@@ -55,30 +55,6 @@
     <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\CheckListItem.cs">
-      <Link>Helpers\CheckListItem.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\Model.cs">
-      <Link>Helpers\Model.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\NuGetHelper.cs">
-      <Link>Helpers\NuGetHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\RepositoryHelper.cs">
-      <Link>Helpers\RepositoryHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\SqlCe40ProviderRegistration.cs">
-      <Link>Helpers\SqlCe40ProviderRegistration.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\SqliteProviderRegistration.cs">
-      <Link>Helpers\SqliteProviderRegistration.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\Telemetry.cs">
-      <Link>Helpers\Telemetry.cs</Link>
-    </Compile>
-    <Compile Include="..\SqlCe35Toolbox\Helpers\VsTheming.cs">
-      <Link>Helpers\VsTheming.cs</Link>
-    </Compile>
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
@@ -106,7 +82,15 @@
     <Compile Include="Handlers\ServerDgmlHandler.cs" />
     <Compile Include="Handlers\ReverseEngineerHandler.cs" />
     <Compile Include="Helpers\AssemblyBindingRedirectHelper.cs" />
+    <Compile Include="Helpers\CheckListItem.cs" />
     <Compile Include="Helpers\EnvDTEHelper.cs" />
+    <Compile Include="Helpers\Model.cs" />
+    <Compile Include="Helpers\NuGetHelper.cs" />
+    <Compile Include="Helpers\RepositoryHelper.cs" />
+    <Compile Include="Helpers\SqlCe40ProviderRegistration.cs" />
+    <Compile Include="Helpers\SqliteProviderRegistration.cs" />
+    <Compile Include="Helpers\Telemetry.cs" />
+    <Compile Include="Helpers\VsTheming.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
