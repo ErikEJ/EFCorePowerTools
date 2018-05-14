@@ -91,7 +91,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\Aw2014Person.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"Aw2014Person.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\northwind.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"northwind.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\pfizer.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"pfizer.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\nofk.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"nofk.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\singlenav.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"singlenav.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -156,7 +156,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\Samurai.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"Samurai.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\Issue604.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"Issue604.dgml", result, Encoding.UTF8);
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace UnitTests
             // Assert
             Assert.AreNotEqual(result, null);
 
-            File.WriteAllText(@"C:\temp\Identity.dgml", result, Encoding.UTF8);
+            File.WriteAllText(@"Identity.dgml", result, Encoding.UTF8);
         }
 
         private static string GetTemplate()
