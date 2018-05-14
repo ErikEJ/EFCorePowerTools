@@ -1,0 +1,471 @@
+Model: 
+  EntityType: Address
+    Properties: 
+      AddressId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: AddressID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      AddressLine1 (string) Required Index MaxLength60 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 60
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      AddressLine2 (string) Index MaxLength60 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 60
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      City (string) Required Index MaxLength30 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 30
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 4 4 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      PostalCode (string) Required Index MaxLength15 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 6 6 -1 -1 2
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      StateProvinceId (int) Required FK Index 7 7 1 -1 3
+        Annotations: 
+          Relational:ColumnName: StateProvinceID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      BusinessEntityAddress (<BusinessEntityAddress>k__BackingField, ICollection<BusinessEntityAddress>) Collection ToDependent BusinessEntityAddress Inverse: Address 0 -1 2 -1 -1
+      StateProvince (<StateProvince>k__BackingField, StateProvince) ToPrincipal StateProvince Inverse: Address 1 -1 3 -1 -1
+    Keys: 
+      AddressId PK
+    Foreign keys: 
+      Address {'StateProvinceId'} -> StateProvince {'StateProvinceId'} ToDependent: Address ToPrincipal: StateProvince
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: Address
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: AddressType
+    Properties: 
+      AddressTypeId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: AddressTypeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 1 1 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Name (string) Required Index 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 3 3 -1 -1 2
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      BusinessEntityAddress (<BusinessEntityAddress>k__BackingField, ICollection<BusinessEntityAddress>) Collection ToDependent BusinessEntityAddress Inverse: AddressType 0 -1 1 -1 -1
+    Keys: 
+      AddressTypeId PK
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: AddressType
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: BusinessEntity
+    Properties: 
+      BusinessEntityId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 1 1 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 2 2 -1 -1 2
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      BusinessEntityAddress (<BusinessEntityAddress>k__BackingField, ICollection<BusinessEntityAddress>) Collection ToDependent BusinessEntityAddress Inverse: BusinessEntity 0 -1 1 -1 -1
+      BusinessEntityContact (<BusinessEntityContact>k__BackingField, ICollection<BusinessEntityContact>) Collection ToDependent BusinessEntityContact Inverse: BusinessEntity 1 -1 2 -1 -1
+      Person (<Person>k__BackingField, Person) ToDependent Person Inverse: BusinessEntity 2 -1 3 -1 -1
+    Keys: 
+      BusinessEntityId PK
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: BusinessEntity
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: BusinessEntityAddress
+    Properties: 
+      BusinessEntityId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      AddressId (int) Required PK FK Index AfterSave:Throw 1 1 1 -1 1
+        Annotations: 
+          Relational:ColumnName: AddressID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      AddressTypeId (int) Required PK FK Index AfterSave:Throw 2 2 2 -1 2
+        Annotations: 
+          Relational:ColumnName: AddressTypeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 3 3 -1 -1 3
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 4 4 -1 -1 4
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      Address (<Address>k__BackingField, Address) ToPrincipal Address Inverse: BusinessEntityAddress 0 -1 3 -1 -1
+      AddressType (<AddressType>k__BackingField, AddressType) ToPrincipal AddressType Inverse: BusinessEntityAddress 1 -1 4 -1 -1
+      BusinessEntity (<BusinessEntity>k__BackingField, BusinessEntity) ToPrincipal BusinessEntity Inverse: BusinessEntityAddress 2 -1 5 -1 -1
+    Keys: 
+      BusinessEntityId, AddressId, AddressTypeId PK
+    Foreign keys: 
+      BusinessEntityAddress {'AddressId'} -> Address {'AddressId'} ToDependent: BusinessEntityAddress ToPrincipal: Address
+      BusinessEntityAddress {'AddressTypeId'} -> AddressType {'AddressTypeId'} ToDependent: BusinessEntityAddress ToPrincipal: AddressType
+      BusinessEntityAddress {'BusinessEntityId'} -> BusinessEntity {'BusinessEntityId'} ToDependent: BusinessEntityAddress ToPrincipal: BusinessEntity
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: BusinessEntityAddress
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: BusinessEntityContact
+    Properties: 
+      BusinessEntityId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      PersonId (int) Required PK FK Index AfterSave:Throw 1 1 1 -1 1
+        Annotations: 
+          Relational:ColumnName: PersonID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ContactTypeId (int) Required PK FK Index AfterSave:Throw 2 2 2 -1 2
+        Annotations: 
+          Relational:ColumnName: ContactTypeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 3 3 -1 -1 3
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 4 4 -1 -1 4
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      BusinessEntity (<BusinessEntity>k__BackingField, BusinessEntity) ToPrincipal BusinessEntity Inverse: BusinessEntityContact 0 -1 3 -1 -1
+      ContactType (<ContactType>k__BackingField, ContactType) ToPrincipal ContactType Inverse: BusinessEntityContact 1 -1 4 -1 -1
+      Person (<Person>k__BackingField, Person) ToPrincipal Person Inverse: BusinessEntityContact 2 -1 5 -1 -1
+    Keys: 
+      BusinessEntityId, PersonId, ContactTypeId PK
+    Foreign keys: 
+      BusinessEntityContact {'BusinessEntityId'} -> BusinessEntity {'BusinessEntityId'} ToDependent: BusinessEntityContact ToPrincipal: BusinessEntity
+      BusinessEntityContact {'ContactTypeId'} -> ContactType {'ContactTypeId'} ToDependent: BusinessEntityContact ToPrincipal: ContactType
+      BusinessEntityContact {'PersonId'} -> Person {'BusinessEntityId'} ToDependent: BusinessEntityContact ToPrincipal: Person
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: BusinessEntityContact
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: ContactType
+    Properties: 
+      ContactTypeId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: ContactTypeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 1 1 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Name (string) Required Index 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      BusinessEntityContact (<BusinessEntityContact>k__BackingField, ICollection<BusinessEntityContact>) Collection ToDependent BusinessEntityContact Inverse: ContactType 0 -1 1 -1 -1
+    Keys: 
+      ContactTypeId PK
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: ContactType
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: CountryRegion
+    Properties: 
+      CountryRegionCode (string) Required PK AfterSave:Throw MaxLength3 0 0 0 -1 -1
+        Annotations: 
+          MaxLength: 3
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 1 1 -1 -1 0
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Name (string) Required Index 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      StateProvince (<StateProvince>k__BackingField, ICollection<StateProvince>) Collection ToDependent StateProvince Inverse: CountryRegionCodeNavigation 0 -1 1 -1 -1
+    Keys: 
+      CountryRegionCode PK
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: CountryRegion
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: EmailAddress
+    Properties: 
+      BusinessEntityId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      EmailAddressId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 1 1 1 -1 1
+        Annotations: 
+          Relational:ColumnName: EmailAddressID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      EmailAddress1 (string) Index MaxLength50 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:ColumnName: EmailAddress
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 3 3 -1 -1 2
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required ValueGenerated.OnAdd 4 4 -1 -1 3
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      BusinessEntity (<BusinessEntity>k__BackingField, Person) ToPrincipal Person Inverse: EmailAddress 0 -1 2 -1 -1
+    Keys: 
+      BusinessEntityId, EmailAddressId PK
+    Foreign keys: 
+      EmailAddress {'BusinessEntityId'} -> Person {'BusinessEntityId'} ToDependent: EmailAddress ToPrincipal: BusinessEntity
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: EmailAddress
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Password
+    Properties: 
+      BusinessEntityId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 1 1 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      PasswordHash (string) Required MaxLength128 Ansi 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 128
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      PasswordSalt (string) Required MaxLength10 Ansi 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      Rowguid (Guid) Required ValueGenerated.OnAdd 4 4 -1 -1 2
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      BusinessEntity (<BusinessEntity>k__BackingField, Person) ToPrincipal Person Inverse: Password 0 -1 1 -1 -1
+    Keys: 
+      BusinessEntityId PK
+    Foreign keys: 
+      Password {'BusinessEntityId'} -> Person {'BusinessEntityId'} Unique ToDependent: Password ToPrincipal: BusinessEntity
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: Password
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Person
+    Properties: 
+      BusinessEntityId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      AdditionalContactInfo (string) Index 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: xml
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Demographics (string) Index 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: xml
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      EmailPromotion (int) Required ValueGenerated.OnAdd 3 3 -1 -1 1
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      FirstName (string) Required Index 4 4 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastName (string) Required Index 5 5 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      MiddleName (string) Index 6 6 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 7 7 -1 -1 2
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      NameStyle (Nullable<bool>) ValueGenerated.OnAdd 8 8 -1 -1 3
+        Annotations: 
+          Relational:ColumnType: NameStyle
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      PersonType (string) Required 9 9 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: nchar(2)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 10 10 -1 -1 4
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Suffix (string) MaxLength10 11 11 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Title (string) MaxLength8 12 12 -1 -1 -1
+        Annotations: 
+          MaxLength: 8
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      BusinessEntity (<BusinessEntity>k__BackingField, BusinessEntity) ToPrincipal BusinessEntity Inverse: Person 0 -1 1 -1 -1
+      BusinessEntityContact (<BusinessEntityContact>k__BackingField, ICollection<BusinessEntityContact>) Collection ToDependent BusinessEntityContact Inverse: Person 1 -1 2 -1 -1
+      EmailAddress (<EmailAddress>k__BackingField, ICollection<EmailAddress>) Collection ToDependent EmailAddress Inverse: BusinessEntity 2 -1 3 -1 -1
+      Password (<Password>k__BackingField, Password) ToDependent Password Inverse: BusinessEntity 3 -1 4 -1 -1
+      PersonPhone (<PersonPhone>k__BackingField, ICollection<PersonPhone>) Collection ToDependent PersonPhone Inverse: BusinessEntity 4 -1 5 -1 -1
+    Keys: 
+      BusinessEntityId PK
+    Foreign keys: 
+      Person {'BusinessEntityId'} -> BusinessEntity {'BusinessEntityId'} Unique ToDependent: Person ToPrincipal: BusinessEntity
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: Person
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: PersonPhone
+    Properties: 
+      BusinessEntityId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: BusinessEntityID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      PhoneNumber (string) Required PK Index AfterSave:Throw 1 1 1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Phone
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      PhoneNumberTypeId (int) Required PK FK Index AfterSave:Throw 2 2 2 -1 1
+        Annotations: 
+          Relational:ColumnName: PhoneNumberTypeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 3 3 -1 -1 2
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+    Navigations: 
+      BusinessEntity (<BusinessEntity>k__BackingField, Person) ToPrincipal Person Inverse: PersonPhone 0 -1 3 -1 -1
+      PhoneNumberType (<PhoneNumberType>k__BackingField, PhoneNumberType) ToPrincipal PhoneNumberType Inverse: PersonPhone 1 -1 4 -1 -1
+    Keys: 
+      BusinessEntityId, PhoneNumber, PhoneNumberTypeId PK
+    Foreign keys: 
+      PersonPhone {'BusinessEntityId'} -> Person {'BusinessEntityId'} ToDependent: PersonPhone ToPrincipal: BusinessEntity
+      PersonPhone {'PhoneNumberTypeId'} -> PhoneNumberType {'PhoneNumberTypeId'} ToDependent: PersonPhone ToPrincipal: PhoneNumberType
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: PersonPhone
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: PhoneNumberType
+    Properties: 
+      PhoneNumberTypeId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: PhoneNumberTypeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 1 1 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Name (string) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      PersonPhone (<PersonPhone>k__BackingField, ICollection<PersonPhone>) Collection ToDependent PersonPhone Inverse: PhoneNumberType 0 -1 1 -1 -1
+    Keys: 
+      PhoneNumberTypeId PK
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: PhoneNumberType
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: StateProvince
+    Properties: 
+      StateProvinceId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: StateProvinceID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      CountryRegionCode (string) Required FK Index MaxLength3 1 1 1 -1 -1
+        Annotations: 
+          MaxLength: 3
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      IsOnlyStateProvinceFlag (Nullable<bool>) ValueGenerated.OnAdd 2 2 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: Flag
+          Relational:DefaultValueSql: ((1))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      ModifiedDate (DateTime) Required ValueGenerated.OnAdd 3 3 -1 -1 2
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Name (string) Required Index 4 4 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: Name
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 5 5 -1 -1 3
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      StateProvinceCode (string) Required Index 6 6 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: nchar(3)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      TerritoryId (int) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: TerritoryID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      Address (<Address>k__BackingField, ICollection<Address>) Collection ToDependent Address Inverse: StateProvince 0 -1 2 -1 -1
+      CountryRegionCodeNavigation (<CountryRegionCodeNavigation>k__BackingField, CountryRegion) ToPrincipal CountryRegion Inverse: StateProvince 1 -1 3 -1 -1
+    Keys: 
+      StateProvinceId PK
+    Foreign keys: 
+      StateProvince {'CountryRegionCode'} -> CountryRegion {'CountryRegionCode'} ToDependent: StateProvince ToPrincipal: CountryRegionCodeNavigation
+    Annotations: 
+      Relational:Schema: Person
+      Relational:TableName: StateProvince
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+Annotations: 
+  ProductVersion: 2.0.0-rtm-26452
+  SqlServer:ValueGenerationStrategy: IdentityColumn

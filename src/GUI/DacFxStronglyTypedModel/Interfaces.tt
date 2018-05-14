@@ -1,0 +1,124 @@
+﻿//------------------------------------------------------------------------------
+//<copyright company="Microsoft">
+//
+//    The MIT License (MIT)
+//    
+//    Copyright (c) 2015 Microsoft
+//    
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the "Software"), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//    
+//    The above copyright notice and this permission notice shall be included in all
+//    copies or substantial portions of the Software.
+//    
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//    SOFTWARE.
+//</copyright>
+//------------------------------------------------------------------------------
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(DacFxExternals)\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="Microsoft.SqlServer.Dac.Model"#>
+<#@ output extension=".cs" #>
+<#@ include file="Utils.tt" #>
+namespace <#=NamespaceName#>
+{
+	using System;
+	using System.Linq; 
+	using Microsoft.SqlServer.Server;
+	using Microsoft.SqlServer.Dac.Model;
+	using System.Collections.Generic;
+<#
+    var overrides = LoadOverrides(this.Host.TemplateFile);
+	string interfacePrefix;
+
+foreach(SqlServerVersion currentSQLVersion in GetSqlServerVersionValues())
+{
+	interfacePrefix = GetInterfacePrefix(currentSQLVersion);
+	foreach(var type in  ModelSchema.SchemaInstance.AllTypes)
+	{
+		string className = interfacePrefix+ ClassNamePrefix +type.Name;
+		ModelEntry modelEntry;
+		overrides.TryGetValue(type.Name, out modelEntry);
+		
+#>
+    public interface <#= className #>Reference : <#= className #>
+	{
+    }
+	public interface <#= className #> : ISqlModelElement
+	{		
+<#
+        foreach (var property in type.Properties.OrderBy(p => p.Name))
+        {
+			if(!SupportsVersion(property.SupportedPlatforms, currentSQLVersion))
+			{
+				continue;
+			}
+			bool useGenericGetter;
+			string typeName = GetPropertyTypeName(property.DataType, out useGenericGetter);		
+			string propertyName = GetPropertyName(property, modelEntry);
+#>
+		<#= typeName #> <#= propertyName #> 
+		{
+			get;
+		}
+<#
+		}// end property loop
+		
+	
+	// begin relationship loop
+	foreach (var relationship in type.Relationships.OrderBy( r => r.Name))
+	{
+	   if (!SupportsVersion(relationship.SupportedPlatforms, currentSQLVersion))
+	   {
+	   // skip unsupported properties
+		continue;
+	   }
+	string returnType = DefaultReturnType;
+	if(modelEntry != null)
+	{
+		RelationshipOverride localoverride;
+		if(modelEntry.RelationshipOverrides.TryGetValue(relationship.Name, out localoverride))
+		{
+			if(localoverride.Specialize)
+			{
+				// specialize the return type to match the sql version interface name
+				returnType = string.Format("{0}.{1}{2}", localoverride.ReturnTypeNamespace,interfacePrefix, localoverride.ReturnType);
+			}
+			else
+			{
+				// return type is not specialized for each sql version interface.
+				returnType = string.Format("{0}.{1}", localoverride.ReturnTypeNamespace, localoverride.ReturnType);
+			}
+		}
+	}			
+#>
+		//<#=relationship.Type#>
+		IEnumerable<<#=returnType#>> <#=relationship.Name #> 
+		{
+			get;
+		}
+<#		
+	} //end foreach relationship
+#>
+	}
+<#
+	}
+}
+	#>
+}

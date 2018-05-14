@@ -1,0 +1,40 @@
+﻿Model: 
+  EntityType: Blog
+    Properties: 
+      BlogId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Url (string) 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Posts (<Posts>k__BackingField, List<Post>) Collection ToDependent Post 0 -1 1 -1 -1
+    Keys: 
+      BlogId PK
+    Annotations: 
+      Relational:TableName: Blogs
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Post
+    Properties: 
+      PostId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      BlogId (no field, Nullable<int>) Shadow FK Index 1 1 1 0 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Content (string) 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Title (string) 3 3 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Keys: 
+      PostId PK
+    Foreign keys: 
+      Post {'BlogId'} -> Blog {'BlogId'} ToDependent: Posts
+    Annotations: 
+      Relational:TableName: Posts
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+Annotations: 
+  ProductVersion: 2.0.0-rtm-26452
+  SqlServer:ValueGenerationStrategy: IdentityColumn

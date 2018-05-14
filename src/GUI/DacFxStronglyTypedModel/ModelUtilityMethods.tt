@@ -1,0 +1,207 @@
+﻿//------------------------------------------------------------------------------
+//<copyright company="Microsoft">
+//
+//    The MIT License (MIT)
+//    
+//    Copyright (c) 2015 Microsoft
+//    
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the "Software"), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//    
+//    The above copyright notice and this permission notice shall be included in all
+//    copies or substantial portions of the Software.
+//    
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//    SOFTWARE.
+//</copyright>
+//------------------------------------------------------------------------------
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(DacFxExternals)\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="Microsoft.SqlServer.Dac.Model"#>
+<#@ output extension=".cs" #>
+<#@ include file="Utils.tt" #>
+<#
+var overrides = LoadOverrides(this.Host.TemplateFile);
+#>
+namespace <#=NamespaceName#>
+{
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using Microsoft.SqlServer.Dac.Model;
+	    
+	public static class UtilityMethods
+	{
+
+		/// <summary>
+        /// Returns the set of possible <see cref="ModelTypeClass"/> for the <see cref="System.Type"/>.
+        /// </summary>
+        /// <param name="type">Class or Interface to find mapped <see cref="ModelTypeClass"/></param>
+        /// <returns>The <see cref="ModelTypeClass"/> that map to the <paramref name="type"/> <see cref="ModelTypeClass"/></returns>
+        /// <remarks>
+        /// if <paramref name="type"/> is an interface the the returned <see cref="ModelTypeClass"/> all implement the type. If the <paramref name="type"/> is class type on a single <see cref="ModelTypeClass"/> will be returned.
+        /// </remarks>
+		public static IEnumerable<ModelTypeClass> GetModelElementTypes(Type type)
+		{
+			if(type.Namespace != typeof(TSqlTable).Namespace)
+			{
+				throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The type {0}.{1} must be in the namespace {2}", type.Namespace, type.Name, typeof(TSqlTable).Namespace) , "type");
+			}
+			switch(type.Name)
+			{
+<#
+			Dictionary<string, List<ModelTypeClass>> interfaces = new Dictionary<string, List<ModelTypeClass>>();
+			// create the list of ModelElement classes that implement each interface.
+			foreach( var type in ModelSchema.SchemaInstance.AllTypes.OrderBy(t => t.Name))
+            {
+				var typeOverrides = overrides[type.Name];
+				foreach(string interfaceName in typeOverrides.Interfaces)
+                {
+					List<ModelTypeClass> implementationTypes;
+					if(!interfaces.TryGetValue(interfaceName, out implementationTypes))
+                    {
+						implementationTypes = new List<ModelTypeClass>();
+						interfaces.Add(interfaceName, implementationTypes);
+                    }
+					// Mark that instance of ModelTypeClass implement the interface
+					implementationTypes.Add(type);
+                }
+
+				
+				// Iterate over all the SQLPlatforms and build cases statements
+				// for each SqlServerVersion but filter out any unsupported ModelElementTypes				
+				foreach(SqlServerVersion currentSQLVersion in GetSqlServerVersionValues())
+                {	
+					string typePrefix = GetInterfacePrefix(currentSQLVersion);			
+					if (!SupportsVersion(type.SupportedPlatforms, currentSQLVersion))
+					{
+						// skip ModelTypeClass as it does not support the SQL Version
+						continue;
+					}										
+#>
+				case "<#=typePrefix + ClassNamePrefix + type.Name#>":
+<#
+                }
+
+				// ClassNamePrefix + type.Name represents the base typed class.
+#>
+				case "<#=ClassNamePrefix + type.Name#>":				
+					yield return <#=ClassNamePrefix + type.Name#>.TypeClass;
+					break;
+<#				
+            }
+		
+			// iterate over all the interfaces implemented by typed elements
+			foreach (var kvp in interfaces.OrderBy(i => i.Key))
+            {
+			
+			// kvp.Key represents the interface name that all the kvp.Value
+			// ModelElementClasses implement	
+#>
+				case "<#=kvp.Key#>":
+<#
+				foreach(var modelType in kvp.Value)
+                {
+#>
+					yield return <#=ClassNamePrefix + modelType.Name#>.TypeClass;
+<#
+                }
+#>
+					break;
+<#
+            }
+#>
+				default:
+					throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "The type {0}.{1} is not mapped", type.Namespace, type.Name));
+			}
+		}
+		
+		/// <summary>
+        /// Determines if instances of <see cref="TSqlModelElement"/> for the <paramref name="typeClass"/> model 
+        /// element class will derive from or implement the interface type <paramref name="type"/>.
+        /// </summary>
+        /// <param name="typeClass">Model element type class to interrogate.</param>
+        /// <param name="type">Candidate <see cref="System.Type"/> for comparison</param>
+        /// <returns>True if <see cref="TSqlModelElement"/> implement or extend the type <paramref name="type"/>.</returns>		
+		public static bool ImplementsType(ModelTypeClass typeClass, Type type)
+		{
+			if(typeClass == null)
+			{
+				throw new ArgumentNullException("typeClass");
+			}
+			else if(type == null)
+			{
+				throw new ArgumentNullException("type");
+			}
+
+			switch(typeClass.Name)
+			{
+<#
+			foreach( var type in ModelSchema.SchemaInstance.AllTypes)
+            {
+				var typeOverrides = overrides[type.Name];
+				if(typeOverrides.Interfaces.Count == 0)
+                {
+					continue;
+                }
+#>
+			case "<#=type.Name#>":
+				if (typeof(<#=ClassNamePrefix + type.Name#>).IsAssignableFrom(type))
+				{
+					return true;
+				}
+<#
+
+			// Iterate over all the SQLPlatforms and build cases statements
+			// for each SqlServerVersion but filter out any unsupported ModelElementTypes				
+			foreach(SqlServerVersion currentSQLVersion in GetSqlServerVersionValues())
+            {	
+				string typePrefix = GetInterfacePrefix(currentSQLVersion);			
+				if (!SupportsVersion(type.SupportedPlatforms, currentSQLVersion))
+				{
+					// skip ModelTypeClass as it does not support the SQL Version
+					continue;
+				}										
+#>
+				else if (typeof(<#=typePrefix + ClassNamePrefix + type.Name#>).IsAssignableFrom(type))
+				{
+					return true;
+				}
+<#
+            }
+			// get a list of all implemented marker interfaces
+			foreach(var interfaceType in overrides[type.Name].Interfaces)
+            {
+#>
+				else if(typeof(<#=interfaceType#>).IsAssignableFrom(type))
+				{
+					return true;
+				}
+<#}
+#>
+				// no interfaces mapped.
+				return false;
+<#
+            }
+#>
+			}
+			// no type mapping found 
+			return false;
+		}
+	}
+}

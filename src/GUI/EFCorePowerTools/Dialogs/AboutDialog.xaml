@@ -1,0 +1,38 @@
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.AboutDialog"
+             xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+       Title="About" 
+        WindowStartupLocation="CenterOwner"
+        x:Name="aboutDialog"
+        Loaded="Window_Loaded" SizeToContent="WidthAndHeight" ResizeMode="NoResize" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d:DesignHeight="634" d:DesignWidth="337">
+    <Grid ClipToBounds="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="117*" />
+            <RowDefinition Height="109" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        <TextBlock VerticalAlignment="Center" Margin="5,20,5,396" TextWrapping="Wrap" Height="35">                
+            <Bold>EF Core Power Tools</Bold> for Visual Studio</TextBlock>
+        <TextBlock Margin="5,0,5,280" Height="86" VerticalAlignment="Bottom">
+                For support, feedback and full source code, go to:<LineBreak/>
+                <Bold>
+                    <Hyperlink TextDecorations="" Click="CodeplexLink_Click" x:Name="CodeplexLink">
+                    https://github.com/ErikEJ/SqlCeToolbox</Hyperlink>
+                </Bold>
+                <LineBreak/><LineBreak/>
+                This add-in is FREE, but I would be grateful for a review:
+            <Bold>
+                <LineBreak/>
+                    <Hyperlink TextDecorations="" Click="GalleryLink_Click" x:Name="GalleryLink">
+                    Visual Studio Marketplace</Hyperlink>
+                </Bold>
+        </TextBlock>
+        <TextBlock Name="Version" VerticalAlignment="Center" Margin="5,69,5,366" Height="16">Version:</TextBlock>
+
+        <dw:DialogButton IsCancel="True" IsDefault="True" Name="OKButton" Click="OKButton_Click" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,12,12">OK</dw:DialogButton>
+        <dw:DialogButton Name="SaveButton" Click="SaveButton_Click" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12,0,0,12.2" Width="30">Copy</dw:DialogButton>
+        <TextBlock Height="374" Margin="5,186,5,10" Name="txtStatus" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Grid.RowSpan="2"></TextBlock>
+    </Grid>
+</dw:DialogWindow>

@@ -1,0 +1,254 @@
+﻿<#//------------------------------------------------------------------------------
+//<copyright company="Microsoft">
+//
+//    The MIT License (MIT)
+//    
+//    Copyright (c) 2015 Microsoft
+//    
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the "Software"), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//    
+//    The above copyright notice and this permission notice shall be included in all
+//    copies or substantial portions of the Software.
+//    
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//    SOFTWARE.
+//</copyright>
+//------------------------------------------------------------------------------#>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="$(DacFxExternals)\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.SqlServer.Dac.Model"#>
+<#@ import namespace="System.Text.RegularExpressions"#>
+<#+
+private static string NamespaceName = "Microsoft.SqlServer.Dac.Extensions.Prototype";
+private static string ClassNamePrefix = "TSql";
+public static string DefaultReturnType = "TSqlModelElementReference";
+// SqlServerVersion is missing the  AzureV12 enum value in the latest release.
+private const SqlServerVersion AzureV12 = (SqlServerVersion)0x00000020;
+
+private static string GetPropertyTypeName(Type dataType, out bool useGenericGetter)
+{
+    useGenericGetter = true;
+    string typeName;
+    if (dataType.IsGenericType)
+    {
+        Type[] genericTypes = dataType.GetGenericArguments();
+        typeName = genericTypes[0].Name + "?";
+    }
+    else if (dataType.Name == "SqlScriptProperty")
+    {
+        // SqlScriptProperty is an internal type. The property getter should
+        // return a string
+        typeName = "String";
+        useGenericGetter = false;
+    }
+    else
+    {
+        typeName = dataType.Name;
+    }
+
+    return typeName;
+}
+
+
+private static string GetPropertyName(ModelPropertyClass property, ModelEntry modelEntry)
+{
+	PropertyOverride overrideProperty;
+
+	if(modelEntry != null && modelEntry.PropertyOverrides.TryGetValue(property.Name, out overrideProperty))
+    {
+		return overrideProperty.NameOverride;
+    }
+
+	return property.Name;
+}
+
+private class ModelEntry
+{
+	public ModelEntry()
+    {
+		Interfaces = new List<string>();
+		RelationshipOverrides = new Dictionary<string,RelationshipOverride>();
+		PropertyOverrides = new Dictionary<string, PropertyOverride>();
+    }
+
+	public List<string> Interfaces {get;set;}
+	public Dictionary<string, RelationshipOverride> RelationshipOverrides {get;set;}
+	public Dictionary<string, PropertyOverride> PropertyOverrides {get;set;}
+}
+
+public class RelationshipOverride
+{
+	public RelationshipOverride()
+    {
+		AdaptInstance = true;
+    }
+
+	public string RelationshipName {get;set;}
+	public string ReturnType {get;set;}
+    public string InternalReturnType {get; set;}
+    public string InternalReturnTypeNamespace {get; set;}
+	public string ReturnTypeNamespace {get; set;}
+    public string UnresolvedReturnType{get; set;}
+	public bool Specialize {get; set;}
+	public bool AdaptInstance {get; set;}
+
+}
+
+public class PropertyOverride
+{
+	public string Name {get;set;}
+	public string NameOverride {get;set;}
+}
+
+private static Dictionary<string, ModelEntry> LoadOverrides(string templateFile)
+{
+	// Matches and extracts the DacFX ModelElementType name.
+	// The ModelElementType name is extracted by removing the prefix "TSql" and the optional suffix of "Reference". 
+	// The element type name is used to determine the ModelElementType to pass to the TSQLModelElement constructor 
+	// when adapting the model element.
+    Regex r = new Regex("TSql([a-zA-Z]+?)(?:Reference)?$");    
+
+	XmlDocument configurationData = new XmlDocument();
+    configurationData.Load( System.IO.Path.GetDirectoryName(templateFile) +"\\modelmetadata.xml");
+    XmlNode root = configurationData.SelectSingleNode("Model");
+	Dictionary<string, ModelEntry> overrides = new Dictionary<string, ModelEntry>();
+    foreach (XmlNode element in root.ChildNodes)
+    {
+		List<string> interfaces = new List<string>();
+		if(element.NodeType == XmlNodeType.Comment)
+		{
+			//skip comments
+			continue;
+		}
+
+        string elementName = element.Attributes["Name"].Value;
+		ModelEntry modelEntry = new ModelEntry();
+		overrides.Add(elementName, modelEntry);
+        foreach (XmlNode relationship in element.ChildNodes)
+        {
+			if(relationship.NodeType == XmlNodeType.Comment)
+			{
+				continue;
+			}
+
+			else if(relationship.LocalName == "Implements")
+            {
+				modelEntry.Interfaces.Add(relationship.Attributes["Name"].Value);
+				continue;
+            }
+			else if(relationship.LocalName == "Relationship")
+            {
+				string name = relationship.Attributes["Name"].Value;
+                string returnTypeValue = relationship.Attributes["ReturnType"].Value;
+                string internalReturnType = null;
+				bool adaptInstance = true;
+				var adaptInstanceAttribute = relationship.Attributes["AdaptInstance"];
+				if(adaptInstanceAttribute != null)
+                {
+					adaptInstance = bool.Parse(adaptInstanceAttribute.Value);
+                }
+                
+                Match m = r.Match(returnTypeValue);
+                if (m.Success)
+                {
+                    internalReturnType = m.Groups[1].Value;
+                }
+                string unresolvedReturnType = null;
+                var unresolvedReturnTypeNode =  relationship.Attributes["UnresolvedReturnType"];
+                if(unresolvedReturnTypeNode != null)
+                {
+                    unresolvedReturnType = unresolvedReturnTypeNode.Value;
+                }
+
+				modelEntry.RelationshipOverrides.Add(name, new RelationshipOverride() 
+					{ 
+						RelationshipName= name, //todo: allow overriding name
+						ReturnType = returnTypeValue, 
+                        InternalReturnType = internalReturnType,
+                        InternalReturnTypeNamespace= "Microsoft.SqlServer.Dac.Model",
+						ReturnTypeNamespace=relationship.Attributes["ReturnTypeNamespace"].Value, 
+                        UnresolvedReturnType = unresolvedReturnType,
+						Specialize=bool.Parse(relationship.Attributes["Specialize"].Value),
+						AdaptInstance= adaptInstance,
+					});
+            }
+			else if(relationship.LocalName == "Property")
+            {
+				string name = relationship.Attributes["Name"].Value;
+				modelEntry.PropertyOverrides.Add(name, new PropertyOverride()
+                {
+					Name = name,
+					NameOverride=relationship.Attributes["OverrideName"].Value
+                });
+            }
+        }
+    }
+    return overrides;
+}
+
+private IEnumerable<SqlServerVersion> GetSqlServerVersionValues()
+{
+	bool foundAzureV12 = false;
+	//defect: SqlAzureV12 not included in the SqlServerVersion enum
+	foreach(SqlServerVersion val in Enum.GetValues(typeof(SqlServerVersion)))
+    {
+		if(val == AzureV12)
+        {
+			foundAzureV12 = true;
+        }
+		yield return val;
+    }
+	// add AzureV12 if not in the enum
+	if(!foundAzureV12)
+    {
+		yield return AzureV12;
+    }
+}
+
+private string GetInterfacePrefix(SqlServerVersion version)
+{
+	switch(version)
+    {
+		case AzureV12:
+			return "ISqlAzureV12";
+		default:
+			return "I" + version;
+     }
+}
+private bool SupportsVersion(TSqlPlatforms platform, SqlServerVersion version)
+        { 
+            switch(version)
+            {
+                case SqlServerVersion.Sql90:
+					return (platform & TSqlPlatforms.Sql90) == TSqlPlatforms.Sql90;
+				case SqlServerVersion.Sql100:
+                     return (platform & TSqlPlatforms.Sql100) == TSqlPlatforms.Sql100;
+                case SqlServerVersion.Sql110:
+                     return (platform & TSqlPlatforms.Sql110) == TSqlPlatforms.Sql110;
+                case SqlServerVersion.Sql120:
+                    return (platform & TSqlPlatforms.Sql120) == TSqlPlatforms.Sql120;                
+                case SqlServerVersion.SqlAzure:
+                     return (platform & TSqlPlatforms.SqlAzure) == TSqlPlatforms.SqlAzure;
+                //case SqlServerVersion.SqlAzureV12:
+				case AzureV12:
+                     return (platform & TSqlPlatforms.SqlAzureV12) == TSqlPlatforms.SqlAzureV12;
+				default:
+                    return false;
+            }   
+        }
+#>

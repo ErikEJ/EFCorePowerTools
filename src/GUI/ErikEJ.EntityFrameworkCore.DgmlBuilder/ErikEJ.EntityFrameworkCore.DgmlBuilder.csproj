@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="template.dgml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="template.dgml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
+    <PackageVersion>1.0.10</PackageVersion>
+    <Authors>ErikEJ</Authors>
+    <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Bug fixes to generated DGML</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/ErikEJ/SqlCeToolbox</PackageProjectUrl>
+    <PackageTags>DbContext;EntityFramework;DGML;graph;EFCore;EntityFrameworkCore</PackageTags>
+    <RootNamespace>DgmlBuilder</RootNamespace>
+    <MinClientVersion>4.0</MinClientVersion>
+    <Dependencies>
+      <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.0.1" />
+    </Dependencies>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+</Project>

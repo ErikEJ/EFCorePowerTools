@@ -1,0 +1,548 @@
+﻿Model: 
+  EntityType: Categories Base: Abc Abstract ChangeTrackingStrategy.ErikEJ
+    Properties: 
+      CategoryId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: CategoryID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      CategoryName (string) Required Index MaxLength15 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Description (string) 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: ntext
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Picture (Byte[]) 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: image
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerByteArrayTypeMapping
+    Navigations: 
+      Products (<Products>k__BackingField, ICollection<Products>) Collection ToDependent Products Inverse: Category 0 -1 1 -1 -1
+    Keys: 
+      CategoryId PK
+    Annotations: 
+      Relational:TableName: Categories
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: CustomerCustomerDemo
+    Properties: 
+      CustomerId (string) Required PK FK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: CustomerID
+          Relational:ColumnType: nchar(5)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CustomerTypeId (string) Required PK FK Index AfterSave:Throw 1 1 1 -1 -1
+        Annotations: 
+          Relational:ColumnName: CustomerTypeID
+          Relational:ColumnType: nchar(10)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Customer (<Customer>k__BackingField, Customers) ToPrincipal Customers Inverse: CustomerCustomerDemo 0 -1 2 -1 -1
+      CustomerType (<CustomerType>k__BackingField, CustomerDemographics) ToPrincipal CustomerDemographics Inverse: CustomerCustomerDemo 1 -1 3 -1 -1
+    Keys: 
+      CustomerId, CustomerTypeId PK
+        Annotations: 
+          SqlServer:Clustered: False
+    Foreign keys: 
+      CustomerCustomerDemo {'CustomerId'} -> Customers {'CustomerId'} ToDependent: CustomerCustomerDemo ToPrincipal: Customer
+        Annotations: 
+          Relational:Name: FK_CustomerCustomerDemo_Customers
+      CustomerCustomerDemo {'CustomerTypeId'} -> CustomerDemographics {'CustomerTypeId'} ToDependent: CustomerCustomerDemo ToPrincipal: CustomerType
+        Annotations: 
+          Relational:Name: FK_CustomerCustomerDemo
+    Annotations: 
+      Relational:TableName: CustomerCustomerDemo
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: CustomerDemographics
+    Properties: 
+      CustomerTypeId (string) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: CustomerTypeID
+          Relational:ColumnType: nchar(10)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CustomerDesc (string) 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: ntext
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      CustomerCustomerDemo (<CustomerCustomerDemo>k__BackingField, ICollection<CustomerCustomerDemo>) Collection ToDependent CustomerCustomerDemo Inverse: CustomerType 0 -1 1 -1 -1
+    Keys: 
+      CustomerTypeId PK
+        Annotations: 
+          SqlServer:Clustered: False
+    Annotations: 
+      Relational:TableName: CustomerDemographics
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Customers
+    Properties: 
+      CustomerId (string) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: CustomerID
+          Relational:ColumnType: nchar(5)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Address (string) MaxLength60 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 60
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      City (string) Index MaxLength15 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CompanyName (string) Required Index MaxLength40 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 40
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ContactName (string) MaxLength30 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 30
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ContactTitle (string) MaxLength30 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 30
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Country (string) MaxLength15 6 6 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Fax (string) MaxLength24 7 7 -1 -1 -1
+        Annotations: 
+          MaxLength: 24
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Phone (string) MaxLength24 8 8 -1 -1 -1
+        Annotations: 
+          MaxLength: 24
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      PostalCode (string) Index MaxLength10 9 9 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Region (string) Index MaxLength15 10 10 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      CustomerCustomerDemo (<CustomerCustomerDemo>k__BackingField, ICollection<CustomerCustomerDemo>) Collection ToDependent CustomerCustomerDemo Inverse: Customer 0 -1 1 -1 -1
+      Orders (<Orders>k__BackingField, ICollection<Orders>) Collection ToDependent Orders Inverse: Customer 1 -1 2 -1 -1
+    Keys: 
+      CustomerId PK
+    Annotations: 
+      Relational:TableName: Customers
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Employees
+    Properties: 
+      EmployeeId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: EmployeeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Address (string) MaxLength60 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 60
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      BirthDate (Nullable<DateTime>) 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      City (string) MaxLength15 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Country (string) MaxLength15 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Extension (string) MaxLength4 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 4
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      FirstName (string) Required MaxLength10 6 6 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      HireDate (Nullable<DateTime>) 7 7 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      HomePhone (string) MaxLength24 8 8 -1 -1 -1
+        Annotations: 
+          MaxLength: 24
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastName (string) Required Index MaxLength20 9 9 -1 -1 -1
+        Annotations: 
+          MaxLength: 20
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Notes (string) 10 10 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: ntext
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Photo (Byte[]) 11 11 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: image
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerByteArrayTypeMapping
+      PhotoPath (string) MaxLength255 12 12 -1 -1 -1
+        Annotations: 
+          MaxLength: 255
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      PostalCode (string) Index MaxLength10 13 13 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Region (string) MaxLength15 14 14 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ReportsTo (Nullable<int>) FK Index 15 15 1 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Title (string) MaxLength30 16 16 -1 -1 -1
+        Annotations: 
+          MaxLength: 30
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      TitleOfCourtesy (string) MaxLength25 17 17 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      EmployeeTerritories (<EmployeeTerritories>k__BackingField, ICollection<EmployeeTerritories>) Collection ToDependent EmployeeTerritories Inverse: Employee 0 -1 2 -1 -1
+      InverseReportsToNavigation (<InverseReportsToNavigation>k__BackingField, ICollection<Employees>) Collection ToDependent Employees Inverse: ReportsToNavigation 1 -1 3 -1 -1
+      Orders (<Orders>k__BackingField, ICollection<Orders>) Collection ToDependent Orders Inverse: Employee 2 -1 4 -1 -1
+      ReportsToNavigation (<ReportsToNavigation>k__BackingField, Employees) ToPrincipal Employees Inverse: InverseReportsToNavigation 3 -1 5 -1 -1
+    Keys: 
+      EmployeeId PK
+    Foreign keys: 
+      Employees {'ReportsTo'} -> Employees {'EmployeeId'} ToDependent: InverseReportsToNavigation ToPrincipal: ReportsToNavigation
+        Annotations: 
+          Relational:Name: FK_Employees_Employees
+    Annotations: 
+      Relational:TableName: Employees
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: EmployeeTerritories
+    Properties: 
+      EmployeeId (int) Required PK FK AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: EmployeeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      TerritoryId (string) Required PK FK Index AfterSave:Throw MaxLength20 1 1 1 -1 -1
+        Annotations: 
+          MaxLength: 20
+          Relational:ColumnName: TerritoryID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Employee (<Employee>k__BackingField, Employees) ToPrincipal Employees Inverse: EmployeeTerritories 0 -1 2 -1 -1
+      Territory (<Territory>k__BackingField, Territories) ToPrincipal Territories Inverse: EmployeeTerritories 1 -1 3 -1 -1
+    Keys: 
+      EmployeeId, TerritoryId PK
+        Annotations: 
+          SqlServer:Clustered: False
+    Foreign keys: 
+      EmployeeTerritories {'EmployeeId'} -> Employees {'EmployeeId'} ToDependent: EmployeeTerritories ToPrincipal: Employee
+        Annotations: 
+          Relational:Name: FK_EmployeeTerritories_Employees
+      EmployeeTerritories {'TerritoryId'} -> Territories {'TerritoryId'} ToDependent: EmployeeTerritories ToPrincipal: Territory
+        Annotations: 
+          Relational:Name: FK_EmployeeTerritories_Territories
+    Annotations: 
+      Relational:TableName: EmployeeTerritories
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: OrderDetails
+    Properties: 
+      OrderId (int) Required PK FK Index AfterSave:Throw 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: OrderID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ProductId (int) Required PK FK Index AfterSave:Throw 1 1 1 -1 1
+        Annotations: 
+          Relational:ColumnName: ProductID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Discount (float) Required ValueGenerated.OnAdd 2 2 -1 -1 2
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerFloatTypeMapping
+      Quantity (short) Required ValueGenerated.OnAdd 3 3 -1 -1 3
+        Annotations: 
+          Relational:DefaultValueSql: ((1))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.ShortTypeMapping
+      UnitPrice (decimal) Required ValueGenerated.OnAdd 4 4 -1 -1 4
+        Annotations: 
+          Relational:ColumnType: money
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.DecimalTypeMapping
+    Navigations: 
+      Order (<Order>k__BackingField, Orders) ToPrincipal Orders Inverse: OrderDetails 0 -1 2 -1 -1
+      Product (<Product>k__BackingField, Products) ToPrincipal Products Inverse: OrderDetails 1 -1 3 -1 -1
+    Keys: 
+      OrderId, ProductId PK
+    Foreign keys: 
+      OrderDetails {'OrderId'} -> Orders {'OrderId'} ToDependent: OrderDetails ToPrincipal: Order
+        Annotations: 
+          Relational:Name: FK_Order_Details_Orders
+      OrderDetails {'ProductId'} -> Products {'ProductId'} ToDependent: OrderDetails ToPrincipal: Product
+        Annotations: 
+          Relational:Name: FK_Order_Details_Products
+    Annotations: 
+      Relational:TableName: Order Details
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Orders
+    Properties: 
+      OrderId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: OrderID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      CustomerId (string) FK Index 1 1 1 -1 -1
+        Annotations: 
+          Relational:ColumnName: CustomerID
+          Relational:ColumnType: nchar(5)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      EmployeeId (Nullable<int>) FK Index 2 2 2 -1 1
+        Annotations: 
+          Relational:ColumnName: EmployeeID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Freight (Nullable<decimal>) ValueGenerated.OnAdd 3 3 -1 -1 2
+        Annotations: 
+          Relational:ColumnType: money
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.DecimalTypeMapping
+      OrderDate (Nullable<DateTime>) Index 4 4 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      RequiredDate (Nullable<DateTime>) 5 5 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      ShipAddress (string) MaxLength60 6 6 -1 -1 -1
+        Annotations: 
+          MaxLength: 60
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ShipCity (string) MaxLength15 7 7 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ShipCountry (string) MaxLength15 8 8 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ShipName (string) MaxLength40 9 9 -1 -1 -1
+        Annotations: 
+          MaxLength: 40
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ShipPostalCode (string) Index MaxLength10 10 10 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ShipRegion (string) MaxLength15 11 11 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ShipVia (Nullable<int>) FK Index 12 12 3 -1 3
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ShippedDate (Nullable<DateTime>) Index 13 13 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+    Navigations: 
+      Customer (<Customer>k__BackingField, Customers) ToPrincipal Customers Inverse: Orders 0 -1 4 -1 -1
+      Employee (<Employee>k__BackingField, Employees) ToPrincipal Employees Inverse: Orders 1 -1 5 -1 -1
+      OrderDetails (<OrderDetails>k__BackingField, ICollection<OrderDetails>) Collection ToDependent OrderDetails Inverse: Order 2 -1 6 -1 -1
+      ShipViaNavigation (<ShipViaNavigation>k__BackingField, Shippers) ToPrincipal Shippers Inverse: Orders 3 -1 7 -1 -1
+    Keys: 
+      OrderId PK
+    Foreign keys: 
+      Orders {'CustomerId'} -> Customers {'CustomerId'} ToDependent: Orders ToPrincipal: Customer
+        Annotations: 
+          Relational:Name: FK_Orders_Customers
+      Orders {'EmployeeId'} -> Employees {'EmployeeId'} ToDependent: Orders ToPrincipal: Employee
+        Annotations: 
+          Relational:Name: FK_Orders_Employees
+      Orders {'ShipVia'} -> Shippers {'ShipperId'} ToDependent: Orders ToPrincipal: ShipViaNavigation
+        Annotations: 
+          Relational:Name: FK_Orders_Shippers
+    Annotations: 
+      Relational:TableName: Orders
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Products
+    Properties: 
+      ProductId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: ProductID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      CategoryId (Nullable<int>) FK Index 1 1 1 -1 1
+        Annotations: 
+          Relational:ColumnName: CategoryID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Discontinued (Nullable<bool>) ValueGenerated.OnAdd 2 2 -1 -1 2
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      ProductName (string) Required Index MaxLength40 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 40
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      QuantityPerUnit (string) MaxLength20 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 20
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ReorderLevel (Nullable<short>) ValueGenerated.OnAdd 5 5 -1 -1 3
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.ShortTypeMapping
+      SupplierId (Nullable<int>) FK Index 6 6 2 -1 4
+        Annotations: 
+          Relational:ColumnName: SupplierID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      UnitPrice (Nullable<decimal>) ValueGenerated.OnAdd 7 7 -1 -1 5
+        Annotations: 
+          Relational:ColumnType: money
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.DecimalTypeMapping
+      UnitsInStock (Nullable<short>) ValueGenerated.OnAdd 8 8 -1 -1 6
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.ShortTypeMapping
+      UnitsOnOrder (Nullable<short>) ValueGenerated.OnAdd 9 9 -1 -1 7
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.ShortTypeMapping
+    Navigations: 
+      Category (<Category>k__BackingField, Categories) ToPrincipal Categories Inverse: Products 0 -1 3 -1 -1
+      OrderDetails (<OrderDetails>k__BackingField, ICollection<OrderDetails>) Collection ToDependent OrderDetails Inverse: Product 1 -1 4 -1 -1
+      Supplier (<Supplier>k__BackingField, Suppliers) ToPrincipal Suppliers Inverse: Products 2 -1 5 -1 -1
+    Keys: 
+      ProductId PK
+    Foreign keys: 
+      Products {'CategoryId'} -> Categories {'CategoryId'} ToDependent: Products ToPrincipal: Category
+        Annotations: 
+          Relational:Name: FK_Products_Categories
+      Products {'SupplierId'} -> Suppliers {'SupplierId'} ToDependent: Products ToPrincipal: Supplier
+        Annotations: 
+          Relational:Name: FK_Products_Suppliers
+    Annotations: 
+      Relational:TableName: Products
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Region
+    Properties: 
+      RegionId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: RegionID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      RegionDescription (string) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: nchar(50)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Territories (<Territories>k__BackingField, ICollection<Territories>) Collection ToDependent Territories Inverse: Region 0 -1 1 -1 -1
+    Keys: 
+      RegionId PK
+    Annotations: 
+      Relational:TableName: Region
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Shippers
+    Properties: 
+      ShipperId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: ShipperID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      CompanyName (string) Required MaxLength40 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 40
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Phone (string) MaxLength24 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 24
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Orders (<Orders>k__BackingField, ICollection<Orders>) Collection ToDependent Orders Inverse: ShipViaNavigation 0 -1 1 -1 -1
+    Keys: 
+      ShipperId PK
+    Annotations: 
+      Relational:TableName: Shippers
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Suppliers
+    Properties: 
+      SupplierId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:ColumnName: SupplierID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Address (string) MaxLength60 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 60
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      City (string) MaxLength15 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CompanyName (string) Required Index MaxLength40 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 40
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ContactName (string) MaxLength30 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 30
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ContactTitle (string) MaxLength30 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 30
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Country (string) MaxLength15 6 6 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Fax (string) MaxLength24 7 7 -1 -1 -1
+        Annotations: 
+          MaxLength: 24
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      HomePage (string) 8 8 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: ntext
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Phone (string) MaxLength24 9 9 -1 -1 -1
+        Annotations: 
+          MaxLength: 24
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      PostalCode (string) Index MaxLength10 10 10 -1 -1 -1
+        Annotations: 
+          MaxLength: 10
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Region (string) MaxLength15 11 11 -1 -1 -1
+        Annotations: 
+          MaxLength: 15
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Products (<Products>k__BackingField, ICollection<Products>) Collection ToDependent Products Inverse: Supplier 0 -1 1 -1 -1
+    Keys: 
+      SupplierId PK
+    Annotations: 
+      Relational:TableName: Suppliers
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Territories 
+    Properties: 
+      TerritoryId (string) Required PK AfterSave:Throw MaxLength20 0 0 0 -1 -1
+        Annotations: 
+          MaxLength: 20
+          Relational:ColumnName: TerritoryID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      RegionId (int) Required FK Index 1 1 1 -1 -1
+        Annotations: 
+          Relational:ColumnName: RegionID
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      TerritoryDescription (string) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: nchar(50)
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      EmployeeTerritories (<EmployeeTerritories>k__BackingField, ICollection<EmployeeTerritories>) Collection ToDependent EmployeeTerritories Inverse: Territory 0 -1 2 -1 -1
+      Region (<Region>k__BackingField, Region) ToPrincipal Region Inverse: Territories 1 -1 3 -1 -1
+    Keys: 
+      TerritoryId PK
+        Annotations: 
+          SqlServer:Clustered: False
+    Foreign keys: 
+      Territories {'RegionId'} -> Region {'RegionId'} ToDependent: Territories ToPrincipal: Region
+        Annotations: 
+          Relational:Name: FK_Territories_Region
+    Annotations: 
+      Relational:TableName: Territories
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+Annotations: 
+  ProductVersion: 2.0.0-rtm-26452
+  SqlServer:ValueGenerationStrategy: IdentityColumn

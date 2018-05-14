@@ -1,0 +1,468 @@
+﻿//------------------------------------------------------------------------------
+//<copyright company="Microsoft">
+//
+//    The MIT License (MIT)
+//    
+//    Copyright (c) 2015 Microsoft
+//    
+//    Permission is hereby granted, free of charge, to any person obtaining a copy
+//    of this software and associated documentation files (the "Software"), to deal
+//    in the Software without restriction, including without limitation the rights
+//    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//    copies of the Software, and to permit persons to whom the Software is
+//    furnished to do so, subject to the following conditions:
+//    
+//    The above copyright notice and this permission notice shall be included in all
+//    copies or substantial portions of the Software.
+//    
+//    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//    SOFTWARE.
+//</copyright>
+//------------------------------------------------------------------------------
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(DacFxExternals)\Microsoft.SqlServer.Dac.Extensions.dll" #>
+<#@ import namespace="Microsoft.SqlServer.Dac.Model"#>
+<#@ output extension=".cs" #>
+<#@ include file="Utils.tt" #>
+namespace <#=NamespaceName#>
+{
+	using System;
+	using System.Linq;
+	using System.Collections.Generic;
+    using System.Globalization;
+    using Microsoft.SqlServer.Server;
+	using Microsoft.SqlServer.Dac.Model;
+<#
+    var overrides = LoadOverrides(this.Host.TemplateFile);
+    Dictionary<Tuple<ModelTypeClass, ModelRelationshipClass, string, string>, List<Tuple<string,ModelPropertyClass>>>  metadataProperties = new Dictionary<Tuple<ModelTypeClass, ModelRelationshipClass,string,string>, List<Tuple<string,ModelPropertyClass>>>();    
+
+#>
+    public partial class TSqlModelElement
+    {
+        ///<summary>
+	    ///  Returns a strongly-typed wrapper for the TSqlObject instance.
+	    ///</summary>
+	    public static ISqlModelElementReference AdaptInstance(ModelRelationshipInstance obj, Func<ModelRelationshipInstance,ISqlModelElementReference> createUnresolvedElement)
+        {
+            ModelTypeClass objectType = null;
+		
+            if(obj == null)
+		    {
+			    throw new ArgumentNullException("obj");
+		    }	
+
+            if (obj.Object != null)
+            {
+                objectType = obj.Object.ObjectType;
+            }
+            else
+            {
+                return createUnresolvedElement(obj);
+            }
+		
+		    switch(objectType.Name)
+		    {
+<#
+	// Create adapter method for public model
+	foreach(var type in  ModelSchema.SchemaInstance.AllTypes)
+	{
+#>
+		    case "<#=type.Name#>":     
+                return new <#=ClassNamePrefix + type.Name + "Reference"#>(obj, objectType);
+<#
+	}
+	#>
+		    default:
+			    throw new ArgumentException("No type mapping exists for " + objectType.Name);
+		    }
+	    }
+
+
+	    ///<summary>
+	    ///  Returns a strongly-typed wrapper for the TSqlObject instance.
+	    ///</summary>
+	    public static ISqlModelElement AdaptInstance(TSqlObject obj)
+        {
+		    if(obj == null)
+		    {
+			    throw new ArgumentNullException("obj");
+		    }	
+		
+		    switch(obj.ObjectType.Name)
+		    {
+<#
+	// Create adapter method for public model
+	foreach(var type in  ModelSchema.SchemaInstance.AllTypes)
+	{
+#>
+		    case "<#=type.Name#>":     
+                return new <#=ClassNamePrefix + type.Name#>(obj);
+<#
+	}
+	#>
+		    default:
+			    throw new ArgumentException("No type mapping exists for " + obj.ObjectType.Name);
+		    }
+	    }
+    }
+<#
+    // Iterate over all types in the public model and create strongly-typed adapter class.
+	foreach(var type in  ModelSchema.SchemaInstance.AllTypes)
+	{
+		ModelEntry modelEntry;
+		overrides.TryGetValue(type.Name, out modelEntry);
+
+		string className = ClassNamePrefix + type.Name;
+#>
+
+    ///
+	/// Adapter class for instances of <see cref="T:TSqlObject"/> with an <see cref="T:TSqlObject M:ObjectType"> equal to <see cref="T:<#=type.Name#>"/>
+	///
+	/// <see href="http://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.model.<#=type.Name.ToLowerInvariant()#>.aspx"><#=type.Name#></see>
+	///
+	public partial class <#= className + "Reference" #> : <#=className #>, ISqlModelElementReference
+	{		
+        private ModelRelationshipInstance relationshipInstance;
+        private ModelTypeClass predefinedTypeClass;
+        public <#= className + "Reference" #> (ModelRelationshipInstance relationshipReference, ModelTypeClass typeClass)
+		{
+            relationshipInstance = relationshipReference;
+            if (relationshipInstance.Object != null && relationshipInstance.Object.ObjectType != typeClass)
+            {
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+                ModelMessages.InvalidObjectType, relationshipInstance.Object.ObjectType.Name, typeClass.Name),
+                "typeClass");
+            }
+            predefinedTypeClass = typeClass;
+        }
+
+        public override ObjectIdentifier Name
+        {
+            get
+            {
+                return relationshipInstance.ObjectName;
+            }
+        }
+
+        public override ModelTypeClass ObjectType
+        {
+            get
+            {
+                if (IsResolved())
+                {
+                    return base.ObjectType;
+                }
+                else
+                {
+                    // when object is unresolved default to the predefined ModelTypClass
+                    return predefinedTypeClass;
+                }
+            }
+        }
+
+        public bool IsResolved()
+        {
+            return relationshipInstance.Object != null;
+        }
+
+        public override TSqlObject Element
+        {
+            get
+            {
+                // Verify the Element is resolved.
+                if (!IsResolved())
+                {
+                    throw new UnresolvedElementException(
+                       string.Format(CultureInfo.CurrentUICulture,
+                       ModelMessages.UnresolvedObject,
+                       relationshipInstance.ObjectName));
+                }
+                return relationshipInstance.Object;
+            }
+        }
+        
+        public T GetMetadataProperty<T>(ModelPropertyClass property)
+        {
+            return relationshipInstance.GetProperty<T>(property);
+        }
+	}
+
+	///
+	/// Adapter class for instances of <see cref="T:TSqlObject"/> with an <see cref="T:TSqlObject M:ObjectType"> equal to <see cref="T:<#=type.Name#>"/>
+	///
+	/// <see href="http://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.model.<#=type.Name.ToLowerInvariant()#>.aspx"><#=type.Name#></see>
+	///
+	public partial class <#= className #> : TSqlModelElement<#
+	if(modelEntry != null )
+    {
+		foreach(string interfaceName in modelEntry.Interfaces)
+        {
+		#>,<#=interfaceName#><#
+		}
+	}
+
+#>
+	{
+		private static ModelTypeClass typeClass = <#=type.Name#>.TypeClass;
+
+		/// <summary>
+		///	Create a strongly-typed class <#= className #> to adapt instances of <see cref="T:<#=type.Name#>"/>
+		/// </summary>
+		public <#= className  #>(TSqlObject obj)  : base(obj, <#=type.Name#>.TypeClass)
+		{
+		}
+
+
+		/// <summary>
+		///	Create a strongly-typed class <#= className #> to adapt instances of <see cref="T:<#=type.Name#>"/>
+		/// </summary>
+		protected <#= className  #>()
+		{
+		}
+
+		public static ModelTypeClass TypeClass 
+		{
+			get { return typeClass;}
+		}
+<#
+        foreach (var property in type.Properties.OrderBy(p => p.Name))
+        {	
+			bool useGenericGetter;
+			string typeName = GetPropertyTypeName(property.DataType, out useGenericGetter);
+			string propertyName = GetPropertyName(property, modelEntry);
+#>
+
+		///
+		/// Property wrapper for <see cref="M:<#=type.Name#>.<#=property.Name#>"/>
+		/// <see href="http://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.model.<#=type.Name.ToLowerInvariant()#>.<#=property.Name.ToLowerInvariant()#>.aspx"><#=type.Name#>.<#=property.Name#></see>
+		///
+		public <#= typeName #> <#= propertyName #> 
+		{
+<#if (useGenericGetter) { #>
+			get { return Element.GetProperty<<#= typeName #>>(<#=type.Name#>.<#=property.Name#>);}
+<#} else { #>
+			get { return (<#=typeName#>)Element.GetProperty(<#=type.Name#>.<#=property.Name#>);}
+<#}#>
+		}
+
+<#
+		}// end property loop
+
+    // begin Metadata properties
+    foreach(ModelMetadataClass metadataProperty in type.Metadata.OrderBy(m => m.Name))
+    {
+	        bool useGenericGetter;
+			string typeName = GetPropertyTypeName(metadataProperty.DataType, out useGenericGetter);
+			string propertyName = metadataProperty.Name;
+#>
+
+		///
+		/// Metadata property wrapper for <see cref="M:<#=type.Name#>.<#=metadataProperty.Name#>"/>
+		///
+		public <#= typeName #> <#= propertyName #> 
+		{
+<#if (useGenericGetter) { #>
+			get { return Element.GetMetadata<<#= typeName #>>(<#=type.Name#>.<#=metadataProperty.Name#>);}
+<#} else { #>
+			get { return (<#=typeName#>)Element.GetMetadata(<#=type.Name#>.<#=metadataProperty.Name#>);}
+<#}#>
+		}
+
+<#
+    }
+    //end metadata property looop
+
+	// begin relationship loop
+	foreach (var relationship in type.Relationships.OrderBy( r => r.Name))
+	{
+
+        List<Tuple<string, ModelPropertyClass>> relationshipMetadataProperties = new List<Tuple<string, ModelPropertyClass>>();
+        
+        // Store information about metadata for the returned Reference Type
+        foreach(var relationshipMetadataProperty in relationship.Properties)
+        {
+            relationshipMetadataProperties.Add(Tuple.Create(
+                string.Format("{0}.{1}Relationship.{2}", type.Name, relationship.Name, relationshipMetadataProperty.Name), relationshipMetadataProperty));
+        }
+        bool relationshipHasMetadata = relationshipMetadataProperties.Count > 0;
+        //this is used to track the original return type before it is overriden to allow return types with metadata properties
+        string originalReturnType = null;
+		RelationshipOverride returnType = new RelationshipOverride()
+			{
+				Specialize = false, // controls if the per platoform interfaces are created.
+				ReturnTypeNamespace = NamespaceName,
+				ReturnType = "ISqlModelElementReference"
+	        };
+
+		string castExpression = "";
+        
+        string accessMethodName= relationship.Type == RelationshipType.Composing 
+            ? "GetReferenced"  // composing releationships cannot have unresolved elements so use GetReferenced.
+            : "GetReferencedRelationshipInstances"; // Peer and Hierarchical can be unresolved so get the relationshipInstance
+		
+        if(modelEntry != null)
+		{	
+			RelationshipOverride localoverride;		
+			if(modelEntry.RelationshipOverrides.TryGetValue(relationship.Name, out localoverride))
+			{                
+				if(localoverride.AdaptInstance)
+				{
+                    if(relationship.Type == RelationshipType.Composing)
+                    {
+                        // Because Comnposing elemnts cannot be unresolved the element returned will never be an unresolved element reference
+                        if(localoverride.Specialize)
+                        {
+                            // Because return type is a single known type instantiate the type directly rather than calling AdaptInstance
+                            castExpression = string.Format(".Select(o => new {0}.{1}(o))",
+                                localoverride.ReturnTypeNamespace, localoverride.ReturnType);                    
+                        }
+                        else
+                        {
+                            //Adapt the instance as the concrete return type is not known.
+                            castExpression = string.Format(".Select( o => ({0}.{1})TSqlModelElement.AdaptInstance(o))", 
+                                localoverride.ReturnTypeNamespace, 
+                                localoverride.ReturnType
+                                );
+                        }
+                    }                    
+                    else if(localoverride.Specialize)
+                    {
+                        if(relationshipHasMetadata)
+                        {
+                            // If the relationship has metadata properties and it is specialzied, change the return type to the derived class that
+                            // has the metadata properties
+                            originalReturnType = localoverride.ReturnType;
+                            localoverride.ReturnType = string.Format("{0}{1}Reference", type.Name, relationship.Name);
+                        }
+                        // For Peer and Hierarchical relationships where there is a single known return type instantiate the object
+                        // directly instead of calling AdaptInstance.
+                        castExpression = string.Format(".Select(o => new {0}.{1}(o, {2}.{3}.TypeClass))",
+                            localoverride.ReturnTypeNamespace, 
+                            localoverride.ReturnType, 
+                            localoverride.InternalReturnTypeNamespace,
+                            localoverride.InternalReturnType);                  
+                    }
+                    else
+                    {
+                        if(string.IsNullOrEmpty(localoverride.UnresolvedReturnType))
+                        {
+                            // For Peer and Hierarchical relationships that are not specialzied, cast directly to the known return type
+                            castExpression = string.Format(".Cast<{0}.{1}>()", 
+                                localoverride.ReturnTypeNamespace, 
+                                localoverride.ReturnType
+                                );
+                        }
+                        else
+                        {
+                            // In this case the return type is a base type or interface where each instance can be a different type.
+                            // Call AdaptInstance to correctly map the resolved elements. The Unresolved Elements are returned by calling the 
+                            // FUNC. The FUNC must return a type that implementes or derives from the value defined in the localoverride.ReturnType field
+                            // NOTE: This will not work in conjunction with Metadata properties as the exact return type is not known!
+                            castExpression = string.Format(".Select(o => ({0}.{1})TSqlModelElement.AdaptInstance(o, (ri) => new {0}.{2}(ri)))", 
+                                localoverride.ReturnTypeNamespace, 
+                                localoverride.ReturnType,
+                                localoverride.UnresolvedReturnType
+                                );
+                        } 
+                    }
+				}
+				else
+				{
+                     //Unadapted instances are simply cast before returning.
+                    castExpression = string.Format(".Cast<{0}.{1}>()", localoverride.ReturnTypeNamespace, localoverride.ReturnType);
+				}
+				returnType = localoverride;
+			}
+            else
+            {
+            // Missing override
+             throw new Exception("Missing Override for relationship " + type.Name + "." + relationship.Name);
+            }
+		}
+		
+        if(relationshipHasMetadata)
+        {
+            // save metadata about the override so a class can be generated with the correct metadata properties
+            metadataProperties.Add(Tuple.Create(type, relationship, returnType.ReturnTypeNamespace, originalReturnType ?? returnType.ReturnType ), relationshipMetadataProperties);
+        }
+#>
+
+		///
+		/// <#=relationship.Type#> relationship returning instances of <see cref=":T <#=returnType.ReturnTypeNamespace#>.<#=returnType.ReturnType#>"/>
+		/// <see href="http://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.model.<#=type.Name.ToLowerInvariant()#>.<#=relationship.Name.ToLowerInvariant()#>.aspx"><#=type.Name#>.<#=relationship.Name#></see>
+		/// <#=  "Relationship Type:" + relationship.Type #>
+		public IEnumerable<<#=returnType.ReturnTypeNamespace#>.<#=returnType.ReturnType#>> <#=relationship.Name #> 
+		{
+			get 
+			{
+				return Element.<#=accessMethodName #>(<#=type.Name#>.<#=relationship.Name#>)<#=castExpression#>;
+			}
+		}
+<#
+		
+	} //end foreach relationship
+#>
+
+}
+
+<#
+	}
+
+	#>
+
+    // Derived Types with Metadata properties.
+<# 
+    foreach(var metadataPropertyKVP in metadataProperties)
+    {
+        ModelTypeClass referencingType= metadataPropertyKVP.Key.Item1;
+        ModelRelationshipClass referencingRelationship = metadataPropertyKVP.Key.Item2;
+        string className = string.Format("{0}{1}Reference", referencingType.Name, referencingRelationship.Name); //
+#>
+
+    public partial class <#=className#> : <#=metadataPropertyKVP.Key.Item3#>.<#=metadataPropertyKVP.Key.Item4#>
+    {
+        public  <#=className#> (ModelRelationshipInstance relationshipReference,  ModelTypeClass typeClass) : base(relationshipReference, typeClass) { }
+
+<#
+        foreach(var metadataProperty in metadataPropertyKVP.Value)
+        {
+            ModelPropertyClass metadataPropertyClass = metadataProperty.Item2;
+            bool useGenericGetter;
+		    string typeName = GetPropertyTypeName(metadataPropertyClass.DataType, out useGenericGetter);
+		    string propertyName =metadataPropertyClass.Name;
+#>
+        ///
+	    /// Metadata property wrapper for <see cref="M:<#=referencingType.Name#>.<#=referencingRelationship.Name#>"/>		
+	    ///
+	    public <#= typeName #> <#= propertyName #> 
+	    {
+    <#if (useGenericGetter) { 
+#>
+        get { return this.GetMetadataProperty<<#= typeName #>>(<#=metadataProperty.Item1#>);}
+    <#} else { 
+#>
+	    get { return (<#=typeName#>)Element.GetMetadata<object>(<#=metadataProperty.Item1#>);}
+    <#}#>
+	}
+<#
+        }
+        
+#>
+
+    }
+<#
+    }
+        
+#>
+}

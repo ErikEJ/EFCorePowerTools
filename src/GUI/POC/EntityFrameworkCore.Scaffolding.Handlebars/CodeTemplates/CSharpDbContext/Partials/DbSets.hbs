@@ -1,0 +1,3 @@
+﻿{{#each dbsets}}
+{{spaces 8}}public virtual DbSet<{{set-property-type}}> {{set-property-name}} { get; set; }
+{{/each}}

@@ -1,0 +1,393 @@
+﻿Model: 
+  EntityType: Audit
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      ChangedProperties (string) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      DateTime (DateTimeOffset) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeOffsetTypeMapping
+      EntityId (Guid) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      EntityName (string) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      EntityState (EntityState) Required 5 5 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      PreviousAuditId (Nullable<Guid>) 6 6 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UserId (Guid) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Keys: 
+      Id PK
+    Annotations: 
+      Relational:TableName: Audits
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Company
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      City (string) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Deleted (bool) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FirstAuditId (Guid) Required FK Index 3 3 1 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastAuditId (Guid) Required FK Index 4 4 2 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Mailbox (string) 5 5 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Name (string) Required 6 6 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      PostalCode (string) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Street (string) Required 8 8 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      ContactPerson (<ContactPerson>k__BackingField, ContactPerson) ToDependent Company.ContactPerson#ContactPerson 0 -1 3 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 4 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 5 -1 -1
+    Keys: 
+      Id PK
+    Foreign keys: 
+      Company {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      Company {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+    Annotations: 
+      Relational:TableName: Companies
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Education
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Deleted (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FirstAuditId (Guid) Required FK Index 2 2 1 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastAuditId (Guid) Required FK Index 3 3 2 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Name (string) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      FieldsOfStudy (<FieldsOfStudy>k__BackingField, ICollection<FieldOfStudy>) Collection ToDependent FieldOfStudy Inverse: Education 0 -1 3 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 4 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 5 -1 -1
+    Keys: 
+      Id PK
+    Foreign keys: 
+      Education {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      Education {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+    Annotations: 
+      Relational:TableName: Educations
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: FieldOfStudy
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Deleted (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      EducationId (Guid) Required FK Index 2 2 1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      FirstAuditId (Guid) Required FK Index 3 3 2 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastAuditId (Guid) Required FK Index 4 4 3 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Name (string) Required 5 5 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Education (<Education>k__BackingField, Education) ToPrincipal Education Inverse: FieldsOfStudy 0 -1 4 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 5 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 6 -1 -1
+    Keys: 
+      Id PK
+    Foreign keys: 
+      FieldOfStudy {'EducationId'} -> Education {'Id'} ToDependent: FieldsOfStudy ToPrincipal: Education
+      FieldOfStudy {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      FieldOfStudy {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+    Annotations: 
+      Relational:TableName: FieldsOfStudy
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Project
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      CoachId (Nullable<Guid>) Required FK Index 1 1 1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      CompanyId (Guid) Required FK Index 2 2 2 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Deleted (bool) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      Description (string) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      EndDate (DateTime) Required 5 5 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      FirstAuditId (Guid) Required FK Index 6 6 3 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      GraduateProfile (GraduateProfile) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LastAuditId (Guid) Required FK Index 8 8 4 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Location (string) Required 9 9 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Name (string) Required 10 10 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      StartDate (DateTime) Required 11 11 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Status (ProjectStatus) Required 12 12 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Type (ProjectType) Required 13 13 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      Coach (<Coach>k__BackingField, User) ToPrincipal User 0 -1 5 -1 -1
+      Company (<Company>k__BackingField, Company) ToPrincipal Company 1 -1 6 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 7 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 3 -1 8 -1 -1
+      ProjectFieldsOfStudy (<ProjectFieldsOfStudy>k__BackingField, ICollection<ProjectFieldOfStudy>) Collection ToDependent ProjectFieldOfStudy Inverse: Project 4 -1 9 -1 -1
+      Registrations (registrations, IReadOnlyCollection<Registration>) Collection ToDependent Registration Inverse: Project PropertyAccessMode.Field 5 -1 10 -1 -1
+        Annotations: 
+          PropertyAccessMode: Field
+    Keys: 
+      Id PK
+    Foreign keys: 
+      Project {'CoachId'} -> User {'Id'} ToPrincipal: Coach
+      Project {'CompanyId'} -> Company {'Id'} ToPrincipal: Company
+      Project {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      Project {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+    Annotations: 
+      Relational:TableName: Projects
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: ProjectFieldOfStudy
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Deleted (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FieldOfStudyId (Guid) Required FK Index 2 2 1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      FirstAuditId (Guid) Required FK Index 3 3 2 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastAuditId (Guid) Required FK Index 4 4 3 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      ProjectId (Guid) Required FK Index 5 5 4 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      FieldOfStudy (<FieldOfStudy>k__BackingField, FieldOfStudy) ToPrincipal FieldOfStudy 0 -1 5 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 6 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 7 -1 -1
+      Project (<Project>k__BackingField, Project) ToPrincipal Project Inverse: ProjectFieldsOfStudy 3 -1 8 -1 -1
+    Keys: 
+      Id PK
+    Foreign keys: 
+      ProjectFieldOfStudy {'FieldOfStudyId'} -> FieldOfStudy {'Id'} ToPrincipal: FieldOfStudy
+      ProjectFieldOfStudy {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      ProjectFieldOfStudy {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+      ProjectFieldOfStudy {'ProjectId'} -> Project {'Id'} ToDependent: ProjectFieldsOfStudy ToPrincipal: Project
+    Annotations: 
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Registration
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Accepted (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      Active (bool) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      Choice (int) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Deleted (bool) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FirstAuditId (Guid) Required FK Index 5 5 1 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastAuditId (Guid) Required FK Index 6 6 2 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Motivation (string) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Order (int) Required 8 8 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ProjectId (Guid) Required FK Index 9 9 3 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UserId (Guid) Required FK Index 10 10 4 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 0 -1 5 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 6 -1 -1
+      Project (<Project>k__BackingField, Project) ToPrincipal Project Inverse: Registrations 2 -1 7 -1 -1
+      User (<User>k__BackingField, User) ToPrincipal User Inverse: Registrations 3 -1 8 -1 -1
+    Keys: 
+      Id PK
+    Foreign keys: 
+      Registration {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      Registration {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+      Registration {'ProjectId'} -> Project {'Id'} ToDependent: Registrations ToPrincipal: Project
+      Registration {'UserId'} -> User {'Id'} ToDependent: Registrations ToPrincipal: User
+    Annotations: 
+      Relational:TableName: Registrations
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: User
+    Properties: 
+      Id (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Deleted (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      EducationId (Nullable<Guid>) FK Index 2 2 1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      FirstAuditId (Guid) Required FK Index 3 3 2 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      FirstName (string) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      GraduateProfile (GraduateProfile) Required 5 5 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LastAuditId (Guid) Required FK Index 6 6 3 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastName (string) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ProjectType (ProjectType) Required 8 8 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      TentantId (Guid) Required 9 9 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      WindesheimId (Nullable<Guid>) 10 10 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      Education (<Education>k__BackingField, Education) ToPrincipal Education 0 -1 4 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 5 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 6 -1 -1
+      Registrations (<Registrations>k__BackingField, ICollection<Registration>) Collection ToDependent Registration Inverse: User 3 -1 7 -1 -1
+      UserFieldsOfStudy (_userFieldsOfStudy, ICollection<UserFieldOfStudy>) Collection ToDependent UserFieldOfStudy Inverse: User PropertyAccessMode.Field 4 -1 8 -1 -1
+        Annotations: 
+          PropertyAccessMode: Field
+    Keys: 
+      Id PK
+    Foreign keys: 
+      User {'EducationId'} -> Education {'Id'} ToPrincipal: Education
+      User {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      User {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+    Annotations: 
+      Relational:TableName: Users
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: UserFieldOfStudy
+    Properties: 
+      UserId (Guid) Required PK FK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      FieldOfStudyId (Guid) Required PK FK Index AfterSave:Throw 1 1 1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Deleted (bool) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FirstAuditId (Guid) Required FK Index 3 3 2 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Id (Guid) Required AlternateKey AfterSave:Throw 4 4 3 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastAuditId (Guid) Required FK Index 5 5 4 -1 1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      FieldOfStudy (<FieldOfStudy>k__BackingField, FieldOfStudy) ToPrincipal FieldOfStudy 0 -1 5 -1 -1
+      FirstAudit (<FirstAudit>k__BackingField, Audit) ToPrincipal Audit 1 -1 6 -1 -1
+      LastAudit (<LastAudit>k__BackingField, Audit) ToPrincipal Audit 2 -1 7 -1 -1
+      User (<User>k__BackingField, User) ToPrincipal User Inverse: UserFieldsOfStudy 3 -1 8 -1 -1
+    Keys: 
+      Id
+      UserId, FieldOfStudyId PK
+    Foreign keys: 
+      UserFieldOfStudy {'FieldOfStudyId'} -> FieldOfStudy {'Id'} ToPrincipal: FieldOfStudy
+      UserFieldOfStudy {'FirstAuditId'} -> Audit {'Id'} ToPrincipal: FirstAudit
+      UserFieldOfStudy {'LastAuditId'} -> Audit {'Id'} ToPrincipal: LastAudit
+      UserFieldOfStudy {'UserId'} -> User {'Id'} ToDependent: UserFieldsOfStudy ToPrincipal: User
+    Annotations: 
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: Company.ContactPerson#ContactPerson
+    Properties: 
+      CompanyId (no field, Guid) Shadow Required PK FK AfterSave:Throw 0 0 0 0 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Email (string) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Name (string) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      PhoneNumber (string) 3 3 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Keys: 
+      CompanyId PK
+    Foreign keys: 
+      Company.ContactPerson#ContactPerson {'CompanyId'} -> Company {'Id'} Unique ToDependent: ContactPerson
+    Annotations: 
+      Relational:TableName: Companies
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+Annotations: 
+  ProductVersion: 2.0.1-rtm-125
+  SqlServer:ValueGenerationStrategy: IdentityColumn

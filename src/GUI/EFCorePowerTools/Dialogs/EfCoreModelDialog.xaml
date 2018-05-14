@@ -1,0 +1,49 @@
+﻿<dw:DialogWindow x:Class="ErikEJ.SqlCeToolbox.Dialogs.EfCoreModelDialog"
+        xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Generate EF Core Model in Project" 
+        ShowInTaskbar="False" Height="550" Width="418" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <dw:DialogWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Dialogs/Style.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </dw:DialogWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="35*" />
+            <RowDefinition Height="130*" />
+            <RowDefinition Height="35*" />
+            <RowDefinition Height="35*" />
+            <RowDefinition Height="35*" />
+            <RowDefinition Height="35*" />
+            <RowDefinition Height="45*" />
+        </Grid.RowDefinitions>
+
+        <TextBox TabIndex="0" Grid.Row="0" Height="23" Margin="13,25,0,0" Name="textBox1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="371" />
+        <TextBox TabIndex="1" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" Name="txtNameSpace" VerticalAlignment="Top" Width="371" Grid.Row="1" />
+        <TextBox TabIndex="2" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" x:Name="txtOutputPath" VerticalAlignment="Top" Width="371" Grid.Row="2" />
+        <ComboBox TabIndex="3" Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="161,0,0,0" Name="cmbLanguage" VerticalAlignment="Top" Width="223" ItemsSource="{Binding}" IsEditable="False" />
+        <GroupBox Grid.Row="4" Header="Naming" Margin="5">
+            <StackPanel>
+                <CheckBox TabIndex="4" Content="Pluralize or singularize generated object names (English)" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkPluralize" VerticalAlignment="Top" Width="358" Checked="chkPluralize_Checked" Unchecked="chkPluralize_Unchecked" />
+                <CheckBox TabIndex="5" Content="Use table and column names directly from the database" IsChecked="False" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" Name="chkUseDatabaseNames" VerticalAlignment="Top" Width="358" Checked="chkUseDatabaseNames_Checked" Unchecked="chkUseDatabaseNames_Unchecked" />
+                <CheckBox TabIndex="6" Content="Replace Id with ID (experimental!)" x:Name="chkIdReplace" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0"  VerticalAlignment="Top" Width="358" />
+            </StackPanel>
+        </GroupBox>
+        <CheckBox TabIndex="10" Content="Use DataAnnotation attributes to configure the model"  Grid.Row="5" Height="22" HorizontalAlignment="Left" Margin="12,10,0,0" Name="chkDataAnnoations" VerticalAlignment="Top" Width="358" />
+        <CheckBox TabIndex="11" Visibility="Collapsed" Content="Customize code using Handlebars templates (preview)" Grid.Row="6" Height="22" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkHandlebars" VerticalAlignment="Top" Width="358" />
+        <CheckBox TabIndex="12" Content="Include connection string in generated code" IsChecked="True" Grid.Row="7" Height="22" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkIncludeConnectionString" VerticalAlignment="Top" Width="358" />
+        <CheckBox TabIndex="13" Content="Install the EF Core provider package in the project" IsChecked="True" Grid.Row="8" Height="22" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkInstallNuGet" VerticalAlignment="Top" Width="358" />
+        <dw:LiveTextBlock Grid.Row="0" Text="Context name" Margin="14,6,0,36"></dw:LiveTextBlock>
+        <dw:LiveTextBlock Grid.Row="1" Text="Namespace" Margin="14,6,0,36"></dw:LiveTextBlock>
+        <dw:LiveTextBlock Grid.Row="2" Text="Project path (f.ex. Model) - optional" Margin="14,6,0,36"></dw:LiveTextBlock>
+        <dw:LiveTextBlock Grid.Row="3" Text="What to generate" Margin="14,4,256,10"></dw:LiveTextBlock>
+        <dw:DialogButton TabIndex="20" Content="OK" IsDefault="True" Grid.Row="9" Height="23" Margin="0,0,94,12" Name="button1" VerticalAlignment="Bottom" Click="button1_Click" HorizontalAlignment="Right" Width="75" />
+        <dw:DialogButton TabIndex="21" Content="Cancel" IsCancel="True" Grid.Row="9" Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button2" VerticalAlignment="Bottom" Width="75"  SnapsToDevicePixels="False" Click="button2_Click" />
+    </Grid>
+</dw:DialogWindow>

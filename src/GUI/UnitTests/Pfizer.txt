@@ -1,0 +1,662 @@
+﻿Model: 
+  EntityType: TblDoctor
+    Properties: 
+      DoctorId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FirstName (string) Required MaxLength50 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      FullName (string) Required MaxLength150 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 150
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastName (string) MaxLength50 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastUpdated (DateTime) Required 5 5 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      MiddleName (string) MaxLength50 6 6 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 7 7 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      SpecialityIdFk (int) Required Index 8 8 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: SpecialityId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      TblDoctorLocation (<TblDoctorLocation>k__BackingField, ICollection<TblDoctorLocation>) Collection ToDependent TblDoctorLocation Inverse: Doctor 0 -1 1 -1 -1
+      TblRegistration (<TblRegistration>k__BackingField, ICollection<TblRegistration>) Collection ToDependent TblRegistration Inverse: DoctorIdFkNavigation 1 -1 2 -1 -1
+    Keys: 
+      DoctorId PK
+    Annotations: 
+      Relational:TableName: tblDoctor
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblDoctorLocation
+    Properties: 
+      DoctorId (int) Required PK FK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LocationId (int) Required PK FK Index AfterSave:Throw 1 1 1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      LastUpdated (DateTime) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 4 4 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      Doctor (<Doctor>k__BackingField, TblDoctor) ToPrincipal TblDoctor Inverse: TblDoctorLocation 0 -1 2 -1 -1
+      Location (<Location>k__BackingField, TblLocation) ToPrincipal TblLocation Inverse: TblDoctorLocation 1 -1 3 -1 -1
+      TblFavoriteDoctor (<TblFavoriteDoctor>k__BackingField, ICollection<TblFavoriteDoctor>) Collection ToDependent TblFavoriteDoctor Inverse: TblDoctorLocation 2 -1 4 -1 -1
+    Keys: 
+      DoctorId, LocationId PK
+    Foreign keys: 
+      TblDoctorLocation {'DoctorId'} -> TblDoctor {'DoctorId'} ToDependent: TblDoctorLocation ToPrincipal: Doctor
+        Annotations: 
+          Relational:Name: FK_tblDoctorLocation_tblDoctor
+      TblDoctorLocation {'LocationId'} -> TblLocation {'LocationId'} ToDependent: TblDoctorLocation ToPrincipal: Location
+        Annotations: 
+          Relational:Name: FK_tblDoctorLocation_tblLocation
+    Annotations: 
+      Relational:TableName: tblDoctorLocation
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblFavoriteDoctor
+    Properties: 
+      DoctorIdFk (int) Required PK FK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: DoctorId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LocationIdFk (int) Required PK FK AfterSave:Throw 1 1 1 -1 -1
+        Annotations: 
+          Relational:ColumnName: LocationId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      UsersIdFk (int) Required PK FK Index AfterSave:Throw 2 2 2 -1 0
+        Annotations: 
+          Relational:ColumnName: UsersId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LastUpdated (DateTime) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 4 4 -1 -1 1
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      TblDoctorLocation (<TblDoctorLocation>k__BackingField, TblDoctorLocation) ToPrincipal TblDoctorLocation Inverse: TblFavoriteDoctor 0 -1 3 -1 -1
+      UsersIdFkNavigation (<UsersIdFkNavigation>k__BackingField, TblUser) ToPrincipal TblUser Inverse: TblFavoriteDoctor 1 -1 4 -1 -1
+    Keys: 
+      DoctorIdFk, LocationIdFk, UsersIdFk PK
+    Foreign keys: 
+      TblFavoriteDoctor {'UsersIdFk'} -> TblUser {'UsersId'} ToDependent: TblFavoriteDoctor ToPrincipal: UsersIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblFavoriteDoctor_tblUser
+      TblFavoriteDoctor {'DoctorIdFk', 'LocationIdFk'} -> TblDoctorLocation {'DoctorId', 'LocationId'} ToDependent: TblFavoriteDoctor ToPrincipal: TblDoctorLocation
+        Annotations: 
+          Relational:Name: FK_tblFavoriteDoctor_tblDoctorLocation
+    Annotations: 
+      Relational:TableName: tblFavoriteDoctor
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblImage
+    Properties: 
+      RegistrationIdFk (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: RegistrationId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Crc32 (long) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.LongTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 2 2 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      ScreenShot (Byte[]) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: image
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerByteArrayTypeMapping
+    Keys: 
+      RegistrationIdFk PK
+    Annotations: 
+      Relational:TableName: tblImage
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblLastSync
+    Properties: 
+      LastSyncId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LastSyncTime (DateTime) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 2 2 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Keys: 
+      LastSyncId PK
+    Annotations: 
+      Relational:TableName: tblLastSync
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblLocation
+    Properties: 
+      LocationId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      Address1 (string) Required MaxLength50 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Address2 (string) MaxLength50 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      City (string) Required MaxLength50 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      FullAddress (string) Required MaxLength170 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 170
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastUpdated (DateTime) Required 6 6 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      ModuleIdFk (int) Required Index 7 7 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: ModuleId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 8 8 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Zip (string) MaxLength25 9 9 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      TblDoctorLocation (<TblDoctorLocation>k__BackingField, ICollection<TblDoctorLocation>) Collection ToDependent TblDoctorLocation Inverse: Location 0 -1 1 -1 -1
+    Keys: 
+      LocationId PK
+    Annotations: 
+      Relational:TableName: tblLocation
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblModule
+    Properties: 
+      ModuleId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      LastUpdated (DateTime) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      ModuleName (string) Required MaxLength25 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      RegionName (string) Required MaxLength25 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 5 5 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Keys: 
+      ModuleId PK
+    Annotations: 
+      Relational:TableName: tblModule
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblOrder
+    Properties: 
+      OrderId (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastUpdated (Nullable<DateTime>) 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastUpdatedBy (string) MaxLength50 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Note (string) MaxLength100 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 100
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      OrderDate (DateTime) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Ordered (Nullable<bool>) ValueGenerated.OnAdd 5 5 -1 -1 1
+        Annotations: 
+          Relational:DefaultValueSql: ((0))
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      ProductIdFk (int) Required 6 6 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: ProductId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Quantity (int) Required 7 7 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 8 8 -1 -1 2
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UsersIdFk (int) Required Index 9 9 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: UsersId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Keys: 
+      OrderId PK
+    Annotations: 
+      Relational:TableName: tblOrder
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblPdastatus
+    Properties: 
+      PdastatusId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: PDAStatusId
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      FkUserId (Guid) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: FK_UserId
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      LastCheckinReply (DateTime) Required ValueGenerated.OnAdd 2 2 -1 -1 0
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastOnline (DateTime) Required ValueGenerated.OnAdd 3 3 -1 -1 1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getdate())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Password (string) Required MaxLength50 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      UserName (string) Required MaxLength50 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Keys: 
+      PdastatusId PK
+    Annotations: 
+      Relational:TableName: tblPDAStatus
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblProduct
+    Properties: 
+      ProductId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      LastUpdated (DateTime) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastUpdatedBy (string) Required MaxLength50 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastUsedBatch (string) MaxLength25 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      ProductName (string) Required MaxLength50 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 6 6 -1 -1 1
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      TblRegistrationUserStock (<TblRegistrationUserStock>k__BackingField, ICollection<TblRegistrationUserStock>) Collection ToDependent TblRegistrationUserStock Inverse: ProductIdFkNavigation 0 -1 1 -1 -1
+      TblStockCount (<TblStockCount>k__BackingField, ICollection<TblStockCount>) Collection ToDependent TblStockCount Inverse: ProductIdFkNavigation 1 -1 2 -1 -1
+      TblUserStock (<TblUserStock>k__BackingField, ICollection<TblUserStock>) Collection ToDependent TblUserStock Inverse: ProductIdFkNavigation 2 -1 3 -1 -1
+    Keys: 
+      ProductId PK
+    Annotations: 
+      Relational:TableName: tblProduct
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblRegistration
+    Properties: 
+      RegistrationId (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      CreatedDate (DateTime) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      DoctorIdFk (int) Required FK Index 2 2 1 -1 -1
+        Annotations: 
+          Relational:ColumnName: DoctorId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LocationIdFk (int) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: LocationId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ManualNumber (Nullable<int>) 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 5 5 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UsersIdFk (int) Required Index 6 6 -1 -1 -1
+        Annotations: 
+          Relational:ColumnName: UsersId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      DoctorIdFkNavigation (<DoctorIdFkNavigation>k__BackingField, TblDoctor) ToPrincipal TblDoctor Inverse: TblRegistration 0 -1 2 -1 -1
+      TblRegistrationUserStock (<TblRegistrationUserStock>k__BackingField, ICollection<TblRegistrationUserStock>) Collection ToDependent TblRegistrationUserStock Inverse: RegistrationIdFkNavigation 1 -1 3 -1 -1
+    Keys: 
+      RegistrationId PK
+    Foreign keys: 
+      TblRegistration {'DoctorIdFk'} -> TblDoctor {'DoctorId'} ToDependent: TblRegistration ToPrincipal: DoctorIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblRegistration_tblDoctor
+    Annotations: 
+      Relational:TableName: tblRegistration
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblRegistrationUserStock
+    Properties: 
+      RegistrationUserStockId (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      ProductIdFk (int) Required FK Index 1 1 1 -1 0
+        Annotations: 
+          Relational:ColumnName: ProductId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      RegistrationIdFk (Guid) Required FK Index 2 2 2 -1 -1
+        Annotations: 
+          Relational:ColumnName: RegistrationId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 3 3 -1 -1 1
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UserStockIdFk (int) Required FK Index 4 4 3 -1 2
+        Annotations: 
+          Relational:ColumnName: UserStockId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      ProductIdFkNavigation (<ProductIdFkNavigation>k__BackingField, TblProduct) ToPrincipal TblProduct Inverse: TblRegistrationUserStock 0 -1 4 -1 -1
+      RegistrationIdFkNavigation (<RegistrationIdFkNavigation>k__BackingField, TblRegistration) ToPrincipal TblRegistration Inverse: TblRegistrationUserStock 1 -1 5 -1 -1
+      UserStockIdFkNavigation (<UserStockIdFkNavigation>k__BackingField, TblUserStock) ToPrincipal TblUserStock Inverse: TblRegistrationUserStock 2 -1 6 -1 -1
+    Keys: 
+      RegistrationUserStockId PK
+    Foreign keys: 
+      TblRegistrationUserStock {'ProductIdFk'} -> TblProduct {'ProductId'} ToDependent: TblRegistrationUserStock ToPrincipal: ProductIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblRegistrationUserStock_tblProduct
+      TblRegistrationUserStock {'RegistrationIdFk'} -> TblRegistration {'RegistrationId'} ToDependent: TblRegistrationUserStock ToPrincipal: RegistrationIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblRegistrationUserStock_tblRegistration
+      TblRegistrationUserStock {'UserStockIdFk'} -> TblUserStock {'UserStockId'} ToDependent: TblRegistrationUserStock ToPrincipal: UserStockIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblRegistrationUserStock_tblUserStock
+    Annotations: 
+      Relational:TableName: tblRegistrationUserStock
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblSpeciality
+    Properties: 
+      SpecialityId (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      LastUpdated (DateTime) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 3 3 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      SpecialityName (string) Required MaxLength25 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+    Keys: 
+      SpecialityId PK
+    Annotations: 
+      Relational:TableName: tblSpeciality
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblStockCount
+    Properties: 
+      StockCountId (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Amount (int) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      BatchNumber (string) Required MaxLength25 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CreatedDate (DateTime) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      ProductIdFk (int) Required FK Index 4 4 1 -1 0
+        Annotations: 
+          Relational:ColumnName: ProductId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 5 5 -1 -1 1
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UsersIdFk (int) Required FK Index 6 6 2 -1 2
+        Annotations: 
+          Relational:ColumnName: UsersID_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      ProductIdFkNavigation (<ProductIdFkNavigation>k__BackingField, TblProduct) ToPrincipal TblProduct Inverse: TblStockCount 0 -1 3 -1 -1
+      UsersIdFkNavigation (<UsersIdFkNavigation>k__BackingField, TblUser) ToPrincipal TblUser Inverse: TblStockCount 1 -1 4 -1 -1
+    Keys: 
+      StockCountId PK
+    Foreign keys: 
+      TblStockCount {'ProductIdFk'} -> TblProduct {'ProductId'} ToDependent: TblStockCount ToPrincipal: ProductIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblStockCount_tblProduct
+      TblStockCount {'UsersIdFk'} -> TblUser {'UsersId'} ToDependent: TblStockCount ToPrincipal: UsersIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblStockCount_tblUser
+    Annotations: 
+      Relational:TableName: tblStockCount
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblUser
+    Properties: 
+      UsersId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Active (bool) Required 1 1 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.BoolTypeMapping
+      FullName (string) Required MaxLength50 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      LastUpdated (DateTime) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastUpdatedBy (string) Required MaxLength50 4 4 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Password (string) Required MaxLength25 5 5 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 6 6 -1 -1 1
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Navigations: 
+      TblFavoriteDoctor (<TblFavoriteDoctor>k__BackingField, ICollection<TblFavoriteDoctor>) Collection ToDependent TblFavoriteDoctor Inverse: UsersIdFkNavigation 0 -1 1 -1 -1
+      TblStockCount (<TblStockCount>k__BackingField, ICollection<TblStockCount>) Collection ToDependent TblStockCount Inverse: UsersIdFkNavigation 1 -1 2 -1 -1
+      TblUserStock (<TblUserStock>k__BackingField, ICollection<TblUserStock>) Collection ToDependent TblUserStock Inverse: UsersIdFkNavigation 2 -1 3 -1 -1
+      TblUserSync (<TblUserSync>k__BackingField, ICollection<TblUserSync>) Collection ToDependent TblUserSync Inverse: UsersIdFkNavigation 3 -1 4 -1 -1
+    Keys: 
+      UsersId PK
+    Annotations: 
+      Relational:TableName: tblUser
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblUserModule
+    Properties: 
+      UsersIdFk (int) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:ColumnName: UsersId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ModuleIdFk (int) Required PK AfterSave:Throw 1 1 1 -1 -1
+        Annotations: 
+          Relational:ColumnName: ModuleId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      LastUpdated (DateTime) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastUpdatedBy (string) Required MaxLength50 3 3 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 4 4 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+    Keys: 
+      UsersIdFk, ModuleIdFk PK
+    Annotations: 
+      Relational:TableName: tblUserModule
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblUserStock
+    Properties: 
+      UserStockId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd 0 0 0 -1 0
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      BatchNumber (string) Required MaxLength25 1 1 -1 -1 -1
+        Annotations: 
+          MaxLength: 25
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CreatedBy (string) Required MaxLength50 2 2 -1 -1 -1
+        Annotations: 
+          MaxLength: 50
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      CreatedDate (DateTime) Required 3 3 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      OriginalAmount (int) Required 4 4 -1 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ProductIdFk (int) Required FK Index 5 5 1 -1 1
+        Annotations: 
+          Relational:ColumnName: ProductId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Remark (string) MaxLength100 6 6 -1 -1 -1
+        Annotations: 
+          MaxLength: 100
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerStringTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 7 7 -1 -1 2
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      UsersIdFk (int) Required FK Index 8 8 2 -1 3
+        Annotations: 
+          Relational:ColumnName: UsersId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      ProductIdFkNavigation (<ProductIdFkNavigation>k__BackingField, TblProduct) ToPrincipal TblProduct Inverse: TblUserStock 0 -1 3 -1 -1
+      TblRegistrationUserStock (<TblRegistrationUserStock>k__BackingField, ICollection<TblRegistrationUserStock>) Collection ToDependent TblRegistrationUserStock Inverse: UserStockIdFkNavigation 1 -1 4 -1 -1
+      UsersIdFkNavigation (<UsersIdFkNavigation>k__BackingField, TblUser) ToPrincipal TblUser Inverse: TblUserStock 2 -1 5 -1 -1
+    Keys: 
+      UserStockId PK
+    Foreign keys: 
+      TblUserStock {'ProductIdFk'} -> TblProduct {'ProductId'} ToDependent: TblUserStock ToPrincipal: ProductIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblUserStock_tblProduct
+      TblUserStock {'UsersIdFk'} -> TblUser {'UsersId'} ToDependent: TblUserStock ToPrincipal: UsersIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblUserStock_tblUser
+    Annotations: 
+      Relational:TableName: tblUserStock
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+  EntityType: TblUserSync
+    Properties: 
+      UserSyncId (Guid) Required PK AfterSave:Throw 0 0 0 -1 -1
+        Annotations: 
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      Rowguid (Guid) Required Index ValueGenerated.OnAdd 1 1 -1 -1 0
+        Annotations: 
+          Relational:ColumnName: rowguid
+          Relational:DefaultValueSql: (newid())
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping
+      SyncDate (DateTime) Required 2 2 -1 -1 -1
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.Internal.SqlServerDateTimeTypeMapping
+      UsersIdFk (int) Required FK Index 3 3 1 -1 1
+        Annotations: 
+          Relational:ColumnName: UsersId_FK
+          Relational:TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      UsersIdFkNavigation (<UsersIdFkNavigation>k__BackingField, TblUser) ToPrincipal TblUser Inverse: TblUserSync 0 -1 2 -1 -1
+    Keys: 
+      UserSyncId PK
+    Foreign keys: 
+      TblUserSync {'UsersIdFk'} -> TblUser {'UsersId'} ToDependent: TblUserSync ToPrincipal: UsersIdFkNavigation
+        Annotations: 
+          Relational:Name: FK_tblUserSync_tblUser
+    Annotations: 
+      Relational:TableName: tblUserSync
+      RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.Type]
+Annotations: 
+  ProductVersion: 2.0.0-rtm-26452
+  SqlServer:ValueGenerationStrategy: IdentityColumn

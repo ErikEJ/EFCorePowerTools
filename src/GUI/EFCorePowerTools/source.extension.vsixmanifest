@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="f4c4712c-ceae-4803-8e52-0e2049d5de9f" Version="1.0.0" Language="en-US" Publisher="ErikEJ" />
+        <DisplayName>EF Core Power Tools</DisplayName>
+        <Description xml:space="preserve">Useful design-time DbContext features, added to the Visual Studio Solution Explorer context menu.
+
+When right-clicking on a C# project, the following context menu functions are available:
+Reverse Engineer - Generates POCO classes, derived DbContext and Code First mapping for an existing database.
+Add DbContext Model Diagram - Adds a DGML graph from your DbContext Model.
+View DbContext Model SQL DDL - View a SQL DDL script from your DbContext Model.
+View Database Schema as Graph - Generates a DGML graph of your database schema, viewable in Visual Studio.
+About - Displays version and other diagnostic information about your Visual Studio instance. 
+        </Description>
+        <MoreInfo>https://github.com/ErikEJ/SqlCeToolbox/wiki/EF-Core-Power-Tools</MoreInfo>
+        <License>Resources\license.txt</License>
+        <Icon>db.png</Icon>
+        <PreviewImage>Resources\pt.png</PreviewImage>
+        <Tags>sql sqlite sqlce entityframework efcore codegeneration database</Tags>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0.26730.3,16.0)" />
+    </Installation>
+    <Dependencies>
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
+</PackageManifest>
