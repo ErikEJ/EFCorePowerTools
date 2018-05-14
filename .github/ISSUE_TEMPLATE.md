@@ -4,8 +4,8 @@ Describe what is not working as expected.
 Include a complete description that I can redo to reproduce the issue.
 
 ### Further technical details
-Toolbox/Power Tools version: (found in About dialog - blue questionmark icon)
+EF Core Power Tools version: (found in About dialog - blue questionmark icon on context menu)
 
-Database engine: (SQlite, SQL Compact or SQL Server)
+Database engine: (SQlite, SQL Compact, SQL Server, Postgres)
 
-Visual Studio or SSMS version: (e.g. Visual Studio 2017 15.3, SSMS 17.3)
+Visual Studio version: (e.g. Visual Studio 2017 15.7)
