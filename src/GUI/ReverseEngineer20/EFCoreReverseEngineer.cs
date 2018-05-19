@@ -147,20 +147,20 @@ namespace ReverseEngineer20
                         continue;
                 }
 
-                //TODO Need more testing!
-                //if (line.Contains("OnModelCreating")) inModelCreating = true;
+                //TODO Get feedback!!
+                if (line.Contains("OnModelCreating")) inModelCreating = true;
 
-                //if (inModelCreating && line.StartsWith("        }"))
-                //{
-                //    finalLines.Add(string.Empty);
-                //    finalLines.Add("            OnModelCreatingPartial(modelBuilder);");
-                //}
+                if (inModelCreating && line.StartsWith("        }"))
+                {
+                    finalLines.Add(string.Empty);
+                    finalLines.Add("            OnModelCreatingPartial(modelBuilder);");
+                }
 
-                //if (inModelCreating && line.StartsWith("    }"))
-                //{
-                //    finalLines.Add(string.Empty);
-                //    finalLines.Add("        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);");
-                //}
+                if (inModelCreating && line.StartsWith("    }"))
+                {
+                    finalLines.Add(string.Empty);
+                    finalLines.Add("        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);");
+                }
 
                 finalLines.Add(line);
                 i++;
