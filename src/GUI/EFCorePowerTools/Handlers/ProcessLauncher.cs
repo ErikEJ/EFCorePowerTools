@@ -73,24 +73,24 @@ namespace EFCorePowerTools.Handlers
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
-            var version = "2.0.0";
+            var testVersion = string.Empty;
             var testFile = Path.Combine(toDir, "Microsoft.EntityFrameworkCore.dll");
 
             if (File.Exists(testFile))
             {
                 var fvi = FileVersionInfo.GetVersionInfo(testFile);
-                version = fvi.FileVersion;
-                if (version.StartsWith("2.0.1"))
-                {
-                    version = "2.0.1";
-                }
+                var version = Version.Parse(fvi.FileVersion);
+
+                if (version.ToString(3) == "2.0.1") testVersion = "2.0.1";
+                if (version.ToString(3) == "2.0.2") testVersion = "2.0.2";
+                if (version.ToString(3) == "2.0.3") testVersion = "2.0.3";
             }
 
             File.Copy(Path.Combine(fromDir, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
-            if (version == "2.0.1")
+            if (!string.IsNullOrEmpty(testVersion))
             {
-                File.Copy(Path.Combine(fromDir, "2.0.1", "efpt.exe.config"), Path.Combine(toDir, "efpt.exe.config"), true);
-                File.Copy(Path.Combine(fromDir, "2.0.1", "Microsoft.EntityFrameworkCore.Design.dll"), Path.Combine(toDir, "Microsoft.EntityFrameworkCore.Design.dll"), true);
+                File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe.config"), Path.Combine(toDir, "efpt.exe.config"), true);
+                File.Copy(Path.Combine(fromDir, testVersion, "Microsoft.EntityFrameworkCore.Design.dll"), Path.Combine(toDir, "Microsoft.EntityFrameworkCore.Design.dll"), true);
             }
             else
             {

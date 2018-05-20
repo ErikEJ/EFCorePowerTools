@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>System.Interactive.Async</name>
+    </assembly>
+    <members>
+        <member name="T:System.Linq.Internal.Grouping`2">
+            Adapted from System.Linq.Grouping from .NET Framework
+            Source: https://github.com/dotnet/corefx/blob/b90532bc97b07234a7d18073819d019645285f1c/src/System.Linq/src/System/Linq/Grouping.cs#L64
+        </member>
+        <member name="T:System.Linq.IIListProvider`1">
+            <summary>
+            An iterator that can produce an array or <see cref="T:System.Collections.Generic.List`1"/> through an optimized path.
+            </summary>
+        </member>
+        <member name="M:System.Linq.IIListProvider`1.ToArrayAsync(System.Threading.CancellationToken)">
+            <summary>
+            Produce an array of the sequence through an optimized path.
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns>The array.</returns>
+        </member>
+        <member name="M:System.Linq.IIListProvider`1.ToListAsync(System.Threading.CancellationToken)">
+            <summary>
+            Produce a <see cref="T:System.Collections.Generic.List`1"/> of the sequence through an optimized path.
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns>The <see cref="T:System.Collections.Generic.List`1"/>.</returns>
+        </member>
+        <member name="M:System.Linq.IIListProvider`1.GetCountAsync(System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Returns the count of elements in the sequence.
+            </summary>
+            <param name="onlyIfCheap">If true then the count should only be calculated if doing
+            so is quick (sure or likely to be constant time), otherwise -1 should be returned.</param>
+            <param name="cancellationToken"></param>
+            <returns>The number of elements.</returns>
+        </member>
+        <member name="M:System.Collections.Generic.AsyncEnumerator.MoveNext``1(System.Collections.Generic.IAsyncEnumerator{``0})">
+            <summary>
+            Advances the enumerator to the next element in the sequence, returning the result asynchronously.
+            </summary>
+            <returns>
+            Task containing the result of the operation: true if the enumerator was successfully advanced 
+            to the next element; false if the enumerator has passed the end of the sequence.
+            </returns>
+        </member>
+        <member name="T:System.Collections.Generic.IAsyncEnumerable`1">
+            <summary>
+                Asynchronous version of the IEnumerable&lt;T&gt; interface, allowing elements of the
+                enumerable sequence to be retrieved asynchronously.
+            </summary>
+            <typeparam name="T">Element type.</typeparam>
+        </member>
+        <member name="M:System.Collections.Generic.IAsyncEnumerable`1.GetEnumerator">
+            <summary>
+                Gets an asynchronous enumerator over the sequence.
+            </summary>
+            <returns>Enumerator for asynchronous enumeration over the sequence.</returns>
+        </member>
+        <member name="T:System.Collections.Generic.IAsyncEnumerator`1">
+            <summary>
+                Asynchronous version of the IEnumerator&lt;T&gt; interface, allowing elements to be
+                retrieved asynchronously.
+            </summary>
+            <typeparam name="T">Element type.</typeparam>
+        </member>
+        <member name="P:System.Collections.Generic.IAsyncEnumerator`1.Current">
+            <summary>
+                Gets the current element in the iteration.
+            </summary>
+        </member>
+        <member name="M:System.Collections.Generic.IAsyncEnumerator`1.MoveNext(System.Threading.CancellationToken)">
+            <summary>
+                Advances the enumerator to the next element in the sequence, returning the result asynchronously.
+            </summary>
+            <param name="cancellationToken">Cancellation token that can be used to cancel the operation.</param>
+            <returns>
+                Task containing the result of the operation: true if the enumerator was successfully advanced
+                to the next element; false if the enumerator has passed the end of the sequence.
+            </returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Extensions.Caching.Memory</name>
+    </assembly>
+    <members>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.AbsoluteExpiration">
+            <summary>
+            Gets or sets an absolute expiration date for the cache entry.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.AbsoluteExpirationRelativeToNow">
+            <summary>
+            Gets or sets an absolute expiration time, relative to now.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.SlidingExpiration">
+            <summary>
+            Gets or sets how long a cache entry can be inactive (e.g. not accessed) before it will be removed.
+            This will not extend the entry lifetime beyond the absolute expiration (if set).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.ExpirationTokens">
+            <summary>
+            Gets the <see cref="T:Microsoft.Extensions.Primitives.IChangeToken"/> instances which cause the cache entry to expire.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.PostEvictionCallbacks">
+            <summary>
+            Gets or sets the callbacks will be fired after the cache entry is evicted from the cache.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.Priority">
+            <summary>
+            Gets or sets the priority for keeping the cache entry in the cache during a
+            memory pressure triggered cleanup. The default is <see cref="F:Microsoft.Extensions.Caching.Memory.CacheItemPriority.Normal"/>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.CacheEntry.Size">
+            <summary>
+            Gets or sets the size of the cache entry value.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.Caching.Memory.MemoryCache">
+            <summary>
+            An implementation of <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> using a dictionary to
+            store its entries.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.#ctor(Microsoft.Extensions.Options.IOptions{Microsoft.Extensions.Caching.Memory.MemoryCacheOptions})">
+            <summary>
+            Creates a new <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCache"/> instance.
+            </summary>
+            <param name="optionsAccessor">The options of the cache.</param>
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.Finalize">
+            <summary>
+            Cleans up the background collection events.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.MemoryCache.Count">
+            <summary>
+            Gets the count of the current entries for diagnostic purposes.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.CreateEntry(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.TryGetValue(System.Object,System.Object@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.Remove(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.Compact(System.Double)">
+            Remove at least the given percentage (0.10 for 10%) of the total entries (or estimated memory?), according to the following policy:
+            1. Remove all expired items.
+            2. Bucket by CacheItemPriority.
+            3. Least recently used objects.
+            ?. Items with the soonest absolute expiration.
+            ?. Items with the soonest sliding expiration.
+            ?. Larger objects - estimated by object graph size, inaccurate.
+        </member>
+        <member name="M:Microsoft.Extensions.Caching.Memory.MemoryCache.ExpirePriorityBucket(System.Int64@,System.Int64,System.Func{Microsoft.Extensions.Caching.Memory.CacheEntry,System.Int64},System.Collections.Generic.List{Microsoft.Extensions.Caching.Memory.CacheEntry},System.Collections.Generic.List{Microsoft.Extensions.Caching.Memory.CacheEntry})">
+            Policy:
+            1. Least recently used objects.
+            ?. Items with the soonest absolute expiration.
+            ?. Items with the soonest sliding expiration.
+            ?. Larger objects - estimated by object graph size, inaccurate.
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.MemoryCacheOptions.CompactOnMemoryPressure">
+            <summary>
+            Gets or sets the minimum length of time between successive scans for expired items.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.MemoryCacheOptions.SizeLimit">
+            <summary>
+            Gets or sets the maximum size of the cache.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Caching.Memory.MemoryCacheOptions.CompactionPercentage">
+            <summary>
+            Gets or sets the amount to compact the cache by when the maximum size is exceeded.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions">
+            <summary>
+            Extension methods for setting up memory cache related services in an <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds a non distributed in memory implementation of <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> to the
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> to add services to.</param>
+            <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> so that additional calls can be chained.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.Extensions.Caching.Memory.MemoryCacheOptions})">
+            <summary>
+            Adds a non distributed in memory implementation of <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> to the
+            <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> to add services to.</param>
+            <param name="setupAction">
+            The <see cref="T:System.Action`1"/> to configure the provided <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheOptions"/>.
+            </param>
+            <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> so that additional calls can be chained.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddDistributedMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds a default implementation of <see cref="T:Microsoft.Extensions.Caching.Distributed.IDistributedCache"/> that stores items in memory
+            to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />. Frameworks that require a distributed cache to work
+            can safely add this dependency as part of their dependency list to ensure that there is at least
+            one implementation available.
+            </summary>
+            <remarks>
+            <see cref="M:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddDistributedMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/> should only be used in single
+            server scenarios as this cache stores items in memory and doesn't expand across multiple machines.
+            For those scenarios it is recommended to use a proper distributed cache that can expand across
+            multiple machines.
+            </remarks>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> to add services to.</param>
+            <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> so that additional calls can be chained.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddDistributedMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions})">
+            <summary>
+            Adds a default implementation of <see cref="T:Microsoft.Extensions.Caching.Distributed.IDistributedCache"/> that stores items in memory
+            to the <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />. Frameworks that require a distributed cache to work
+            can safely add this dependency as part of their dependency list to ensure that there is at least
+            one implementation available.
+            </summary>
+            <remarks>
+            <see cref="M:Microsoft.Extensions.DependencyInjection.MemoryCacheServiceCollectionExtensions.AddDistributedMemoryCache(Microsoft.Extensions.DependencyInjection.IServiceCollection)"/> should only be used in single
+            server scenarios as this cache stores items in memory and doesn't expand across multiple machines.
+            For those scenarios it is recommended to use a proper distributed cache that can expand across
+            multiple machines.
+            </remarks>
+            <param name="services">The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" /> to add services to.</param>
+            <param name="setupAction">
+            The <see cref="T:System.Action`1"/> to configure the provided <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryDistributedCacheOptions"/>.
+            </param>
+            <returns>The <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> so that additional calls can be chained.</returns>
+        </member>
+    </members>
+</doc>

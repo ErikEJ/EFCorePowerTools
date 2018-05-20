@@ -1,0 +1,1557 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.EntityFrameworkCore.Design</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.DbContextActivator">
+            <summary>
+                Used to instantiate <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> types at design time.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.DbContextActivator.CreateInstance(System.Type,System.Reflection.Assembly,Microsoft.EntityFrameworkCore.Design.IOperationReportHandler)">
+            <summary>
+                Creates an instance of the specified <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> type using the standard design-time
+                mechanisms. When available, this will use any <see cref="T:Microsoft.EntityFrameworkCore.Design.IDesignTimeDbContextFactory`1"/>
+                implementations or the application's service provider.
+            </summary>
+            <param name="contextType"> The <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/> type to instantiate. </param>
+            <param name="startupAssembly"> The application's startup assembly. </param>
+            <param name="reportHandler"> The design-time report handler. </param>
+            <returns> The newly created object. </returns>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.DesignTimeServicesBuilder">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.DesignTimeServicesBuilder.#ctor(System.Reflection.Assembly,Microsoft.EntityFrameworkCore.Design.Internal.IOperationReporter)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.DesignTimeServicesBuilder.Build(Microsoft.EntityFrameworkCore.DbContext)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.DesignTimeServicesBuilder.Build(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.DesignTimeServicesBuilder.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.DesignTimeServicesBuilder.ConfigureContextServices(System.IServiceProvider,Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.ForwardingProxy">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.ForwardingProxy.Unwrap``1(System.Object)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.ForwardingProxy`1">
+            <summary>
+                This is a small piece of Remoting magic. It enables us to invoke methods on a
+                remote object without knowing its actual type. The only restriction is that the
+                names and shapes of the types and their members must be the same on each side of
+                the boundary.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.ForwardingProxy`1.#ctor(System.Object)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.ForwardingProxy`1.Invoke(System.Runtime.Remoting.Messaging.IMessage)">
+            <summary>
+                Intercepts method invocations on the object represented by the current instance
+                and forwards them to the target to finish processing.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.ForwardingProxy`1.GetTransparentProxy">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.NullPluralizer">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.NullPluralizer.Pluralize(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.NullPluralizer.Singularize(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.OperationLogger">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLogger.#ctor(System.String,Microsoft.EntityFrameworkCore.Design.Internal.IOperationReporter)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLogger.BeginScope``1(``0)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.OperationLoggerProvider">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLoggerProvider.#ctor(Microsoft.EntityFrameworkCore.Design.Internal.IOperationReporter)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLoggerProvider.CreateLogger(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationLoggerProvider.Dispose">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.Internal.OperationReporter">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationReporter.#ctor(Microsoft.EntityFrameworkCore.Design.IOperationReportHandler)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationReporter.WriteError(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationReporter.WriteWarning(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationReporter.WriteInformation(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.Internal.OperationReporter.WriteVerbose(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.IOperationReportHandler">
+            <summary>
+                Used to handle reported design-time activity.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Design.IOperationReportHandler.Version">
+            <summary>
+                Gets the contract version of this handler.
+            </summary>
+            <value> The contract version of this handler. </value>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.IOperationReportHandler.OnError(System.String)">
+            <summary>
+                Invoked when an error is reported.
+            </summary>
+            <param name="message"> The message. </param>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.IOperationReportHandler.OnWarning(System.String)">
+            <summary>
+                Invoked when a warning is reported.
+            </summary>
+            <param name="message"> The message. </param>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.IOperationReportHandler.OnInformation(System.String)">
+            <summary>
+                Invoked when information is reported.
+            </summary>
+            <param name="message"> The message. </param>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.IOperationReportHandler.OnVerbose(System.String)">
+            <summary>
+                Invoked when verbose information is reported.
+            </summary>
+            <param name="message"> The message. </param>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.IPluralizer">
+            <summary>
+                Converts identifiers to the plural and singular equivalents.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.IPluralizer.Pluralize(System.String)">
+            <summary>
+                Gets the plural version of the given identifier. Returns the same
+                identifier if it is already pluralized.
+            </summary>
+            <param name="identifier"> The identifier to be pluralized. </param>
+            <returns> The pluralized identifier. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Design.IPluralizer.Singularize(System.String)">
+            <summary>
+                Gets the singular version of the given identifier. Returns the same
+                identifier if it is already singularized.
+            </summary>
+            <param name="identifier"> The identifier to be singularized. </param>
+            <returns> The singularized identifier. </returns>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.OperationException">
+            <summary>
+                Represents an exception whose stack trace should, by default, not be reported by the commands.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Design.OperationExecutor">
+            <summary>
+                A version-resilient, AppDomain-and-reflection-friendly facade for command operations.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.Prefix">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.ColumnOrdinal">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.DependentEndNavigation">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.PrincipalEndNavigation">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.EntityTypeErrors">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.DbSetName">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingAnnotationNames.DatabaseName">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingEntityTypeAnnotations">
+            <summary>
+                Provides strongly typed access to scaffolding related annotations on an 
+                <see cref="T:Microsoft.EntityFrameworkCore.Metadata.IEntityType"/> instance. Instances of this class are typically obtained via the
+                <see cref="M:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingMetadataExtensions.Scaffolding(Microsoft.EntityFrameworkCore.Metadata.IEntityType)" /> extension method and it is not designed
+                to be directly constructed in your application code.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingEntityTypeAnnotations.#ctor(Microsoft.EntityFrameworkCore.Metadata.IEntityType)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingEntityTypeAnnotations"/> class. 
+                Instances of this class are typically obtained via the
+                <see cref="M:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingMetadataExtensions.Scaffolding(Microsoft.EntityFrameworkCore.Metadata.IEntityType)" /> extension method and it is not designed
+                to be directly constructed in your application code.
+            </summary>
+            <param name="entity"> The entity type to access annotation on. </param>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Metadata.Internal.ScaffoldingEntityTypeAnnotations.DbSetName">
+            <summary>
+                Gets or set the name of the <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/> property for this entity type.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGenerator.Dependencies">
+            <summary>
+                Parameter object containing dependencies for this service.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGeneratorDependencies">
+            <summary>
+                <para>
+                    Service dependencies parameter class for <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGenerator" />
+                </para>
+                <para>
+                    This type is typically used by database providers (and other extensions). It is generally
+                    not used in application code.
+                </para>
+                <para>
+                    Do not construct instances of this class directly from either provider or application code as the
+                    constructor signature may change as new dependencies are added. Instead, use this type in
+                    your constructor so that an instance will be created and injected automatically by the
+                    dependency injection container. To create an instance with some dependent services replaced,
+                    first resolve the object from the dependency injection container, then replace selected
+                    services using the 'With...' methods. Do not call the constructor at any point in this process.
+                </para>
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGeneratorDependencies.#ctor(Microsoft.EntityFrameworkCore.Design.ICSharpHelper)">
+            <summary>
+                <para>
+                    Creates the service dependencies parameter object for a <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGenerator" />.
+                </para>
+                <para>
+                    Do not call this constructor directly from either provider or application code as it may change
+                    as new dependencies are added. Instead, use this type in your constructor so that an instance
+                    will be created and injected automatically by the dependency injection container. To create
+                    an instance with some dependent services replaced, first resolve the object from the dependency
+                    injection container, then replace selected services using the 'With...' methods. Do not call
+                    the constructor at any point in this process.
+                </para>
+                <para>
+                    This API supports the Entity Framework Core infrastructure and is not intended to be used
+                    directly from your code. This API may change or be removed in future releases.
+                </para>
+            </summary>
+            <param name="csharpHelper"> The C# helper. </param>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGeneratorDependencies.CSharpHelper">
+            <summary>
+                The C# helper.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationOperationGeneratorDependencies.With(Microsoft.EntityFrameworkCore.Design.ICSharpHelper)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="csharpHelper"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGenerator.CSharpDependencies">
+            <summary>
+                Parameter object containing dependencies for this service.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies">
+            <summary>
+                <para>
+                    Service dependencies parameter class for <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGenerator" />
+                </para>
+                <para>
+                    This type is typically used by database providers (and other extensions). It is generally
+                    not used in application code.
+                </para>
+                <para>
+                    Do not construct instances of this class directly from either provider or application code as the
+                    constructor signature may change as new dependencies are added. Instead, use this type in
+                    your constructor so that an instance will be created and injected automatically by the
+                    dependency injection container. To create an instance with some dependent services replaced,
+                    first resolve the object from the dependency injection container, then replace selected
+                    services using the 'With...' methods. Do not call the constructor at any point in this process.
+                </para>
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.#ctor(Microsoft.EntityFrameworkCore.Design.ICSharpHelper,Microsoft.EntityFrameworkCore.Migrations.Design.ICSharpMigrationOperationGenerator,Microsoft.EntityFrameworkCore.Migrations.Design.ICSharpSnapshotGenerator)">
+            <summary>
+                <para>
+                    Creates the service dependencies parameter object for a <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGenerator" />.
+                </para>
+                <para>
+                    Do not call this constructor directly from either provider or application code as it may change
+                    as new dependencies are added. Instead, use this type in your constructor so that an instance
+                    will be created and injected automatically by the dependency injection container. To create
+                    an instance with some dependent services replaced, first resolve the object from the dependency
+                    injection container, then replace selected services using the 'With...' methods. Do not call
+                    the constructor at any point in this process.
+                </para>
+            </summary>
+            <param name="csharpHelper"> The C# helper. </param>
+            <param name="csharpMigrationOperationGenerator"> The C# migration operation generator. </param>
+            <param name="csharpSnapshotGenerator"> The C# model snapshot generator. </param>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.CSharpHelper">
+            <summary>
+                The C# helper.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.CSharpMigrationOperationGenerator">
+            <summary>
+                The C# migration operation generator.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.CSharpSnapshotGenerator">
+            <summary>
+                The C# model snapshot generator.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.With(Microsoft.EntityFrameworkCore.Design.ICSharpHelper)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="csharpHelper"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.With(Microsoft.EntityFrameworkCore.Migrations.Design.ICSharpMigrationOperationGenerator)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="csharpMigrationOperationGenerator"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpMigrationsGeneratorDependencies.With(Microsoft.EntityFrameworkCore.Migrations.Design.ICSharpSnapshotGenerator)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="csharpSnapshotGenerator"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGenerator.Dependencies">
+            <summary>
+                Parameter object containing dependencies for this service.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGeneratorDependencies">
+            <summary>
+                <para>
+                    Service dependencies parameter class for <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGenerator" />
+                </para>
+                <para>
+                    This type is typically used by database providers (and other extensions). It is generally
+                    not used in application code.
+                </para>
+                <para>
+                    Do not construct instances of this class directly from either provider or application code as the
+                    constructor signature may change as new dependencies are added. Instead, use this type in
+                    your constructor so that an instance will be created and injected automatically by the
+                    dependency injection container. To create an instance with some dependent services replaced,
+                    first resolve the object from the dependency injection container, then replace selected
+                    services using the 'With...' methods. Do not call the constructor at any point in this process.
+                </para>
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGeneratorDependencies.#ctor(Microsoft.EntityFrameworkCore.Design.ICSharpHelper)">
+            <summary>
+                <para>
+                    Creates the service dependencies parameter object for a <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGenerator" />.
+                </para>
+                <para>
+                    Do not call this constructor directly from either provider or application code as it may change
+                    as new dependencies are added. Instead, use this type in your constructor so that an instance
+                    will be created and injected automatically by the dependency injection container. To create
+                    an instance with some dependent services replaced, first resolve the object from the dependency
+                    injection container, then replace selected services using the 'With...' methods. Do not call
+                    the constructor at any point in this process.
+                </para>
+                <para>
+                    This API supports the Entity Framework Core infrastructure and is not intended to be used
+                    directly from your code. This API may change or be removed in future releases.
+                </para>
+            </summary>
+            <param name="csharpHelper"> The C# helper. </param>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGeneratorDependencies.CSharpHelper">
+            <summary>
+                The C# helper.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.CSharpSnapshotGeneratorDependencies.With(Microsoft.EntityFrameworkCore.Design.ICSharpHelper)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="csharpHelper"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsCodeGeneratorDependencies">
+            <summary>
+                <para>
+                    Service dependencies parameter class for <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsCodeGenerator" />
+                </para>
+                <para>
+                    This type is typically used by database providers (and other extensions). It is generally
+                    not used in application code.
+                </para>
+                <para>
+                    Do not construct instances of this class directly from either provider or application code as the
+                    constructor signature may change as new dependencies are added. Instead, use this type in
+                    your constructor so that an instance will be created and injected automatically by the
+                    dependency injection container. To create an instance with some dependent services replaced,
+                    first resolve the object from the dependency injection container, then replace selected
+                    services using the 'With...' methods. Do not call the constructor at any point in this process.
+                </para>
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsCodeGeneratorDependencies.#ctor">
+            <summary>
+                <para>
+                    Creates the service dependencies parameter object for a <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsCodeGenerator" />.
+                </para>
+                <para>
+                    Do not call this constructor directly from either provider or application code as it may change
+                    as new dependencies are added. Instead, use this type in your constructor so that an instance
+                    will be created and injected automatically by the dependency injection container. To create
+                    an instance with some dependent services replaced, first resolve the object from the dependency
+                    injection container, then replace selected services using the 'With...' methods. Do not call
+                    the constructor at any point in this process.
+                </para>
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies">
+            <summary>
+                <para>
+                    Service dependencies parameter class for <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolder" />
+                </para>
+                <para>
+                    This type is typically used by database providers (and other extensions). It is generally
+                    not used in application code.
+                </para>
+                <para>
+                    Do not construct instances of this class directly from either provider or application code as the
+                    constructor signature may change as new dependencies are added. Instead, use this type in
+                    your constructor so that an instance will be created and injected automatically by the
+                    dependency injection container. To create an instance with some dependent services replaced,
+                    first resolve the object from the dependency injection container, then replace selected
+                    services using the 'With...' methods. Do not call the constructor at any point in this process.
+                </para>
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.#ctor(Microsoft.EntityFrameworkCore.Internal.ICurrentDbContext,Microsoft.EntityFrameworkCore.Metadata.IModel,Microsoft.EntityFrameworkCore.Migrations.IMigrationsAssembly,Microsoft.EntityFrameworkCore.Migrations.IMigrationsModelDiffer,Microsoft.EntityFrameworkCore.Migrations.IMigrationsIdGenerator,Microsoft.EntityFrameworkCore.Migrations.Design.IMigrationsCodeGenerator,Microsoft.EntityFrameworkCore.Migrations.IHistoryRepository,Microsoft.EntityFrameworkCore.Design.Internal.IOperationReporter,Microsoft.EntityFrameworkCore.Storage.IDatabaseProvider,Microsoft.EntityFrameworkCore.Migrations.Internal.ISnapshotModelProcessor)">
+            <summary>
+                <para>
+                    Creates the service dependencies parameter object for a <see cref="T:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolder" />.
+                </para>
+                <para>
+                    Do not call this constructor directly from either provider or application code as it may change
+                    as new dependencies are added. Instead, use this type in your constructor so that an instance
+                    will be created and injected automatically by the dependency injection container. To create
+                    an instance with some dependent services replaced, first resolve the object from the dependency
+                    injection container, then replace selected services using the 'With...' methods. Do not call
+                    the constructor at any point in this process.
+                </para>
+                <para>
+                    This API supports the Entity Framework Core infrastructure and is not intended to be used
+                    directly from your code. This API may change or be removed in future releases.
+                </para>
+            </summary>
+            <param name="currentDbContext"> The current DbContext. </param>
+            <param name="model"> The model. </param>
+            <param name="migrationsAssembly"> The migrations assembly. </param>
+            <param name="migrationsModelDiffer"> The migrations model differ. </param>
+            <param name="migrationsIdGenerator"> The migrations ID generator. </param>
+            <param name="migrationCodeGenerator"> The migrations code generator. </param>
+            <param name="historyRepository"> The history repository. </param>
+            <param name="operationReporter"> The operation reporter. </param>
+            <param name="databaseProvider"> The database provider. </param>
+            <param name="snapshotModelProcessor"> The snapshot model processor. </param>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.CurrentDbContext">
+            <summary>
+                The current DbContext.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.Model">
+            <summary>
+                The model.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.MigrationsAssembly">
+            <summary>
+                The migrations assembly.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.MigrationsModelDiffer">
+            <summary>
+                The migrations model differ.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.MigrationsIdGenerator">
+            <summary>
+                The migrations ID generator.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.MigrationCodeGenerator">
+            <summary>
+                The migrations code generator.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.HistoryRepository">
+            <summary>
+                The history repository.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.OperationReporter">
+            <summary>
+                The operation reporter.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.DatabaseProvider">
+            <summary>
+                The database provider.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.SnapshotModelProcessor">
+            <summary>
+                The snapshot model processor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Internal.ICurrentDbContext)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="currentDbContext"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Metadata.IModel)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="model"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Migrations.IMigrationsAssembly)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="migrationsAssembly"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Migrations.IMigrationsModelDiffer)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="migrationsModelDiffer"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Migrations.IMigrationsIdGenerator)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="migrationsIdGenerator"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Migrations.Design.IMigrationsCodeGenerator)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="migrationCodeGenerator"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Migrations.IHistoryRepository)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="historyRepository"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Design.Internal.IOperationReporter)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="operationReporter"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Storage.IDatabaseProvider)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="databaseProvider"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Migrations.Design.MigrationsScaffolderDependencies.With(Microsoft.EntityFrameworkCore.Migrations.Internal.ISnapshotModelProcessor)">
+            <summary>
+                Clones this dependency parameter object with one service replaced.
+            </summary>
+            <param name="snapshotModelProcessor"> A replacement for the current dependency of this type. </param>
+            <returns> A new parameter object with the given service replaced. </returns>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Internal.DesignStrings">
+            <summary>
+            	This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.DuplicateMigrationName(System.Object)">
+            <summary>
+                The name '{migrationName}' is used by an existing migration.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.MultipleContexts">
+            <summary>
+                More than one DbContext was found. Specify which one to use. Use the '-Context' parameter for PowerShell commands and the '--context' parameter for dotnet commands.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.MultipleContextsWithName(System.Object)">
+            <summary>
+                More than one DbContext named '{name}' was found. Specify which one to use by providing its fully qualified name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.MultipleContextsWithQualifiedName(System.Object)">
+            <summary>
+                More than one DbContext named '{name}' was found. Specify which one to use by providing its fully qualified name using its exact case.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoContext(System.Object)">
+            <summary>
+                No DbContext was found in assembly '{assembly}'. Ensure that you're using the correct assembly and that the type is neither abstract nor generic.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoContextWithName(System.Object)">
+            <summary>
+                No DbContext named '{name}' was found.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UseContext(System.Object)">
+            <summary>
+                Using context '{name}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.DroppingDatabase(System.Object)">
+            <summary>
+                Dropping database '{name}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.DatabaseDropped(System.Object)">
+            <summary>
+                Successfully dropped database '{name}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ManuallyDeleted">
+            <summary>
+                A manual migration deletion was detected.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoMigrationFile(System.Object,System.Object)">
+            <summary>
+                No file named '{file}' was found. You must manually remove the migration class '{migrationClass}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoMigrationMetadataFile(System.Object)">
+            <summary>
+                No file named '{file}' was found.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoSnapshot">
+            <summary>
+                No ModelSnapshot was found.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoSnapshotFile(System.Object,System.Object)">
+            <summary>
+                No file named '{file}' was found. You must manually remove the model snapshot class '{snapshotClass}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.RemovingMigration(System.Object)">
+            <summary>
+                Removing migration '{name}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.RemovingSnapshot">
+            <summary>
+                Removing model snapshot.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.RevertingSnapshot">
+            <summary>
+                Reverting model snapshot.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.RevertMigration(System.Object)">
+            <summary>
+                The migration '{name}' has already been applied to the database. Revert it and try again. If the migration has been applied to other databases, consider reverting its changes using a new migration.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UnknownOperation(System.Object)">
+            <summary>
+                The current CSharpMigrationOperationGenerator cannot scaffold operations of type '{operationType}'. Configure your services to use one that can.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UnknownLiteral(System.Object)">
+            <summary>
+                The current CSharpHelper cannot scaffold literals of type '{literalType}'. Configure your services to use one that can.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.CannotFindRuntimeProviderAssembly(System.Object)">
+            <summary>
+                Unable to find provider assembly with name {assemblyName}. Ensure the specified name is correct and is referenced by the project.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.DestructiveOperation">
+            <summary>
+                An operation was scaffolded that may result in the loss of data. Please review the migration for accuracy.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.WritingMigration(System.Object)">
+            <summary>
+                Writing migration to '{file}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.WritingSnapshot(System.Object)">
+            <summary>
+                Writing model snapshot to '{file}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.Done">
+            <summary>
+                Done.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ReusingNamespace(System.Object)">
+            <summary>
+                Reusing namespace of type '{type}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ReusingSnapshotName(System.Object)">
+            <summary>
+                Reusing model snapshot name '{name}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.CannotFindDesignTimeProviderAssemblyAttribute(System.Object,System.Object)">
+            <summary>
+                Unable to find expected assembly attribute named {attributeName} in provider assembly {runtimeProviderAssemblyName}. This attribute is required to identify the class which acts as the design-time service provider factory.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NonRelationalProvider(System.Object)">
+            <summary>
+                {provider} is not a Relational provider and therefore cannot be use with Migrations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UnreferencedAssembly(System.Object,System.Object)">
+            <summary>
+                Could not load assembly '{assembly}'. Ensure it is referenced by the startup project '{startupProject}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingContexts">
+            <summary>
+                Finding DbContext classes...
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForeignMigrations(System.Object)">
+            <summary>
+                The namespace '{migrationsNamespace}' contains migrations for a different DbContext. This can result in conflicting migration names. It's recommend to put migrations for different DbContext classes into different namespaces.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ContextClassNotValidCSharpIdentifier(System.Object)">
+            <summary>
+                The context class name passed in, {contextClassName}, is not a valid C# identifier.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.MigrationsAssemblyMismatch(System.Object,System.Object)">
+            <summary>
+                Your target project '{assembly}' doesn't match your migrations assembly '{migrationsAssembly}'. Either change your target project or change your migrations assembly.
+                Change your migrations assembly by using DbContextOptionsBuilder. E.g. options.UseSqlServer(connection, b =&gt; b.MigrationsAssembly("{assembly}")). By default, the migrations assembly is the assembly containing the DbContext.
+                Change your target project to the migrations project by using the Package Manager Console's Default project drop-down list, or by executing "dotnet ef" from the directory containing the migrations project.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.SensitiveInformationWarning">
+            <summary>
+                To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForceRemoveMigration(System.Object)">
+            <summary>
+                Removing migration '{name}' without checking the database. If this migration has been applied to the database, you will need to manually reverse the changes it made.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoParameterlessConstructor(System.Object)">
+            <summary>
+                Unable to create an object of type '{contextType}'. Add an implementation of 'IDesignTimeDbContextFactory&lt;{contextType}&gt;' to the project, or see https://go.microsoft.com/fwlink/?linkid=851728 for additional patterns supported at design time.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NotExistDatabase(System.Object)">
+            <summary>
+                Database '{name}' did not exist, no action was taken.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UsingEnvironment(System.Object)">
+            <summary>
+                Using environment '{environment}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingBuildWebHost">
+            <summary>
+                Finding BuildWebHost method...
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingServiceProvider">
+            <summary>
+                Finding application service provider...
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoBuildWebHost(System.Object)">
+            <summary>
+                No BuildWebHost method was found on type '{programClass}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoEntryPoint(System.Object)">
+            <summary>
+                No entry point was found for assembly '{startupAssembly}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoServiceProvider">
+            <summary>
+                No application service provider was found.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UsingBuildWebHost(System.Object)">
+            <summary>
+                Using application service provider from BuildWebHost method on '{programClass}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FoundDbContext(System.Object)">
+            <summary>
+                Found DbContext '{contextType}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UsingDbContextFactory(System.Object)">
+            <summary>
+                Using DbContext factory '{factory}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingDesignTimeServices(System.Object)">
+            <summary>
+                Finding IDesignTimeServices implementations in assembly '{startupAssembly}'...
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingProviderServices(System.Object)">
+            <summary>
+                Finding design-time services for provider '{provider}'...
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NoDesignTimeServices">
+            <summary>
+                No design-time services were found.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UsingDesignTimeServices(System.Object)">
+            <summary>
+                Using design-time services from class '{designTimeServices}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UsingProviderServices(System.Object)">
+            <summary>
+                Using design-time services from provider '{provider}'.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingContextFactories">
+            <summary>
+                Finding IDesignTimeDbContextFactory implementations...
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FindingReferencedContexts">
+            <summary>
+                Finding DbContext classes in the project...
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.FoundContextFactory(System.Object)">
+            <summary>
+                Found IDesignTimeDbContextFactory implementation '{factory}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ProviderReturnedNullModel(System.Object)">
+            <summary>
+                Metadata model returned should not be null. Provider: {providerTypeName}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ReadOnlyFiles(System.Object,System.Object)">
+            <summary>
+                No files generated in directory {outputDirectoryName}. The following file(s) already exist and must be made writeable to continue: {readOnlyFiles}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ExistingFiles(System.Object,System.Object)">
+            <summary>
+                The following file(s) already exist in directory {outputDirectoryName}: {existingFiles}. Use the Force flag to overwrite these files.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.CannotFindTypeMappingForColumn(System.Object,System.Object)">
+            <summary>
+                Could not find type mapping for column '{columnName}' with data type '{dateType}'. Skipping column.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForeignKeyScaffoldErrorPrincipalKeyNotFound(System.Object,System.Object,System.Object)">
+            <summary>
+                Could not scaffold the foreign key '{foreignKeyName}'. A key for '{columnsList}' was not found in the principal entity type '{principalEntityType}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForeignKeyScaffoldErrorPrincipalTableScaffoldingError(System.Object,System.Object)">
+            <summary>
+                Could not scaffold the foreign key '{foreignKeyName}'. The referenced table '{principaltableName}' could not be scaffolded.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.PrimaryKeyErrorPropertyNotFound(System.Object,System.Object)">
+            <summary>
+                Could not scaffold the primary key for '{tableName}'. The following columns in the primary key could not be scaffolded: {columnNames}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.MissingPrimaryKey(System.Object)">
+            <summary>
+                Unable to identify the primary key for table '{tableName}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UnableToGenerateEntityType(System.Object)">
+            <summary>
+                Unable to generate entity type for table '{tableName}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.BadSequenceType(System.Object,System.Object)">
+            <summary>
+                For sequence '{sequenceName}'. Unable to scaffold because it uses an unsupported type: '{typeName}'.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForeignKeyPrincipalEndContainsNullableColumns(System.Object,System.Object,System.Object)">
+            <summary>
+                The principal end of the foreign key '{foreignKeyName}' is supported by the unique index '{indexName}' and contains the following nullable columns '{columnNames}'. Entity Framework requires the properties representing those columns to be non-nullable.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.NonNullableBoooleanColumnHasDefaultConstraint(System.Object)">
+            <summary>
+                The column '{columnName}' would normally be mapped to a non-nullable bool property, but it has a default constraint. Such a column is mapped to a nullable bool property to allow a difference between setting the property to false and invoking the default constraint. See https://go.microsoft.com/fwlink/?linkid=851278 for details.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForeignKeyScaffoldErrorPrincipalTableNotFound(System.Object)">
+            <summary>
+                Could not scaffold the foreign key '{foreignKeyName}'. The referenced table could not be found. This most likely occurred because the referenced table was excluded from scaffolding.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.ForeignKeyScaffoldErrorPropertyNotFound(System.Object,System.Object)">
+            <summary>
+                Could not scaffold the foreign key '{foreignKeyName}'.  The following columns in the foreign key could not be scaffolded: {columnNames}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.UnableToScaffoldIndexMissingProperty(System.Object,System.Object)">
+            <summary>
+                Unable to scaffold the index '{indexName}'. The following columns could not be scaffolded: {columnNames}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.MultipleAnnotationConflict(System.Object)">
+            <summary>
+                The annotation '{annotationName}' was specified twice with potentially different values. Specifying the same annotation multiple times for different providers is no longer supported. Review the generated Migration to ensure it is correct and, if necessary, edit the Migration to fix any issues.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Internal.DesignStrings.SequencesRequireName">
+            <summary>
+                Sequence name cannot be null or empty. Entity Framework cannot model a sequence that does not have a name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.DesignStrings.InvokeBuildWebHostFailed(System.Object,System.Object)">
+            <summary>
+                An error occurred while calling method 'BuildWebHost' on class '{startupClass}'. Continuing without the application service provider. Error: {error}
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CandidateNamingService">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CandidateNamingService.GenerateCandidateIdentifier(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CandidateNamingService.GetDependentEndCandidateNavigationPropertyName(Microsoft.EntityFrameworkCore.Metadata.IForeignKey)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CandidateNamingService.GetPrincipalEndCandidateNavigationPropertyName(Microsoft.EntityFrameworkCore.Metadata.IForeignKey,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpDbContextGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpDbContextGenerator.#ctor(Microsoft.EntityFrameworkCore.Scaffolding.IScaffoldingProviderCodeGenerator,Microsoft.EntityFrameworkCore.Design.IAnnotationCodeGenerator,Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpUtilities)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpDbContextGenerator.WriteCode(Microsoft.EntityFrameworkCore.Metadata.IModel,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpEntityTypeGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpEntityTypeGenerator.#ctor(Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpUtilities)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpEntityTypeGenerator.WriteCode(Microsoft.EntityFrameworkCore.Metadata.IEntityType,System.String,System.Boolean)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpNamer`1">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="F:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpNamer`1.NameCache">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpNamer`1.#ctor(System.Func{`0,System.String},Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpUtilities,System.Func{System.String,System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpNamer`1.GetName(`0)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpScaffoldingGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpScaffoldingGenerator.CSharpDbContextGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpScaffoldingGenerator.CSharpEntityTypeGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpScaffoldingGenerator.#ctor(Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService,Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpDbContextGenerator,Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpEntityTypeGenerator)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpScaffoldingGenerator.WriteCode(Microsoft.EntityFrameworkCore.Metadata.IModel,System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUniqueNamer`1">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUniqueNamer`1.#ctor(System.Func{`0,System.String},Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpUtilities,System.Func{System.String,System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUniqueNamer`1.#ctor(System.Func{`0,System.String},System.Collections.Generic.IEnumerable{System.String},Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpUtilities,System.Func{System.String,System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUniqueNamer`1.GetName(`0)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.DelimitString(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.EscapeString(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.EscapeVerbatimString(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Byte[])">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Boolean)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Int32)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Int64)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Decimal)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Single)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Double)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.TimeSpan)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.DateTime)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.DateTimeOffset)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Guid)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateVerbatimStringLiteral(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateLiteral(System.Object)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.IsCSharpKeyword(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateCSharpIdentifier(System.String,System.Collections.Generic.ICollection{System.String},System.Func{System.String,System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GenerateCSharpIdentifier(System.String,System.Collections.Generic.ICollection{System.String},System.Func{System.String,System.String},System.Func{System.String,System.Collections.Generic.ICollection{System.String},System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.Uniquifier(System.String,System.Collections.Generic.ICollection{System.String})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.GetTypeName(System.Type)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.CSharpUtilities.IsValidIdentifier(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.FileSystemFileService">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.FileSystemFileService.DirectoryExists(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.FileSystemFileService.FileExists(System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.FileSystemFileService.IsFileReadOnly(System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.FileSystemFileService.RetrieveFileContents(System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.FileSystemFileService.OutputFile(System.String,System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService.DirectoryExists(System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService.FileExists(System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService.IsFileReadOnly(System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService.OutputFile(System.String,System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService.RetrieveFileContents(System.String,System.String)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ModelScaffolder">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ModelScaffolder.#ctor(Microsoft.EntityFrameworkCore.Scaffolding.Internal.IScaffoldingModelFactory,Microsoft.EntityFrameworkCore.Scaffolding.Internal.IScaffoldingCodeGenerator,Microsoft.EntityFrameworkCore.Scaffolding.Internal.ICSharpUtilities)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ModelScaffolder.ScaffoldingCodeGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ModelScaffolder.Generate(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ReverseEngineerFiles">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ReverseEngineerFiles.ContextFile">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ReverseEngineerFiles.EntityTypeFiles">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator.#ctor(Microsoft.EntityFrameworkCore.Scaffolding.Internal.IFileService)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator.FileService">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator.FileExtension">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator.GetExistingFilePaths(System.String,System.String,System.Collections.Generic.IEnumerable{Microsoft.EntityFrameworkCore.Metadata.IEntityType})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator.GetReadOnlyFilePaths(System.String,System.String,System.Collections.Generic.IEnumerable{Microsoft.EntityFrameworkCore.Metadata.IEntityType})">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingCodeGenerator.WriteCode(Microsoft.EntityFrameworkCore.Metadata.IModel,System.String,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingServiceCollectionExtensions">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Scaffolding.Internal.ScaffoldingServiceCollectionExtensions.AddScaffolding(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.EntityFrameworkCore.Design.Internal.IOperationReporter)">
+            <summary>
+                This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+    </members>
+</doc>

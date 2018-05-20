@@ -141,7 +141,7 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Generating code...";
 
                 var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
-                bool isNetCore = tfm.Contains(".NETCoreApp,Version=v2.0");
+                bool isNetCore = tfm.Contains(".NETCoreApp,Version=v2.");
                 bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.0");
 
                 //TODO await update

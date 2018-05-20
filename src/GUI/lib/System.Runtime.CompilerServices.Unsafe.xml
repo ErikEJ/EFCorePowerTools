@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?><span>
+<doc>
+  <assembly>
+    <name>System.Runtime.CompilerServices.Unsafe</name>
+  </assembly>
+  <members>
+    <member name="T:System.Runtime.CompilerServices.Unsafe">
+      
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Add``1(``0@,System.Int32)">
+      <param name="source"></param>
+      <param name="elementOffset"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Add``1(``0@,System.IntPtr)">
+      <param name="source"></param>
+      <param name="elementOffset"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.AddByteOffset``1(``0@,System.IntPtr)">
+      <param name="source"></param>
+      <param name="byteOffset"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.AreSame``1(``0@,``0@)">
+      <param name="left"></param>
+      <param name="right"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.As``1(System.Object)">
+      <param name="o"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.As``2(``0@)">
+      <param name="source"></param>
+      <typeparam name="TFrom"></typeparam>
+      <typeparam name="TTo"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.AsPointer``1(``0@)">
+      <param name="value"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.AsRef``1(System.Void*)">
+      <param name="source"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.ByteOffset``1(``0@,``0@)">
+      <param name="origin"></param>
+      <param name="target"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Copy``1(System.Void*,``0@)">
+      <param name="destination"></param>
+      <param name="source"></param>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Copy``1(``0@,System.Void*)">
+      <param name="destination"></param>
+      <param name="source"></param>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.CopyBlock(System.Byte@,System.Byte@,System.UInt32)">
+      <param name="destination"></param>
+      <param name="source"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.CopyBlock(System.Void*,System.Void*,System.UInt32)">
+      <param name="destination"></param>
+      <param name="source"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.CopyBlockUnaligned(System.Void*,System.Void*,System.UInt32)">
+      <param name="destination"></param>
+      <param name="source"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.CopyBlockUnaligned(System.Byte@,System.Byte@,System.UInt32)">
+      <param name="destination"></param>
+      <param name="source"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.InitBlock(System.Byte@,System.Byte,System.UInt32)">
+      <param name="startAddress"></param>
+      <param name="value"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.InitBlock(System.Void*,System.Byte,System.UInt32)">
+      <param name="startAddress"></param>
+      <param name="value"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.InitBlockUnaligned(System.Byte@,System.Byte,System.UInt32)">
+      <param name="startAddress"></param>
+      <param name="value"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.InitBlockUnaligned(System.Void*,System.Byte,System.UInt32)">
+      <param name="startAddress"></param>
+      <param name="value"></param>
+      <param name="byteCount"></param>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Read``1(System.Void*)">
+      <param name="source"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.ReadUnaligned``1(System.Byte@)">
+      <param name="source"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.ReadUnaligned``1(System.Void*)">
+      <param name="source"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.SizeOf``1">
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Subtract``1(``0@,System.Int32)">
+      <param name="source"></param>
+      <param name="elementOffset"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Subtract``1(``0@,System.IntPtr)">
+      <param name="source"></param>
+      <param name="elementOffset"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.SubtractByteOffset``1(``0@,System.IntPtr)">
+      <param name="source"></param>
+      <param name="byteOffset"></param>
+      <typeparam name="T"></typeparam>
+      <returns></returns>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.Write``1(System.Void*,``0)">
+      <param name="destination"></param>
+      <param name="value"></param>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.WriteUnaligned``1(System.Byte@,``0)">
+      <param name="destination"></param>
+      <param name="value"></param>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:System.Runtime.CompilerServices.Unsafe.WriteUnaligned``1(System.Void*,``0)">
+      <param name="destination"></param>
+      <param name="value"></param>
+      <typeparam name="T"></typeparam>
+    </member>
+  </members>
+</doc></span>

@@ -19,15 +19,19 @@
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
+      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmMigrationMenuItemsGroup" priority="0x0150">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
+      </Group>
+
       <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" priority="0x0200">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
-      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" priority="0x0400">
+      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" priority="0x0600">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
-      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" priority="0x0400">
+      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" priority="0x0800">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
@@ -62,6 +66,16 @@
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
           <ButtonText>Reverse Engineer</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidMigrationStatus" priority="0x0100" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMigrationMenuItemsGroup" />
+        <Icon guid="guidImage5" id="bmpPic5" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidMigrationStatus</CommandName>
+          <ButtonText>Migrations Status (alpha)</ButtonText>
         </Strings>
       </Button>
 
@@ -163,12 +177,13 @@
       <IDSymbol name="cmdidSqlBuild" value="0x0400" />
       <IDSymbol name="cmdidDebugViewBuild" value="0x0450" />
       <IDSymbol name="cmdidEdmDatabaseMenuItemsGroup" value="0x0470" />
+      <IDSymbol name="cmdidEdmMigrationMenuItemsGroup" value="0x0490" />
       <IDSymbol name="cmdidEdmMenu" value="0x0500" />
       <IDSymbol name="cmdidEdmMenuGroup" value="0x0600" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0700" />
       <IDSymbol name="cmdidEdmAboutMenuItemsGroup" value="0x0800" />
       <IDSymbol name="cmdidEdmViewMenuItemsGroup" value="0x0900" />
-
+      
       <!-- Project Menu Entries -->
       <IDSymbol name="cmdidReverseEngineerCodeFirst" value="0x0001" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
@@ -176,6 +191,7 @@
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
       <IDSymbol name="cmdidReverseEngineerDgml" value="0x0005" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
+      <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImage6" value="{146f17c2-c8e3-4cfd-9fe2-49cc07c6d456}">

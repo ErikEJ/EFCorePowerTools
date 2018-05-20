@@ -35,6 +35,7 @@ namespace EFCorePowerTools
         private readonly AboutHandler _aboutHandler;
         private readonly DgmlNugetHandler _dgmlNugetHandler;
         private readonly ServerDgmlHandler _serverDgmlHandler;
+        private readonly MigrationsHandler _migrationsHandler;
         private DTE2 _dte2;
 
         public EFCorePowerToolsPackage()
@@ -44,6 +45,7 @@ namespace EFCorePowerTools
             _aboutHandler = new AboutHandler(this);
             _dgmlNugetHandler = new DgmlNugetHandler(this);
             _serverDgmlHandler = new ServerDgmlHandler(this);
+            _migrationsHandler = new MigrationsHandler(this);
         }
 
         internal DTE2 Dte2 => _dte2;
@@ -108,6 +110,12 @@ namespace EFCorePowerTools
                 var menuItem10 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
                     OnProjectMenuBeforeQueryStatus, menuCommandId10);
                 oleMenuCommandService.AddCommand(menuItem10);
+
+                var menuCommandId11 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    (int)PkgCmdIDList.cmdidMigrationStatus);
+                var menuItem11 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId11);
+                oleMenuCommandService.AddCommand(menuItem11);
             }
         }
 
@@ -154,7 +162,8 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
-                menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild)
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
             {
                 path = LocateProjectAssemblyPath(project);
                 if (path == null) return;
@@ -183,6 +192,10 @@ namespace EFCorePowerTools
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild)
             {
                 _modelAnalyzerHandler.Generate(path, project, GenerationType.DebugView);
+            }
+            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
+            {
+                _migrationsHandler.ManageMigrations(path, project);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
             {
