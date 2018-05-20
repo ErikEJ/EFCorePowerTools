@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <PropertyGroup>
-    <DacFxExternals>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\130</DacFxExternals>
+    <DacFxExternals>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\140</DacFxExternals>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
