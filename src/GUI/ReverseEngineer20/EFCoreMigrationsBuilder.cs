@@ -109,8 +109,10 @@ namespace ReverseEngineer20
 
         private string AddMigration(DbContext context, string outputPath, string name, string nameSpace)
         {
+            var status = GetMigrationStatus(context);
+
             //Add files to result!!
-            return GetMigrationStatus(context);
+            return status;
         }
 
         public virtual MigrationFiles AddMigration(

@@ -121,6 +121,16 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
                     _package.Dte2.StatusBar.Text = $"Creating Migration {txtMigrationName.Text} in DbContext {cmbDbContext.SelectedValue.ToString()}";
                     var processResult = _processLauncher.GetOutput(_outputPath, _isNetCore, GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
+
+                    //TODO Get and remove fileNames from processResult
+                    _project.ProjectItems.AddFromFile(""); // migrationFile
+                    _package.Dte2.ItemOperations.OpenFile(""); // migrationFile
+
+                    _project.ProjectItems.AddFromFile(""); // metadataFile
+                    _project.ProjectItems.AddFromFile(""); // snapshotFile
+
+                    //Remove file names from processResult
+
                     ReportStatus(processResult);
                 }
 
