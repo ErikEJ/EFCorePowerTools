@@ -13,6 +13,8 @@ namespace ReverseEngineer20
                 if (args.Length > 0)
                 {
                     var builder = new EfCoreModelBuilder();
+                    var migrationsBuilder = new EfCoreMigrationsBuilder();
+
                     List<Tuple<string, string>> result;
 
                     if (args.Contains("ddl") && args.Count() >= 2)
@@ -21,15 +23,15 @@ namespace ReverseEngineer20
                     }
                     else if (args.Contains("migrationstatus") && args.Count() >= 2)
                     {
-                        result = builder.GenerateMigrationStatusList(args[1]);
+                        result = migrationsBuilder.GenerateMigrationStatusList(args[1]);
                     }
                     else if (args.Contains("migrate") && args.Count() >= 2)
                     {
-                        result = builder.Migrate(args[1], args[2]);
+                        result = migrationsBuilder.Migrate(args[1], args[2]);
                     }
-                    else if (args.Contains("addmigration") && args.Count() >= 4)
+                    else if (args.Contains("addmigration") && args.Count() >= 5)
                     {
-                        result = builder.AddMigration(args[1], args[2], args[3]);
+                        result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4]);
                     }
                     else
                     {

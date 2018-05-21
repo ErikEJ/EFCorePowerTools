@@ -58,6 +58,9 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\EfCoreMigrationsDialog.xaml.cs">
+      <DependentUpon>EfCoreMigrationsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\EfCoreModelDialog.xaml.cs">
       <DependentUpon>EfCoreModelDialog.xaml</DependentUpon>
     </Compile>
@@ -377,6 +380,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Dialogs\AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\EfCoreMigrationsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

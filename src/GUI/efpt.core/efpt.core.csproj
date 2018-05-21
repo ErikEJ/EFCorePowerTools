@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Compile Include="..\efpt\Program.cs" Link="Program.cs" />
+    <Compile Include="..\ReverseEngineer20\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
     <Compile Include="..\ReverseEngineer20\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
   </ItemGroup>
 

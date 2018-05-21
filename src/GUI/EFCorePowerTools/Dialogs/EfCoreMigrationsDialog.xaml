@@ -1,0 +1,31 @@
+﻿<dw:DialogWindow x:Class="ErikEJ.SqlCeToolbox.Dialogs.EfCoreMigrationsDialog"
+        xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Manage Migrations in Project" 
+        ShowInTaskbar="False" Height="300" Width="418" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <dw:DialogWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Dialogs/Style.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </dw:DialogWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="63*" />
+            <RowDefinition Height="35*" />
+            <RowDefinition Height="35*" />
+        </Grid.RowDefinitions>
+
+        <ComboBox TabIndex="0" Grid.Row="0" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" Name="cmbDbContext" VerticalAlignment="Top" Width="223" ItemsSource="{Binding}" IsEditable="False" />
+        <TextBox TabIndex="2" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" x:Name="txtMigrationName" VerticalAlignment="Top" Width="371" Grid.Row="2" />
+        <Button Grid.Row="3" Height="23" Width="100" HorizontalAlignment="Left" Click="btnApply_Click" Margin="13,0,0,0" x:Name="btnApply" >Update</Button>
+        
+        <dw:LiveTextBlock Grid.Row="0" Text="Context name" Margin="14,6,0,36"></dw:LiveTextBlock>
+        <dw:LiveTextBlock Grid.Row="1" x:Name="txtMessage"  Margin="14,6,0,0"></dw:LiveTextBlock>
+        <dw:LiveTextBlock Grid.Row="2" x:Name="lblMigration" Text="Migration Name" Margin="14,6,0,36"></dw:LiveTextBlock>
+        <dw:DialogButton TabIndex="21" Content="Close" IsCancel="True" Grid.Row="9" Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button2" VerticalAlignment="Bottom" Width="75"  SnapsToDevicePixels="False" Click="button2_Click" />
+    </Grid>
+</dw:DialogWindow>

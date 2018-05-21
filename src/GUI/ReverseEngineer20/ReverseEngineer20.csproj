@@ -183,6 +183,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>ModelBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="EFCoreMigrationsBuilder.cs" />
     <Compile Include="EFCoreModelBuilder.cs" />
     <Compile Include="ReverseEngineer\DacpacTableListBuilder.cs" />
     <Compile Include="ReverseEngineer\SqlServerDacpacDatabaseModelFactory.cs" />

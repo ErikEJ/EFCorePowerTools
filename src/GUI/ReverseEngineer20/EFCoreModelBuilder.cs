@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,21 +29,6 @@ namespace ReverseEngineer20
             return BuildResult(outputPath, true);
         }
 
-        public List<Tuple<string, string>> GenerateMigrationStatusList(string outputPath)
-        {
-            return GetMigrationStatus(outputPath);
-        }
-
-        public List<Tuple<string, string>> Migrate(string outputPath, string contextName)
-        {
-            return BuildMigrationResult(outputPath, contextName, false, null);
-        }
-
-        public List<Tuple<string, string>> AddMigration(string outputPath, string contextName, string migrationIdentifier)
-        {
-            return BuildMigrationResult(outputPath, contextName, true, migrationIdentifier);
-        }
-
         private List<Tuple<string, string>> BuildResult(string outputPath, bool generateDdl)
         {
             var result = new List<Tuple<string, string>>();
@@ -57,84 +44,6 @@ namespace ReverseEngineer20
             }
 
             return result;
-        }
-
-        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string contextName, bool addMigration, string migrationIdentifier)
-        {
-            var result = new List<Tuple<string, string>>();
-            var operations = GetOperations(outputPath);
-            var types = GetDbContextTypes(operations);
-
-            foreach (var type in types)
-            {
-                if (type.Name == contextName)
-                {
-                    var dbContext = operations.CreateContext(type.Name);
-                    result.Add(addMigration 
-                        ? new Tuple<string, string>(type.Name, ApplyMigrations(dbContext))
-                        : new Tuple<string, string>(type.Name, AddMigration(dbContext, migrationIdentifier)));
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        private List<Tuple<string, string>> GetMigrationStatus(string outputPath)
-        {
-            var result = new List<Tuple<string, string>>();
-            var operations = GetOperations(outputPath);
-            var types = GetDbContextTypes(operations);
-
-            foreach (var type in types)
-            {
-                var dbContext = operations.CreateContext(type.Name);
-                result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
-            }
-            return result;
-        }
-
-        private string GetMigrationStatus(DbContext context)
-        {
-            var relationalDatabaseCreator = context.GetService<IDatabaseCreator>() as IRelationalDatabaseCreator;
-            if (relationalDatabaseCreator == null)
-            {
-                throw new Exception("Not a relational database, migrations are not supported");
-            }
-            var databaseExists = relationalDatabaseCreator.Exists();
-
-            var migrationsAssembly = context.GetService<IMigrationsAssembly>();
-            var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-
-            var pendingModelChanges
-                = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
-                    && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
-
-            if (pendingModelChanges) return "Changes";
-
-            var pendingMigrations
-                = (databaseExists
-                    ? context.Database.GetPendingMigrations()
-                    : context.Database.GetMigrations())
-                .ToArray();
-
-            if (pendingMigrations.Any()) return "Pending";
-
-            return "InSync";
-        }
-
-        private string ApplyMigrations(DbContext context)
-        {
-            context.Database.Migrate();
-
-            return GetMigrationStatus(context);
-        }
-
-        private string AddMigration(DbContext context, string name)
-        {
-            // ??? How to do it?? context.Database.Migrate();
-
-            return GetMigrationStatus(context);
         }
 
         private static string GenerateCreateScript(DbContext dbContext)
@@ -177,6 +86,7 @@ namespace ReverseEngineer20
                 throw new ArgumentException("Unable to load project assembly");
             }
 
+            //TODO Use OperationHandler output!!
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
