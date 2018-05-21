@@ -10,6 +10,7 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 # Documentation
 
+Get started with the [Wiki post](https://github.com/ErikEJ/EFCorePowerTools/wiki/Power-Tools)
 
 # Downloads/builds
 
@@ -20,7 +21,6 @@ The EF Core Power Tools contains DbContext design time feature: Reverse Engineer
 Download the latest version of the Visual Studio 2017 extension from [Visual Studio MarketPlace](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
 
 Or just install from Tools, Extensions and Updates in Visual Studio! ![](https://github.com/ErikEJ/SqlCeToolbox/blob/master/img/ext.png)
-
 
 **Daily build**
 
