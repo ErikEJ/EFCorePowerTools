@@ -104,7 +104,7 @@ namespace ReverseEngineer20
         {
             context.Database.Migrate();
 
-            return GetMigrationStatus(context);
+            return "Done";
         }
 
         private string AddMigration(DbContext context, string outputPath, string projectPath, string name, string nameSpace)

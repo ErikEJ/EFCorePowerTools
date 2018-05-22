@@ -69,6 +69,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            btnApply.Visibility = Visibility.Collapsed;
             GetMigrationStatus();
         }
 
@@ -77,6 +78,9 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             //var controller = ImageBehavior.GetAnimationController(imgUnicorn);
             //imgUnicorn.Visibility = Visibility.Collapsed;
             //controller.Pause();
+            txtMigrationName.Visibility = Visibility.Visible;
+            lblMigration.Visibility = Visibility.Visible;
+            btnApply.Visibility = Visibility.Visible;
 
             // InSync, NoMigrations, Changes, Pending
             if (status == "InSync")
@@ -152,18 +156,21 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                             _project.ProjectItems.AddFromFile(lines[0]); // metadataFile
                             _project.ProjectItems.AddFromFile(lines[2]); // snapshotFile
                         }
-
                     }
-
-                    GetMigrationStatus();
                 }
 
                 if (btnApply.Content.ToString() == "Update Database")
                 {
                     _package.Dte2.StatusBar.Text = $"Updating Database from migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
                     var processResult = _processLauncher.GetOutput(_outputPath, null, _isNetCore, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString(), null, null);
-                    ReportStatus(processResult);
+                    if (processResult.StartsWith("Error:"))
+                    {
+                        EnvDteHelper.ShowError(processResult);
+                        return;
+                    }
                 }
+
+                GetMigrationStatus();
             }
             catch (Exception ex)
             {
