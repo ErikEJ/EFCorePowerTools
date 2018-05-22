@@ -53,25 +53,12 @@ namespace EFCorePowerTools.Handlers
 
                 bool isNetCore = project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.");
 
-                _package.Dte2.StatusBar.Text = "Getting Migration Status";
-                var processResult = _processLauncher.GetOutput(outputPath, isNetCore, GenerationType.MigrationStatus, null, null, null);
-
-                if (processResult.StartsWith("Error:"))
-                {
-                    throw new ArgumentException(processResult, nameof(processResult));
-                }
-
-                _package.Dte2.StatusBar.Text = "Showing Migration Status";
-
-                var result = BuildModelResult(processResult);
-                var msd = new EfCoreMigrationsDialog(result, _package, outputPath, isNetCore, project)
+                var msd = new EfCoreMigrationsDialog(_package, outputPath, isNetCore, project)
                 {
                     ProjectName = project.Name
                 };
 
                 msd.ShowModal();
-
-                _package.Dte2.StatusBar.Text = string.Empty;
             }
             catch (Exception exception)
             {
@@ -79,19 +66,5 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        public static SortedDictionary<string, string> BuildModelResult(string modelInfo)
-        {
-            var result = new SortedDictionary<string, string>();
-
-            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var context in contexts)
-            {
-                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(parts[0].Trim(), parts[1].Trim());
-            }
-
-            return result;
-        }
     }
 }

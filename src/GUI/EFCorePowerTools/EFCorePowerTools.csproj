@@ -122,9 +122,16 @@
     <Content Include="efpt\2.0.3\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\tenor.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="System.ValueTuple.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WpfAnimatedGif.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
@@ -141,6 +148,7 @@
     <Content Include="efpt\2.0.3\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="app.config" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -360,6 +368,9 @@
       <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PublicAssemblies\VSLangProj.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.16\lib\net\WpfAnimatedGif.dll</HintPath>
+    </Reference>
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>..\lib\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>

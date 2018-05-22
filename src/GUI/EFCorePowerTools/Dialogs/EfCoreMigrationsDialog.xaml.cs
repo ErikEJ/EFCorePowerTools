@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
 using EnvDTE;
 using ErikEJ.SqlCeToolbox.Helpers;
+using Microsoft.VisualStudio.Shell.Interop;
+using WpfAnimatedGif;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
@@ -16,8 +20,9 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         private readonly string _outputPath;
         private readonly bool _isNetCore;
         private readonly Project _project;
+        private object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
 
-        public EfCoreMigrationsDialog(SortedDictionary<string, string> statusList, EFCorePowerTools.EFCorePowerToolsPackage package, string outputPath, bool isNetCore, Project project)
+        public EfCoreMigrationsDialog(EFCorePowerTools.EFCorePowerToolsPackage package, string outputPath, bool isNetCore, Project project)
         {
             Telemetry.TrackPageView(nameof(EfCoreModelDialog));
             InitializeComponent();
@@ -26,8 +31,6 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             _isNetCore = isNetCore;
             _outputPath = outputPath;
             _project = project;
-
-            UpdateStatusList(statusList);
         }
 
         private void UpdateStatusList(SortedDictionary<string, string> statusList)
@@ -66,11 +69,15 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //textBox1.Focus();
+            GetMigrationStatus();
         }
 
         private void SetUI(string status)
         {
+            //var controller = ImageBehavior.GetAnimationController(imgUnicorn);
+            //imgUnicorn.Visibility = Visibility.Collapsed;
+            //controller.Pause();
+
             // InSync, NoMigrations, Changes, Pending
             if (status == "InSync")
             {
@@ -78,6 +85,8 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 lblMigration.Visibility = Visibility.Collapsed;
                 txtMigrationName.Visibility = Visibility.Collapsed;
                 btnApply.Visibility = Visibility.Collapsed;
+                //imgUnicorn.Visibility = Visibility.Visible;
+                //controller.Play();
             }
 
             if (status == "NoMigrations")
@@ -107,9 +116,8 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         {
             try
             {
+                StartAnimation();
                 btnApply.IsEnabled = false;
-
-                //TODO Circular progress bar?
 
                 if (btnApply.Content.ToString() == "Add Migration")
                 {
@@ -120,24 +128,40 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                     }
 
                     _package.Dte2.StatusBar.Text = $"Creating Migration {txtMigrationName.Text} in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = _processLauncher.GetOutput(_outputPath, _isNetCore, GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
+                    var processResult = _processLauncher.GetOutput(_outputPath, Path.GetDirectoryName(_project.FullName), _isNetCore, GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
 
-                    //TODO Get and remove fileNames from processResult
-                    _project.ProjectItems.AddFromFile(""); // migrationFile
-                    _package.Dte2.ItemOperations.OpenFile(""); // migrationFile
+                    var result = BuildModelResult(processResult);
 
-                    _project.ProjectItems.AddFromFile(""); // metadataFile
-                    _project.ProjectItems.AddFromFile(""); // snapshotFile
+                    if (processResult.StartsWith("Error:"))
+                    {
+                        EnvDteHelper.ShowError(processResult);
+                        return;
+                    }
 
-                    //Remove file names from processResult
+                    if (result.Count == 1)
+                    {
+                        string[] lines = result.First().Value.Split(
+                                new[] { Environment.NewLine },
+                                StringSplitOptions.None
+                            );
+                        if (lines.Length == 3)
+                        {
+                            _project.ProjectItems.AddFromFile(lines[1]); // migrationFile
+                            _package.Dte2.ItemOperations.OpenFile(lines[1]); // migrationFile
 
-                    ReportStatus(processResult);
+                            _project.ProjectItems.AddFromFile(lines[0]); // metadataFile
+                            _project.ProjectItems.AddFromFile(lines[2]); // snapshotFile
+                        }
+
+                    }
+
+                    GetMigrationStatus();
                 }
 
                 if (btnApply.Content.ToString() == "Update Database")
                 {
                     _package.Dte2.StatusBar.Text = $"Updating Database from migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = _processLauncher.GetOutput(_outputPath, _isNetCore, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString(), null, null);
+                    var processResult = _processLauncher.GetOutput(_outputPath, null, _isNetCore, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString(), null, null);
                     ReportStatus(processResult);
                 }
             }
@@ -147,19 +171,79 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
             finally
             {
+                StopAnimation();
+                _package.Dte2.StatusBar.Text = string.Empty;
+
                 btnApply.IsEnabled = true;
+            }
+        }
+
+        private void StartAnimation()
+        {
+            IVsStatusbar statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
+            statusBar.Animation(1, ref icon);
+        }
+
+        private void StopAnimation()
+        {
+            IVsStatusbar statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
+            statusBar.Animation(0, ref icon);
+        }
+
+        private void GetMigrationStatus()
+        {
+            try
+            {
+                StartAnimation();
+                _package.Dte2.StatusBar.Text = "Getting Migration Status";
+                if (_project.TryBuild())
+                {
+                    var processResult = _processLauncher.GetOutput(_outputPath, null, _isNetCore, GenerationType.MigrationStatus, null, null, null);
+
+                    ReportStatus(processResult);
+                }
+                else
+                {
+                    EnvDteHelper.ShowError("Build failed");
+                }
+            }
+            catch (Exception ex)
+            {
+                EnvDteHelper.ShowError(ex.ToString());
+            }
+            finally
+            {
+                _package.Dte2.StatusBar.Text = string.Empty;
+                StopAnimation();
             }
         }
 
         private void ReportStatus(string processResult)
         {
+            _package.Dte2.StatusBar.Text = string.Empty;
+
             if (processResult.StartsWith("Error:"))
             {
                 EnvDteHelper.ShowError(processResult);
             }
-            var result = MigrationsHandler.BuildModelResult(processResult);
 
+            var result = BuildModelResult(processResult);
             UpdateStatusList(result);
+        }
+
+        private SortedDictionary<string, string> BuildModelResult(string modelInfo)
+        {
+            var result = new SortedDictionary<string, string>();
+
+            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var context in contexts)
+            {
+                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
+                result.Add(parts[0].Trim(), parts[1].Trim());
+            }
+
+            return result;
         }
     }
 }

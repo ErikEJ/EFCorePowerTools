@@ -24,7 +24,11 @@
         <Button Grid.Row="3" Height="23" Width="100" HorizontalAlignment="Left" Click="btnApply_Click" Margin="13,0,0,0" x:Name="btnApply" >Update</Button>
         
         <dw:LiveTextBlock Grid.Row="0" Text="Context name" Margin="14,6,0,36"></dw:LiveTextBlock>
-        <dw:LiveTextBlock Grid.Row="1" x:Name="txtMessage"  Margin="14,6,0,0"></dw:LiveTextBlock>
+        <dw:LiveTextBlock Grid.Row="1" x:Name="txtMessage"  Margin="14,8,-0.4,64" Grid.RowSpan="2"></dw:LiveTextBlock>
+        <!--<Image x:Name="imgUnicorn" Grid.Row="2" Grid.RowSpan="2" 
+               gif:ImageBehavior.AnimatedSource="/Resources/Tenor.gif"
+                gif:ImageBehavior.AutoStart="False"
+               Visibility="Collapsed" />-->
         <dw:LiveTextBlock Grid.Row="2" x:Name="lblMigration" Text="Migration Name" Margin="14,6,0,36"></dw:LiveTextBlock>
         <dw:DialogButton TabIndex="21" Content="Close" IsCancel="True" Grid.Row="9" Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button2" VerticalAlignment="Bottom" Width="75"  SnapsToDevicePixels="False" Click="button2_Click" />
     </Grid>

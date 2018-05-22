@@ -9,7 +9,7 @@ namespace EFCorePowerTools.Handlers
 {
     public class ProcessLauncher
     {
-        public string GetOutput(string outputPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        public string GetOutput(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
             var launchPath = isNetCore ? DropNetCoreFiles() : DropFiles(outputPath);
 
@@ -36,7 +36,7 @@ namespace EFCorePowerTools.Handlers
             }
             if (generationType == GenerationType.MigrationAdd)
             {
-                startInfo.Arguments = "addmigration \"" + outputPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
+                startInfo.Arguments = "addmigration \"" + outputPath + "\" " + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
             }
 
             if (isNetCore)

@@ -31,7 +31,7 @@ namespace ReverseEngineer20
                     }
                     else if (args.Contains("addmigration") && args.Count() >= 5)
                     {
-                        result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4]);
+                        result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5]);
                     }
                     else
                     {

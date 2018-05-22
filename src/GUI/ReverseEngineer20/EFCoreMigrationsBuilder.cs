@@ -24,15 +24,15 @@ namespace ReverseEngineer20
 
         public List<Tuple<string, string>> Migrate(string outputPath, string contextName)
         {
-            return BuildMigrationResult(outputPath, contextName, false, null, null);
+            return BuildMigrationResult(outputPath, null, contextName, false, null, null);
         }
 
-        public List<Tuple<string, string>> AddMigration(string outputPath, string contextName, string migrationIdentifier, string nameSpace)
+        public List<Tuple<string, string>> AddMigration(string outputPath, string projectPath, string contextName, string migrationIdentifier, string nameSpace)
         {
-            return BuildMigrationResult(outputPath, contextName, true, migrationIdentifier, nameSpace);
+            return BuildMigrationResult(outputPath, projectPath, contextName, true, migrationIdentifier, nameSpace);
         }
 
-        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string contextName, bool addMigration, string migrationIdentifier, string nameSpace)
+        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string projectPath, string contextName, bool addMigration, string migrationIdentifier, string nameSpace)
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath);
@@ -43,9 +43,9 @@ namespace ReverseEngineer20
                 if (type.Name == contextName)
                 {
                     var dbContext = operations.CreateContext(type.Name);
-                    result.Add(addMigration 
-                        ? new Tuple<string, string>(type.Name, ApplyMigrations(dbContext))
-                        : new Tuple<string, string>(type.Name, AddMigration(dbContext, outputPath, migrationIdentifier, nameSpace)));
+                    result.Add(addMigration
+                        ? new Tuple<string, string>(type.Name + "Add", AddMigration(dbContext, outputPath, projectPath, migrationIdentifier, nameSpace))
+                        : new Tuple<string, string>(type.Name + "Apply", ApplyMigrations(dbContext)));
                     break;
                 }
             }
@@ -107,17 +107,19 @@ namespace ReverseEngineer20
             return GetMigrationStatus(context);
         }
 
-        private string AddMigration(DbContext context, string outputPath, string name, string nameSpace)
+        private string AddMigration(DbContext context, string outputPath, string projectPath, string name, string nameSpace)
         {
-            var status = GetMigrationStatus(context);
-
-            //Add files to result!!
+            var result = AddMigration(name, outputPath, projectPath, nameSpace, context);
+            string status = result.MetadataFile + Environment.NewLine;
+            status += result.MigrationFile + Environment.NewLine;
+            status += result.SnapshotFile + Environment.NewLine;
             return status;
         }
 
         public virtual MigrationFiles AddMigration(
             string name,
             string outputPath,
+            string projectPath,
             string nameSpace,
             DbContext context)
         {
@@ -140,7 +142,8 @@ namespace ReverseEngineer20
 
             var scaffolder = services.GetRequiredService<MigrationsScaffolder>();
             var migration = scaffolder.ScaffoldMigration(name, nameSpace);
-            var files = scaffolder.Save(Path.GetDirectoryName(outputPath), migration, null);
+
+            var files = scaffolder.Save(projectPath, migration, null);
 
             return files;
         }
