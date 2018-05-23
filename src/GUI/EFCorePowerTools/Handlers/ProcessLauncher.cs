@@ -4,12 +4,28 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers
 {
     public class ProcessLauncher
     {
-        public string GetOutput(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        public Task<string> GetOutputAsync(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        {
+            return Task.Factory.StartNew(() => GetOutput(outputPath, projectPath, isNetCore,  generationType, contextName, migrationIdentifier, nameSpace));
+        }
+
+        public Task<string> GetOutputAsync(string outputPath, bool isNetCore, GenerationType generationType, string contextName)
+        {
+            return Task.Factory.StartNew(() => GetOutput(outputPath, null, isNetCore, generationType, contextName, null, null));
+        }
+
+        public string GetOutput(string outputPath, bool isNetCore, GenerationType generationType, string contextName)
+        {
+            return GetOutput(outputPath, null, isNetCore, generationType, contextName, null, null);
+        }
+
+        private string GetOutput(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
             var launchPath = isNetCore ? DropNetCoreFiles() : DropFiles(outputPath);
 

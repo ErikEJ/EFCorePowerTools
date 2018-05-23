@@ -44,7 +44,7 @@ namespace EFCorePowerTools.Handlers
 
                 bool isNetCore = project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.0");
 
-                var processResult = _processLauncher.GetOutput(outputPath, null, isNetCore, generationType, null, null, null);
+                var processResult = _processLauncher.GetOutput(outputPath, isNetCore, generationType, null);
 
                 if (processResult.StartsWith("Error:"))
                 {

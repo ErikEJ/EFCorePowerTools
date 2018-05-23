@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
@@ -33,14 +34,11 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             _project = project;
         }
 
-        private void UpdateStatusList(SortedDictionary<string, string> statusList)
+        public string ProjectName
         {
-            _statusList = statusList;
-            cmbDbContext.ItemsSource = _statusList.Select(s => s.Key).ToList();
-            cmbDbContext.SelectionChanged += CmbDbContext_SelectionChanged;
-            if (_statusList.Count > 0)
+            set
             {
-                cmbDbContext.SelectedIndex = 0;
+                Title = $"Manage Migrations in Project {value}";
             }
         }
 
@@ -53,24 +51,85 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             };
         }
 
-        public string ProjectName
-        {
-            set
-            {
-                Title = $"Manage Migrations in Project {value}";
-            }
-        }
-
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             btnApply.Visibility = Visibility.Collapsed;
-            GetMigrationStatus();
+            await GetMigrationStatus();
+        }
+
+        private async void btnApply_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                StartAnimation();
+                btnApply.IsEnabled = false;
+
+                if (btnApply.Content.ToString() == "Add Migration")
+                {
+                    if (string.IsNullOrEmpty(txtMigrationName.Text))
+                    {
+                        EnvDteHelper.ShowError("Migration Name required");
+                        return;
+                    }
+
+                    _package.Dte2.StatusBar.Text = $"Creating Migration {txtMigrationName.Text} in DbContext {cmbDbContext.SelectedValue.ToString()}";
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullName), _isNetCore, GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
+
+                    var result = BuildModelResult(processResult);
+
+                    if (processResult.StartsWith("Error:"))
+                    {
+                        EnvDteHelper.ShowError(processResult);
+                        return;
+                    }
+
+                    if (result.Count == 1)
+                    {
+                        string[] lines = result.First().Value.Split(
+                                new[] { Environment.NewLine },
+                                StringSplitOptions.None
+                            );
+                        if (lines.Length == 3)
+                        {
+                            _project.ProjectItems.AddFromFile(lines[1]); // migrationFile
+                            _package.Dte2.ItemOperations.OpenFile(lines[1]); // migrationFile
+
+                            _project.ProjectItems.AddFromFile(lines[0]); // metadataFile
+                            _project.ProjectItems.AddFromFile(lines[2]); // snapshotFile
+                        }
+                    }
+                }
+
+                if (btnApply.Content.ToString() == "Update Database")
+                {
+                    _package.Dte2.StatusBar.Text = $"Updating Database from migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, _isNetCore, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString());
+                    if (processResult.StartsWith("Error:"))
+                    {
+                        EnvDteHelper.ShowError(processResult);
+                        return;
+                    }
+                }
+
+                await GetMigrationStatus();
+            }
+            catch (Exception ex)
+            {
+                EnvDteHelper.ShowError(ex.ToString());
+            }
+            finally
+            {
+                StopAnimation();
+                _package.Dte2.StatusBar.Text = string.Empty;
+
+                btnApply.IsEnabled = true;
+            }
         }
 
         private void SetUI(string status)
@@ -116,75 +175,6 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
         }
 
-        private void btnApply_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                StartAnimation();
-                btnApply.IsEnabled = false;
-
-                if (btnApply.Content.ToString() == "Add Migration")
-                {
-                    if (string.IsNullOrEmpty(txtMigrationName.Text))
-                    {
-                        EnvDteHelper.ShowError("Migration Name required");
-                        return;
-                    }
-
-                    _package.Dte2.StatusBar.Text = $"Creating Migration {txtMigrationName.Text} in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = _processLauncher.GetOutput(_outputPath, Path.GetDirectoryName(_project.FullName), _isNetCore, GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
-
-                    var result = BuildModelResult(processResult);
-
-                    if (processResult.StartsWith("Error:"))
-                    {
-                        EnvDteHelper.ShowError(processResult);
-                        return;
-                    }
-
-                    if (result.Count == 1)
-                    {
-                        string[] lines = result.First().Value.Split(
-                                new[] { Environment.NewLine },
-                                StringSplitOptions.None
-                            );
-                        if (lines.Length == 3)
-                        {
-                            _project.ProjectItems.AddFromFile(lines[1]); // migrationFile
-                            _package.Dte2.ItemOperations.OpenFile(lines[1]); // migrationFile
-
-                            _project.ProjectItems.AddFromFile(lines[0]); // metadataFile
-                            _project.ProjectItems.AddFromFile(lines[2]); // snapshotFile
-                        }
-                    }
-                }
-
-                if (btnApply.Content.ToString() == "Update Database")
-                {
-                    _package.Dte2.StatusBar.Text = $"Updating Database from migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = _processLauncher.GetOutput(_outputPath, null, _isNetCore, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString(), null, null);
-                    if (processResult.StartsWith("Error:"))
-                    {
-                        EnvDteHelper.ShowError(processResult);
-                        return;
-                    }
-                }
-
-                GetMigrationStatus();
-            }
-            catch (Exception ex)
-            {
-                EnvDteHelper.ShowError(ex.ToString());
-            }
-            finally
-            {
-                StopAnimation();
-                _package.Dte2.StatusBar.Text = string.Empty;
-
-                btnApply.IsEnabled = true;
-            }
-        }
-
         private void StartAnimation()
         {
             IVsStatusbar statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
@@ -197,7 +187,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             statusBar.Animation(0, ref icon);
         }
 
-        private void GetMigrationStatus()
+        private async Task GetMigrationStatus()
         {
             try
             {
@@ -205,7 +195,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 _package.Dte2.StatusBar.Text = "Getting Migration Status";
                 if (_project.TryBuild())
                 {
-                    var processResult = _processLauncher.GetOutput(_outputPath, null, _isNetCore, GenerationType.MigrationStatus, null, null, null);
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, _isNetCore, GenerationType.MigrationStatus, null);
 
                     ReportStatus(processResult);
                 }
@@ -236,6 +226,17 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
             var result = BuildModelResult(processResult);
             UpdateStatusList(result);
+        }
+
+        private void UpdateStatusList(SortedDictionary<string, string> statusList)
+        {
+            _statusList = statusList;
+            cmbDbContext.ItemsSource = _statusList.Select(s => s.Key).ToList();
+            cmbDbContext.SelectionChanged += CmbDbContext_SelectionChanged;
+            if (_statusList.Count > 0)
+            {
+                cmbDbContext.SelectedIndex = 0;
+            }
         }
 
         private SortedDictionary<string, string> BuildModelResult(string modelInfo)
