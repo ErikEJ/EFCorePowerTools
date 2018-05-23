@@ -75,7 +75,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidMigrationStatus</CommandName>
-          <ButtonText>Migrations Status (alpha)</ButtonText>
+          <ButtonText>Migrations Tool (preview)</ButtonText>
         </Strings>
       </Button>
 
