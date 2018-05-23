@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
 using EnvDTE;
@@ -58,7 +62,17 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            imgUnicorn.Opacity = 0;
+            txtMigrationName.Visibility = Visibility.Collapsed;
+            lblMigration.Visibility = Visibility.Collapsed;
             btnApply.Visibility = Visibility.Collapsed;
+
+            var image = new Image();
+            var thisassembly = Assembly.GetExecutingAssembly();
+            var imageStream = thisassembly.GetManifestResourceStream("EFCorePowerTools.Resources.Unicorn.png");
+            var bmp = BitmapFrame.Create(imageStream);
+            image.Source = bmp;
+            imgUnicorn.ImageSource = image.Source;
             await GetMigrationStatus();
         }
 
@@ -133,12 +147,10 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private void SetUI(string status)
         {
-            //imgUnicorn.Visibility = Visibility.Collapsed;
+            imgUnicorn.Opacity = 0;
             txtMigrationName.Visibility = Visibility.Visible;
             lblMigration.Visibility = Visibility.Visible;
             btnApply.Visibility = Visibility.Visible;
-
-            status = "InSync";
 
             // InSync, NoMigrations, Changes, Pending
             if (status == "InSync")
@@ -147,12 +159,12 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 lblMigration.Visibility = Visibility.Collapsed;
                 txtMigrationName.Visibility = Visibility.Collapsed;
                 btnApply.Visibility = Visibility.Collapsed;
-                //imgUnicorn.Visibility = Visibility.Visible;
+                imgUnicorn.Opacity = 0.2;
             }
 
             if (status == "NoMigrations")
             {
-                txtMessage.Text = $"No migrations are present in your project, create you initial migration.{Environment.NewLine}Enter a name for the new migration below.";
+                txtMessage.Text = $"No migrations are present in your project, create your initial migration.{Environment.NewLine}Enter a name for the new migration below.";
                 lblMigration.Text = "Migration Name";
                 btnApply.Content = "Add Migration";
             }

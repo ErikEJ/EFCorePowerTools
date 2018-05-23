@@ -123,7 +123,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\7.png" />
-    <Resource Include="Resources\Unicorn.png" />
+    <EmbeddedResource Include="Resources\Unicorn.png" />
     <Content Include="System.ValueTuple.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
