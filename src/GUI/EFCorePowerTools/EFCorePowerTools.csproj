@@ -175,6 +175,10 @@
       <Project>{4c0f2979-fcd9-4e93-8e4f-2a43055d42fe}</Project>
       <Name>ReverseEngineer20</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SqlCeToolbox.DDEX4\SqlCeToolbox.DDEX4.csproj">
+      <Project>{42939e33-fc72-459c-9403-b62ab074635e}</Project>
+      <Name>SqlCeToolbox.DDEX4</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

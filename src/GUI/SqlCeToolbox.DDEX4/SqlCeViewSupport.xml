@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataViewSupport xmlns="http://schemas.microsoft.com/VisualStudio/2007/07/Data/DataViewSupport">
+  <Views>
+    <View name="SQL Server Compact Simple">
+      <DisplayName>SQL Server Compact 4.0</DisplayName>
+      <ConnectionNode>
+        <InitialDisplayName>{Root.Name}</InitialDisplayName>
+        <Children>
+          <StaticNode>
+            <DisplayName>Tables</DisplayName>
+            <Children>
+              <Selection type="Table">
+                <SelectionNode nodeId="Table">
+                  <DisplayName>{Name}</DisplayName>
+                    <Icon name="Table" />
+                </SelectionNode>
+              </Selection>
+            </Children>
+          </StaticNode>
+        
+        </Children>
+
+      </ConnectionNode>
+    </View>
+  </Views>
+</DataViewSupport>

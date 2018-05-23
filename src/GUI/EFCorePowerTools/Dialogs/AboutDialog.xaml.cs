@@ -157,7 +157,7 @@ namespace EFCorePowerTools
 
         private void CodeplexLink_Click(object sender, RoutedEventArgs e)
         {
-            _package.Dte2.ItemOperations.Navigate("https://github.com/ErikEJ/SqlCeToolbox");
+            _package.Dte2.ItemOperations.Navigate("https://github.com/ErikEJ/EFCorePowerTools");
         }
 
         private void GalleryLink_Click(object sender, RoutedEventArgs e)

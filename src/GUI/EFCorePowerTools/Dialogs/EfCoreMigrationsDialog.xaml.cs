@@ -1,4 +1,9 @@
-﻿using System;
+﻿using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Handlers;
+using EnvDTE;
+using ErikEJ.SqlCeToolbox.Helpers;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,13 +11,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Handlers;
-using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
@@ -160,7 +159,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 lblMigration.Visibility = Visibility.Collapsed;
                 txtMigrationName.Visibility = Visibility.Collapsed;
                 btnApply.Visibility = Visibility.Collapsed;
-                imgUnicorn.Opacity = 0.2;
+                imgUnicorn.Opacity = 0.4;
             }
 
             if (status == "NoMigrations")

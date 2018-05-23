@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DataObjectSupport xmlns="http://schemas.microsoft.com/VisualStudio/2007/07/Data/DataObjectSupport">
+  <Types>
+    
+    <RootType>
+      <Properties>
+        <Property name="Name"/>
+      </Properties>
+      <Services>
+        <Service type="IVsDataObjectSelector" implementationType="ErikEJ.SqlCeToolbox.DDEX4.SqlCeObjectSelector" />
+      </Services>
+    </RootType>
+    
+    <Type name="Table">
+      <Identifier>
+        <Part name="Name" />
+      </Identifier>
+      <Properties>
+        <Property name="Name" isIdentifierPart="true" />
+      </Properties>
+      <Services>
+        <Service type="IVsDataObjectSelector" implementationType="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetObjectSelector, Microsoft.VisualStudio.Data.Framework, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+          <Parameters method="SelectObjects">
+            <Parameter value="Tables" />
+            <Parameter>
+              <Parameter value="Database">
+                <Parameter value="TABLE_CATALOG" />
+              </Parameter>
+              <Parameter value="Schema">
+                <Parameter value="TABLE_SCHEMA" />
+              </Parameter>
+              <Parameter value="Name">
+                <Parameter value="TABLE_NAME" />
+              </Parameter>
+              <Parameter value="Type">
+                <Parameter value="TABLE_TYPE" />
+              </Parameter>
+            </Parameter>
+          </Parameters>
+        </Service>
+      </Services>
+    </Type>
+    
+  </Types>
+
+</DataObjectSupport>

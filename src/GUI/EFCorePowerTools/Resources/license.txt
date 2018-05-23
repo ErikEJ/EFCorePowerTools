@@ -1,2 +1,2 @@
 
-For license, see https://github.com/ErikEJ/SqlCeToolbox/blob/master/LICENSE
+For license, see https://github.com/ErikEJ/EFCorePowerTools/blob/master/LICENSE

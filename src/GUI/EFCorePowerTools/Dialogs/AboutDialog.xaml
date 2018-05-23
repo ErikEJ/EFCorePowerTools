@@ -19,7 +19,7 @@
                 For support, feedback and full source code, go to:<LineBreak/>
                 <Bold>
                     <Hyperlink TextDecorations="" Click="CodeplexLink_Click" x:Name="CodeplexLink">
-                    https://github.com/ErikEJ/SqlCeToolbox</Hyperlink>
+                    https://github.com/ErikEJ/EFCorePowerTools</Hyperlink>
                 </Bold>
                 <LineBreak/><LineBreak/>
                 This add-in is FREE, but I would be grateful for a review:

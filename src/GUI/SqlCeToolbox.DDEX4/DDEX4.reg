@@ -1,0 +1,72 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}]
+@="SQL Server Compact 4.0 Provider (Simple by ErikEJ)"
+"AssociatedSource"="{2A7AD6AD-5D61-4817-B45F-681F8D29ECF7}"
+;"Codebase"="C:\\Data\\SQLCE\\DdexProvider\\bin\\Debug\\ExtendedProvider.dll"
+"Description"="Provider_Description, ErikEJ.SqlCeToolbox.DDEX4.Properties.Resources"
+"DisplayName"="Provider_DisplayName, ErikEJ.SqlCeToolbox.DDEX4.Properties.Resources"
+"InvariantName"="System.Data.SqlServerCe.4.0"
+"PlatformVersion"="2.0"
+"ShortDisplayName"="Provider_ShortDisplayName, ErikEJ.SqlCeToolbox.DDEX4.Properties.Resources"
+"Technology"="{77AB9A9D-78B9-4ba7-91AC-873F5338F1D2}"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects]
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataAsyncCommand]
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataCommand]
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataConnectionProperties]
+@="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetConnectionProperties"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataConnectionSupport]
+@="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetConnectionSupport"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataConnectionUIProperties]
+@="Microsoft.VisualStudio.Data.Framework.AdoDotNet.AdoDotNetConnectionProperties"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataObjectSelector]
+@="ErikEJ.SqlCeToolbox.DDEX4.SqlCeObjectSelector"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataObjectSupport]
+@="Microsoft.VisualStudio.Data.Framework.DataObjectSupport"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+"XmlResource"="ErikEJ.SqlCeToolbox.DDEX4.SqlCeObjectSupport"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataSourceInformation]
+@="ErikEJ.SqlCeToolbox.DDEX4.SqlCeSourceInformation"
+"SupportsAnsi92Sql"="True"
+"SupportsQuotedIdentifierParts"="True"
+"IdentifierOpenQuote"="["
+"IdentifierCloseQuote"="]"
+"ServerSeparator"=""
+"CatalogSupported="False"
+"CatalogSupportedInDml="False"
+"SchemaSupported"="False"
+"SchemaSupportedInDml"="False"
+"SchemaSeparator"=""
+"ParameterPrefix"="@"
+"ParameterPrefixInName"="True"
+"DataSourceProduct"="SQL Server Compact 4.0 (Simple by ErikEJ)"
+"DataSourceVersion"="4.0"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}\SupportedObjects\IVsDataViewSupport]
+@="Microsoft.VisualStudio.Data.Framework.DataViewSupport"
+"Assembly"="Microsoft.VisualStudio.Data.Framework, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+"XmlResource"="ErikEJ.SqlCeToolbox.DDEX4.SqlCeViewSupport"
+
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataSources\{2A7AD6AD-5D61-4817-B45F-681F8D29ECF7}]
+@="SQL Server Compact 4.0 (ErikEJ)"
+"DefaultProvider"="{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}"
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataSources\{2A7AD6AD-5D61-4817-B45F-681F8D29ECF7}\SupportingProviders]
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\VisualStudio\12.0_Config\DataSources\{2A7AD6AD-5D61-4817-B45F-681F8D29ECF7}\SupportingProviders\{673BE80C-CB41-47A7-B0F3-9872B6DDE5E5}]
+"Description"="Provider_Description, ErikEJ.SqlCeToolbox.DDEX4.Properties.Resources"
+"DisplayName"="Provider_DisplayName, ErikEJ.SqlCeToolbox.DDEX4.Properties.Resources"
+
