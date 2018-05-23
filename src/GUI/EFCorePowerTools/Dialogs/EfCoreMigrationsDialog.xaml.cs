@@ -149,6 +149,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         {
             imgUnicorn.Opacity = 0;
             txtMigrationName.Visibility = Visibility.Visible;
+            txtMigrationName.Text = string.Empty;
             lblMigration.Visibility = Visibility.Visible;
             btnApply.Visibility = Visibility.Visible;
 
