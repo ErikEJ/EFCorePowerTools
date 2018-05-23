@@ -71,7 +71,7 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidMigrationStatus" priority="0x0100" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMigrationMenuItemsGroup" />
-        <Icon guid="guidImage5" id="bmpPic5" />
+        <Icon guid="guidImage7" id="bmpPic7" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidMigrationStatus</CommandName>
@@ -143,6 +143,7 @@
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
+      <Bitmap guid="guidImage7" href="Resources\7.png" usedList="bmpPic7" />
       <Bitmap guid="guidImage6" href="Resources\ImportPackage_16x.png" usedList="bmpPic6" />
       <Bitmap guid="guidImage5" href="Resources\5.png" usedList="bmpPic5" />
       <Bitmap guid="guidImage4" href="Resources\SQL_16x.png" usedList="bmpPic4" />
@@ -194,6 +195,10 @@
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
     </GuidSymbol>
 
+    <GuidSymbol name="guidImage7" value="{146f17c2-c8e3-4abc-9fe2-49cc07c6d456}">
+      <IDSymbol name="bmpPic7" value="1" />
+    </GuidSymbol>
+      
     <GuidSymbol name="guidImage6" value="{146f17c2-c8e3-4cfd-9fe2-49cc07c6d456}">
       <IDSymbol name="bmpPic6" value="1" />
     </GuidSymbol>

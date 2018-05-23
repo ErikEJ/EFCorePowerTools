@@ -9,7 +9,6 @@ using EFCorePowerTools.Handlers;
 using EnvDTE;
 using ErikEJ.SqlCeToolbox.Helpers;
 using Microsoft.VisualStudio.Shell.Interop;
-using WpfAnimatedGif;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
@@ -134,12 +133,12 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private void SetUI(string status)
         {
-            //var controller = ImageBehavior.GetAnimationController(imgUnicorn);
             //imgUnicorn.Visibility = Visibility.Collapsed;
-            //controller.Pause();
             txtMigrationName.Visibility = Visibility.Visible;
             lblMigration.Visibility = Visibility.Visible;
             btnApply.Visibility = Visibility.Visible;
+
+            status = "InSync";
 
             // InSync, NoMigrations, Changes, Pending
             if (status == "InSync")
@@ -149,7 +148,6 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 txtMigrationName.Visibility = Visibility.Collapsed;
                 btnApply.Visibility = Visibility.Collapsed;
                 //imgUnicorn.Visibility = Visibility.Visible;
-                //controller.Play();
             }
 
             if (status == "NoMigrations")
@@ -222,6 +220,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             if (processResult.StartsWith("Error:"))
             {
                 EnvDteHelper.ShowError(processResult);
+                return;
             }
 
             var result = BuildModelResult(processResult);
