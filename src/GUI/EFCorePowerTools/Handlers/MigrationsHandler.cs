@@ -39,7 +39,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework"))
                 {
-                    EnvDteHelper.ShowError("Currently only .NET Framework is supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    EnvDteHelper.ShowError("Currently only .NET Framework is supported (.NET Core coming soon) - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
                     return;
                 }
 
