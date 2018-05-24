@@ -32,3 +32,8 @@ You can also automatically get the [latest build of the Master branch directly i
 # How do I contribute
 
 If you encounter a bug or have a feature request, please use the [Issue Tracker](https://github.com/ErikEJ/EFCorePowerTools/issues/new)
+
+# Building and debugging
+
+In order to build the source code, use Visual Studio 2017 - run as Administrator. To debug, make EFCorePowerTools the startup project, and ensure your build configuration is Debug, x86 (not AnyCPU).
+
