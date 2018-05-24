@@ -61,6 +61,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            cmbDbContext.IsEnabled = false;
             imgUnicorn.Opacity = 0;
             txtMigrationName.Visibility = Visibility.Collapsed;
             lblMigration.Visibility = Visibility.Collapsed;
@@ -72,7 +73,14 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             var bmp = BitmapFrame.Create(imageStream);
             image.Source = bmp;
             imgUnicorn.ImageSource = image.Source;
+            
             await GetMigrationStatus();
+            if (cmbDbContext.Items.Count == 0)
+            {
+                EnvDteHelper.ShowMessage("No DbContext classes found in the current project");
+                Close();
+            }
+            cmbDbContext.IsEnabled = true;
         }
 
         private async void btnApply_Click(object sender, RoutedEventArgs e)
@@ -146,6 +154,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private void SetUI(string status)
         {
+            cmbDbContext.IsEnabled = true;
             imgUnicorn.Opacity = 0;
             txtMigrationName.Visibility = Visibility.Visible;
             txtMigrationName.Text = string.Empty;

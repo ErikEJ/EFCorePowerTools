@@ -20,7 +20,6 @@ namespace EFCorePowerTools.Handlers
         {
             try
             {
-
                 if (string.IsNullOrEmpty(outputPath))
                 {
                     throw new ArgumentException(outputPath, nameof(outputPath));
@@ -37,19 +36,12 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework"))
+                if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework")
+                    && !project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.0"))
                 {
-                    EnvDteHelper.ShowError("Currently only .NET Framework is supported (.NET Core coming soon) - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    EnvDteHelper.ShowError("Currently only .NET Framework and .NET Core 2.0 projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
                     return;
                 }
-
-                //TODO Enable NetCore support
-                //if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework")
-                //    && !project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.0"))
-                //{
-                //    EnvDteHelper.ShowError("Currently only .NET Framework and .NET Core 2.0 projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
-                //    return;
-                //}
 
                 bool isNetCore = project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.");
 
