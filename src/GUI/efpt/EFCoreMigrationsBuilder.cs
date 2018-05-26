@@ -61,8 +61,15 @@ namespace ReverseEngineer20
 
             foreach (var type in types)
             {
-                var dbContext = operations.CreateContext(type.Name);
-                result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
+                try
+                {
+                    var dbContext = operations.CreateContext(type.Name);
+                    result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
+                }
+                catch (InvalidOperationException)
+                {
+                    continue;
+                }
             }
             return result;
         }
