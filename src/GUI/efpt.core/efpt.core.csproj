@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\efpt\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
+    <Compile Include="..\efpt\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
     <Compile Include="..\efpt\Program.cs" Link="Program.cs" />
-    <Compile Include="..\ReverseEngineer20\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
-    <Compile Include="..\ReverseEngineer20\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
   </ItemGroup>
 
   <ItemGroup>
