@@ -129,7 +129,6 @@
     <Content Include="AdventureWorks2014.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
     <None Include="graph.dgml">
       <SubType>Designer</SubType>
     </None>
