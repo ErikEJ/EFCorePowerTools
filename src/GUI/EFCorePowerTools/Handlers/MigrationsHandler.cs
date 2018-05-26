@@ -3,6 +3,7 @@ using ErikEJ.SqlCeToolbox.Dialogs;
 using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -27,7 +28,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (project == null)
                 {
-                    throw new ArgumentNullException(outputPath, nameof(outputPath));
+                    throw new ArgumentNullException(nameof(project));
                 }
 
                 if (project.Properties.Item("TargetFrameworkMoniker") == null)
@@ -43,7 +44,15 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
+                var outputFolder = Path.GetDirectoryName(outputPath);
+
                 bool isNetCore = project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.");
+
+                if (!isNetCore && !File.Exists(Path.Combine(outputFolder, "Microsoft.EntityFrameworkCore.dll")))
+                {
+                    EnvDteHelper.ShowError("EF Core is not installed in the current project");
+                    return;
+                }
 
                 var msd = new EfCoreMigrationsDialog(_package, outputPath, isNetCore, project)
                 {

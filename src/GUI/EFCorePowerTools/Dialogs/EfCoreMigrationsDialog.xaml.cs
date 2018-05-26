@@ -77,7 +77,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             await GetMigrationStatus();
             if (cmbDbContext.Items.Count == 0)
             {
-                EnvDteHelper.ShowMessage("No DbContext classes found in the current project");
+                EnvDteHelper.ShowMessage("No valid DbContext classes found in the current project");
                 Close();
             }
             cmbDbContext.IsEnabled = true;

@@ -59,13 +59,16 @@ namespace EFCorePowerTools.Handlers
             {
                 startInfo.WorkingDirectory = launchPath;
                 startInfo.FileName = "dotnet";
-                startInfo.Arguments = " efpt.dll \"" + outputPath + "\"";
                 if (generationType == GenerationType.Ddl
                     || generationType == GenerationType.MigrationApply
                     || generationType == GenerationType.MigrationAdd
                     || generationType == GenerationType.MigrationStatus)
                 {
                     startInfo.Arguments = " efpt.dll " + startInfo.Arguments;
+                }
+                else
+                {
+                    startInfo.Arguments = " efpt.dll \"" + outputPath + "\"";
                 }
             }
 
