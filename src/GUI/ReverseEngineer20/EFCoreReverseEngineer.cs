@@ -1,9 +1,12 @@
-﻿using EFCore.SqlCe.Scaffolding.Internal;
-//using EntityFrameworkCore.Scaffolding.Handlebars;
+﻿using EFCore.SqlCe.Design.Internal;
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
@@ -33,11 +36,12 @@ namespace ReverseEngineer20
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>();
 
-            //TODO await update to 2.1
-            //if (reverseEngineerOptions.UseHandleBars)
-            //{
-            //    serviceCollection.AddHandlebarsScaffolding(reverseEngineerOptions.ProjectPath);
-            //}
+            if (reverseEngineerOptions.UseHandleBars)
+            {
+                //TODO Consider being selective based on SelectedToBeGenerated
+                serviceCollection.AddHandlebarsScaffolding();
+                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
+            }
 
             if (reverseEngineerOptions.UseInflector)
             {
@@ -68,7 +72,6 @@ namespace ReverseEngineer20
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, CustomSqliteDatabaseModelFactory>();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -90,6 +93,15 @@ namespace ReverseEngineer20
             {
                 @namespace += "." + subNamespace;
             }
+            var modelOptions = new ModelReverseEngineerOptions
+            {
+                UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames
+            };
+
+            var codeOptions = new ModelCodeGenerationOptions
+            {
+                UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly
+            };
 
             var scaffoldedModel = scaffolder.ScaffoldModel(
                     reverseEngineerOptions.Dacpac != null
@@ -101,8 +113,8 @@ namespace ReverseEngineer20
                     "C#",
                     null,
                     reverseEngineerOptions.ContextClassName,
-                    !reverseEngineerOptions.UseFluentApiOnly,
-                    useDatabaseNames: reverseEngineerOptions.UseDatabaseNames);
+                    modelOptions,
+                    codeOptions);
 
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
@@ -147,7 +159,6 @@ namespace ReverseEngineer20
                         continue;
                 }
 
-                //TODO Get feedback!!
                 if (line.Contains("OnModelCreating")) inModelCreating = true;
 
                 if (inModelCreating && line.StartsWith("        }"))

@@ -162,15 +162,6 @@
       <Project>{832ecf86-c071-4628-a8b7-2529d8a7bdbc}</Project>
       <Name>DacFxStronglyTypedModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\POC\EntityFrameworkCore.Scaffolding.Handlebars\EntityFrameworkCore.Scaffolding.Handlebars.csproj">
-      <Project>{98ba37e1-99ff-4c0c-bd46-66c4f07e9b20}</Project>
-      <Name>EntityFrameworkCore.Scaffolding.Handlebars</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\POC\Handlebars\Handlebars.csproj">
-      <AdditionalProperties>TargetFramework=net452</AdditionalProperties>
-      <Project>{8620a8b3-c543-4c14-a9b9-5288821e9dcf}</Project>
-      <Name>Handlebars</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ReverseEngineer20\ReverseEngineer20.csproj">
       <Project>{4c0f2979-fcd9-4e93-8e4f-2a43055d42fe}</Project>
       <Name>ReverseEngineer20</Name>

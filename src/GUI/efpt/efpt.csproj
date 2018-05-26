@@ -98,12 +98,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ReverseEngineer20\EFCoreMigrationsBuilder.cs">
-      <Link>EFCoreMigrationsBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\ReverseEngineer20\EFCoreModelBuilder.cs">
-      <Link>EFCoreModelBuilder.cs</Link>
-    </Compile>
+    <Compile Include="EFCoreMigrationsBuilder.cs" />
+    <Compile Include="EFCoreModelBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

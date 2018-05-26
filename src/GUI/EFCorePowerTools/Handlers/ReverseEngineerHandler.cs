@@ -142,15 +142,14 @@ namespace EFCorePowerTools.Handlers
                 bool isNetCore = tfm.Contains(".NETCoreApp,Version=v2.");
                 bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.0");
 
-                //TODO await update
-                //if (modelDialog.UseHandelbars)
-                //{
-                //    var dropped = (DropTemplates(projectPath));
-                //    if (dropped && !isNetCore && !isNetStandard)
-                //    {
-                //        project.ProjectItems.AddFromDirectory(Path.Combine(projectPath, "CodeTemplates"));
-                //    }
-                //}
+                if (modelDialog.UseHandelbars)
+                {
+                    var dropped = (DropTemplates(projectPath));
+                    if (dropped && !isNetCore && !isNetStandard)
+                    {
+                        project.ProjectItems.AddFromDirectory(Path.Combine(projectPath, "CodeTemplates"));
+                    }
+                }
 
                 var revEngResult = revEng.GenerateFiles(options);
 
