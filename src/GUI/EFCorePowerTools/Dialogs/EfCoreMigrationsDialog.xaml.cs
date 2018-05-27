@@ -255,6 +255,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             cmbDbContext.SelectionChanged += CmbDbContext_SelectionChanged;
             if (_statusList.Count > 0)
             {
+                SetUI(_statusList.First().Value);
                 cmbDbContext.SelectedIndex = 0;
             }
         }
