@@ -88,10 +88,9 @@ namespace ReverseEngineer20
 
             var @namespace = reverseEngineerOptions.ProjectRootNamespace;
 
-            var subNamespace = SubnamespaceFromOutputPath(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath);
-            if (!string.IsNullOrEmpty(subNamespace))
+            if (!string.IsNullOrEmpty(reverseEngineerOptions.OutputPath))
             {
-                @namespace += "." + subNamespace;
+                @namespace += "." + reverseEngineerOptions.OutputPath.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
             }
             var modelOptions = new ModelReverseEngineerOptions
             {
@@ -218,23 +217,6 @@ namespace ReverseEngineer20
         {
             var builder = new DacpacTableListBuilder(dacpacPath);
             return builder.GetTableNames();
-        }
-
-        // if outputDir is a subfolder of projectDir, then use each subfolder as a subnamespace
-        // --output-dir $(projectFolder)/A/B/C
-        // => "namespace $(rootnamespace).A.B.C"
-        private static string SubnamespaceFromOutputPath(string projectDir, string outputDir)
-        {
-            if (!outputDir.StartsWith(projectDir, StringComparison.Ordinal))
-            {
-                return null;
-            }
-
-            var subPath = outputDir.Substring(projectDir.Length);
-
-            return !string.IsNullOrWhiteSpace(subPath)
-                ? string.Join(".", subPath.Split(new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries))
-                : null;
         }
     }
 }
