@@ -24,15 +24,20 @@ namespace ReverseEngineer20
 
         public List<Tuple<string, string>> Migrate(string outputPath, string contextName)
         {
-            return BuildMigrationResult(outputPath, null, contextName, false, null, null);
+            return BuildMigrationResult(outputPath, null, contextName, false, false, null, null);
         }
 
         public List<Tuple<string, string>> AddMigration(string outputPath, string projectPath, string contextName, string migrationIdentifier, string nameSpace)
         {
-            return BuildMigrationResult(outputPath, projectPath, contextName, true, migrationIdentifier, nameSpace);
+            return BuildMigrationResult(outputPath, projectPath, contextName, true, false, migrationIdentifier, nameSpace);
         }
 
-        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string projectPath, string contextName, bool addMigration, string migrationIdentifier, string nameSpace)
+        public List<Tuple<string, string>> ScriptMigration(string outputPath, string contextName)
+        {
+            return BuildMigrationResult(outputPath, null, contextName, false, true, null, null);
+        }
+
+        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string projectPath, string contextName, bool addMigration, bool scriptMigration, string migrationIdentifier, string nameSpace)
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath);
@@ -43,9 +48,16 @@ namespace ReverseEngineer20
                 if (type.Name == contextName)
                 {
                     var dbContext = operations.CreateContext(type.Name);
-                    result.Add(addMigration
-                        ? new Tuple<string, string>(type.Name + "Add", AddMigration(dbContext, outputPath, projectPath, migrationIdentifier, nameSpace))
-                        : new Tuple<string, string>(type.Name + "Apply", ApplyMigrations(dbContext)));
+                    if (scriptMigration)
+                    {
+                        result.Add(new Tuple<string, string>(type.Name,  ScriptMigration(dbContext, outputPath)));
+                    }
+                    else
+                    {
+                        result.Add(addMigration
+                            ? new Tuple<string, string>(type.Name + "Add", AddMigration(dbContext, outputPath, projectPath, migrationIdentifier, nameSpace))
+                            : new Tuple<string, string>(type.Name + "Apply", ApplyMigrations(dbContext)));
+                    }
                     break;
                 }
             }
@@ -107,6 +119,19 @@ namespace ReverseEngineer20
             return "InSync";
         }
 
+        private string ScriptMigration(DbContext context, string outputPath)
+        {
+            var servicesBuilder = GetDesignTimeServicesBuilder(outputPath);
+
+            var services = servicesBuilder.Build(context);
+
+            EnsureServices(services);
+
+            var migrator = services.GetRequiredService<IMigrator>();
+
+            return migrator.GenerateScript(null, null, idempotent: true);
+        }
+
         private string ApplyMigrations(DbContext context)
         {
             context.Database.Migrate();
@@ -123,7 +148,7 @@ namespace ReverseEngineer20
             return status;
         }
 
-        public virtual MigrationFiles AddMigration(
+        private MigrationFiles AddMigration(
             string name,
             string outputPath,
             string projectPath,

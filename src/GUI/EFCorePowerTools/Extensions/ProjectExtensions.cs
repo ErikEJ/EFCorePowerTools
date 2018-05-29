@@ -1,5 +1,6 @@
 ﻿using EnvDTE;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using VSLangProj;
 
@@ -79,7 +80,27 @@ namespace EFCorePowerTools.Extensions
 
             return absoluteOutputPath;
         }
-        
 
+        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
+        {
+            var list = new List<string>();
+
+            foreach (var item in result)
+            {
+                var filePath = Path.Combine(Path.GetTempPath(),
+                    item.Item1 + extension);
+
+                if (File.Exists(filePath))
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                }
+                File.WriteAllText(filePath, item.Item2);
+                File.SetAttributes(filePath, FileAttributes.ReadOnly);
+
+                list.Add(filePath);
+                //_package.Dte2.ItemOperations.OpenFile(filePath);
+            }
+            return list;
+        }
     }
 }

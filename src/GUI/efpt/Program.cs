@@ -29,6 +29,10 @@ namespace ReverseEngineer20
                     {
                         result = migrationsBuilder.Migrate(args[1], args[2]);
                     }
+                    else if (args.Contains("scriptmigration") && args.Count() >= 2)
+                    {
+                        result = migrationsBuilder.ScriptMigration(args[1], args[2]);
+                    }
                     else if (args.Contains("addmigration") && args.Count() >= 5)
                     {
                         result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5]);

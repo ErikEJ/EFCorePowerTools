@@ -23,7 +23,6 @@ namespace EFCorePowerTools.Handlers
         {
             try
             {
-
                 if (string.IsNullOrEmpty(outputPath))
                 {
                     throw new ArgumentException(outputPath, nameof(outputPath));
@@ -51,6 +50,8 @@ namespace EFCorePowerTools.Handlers
                     throw new ArgumentException(processResult, nameof(processResult));
                 }
 
+                var modelResult = _processLauncher.BuildModelResult(processResult);
+
                 switch (generationType)
                 {
                     case GenerationType.Dgml:
@@ -58,11 +59,19 @@ namespace EFCorePowerTools.Handlers
                         Telemetry.TrackEvent("PowerTools.GenerateModelDgml");
                         break;
                     case GenerationType.Ddl:
-                        GenerateFiles(processResult, project, ".sql");
+                        var files = project.GenerateFiles(modelResult, ".sql");
+                        foreach (var file in files)
+                        {
+                            _package.Dte2.ItemOperations.OpenFile(file);
+                        }
                         Telemetry.TrackEvent("PowerTools.GenerateSqlCreate");
                         break;
                     case GenerationType.DebugView:
-                        GenerateFiles(processResult, project, ".txt");
+                        var views = project.GenerateFiles(modelResult, ".txt");
+                        foreach (var file in views)
+                        {
+                            _package.Dte2.ItemOperations.OpenFile(file);
+                        }
                         Telemetry.TrackEvent("PowerTools.GenerateDebugView");
                         break;
                     default:
@@ -78,7 +87,7 @@ namespace EFCorePowerTools.Handlers
         private void GenerateDgml(string processResult, Project project)
         {
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
-            var result = BuildModelResult(processResult);
+            var result = _processLauncher.BuildModelResult(processResult);
             ProjectItem item = null;
 
             foreach (var info in result)
@@ -100,41 +109,6 @@ namespace EFCorePowerTools.Handlers
                 var window = item.Open();
                 window.Document.Activate();
             }
-        }
-
-        public void GenerateFiles(string processResult, Project project, string extension)
-        {
-            var result = BuildModelResult(processResult);
-
-            foreach (var item in result)
-            {
-                var filePath = Path.Combine(Path.GetTempPath(),
-                    item.Item1 + extension);
-
-                if (File.Exists(filePath))
-                {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
-                }
-                File.WriteAllText(filePath, item.Item2);
-                File.SetAttributes(filePath, FileAttributes.ReadOnly);
-
-                _package.Dte2.ItemOperations.OpenFile(filePath);
-            }
-        }
-
-        private List<Tuple<string, string>> BuildModelResult(string modelInfo)
-        {
-            var result = new List<Tuple<string, string>>();
-
-            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var context in contexts)
-            {
-                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(new Tuple<string, string>(parts[0].Trim(), parts[1].Trim()));
-            }
-
-            return result;
         }
 
         private string GetTemplate()

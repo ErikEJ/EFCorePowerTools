@@ -137,6 +137,24 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                     }
                 }
 
+                if (btnApply.Content.ToString() == "Script Migrations")
+                {
+                    _package.Dte2.StatusBar.Text = $"Scripting migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, _isNetCore, GenerationType.MigrationScript, cmbDbContext.SelectedValue.ToString());
+                    if (processResult.StartsWith("Error:"))
+                    {
+                        EnvDteHelper.ShowError(processResult);
+                        return;
+                    }
+
+                    var modelResult = _processLauncher.BuildModelResult(processResult);
+                    var files = _project.GenerateFiles(modelResult, ".sql");
+                    foreach (var file in files)
+                    {
+                        _package.Dte2.ItemOperations.OpenFile(file);
+                    }
+                }
+
                 await GetMigrationStatus();
             }
             catch (Exception ex)
@@ -167,7 +185,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 txtMessage.Text = $"Your database and model are in sync.";
                 lblMigration.Visibility = Visibility.Collapsed;
                 txtMigrationName.Visibility = Visibility.Collapsed;
-                btnApply.Visibility = Visibility.Collapsed;
+                btnApply.Content = "Script Migrations";
                 imgUnicorn.Opacity = 0.4;
             }
 
