@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -23,6 +24,21 @@ namespace EFCorePowerTools.Handlers
         public string GetOutput(string outputPath, bool isNetCore, GenerationType generationType, string contextName)
         {
             return GetOutput(outputPath, null, isNetCore, generationType, contextName, null, null);
+        }
+
+        public List<Tuple<string, string>> BuildModelResult(string modelInfo)
+        {
+            var result = new List<Tuple<string, string>>();
+
+            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var context in contexts)
+            {
+                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
+                result.Add(new Tuple<string, string>(parts[0].Trim(), parts[1].Trim()));
+            }
+
+            return result;
         }
 
         private string GetOutput(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
@@ -53,6 +69,10 @@ namespace EFCorePowerTools.Handlers
             if (generationType == GenerationType.MigrationAdd)
             {
                 startInfo.Arguments = "addmigration \"" + outputPath + "\" " + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
+            }
+            if (generationType == GenerationType.MigrationScript)
+            {
+                startInfo.Arguments = "scriptmigration \"" + outputPath + "\" " + contextName;
             }
 
             if (isNetCore)
