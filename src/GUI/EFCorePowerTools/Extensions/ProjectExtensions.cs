@@ -98,7 +98,6 @@ namespace EFCorePowerTools.Extensions
                 File.SetAttributes(filePath, FileAttributes.ReadOnly);
 
                 list.Add(filePath);
-                //_package.Dte2.ItemOperations.OpenFile(filePath);
             }
             return list;
         }
