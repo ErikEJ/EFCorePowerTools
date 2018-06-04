@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.EntityFrameworkCore.Abstractions</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.EntityFrameworkCore.DbFunctionAttribute">
+            <summary>
+                Maps a static CLR method to a database function so that the CLR method may be used in LINQ queries.
+                By convention uses the .NET method name as name of the database function and the default schema.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.DbFunctionAttribute.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:Microsoft.EntityFrameworkCore.DbFunctionAttribute" /> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.DbFunctionAttribute.#ctor(System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Microsoft.EntityFrameworkCore.DbFunctionAttribute" /> class.
+            </summary>
+            <param name="functionName">The name of the function in the database.</param>
+            <param name="schema">The schema of the function in the database.</param>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.DbFunctionAttribute.FunctionName">
+            <summary>
+                The name of the function in the database.
+            </summary>
+        </member>
+        <member name="P:Microsoft.EntityFrameworkCore.DbFunctionAttribute.Schema">
+            <summary>
+                The schema of the function in the database.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Infrastructure.ILazyLoader">
+            <summary>
+                A service that can be injected into entities to give them the capability
+                of loading navigation properties automatically the first time they are accessed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Infrastructure.ILazyLoader.Load(System.Object,System.String)">
+            <summary>
+                Loads a navigation property if it has not already been loaded.
+            </summary>
+            <param name="entity"> The entity on which the navigation property is located. </param>
+            <param name="navigationName"> The navigation property name. </param>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Infrastructure.ILazyLoader.LoadAsync(System.Object,System.Threading.CancellationToken,System.String)">
+            <summary>
+                Loads a navigation property if it has not already been loaded.
+            </summary>
+            <param name="entity"> The entity on which the navigation property is located. </param>
+            <param name="cancellationToken"> A <see cref="T:System.Threading.CancellationToken" /> to observe while waiting for the task to complete. </param>
+            <param name="navigationName"> The navigation property name. </param>
+            <returns> A task that represents the asynchronous operation. </returns>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Infrastructure.LazyLoaderExtensions">
+            <summary>
+                Extension methods for the <see cref="T:Microsoft.EntityFrameworkCore.Infrastructure.ILazyLoader" /> service that make it more
+                convenient to use from entity classes.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Infrastructure.LazyLoaderExtensions.Load``1(Microsoft.EntityFrameworkCore.Infrastructure.ILazyLoader,System.Object,``0@,System.String)">
+            <summary>
+                Loads a navigation property if it has not already been loaded.
+            </summary>
+            <typeparam name="TRelated"> The type of the navigation property. </typeparam>
+            <param name="loader">The loader instance, which may be <c>null</c>.</param>
+            <param name="entity"> The entity on which the navigation property is located. </param>
+            <param name="navigationField"> A reference to the backing field for the navigation. </param>
+            <param name="navigationName"> The navigation property name. </param>
+            <returns>
+                The loaded navigation property value, or the navigation property value unchanged if the loader is <c>null</c>.
+            </returns>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.OwnedAttribute">
+            <summary>
+                Marks a type as owned. All references to this type will be configured as owned entity types.
+            </summary>
+        </member>
+        <member name="T:Microsoft.EntityFrameworkCore.Internal.AbstractionsStrings">
+            <summary>
+            	This API supports the Entity Framework Core infrastructure and is not intended to be used
+                directly from your code. This API may change or be removed in future releases.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.AbstractionsStrings.ArgumentIsEmpty(System.Object)">
+            <summary>
+                The string argument '{argumentName}' cannot be empty.
+            </summary>
+        </member>
+        <member name="M:Microsoft.EntityFrameworkCore.Internal.AbstractionsStrings.CollectionArgumentIsEmpty(System.Object)">
+            <summary>
+                The collection argument '{argumentName}' must contain at least one element.
+            </summary>
+        </member>
+    </members>
+</doc>
