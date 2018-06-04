@@ -123,11 +123,17 @@ namespace EFCorePowerTools.Handlers
                 if (version.ToString(3) == "2.0.1") testVersion = "2.0.1";
                 if (version.ToString(3) == "2.0.2") testVersion = "2.0.2";
                 if (version.ToString(3) == "2.0.3") testVersion = "2.0.3";
+                if (version.ToString(3) == "2.1.0") testVersion = "2.1.0";
             }
 
             File.Copy(Path.Combine(fromDir, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
+
             if (!string.IsNullOrEmpty(testVersion))
             {
+                if (testVersion == "2.1.0")
+                {
+                    File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
+                }
                 File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe.config"), Path.Combine(toDir, "efpt.exe.config"), true);
                 File.Copy(Path.Combine(fromDir, testVersion, "Microsoft.EntityFrameworkCore.Design.dll"), Path.Combine(toDir, "Microsoft.EntityFrameworkCore.Design.dll"), true);
             }

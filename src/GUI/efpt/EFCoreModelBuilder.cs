@@ -87,11 +87,13 @@ namespace ReverseEngineer20
             }
 
             //TODO Use OperationHandler output!!
-            var reporter = new OperationReporter(
-                new OperationReportHandler());
+            var reporter = new OperationReporter(new OperationReportHandler());
 
-            var operations = new DbContextOperations(reporter, assembly, assembly);
-            return operations;
+#if CORE21
+            return new DbContextOperations(reporter, assembly, assembly, null);
+#else
+            return new DbContextOperations(reporter, assembly, assembly);
+#endif
         }
 
         private Assembly Load(string assemblyPath)

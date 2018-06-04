@@ -108,10 +108,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\lib\efpt.exe.config">
-      <Link>efpt\efpt.exe.config</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efpt.exe.zip">
       <Link>efpt.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -120,6 +116,18 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="efpt\2.0.3\Microsoft.EntityFrameworkCore.Design.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.1.0\efpt.exe">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.1.0\Microsoft.EntityFrameworkCore.Design.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\efpt.exe">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\7.png" />
@@ -141,6 +149,12 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="efpt\2.0.3\efpt.exe.config">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\efpt.exe.config">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.1.0\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
@@ -402,14 +416,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\lib\efpt.exe">
-      <Link>efpt\efpt.exe</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\Microsoft.EntityFrameworkCore.Design.dll">
-      <Link>efpt\Microsoft.EntityFrameworkCore.Design.dll</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="db.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
