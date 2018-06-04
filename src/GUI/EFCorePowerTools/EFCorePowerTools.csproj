@@ -143,6 +143,7 @@
     <Content Include="efpt\2.0.3\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="app.config" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
