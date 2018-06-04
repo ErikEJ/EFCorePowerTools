@@ -53,7 +53,10 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Microsoft.EntityFrameworkCore.Sqlite";
             }
-
+            if (dbType == DatabaseType.MySql)
+            {
+                providerPackage = "Pomelo.EntityFrameworkCore.MySql";
+            }
             var vsProject = project.Object as VSProject;
             if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
             for (var i = 1; i < vsProject.References.Count + 1; i++)

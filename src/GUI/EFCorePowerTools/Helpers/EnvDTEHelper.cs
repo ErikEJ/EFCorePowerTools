@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using MySql.Data.MySqlClient;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             Guid providerSqLite = new Guid(Resources.SQLiteProvider);
             Guid providerSqlitePrivate = new Guid(Resources.SqlitePrivateProvider);
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
+            Guid providerMySql = new Guid(Resources.MySqlProvider);
 
             bool isV40Installed = RepositoryHelper.IsV40Installed() &&
                 (DdexProviderIsInstalled(provider40) || DdexProviderIsInstalled(provider40Private));
@@ -62,7 +64,10 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         {
                             info.DatabaseType = objProviderGuid == providerNpgsql ? DatabaseType.Npgsql : DatabaseType.SQLServer;
                         }
-
+                        if (objProviderGuid == providerMySql)
+                        {
+                            info.DatabaseType = DatabaseType.MySql;
+                        }
                         if (info.DatabaseType != DatabaseType.SQLCE35
                             && !databaseList.ContainsKey(sConnectionString))
                         {
@@ -155,6 +160,11 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     dbType = DatabaseType.Npgsql;
                     providerGuid = Resources.NpgsqlProvider;
                 }
+                if (providerInvariant == "MySql.Data.MySqlClient")
+                {
+                    dbType = DatabaseType.MySql;
+                    providerGuid = Resources.MySqlProvider;
+                }
             }
             return new DatabaseInfo
             {
@@ -164,7 +174,29 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 Size = providerGuid
             };
         }
+        internal static string GetMySqlDatabaseName(string connectionString)
+        {
+            var mySqlBuilder = new MySqlConnectionStringBuilder(connectionString);
+            return mySqlBuilder.Database;
+        }
 
+        internal static List<string> GetMySqlTableNames(string connectionString)
+        {
+            var result = new List<string>();
+            using (var mySqlConn = new MySqlConnection(connectionString))
+            {
+                mySqlConn.Open();
+                var tablesDataTable = mySqlConn.GetSchema("Tables");
+                foreach (DataRow row in tablesDataTable.Rows)
+                {
+                    var schema = row["TABLE_SCHEMA"].ToString();
+                    //condition?
+                    result.Add(schema + "." + row["TABLE_NAME"].ToString());
+                }
+            }
+
+            return result.OrderBy(l => l).ToList();
+        }
         internal static string GetNpgsqlDatabaseName(string connectionString)
         {
             var pgBuilder = new NpgsqlConnectionStringBuilder(connectionString);
@@ -207,6 +239,9 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             }
             if (dbType == DatabaseType.Npgsql)
                 return GetNpgsqlDatabaseName(connectionString);
+
+            if (dbType == DatabaseType.MySql)
+                return GetMySqlDatabaseName(connectionString);
 
             var filePath = GetFilePath(connectionString, dbType);
             return Path.GetFileName(filePath);

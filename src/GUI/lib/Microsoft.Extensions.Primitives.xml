@@ -26,7 +26,7 @@
         </member>
         <member name="T:Microsoft.Extensions.Primitives.ChangeToken">
             <summary>
-            Propagates notifications that a change has occured.
+            Propagates notifications that a change has occurred.
             </summary>
         </member>
         <member name="M:Microsoft.Extensions.Primitives.ChangeToken.OnChange(System.Func{Microsoft.Extensions.Primitives.IChangeToken},System.Action)">
@@ -81,17 +81,18 @@
         </member>
         <member name="T:Microsoft.Extensions.Primitives.IChangeToken">
             <summary>
-            Propagates notifications that a change has occured.
+            Propagates notifications that a change has occurred.
             </summary>
         </member>
         <member name="P:Microsoft.Extensions.Primitives.IChangeToken.HasChanged">
             <summary>
-            Gets a value that indicates if a change has occured.
+            Gets a value that indicates if a change has occurred.
             </summary>
         </member>
         <member name="P:Microsoft.Extensions.Primitives.IChangeToken.ActiveChangeCallbacks">
             <summary>
-            Indicates if this token will pro-actively raise callbacks. Callbacks are still guaranteed to fire, eventually.
+            Indicates if this token will pro-actively raise callbacks. If <c>false</c>, the token consumer must
+            poll <see cref="P:Microsoft.Extensions.Primitives.IChangeToken.HasChanged" /> to detect changes.
             </summary>
         </member>
         <member name="M:Microsoft.Extensions.Primitives.IChangeToken.RegisterChangeCallback(System.Action{System.Object},System.Object)">
@@ -122,6 +123,11 @@
         <member name="P:Microsoft.Extensions.Primitives.Resources.Argument_InvalidOffsetLength">
             <summary>
                Looks up a localized string similar to Offset and length are out of bounds for the string or length is greater than the number of characters from index to the end of the string..
+            </summary>
+        </member>
+        <member name="P:Microsoft.Extensions.Primitives.Resources.Capacity_CannotChangeAfterWriteStarted">
+            <summary>
+               Looks up a localized string similar to Cannot change capacity after write started..
             </summary>
         </member>
         <member name="T:Microsoft.Extensions.Primitives.StringSegment">
@@ -181,6 +187,18 @@
             </summary>
             <param name="index">The offset into the <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/></param>
             <returns>The <see cref="T:System.Char"/> at a specified position.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.Primitives.StringSegment.AsSpan">
+            <summary>
+            Gets a <see cref="T:System.ReadOnlySpan`1"/> from the current <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/>.
+            </summary>
+            <returns>The <see cref="T:System.ReadOnlySpan`1"/> from this <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.Primitives.StringSegment.AsMemory">
+            <summary>
+            Gets a <see cref="T:System.ReadOnlyMemory`1"/> from the current <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/>.
+            </summary>
+            <returns>The <see cref="T:System.ReadOnlyMemory`1"/> from this <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/>.</returns>
         </member>
         <member name="M:Microsoft.Extensions.Primitives.StringSegment.Equals(System.Object)">
             <inheritdoc />
@@ -254,6 +272,18 @@
             Creates a new <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/> from the given <see cref="T:System.String"/>.
             </summary>
             <param name="value">The <see cref="T:System.String"/> to convert to a <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/></param>
+        </member>
+        <member name="M:Microsoft.Extensions.Primitives.StringSegment.op_Implicit(Microsoft.Extensions.Primitives.StringSegment)~System.ReadOnlySpan{System.Char}">
+            <summary>
+            Creates a see <see cref="T:System.ReadOnlySpan`1"/> from the given <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/>.
+            </summary>
+            <param name="segment">The <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/> to convert to a <see cref="T:System.ReadOnlySpan`1"/>.</param>
+        </member>
+        <member name="M:Microsoft.Extensions.Primitives.StringSegment.op_Implicit(Microsoft.Extensions.Primitives.StringSegment)~System.ReadOnlyMemory{System.Char}">
+            <summary>
+            Creates a see <see cref="T:System.ReadOnlyMemory`1"/> from the given <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/>.
+            </summary>
+            <param name="segment">The <see cref="T:Microsoft.Extensions.Primitives.StringSegment"/> to convert to a <see cref="T:System.ReadOnlyMemory`1"/>.</param>
         </member>
         <member name="M:Microsoft.Extensions.Primitives.StringSegment.StartsWith(System.String,System.StringComparison)">
             <summary>

@@ -90,7 +90,7 @@ namespace ReverseEngineer20
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
-            var operations = new DbContextOperations(reporter, assembly, assembly);
+            var operations = new DbContextOperations(reporter, assembly, assembly, null);
             return operations;
         }
 

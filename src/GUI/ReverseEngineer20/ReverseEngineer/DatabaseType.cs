@@ -7,6 +7,7 @@ namespace ReverseEngineer20
         SQLCE40,
         SQLServer,
         SQLite,
-        Npgsql
+        Npgsql,
+        MySql
     }
 }

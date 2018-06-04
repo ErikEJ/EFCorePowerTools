@@ -88,7 +88,7 @@
             ?. Items with the soonest sliding expiration.
             ?. Larger objects - estimated by object graph size, inaccurate.
         </member>
-        <member name="P:Microsoft.Extensions.Caching.Memory.MemoryCacheOptions.CompactOnMemoryPressure">
+        <member name="P:Microsoft.Extensions.Caching.Memory.MemoryCacheOptions.ExpirationScanFrequency">
             <summary>
             Gets or sets the minimum length of time between successive scans for expired items.
             </summary>

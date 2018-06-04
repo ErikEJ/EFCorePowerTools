@@ -21,32 +21,38 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         private static List<BindingRedirect> GetBindingRedirects()
         {
-            //var result = new List<BindingRedirect>
-            //{
-            //    new BindingRedirect
-            //    {
-            //        ShortName = "Microsoft.EntityFrameworkCore",
-            //        RedirectToVersion = "2.0.1.0",
-            //        PublicKeyToken = "adb9793829ddae60"
-            //    },
-            //    new BindingRedirect
-            //    {
-            //        ShortName = "Microsoft.EntityFrameworkCore.Relational",
-            //        RedirectToVersion = "2.0.1.0",
-            //        PublicKeyToken = "adb9793829ddae60"
-            //    }
-            //};
-
-            //System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'
-
             var result = new List<BindingRedirect>
             {
                 new BindingRedirect
                 {
-                    ShortName = "System.Diagnostics.DiagnosticSource",
+                    ShortName = "System.Buffers",
                     RedirectToVersion = "4.0.2.0",
                     PublicKeyToken = "cc7b13ffcd2ddd51"
-                }
+                },
+                new BindingRedirect
+                {
+                    ShortName = "System.Diagnostics.DiagnosticSource",
+                    RedirectToVersion = "4.0.3.0",
+                    PublicKeyToken = "cc7b13ffcd2ddd51"
+                },
+                new BindingRedirect
+                {
+                    ShortName = "Microsoft.EntityFrameworkCore.Abstractions",
+                    RedirectToVersion = "2.1.0.0",
+                    PublicKeyToken = "adb9793829ddae60"
+                },
+                new BindingRedirect
+                {
+                    ShortName = "Microsoft.Extensions.DependencyInjection.Abstractions",
+                    RedirectToVersion = "2.1.0.0",
+                    PublicKeyToken = "adb9793829ddae60"
+                },
+                new BindingRedirect
+                {
+                    ShortName = "Microsoft.Extensions.Logging.Abstractions",
+                    RedirectToVersion = "2.1.0.0",
+                    PublicKeyToken = "adb9793829ddae60"
+                },
             };
 
             return result;

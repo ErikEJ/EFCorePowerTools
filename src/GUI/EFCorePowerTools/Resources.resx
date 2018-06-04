@@ -289,4 +289,7 @@ Storage size varies. It is the length of the value in bytes.</value>
   <data name="NpgsqlProvider" xml:space="preserve">
     <value>70ba90f8-3027-4aF1-9b15-37abbd48744c</value>
   </data>
+  <data name="MySqlProvider" xml:space="preserve">
+    <value>c6882346-e592-4da5-80ba-d2eadcda0359</value>
+  </data>
 </root>
