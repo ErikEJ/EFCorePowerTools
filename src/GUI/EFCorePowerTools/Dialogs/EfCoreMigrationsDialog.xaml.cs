@@ -19,21 +19,20 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
     {
         private SortedDictionary<string, string> _statusList;
         private readonly EFCorePowerTools.EFCorePowerToolsPackage _package;
-        private readonly ProcessLauncher _processLauncher = new ProcessLauncher();
+        private readonly ProcessLauncher _processLauncher;
         private readonly string _outputPath;
-        private readonly bool _isNetCore;
         private readonly Project _project;
         private object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
 
-        public EfCoreMigrationsDialog(EFCorePowerTools.EFCorePowerToolsPackage package, string outputPath, bool isNetCore, Project project)
+        public EfCoreMigrationsDialog(EFCorePowerTools.EFCorePowerToolsPackage package, string outputPath, Project project)
         {
             Telemetry.TrackPageView(nameof(EfCoreModelDialog));
             InitializeComponent();
             Background = VsThemes.GetWindowBackground();
             _package = package;
-            _isNetCore = isNetCore;
             _outputPath = outputPath;
             _project = project;
+            _processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21());
         }
 
         public string ProjectName
@@ -99,7 +98,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                     }
 
                     _package.Dte2.StatusBar.Text = $"Creating Migration {txtMigrationName.Text} in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullName), _isNetCore, GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullName), GenerationType.MigrationAdd, cmbDbContext.SelectedValue.ToString(), txtMigrationName.Text, _project.Properties.Item("DefaultNamespace").Value.ToString());
 
                     var result = BuildModelResult(processResult);
 
@@ -129,7 +128,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 if (btnApply.Content.ToString() == "Update Database")
                 {
                     _package.Dte2.StatusBar.Text = $"Updating Database from migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, _isNetCore, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString());
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationApply, cmbDbContext.SelectedValue.ToString());
                     if (processResult.StartsWith("Error:"))
                     {
                         EnvDteHelper.ShowError(processResult);
@@ -140,7 +139,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 if (btnApply.Content.ToString() == "Script Migrations")
                 {
                     _package.Dte2.StatusBar.Text = $"Scripting migrations in DbContext {cmbDbContext.SelectedValue.ToString()}";
-                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, _isNetCore, GenerationType.MigrationScript, cmbDbContext.SelectedValue.ToString());
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationScript, cmbDbContext.SelectedValue.ToString());
                     if (processResult.StartsWith("Error:"))
                     {
                         EnvDteHelper.ShowError(processResult);
@@ -232,7 +231,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 _package.Dte2.StatusBar.Text = "Getting Migration Status";
                 if (_project.TryBuild())
                 {
-                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, _isNetCore, GenerationType.MigrationStatus, null);
+                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
 
                     ReportStatus(processResult);
                 }

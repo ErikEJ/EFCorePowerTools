@@ -175,9 +175,7 @@ namespace ReverseEngineer20
             var scaffolder = services.GetRequiredService<MigrationsScaffolder>();
             var migration = scaffolder.ScaffoldMigration(name, nameSpace);
 
-            var files = scaffolder.Save(projectPath, migration, null);
-
-            return files;
+            return scaffolder.Save(projectPath, migration, null);
         }
 
         private List<Type> GetDbContextTypes(DbContextOperations operations)
@@ -202,8 +200,11 @@ namespace ReverseEngineer20
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
-            var operations = new DbContextOperations(reporter, assembly, assembly);
-            return operations;
+#if CORE21
+            return new DbContextOperations(reporter, assembly, assembly, Array.Empty<string>());
+#else
+            return new DbContextOperations(reporter, assembly, assembly);
+#endif
         }
 
         private DesignTimeServicesBuilder GetDesignTimeServicesBuilder(string outputPath)
@@ -218,8 +219,11 @@ namespace ReverseEngineer20
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
-            var builder = new DesignTimeServicesBuilder(assembly, reporter);
-            return builder;
+#if CORE21
+            return new DesignTimeServicesBuilder(assembly, reporter, Array.Empty<string>());
+#else
+            return new DesignTimeServicesBuilder(assembly, reporter);
+#endif
         }
 
         private Assembly Load(string assemblyPath)

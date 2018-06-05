@@ -11,19 +11,28 @@ namespace EFCorePowerTools.Handlers
 {
     public class ProcessLauncher
     {
-        public Task<string> GetOutputAsync(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        private readonly bool _isNetCore;
+        private readonly bool _isNetCore21;
+
+        public ProcessLauncher(bool isNetCore, bool isNetCore21)
         {
-            return Task.Factory.StartNew(() => GetOutput(outputPath, projectPath, isNetCore,  generationType, contextName, migrationIdentifier, nameSpace));
+            _isNetCore = isNetCore;
+            _isNetCore21 = isNetCore21;
         }
 
-        public Task<string> GetOutputAsync(string outputPath, bool isNetCore, GenerationType generationType, string contextName)
+        public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            return Task.Factory.StartNew(() => GetOutput(outputPath, null, isNetCore, generationType, contextName, null, null));
+            return Task.Factory.StartNew(() => GetOutput(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace));
         }
 
-        public string GetOutput(string outputPath, bool isNetCore, GenerationType generationType, string contextName)
+        public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
-            return GetOutput(outputPath, null, isNetCore, generationType, contextName, null, null);
+            return Task.Factory.StartNew(() => GetOutput(outputPath, null, generationType, contextName, null, null));
+        }
+
+        public string GetOutput(string outputPath, GenerationType generationType, string contextName)
+        {
+            return GetOutput(outputPath, null, generationType, contextName, null, null);
         }
 
         public List<Tuple<string, string>> BuildModelResult(string modelInfo)
@@ -41,9 +50,9 @@ namespace EFCorePowerTools.Handlers
             return result;
         }
 
-        private string GetOutput(string outputPath, string projectPath, bool isNetCore, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = isNetCore ? DropNetCoreFiles() : DropFiles(outputPath);
+            var launchPath = _isNetCore ? DropNetCoreFiles() : DropFiles(outputPath);
 
             var startInfo = new ProcessStartInfo
             {
@@ -75,7 +84,7 @@ namespace EFCorePowerTools.Handlers
                 startInfo.Arguments = "scriptmigration \"" + outputPath + "\" " + contextName;
             }
 
-            if (isNetCore)
+            if (_isNetCore)
             {
                 startInfo.WorkingDirectory = launchPath;
                 startInfo.FileName = "dotnet";
@@ -123,11 +132,17 @@ namespace EFCorePowerTools.Handlers
                 if (version.ToString(3) == "2.0.1") testVersion = "2.0.1";
                 if (version.ToString(3) == "2.0.2") testVersion = "2.0.2";
                 if (version.ToString(3) == "2.0.3") testVersion = "2.0.3";
+                if (version.ToString(3) == "2.1.0") testVersion = "2.1.0";
             }
 
             File.Copy(Path.Combine(fromDir, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
+
             if (!string.IsNullOrEmpty(testVersion))
             {
+                if (testVersion == "2.1.0")
+                {
+                    File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
+                }
                 File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe.config"), Path.Combine(toDir, "efpt.exe.config"), true);
                 File.Copy(Path.Combine(fromDir, testVersion, "Microsoft.EntityFrameworkCore.Design.dll"), Path.Combine(toDir, "Microsoft.EntityFrameworkCore.Design.dll"), true);
             }
@@ -154,8 +169,14 @@ namespace EFCorePowerTools.Handlers
 
             Directory.CreateDirectory(toDir);
 
-            ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt.exe.zip"), toDir);
-
+            if (_isNetCore21)
+            {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt21.exe.zip"), toDir);
+            }
+            else
+            {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt.exe.zip"), toDir);
+            }
             return toDir;
         }
     }
