@@ -66,6 +66,15 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(false, providerPackage);
         }
 
+        public static bool IsNetCore(this Project project)
+        {
+            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.");
+        }
+
+        public static bool IsNetCore21(this Project project)
+        {
+            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.1");
+        }
 
         private static string GetOutputPath(Project project)
         {

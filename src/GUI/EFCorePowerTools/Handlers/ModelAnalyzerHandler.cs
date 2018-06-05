@@ -12,7 +12,6 @@ namespace EFCorePowerTools.Handlers
     internal class ModelAnalyzerHandler
     {
         private readonly EFCorePowerToolsPackage _package;
-        private readonly ProcessLauncher _processLauncher = new ProcessLauncher();
 
         public ModelAnalyzerHandler(EFCorePowerToolsPackage package)
         {
@@ -35,22 +34,22 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework")
-                    && !project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.0"))
+                    && !project.IsNetCore())
                 {
                     EnvDteHelper.ShowError("Currently only .NET Framework and .NET Core 2.0 projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
                     return;
                 }
 
-                bool isNetCore = project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.0");
+                var processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21());
 
-                var processResult = _processLauncher.GetOutput(outputPath, isNetCore, generationType, null);
+                var processResult = processLauncher.GetOutput(outputPath, generationType, null);
 
                 if (processResult.StartsWith("Error:"))
                 {
                     throw new ArgumentException(processResult, nameof(processResult));
                 }
 
-                var modelResult = _processLauncher.BuildModelResult(processResult);
+                var modelResult = processLauncher.BuildModelResult(processResult);
 
                 switch (generationType)
                 {
@@ -87,7 +86,9 @@ namespace EFCorePowerTools.Handlers
         private void GenerateDgml(string processResult, Project project)
         {
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
-            var result = _processLauncher.BuildModelResult(processResult);
+            var processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21());
+
+            var result = processLauncher.BuildModelResult(processResult);
             ProjectItem item = null;
 
             foreach (var info in result)

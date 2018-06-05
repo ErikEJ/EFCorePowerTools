@@ -1,4 +1,5 @@
-﻿using EnvDTE;
+﻿using EFCorePowerTools.Extensions;
+using EnvDTE;
 using ErikEJ.SqlCeToolbox.Dialogs;
 using ErikEJ.SqlCeToolbox.Helpers;
 using System;
@@ -10,7 +11,6 @@ namespace EFCorePowerTools.Handlers
     internal class MigrationsHandler
     {
         private readonly EFCorePowerToolsPackage _package;
-        private readonly ProcessLauncher _processLauncher = new ProcessLauncher();
 
         public MigrationsHandler(EFCorePowerToolsPackage package)
         {
@@ -38,7 +38,7 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework")
-                    && !project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.0"))
+                    && !project.IsNetCore())
                 {
                     EnvDteHelper.ShowError("Currently only .NET Framework and .NET Core 2.0 projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
                     return;
@@ -46,15 +46,13 @@ namespace EFCorePowerTools.Handlers
 
                 var outputFolder = Path.GetDirectoryName(outputPath);
 
-                bool isNetCore = project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.");
-
-                if (!isNetCore && !File.Exists(Path.Combine(outputFolder, "Microsoft.EntityFrameworkCore.dll")))
+                if (!project.IsNetCore() && !File.Exists(Path.Combine(outputFolder, "Microsoft.EntityFrameworkCore.dll")))
                 {
                     EnvDteHelper.ShowError("EF Core is not installed in the current project");
                     return;
                 }
 
-                var msd = new EfCoreMigrationsDialog(_package, outputPath, isNetCore, project)
+                var msd = new EfCoreMigrationsDialog(_package, outputPath, project)
                 {
                     ProjectName = project.Name
                 };

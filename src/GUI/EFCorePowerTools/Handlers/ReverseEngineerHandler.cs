@@ -139,13 +139,12 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Generating code...";
 
                 var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
-                bool isNetCore = tfm.Contains(".NETCoreApp,Version=v2.");
                 bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.0");
 
                 if (modelDialog.UseHandelbars)
                 {
                     var dropped = (DropTemplates(projectPath));
-                    if (dropped && !isNetCore && !isNetStandard)
+                    if (dropped && !project.IsNetCore() && !isNetStandard)
                     {
                         project.ProjectItems.AddFromDirectory(Path.Combine(projectPath, "CodeTemplates"));
                     }
@@ -167,7 +166,7 @@ namespace EFCorePowerTools.Handlers
                 if (modelDialog.SelectedTobeGenerated == 0 || modelDialog.SelectedTobeGenerated == 1)
                 {
                     project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
-                    if (!isNetCore && !isNetStandard)
+                    if (!project.IsNetCore() && !isNetStandard)
                     {
                         _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
                     }
