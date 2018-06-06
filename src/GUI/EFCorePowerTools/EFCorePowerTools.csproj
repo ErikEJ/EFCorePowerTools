@@ -130,6 +130,9 @@
     <Content Include="efpt\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="e_sqlite3.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\7.png" />
     <EmbeddedResource Include="Resources\Unicorn.png" />
     <Content Include="System.ValueTuple.dll">
@@ -161,7 +164,6 @@
       <Link>efpt21.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="app.config" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
