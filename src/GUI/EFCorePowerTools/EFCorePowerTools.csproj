@@ -135,10 +135,6 @@
     </Content>
     <Content Include="Resources\7.png" />
     <EmbeddedResource Include="Resources\Unicorn.png" />
-    <Content Include="System.ValueTuple.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
