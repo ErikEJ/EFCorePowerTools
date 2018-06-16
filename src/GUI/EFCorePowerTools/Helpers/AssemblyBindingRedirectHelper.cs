@@ -39,15 +39,15 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
             //System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51'
 
-            var result = new List<BindingRedirect>
-            {
-                new BindingRedirect
-                {
-                    ShortName = "System.Diagnostics.DiagnosticSource",
-                    RedirectToVersion = "4.0.2.0",
-                    PublicKeyToken = "cc7b13ffcd2ddd51"
-                }
-            };
+            var result = new List<BindingRedirect>();
+            //{
+            //    new BindingRedirect
+            //    {
+            //        ShortName = "System.Diagnostics.DiagnosticSource",
+            //        RedirectToVersion = "4.0.2.0",
+            //        PublicKeyToken = "cc7b13ffcd2ddd51"
+            //    }
+            //};
 
             return result;
         }
