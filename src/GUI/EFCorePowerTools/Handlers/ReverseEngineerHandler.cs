@@ -180,7 +180,7 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 var missingProviderPackage = packageResult.Item1 ? null : packageResult.Item2;
-                if (modelDialog.InstallNuGetPackage)
+                if (modelDialog.InstallNuGetPackage || modelDialog.SelectedTobeGenerated == 2)
                 {
                     missingProviderPackage = null;
                 }

@@ -53,6 +53,10 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Microsoft.EntityFrameworkCore.Sqlite";
             }
+            if (dbType == DatabaseType.Npgsql)
+            {
+                providerPackage = "Npgsql.EntityFrameworkCore.PostgreSQL";
+            }
 
             var vsProject = project.Object as VSProject;
             if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
