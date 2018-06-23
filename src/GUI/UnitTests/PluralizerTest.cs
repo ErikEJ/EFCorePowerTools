@@ -26,5 +26,34 @@ namespace UnitTests
             // Assert
             Assert.AreEqual("CourseStatuses", result);
         }
+        [Test]
+        public void CanSingularizeCourseStatuses()
+        {
+            // Act
+            var result = new Pluralizer().Singularize("CourseStatuses");
+
+            // Assert
+            Assert.AreEqual("CourseStatus", result);
+        }
+
+        [Test]
+        public void CanSingularizeGames()
+        {
+            // Act
+            var result = new Pluralizer().Singularize("Games");
+
+            // Assert
+            Assert.AreEqual("Game", result);
+        }
+
+        [Test]
+        public void CanPluralizeGame()
+        {
+            // Act
+            var result = new Pluralizer().Pluralize("Game");
+
+            // Assert
+            Assert.AreEqual("Games", result);
+        }
     }
 }
