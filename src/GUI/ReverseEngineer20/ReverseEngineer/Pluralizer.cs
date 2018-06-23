@@ -897,19 +897,29 @@ namespace Bricelam.EntityFrameworkCore.Design
             var lastSpaceIndex = word.LastIndexOf(' ');
             prefixWord = word.Substring(0, lastSpaceIndex + 1);
 
+            // Check if the prefix is empty (empty prefix means, the suffix could not be extracted from the string by splitting it by space)
             if (!string.IsNullOrWhiteSpace(prefixWord))
             {
+                // Return the suffix 
                 return word.Substring(lastSpaceIndex + 1);
             }
-            // Use the last capital letter to separate the suffix word
+
+            // UPPER CASE SPLIT TO EXTRACT SUFFIX
+            // Check if there are any upper case characters in the string
             if (word.Any(x => char.IsUpper(x)))
             {
-                var lastUpperCaseLetter = word.Reverse().First(x => char.IsUpper(x));
-                var lastUpperCaseIndex = word.LastIndexOf(lastUpperCaseLetter);
+                // Get the lastly occuring Upper Case character in the string
+                var lastUpperCaseChar = word.Reverse().First(x => char.IsUpper(x));
+                // Get the index of the lastly occuring upper case character in the string
+                var lastUpperCaseIndex = word.LastIndexOf(lastUpperCaseChar);
+                // Get the prefix word spliting the string at the index of the lastly occuring Upper case charater in the string
                 prefixWord = word.Substring(0, lastUpperCaseIndex);
+
+                // Return the suffix word 
                 return word.Substring(lastUpperCaseIndex);
             }
-            //prefixWord = word.Reverse().
+            
+            // Return the word itself as the suffix word if a suffix cannot be extracted
             return word;
         }
 
