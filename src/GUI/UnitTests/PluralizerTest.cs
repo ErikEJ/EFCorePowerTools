@@ -16,5 +16,15 @@ namespace UnitTests
             // Assert
             Assert.AreEqual("People", result);
         }
+
+        [Test]
+        public void CanPluralizeCourseStatus()
+        {
+            // Act
+            var result = new Pluralizer().Pluralize("CourseStatus");
+
+            // Assert
+            Assert.AreEqual("CourseStatuses", result);
+        }
     }
 }

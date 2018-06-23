@@ -295,7 +295,7 @@ namespace Bricelam.EntityFrameworkCore.Design
             { "sinus", "sinus" },
             { "coitus", "coitus" },
             { "plexus", "plexus" },
-            { "status", "status" },
+            //{ "status", "status" },
             { "hiatus", "hiatus" },
             { "afreet", "afreeti" },
             { "afrit", "afriti" },
@@ -601,7 +601,7 @@ namespace Bricelam.EntityFrameworkCore.Design
             // [cs]h and ss that take es as plural form
             if (TryInflectOnSuffixInWord(
                 suffixWord,
-                new[] { "ch", "sh", "ss" },
+                new[] { "ch", "sh", "ss", "us" },
                 (s) => s + "es",
                 out newSuffixWord))
             {
@@ -897,8 +897,20 @@ namespace Bricelam.EntityFrameworkCore.Design
             var lastSpaceIndex = word.LastIndexOf(' ');
             prefixWord = word.Substring(0, lastSpaceIndex + 1);
 
-            // CONSIDER(leil): use capital letters to separate the words
-            return word.Substring(lastSpaceIndex + 1);
+            if (!string.IsNullOrWhiteSpace(prefixWord))
+            {
+                return word.Substring(lastSpaceIndex + 1);
+            }
+            // Use the last capital letter to separate the suffix word
+            if (word.Any(x => char.IsUpper(x)))
+            {
+                var lastUpperCaseLetter = word.Reverse().First(x => char.IsUpper(x));
+                var lastUpperCaseIndex = word.LastIndexOf(lastUpperCaseLetter);
+                prefixWord = word.Substring(0, lastUpperCaseIndex);
+                return word.Substring(lastUpperCaseIndex);
+            }
+            //prefixWord = word.Reverse().
+            return word;
         }
 
         static bool IsCapitalized(string word)
