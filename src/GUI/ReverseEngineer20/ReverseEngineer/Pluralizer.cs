@@ -295,7 +295,7 @@ namespace Bricelam.EntityFrameworkCore.Design
             { "sinus", "sinus" },
             { "coitus", "coitus" },
             { "plexus", "plexus" },
-            //{ "status", "status" },
+            //{ "status", "status" }, // Commented out because it is setting "status" as a plural word
             { "hiatus", "hiatus" },
             { "afreet", "afreeti" },
             { "afrit", "afriti" },
