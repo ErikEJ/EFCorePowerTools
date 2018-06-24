@@ -44,8 +44,8 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFrameworkCore.Scaffolding.Handlebars, Version=1.1.1.0, Culture=neutral, PublicKeyToken=b10b51e7b9be6a2e, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFrameworkCore.Scaffolding.Handlebars.1.1.1\lib\netstandard2.0\EntityFrameworkCore.Scaffolding.Handlebars.dll</HintPath>
+    <Reference Include="EntityFrameworkCore.Scaffolding.Handlebars, Version=1.4.0.0, Culture=neutral, PublicKeyToken=b10b51e7b9be6a2e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFrameworkCore.Scaffolding.Handlebars.1.4.0\lib\netstandard2.0\EntityFrameworkCore.Scaffolding.Handlebars.dll</HintPath>
     </Reference>
     <Reference Include="EntityFrameworkCore.SqlServerCompact40, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9af395b34ac99006, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFrameworkCore.SqlServerCompact40.2.1.0.1\lib\net461\EntityFrameworkCore.SqlServerCompact40.dll</HintPath>
