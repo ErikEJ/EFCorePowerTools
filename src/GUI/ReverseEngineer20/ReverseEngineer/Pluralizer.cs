@@ -295,7 +295,6 @@ namespace Bricelam.EntityFrameworkCore.Design
             { "sinus", "sinus" },
             { "coitus", "coitus" },
             { "plexus", "plexus" },
-            { "status", "status" },
             { "hiatus", "hiatus" },
             { "afreet", "afreeti" },
             { "afrit", "afriti" },
@@ -601,7 +600,7 @@ namespace Bricelam.EntityFrameworkCore.Design
             // [cs]h and ss that take es as plural form
             if (TryInflectOnSuffixInWord(
                 suffixWord,
-                new[] { "ch", "sh", "ss" },
+                new[] { "ch", "sh", "ss", "us" },
                 (s) => s + "es",
                 out newSuffixWord))
             {
@@ -893,14 +892,39 @@ namespace Bricelam.EntityFrameworkCore.Design
         // separate one combine word in to two parts, prefix word and the last word(suffix word)
         static string GetSuffixWord(string word, out string prefixWord)
         {
-            // use the last space to separate the words
+            var suffix = ExtractSuffixByLastSpace(word, out string firstPrefixWord);
+
+            suffix = ExtractSuffixByLastUpperCase(suffix, out string secondPrefixWord);
+
+            prefixWord = firstPrefixWord + secondPrefixWord;
+
+            return suffix;
+        }
+
+        static string ExtractSuffixByLastSpace(string word, out string prefixWord)
+        {
             var lastSpaceIndex = word.LastIndexOf(' ');
             prefixWord = word.Substring(0, lastSpaceIndex + 1);
 
-            // CONSIDER(leil): use capital letters to separate the words
             return word.Substring(lastSpaceIndex + 1);
         }
 
+        static string ExtractSuffixByLastUpperCase(string word, out string prefixWord)
+        {
+            if (!word.Any(x => char.IsUpper(x)))
+            {
+                prefixWord = string.Empty;
+                return word;
+            }
+
+            var lastUpperCaseChar = word.Reverse().First(x => char.IsUpper(x));
+            var lastUpperCaseIndex = word.LastIndexOf(lastUpperCaseChar);
+
+            prefixWord = word.Substring(0, lastUpperCaseIndex);
+
+            return word.Substring(lastUpperCaseIndex);
+
+        }
         static bool IsCapitalized(string word)
             => !string.IsNullOrEmpty(word) && char.IsUpper(word, 0);
 
