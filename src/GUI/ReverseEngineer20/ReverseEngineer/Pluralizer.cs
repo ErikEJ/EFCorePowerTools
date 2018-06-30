@@ -295,7 +295,6 @@ namespace Bricelam.EntityFrameworkCore.Design
             { "sinus", "sinus" },
             { "coitus", "coitus" },
             { "plexus", "plexus" },
-            //{ "status", "status" }, // Commented out because it is setting "status" as a plural word
             { "hiatus", "hiatus" },
             { "afreet", "afreeti" },
             { "afrit", "afriti" },
@@ -893,36 +892,39 @@ namespace Bricelam.EntityFrameworkCore.Design
         // separate one combine word in to two parts, prefix word and the last word(suffix word)
         static string GetSuffixWord(string word, out string prefixWord)
         {
-            // use the last space to separate the words
+            var suffix = ExtractSuffixByLastSpace(word, out string firstPrefixWord);
+
+            suffix = ExtractSuffixByLastUpperCase(suffix, out string secondPrefixWord);
+
+            prefixWord = firstPrefixWord + secondPrefixWord;
+
+            return suffix;
+        }
+
+        static string ExtractSuffixByLastSpace(string word, out string prefixWord)
+        {
             var lastSpaceIndex = word.LastIndexOf(' ');
             prefixWord = word.Substring(0, lastSpaceIndex + 1);
 
-            // Check if the prefix is empty (empty prefix means, the suffix could not be extracted from the string by splitting it by space)
-            if (!string.IsNullOrWhiteSpace(prefixWord))
-            {
-                // Return the suffix 
-                return word.Substring(lastSpaceIndex + 1);
-            }
-
-            // UPPER CASE SPLIT TO EXTRACT SUFFIX
-            // Check if there are any upper case characters in the string
-            if (word.Any(x => char.IsUpper(x)))
-            {
-                // Get the lastly occuring Upper Case character in the string
-                var lastUpperCaseChar = word.Reverse().First(x => char.IsUpper(x));
-                // Get the index of the lastly occuring upper case character in the string
-                var lastUpperCaseIndex = word.LastIndexOf(lastUpperCaseChar);
-                // Get the prefix word spliting the string at the index of the lastly occuring Upper case charater in the string
-                prefixWord = word.Substring(0, lastUpperCaseIndex);
-
-                // Return the suffix word 
-                return word.Substring(lastUpperCaseIndex);
-            }
-            
-            // Return the word itself as the suffix word if a suffix cannot be extracted
-            return word;
+            return word.Substring(lastSpaceIndex + 1);
         }
 
+        static string ExtractSuffixByLastUpperCase(string word, out string prefixWord)
+        {
+            if (!word.Any(x => char.IsUpper(x)))
+            {
+                prefixWord = string.Empty;
+                return word;
+            }
+
+            var lastUpperCaseChar = word.Reverse().First(x => char.IsUpper(x));
+            var lastUpperCaseIndex = word.LastIndexOf(lastUpperCaseChar);
+
+            prefixWord = word.Substring(0, lastUpperCaseIndex);
+
+            return word.Substring(lastUpperCaseIndex);
+
+        }
         static bool IsCapitalized(string word)
             => !string.IsNullOrEmpty(word) && char.IsUpper(word, 0);
 

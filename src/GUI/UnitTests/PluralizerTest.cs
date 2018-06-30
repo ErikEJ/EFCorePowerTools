@@ -27,6 +27,15 @@ namespace UnitTests
             Assert.AreEqual("CourseStatuses", result);
         }
         [Test]
+        public void CanPluralizeCourseStatusWithSpace()
+        {
+            // Act
+            var result = new Pluralizer().Pluralize("Course Status");
+
+            // Assert
+            Assert.AreEqual("Course Statuses", result);
+        }
+        [Test]
         public void CanSingularizeCourseStatuses()
         {
             // Act
@@ -55,5 +64,16 @@ namespace UnitTests
             // Assert
             Assert.AreEqual("Games", result);
         }
+
+        [Test]
+        public void CanPluralizeWordWithSpaceAndUpperCase()
+        {
+            // Act
+            var result = new Pluralizer().Pluralize("Fun CourseStatus");
+
+            // Assert
+            Assert.AreEqual("Fun CourseStatuses", result);
+        }
+
     }
 }
