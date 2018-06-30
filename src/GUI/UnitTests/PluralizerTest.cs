@@ -75,5 +75,24 @@ namespace UnitTests
             Assert.AreEqual("Fun CourseStatuses", result);
         }
 
+        [Test]
+        public void CanPluralizeStatus()
+        {
+            // Act
+            var result = new Pluralizer().Pluralize("Status");
+
+            // Assert
+            Assert.AreEqual("Statuses", result);
+        }
+
+        [Test]
+        public void CanPluralizeStatusLowerCase()
+        {
+            // Act
+            var result = new Pluralizer().Pluralize("status");
+
+            // Assert
+            Assert.AreEqual("statuses", result);
+        }
     }
 }
