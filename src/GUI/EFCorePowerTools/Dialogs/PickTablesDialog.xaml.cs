@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using ErikEJ.SqlCeToolbox.Helpers;
 using Microsoft.Win32;
@@ -88,6 +89,8 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
             chkTables.ItemsSource = null;
             chkTables.ItemsSource = items;
+
+            TxtSearchTable.Text = string.Empty;
         }
 
         private void BtnSaveSelection_OnClick(object sender, RoutedEventArgs e)
@@ -135,6 +138,26 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
             chkTables.ItemsSource = null;
             chkTables.ItemsSource = items;
+        }
+
+        private async void TxtSearchTable_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            var search = TxtSearchTable.Text;
+
+            await Task.Delay(500); // Add a delay (like a debounce) so that not every character change triggers a search
+            if (search != TxtSearchTable.Text)
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                chkTables.ItemsSource = items;
+                return;
+            }
+
+            var filteredItems = items.Where(x => x.Label.ToUpper().Contains(TxtSearchTable.Text.ToUpper())).ToList();
+            chkTables.ItemsSource = filteredItems;
         }
     }
 }
