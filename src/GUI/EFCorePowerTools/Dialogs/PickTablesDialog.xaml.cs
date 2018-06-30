@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ErikEJ.SqlCeToolbox.Helpers;
 using Microsoft.Win32;
+using Xceed.Wpf.Toolkit;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
@@ -38,6 +39,10 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
             chkTables.ItemsSource = items;
 
+            //chkTables.ItemSelectionChanged += (src, arg) => {
+            //    var test = items;
+            //};
+
             if (SelectedTables != null)
             {
                 SetChecked(SelectedTables.ToArray());
@@ -48,7 +53,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         {
             DialogResult = true;
             Tables.Clear();
-            foreach (var item in chkTables.Items)
+            foreach (var item in items)
             {
                 var checkItem = (CheckListItem)item;
                 if ((!checkItem.IsChecked && !IncludeTables) 
@@ -96,7 +101,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         private void BtnSaveSelection_OnClick(object sender, RoutedEventArgs e)
         {
             var tableList = string.Empty;
-            foreach (var item in chkTables.Items)
+            foreach (var item in items)
             {
                 var checkItem = (CheckListItem)item;
                 if ((checkItem.IsChecked))
@@ -138,6 +143,8 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
             chkTables.ItemsSource = null;
             chkTables.ItemsSource = items;
+
+            TxtSearchTable.Text = string.Empty;
         }
 
         private async void TxtSearchTable_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
