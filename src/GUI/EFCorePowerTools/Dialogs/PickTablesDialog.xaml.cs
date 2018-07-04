@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using ErikEJ.SqlCeToolbox.Helpers;
 using Microsoft.Win32;
-using Xceed.Wpf.Toolkit;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
@@ -38,10 +37,6 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 items.Add(new CheckListItem { IsChecked = isChecked, Label = table });                
             }
             chkTables.ItemsSource = items;
-
-            //chkTables.ItemSelectionChanged += (src, arg) => {
-            //    var test = items;
-            //};
 
             if (SelectedTables != null)
             {
