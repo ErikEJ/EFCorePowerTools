@@ -18,15 +18,6 @@ namespace UnitTests
         }
 
         [Test]
-        public void CanPluralizeCourseStatus()
-        {
-            // Act
-            var result = new Pluralizer().Pluralize("CourseStatus");
-
-            // Assert
-            Assert.AreEqual("CourseStatuses", result);
-        }
-        [Test]
         public void CanPluralizeCourseStatusWithSpace()
         {
             // Act
@@ -34,15 +25,6 @@ namespace UnitTests
 
             // Assert
             Assert.AreEqual("Course Statuses", result);
-        }
-        [Test]
-        public void CanSingularizeCourseStatuses()
-        {
-            // Act
-            var result = new Pluralizer().Singularize("CourseStatuses");
-
-            // Assert
-            Assert.AreEqual("CourseStatus", result);
         }
 
         [Test]
@@ -93,6 +75,32 @@ namespace UnitTests
 
             // Assert
             Assert.AreEqual("statuses", result);
+        }
+
+        [Test]
+        [TestCase("AxResponses", "AxResponse", Description = "Ending on -se")]
+        [TestCase("CourseStatuses", "CourseStatus", Description = "Ending on -s")]
+        [TestCase("HugeOxen", "HugeOx", Description = "Irregular")]
+        public void CanSingularizePascalCaseCompoundWords(string word, string expectedResult)
+        {
+            // Act
+            var result = new Pluralizer().Singularize(word);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("AxResponse", "AxResponses", Description = "Ending on -se")]
+        [TestCase("CourseStatus", "CourseStatuses", Description = "Ending on -s")]
+        [TestCase("HugeOx", "HugeOxen", Description = "Irregular")]
+        public void CanPlurarizePascalCaseCompoundWords(string word, string expectedResult)
+        {
+            // Act
+            var result = new Pluralizer().Pluralize(word);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }
