@@ -280,5 +280,31 @@ namespace UnitTests
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));
         }
+
+        [Test]
+        [TestCase("AxResponses", "AxResponse", Description = "Ending on -se")]
+        [TestCase("CourseStatuses", "CourseStatus", Description = "Ending on -s")]
+        [TestCase("HugeOxen", "HugeOx", Description = "Irregular")]
+        public void CanSingularizePascalCaseCompoundWords(string word, string expectedResult)
+        {
+            // Act
+            var result = new Pluralizer().Singularize(word);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("AxResponse", "AxResponses", Description = "Ending on -se")]
+        [TestCase("CourseStatus", "CourseStatuses", Description = "Ending on -s")]
+        [TestCase("HugeOx", "HugeOxen", Description = "Irregular")]
+        public void CanPlurarizePascalCaseCompoundWords(string word, string expectedResult)
+        {
+            // Act
+            var result = new Pluralizer().Pluralize(word);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
     }
 }
