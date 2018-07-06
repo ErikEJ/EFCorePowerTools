@@ -3,7 +3,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:extToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-        Title="Select Tables to Script" ShowInTaskbar="False" Height="411" Width="420" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="Select Tables to Script" ShowInTaskbar="False" Height="455.056" Width="420" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,16 +13,20 @@
     </dw:DialogWindow.Resources>
     <Grid>
         <StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="6" >
-                <CheckBox x:Name="chkClear" Content="Tables" IsChecked="True" Click="chkClear_Click" Margin="6,10,0,0"  BorderThickness="2" IsThreeState="False" ></CheckBox>
-                <dw:DialogButton Margin="20,10, 0, 0" x:Name="BtnSaveSelection"  Content="Save Selection" Click="BtnSaveSelection_OnClick" ></dw:DialogButton>
-                <dw:DialogButton Margin="20,10, 0, 0" x:Name="BtnLoadSelection"  Content="Load Selection" Click="BtnLoadSelection_OnClick" ></dw:DialogButton>
+            <StackPanel Orientation="Horizontal" Margin="6,6,6,3" Width="390" >
+                <dw:DialogButton ToolTip="Save the seletion of tables."  Margin="178,0,0,0" x:Name="BtnSaveSelection"  Content="Save Selection" Click="BtnSaveSelection_OnClick" Width="102" MinWidth="20" Height="10" ></dw:DialogButton>
+                <dw:DialogButton ToolTip="Load a selection of tables." Margin="3,0,0,0" x:Name="BtnLoadSelection"  Content="Load Selection" Click="BtnLoadSelection_OnClick" Width="101" RenderTransformOrigin="0.474,0.566" Height="23" MinWidth="20" HorizontalAlignment="Left" />
             </StackPanel>
-            <extToolkit:CheckListBox x:Name="chkTables" Margin="12,0" DisplayMemberPath="Label" SelectedMemberPath="IsChecked" Height="285" />
+            <StackPanel Orientation="Horizontal" Margin="6,0,6,6" Width="390" >
+                <CheckBox x:Name="chkClear" Content="Tables" IsChecked="True" Click="chkClear_Click" Margin="10,0,0,0"  BorderThickness="2" IsThreeState="False" VerticalAlignment="Center" ></CheckBox>
+                <Label Content="Search" Margin="43,0,0,0" Width="47"/>
+                <TextBox ToolTip="Search for table" x:Name="TxtSearchTable" Height="22" TextWrapping="Wrap" Width="230" Margin="0,0,5,0" TextChanged="TxtSearchTable_TextChanged" Background="White" Foreground="Black"/>
+            </StackPanel>
+            <extToolkit:CheckListBox x:Name="chkTables" Margin="12,0" DisplayMemberPath="Label" SelectedMemberPath="IsChecked" Height="302" />
             <StackPanel Orientation="Horizontal">
                 <dw:DialogButton Content="OK" IsDefault="True" Grid.Row="5" Margin="230,12,12,12" Name="button1" TabIndex="6" Click="button1_Click" Width="75" />
                 <dw:DialogButton Content="Cancel" IsCancel="True" Grid.Row="5" HorizontalAlignment="Right" Margin="0,12,12,12" Name="button2" TabIndex="7" SnapsToDevicePixels="False" Click="button2_Click" Height="23" VerticalAlignment="Bottom" />
-           </StackPanel>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </dw:DialogWindow>
