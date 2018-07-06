@@ -80,6 +80,162 @@ namespace UnitTests
         }
 
         [Test]
+        [TestCase("alumna", "alumnae")]
+        [TestCase("forum", "fora")]
+        [TestCase("bacterium", "bacteria")]
+        public void CanPlurarizeAssimilatedClassicalInflectionWord(string word, string expectedResult)
+        {
+            var result = new Pluralizer().Pluralize(word);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("alumnae", "alumna")]
+        [TestCase("fora", "forum")]
+        [TestCase("bacteria", "bacterium")]
+        public void CanSingularizeAssimilatedClassicalInflectionWord(string word, string expectedResult)
+        {
+            var result = new Pluralizer().Singularize(word);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("enigma", "enigmata")]
+        [TestCase("drama", "dramata")]
+        [TestCase("alto", "alti")]
+        public void CanPlurarizeClassicalInflectionWord(string word, string expectedResult)
+        {
+            var result = new Pluralizer().Pluralize(word);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("enigmata", "enigma")]
+        [TestCase("dramata", "drama")]
+        [TestCase("alti", "alto")]
+        public void CanSingularizeClassicalInflectionWord(string word, string expectedResult)
+        {
+            var result = new Pluralizer().Singularize(word);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+
+
+        [Test]
+        [TestCase("albino", "albinos")]
+        [TestCase("guano", "guanos")]
+        [TestCase("mango", "mangoes")]
+        public void CanPlurarizeOSuffixWord(string word, string expectedResult)
+        {
+            var result = new Pluralizer().Pluralize(word);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("albinos", "albino")]
+        [TestCase("guanos", "guano")]
+        [TestCase("mangoes", "mango")]
+        public void CanSingularizeOSuffixWord(string word, string expectedResult)
+        {
+            var result = new Pluralizer().Singularize(word);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("horseman", "horsemen")]
+        [TestCase("woman", "women")]
+        [TestCase("Deliveryman", "Deliverymen")]
+
+        public void TestPluralRule_Suffix_Man(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("Mouse", "Mice")]
+        [TestCase("house", "houses")]
+        [TestCase("Louse", "Lice")]
+        public void TestPluralRule_Suffix_Ouse(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("Tooth", "Teeth")]
+        [TestCase("house", "houses")]
+        [TestCase("bluetooth", "bluetooths")]
+        public void TestPluralRule_Suffix_Tooth(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("goose", "geese")]
+        [TestCase("mongoose", "mongooses")]
+        public void TestPluralRule_Suffix_Goose(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("foot", "feet")]
+        [TestCase("webfoot", "webfeet")]
+        [TestCase("Bigfoot", "Bigfoots")]
+        public void TestPluralRule_Suffix_Feet(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("brother", "brothers")]
+        [TestCase("game", "games")]
+        [TestCase("status", "statuses")]
+        [TestCase("Status", "Statuses")]
+        [TestCase("Cow", "Cows")]
+        public void TestInflection_Random(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+
+
+        [Test]
         public void CanPluralizeCourseStatusWithSpace()
         {
             // Act
@@ -90,26 +246,6 @@ namespace UnitTests
         }
 
         [Test]
-        public void CanSingularizeGames()
-        {
-            // Act
-            var result = new Pluralizer().Singularize("Games");
-
-            // Assert
-            Assert.AreEqual("Game", result);
-        }
-
-        [Test]
-        public void CanPluralizeGame()
-        {
-            // Act
-            var result = new Pluralizer().Pluralize("Game");
-
-            // Assert
-            Assert.AreEqual("Games", result);
-        }
-
-        [Test]
         public void CanPluralizeWordWithSpaceAndUpperCase()
         {
             // Act
@@ -117,26 +253,6 @@ namespace UnitTests
 
             // Assert
             Assert.AreEqual("Fun CourseStatuses", result);
-        }
-
-        [Test]
-        public void CanPluralizeStatus()
-        {
-            // Act
-            var result = new Pluralizer().Pluralize("Status");
-
-            // Assert
-            Assert.AreEqual("Statuses", result);
-        }
-
-        [Test]
-        public void CanPluralizeStatusLowerCase()
-        {
-            // Act
-            var result = new Pluralizer().Pluralize("status");
-
-            // Assert
-            Assert.AreEqual("statuses", result);
         }
 
         [Test]

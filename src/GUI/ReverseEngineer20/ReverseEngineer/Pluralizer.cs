@@ -77,9 +77,7 @@ namespace Bricelam.EntityFrameworkCore.Design
 
         readonly IReadOnlyDictionary<string, string> _irregularPluralsList = new Dictionary<string, string>
         {
-            { "brother", "brothers" },
             { "child", "children" },
-            { "cow", "cows" },
             { "ephemeris", "ephemerides" },
             { "genie", "genies" },
             { "money", "moneys" },
@@ -126,10 +124,13 @@ namespace Bricelam.EntityFrameworkCore.Design
             { "house", "houses" },
             { "valve", "valves" },
             { "cloth", "clothes" },
+            { "bluetooth", "bluetooths"},
+            { "bigfoot", "bigfoots"},
+            { "goosefoot", "goosefoots" }
         };
 
         readonly IReadOnlyDictionary<string, string> _assimilatedClassicalInflectionList = new Dictionary<string, string>
-                {
+        {
             { "alumna", "alumnae" },
             { "alga", "algae" },
             { "vertebra", "vertebrae" },
@@ -523,7 +524,6 @@ namespace Bricelam.EntityFrameworkCore.Design
             if (_irregularPluralsList.TryGetValue(suffixWord.ToLowerInvariant(), out plural))
                 return prefixWord + FirstLetterCaseSameAsOriginal(suffixWord, plural);
 
-            // handle irregular inflections for common suffixes, e.g. "mouse" -> "mice"
             if (TryInflectOnSuffixInWord(
                 suffixWord,
                 new[] { "man" },
@@ -532,6 +532,7 @@ namespace Bricelam.EntityFrameworkCore.Design
             {
                 return prefixWord + newSuffixWord;
             }
+            // handle irregular inflections for common suffixes, e.g. "mouse" -> "mice"
             if (TryInflectOnSuffixInWord(
                 suffixWord,
                 new[] { "louse", "mouse" },
