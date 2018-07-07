@@ -11,7 +11,7 @@ namespace UnitTests
         [TestCase("bison")]
         [TestCase("Djinn")]
         [TestCase("tobacco")]
-        public void CanPlurarizeUninflectedWord(string word)
+        public void CanPluralizeUninflectedWord(string word)
         {
             // Act
             var result = new Pluralizer().Pluralize(word);
@@ -38,7 +38,7 @@ namespace UnitTests
         [TestCase("is", "are")]
         [TestCase("was", "were")]
         [TestCase("has", "have")]
-        public void CanPlurarizeIrregularVerb(string word, string expectedResult)
+        public void CanPluralizeIrregularVerb(string word, string expectedResult)
         {
             var result = new Pluralizer().Pluralize(word);
 
@@ -61,7 +61,7 @@ namespace UnitTests
         [TestCase("child", "children")]
         [TestCase("corpus", "corpora")]
         [TestCase("pie", "pies")]
-        public void CanPlurarizeIrregularWord(string word, string expectedResult)
+        public void CanPluralizeIrregularWord(string word, string expectedResult)
         {
             var result = new Pluralizer().Pluralize(word);
 
@@ -83,7 +83,7 @@ namespace UnitTests
         [TestCase("alumna", "alumnae")]
         [TestCase("forum", "fora")]
         [TestCase("bacterium", "bacteria")]
-        public void CanPlurarizeAssimilatedClassicalInflectionWord(string word, string expectedResult)
+        public void CanPluralizeAssimilatedClassicalInflectionWord(string word, string expectedResult)
         {
             var result = new Pluralizer().Pluralize(word);
 
@@ -105,7 +105,7 @@ namespace UnitTests
         [TestCase("enigma", "enigmata")]
         [TestCase("drama", "dramata")]
         [TestCase("alto", "alti")]
-        public void CanPlurarizeClassicalInflectionWord(string word, string expectedResult)
+        public void CanPluralizeClassicalInflectionWord(string word, string expectedResult)
         {
             var result = new Pluralizer().Pluralize(word);
 
@@ -129,7 +129,7 @@ namespace UnitTests
         [TestCase("albino", "albinos")]
         [TestCase("guano", "guanos")]
         [TestCase("mango", "mangoes")]
-        public void CanPlurarizeOSuffixWord(string word, string expectedResult)
+        public void CanPluralizeOSuffixWord(string word, string expectedResult)
         {
             var result = new Pluralizer().Pluralize(word);
 
@@ -272,33 +272,7 @@ namespace UnitTests
         [TestCase("AxResponse", "AxResponses", Description = "Ending on -se")]
         [TestCase("CourseStatus", "CourseStatuses", Description = "Ending on -s")]
         [TestCase("HugeOx", "HugeOxen", Description = "Irregular")]
-        public void CanPlurarizePascalCaseCompoundWords(string word, string expectedResult)
-        {
-            // Act
-            var result = new Pluralizer().Pluralize(word);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        [TestCase("AxResponses", "AxResponse", Description = "Ending on -se")]
-        [TestCase("CourseStatuses", "CourseStatus", Description = "Ending on -s")]
-        [TestCase("HugeOxen", "HugeOx", Description = "Irregular")]
-        public void CanSingularizePascalCaseCompoundWords(string word, string expectedResult)
-        {
-            // Act
-            var result = new Pluralizer().Singularize(word);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        [TestCase("AxResponse", "AxResponses", Description = "Ending on -se")]
-        [TestCase("CourseStatus", "CourseStatuses", Description = "Ending on -s")]
-        [TestCase("HugeOx", "HugeOxen", Description = "Irregular")]
-        public void CanPlurarizePascalCaseCompoundWords(string word, string expectedResult)
+        public void CanPluralizePascalCaseCompoundWords(string word, string expectedResult)
         {
             // Act
             var result = new Pluralizer().Pluralize(word);
