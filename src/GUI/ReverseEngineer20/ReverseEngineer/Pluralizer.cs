@@ -567,7 +567,7 @@ namespace Bricelam.EntityFrameworkCore.Design
             }
             if (TryInflectOnSuffixInWord(
                 suffixWord,
-                new[] { "zoon" },
+                new[] { "zoon", "zoan" },
                 (s) => s.Remove(s.Length - 3, 3) + "oa",
                 out newSuffixWord))
             {
