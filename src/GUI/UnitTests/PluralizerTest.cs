@@ -389,7 +389,6 @@ namespace UnitTests
 
         [Test]
         [TestCase("box", "boxes")]
-        [TestCase("potato", "potatoes")]
         public void TestPluralRule_Suffix_X(string singular, string plural)
         {
             var pluralResult = new Pluralizer().Pluralize(singular);
