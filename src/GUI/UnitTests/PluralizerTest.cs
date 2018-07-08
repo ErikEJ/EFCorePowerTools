@@ -124,7 +124,6 @@ namespace UnitTests
         }
 
 
-
         [Test]
         [TestCase("albino", "albinos")]
         [TestCase("guano", "guanos")]
@@ -303,23 +302,130 @@ namespace UnitTests
         }
 
         [Test]
-        public void CanPluralizeCourseStatusWithSpace()
+        [TestCase("Status", "Statuses")]
+        [TestCase("Dish", "Dishes")]
+        [TestCase("miss", "misses")]
+        [TestCase("birch", "birches")]
+        public void TestPluralRule_Suffix_Ch_Sh_Ss_Us(string singular, string plural)
         {
-            // Act
-            var result = new Pluralizer().Pluralize("Course Status");
+            var pluralResult = new Pluralizer().Pluralize(singular);
 
-            // Assert
-            Assert.AreEqual("Course Statuses", result);
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
         }
 
         [Test]
-        public void CanPluralizeWordWithSpaceAndUpperCase()
+        [TestCase("dwarf", "dwarves")]
+        [TestCase("wolf", "wolves")]
+        [TestCase("calf", "calves")]
+        [TestCase("shelf", "shelves")]
+        [TestCase("leaf", "leaves")]
+        public void TestPluralRule_Suffix_Alf_Elf_Olf_Eaf_Arf(string singular, string plural)
         {
-            // Act
-            var result = new Pluralizer().Pluralize("Fun CourseStatus");
+            var pluralResult = new Pluralizer().Pluralize(singular);
 
-            // Assert
-            Assert.AreEqual("Fun CourseStatuses", result);
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("Day", "Days")]
+        [TestCase("key", "keys")]
+        [TestCase("Boy", "Boys")]
+        [TestCase("Guy", "Guys")]
+        public void TestPluralRule_Suffix_Vowel_Y(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("Baby", "Babies")]
+        public void TestPluralRule_Suffix_Y(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("video", "videos")]
+        [TestCase("kangaroo", "kangaroos")]
+        [TestCase("portfolio", "portfolios")]
+        [TestCase("duo", "duos")]
+        public void TestPluralRule_Suffix_Vowel_O(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("hero", "heroes")]
+        [TestCase("potato", "potatoes")]
+        public void TestPluralRule_Suffix_O(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("box", "boxes")]
+        [TestCase("potato", "potatoes")]
+        public void TestPluralRule_Suffix_X(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("Course Status", "Course Statuses")]
+        [TestCase("limited Offer", "limited Offers")]
+        [TestCase("Fun class", "Fun classes")]
+        public void CanPluralizeWordsSeparatedBySpace(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("Course AverageStatus", "Course AverageStatuses")]
+        [TestCase("limited GreatOffer", "limited GreatOffers")]
+        [TestCase("Fun smallClass", "Fun smallClasses")]
+        public void CanPluralizeWordWithSpaceAndUpperCase(string singular, string plural)
+        {
+            var pluralResult = new Pluralizer().Pluralize(singular);
+
+            var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
         }
 
         [Test]

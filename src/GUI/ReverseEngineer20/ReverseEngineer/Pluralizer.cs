@@ -607,14 +607,6 @@ namespace Bricelam.EntityFrameworkCore.Design
             {
                 return prefixWord + newSuffixWord;
             }
-            //if (TryInflectOnSuffixInWord(
-            //    suffixWord,
-            //    new[] { "inx", "anx", "ynx" },
-            //    (s) => s.Remove(s.Length - 1, 1) + "ges",
-            //    out newSuffixWord))
-            //{
-            //    return prefixWord + newSuffixWord;
-            //}
 
             // [cs]h and ss that take es as plural form
             if (TryInflectOnSuffixInWord(
@@ -626,7 +618,6 @@ namespace Bricelam.EntityFrameworkCore.Design
                 return prefixWord + newSuffixWord;
             }
 
-            // f, fe that take ves as plural form
             if (TryInflectOnSuffixInWord(
                 suffixWord,
                 new[] { "alf", "elf", "olf", "eaf", "arf" },
@@ -635,6 +626,8 @@ namespace Bricelam.EntityFrameworkCore.Design
             {
                 return prefixWord + newSuffixWord;
             }
+
+            // f, fe that take ves as plural form
             if (TryInflectOnSuffixInWord(
                 suffixWord,
                 new[] { "nife", "life", "wife" },
