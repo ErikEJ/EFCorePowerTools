@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -57,7 +54,9 @@ namespace EFCorePowerTools.Extensions
             var project = GetProject(dte, sqlprojPath);
             if (project == null) return null;
 
-            var files = DirSearch(Path.GetDirectoryName(project.FullName), "*.dacpac");
+            var searchPath = Path.Combine(Path.GetDirectoryName(project.FullName), "bin");
+
+            var files = DirSearch(searchPath, "*.dacpac");
             foreach (var file in files)
             {
                 File.Delete(file);
@@ -65,7 +64,7 @@ namespace EFCorePowerTools.Extensions
 
             if (!project.TryBuild()) return null;
 
-            files = DirSearch(Path.GetDirectoryName(project.FullName), "*.dacpac");
+            files = DirSearch(searchPath, "*.dacpac");
             foreach (var file in files)
             {
                 if (File.GetLastWriteTime(file) > DateTime.Now.AddSeconds(-2))
