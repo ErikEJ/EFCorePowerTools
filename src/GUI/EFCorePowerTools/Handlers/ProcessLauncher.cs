@@ -133,13 +133,14 @@ namespace EFCorePowerTools.Handlers
                 if (version.ToString(3) == "2.0.2") testVersion = "2.0.2";
                 if (version.ToString(3) == "2.0.3") testVersion = "2.0.3";
                 if (version.ToString(3) == "2.1.0") testVersion = "2.1.0";
+                if (version.ToString(3) == "2.1.2") testVersion = "2.1.2";
             }
 
             File.Copy(Path.Combine(fromDir, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
 
             if (!string.IsNullOrEmpty(testVersion))
             {
-                if (testVersion == "2.1.0")
+                if (testVersion == "2.1.0" || testVersion == "2.1.2")
                 {
                     File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
                 }

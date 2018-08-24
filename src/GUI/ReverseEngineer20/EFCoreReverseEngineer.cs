@@ -103,9 +103,7 @@ namespace ReverseEngineer20
             };
 
             var scaffoldedModel = scaffolder.ScaffoldModel(
-                    reverseEngineerOptions.Dacpac != null
-                        ? reverseEngineerOptions.Dacpac
-                        : reverseEngineerOptions.ConnectionString,
+                    reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString,
                     reverseEngineerOptions.Tables,
                     schemas,
                     @namespace,
