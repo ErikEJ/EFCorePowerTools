@@ -41,7 +41,7 @@ namespace ReverseEngineer20
             var dbModel = new DatabaseModel
             {
                 DatabaseName = Path.GetFileNameWithoutExtension(dacpacPath),
-                DefaultSchema = schemas.Count() > 0 ? schemas.First() : "dbo"                
+                DefaultSchema = schemas.Count() > 0 ? schemas.First() : "dbo"
             };
             //Sequences not created - not needed for scaffolding
 
@@ -85,7 +85,7 @@ namespace ReverseEngineer20
             return dbModel;
         }
 
-        public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas) 
+        public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas)
             => throw new NotImplementedException();
 
         private IReadOnlyDictionary<string, (string, string)> GetTypeAliases(TSqlTypedModel model, DatabaseModel dbModel)
@@ -255,7 +255,7 @@ namespace ReverseEngineer20
                 && i.ColumnType != ColumnType.ColumnSet
                 // Computed columns not supported for now
                 // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                && i.ColumnType != ColumnType.ComputedColumn 
+                && i.ColumnType != ColumnType.ComputedColumn
                 );
 
             foreach (var col in tableColumns)

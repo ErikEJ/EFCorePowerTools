@@ -50,7 +50,7 @@ namespace ReverseEngineer20
                     var dbContext = operations.CreateContext(type.Name);
                     if (scriptMigration)
                     {
-                        result.Add(new Tuple<string, string>(type.Name,  ScriptMigration(dbContext, outputPath)));
+                        result.Add(new Tuple<string, string>(type.Name, ScriptMigration(dbContext, outputPath)));
                     }
                     else
                     {
@@ -168,11 +168,11 @@ namespace ReverseEngineer20
             }
             EnsureMigrationsAssembly(services, assembly);
 
-            //For 2.1 use:
-            //var scaffolder = services.GetRequiredService<IMigrationsScaffolder>();
-            //var migration = scaffolder.ScaffoldMigration(name, nameSpace, subNamespace, _language);
-
+#if CORE21
+            var scaffolder = services.GetRequiredService<IMigrationsScaffolder>();
+#else
             var scaffolder = services.GetRequiredService<MigrationsScaffolder>();
+#endif
             var migration = scaffolder.ScaffoldMigration(name, nameSpace);
 
             return scaffolder.Save(projectPath, migration, null);
