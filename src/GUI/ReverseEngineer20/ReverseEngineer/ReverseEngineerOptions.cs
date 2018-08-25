@@ -25,5 +25,7 @@ namespace ReverseEngineer20
         [IgnoreDataMember]
         public string Dacpac { get; set; }
         public string DefaultDacpacSchema { get; set; }
+        public string PrefixReplace { get; set; }
+        public string PrefixSubstitution { get; set; }
     }
 }

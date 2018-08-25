@@ -26,6 +26,8 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 NameSpace = options.ProjectRootNamespace;
                 OutputPath = options.OutputPath;
                 cmbLanguage.SelectedIndex = options.SelectedToBeGenerated;
+                txtPrefixReplace.Text = options.PrefixReplace;
+                txtPrefixSubstitution.Text = options.PrefixSubstitution;
                 SetCheckState();
             }
         }
@@ -111,6 +113,10 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         }
 
         public int SelectedTobeGenerated => cmbLanguage.SelectedIndex;
+
+        public string PrefixReplace => txtPrefixReplace.Text;
+
+        public string PrefixSubstitution => txtPrefixSubstitution.Text;
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {

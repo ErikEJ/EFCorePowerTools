@@ -2,7 +2,7 @@
         xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Generate EF Core Model in Project" 
-        ShowInTaskbar="False" Height="550" Width="418" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        ShowInTaskbar="False" Height="699.364" Width="418" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -16,7 +16,7 @@
             <RowDefinition Height="63*" />
             <RowDefinition Height="63*" />
             <RowDefinition Height="35*" />
-            <RowDefinition Height="130*" />
+            <RowDefinition Height="210*" />
             <RowDefinition Height="35*" />
             <RowDefinition Height="35*" />
             <RowDefinition Height="35*" />
@@ -28,11 +28,15 @@
         <TextBox TabIndex="1" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" Name="txtNameSpace" VerticalAlignment="Top" Width="371" Grid.Row="1" />
         <TextBox TabIndex="2" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" x:Name="txtOutputPath" VerticalAlignment="Top" Width="371" Grid.Row="2" />
         <ComboBox TabIndex="3" Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="161,0,0,0" Name="cmbLanguage" VerticalAlignment="Top" Width="223" ItemsSource="{Binding}" IsEditable="False" />
-        <GroupBox Grid.Row="4" Header="Naming" Margin="5">
+        <GroupBox Grid.Row="4" Header="Naming" Margin="5,4.6,4.6,0">
             <StackPanel>
                 <CheckBox TabIndex="4" Content="Pluralize or singularize generated object names (English)" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkPluralize" VerticalAlignment="Top" Width="358" Checked="chkPluralize_Checked" Unchecked="chkPluralize_Unchecked" />
                 <CheckBox TabIndex="5" Content="Use table and column names directly from the database" IsChecked="False" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" Name="chkUseDatabaseNames" VerticalAlignment="Top" Width="358" Checked="chkUseDatabaseNames_Checked" Unchecked="chkUseDatabaseNames_Unchecked" />
                 <CheckBox TabIndex="6" Content="Replace Id with ID (experimental!)" x:Name="chkIdReplace" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0"  VerticalAlignment="Top" Width="358" />
+                <dw:LiveTextBlock Text="Tables that Start With (experimental!)" Margin="12,5,0,0"></dw:LiveTextBlock>
+                <TextBox TabIndex="7" x:Name="txtPrefixReplace" Margin="12,5,0,0" />
+                <dw:LiveTextBlock Text="Replace With" Margin="12,5,0,0"></dw:LiveTextBlock>
+                <TextBox TabIndex="8" x:Name="txtPrefixSubstitution" Margin="12,5,0,0" />
             </StackPanel>
         </GroupBox>
         <CheckBox TabIndex="10" Content="Use DataAnnotation attributes to configure the model"  Grid.Row="5" Height="22" HorizontalAlignment="Left" Margin="12,10,0,0" Name="chkDataAnnoations" VerticalAlignment="Top" Width="358" />

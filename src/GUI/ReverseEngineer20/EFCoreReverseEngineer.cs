@@ -115,6 +115,16 @@ namespace ReverseEngineer20
                     modelOptions,
                     codeOptions);
 
+            if (!String.IsNullOrWhiteSpace(reverseEngineerOptions.PrefixReplace))
+            {
+                foreach (var file in scaffoldedModel.AdditionalFiles)
+                {
+                    file.Path = Regex.Replace(file.Path, "^tbl", "PE");
+                    file.Code = Regex.Replace(file.Code, $"([\\s<]){reverseEngineerOptions.PrefixReplace}(\\w+)", $"$1{reverseEngineerOptions.PrefixSubstitution}$2");
+                }
+                scaffoldedModel.ContextFile.Code = Regex.Replace(scaffoldedModel.ContextFile.Code, $"([\\s<.]){reverseEngineerOptions.PrefixReplace}(\\w+)", $"$1{reverseEngineerOptions.PrefixSubstitution}$2");
+            }
+
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
                 Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath),
