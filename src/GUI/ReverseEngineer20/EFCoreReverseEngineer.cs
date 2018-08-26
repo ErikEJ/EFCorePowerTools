@@ -119,7 +119,7 @@ namespace ReverseEngineer20
             {
                 foreach (var file in scaffoldedModel.AdditionalFiles)
                 {
-                    file.Path = Regex.Replace(file.Path, "^tbl", "PE");
+                    file.Path = Regex.Replace(file.Path, $"^{reverseEngineerOptions.PrefixReplace}", reverseEngineerOptions.PrefixSubstitution);
                     file.Code = Regex.Replace(file.Code, $"([\\s<]){reverseEngineerOptions.PrefixReplace}(\\w+)", $"$1{reverseEngineerOptions.PrefixSubstitution}$2");
                 }
                 scaffoldedModel.ContextFile.Code = Regex.Replace(scaffoldedModel.ContextFile.Code, $"([\\s<.]){reverseEngineerOptions.PrefixReplace}(\\w+)", $"$1{reverseEngineerOptions.PrefixSubstitution}$2");
