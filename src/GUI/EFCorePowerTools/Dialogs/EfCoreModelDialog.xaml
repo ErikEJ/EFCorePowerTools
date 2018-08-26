@@ -30,8 +30,8 @@
         <ComboBox TabIndex="3" Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="161,0,0,0" Name="cmbLanguage" VerticalAlignment="Top" Width="223" ItemsSource="{Binding}" IsEditable="False" />
         <GroupBox Grid.Row="4" Header="Naming" Margin="5,4.6,4.6,0">
             <StackPanel>
-                <CheckBox TabIndex="4" Content="Pluralize or singularize generated object names (English)" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkPluralize" VerticalAlignment="Top" Width="358" Checked="chkPluralize_Checked" Unchecked="chkPluralize_Unchecked" />
-                <CheckBox TabIndex="5" Content="Use table and column names directly from the database" IsChecked="False" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" Name="chkUseDatabaseNames" VerticalAlignment="Top" Width="358" Checked="chkUseDatabaseNames_Checked" Unchecked="chkUseDatabaseNames_Unchecked" />
+                <CheckBox TabIndex="4" Content="Pluralize or singularize generated object names (English)" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" x:Name="chkPluralize" VerticalAlignment="Top" Width="358" />
+                <CheckBox TabIndex="5" Content="Use table and column names directly from the database" IsChecked="False" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0" Name="chkUseDatabaseNames" VerticalAlignment="Top" Width="358" />
                 <CheckBox TabIndex="6" Content="Replace Id with ID (experimental!)" x:Name="chkIdReplace" Height="23" HorizontalAlignment="Left" Margin="12,10,0,0"  VerticalAlignment="Top" Width="358" />
                 <dw:LiveTextBlock Text="Tables that Start With (experimental!)" Margin="12,5,0,0"></dw:LiveTextBlock>
                 <TextBox TabIndex="7" x:Name="txtPrefixReplace" Margin="12,5,0,0" />

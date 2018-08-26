@@ -3,10 +3,13 @@ using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+using ReverseEngineer20.ReplacementServices;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
@@ -43,9 +46,16 @@ namespace ReverseEngineer20
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
             }
 
-            if (reverseEngineerOptions.UseInflector)
+            if (reverseEngineerOptions.UseInflector && !reverseEngineerOptions.UseDatabaseNames)
             {
                 serviceCollection.AddSingleton<IPluralizer, InflectorPluralizer>();
+            }
+            else if (reverseEngineerOptions.UseInflector && reverseEngineerOptions.UseDatabaseNames)
+            {
+                // Replace the Scaffolding Model Factory (so that DbNames are used and Pluralizer is called)
+                // see issue: https://github.com/aspnet/EntityFrameworkCore/issues/13121
+                serviceCollection.Replace(ServiceDescriptor.Singleton<IScaffoldingModelFactory, ReplacementScaffoldingModelFactory>());
+                serviceCollection.AddSingleton<IPluralizer, PreservePluralizer>();
             }
 
             // Add database provider services

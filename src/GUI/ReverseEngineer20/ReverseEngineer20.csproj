@@ -213,8 +213,11 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>ModelBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="ReplacementServices\ReplacementScaffoldingModelFactory.cs" />
+    <Compile Include="ReplacementServices\TypeExtensions.cs" />
     <Compile Include="ReverseEngineer\CustomTemplateFileService.cs" />
     <Compile Include="ReverseEngineer\DacpacTableListBuilder.cs" />
+    <Compile Include="ReverseEngineer\PreservePluralizer.cs" />
     <Compile Include="ReverseEngineer\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="ReverseEngineer\DatabaseType.cs" />
     <Compile Include="EFCoreReverseEngineer.cs" />
