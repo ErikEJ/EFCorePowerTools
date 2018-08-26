@@ -26,7 +26,8 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 NameSpace = options.ProjectRootNamespace;
                 OutputPath = options.OutputPath;
                 cmbLanguage.SelectedIndex = options.SelectedToBeGenerated;
-                SetCheckState();
+                txtPrefixReplace.Text = options.PrefixReplace;
+                txtPrefixSubstitution.Text = options.PrefixSubstitution;
             }
         }
 
@@ -112,6 +113,10 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         public int SelectedTobeGenerated => cmbLanguage.SelectedIndex;
 
+        public string PrefixReplace => txtPrefixReplace.Text;
+
+        public string PrefixSubstitution => txtPrefixSubstitution.Text;
+
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtNameSpace.Text))
@@ -144,40 +149,5 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             }
         }
 
-        private void chkPluralize_Checked(object sender, RoutedEventArgs e)
-        {
-            chkUseDatabaseNames.IsEnabled = true;
-            SetCheckState();
-        }
-
-        private void SetCheckState()
-        {
-            if (chkPluralize.IsChecked.Value)
-            {
-                chkUseDatabaseNames.IsChecked = false;
-                chkUseDatabaseNames.IsEnabled = false;
-            }
-            if (chkUseDatabaseNames.IsChecked.Value)
-            {
-                chkPluralize.IsChecked = false;
-                chkPluralize.IsEnabled = false;
-            }
-        }
-
-        private void chkUseDatabaseNames_Checked(object sender, RoutedEventArgs e)
-        {
-            chkPluralize.IsEnabled = true;
-            SetCheckState();
-        }
-
-        private void chkPluralize_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkUseDatabaseNames.IsEnabled = true;
-        }
-
-        private void chkUseDatabaseNames_Unchecked(object sender, RoutedEventArgs e)
-        {
-            chkPluralize.IsEnabled = true;
-        }
     }
 }

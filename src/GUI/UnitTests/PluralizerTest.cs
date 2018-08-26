@@ -1,5 +1,6 @@
 ﻿using Bricelam.EntityFrameworkCore.Design;
 using NUnit.Framework;
+using ReverseEngineer20.ReverseEngineer;
 
 namespace UnitTests
 {
@@ -354,6 +355,27 @@ namespace UnitTests
             var pluralResult = new Pluralizer().Pluralize(singular);
 
             var singularResult = new Pluralizer().Singularize(plural);
+
+            Assert.That(pluralResult, Is.EqualTo(plural));
+            Assert.That(singularResult, Is.EqualTo(singular));
+        }
+
+        [Test]
+        [TestCase("My_Baby", "My_Babies")]
+        [TestCase("tblActRepArea", "tblActRepAreas")]
+        [TestCase("tblAddress", "tblAddresses")]
+        [TestCase("tblPhoneNumber", "tblPhoneNumbers")]
+        [TestCase("tblArcTSO_Detail", "tblArcTSO_Details")]
+        [TestCase("tblContact", "tblContacts")]
+        [TestCase("tblCreditContact", "tblCreditContacts")]
+        [TestCase("tblJob_EFile_Error", "tblJob_EFile_Error")]
+        [TestCase("tblJob_TaxReturn_Jurisdiction", "tblJob_TaxReturn_Jurisdictions")]
+        [TestCase("tblEMailHistory", "tblEMailHistories")]
+        public void TestPluralRule_Keep_Underscores(string singular, string plural)
+        {
+            var pluralResult = new PreservePluralizer().Pluralize(singular);
+
+            var singularResult = new PreservePluralizer().Singularize(plural);
 
             Assert.That(pluralResult, Is.EqualTo(plural));
             Assert.That(singularResult, Is.EqualTo(singular));
