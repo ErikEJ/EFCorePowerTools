@@ -124,12 +124,14 @@
     <Content Include="efpt\2.1.0\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="efpt\efpt.exe">
+    <Content Include="efpt\2.0.0\efpt.exe">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="efpt\Microsoft.EntityFrameworkCore.Design.dll">
+    <Content Include="efpt\2.0.0\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="efpt\2.1.2\efpt.exe" />
+    <Content Include="efpt\2.1.2\Microsoft.EntityFrameworkCore.Design.dll" />
     <Content Include="e_sqlite3.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -150,7 +152,7 @@
     <Content Include="efpt\2.0.3\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="efpt\efpt.exe.config">
+    <Content Include="efpt\2.0.0\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="efpt\2.1.0\efpt.exe.config">
@@ -160,6 +162,7 @@
       <Link>efpt21.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="efpt\2.1.2\efpt.exe.config" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -457,6 +460,7 @@
       <SubType>Designer</SubType>
     </VSCTCompile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.9\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.9\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" />
