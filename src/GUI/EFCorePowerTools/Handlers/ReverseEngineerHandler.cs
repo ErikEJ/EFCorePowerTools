@@ -39,6 +39,7 @@ namespace EFCorePowerTools.Handlers
                 var startTime = DateTime.Now;
                 var projectPath = project.Properties.Item("FullPath").Value.ToString();
                 var optionsPath = Path.Combine(projectPath, "efpt.config.json");
+                var renamingPath = Path.Combine(projectPath, "efpt.renaming.json");
 
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution();
