@@ -3,6 +3,7 @@ using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,12 +36,18 @@ namespace ReverseEngineer20
                 .AddEntityFrameworkDesignTimeServices()
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>();
-
+                
             if (reverseEngineerOptions.UseHandleBars)
             {
                 //TODO Consider being selective based on SelectedToBeGenerated
                 serviceCollection.AddHandlebarsScaffolding();
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
+                
+            }
+
+            if(reverseEngineerOptions.DatabaseNaming != null)
+            {
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(reverseEngineerOptions.DatabaseNaming));
             }
 
             if (reverseEngineerOptions.UseInflector)
@@ -79,7 +86,7 @@ namespace ReverseEngineer20
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
-
+                
             var schemas = new List<string>();
             if (reverseEngineerOptions.DefaultDacpacSchema != null)
             {
@@ -96,7 +103,7 @@ namespace ReverseEngineer20
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames
             };
-
+                        
             var codeOptions = new ModelCodeGenerationOptions
             {
                 UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly

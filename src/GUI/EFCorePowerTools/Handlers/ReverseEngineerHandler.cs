@@ -91,6 +91,9 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
+                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
+
+
                 if (ptd.ShowModal() != true) return;
 
                 var classBasis = string.Empty;
@@ -134,7 +137,8 @@ namespace EFCorePowerTools.Handlers
                     SelectedToBeGenerated = modelDialog.SelectedTobeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
-                    Tables = ptd.Tables
+                    Tables = ptd.Tables,
+                    DatabaseNaming = customNameOptions
                 };
 
                 _package.Dte2.StatusBar.Text = "Generating code...";

@@ -12,11 +12,11 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class ReplacingCandidateNamingService: CandidateNamingService
     {
-        private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
+        private readonly List<TableRenamer> _customNameOptions;
 
-        public ReplacingCandidateNamingService(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger) : base()
+        public ReplacingCandidateNamingService(List<TableRenamer> customNameOptions)
         {
-            _logger = logger;
+            _customNameOptions = customNameOptions;
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -24,9 +24,9 @@ namespace ReverseEngineer20.ReverseEngineer
             return GenerateCandidateIdentifier(originalTable.Name, originalTable.Schema);
         }
 
-        private static string GenerateCandidateIdentifier(string originalIdentifier, string tableSchema)
+        private string GenerateCandidateIdentifier(string originalIdentifier, string tableSchema)
         {
-            
+
             if (string.IsNullOrWhiteSpace(originalIdentifier))
             {
                 throw new ArgumentException("Argument is empty", nameof(originalIdentifier));
@@ -37,11 +37,35 @@ namespace ReverseEngineer20.ReverseEngineer
                 throw new ArgumentException("Argument is empty", nameof(tableSchema));
             }
 
+            string temp = string.Empty;
             var candidateStringBuilder = new StringBuilder();
 
-            candidateStringBuilder.Append(ToPascalCase(tableSchema));
-            candidateStringBuilder.Append(ToPascalCase(originalIdentifier));
+            foreach (var tables in _customNameOptions)
+            {
+                if (tableSchema == tables.SchemaName)
+                {
+                    if (tables.UseSchemaName)
+                    {
+                        candidateStringBuilder.Append(ToPascalCase(tableSchema));
+                    }
 
+                    if (tables.OldTableName == originalIdentifier && tables.SchemaName == tableSchema)
+                    {
+                        temp = tables.NewTableName;
+                    }
+                    else
+                    {
+                        temp = ToPascalCase(originalIdentifier);
+                    }
+                }
+                else
+                {
+                    temp = ToPascalCase(originalIdentifier);
+                }
+            }
+            //candidateStringBuilder.Append(ToPascalCase(tableSchema));
+            //candidateStringBuilder.Append(ToPascalCase(temp));
+            candidateStringBuilder.Append(temp);
 
             return candidateStringBuilder.ToString();
         }
