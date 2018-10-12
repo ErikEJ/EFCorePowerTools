@@ -12,18 +12,18 @@ namespace EFCorePowerTools.Extensions
 {
     public class CustomNameOptionsExtensions
     {
-        public static List<TableRenamer> TryRead(string optionsCustomNamePath)
+        public static List<Schema> TryRead(string optionsCustomNamePath)
         {
             if (!File.Exists(optionsCustomNamePath)) return null;
             if (File.Exists(optionsCustomNamePath + ".ignore")) return null;
             if (new FileInfo(optionsCustomNamePath).Length == 0) return null;
 
-            List<TableRenamer> customNamingOptions = null;
+            List<Schema> customNamingOptions = null;
             try
             {
                 var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8)));
-                var ser = new DataContractJsonSerializer(typeof(List<TableRenamer>));
-                customNamingOptions = ser.ReadObject(ms) as List<TableRenamer>;
+                var ser = new DataContractJsonSerializer(typeof(List<Schema>));
+                customNamingOptions = ser.ReadObject(ms) as List<Schema>;
                 ms.Close();
             }
             catch(Exception ex)

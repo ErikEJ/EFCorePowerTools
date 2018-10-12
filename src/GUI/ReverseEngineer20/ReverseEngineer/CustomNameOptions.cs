@@ -10,6 +10,6 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class CustomNameOptions
     {
-        List<TableRenamer> DatabaseNaming { get; set; }
+        public IList<Schema> Schemas { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace ReverseEngineer20
         [IgnoreDataMember]
         public string Dacpac { get; set; }
         [IgnoreDataMember]
-        public List<TableRenamer> DatabaseNaming { get; set; }
+        public List<Schema> CustomReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
     }
 }

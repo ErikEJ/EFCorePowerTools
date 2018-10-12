@@ -138,7 +138,7 @@ namespace EFCorePowerTools.Handlers
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = ptd.Tables,
-                    DatabaseNaming = customNameOptions
+                    CustomReplacers = customNameOptions
                 };
 
                 _package.Dte2.StatusBar.Text = "Generating code...";

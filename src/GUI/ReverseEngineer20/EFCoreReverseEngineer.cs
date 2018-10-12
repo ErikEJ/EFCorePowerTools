@@ -45,9 +45,9 @@ namespace ReverseEngineer20
                 
             }
 
-            if(reverseEngineerOptions.DatabaseNaming != null)
+            if(reverseEngineerOptions.CustomReplacers != null)
             {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(reverseEngineerOptions.DatabaseNaming));
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(reverseEngineerOptions.CustomReplacers));
             }
 
             if (reverseEngineerOptions.UseInflector)

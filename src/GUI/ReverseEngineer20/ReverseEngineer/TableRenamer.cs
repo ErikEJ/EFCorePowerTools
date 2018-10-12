@@ -10,14 +10,12 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class TableRenamer
     {
-        public  bool UseSchemaName { get; set; }
-
-        public string SchemaName { get; set; }
 
         public string OldTableName { get; set; }
 
         public string NewTableName { get; set; }
 
-        public List<ColumnNamer> CustomColumnsNames { get; set; }
+        public List<ColumnNamer> Columns { get; set; }
+
     }
 }

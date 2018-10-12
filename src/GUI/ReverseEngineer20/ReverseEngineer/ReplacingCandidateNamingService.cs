@@ -12,63 +12,139 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class ReplacingCandidateNamingService: CandidateNamingService
     {
-        private readonly List<TableRenamer> _customNameOptions;
+        private readonly List<Schema> _customNameOptions;
 
-        public ReplacingCandidateNamingService(List<TableRenamer> customNameOptions)
+        public ReplacingCandidateNamingService(List<Schema> customNameOptions)
         {
             _customNameOptions = customNameOptions;
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
         {
-            return GenerateCandidateIdentifier(originalTable.Name, originalTable.Schema);
+            if (originalTable == null)
+            {
+                throw new ArgumentException("Argument is empty", nameof(originalTable));
+            }
+
+            var candidateStringBuilder = new StringBuilder();
+
+            var schema = GetSchema(originalTable.Schema);
+
+            if (schema == null)
+            {
+                return base.GenerateCandidateIdentifier(originalTable);
+            }
+
+            if (schema.UseSchemaName)
+            {
+                candidateStringBuilder.Append(ToPascalCase(originalTable.Schema));
+                candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
+
+                return candidateStringBuilder.ToString();
+            }
+            else if(schema.DatabaseCustomNameOptions.Count > 0)
+            {
+                var newTableName = _customNameOptions.Where(x => x.SchemaName == schema.SchemaName)
+                    .Select(x => x.DatabaseCustomNameOptions)
+                    .Select(x => x.Where(t => t.OldTableName == originalTable.Name)
+                    .Select(table => table.NewTableName).FirstOrDefault())
+                    .FirstOrDefault();
+
+                if(string.IsNullOrWhiteSpace(newTableName))
+                {
+                    candidateStringBuilder.Append(originalTable.Name);
+
+                    return candidateStringBuilder.ToString();
+                }
+
+                candidateStringBuilder.Append(newTableName);
+
+                return candidateStringBuilder.ToString();
+            }
+            else
+            {
+                return base.GenerateCandidateIdentifier(originalTable);
+            }
         }
 
-        private string GenerateCandidateIdentifier(string originalIdentifier, string tableSchema)
+        public override string GenerateCandidateIdentifier(DatabaseColumn originalColumn)
         {
-
-            if (string.IsNullOrWhiteSpace(originalIdentifier))
-            {
-                throw new ArgumentException("Argument is empty", nameof(originalIdentifier));
-            }
-
-            if (string.IsNullOrWhiteSpace(tableSchema))
-            {
-                throw new ArgumentException("Argument is empty", nameof(tableSchema));
-            }
-
             string temp = string.Empty;
             var candidateStringBuilder = new StringBuilder();
 
-            foreach (var tables in _customNameOptions)
+            var schema = GetSchema(originalColumn.Table.Schema);
+
+            if(schema == null)
             {
-                if (tableSchema == tables.SchemaName)
-                {
-                    if (tables.UseSchemaName)
-                    {
-                        candidateStringBuilder.Append(ToPascalCase(tableSchema));
-                    }
-
-                    if (tables.OldTableName == originalIdentifier && tables.SchemaName == tableSchema)
-                    {
-                        temp = tables.NewTableName;
-                    }
-                    else
-                    {
-                        temp = ToPascalCase(originalIdentifier);
-                    }
-                }
-                else
-                {
-                    temp = ToPascalCase(originalIdentifier);
-                }
+                return base.GenerateCandidateIdentifier(originalColumn);
             }
-            //candidateStringBuilder.Append(ToPascalCase(tableSchema));
-            //candidateStringBuilder.Append(ToPascalCase(temp));
-            candidateStringBuilder.Append(temp);
 
-            return candidateStringBuilder.ToString();
+            if(schema.DatabaseCustomNameOptions == null)
+            {
+                return base.GenerateCandidateIdentifier(originalColumn);
+            }
+
+            var columns = _customNameOptions
+                .Where(x => x.SchemaName == schema.SchemaName)
+                .Select(x => x.DatabaseCustomNameOptions)
+                .Select(x => x.Where(table => table.OldTableName == originalColumn.Table.Name)
+                .FirstOrDefault()).FirstOrDefault()
+                .Columns
+                .Where(x => x.OldColumnName == originalColumn.Name).FirstOrDefault();
+                
+
+            if(columns != null)
+            {
+                candidateStringBuilder.Append(columns.NewColumnName);
+                return candidateStringBuilder.ToString();
+            }
+            else
+            {
+                return base.GenerateCandidateIdentifier(originalColumn);
+            }
+
+            //foreach (var schemas in _customNameOptions)
+            //{
+            //    if(schemas.SchemaName == originalColumn.Table.Schema)
+            //    {
+            //        foreach (var tables in schemas.DatabaseCustomNameOptions)
+            //        {
+            //            foreach (var item in tables.Columns)
+            //            {
+            //                if (item.OldColumnName == originalColumn.Name)
+            //                {
+            //                    temp = item.NewColumnName;
+            //                }
+            //                else
+            //                {
+            //                    return base.GenerateCandidateIdentifier(originalColumn);
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        return base.GenerateCandidateIdentifier(originalColumn);
+            //    }
+            //}
+
+            //candidateStringBuilder.Append(temp);
+
+            //return candidateStringBuilder.ToString();
         }
+
+        private Schema GetSchema(string originalSchema)
+            =>_customNameOptions
+                  .Where(x => x.SchemaName.Contains(originalSchema))
+                  .Select(x =>
+                      new Schema
+                      {
+                          SchemaName = x.SchemaName,
+                          UseSchemaName = x.UseSchemaName,
+                          DatabaseCustomNameOptions = x.DatabaseCustomNameOptions
+
+                      })
+                  .FirstOrDefault();
 
         private static string ToPascalCase(string value)
         {
