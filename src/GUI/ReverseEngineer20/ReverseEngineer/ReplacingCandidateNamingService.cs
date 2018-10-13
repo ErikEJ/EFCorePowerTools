@@ -88,7 +88,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 .Where(x => x.SchemaName == schema.SchemaName)
                 .Select(x => x.DatabaseCustomNameOptions)
                 .Select(x => x.Where(table => table.OldTableName == originalColumn.Table.Name)
-                .FirstOrDefault()).FirstOrDefault()
+                .FirstOrDefault()).FirstOrDefault()?
                 .Columns
                 .Where(x => x.OldColumnName == originalColumn.Name).FirstOrDefault();
                 
