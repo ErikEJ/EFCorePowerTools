@@ -42,12 +42,12 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 return candidateStringBuilder.ToString();
             }
-            else if(schema.DatabaseCustomNameOptions.Count > 0)
+            else if(schema.Tables.Count > 0)
             {
                 var newTableName = _customNameOptions.Where(x => x.SchemaName == schema.SchemaName)
-                    .Select(x => x.DatabaseCustomNameOptions)
-                    .Select(x => x.Where(t => t.OldTableName == originalTable.Name)
-                    .Select(table => table.NewTableName).FirstOrDefault())
+                    .Select(x => x.Tables)
+                    .Select(x => x.Where(t => t.Name == originalTable.Name)
+                    .Select(table => table.NewName).FirstOrDefault())
                     .FirstOrDefault();
 
                 if(string.IsNullOrWhiteSpace(newTableName))
@@ -79,23 +79,23 @@ namespace ReverseEngineer20.ReverseEngineer
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
-            if(schema.DatabaseCustomNameOptions == null)
+            if(schema.Tables == null)
             {
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
             var columns = _customNameOptions
                 .Where(x => x.SchemaName == schema.SchemaName)
-                .Select(x => x.DatabaseCustomNameOptions)
-                .Select(x => x.Where(table => table.OldTableName == originalColumn.Table.Name)
+                .Select(x => x.Tables)
+                .Select(x => x.Where(table => table.Name == originalColumn.Table.Name)
                 .FirstOrDefault()).FirstOrDefault()?
                 .Columns
-                .Where(x => x.OldColumnName == originalColumn.Name).FirstOrDefault();
+                .Where(x => x.Name == originalColumn.Name).FirstOrDefault();
                 
 
             if(columns != null)
             {
-                candidateStringBuilder.Append(columns.NewColumnName);
+                candidateStringBuilder.Append(columns.NewName);
                 return candidateStringBuilder.ToString();
             }
             else
@@ -141,7 +141,7 @@ namespace ReverseEngineer20.ReverseEngineer
                       {
                           SchemaName = x.SchemaName,
                           UseSchemaName = x.UseSchemaName,
-                          DatabaseCustomNameOptions = x.DatabaseCustomNameOptions
+                          Tables = x.Tables
 
                       })
                   .FirstOrDefault();

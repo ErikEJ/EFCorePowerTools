@@ -11,9 +11,9 @@ namespace ReverseEngineer20.ReverseEngineer
     public class TableRenamer
     {
 
-        public string OldTableName { get; set; }
+        public string Name { get; set; }
 
-        public string NewTableName { get; set; }
+        public string NewName { get; set; }
 
         public List<ColumnNamer> Columns { get; set; }
 

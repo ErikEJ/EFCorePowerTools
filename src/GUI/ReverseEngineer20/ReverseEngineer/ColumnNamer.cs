@@ -9,8 +9,8 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class ColumnNamer
     {
-        public string OldColumnName { get; set; }
+        public string Name { get; set; }
 
-        public string NewColumnName { get; set; }
+        public string NewName { get; set; }
     }
 }

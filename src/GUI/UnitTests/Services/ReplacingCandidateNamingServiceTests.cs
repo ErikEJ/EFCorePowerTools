@@ -104,7 +104,7 @@ namespace UnitTests.Services
                   {
                        SchemaName = "dbo",
                        UseSchemaName = true,
-                       DatabaseCustomNameOptions = new List<TableRenamer>{ new TableRenamer {  OldTableName = "work_type"} }
+                       Tables = new List<TableRenamer>{ new TableRenamer {  Name = "work_type"} }
                   }
               };
 
@@ -227,11 +227,11 @@ namespace UnitTests.Services
                   new Schema
                   {
                        SchemaName = "machine",
-                       DatabaseCustomNameOptions = new List<TableRenamer>
+                       Tables = new List<TableRenamer>
                         {
                          new TableRenamer{
-                             NewTableName = "new_name_of_the_table",
-                             OldTableName = "OldTableName"
+                             NewName = "new_name_of_the_table",
+                             Name = "OldTableName"
                          }
                         }
 
@@ -268,11 +268,11 @@ namespace UnitTests.Services
                   new Schema
                   {
                        SchemaName = "machine",
-                       DatabaseCustomNameOptions = new List<TableRenamer>
+                       Tables = new List<TableRenamer>
                         {
                          new TableRenamer{
-                             NewTableName = "new_name_of_the_table",
-                             OldTableName = "OldTableName"
+                             NewName = "new_name_of_the_table",
+                             Name = "OldTableName"
                          }
                         }
 
@@ -337,17 +337,17 @@ namespace UnitTests.Services
                   {
                        SchemaName = "machine",
                        UseSchemaName = true,
-                       DatabaseCustomNameOptions = new List<TableRenamer>
+                       Tables = new List<TableRenamer>
                        {
                           new TableRenamer
                           {
-                               OldTableName = "table_name",
+                               Name = "table_name",
                                Columns = new List<ColumnNamer>
                                {
                                    new ColumnNamer
                                    {
-                                        OldColumnName = "OldDummyColumnName",
-                                        NewColumnName = "NewDummyColumnName"
+                                        Name = "OldDummyColumnName",
+                                        NewName = "NewDummyColumnName"
                                    }
                                }
                           }
@@ -390,17 +390,17 @@ namespace UnitTests.Services
                   {
                        SchemaName = "machine",
                        UseSchemaName = true,
-                       DatabaseCustomNameOptions = new List<TableRenamer>
+                       Tables = new List<TableRenamer>
                        {
                           new TableRenamer
                           {
-                               OldTableName = "table_name",
+                               Name = "table_name",
                                Columns = new List<ColumnNamer>
                                {
                                    new ColumnNamer
                                    {
-                                        OldColumnName = "OldDummyColumnName",
-                                        NewColumnName = "NewDummyColumnName"
+                                        Name = "OldDummyColumnName",
+                                        NewName = "NewDummyColumnName"
                                    }
                                }
                           }

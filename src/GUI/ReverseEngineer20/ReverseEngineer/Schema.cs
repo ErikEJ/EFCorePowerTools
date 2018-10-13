@@ -10,12 +10,12 @@ namespace ReverseEngineer20.ReverseEngineer
     {
         public Schema()
         {
-            DatabaseCustomNameOptions = new List<TableRenamer>();
+            Tables = new List<TableRenamer>();
         }
         public bool UseSchemaName { get; set; }
 
         public string SchemaName { get; set; }
 
-        public List<TableRenamer> DatabaseCustomNameOptions { get; set; }
+        public List<TableRenamer> Tables { get; set; }
     }
 }
