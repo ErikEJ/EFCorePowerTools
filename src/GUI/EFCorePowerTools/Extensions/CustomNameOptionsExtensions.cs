@@ -16,7 +16,6 @@ namespace EFCorePowerTools.Extensions
         {
             if (!File.Exists(optionsCustomNamePath)) return null;
             if (File.Exists(optionsCustomNamePath + ".ignore")) return null;
-            if (new FileInfo(optionsCustomNamePath).Length == 0) return null;
 
             List<Schema> customNamingOptions = null;
             try
@@ -26,10 +25,7 @@ namespace EFCorePowerTools.Extensions
                 customNamingOptions = ser.ReadObject(ms) as List<Schema>;
                 ms.Close();
             }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+            catch{}
             return customNamingOptions;
         }
     }
