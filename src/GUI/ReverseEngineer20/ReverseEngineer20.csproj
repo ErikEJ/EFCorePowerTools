@@ -217,7 +217,6 @@
     <Compile Include="ReverseEngineer\Schema.cs" />
     <Compile Include="ReverseEngineer\TableRenamer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
-    <Compile Include="ReverseEngineer\CustomTableNames.cs" />
     <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />
     <Compile Include="ReverseEngineer\CustomTemplateFileService.cs" />
     <Compile Include="ReverseEngineer\DacpacTableListBuilder.cs" />
