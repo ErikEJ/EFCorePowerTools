@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using ReverseEngineer20.ReverseEngineer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests.Services
 {

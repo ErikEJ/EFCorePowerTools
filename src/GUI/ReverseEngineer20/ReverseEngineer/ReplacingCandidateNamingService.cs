@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System;
@@ -88,8 +90,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 .Where(x => x.SchemaName == schema.SchemaName)
                 .Select(x => x.Tables)
                 .Select(x => x.Where(table => table.Name == originalColumn.Table.Name)
-                .FirstOrDefault()).FirstOrDefault()?
-                .Columns
+                .FirstOrDefault()).FirstOrDefault()?.Columns
                 .Where(x => x.Name == originalColumn.Name).FirstOrDefault();
                 
 
@@ -102,35 +103,6 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
-
-            //foreach (var schemas in _customNameOptions)
-            //{
-            //    if(schemas.SchemaName == originalColumn.Table.Schema)
-            //    {
-            //        foreach (var tables in schemas.DatabaseCustomNameOptions)
-            //        {
-            //            foreach (var item in tables.Columns)
-            //            {
-            //                if (item.OldColumnName == originalColumn.Name)
-            //                {
-            //                    temp = item.NewColumnName;
-            //                }
-            //                else
-            //                {
-            //                    return base.GenerateCandidateIdentifier(originalColumn);
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        return base.GenerateCandidateIdentifier(originalColumn);
-            //    }
-            //}
-
-            //candidateStringBuilder.Append(temp);
-
-            //return candidateStringBuilder.ToString();
         }
 
         private Schema GetSchema(string originalSchema)
