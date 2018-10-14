@@ -419,5 +419,97 @@ namespace UnitTests.Services
             StringAssert.Contains(expected, actResult);
         }
 
+
+
+        [Test]
+        public void ChangeColumnNameToCustom()
+        {
+            //Arrange
+            var exampleColumns = new List<DatabaseColumn>
+            {
+                new DatabaseColumn{
+                    Name = "column_name_to_rename",
+                    Table = new DatabaseTable
+                    {
+                        Name = "table_name",
+                        Schema = "dbo"
+                    }
+                },
+                new DatabaseColumn{
+                    Name = "measure",
+                    Table = new DatabaseTable
+                    {
+                        Name = "table_name",
+                        Schema = "machine"
+                    }
+                }
+            };
+
+            var expected = "SomethingCustom";
+            var expected1 = "Measure";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "machine",
+                       UseSchemaName = true,
+                       Tables = new List<TableRenamer>
+                       {
+                          new TableRenamer
+                          {
+                               Name = "table_name",
+                               Columns = new List<ColumnNamer>
+                               {
+                                   new ColumnNamer
+                                   {
+                                        Name = "OldDummyColumnName",
+                                        NewName = "NewDummyColumnName"
+                                   }
+                               }
+                          }
+                       }
+                  },
+                  new Schema
+                  {
+                       SchemaName = "dbo",
+                       UseSchemaName = false,
+                       Tables = new List<TableRenamer>
+                       {
+                          new TableRenamer
+                          {
+                               Name = "table_name",
+                               Columns = new List<ColumnNamer>
+                               {
+                                   new ColumnNamer
+                                   {
+                                        Name = "column_name_to_rename",
+                                        NewName = "SomethingCustom"
+                                   }
+                               }
+                          }
+                       }
+                  }
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            //Act
+
+            var actResult = new List<string>();
+
+            foreach (var column in exampleColumns)
+            {
+                actResult.Add(sut.GenerateCandidateIdentifier(column));
+            }
+
+             
+
+            //Assert
+
+            StringAssert.Contains(expected, actResult[0]);
+            StringAssert.Contains(expected1, actResult[1]);
+        }
+
     }
 }
