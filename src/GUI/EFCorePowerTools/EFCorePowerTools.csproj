@@ -170,6 +170,7 @@
     <Content Include="efpt\2.1.3\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="efpt.renaming.json" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
