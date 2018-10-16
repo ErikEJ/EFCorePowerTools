@@ -71,6 +71,7 @@
       <DependentUpon>PickTablesDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="EFCorePowerToolsPackage.cs" />
+    <Compile Include="Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="Extensions\EvnDTEExtensions.cs" />
     <Compile Include="Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
@@ -170,6 +171,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="efpt.renaming.json" />
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

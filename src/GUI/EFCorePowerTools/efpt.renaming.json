@@ -1,0 +1,56 @@
+[
+  {
+    "UseSchemaName": true,
+    "SchemaName": "machine",
+    "Tables": [
+      {
+        "Name": "alert_ui",
+        "Columns": [
+          {
+            "Name": "alarm_name",
+            "NewName": "NameOfTheAlarm"
+          },
+          {
+            "Name": "columnOldName1",
+            "NewName": "columnNewName1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "UseSchemaName": true,
+    "SchemaName": "master",
+    "Tables": [
+      {
+        "Name": "measure",
+        "Columns": [
+          {
+            "Name": "alarm_name",
+            "NewName": "NameOfTheAlarm"
+          },
+          {
+            "Name": "columnOldName1",
+            "NewName": "columnNewName1"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "UseSchemaName": false,
+    "SchemaName": "dbo",
+    "Tables": [
+      {
+        "Name": "work_cells",
+        "NewName":  "WorkCell",
+        "Columns": [
+          {
+            "Name": "columnOldName1",
+            "NewName": "columnNewName1"
+          }
+        ]
+      }
+    ]
+  }
+]

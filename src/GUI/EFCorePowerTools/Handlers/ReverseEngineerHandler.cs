@@ -39,6 +39,7 @@ namespace EFCorePowerTools.Handlers
                 var startTime = DateTime.Now;
                 var projectPath = project.Properties.Item("FullPath").Value.ToString();
                 var optionsPath = Path.Combine(projectPath, "efpt.config.json");
+                var renamingPath = Path.Combine(projectPath, "efpt.renaming.json");
 
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution();
@@ -90,6 +91,9 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
+                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
+
+
                 if (ptd.ShowModal() != true) return;
 
                 var classBasis = string.Empty;
@@ -133,7 +137,8 @@ namespace EFCorePowerTools.Handlers
                     SelectedToBeGenerated = modelDialog.SelectedTobeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
-                    Tables = ptd.Tables
+                    Tables = ptd.Tables,
+                    CustomReplacers = customNameOptions
                 };
 
                 _package.Dte2.StatusBar.Text = "Generating code...";

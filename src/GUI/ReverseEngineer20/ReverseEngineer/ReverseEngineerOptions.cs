@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ReverseEngineer20.ReverseEngineer;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace ReverseEngineer20
@@ -24,6 +25,8 @@ namespace ReverseEngineer20
         public int SelectedToBeGenerated { get; set; }
         [IgnoreDataMember]
         public string Dacpac { get; set; }
+        [IgnoreDataMember]
+        public List<Schema> CustomReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
     }
 }
