@@ -33,10 +33,8 @@ namespace UnitTests.Services
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-
             //Assert
             StringAssert.Contains(expected, result);
-    
         }
 
         [Test]
@@ -72,7 +70,6 @@ namespace UnitTests.Services
 
             //Assert
             StringAssert.Contains(expected, result);
-
         }
 
         [Test]
@@ -138,7 +135,6 @@ namespace UnitTests.Services
             StringAssert.Contains(expected2, results[1]);
             StringAssert.Contains(expected3, results[2]);
             StringAssert.Contains(expected4, results[3]);
-
         }
 
         [Test]
@@ -196,7 +192,6 @@ namespace UnitTests.Services
             };
 
             // Act
-
             List<string> results = new List<string>();
             foreach (var table in exampleDbTables)
             {
@@ -209,7 +204,6 @@ namespace UnitTests.Services
             StringAssert.Contains(expected3, results[2]);
             StringAssert.Contains(expected4, results[3]);
             StringAssert.Contains(expected5, results[4]);
-
         }
 
         [Test]
@@ -244,10 +238,8 @@ namespace UnitTests.Services
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-
             //Assert
             StringAssert.Contains(expected, result);
-
         }
 
         [Test]
@@ -306,7 +298,6 @@ namespace UnitTests.Services
             StringAssert.Contains(expected, result[0]);
             StringAssert.Contains(expected1, result[1]);
             StringAssert.Contains(expected2, result[2]);
-
         }
 
         [Test]
@@ -353,14 +344,11 @@ namespace UnitTests.Services
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
             //Act
-
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             //Assert
-
             StringAssert.Contains(expected, actResult);
         }
-
 
         [Test]
         public void GenerateColumnNameInStandarNamingConvention()
@@ -406,15 +394,11 @@ namespace UnitTests.Services
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
             //Act
-
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             //Assert
-
             StringAssert.Contains(expected, actResult);
         }
-
-
 
         [Test]
         public void ChangeColumnNameToCustom()
@@ -490,7 +474,6 @@ namespace UnitTests.Services
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
             //Act
-
             var actResult = new List<string>();
 
             foreach (var column in exampleColumns)
@@ -498,10 +481,7 @@ namespace UnitTests.Services
                 actResult.Add(sut.GenerateCandidateIdentifier(column));
             }
 
-             
-
             //Assert
-
             StringAssert.Contains(expected, actResult[0]);
             StringAssert.Contains(expected1, actResult[1]);
         }
