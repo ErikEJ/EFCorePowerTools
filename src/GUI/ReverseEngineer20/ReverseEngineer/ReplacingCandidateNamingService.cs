@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System;
 using System.Collections.Generic;
@@ -97,6 +99,20 @@ namespace ReverseEngineer20.ReverseEngineer
             else
             {
                 return base.GenerateCandidateIdentifier(originalColumn);
+            }
+        }
+        
+        public override string GetDependentEndCandidateNavigationPropertyName(IForeignKey foreignKey)
+        {
+            var shortName = foreignKey.PrincipalEntityType.ShortName();
+
+            if (string.IsNullOrWhiteSpace(shortName))
+            {
+                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+            }
+            else
+            {
+                return shortName;
             }
         }
 
