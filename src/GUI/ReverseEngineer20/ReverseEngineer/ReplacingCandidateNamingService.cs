@@ -49,7 +49,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 if(string.IsNullOrWhiteSpace(newTableName))
                 {
-                    candidateStringBuilder.Append(originalTable.Name);
+                    candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
 
                     return candidateStringBuilder.ToString();
                 }
@@ -85,8 +85,8 @@ namespace ReverseEngineer20.ReverseEngineer
                 .Where(x => x.SchemaName == schema.SchemaName)
                 .Select(x => x.Tables)
                 .Select(x => x.Where(table => table.Name == originalColumn.Table.Name)
-                .FirstOrDefault()).FirstOrDefault()?.Columns
-                .Where(x => x.Name == originalColumn.Name).FirstOrDefault();
+                .FirstOrDefault()).FirstOrDefault()?.Columns?.Where(x => x.Name == originalColumn.Name)
+                .FirstOrDefault();
                 
 
             if(columns != null)
