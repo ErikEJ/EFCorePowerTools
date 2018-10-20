@@ -247,7 +247,7 @@ namespace UnitTests.Services
         {
             //Arrange
             var expected = "new_name_of_the_table";
-            var expected1 = "alert_ui";
+            var expected1 = "AlertUi";
             var expected2 = "WorkType";
 
             var exampleOption = new List<Schema>
