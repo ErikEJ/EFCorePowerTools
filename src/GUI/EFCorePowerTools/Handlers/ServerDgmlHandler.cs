@@ -7,6 +7,9 @@ using System.IO;
 
 namespace EFCorePowerTools.Handlers
 {
+    using System.Linq;
+    using ReverseEngineer20.ReverseEngineer;
+
     internal class ServerDgmlHandler
     {
         private readonly EFCorePowerToolsPackage _package;
@@ -45,7 +48,13 @@ namespace EFCorePowerTools.Handlers
                 var ptd = new PickTablesDialog();
                 using (var repository = RepositoryHelper.CreateRepository(dbInfo))
                 {
-                    ptd.Tables = repository.GetAllTableNamesForExclusion();
+                    var ti = new List<TableInformation>();
+                    var tables = repository.GetAllTableNamesForExclusion();
+                    foreach (var table in tables)
+                    {
+                        ti.Add(TableInformation.Parse(table));
+                    }
+                    ptd.Tables = ti;
                 }
 
                 var res = ptd.ShowModal();
@@ -64,7 +73,7 @@ namespace EFCorePowerTools.Handlers
                 using (var repository = RepositoryHelper.CreateRepository(dbInfo))
                 {
                     var generator = RepositoryHelper.CreateGenerator(repository, path, dbInfo.DatabaseType);
-                    generator.GenerateSchemaGraph(dbInfo.ConnectionString, ptd.Tables);
+                    generator.GenerateSchemaGraph(dbInfo.ConnectionString, ptd.Tables.Select(m => m.UnsafeFullName).ToList());
                     File.SetAttributes(path, FileAttributes.ReadOnly);
                     _package.Dte2.ItemOperations.OpenFile(path);
                     _package.Dte2.ActiveDocument.Activate();

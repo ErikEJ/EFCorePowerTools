@@ -7,6 +7,8 @@ using System.Linq;
 
 namespace ReverseEngineer20
 {
+    using ReverseEngineer;
+
     public class DacpacTableListBuilder
     {
         private readonly string _dacpacPath;
@@ -24,20 +26,12 @@ namespace ReverseEngineer20
             _dacpacPath = dacpacPath;
         }
 
-        public List<string> GetTableNames()
+        public List<TableInformation> GetTableDefinitions()
         {
-            var names = new List<string>();
             var model = new TSqlTypedModel(_dacpacPath);
-
-            var tables = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
-                .Where(t => t.PrimaryKeyConstraints.Count() > 0)
-                .ToList();
-
-            foreach (var table in tables)
-            {
-                names.Add($"{table.Name.Parts[0]}.{table.Name.Parts[1]}");
-            }
-            return names;
+            return model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
+                        .Select(m => new TableInformation(m.Name.Parts[0], m.Name.Parts[1], m.PrimaryKeyConstraints.Any()))
+                        .ToList();
         }
     }
 }

@@ -10,6 +10,8 @@ using System.Threading;
 
 namespace UnitTests
 {
+    using ReverseEngineer20.ReverseEngineer;
+
     [TestFixture, Apartment(ApartmentState.STA)]
     public class CheckListBoxTest
     {
@@ -19,10 +21,10 @@ namespace UnitTests
             // Arrange
             var source = new List<CheckListItem>
             {
-                new CheckListItem { IsChecked= true, Label = "Item1" },
-                new CheckListItem { IsChecked= true, Label = "Item2" },
-                new CheckListItem { IsChecked= true, Label = "Item3" },
-                new CheckListItem { IsChecked= true, Label = "Item4" },
+                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item1", true) },
+                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item2", true) },
+                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item3", true) },
+                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item4", true) },
             };
 
             var checkListBox = new CheckListBox
@@ -36,7 +38,7 @@ namespace UnitTests
 
             // Assert
             Assert.That(source[0].IsChecked, Is.False); // check if the first item has property IsChecked as false
-            Assert.That(source.SingleOrDefault(x => !x.IsChecked).Label, Is.EqualTo("Item1")); // check if the first item is the only item that has property IsChecked as false
+            Assert.That(source.SingleOrDefault(x => !x.IsChecked).TableInformation.UnsafeFullName, Is.EqualTo("dbo.Item1")); // check if the first item is the only item that has property IsChecked as false
         }
     }
 }

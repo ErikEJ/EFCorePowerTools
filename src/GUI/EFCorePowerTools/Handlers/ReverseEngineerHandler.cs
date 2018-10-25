@@ -13,6 +13,8 @@ using System.Text;
 
 namespace EFCorePowerTools.Handlers
 {
+    using ReverseEngineer20.ReverseEngineer;
+
     internal class ReverseEngineerHandler
     {
         private readonly EFCorePowerToolsPackage _package;
@@ -75,7 +77,7 @@ namespace EFCorePowerTools.Handlers
                 var ptd = new PickTablesDialog { IncludeTables = true };
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
-                    ptd.Tables = revEng.GetDacpacTableNames(dacpacPath);
+                    ptd.Tables = revEng.GetDacpacTables(dacpacPath);
                 }
                 else
                 {
@@ -229,7 +231,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private List<string> GetTablesFromRepository(DatabaseInfo dbInfo)
+        private List<TableInformation> GetTablesFromRepository(DatabaseInfo dbInfo)
         {
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
@@ -240,14 +242,12 @@ namespace EFCorePowerTools.Handlers
             {
                 var allPks = repository.GetAllPrimaryKeys();
                 var tableList = repository.GetAllTableNamesForExclusion();
-                var tables = new List<string>();
+                var tables = new List<TableInformation>();
 
                 foreach (var table in tableList)
                 {
-                    if (allPks.Where(pk => pk.TableName == table).Count() > 0)
-                    {
-                        tables.Add(table);
-                    }
+                    var hasPrimaryKey = allPks.Any(m => m.TableName == table);
+                    tables.Add(TableInformation.Parse(table, hasPrimaryKey));
                 }
                 return tables;
             }

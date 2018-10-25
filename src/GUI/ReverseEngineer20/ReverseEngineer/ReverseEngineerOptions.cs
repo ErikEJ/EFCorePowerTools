@@ -16,7 +16,7 @@ namespace ReverseEngineer20
         public string ProjectRootNamespace { get; set; }
         public bool UseFluentApiOnly { get; set; }
         public string ContextClassName { get; set; }
-        public List<string> Tables { get; set; }
+        public List<TableInformation> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
         public bool UseInflector { get; set; }
         public bool IdReplace { get; set; }
