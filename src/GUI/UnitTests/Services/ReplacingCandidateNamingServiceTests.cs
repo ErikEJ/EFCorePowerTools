@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 using ReverseEngineer20.ReverseEngineer;
 using System.Collections.Generic;
@@ -129,7 +132,7 @@ namespace UnitTests.Services
             {
                 results.Add(sut.GenerateCandidateIdentifier(table));
             }
-            
+
             //Assert
             StringAssert.Contains(expected, results[0]);
             StringAssert.Contains(expected2, results[1]);
@@ -293,7 +296,7 @@ namespace UnitTests.Services
             {
                 result.Add(sut.GenerateCandidateIdentifier(exmapleTable));
             }
-            
+
             //Assert
             StringAssert.Contains(expected, result[0]);
             StringAssert.Contains(expected1, result[1]);
@@ -311,7 +314,7 @@ namespace UnitTests.Services
                 {
                     Name = "table_name",
                     Schema = "machine"
-                    
+
                 }
             };
 
@@ -484,6 +487,80 @@ namespace UnitTests.Services
             //Assert
             StringAssert.Contains(expected, actResult[0]);
             StringAssert.Contains(expected1, actResult[1]);
+        }
+
+        [Test]
+        public void GenerateIForeignKey()
+        {
+            //Arrange
+            var expected = "MachineAlertUi";
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "machine",
+                       UseSchemaName = true
+                  },
+                  new Schema
+                  {
+                       SchemaName = "master",
+                       UseSchemaName = true
+                  }
+              };
+
+
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "alert_ui",
+                Schema = "machine"
+            };
+
+            var test = new FakeForeignKey();
+
+            // Act
+            var result = sut.GetDependentEndCandidateNavigationPropertyName(test);
+
+
+            //Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        private class FakeForeignKey : IForeignKey
+        {
+            public object this[string name] => throw new System.NotImplementedException();
+
+            public IEntityType DeclaringEntityType => throw new System.NotImplementedException();
+
+            public IReadOnlyList<IProperty> Properties => throw new System.NotImplementedException();
+
+            public IEntityType PrincipalEntityType => throw new System.NotImplementedException();
+
+            public IKey PrincipalKey => throw new System.NotImplementedException();
+
+            public INavigation DependentToPrincipal => throw new System.NotImplementedException();
+
+            public INavigation PrincipalToDependent => throw new System.NotImplementedException();
+
+            public bool IsUnique => throw new System.NotImplementedException();
+
+            public bool IsRequired => throw new System.NotImplementedException();
+
+            public bool IsOwnership => throw new System.NotImplementedException();
+
+            public DeleteBehavior DeleteBehavior => throw new System.NotImplementedException();
+
+            public IAnnotation FindAnnotation(string name)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public IEnumerable<IAnnotation> GetAnnotations()
+            {
+                throw new System.NotImplementedException();
+            }
         }
 
     }
