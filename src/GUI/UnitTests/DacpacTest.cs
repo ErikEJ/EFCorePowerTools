@@ -34,7 +34,7 @@ namespace UnitTests
             var result = builder.GetTableDefinitions();
 
             // Assert
-            Assert.AreEqual("dbo.Album", result[0]);
+            Assert.AreEqual("dbo.Album", result[0].UnsafeFullName);
             Assert.AreEqual(11, result.Count);
         }
 
