@@ -50,7 +50,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         {
             DialogResult = true;
             Tables.Clear();
-            foreach (var item in items)
+            foreach (var item in items.Where(m => m.TableInformation.HasPrimaryKey))
             {
                 var checkItem = (CheckListItem)item;
                 if ((!checkItem.IsChecked && !IncludeTables) 
