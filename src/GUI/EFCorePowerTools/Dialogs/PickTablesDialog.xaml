@@ -7,7 +7,8 @@
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Dialogs/Style.xaml"/>
+                <ResourceDictionary Source="Converter.xaml"/>
+                <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </dw:DialogWindow.Resources>
@@ -22,10 +23,24 @@
                 <Label Content="Search" Margin="43,0,0,0" Width="47"/>
                 <TextBox ToolTip="Search for table" x:Name="TxtSearchTable" Height="22" TextWrapping="Wrap" Width="230" Margin="0,0,5,0" TextChanged="TxtSearchTable_TextChanged" Background="White" Foreground="Black"/>
             </StackPanel>
-            <extToolkit:CheckListBox x:Name="chkTables" Margin="12,0" DisplayMemberPath="Label" SelectedMemberPath="IsChecked" Height="302" />
+            <extToolkit:CheckListBox x:Name="chkTables" Margin="12,0" SelectedMemberPath="IsChecked" Height="302">
+                <extToolkit:CheckListBox.ItemTemplate>
+                    <DataTemplate>
+                       <StackPanel Orientation="Horizontal">
+                           <TextBlock Text="{Binding TableInformation.UnsafeFullName}"/>
+                            <Image Visibility="{Binding TableInformation.HasPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}"
+                                   Width="16"
+                                   Height="16"
+                                   Margin="5, 0, 0, 0"
+                                   Source="/EFCorePowerTools;component/Resources/StatusInvalid_16x.png"
+                                   ToolTip="No primary key defined. Table will be ignored."/>
+                        </StackPanel>
+                    </DataTemplate>
+                </extToolkit:CheckListBox.ItemTemplate>
+            </extToolkit:CheckListBox>
             <StackPanel Orientation="Horizontal">
-                <dw:DialogButton Content="OK" IsDefault="True" Grid.Row="5" Margin="230,12,12,12" Name="button1" TabIndex="6" Click="button1_Click" Width="75" />
-                <dw:DialogButton Content="Cancel" IsCancel="True" Grid.Row="5" HorizontalAlignment="Right" Margin="0,12,12,12" Name="button2" TabIndex="7" SnapsToDevicePixels="False" Click="button2_Click" Height="23" VerticalAlignment="Bottom" />
+                <dw:DialogButton Content="OK" IsDefault="True" Grid.Row="5" Margin="230,12,12,12" Name="OkButton" TabIndex="6" Click="OkButton_Click" Width="75" />
+                <dw:DialogButton Content="Cancel" IsCancel="True" Grid.Row="5" HorizontalAlignment="Right" Margin="0,12,12,12" Name="CancelButton" TabIndex="7" SnapsToDevicePixels="False" Click="CancelButton_Click" Height="23" VerticalAlignment="Bottom" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -215,6 +215,7 @@
     </Compile>
     <Compile Include="ReverseEngineer\ColumnNamer.cs" />
     <Compile Include="ReverseEngineer\Schema.cs" />
+    <Compile Include="ReverseEngineer\TableInformation.cs" />
     <Compile Include="ReverseEngineer\TableRenamer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
     <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />

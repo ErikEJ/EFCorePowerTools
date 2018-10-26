@@ -15,6 +15,8 @@ using System.Windows.Forms;
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
 {
+    using ReverseEngineer20.ReverseEngineer;
+
     internal class EnvDteHelper
     {
         internal static Dictionary<string, DatabaseInfo> GetDataConnections(EFCorePowerToolsPackage package)
@@ -171,9 +173,9 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return pgBuilder.Database;
         }
 
-        internal static List<string> GetNpgsqlTableNames(string connectionString)
+        internal static List<TableInformation> GetNpgsqlTableNames(string connectionString)
         {
-            var result = new List<string>();
+            var result = new List<TableInformation>();
             using (var npgsqlConn = new NpgsqlConnection(connectionString))
             {
                 npgsqlConn.Open();
@@ -184,12 +186,13 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     if (schema != "pg_catalog"
                         && schema != "information_schema")
                     {
-                        result.Add(schema + "." + row["table_name"].ToString());
+                        // TODO: Check if the table has a primary key
+                        result.Add(new TableInformation(schema, row["table_name"].ToString(), true));
                     }
                 }
             }
 
-            return result.OrderBy(l => l).ToList();
+            return result.OrderBy(l => l.UnsafeFullName).ToList();
         }
 
         private static string GetFilePath(string connectionString, DatabaseType dbType)

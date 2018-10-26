@@ -18,6 +18,8 @@ using System.Text.RegularExpressions;
 
 namespace ReverseEngineer20
 {
+    using System.Linq;
+
     public class EfCoreReverseEngineer
     {
         public EfCoreReverseEngineerResult GenerateFiles(ReverseEngineerOptions reverseEngineerOptions)
@@ -113,7 +115,7 @@ namespace ReverseEngineer20
                     reverseEngineerOptions.Dacpac != null
                         ? reverseEngineerOptions.Dacpac
                         : reverseEngineerOptions.ConnectionString,
-                    reverseEngineerOptions.Tables,
+                    reverseEngineerOptions.Tables.Select(m => m.UnsafeFullName).ToArray(),
                     schemas,
                     @namespace,
                     "C#",
@@ -220,10 +222,10 @@ namespace ReverseEngineer20
             return className.Replace(" ", string.Empty);
         }
 
-        public List<string> GetDacpacTableNames(string dacpacPath)
+        public List<TableInformation> GetDacpacTables(string dacpacPath)
         {
             var builder = new DacpacTableListBuilder(dacpacPath);
-            return builder.GetTableNames();
+            return builder.GetTableDefinitions();
         }
     }
 }
