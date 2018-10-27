@@ -256,20 +256,11 @@ Storage size varies. It is the length of the value in bytes.</value>
   <data name="SqlCompact35InvariantName" xml:space="preserve">
     <value>System.Data.SqlServerCe.3.5</value>
   </data>
-  <data name="SqlCompact40InvariantName" xml:space="preserve">
-    <value>System.Data.SqlServerCe.4.0</value>
-  </data>
   <data name="SqlCompact35Provider" xml:space="preserve">
     <value>7c602b5b-accb-4acd-9dc0-ca66388c1533</value>
   </data>
-  <data name="SqlCompact40Provider" xml:space="preserve">
-    <value>0cfb2eeb-3e0e-4909-99b7-8ae9e1c3e871</value>
-  </data>
   <data name="SqlServerDotNetProvider" xml:space="preserve">
     <value>91510608-8809-4020-8897-fba057e22d54</value>
-  </data>
-  <data name="SqlCompact40PrivateProvider" xml:space="preserve">
-    <value>673BE80C-CB41-47A7-B0F3-9872B6DDE5E5</value>
   </data>
   <data name="SQLiteInvariantName" xml:space="preserve">
     <value>System.Data.SQLite</value>
@@ -279,12 +270,6 @@ Storage size varies. It is the length of the value in bytes.</value>
   </data>
   <data name="SQLiteEF6InvariantName" xml:space="preserve">
     <value>System.Data.SQLite.EF6</value>
-  </data>
-  <data name="SQLiteProvider" xml:space="preserve">
-    <value>0ebaab6e-ca80-4b4a-8ddf-cbe6bf058c70</value>
-  </data>
-  <data name="SqlitePrivateProvider" xml:space="preserve">
-    <value>687EA40E-7B91-472A-9A58-2A3D43DE1ACE</value>
   </data>
   <data name="NpgsqlProvider" xml:space="preserve">
     <value>70ba90f8-3027-4aF1-9b15-37abbd48744c</value>

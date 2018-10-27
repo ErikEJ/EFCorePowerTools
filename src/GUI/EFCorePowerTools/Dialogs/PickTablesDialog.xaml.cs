@@ -10,6 +10,7 @@ using Microsoft.Win32;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
+    using EFCorePowerTools.Contracts.Views;
     using ReverseEngineer20.ReverseEngineer;
 
     public partial class PickTablesDialog

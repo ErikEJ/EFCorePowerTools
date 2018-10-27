@@ -4,6 +4,8 @@ using ErikEJ.SqlCeToolbox.Helpers;
 
 namespace EFCorePowerTools.Handlers
 {
+    using Contracts.Views;
+
     internal class AboutHandler
     {
         private readonly EFCorePowerToolsPackage _package;
@@ -17,8 +19,8 @@ namespace EFCorePowerTools.Handlers
         {
             try
             {
-                var dialog = new AboutDialog(_package);
-                dialog.ShowDialog();
+                var dialog = _package.GetView<IAboutDialog>();
+                dialog.ShowAndAwaitUserResponse(false);
                 Telemetry.TrackEvent("PowerTools.About");
             }
             catch (Exception exception)
