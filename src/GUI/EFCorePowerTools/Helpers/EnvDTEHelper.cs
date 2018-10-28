@@ -24,10 +24,10 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
             Dictionary<string, DatabaseInfo> databaseList = new Dictionary<string, DatabaseInfo>();
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-            Guid provider40 = new Guid(Resources.SqlCompact40Provider);
-            Guid provider40Private = new Guid(Resources.SqlCompact40PrivateProvider);
-            Guid providerSqLite = new Guid(Resources.SQLiteProvider);
-            Guid providerSqlitePrivate = new Guid(Resources.SqlitePrivateProvider);
+            Guid provider40 = new Guid(EFCorePowerTools.Shared.Resources.SqlCompact40Provider);
+            Guid provider40Private = new Guid(EFCorePowerTools.Shared.Resources.SqlCompact40PrivateProvider);
+            Guid providerSqLite = new Guid(EFCorePowerTools.Shared.Resources.SQLiteProvider);
+            Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Shared.Resources.SQLitePrivateProvider);
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
 
             bool isV40Installed = RepositoryHelper.IsV40Installed() &&
@@ -140,12 +140,12 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 if (providerInvariant == "System.Data.SqlServerCe.4.0")
                 {
                     dbType = DatabaseType.SQLCE40;
-                    providerGuid = Resources.SqlCompact40PrivateProvider;
+                    providerGuid = EFCorePowerTools.Shared.Resources.SqlCompact40PrivateProvider;
                 }
                 if (providerInvariant == "System.Data.SQLite.EF6")
                 {
                     dbType = DatabaseType.SQLite;
-                    providerGuid = Resources.SqlitePrivateProvider;
+                    providerGuid = EFCorePowerTools.Shared.Resources.SQLitePrivateProvider;
                 }
                 if (providerInvariant == "System.Data.SqlClient")
                 {

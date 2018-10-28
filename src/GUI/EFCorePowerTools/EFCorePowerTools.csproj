@@ -55,7 +55,20 @@
     <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IViewModel.cs" />
+    <Compile Include="Contracts\Views\IAboutDialog.cs" />
+    <Compile Include="Contracts\Views\IDialog.cs" />
+    <Compile Include="Contracts\Views\IEfCoreMigrationsDialog.cs" />
+    <Compile Include="Contracts\Views\IEfCoreModelDialog.cs" />
+    <Compile Include="Contracts\Views\IPickServerDatabaseDialog.cs" />
+    <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
+    <Compile Include="Contracts\Views\IView.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="DAL\DotNetAccess.cs" />
+    <Compile Include="DAL\FileSystemAccess.cs" />
+    <Compile Include="DAL\OperatingSystemAccess.cs" />
+    <Compile Include="DAL\TelemetryAccess.cs" />
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
@@ -96,6 +109,7 @@
     <Compile Include="Helpers\SqliteProviderRegistration.cs" />
     <Compile Include="Helpers\Telemetry.cs" />
     <Compile Include="Helpers\VsTheming.cs" />
+    <Compile Include="Messages\ShowMessageBoxMessage.cs" />
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -108,6 +122,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="DAL\VisualStudioAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\lib\efpt.exe.zip">
@@ -173,6 +189,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="app.config" />
     <None Include="efpt.renaming.json" />
     <None Include="Key.snk" />
     <None Include="packages.config">
@@ -192,6 +209,14 @@
       <Project>{832ecf86-c071-4628-a8b7-2529d8a7bdbc}</Project>
       <Name>DacFxStronglyTypedModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EFCorePowerTools.BLL\EFCorePowerTools.BLL.csproj">
+      <Project>{F7BBF46C-7EA9-44FE-9DF0-43FA60B7CB3C}</Project>
+      <Name>EFCorePowerTools.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj">
+      <Project>{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}</Project>
+      <Name>EFCorePowerTools.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReverseEngineer20\ReverseEngineer20.csproj">
       <Project>{4c0f2979-fcd9-4e93-8e4f-2a43055d42fe}</Project>
       <Name>ReverseEngineer20</Name>
@@ -202,6 +227,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
@@ -213,6 +241,15 @@
     </Reference>
     <Reference Include="EnvDTE90, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="ISqlCeScripting">
       <HintPath>..\lib\ISqlCeScripting.dll</HintPath>
@@ -230,6 +267,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Data.Tools.Utilities.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Dac, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -384,6 +427,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

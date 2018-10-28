@@ -19,6 +19,20 @@ using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools
 {
+    using System.Windows;
+    using BLL;
+    using Contracts.ViewModels;
+    using Contracts.Views;
+    using DAL;
+    using Dialogs;
+    using GalaSoft.MvvmLight.Messaging;
+    using Messages;
+    using Microsoft.Extensions.DependencyInjection;
+    using Shared.BLL;
+    using Shared.DAL;
+    using Shared.Models;
+    using ViewModels;
+
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [SqlCe40ProviderRegistration]
     [SqliteProviderRegistration]
@@ -36,6 +50,7 @@ namespace EFCorePowerTools
         private readonly DgmlNugetHandler _dgmlNugetHandler;
         private readonly ServerDgmlHandler _serverDgmlHandler;
         private readonly MigrationsHandler _migrationsHandler;
+        private readonly IServiceProvider _extensionServices;
         private DTE2 _dte2;
 
         public EFCorePowerToolsPackage()
@@ -46,6 +61,7 @@ namespace EFCorePowerTools
             _dgmlNugetHandler = new DgmlNugetHandler(this);
             _serverDgmlHandler = new ServerDgmlHandler(this);
             _migrationsHandler = new MigrationsHandler(this);
+            _extensionServices = CreateServiceProvider();
         }
 
         internal DTE2 Dte2 => _dte2;
@@ -223,6 +239,42 @@ namespace EFCorePowerTools
             return null;
         }
 
+        private IServiceProvider CreateServiceProvider()
+        {
+            var services = new ServiceCollection();
+
+            // Register models
+            services.AddSingleton<AboutExtensionModel>();
+
+            // Register views
+            services.AddTransient<IAboutDialog, AboutDialog>();
+
+            // Register view models
+            services.AddTransient<IAboutViewModel, AboutViewModel>();
+
+            // Register BLL
+            var messenger = new Messenger();
+            messenger.Register<ShowMessageBoxMessage>(this, HandleShowMessageBoxMessage);
+
+            services.AddSingleton<IExtensionVersionService, ExtensionVersionService>()
+                    .AddSingleton<IInstalledComponentsService, InstalledComponentsService>()
+                    .AddSingleton<IMessenger>(messenger);
+
+            // Register DAL
+            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(_dte2))
+                    .AddSingleton<ITelemetryAccess, TelemetryAccess>()
+                    .AddSingleton<IOperatingSystemAccess, OperatingSystemAccess>()
+                    .AddSingleton<IFileSystemAccess, FileSystemAccess>()
+                    .AddSingleton<IDotNetAccess, DotNetAccess>();
+
+            return services.BuildServiceProvider();
+        }
+
+        private void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)
+        {
+            MessageBox.Show(msg.Content);
+        }
+
         internal void LogError(List<string> statusMessages, Exception exception)
         {
             _dte2.StatusBar.Text = "An error occurred. See the Output window for details.";
@@ -255,6 +307,12 @@ namespace EFCorePowerTools
             where TResult : class
         {
             return (TResult)GetService(typeof(TService));
+        }
+
+        internal TView GetView<TView>()
+            where TView : IView
+        {
+            return _extensionServices.GetService<TView>();
         }
     }
 }
