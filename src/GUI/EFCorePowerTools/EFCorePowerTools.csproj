@@ -189,7 +189,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <SubType>Designer</SubType>
     </Content>
-    <None Include="app.config" />
     <None Include="efpt.renaming.json" />
     <None Include="Key.snk" />
     <None Include="packages.config">
