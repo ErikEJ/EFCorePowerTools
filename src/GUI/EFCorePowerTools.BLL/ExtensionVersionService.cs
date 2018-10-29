@@ -11,7 +11,7 @@
 
         public ExtensionVersionService(IDotNetAccess dotNetAccess)
         {
-            _dotNetAccess = dotNetAccess;
+            _dotNetAccess = dotNetAccess ?? throw new ArgumentNullException(nameof(dotNetAccess));
         }
 
         void IExtensionVersionService.SetExtensionVersion(AboutExtensionModel aboutExtensionModel)

@@ -15,9 +15,9 @@
                                           IFileSystemAccess fileSystemAccess,
                                           IDotNetAccess dotNetAccess)
         {
-            _visualStudioAccess = visualStudioAccess;
-            _fileSystemAccess = fileSystemAccess;
-            _dotNetAccess = dotNetAccess;
+            _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            _fileSystemAccess = fileSystemAccess ?? throw new ArgumentNullException(nameof(fileSystemAccess));
+            _dotNetAccess = dotNetAccess ?? throw new ArgumentNullException(nameof(dotNetAccess));
         }
 
         void IInstalledComponentsService.SetMissingComponentData(AboutExtensionModel aboutExtensionModel)
