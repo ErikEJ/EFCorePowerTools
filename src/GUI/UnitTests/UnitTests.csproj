@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckListBoxTest.cs" />
+    <Compile Include="Models\AboutExtensionModelTests.cs" />
     <Compile Include="PluralizerTest.cs" />
     <Compile Include="DacpacTest.cs" />
     <Compile Include="PathHelperTest.cs" />
@@ -172,6 +173,10 @@
     <ProjectReference Include="..\DacFxStronglyTypedModel\DacFxStronglyTypedModel.csproj">
       <Project>{832ecf86-c071-4628-a8b7-2529d8a7bdbc}</Project>
       <Name>DacFxStronglyTypedModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj">
+      <Project>{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}</Project>
+      <Name>EFCorePowerTools.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\EFCorePowerTools\EFCorePowerTools.csproj">
       <Project>{c670be03-6397-4ac0-9914-ad1bb679778f}</Project>
