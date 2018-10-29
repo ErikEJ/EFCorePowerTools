@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\ExtensionVersionServiceTests.cs" />
+    <Compile Include="BLL\InstalledComponentsServiceTests.cs" />
     <Compile Include="CheckListBoxTest.cs" />
     <Compile Include="Models\AboutExtensionModelTests.cs" />
     <Compile Include="PluralizerTest.cs" />
