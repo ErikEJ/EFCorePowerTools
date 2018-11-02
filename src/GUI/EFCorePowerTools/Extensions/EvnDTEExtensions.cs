@@ -26,7 +26,8 @@ namespace EFCorePowerTools.Extensions
                 foreach (string file in files)
                 {
                     var key = Path.GetFileNameWithoutExtension(file);
-                    result.Add(key, file);
+                    if (!result.ContainsKey(key))
+                        result.Add(key, file);
                 }
 
                 files = DirSearch(path, "*.dacpac");
@@ -37,7 +38,8 @@ namespace EFCorePowerTools.Extensions
                     {
                         key = "..." + key.Substring(key.Length - 55);
                     }
-                    result.Add(key, file);
+                    if (!result.ContainsKey(key))
+                        result.Add(key, file);
                 }
             }
 
