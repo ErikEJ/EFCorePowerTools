@@ -62,13 +62,14 @@
                               IVisualStudioAccess visualStudioAccess,
                               IMessenger messenger)
         {
-            _aboutExtensionModel = aboutExtensionModel;
-            _extensionVersionService = extensionVersionService;
-            _installedComponentsService = installedComponentsService;
+            _aboutExtensionModel = aboutExtensionModel ?? throw new ArgumentNullException(nameof(aboutExtensionModel));
+            _extensionVersionService = extensionVersionService ?? throw new ArgumentNullException(nameof(extensionVersionService));
+            _installedComponentsService = installedComponentsService ?? throw new ArgumentNullException(nameof(installedComponentsService));
+            _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
+            _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            _messenger = messenger ?? throw new ArgumentNullException(nameof(messenger));
+
             _aboutExtensionModel.PropertyChanged += AboutExtensionModelOnPropertyChanged;
-            _operatingSystemAccess = operatingSystemAccess;
-            _visualStudioAccess = visualStudioAccess;
-            _messenger = messenger;
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             OkCommand = new RelayCommand(Ok_Executed);
