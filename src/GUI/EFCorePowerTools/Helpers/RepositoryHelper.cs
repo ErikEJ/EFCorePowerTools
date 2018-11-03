@@ -5,6 +5,8 @@ using System.IO;
 
 namespace ErikEJ.SqlCeToolbox.Helpers
 {
+    using EFCorePowerTools.Shared.Enums;
+
     internal static class RepositoryHelper
     {
         //TODO Update this when SQLite provider is updated!

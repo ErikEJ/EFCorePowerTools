@@ -14,6 +14,7 @@ using System.Text;
 namespace EFCorePowerTools.Handlers
 {
     using ReverseEngineer20.ReverseEngineer;
+    using Shared.Enums;
 
     internal class ReverseEngineerHandler
     {

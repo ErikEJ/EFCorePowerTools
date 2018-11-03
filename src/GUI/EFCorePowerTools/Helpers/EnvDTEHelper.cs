@@ -15,6 +15,7 @@ using System.Windows.Forms;
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
 {
+    using EFCorePowerTools.Shared.Enums;
     using ReverseEngineer20.ReverseEngineer;
 
     internal class EnvDteHelper

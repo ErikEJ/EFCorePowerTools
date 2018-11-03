@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using EFCorePowerTools.Shared.Enums;
 
 [DefaultProperty("Caption")]
 // ReSharper disable once CheckNamespace
@@ -67,16 +68,6 @@ public class TableInfo
     public Int64 RowCount { get; set; }
 }
 
-
-[SuppressMessage("ReSharper", "InconsistentNaming")]
-public enum DatabaseType
-{
-    SQLCE35,
-    SQLCE40,
-    SQLServer,
-    SQLite,
-    Npgsql
-}
 /// <summary>
 /// A model used to communicate with DescriptionDialog for table+column descriptions
 /// </summary>

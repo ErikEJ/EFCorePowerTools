@@ -3,10 +3,11 @@ namespace ReverseEngineer20
 {
     public enum DatabaseType
     {
-        SQLCE35,
-        SQLCE40,
-        SQLServer,
-        SQLite,
-        Npgsql
+        Undefined = 0,
+        SQLCE35 = 1,
+        SQLCE40 = 2,
+        SQLServer = 3,
+        SQLite = 4,
+        Npgsql = 5
     }
 }

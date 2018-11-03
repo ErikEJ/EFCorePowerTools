@@ -5,6 +5,8 @@ using ErikEJ.SqlCeToolbox.Helpers;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
+    using EFCorePowerTools.Shared.Enums;
+
     public partial class PickServerDatabaseDialog
     {
         public KeyValuePair<string, DatabaseInfo> SelectedDatabase { get; private set; }

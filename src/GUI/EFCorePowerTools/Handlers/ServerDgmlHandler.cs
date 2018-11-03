@@ -9,6 +9,7 @@ namespace EFCorePowerTools.Handlers
 {
     using System.Linq;
     using ReverseEngineer20.ReverseEngineer;
+    using Shared.Enums;
 
     internal class ServerDgmlHandler
     {
