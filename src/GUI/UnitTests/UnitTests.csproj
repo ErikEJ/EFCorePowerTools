@@ -173,6 +173,7 @@
     <Compile Include="ReverseEngineer\TableInformationTest.cs" />
     <Compile Include="Services\ReplacingCandidateNamingServiceTests.cs" />
     <Compile Include="ViewModels\AboutViewModelTests.cs" />
+    <Compile Include="ViewModels\PickServerDatabaseViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
