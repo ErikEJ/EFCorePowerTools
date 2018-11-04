@@ -27,7 +27,7 @@
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
         {
             var info = EnvDteHelper.PromptForInfo(_package);
-            if (info.DatabaseType == DatabaseType.SQLCE35)
+            if (info.DatabaseType == DatabaseType.Undefined)
                 return null;
 
             return new DatabaseConnectionModel

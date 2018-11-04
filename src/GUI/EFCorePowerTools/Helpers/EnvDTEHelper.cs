@@ -108,10 +108,10 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
             var dialogResult = dialog.ShowDialog(connect: true);
 
-            if (dialogResult == null) return new DatabaseInfo {DatabaseType = DatabaseType.SQLCE35};
+            if (dialogResult == null) return new DatabaseInfo {DatabaseType = DatabaseType.Undefined};
 
             var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
-            if (info.Size == Guid.Empty.ToString()) return new DatabaseInfo { DatabaseType = DatabaseType.SQLCE35 };
+            if (info.Size == Guid.Empty.ToString()) return new DatabaseInfo { DatabaseType = DatabaseType.Undefined };
 
             SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.Size));
             return info;
