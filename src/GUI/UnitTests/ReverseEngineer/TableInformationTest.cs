@@ -138,7 +138,7 @@
 
             // Act
             var parsed1 = TableInformation.TryParse(table1, out var tableInformation1);
-            var parsed2 = TableInformation.TryParse(table1, out var tableInformation2);
+            var parsed2 = TableInformation.TryParse(table2, out var tableInformation2);
 
             // Assert
             Assert.IsFalse(parsed1);
