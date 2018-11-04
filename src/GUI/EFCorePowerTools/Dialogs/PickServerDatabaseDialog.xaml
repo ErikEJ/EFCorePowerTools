@@ -1,39 +1,109 @@
-﻿<dw:DialogWindow x:Class="ErikEJ.SqlCeToolbox.Dialogs.PickServerDatabaseDialog"
-        xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Choose Database Connection" 
-        WindowStyle="SingleBorderWindow"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize" 
-        ShowInTaskbar="False"
-        mc:Ignorable="d" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-        SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Width="418.653" Height="250.581">
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.PickServerDatabaseDialog"
+                 xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                 Title="Choose Database Connection" 
+                 WindowStyle="SingleBorderWindow"
+                 WindowStartupLocation="CenterOwner"
+                 ResizeMode="NoResize" 
+                 ShowInTaskbar="False"
+                 mc:Ignorable="d" 
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 Loaded="Window_Loaded"
+                 Width="420"
+                 Height="190"
+                 d:DataContext="{d:DesignInstance Type=viewModels:PickServerDatabaseViewModel, IsDesignTimeCreatable=False}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Dialogs/Style.xaml"/>
+                <ResourceDictionary Source="Style.xaml"/>
+                <ResourceDictionary Source="Converter.xaml"/>
+                <ResourceDictionary>
+                    <Style x:Key="SourceSelectionComboBoxStyle" TargetType="ComboBox">
+                        <Setter Property="Margin" Value="0, 12, 0, 12"/>
+                    </Style>
+                    <Style x:Key="SourceSelectionButtonStyle" TargetType="Button">
+                        <Setter Property="Margin" Value="10, 0, 0, 0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="10, 2"/>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </dw:DialogWindow.Resources>
-    <Grid Margin="12,24,12,12">
-        <Grid.RowDefinitions>
 
-            <RowDefinition Height="2" />
-            <RowDefinition Height="38" />
-            <RowDefinition Height="38" />
-            <RowDefinition Height="38" />
-            <RowDefinition Height="100*" />
+    <dw:DialogWindow.Background>
+        <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+    </dw:DialogWindow.Background>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Margin="0,0, 0,0" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1" Width="385">
-            <ComboBox Height="23" HorizontalAlignment="Left" x:Name="comboBox1" VerticalAlignment="Top" Width="293" IsEditable="False" SelectionChanged="comboBox1_SelectionChanged" TabIndex="0" Margin="0,12,6,0" />
-            <dw:DialogButton  Click="AddButton_OnClick" HorizontalAlignment="Right" TabIndex="1" SnapsToDevicePixels="False" Width="74" Margin="0,12,0,0" Height="23" VerticalAlignment="Top" Content="Add..."/>
+
+        <Grid Grid.Row="0"
+                   HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Grid.Column="0"
+                      x:Name="DatabaseConnectionCombobox"
+                      TabIndex="1"
+                      Style="{StaticResource SourceSelectionComboBoxStyle}"
+                      ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedDatabaseConnection, Mode=TwoWay}"
+                      DisplayMemberPath="ConnectionName"/>
+            <Button Grid.Column="1"
+                    TabIndex="2"
+                    Style="{StaticResource SourceSelectionButtonStyle}"
+                    Content="Add..."
+                    Command="{Binding AddDatabaseConnectionCommand}"/>
+        </Grid>
+
+        <TextBlock Grid.Row="1"
+                   Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
+                   Text="or SQL Server Database project (.dacpac)"/>
+        <ComboBox Grid.Row="2"
+                  Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
+                  TabIndex="3"
+                  Style="{StaticResource SourceSelectionComboBoxStyle}"
+                  ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
+                  SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+            <Button TabIndex="4"
+                    Style="{StaticResource SourceSelectionButtonStyle}"
+                    Content="OK"
+                    IsDefault="True"
+                    Command="{Binding OkCommand}"/>
+            <Button TabIndex="5" 
+                    Style="{StaticResource SourceSelectionButtonStyle}"
+                    Content="Cancel"
+                    Command="{Binding CancelCommand}"/>
         </StackPanel>
-        <Label Grid.Row="2" HorizontalAlignment="Left" Margin="0,12,0,0" Width="362">or SQL Server Database project (.dacpac)</Label>
-        <ComboBox Height="23" HorizontalAlignment="Left" Grid.Row="3" Name="comboBox2" VerticalAlignment="Top" Width="373" SelectionChanged="comboBox2_SelectionChanged" IsEditable="False" TabIndex="0" Margin="2,10,0,0" />
-        <dw:DialogButton IsDefault="True"   Click="SaveButton_Click" Grid.Row="4" HorizontalAlignment="Right" TabIndex="2" Margin="0,28,98.5,0" Width="74" Height="25" VerticalAlignment="Top">OK</dw:DialogButton>
-        <dw:DialogButton IsCancel="True" Click="CancelButton_Click" Grid.Row="4" HorizontalAlignment="Right" TabIndex="3" SnapsToDevicePixels="False" Width="74" Margin="0,28,13.5,0" Height="25" VerticalAlignment="Top">Cancel</dw:DialogButton>
     </Grid>
 </dw:DialogWindow>

@@ -247,7 +247,8 @@ namespace EFCorePowerTools
             services.AddSingleton<AboutExtensionModel>();
 
             // Register views
-            services.AddTransient<IAboutDialog, AboutDialog>();
+            services.AddTransient<IAboutDialog, AboutDialog>()
+                    .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>();
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()

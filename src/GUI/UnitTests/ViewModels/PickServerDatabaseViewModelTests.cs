@@ -3,6 +3,7 @@
 namespace UnitTests.ViewModels
 {
     using System;
+    using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
@@ -222,18 +223,24 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbConnection = new DatabaseConnectionModel();
             var closeRequested = false;
+            bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
             var vm = new PickServerDatabaseViewModel(vsa)
             {
                 SelectedDatabaseConnection = dbConnection
             };
-            vm.CloseRequested += (sender, args) => closeRequested = true;
+            vm.CloseRequested += (sender, args) =>
+            {
+                closeRequested = true;
+                dialogResult = args.DialogResult;
+            };
 
             // Act
             vm.OkCommand.Execute(null);
 
             // Assert
             Assert.IsTrue(closeRequested);
+            Assert.IsTrue(dialogResult);
             Assert.AreSame(dbConnection, vm.SelectedDatabaseConnection);
             Assert.IsNull(vm.SelectedDatabaseDefinition);
         }
@@ -244,18 +251,24 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbDefinition = new DatabaseDefinitionModel();
             var closeRequested = false;
+            bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
             var vm = new PickServerDatabaseViewModel(vsa)
             {
                 SelectedDatabaseDefinition = dbDefinition
             };
-            vm.CloseRequested += (sender, args) => closeRequested = true;
+            vm.CloseRequested += (sender, args) =>
+            {
+                closeRequested = true;
+                dialogResult = args.DialogResult;
+            };
 
             // Act
             vm.OkCommand.Execute(null);
 
             // Assert
             Assert.IsTrue(closeRequested);
+            Assert.IsTrue(dialogResult);
             Assert.AreSame(dbDefinition, vm.SelectedDatabaseDefinition);
             Assert.IsNull(vm.SelectedDatabaseConnection);
         }
@@ -280,18 +293,24 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbConnection = new DatabaseConnectionModel();
             var closeRequested = false;
+            bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
             var vm = new PickServerDatabaseViewModel(vsa)
             {
                 SelectedDatabaseConnection = dbConnection
             };
-            vm.CloseRequested += (sender, args) => closeRequested = true;
+            vm.CloseRequested += (sender, args) =>
+            {
+                closeRequested = true;
+                dialogResult = args.DialogResult;
+            };
 
             // Act
             vm.CancelCommand.Execute(null);
 
             // Assert
             Assert.IsTrue(closeRequested);
+            Assert.IsFalse(dialogResult);
             Assert.IsNull(vm.SelectedDatabaseConnection);
             Assert.IsNull(vm.SelectedDatabaseDefinition);
         }
@@ -302,18 +321,24 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbDefinition = new DatabaseDefinitionModel();
             var closeRequested = false;
+            bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
             var vm = new PickServerDatabaseViewModel(vsa)
             {
                 SelectedDatabaseDefinition = dbDefinition
             };
-            vm.CloseRequested += (sender, args) => closeRequested = true;
+            vm.CloseRequested += (sender, args) =>
+            {
+                closeRequested = true;
+                dialogResult = args.DialogResult;
+            };
 
             // Act
             vm.CancelCommand.Execute(null);
 
             // Assert
             Assert.IsTrue(closeRequested);
+            Assert.IsFalse(dialogResult);
             Assert.IsNull(vm.SelectedDatabaseConnection);
             Assert.IsNull(vm.SelectedDatabaseDefinition);
         }
@@ -358,6 +383,24 @@ namespace UnitTests.ViewModels
             // Assert
             Assert.IsNull(vm.SelectedDatabaseConnection);
             Assert.AreSame(dbDefinition, vm.SelectedDatabaseDefinition);
+        }
+
+        [Test]
+        public void PropertyChangedOnDatabaseDefinitionsChanged()
+        {
+            // Arrange
+            string propertyChangedName = null;
+            var dbDefinition = new DatabaseDefinitionModel();
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var vm = new PickServerDatabaseViewModel(vsa);
+            vm.PropertyChanged += (sender, args) => propertyChangedName = args.PropertyName;
+
+            // Act
+            vm.DatabaseDefinitions.Add(dbDefinition);
+
+            // Assert
+            Assert.IsNotNull(propertyChangedName);
+            Assert.AreEqual(nameof(IPickServerDatabaseViewModel.DatabaseDefinitions), propertyChangedName);
         }
     }
 }

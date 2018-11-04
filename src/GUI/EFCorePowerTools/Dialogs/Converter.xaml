@@ -4,5 +4,7 @@
     xmlns:converter="clr-namespace:EFCorePowerTools.Converter">
 
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converter:FilePathToDisplayNameConverter x:Key="FilePathToDisplayNameConverter"/>
+    <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter"/>
 
 </ResourceDictionary>

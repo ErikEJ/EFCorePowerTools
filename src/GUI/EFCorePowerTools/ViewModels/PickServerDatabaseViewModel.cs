@@ -4,6 +4,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
+    using Contracts.EventArgs;
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -17,7 +18,7 @@
         private DatabaseConnectionModel _selectedDatabaseConnection;
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
 
-        public event EventHandler CloseRequested;
+        public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand LoadedCommand { get; }
         public ICommand AddDatabaseConnectionCommand { get; }
@@ -66,6 +67,7 @@
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
             DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
+            DatabaseDefinitions.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseDefinitions));
         }
 
         private void Loaded_Executed()
@@ -96,7 +98,7 @@
 
         private void Ok_Executed()
         {
-            CloseRequested?.Invoke(this, EventArgs.Empty);
+            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
         private bool Ok_CanExecute() => SelectedDatabaseConnection != null || SelectedDatabaseDefinition != null;
@@ -105,7 +107,7 @@
         {
             SelectedDatabaseConnection = null;
             SelectedDatabaseDefinition = null;
-            CloseRequested?.Invoke(this, EventArgs.Empty);
+            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
     }
 }

@@ -8,8 +8,11 @@ using System.IO;
 namespace EFCorePowerTools.Handlers
 {
     using System.Linq;
+    using Contracts.Views;
+    using Dialogs;
     using ReverseEngineer20.ReverseEngineer;
     using Shared.Enums;
+    using Shared.Models;
 
     internal class ServerDgmlHandler
     {
@@ -32,13 +35,34 @@ namespace EFCorePowerTools.Handlers
 
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
 
-                var psd = new PickServerDatabaseDialog(databaseList, _package, new Dictionary<string, string>());
-                var diagRes = psd.ShowModal();
-                if (!diagRes.HasValue || !diagRes.Value) return;
+                var psd = _package.GetView<IPickServerDatabaseDialog>();
+                psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
+                {
+                    ConnectionName = m.Value.Caption,
+                    ConnectionString = m.Value.ConnectionString,
+                    DatabaseType = m.Value.DatabaseType
+                }));
 
+                var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
+                if (!pickDataSourceResult.ClosedByOK)
+                    return;
+                
                 _package.Dte2.StatusBar.Text = "Loading schema information...";
 
-                var dbInfo = psd.SelectedDatabase.Value;
+                // Reload the database list, in case the user has added a new database in the dialog
+                databaseList = EnvDteHelper.GetDataConnections(_package);
+
+                DatabaseInfo dbInfo = null;
+                if (pickDataSourceResult.Payload.Connection != null)
+                {
+                    dbInfo = databaseList.Single(m => m.Value.ConnectionString == pickDataSourceResult.Payload.Connection?.ConnectionString).Value;
+                }
+
+                if (dbInfo == null)
+                {
+                    // User didn't select a database, should be impossible, though
+                    return;
+                }
 
                 if (dbInfo.DatabaseType == DatabaseType.SQLCE35)
                 {

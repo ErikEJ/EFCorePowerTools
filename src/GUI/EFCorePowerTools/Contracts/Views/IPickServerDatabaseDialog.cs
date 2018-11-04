@@ -1,7 +1,11 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    public interface IPickServerDatabaseDialog : IDialog<object>
+    using System.Collections.Generic;
+    using Shared.Models;
+
+    public interface IPickServerDatabaseDialog : IDialog<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition)>
     {
-        
+        void PublishConnections(IEnumerable<DatabaseConnectionModel> connections);
+        void PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions);
     }
 }

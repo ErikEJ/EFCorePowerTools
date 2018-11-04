@@ -13,8 +13,11 @@ using System.Text;
 
 namespace EFCorePowerTools.Handlers
 {
+    using Contracts.Views;
+    using Dialogs;
     using ReverseEngineer20.ReverseEngineer;
     using Shared.Enums;
+    using Shared.Models;
 
     internal class ReverseEngineerHandler
     {
@@ -47,13 +50,33 @@ namespace EFCorePowerTools.Handlers
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution();
 
-                var psd = new PickServerDatabaseDialog(databaseList, _package, dacpacList);
-                if (psd.ShowModal() != true) return;
+                var psd = _package.GetView<IPickServerDatabaseDialog>();
+                psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
+                {
+                    ConnectionName = m.Value.Caption,
+                    ConnectionString = m.Value.ConnectionString,
+                    DatabaseType = m.Value.DatabaseType
+                }));
+                psd.PublishDefinitions(dacpacList.Select(m => new DatabaseDefinitionModel
+                {
+                    FilePath = m
+                }));
+
+                var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
+                if (!pickDataSourceResult.ClosedByOK)
+                    return;
 
                 _package.Dte2.StatusBar.Text = "Loading schema information...";
 
-                var dbInfo = psd.SelectedDatabase.Value;
-                var dacpacPath = psd.DacpacPath;
+                // Reload the database list, in case the user has added a new database in the dialog
+                databaseList = EnvDteHelper.GetDataConnections(_package);
+
+                DatabaseInfo dbInfo = null;
+                if (pickDataSourceResult.Payload.Connection != null)
+                {
+                    dbInfo = databaseList.Single(m => m.Value.ConnectionString == pickDataSourceResult.Payload.Connection?.ConnectionString).Value;
+                }
+                var dacpacPath = pickDataSourceResult.Payload.Definition?.FilePath;
 
                 if (dbInfo == null) dbInfo = new DatabaseInfo();
 

@@ -7,46 +7,36 @@ namespace EFCorePowerTools.Extensions
 {
     internal static class EvnDTEExtensions
     {
-        public static Dictionary<string, string> GetDacpacFilesInActiveSolution(this DTE dte)
+        public static string[] GetDacpacFilesInActiveSolution(this DTE dte)
         {
-            var result = new Dictionary<string, string>();
+            var result = new List<string>();
 
             if (!dte.Solution.IsOpen)
-            {
-                result.Add("No open Solution", null);
-                return result;
-            }
+                return null;
 
-            string path = null;
-            TryGetInitialPath(dte, out path);
+            TryGetInitialPath(dte, out var path);
 
             if (path != null)
             {
                 var files = DirSearch(path, "*.sqlproj");
-                foreach (string file in files)
+                foreach (var file in files)
                 {
-                    var key = Path.GetFileNameWithoutExtension(file);
-                    if (!result.ContainsKey(key))
-                        result.Add(key, file);
+                    if (!result.Contains(file))
+                        result.Add(file);
                 }
 
                 files = DirSearch(path, "*.dacpac");
-                foreach (string file in files)
+                foreach (var file in files)
                 {
-                    var key = file;
-                    if (key.Length > 55)
-                    {
-                        key = "..." + key.Substring(key.Length - 55);
-                    }
-                    if (!result.ContainsKey(key))
-                        result.Add(key, file);
+                    if (!result.Contains(file))
+                        result.Add(file);
                 }
             }
 
             if (result.Count == 0)
-                result.Add("No .dacpac files found in Solution folders", null);
+                return null;
 
-            return result;
+            return result.ToArray();
         }
 
         public static string BuildSqlProj(this DTE dte, string sqlprojPath)

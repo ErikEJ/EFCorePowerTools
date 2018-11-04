@@ -3,11 +3,12 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
+    using EventArgs;
     using Shared.Models;
 
     public interface IPickServerDatabaseViewModel : IViewModel
     {
-        event EventHandler CloseRequested;
+        event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         ICommand LoadedCommand { get; }
         ICommand AddDatabaseConnectionCommand { get; }
