@@ -1,97 +1,74 @@
-﻿using System;
-using System.Windows;
-using System.Collections.Generic;
-using ErikEJ.SqlCeToolbox.Helpers;
-
-namespace ErikEJ.SqlCeToolbox.Dialogs
+﻿namespace EFCorePowerTools.Dialogs
 {
-    public partial class PickServerDatabaseDialog
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using Contracts.ViewModels;
+    using Contracts.Views;
+    using Shared.DAL;
+    using Shared.Models;
+
+    public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
-        public KeyValuePair<string, DatabaseInfo> SelectedDatabase { get; private set; }
+        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition)> _getDialogResult;
+        private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
+        private readonly Action<IEnumerable<DatabaseDefinitionModel>> _addDefinitions;
 
-        public string DacpacPath { get; private set; }
-
-        private readonly EFCorePowerTools.EFCorePowerToolsPackage _package;
-
-        public PickServerDatabaseDialog(Dictionary<string, DatabaseInfo> serverConnections, EFCorePowerTools.EFCorePowerToolsPackage package, Dictionary<string, string> dacpacList)
+        public PickServerDatabaseDialog(ITelemetryAccess telemetryAccess,
+                                        IPickServerDatabaseViewModel viewModel)
         {
-            _package = package;
-            Telemetry.TrackPageView(nameof(PickServerDatabaseDialog));
+            telemetryAccess.TrackPageView(nameof(PickServerDatabaseDialog));
+
+            DataContext = viewModel;
+            viewModel.CloseRequested += (sender, args) =>
+            {
+                DialogResult = args.DialogResult;
+                Close();
+            };
+            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition);
+            _addConnections = models =>
+            {
+                foreach (var model in models)
+                    viewModel.DatabaseConnections.Add(model);
+            };
+            _addDefinitions = models =>
+            {
+                foreach (var model in models)
+                    viewModel.DatabaseDefinitions.Add(model);
+            };
+
             InitializeComponent();
-            Background = VsThemes.GetWindowBackground();
-            comboBox1.DisplayMemberPath = "Value.Caption";
-            comboBox1.ItemsSource = serverConnections;
-            comboBox2.DisplayMemberPath = "Key";
-            comboBox2.ItemsSource = dacpacList;
-            if (serverConnections.Count > 0)
-            {
-                comboBox1.SelectedIndex = 0;
-            }
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            Close();
-        }
-
-        private void comboBox1_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (comboBox1.SelectedItem != null)
-            {
-                SelectedDatabase = (KeyValuePair<string, DatabaseInfo>)comboBox1.SelectedItem;
-                DacpacPath = null;
-                comboBox2.SelectedIndex = -1;
-            };
-        }
-
-        private void comboBox2_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (comboBox2.SelectedItem != null)
-            {
-                var result = (KeyValuePair<string, string>)comboBox2.SelectedItem;
-                DacpacPath = result.Value;
-                comboBox1.SelectedIndex = -1;
-            };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            comboBox1.Focus();
+            DatabaseConnectionCombobox.Focus();
         }
 
-        private void AddButton_OnClick(object sender, RoutedEventArgs e)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition) Payload) ShowAndAwaitUserResponse(bool modal)
         {
-            try
-            {
-                var info = EnvDteHelper.PromptForInfo(_package);
-                if (info.DatabaseType == DatabaseType.SQLCE35) return;
+            bool closedByOkay;
 
-                var databaseList = EnvDteHelper.GetDataConnections(_package);
-                comboBox1.DisplayMemberPath = "Value.Caption";
-                comboBox1.ItemsSource = databaseList;
-
-                int i = 0;
-                foreach (var item in databaseList)
-                {
-                    if (item.Key == info.ConnectionString)
-                    {
-                        comboBox1.SelectedIndex = i;
-                    }
-                    i++;
-                }
-            }
-            catch (Exception exception)
+            if (modal)
             {
-                EnvDteHelper.ShowMessage("Unable to add connection, maybe the provider is not supported: "  + exception.Message);
+                closedByOkay = ShowModal() == true;
             }
+            else
+            {
+                closedByOkay = ShowDialog() == true;
+            }
+
+            return (closedByOkay, _getDialogResult());
         }
 
+        void IPickServerDatabaseDialog.PublishConnections(IEnumerable<DatabaseConnectionModel> connections)
+        {
+            _addConnections(connections);
+        }
+
+        void IPickServerDatabaseDialog.PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions)
+        {
+            _addDefinitions(definitions);
+        }
     }
 }

@@ -114,5 +114,55 @@
             Assert.AreEqual("dbo.Album", ti2.UnsafeFullName);
             Assert.AreEqual("[dbo].[Album]", ti2.SafeFullName);
         }
+
+        [Test]
+        public void TryParse_Empty()
+        {
+            // Arrange
+            string table = null;
+
+            // Act
+            var parsed = TableInformation.TryParse(table, out var tableInformation);
+
+            // Assert
+            Assert.IsFalse(parsed);
+            Assert.IsNull(tableInformation);
+        }
+
+        [Test]
+        public void TryParse_NotTwoPeriods()
+        {
+            // Arrange
+            var table1 = "Album";
+            var table2 = "[config.legacy].Album";
+
+            // Act
+            var parsed1 = TableInformation.TryParse(table1, out var tableInformation1);
+            var parsed2 = TableInformation.TryParse(table2, out var tableInformation2);
+
+            // Assert
+            Assert.IsFalse(parsed1);
+            Assert.IsFalse(parsed2);
+            Assert.IsNull(tableInformation1);
+            Assert.IsNull(tableInformation2);
+        }
+
+        [Test]
+        public void TryParse_OnlyTable_CorrectCreation()
+        {
+            // Arrange
+            var table = "dbo.Album";
+
+            // Act
+            var parsed = TableInformation.TryParse(table, out var ti);
+
+            // Assert
+            Assert.IsTrue(parsed);
+            Assert.AreEqual("dbo", ti.Schema);
+            Assert.AreEqual("Album", ti.Name);
+            Assert.IsTrue(ti.HasPrimaryKey);
+            Assert.AreEqual("dbo.Album", ti.UnsafeFullName);
+            Assert.AreEqual("[dbo].[Album]", ti.SafeFullName);
+        }
     }
 }

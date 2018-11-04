@@ -55,7 +55,9 @@
     <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IViewModel.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
     <Compile Include="Contracts\Views\IDialog.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
     <Compile Include="Contracts\Views\IView.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\FilePathToDisplayNameConverter.cs" />
+    <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
     <Compile Include="DAL\DotNetAccess.cs" />
     <Compile Include="DAL\FileSystemAccess.cs" />
     <Compile Include="DAL\OperatingSystemAccess.cs" />
@@ -124,6 +128,7 @@
     </Compile>
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="DAL\VisualStudioAccess.cs" />
+    <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\lib\efpt.exe.zip">

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace ReverseEngineer20
+// ReSharper disable IdentifierTypo
+namespace EFCorePowerTools.Shared.Enums
 {
     public enum DatabaseType
     {

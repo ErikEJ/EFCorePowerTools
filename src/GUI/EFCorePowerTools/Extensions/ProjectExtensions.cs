@@ -6,6 +6,8 @@ using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
 {
+    using Shared.Enums;
+
     internal static class ProjectExtensions
     {
         public const int SOk = 0;

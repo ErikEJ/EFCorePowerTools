@@ -247,10 +247,12 @@ namespace EFCorePowerTools
             services.AddSingleton<AboutExtensionModel>();
 
             // Register views
-            services.AddTransient<IAboutDialog, AboutDialog>();
+            services.AddTransient<IAboutDialog, AboutDialog>()
+                    .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>();
 
             // Register view models
-            services.AddTransient<IAboutViewModel, AboutViewModel>();
+            services.AddTransient<IAboutViewModel, AboutViewModel>()
+                    .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>();
 
             // Register BLL
             var messenger = new Messenger();
@@ -261,7 +263,7 @@ namespace EFCorePowerTools
                     .AddSingleton<IMessenger>(messenger);
 
             // Register DAL
-            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(_dte2))
+            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(this, _dte2))
                     .AddSingleton<ITelemetryAccess, TelemetryAccess>()
                     .AddSingleton<IOperatingSystemAccess, OperatingSystemAccess>()
                     .AddSingleton<IFileSystemAccess, FileSystemAccess>()

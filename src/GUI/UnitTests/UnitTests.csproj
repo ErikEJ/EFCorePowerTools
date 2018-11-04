@@ -163,6 +163,8 @@
     <Compile Include="BLL\InstalledComponentsServiceTests.cs" />
     <Compile Include="CheckListBoxTest.cs" />
     <Compile Include="Models\AboutExtensionModelTests.cs" />
+    <Compile Include="Models\DatabaseConnectionModelTests.cs" />
+    <Compile Include="Models\DatabaseDefinitionModelTests.cs" />
     <Compile Include="PluralizerTest.cs" />
     <Compile Include="DacpacTest.cs" />
     <Compile Include="PathHelperTest.cs" />
@@ -171,6 +173,7 @@
     <Compile Include="ReverseEngineer\TableInformationTest.cs" />
     <Compile Include="Services\ReplacingCandidateNamingServiceTests.cs" />
     <Compile Include="ViewModels\AboutViewModelTests.cs" />
+    <Compile Include="ViewModels\PickServerDatabaseViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
