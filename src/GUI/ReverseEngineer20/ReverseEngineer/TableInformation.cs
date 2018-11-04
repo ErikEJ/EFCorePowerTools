@@ -2,36 +2,43 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// A class holding a certain information about tables.
     /// </summary>
+    [DataContract]
     [DebuggerDisplay("{" + nameof(SafeFullName) + ",nq}")]
     public class TableInformation
     {
         /// <summary>
         /// Gets the schema name of the table.
         /// </summary>
-        public string Schema { get; }
+        [DataMember]
+        public string Schema { get; set; }
 
         /// <summary>
         /// Gets the table name.
         /// </summary>
-        public string Name { get; }
+        [DataMember]
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets whether a primary key exists for the table or not.
         /// </summary>
-        public bool HasPrimaryKey { get; }
+        [DataMember]
+        public bool HasPrimaryKey { get; set; }
 
         /// <summary>
         /// Gets the unsafe (unescaped) full name of the table.
         /// </summary>
+        [IgnoreDataMember]
         public string UnsafeFullName => $"{Schema}.{Name}";
 
         /// <summary>
         /// Gets the safe (escaped) full name of the table.
         /// </summary>
+        [IgnoreDataMember]
         public string SafeFullName => $"[{Schema}].[{Name}]";
 
         /// <summary>
@@ -96,6 +103,34 @@
             var schema = split[0];
             var name = split[1];
             return new TableInformation(schema, name, hasPrimaryKey);
+        }
+
+        /// <summary>
+        /// Tries to parse the given <paramref name="table"/> into a <see cref="TableInformation"/> instance.
+        /// </summary>
+        /// <param name="table">The table to parse.</param>
+        /// <param name="tableInformation">The parsed <see cref="TableInformation"/>, or <b>null</b>.</param>
+        /// <returns><b>True</b>, if the parsing was successful, otherwise <b>false</b>.</returns>
+        public static bool TryParse(string table,
+                                    out TableInformation tableInformation)
+        {
+            if (string.IsNullOrWhiteSpace(table))
+            {
+                tableInformation = null;
+                return false;
+            }
+            
+            var split = table.Split('.');
+            if (split.Length != 2)
+            {
+                tableInformation = null;
+                return false;
+            }
+
+            var schema = split[0];
+            var name = split[1];
+            tableInformation = new TableInformation(schema, name, true);
+            return true;
         }
     }
 }
