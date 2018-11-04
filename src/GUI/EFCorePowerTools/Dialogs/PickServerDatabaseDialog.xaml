@@ -14,7 +14,7 @@
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  Loaded="Window_Loaded"
                  Width="420"
-                 Height="190"
+                 Height="200"
                  d:DataContext="{d:DesignInstance Type=viewModels:PickServerDatabaseViewModel, IsDesignTimeCreatable=False}">
 
     <i:Interaction.Triggers>
@@ -32,10 +32,9 @@
                     <Style x:Key="SourceSelectionComboBoxStyle" TargetType="ComboBox">
                         <Setter Property="Margin" Value="0, 12, 0, 12"/>
                     </Style>
-                    <Style x:Key="SourceSelectionButtonStyle" TargetType="Button">
+                    <Style x:Key="SourceSelectionButtonStyle" TargetType="dw:DialogButton">
                         <Setter Property="Margin" Value="10, 0, 0, 0"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Padding" Value="10, 2"/>
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
@@ -68,11 +67,11 @@
                       ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
                       SelectedItem="{Binding SelectedDatabaseConnection, Mode=TwoWay}"
                       DisplayMemberPath="ConnectionName"/>
-            <Button Grid.Column="1"
-                    TabIndex="2"
-                    Style="{StaticResource SourceSelectionButtonStyle}"
-                    Content="Add..."
-                    Command="{Binding AddDatabaseConnectionCommand}"/>
+            <dw:DialogButton Grid.Column="1"
+                             TabIndex="2"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="Add..."
+                             Command="{Binding AddDatabaseConnectionCommand}"/>
         </Grid>
 
         <TextBlock Grid.Row="1"
@@ -95,15 +94,15 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center">
-            <Button TabIndex="4"
-                    Style="{StaticResource SourceSelectionButtonStyle}"
-                    Content="OK"
-                    IsDefault="True"
-                    Command="{Binding OkCommand}"/>
-            <Button TabIndex="5" 
-                    Style="{StaticResource SourceSelectionButtonStyle}"
-                    Content="Cancel"
-                    Command="{Binding CancelCommand}"/>
+            <dw:DialogButton TabIndex="4"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="OK"
+                             IsDefault="True"
+                             Command="{Binding OkCommand}"/>
+            <dw:DialogButton TabIndex="5"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="Cancel"
+                             Command="{Binding CancelCommand}"/>
         </StackPanel>
     </Grid>
 </dw:DialogWindow>
