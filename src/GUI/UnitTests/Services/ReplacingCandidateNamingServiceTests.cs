@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 using ReverseEngineer20.ReverseEngineer;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace UnitTests.Services
 {
@@ -490,78 +489,147 @@ namespace UnitTests.Services
         }
 
         [Test]
-        public void GenerateIForeignKey()
+        public void GenerateIForeignKeyForSelfReferenceTable()
         {
             //Arrange
-            var expected = "MachineAlertUi";
+            var expected = "SelfRef";
             var exampleOption = new List<Schema>
-              {
-                  new Schema
-                  {
-                       SchemaName = "machine",
-                       UseSchemaName = true
-                  },
-                  new Schema
-                  {
-                       SchemaName = "master",
-                       UseSchemaName = true
-                  }
-              };
-
-
+            {
+            };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            var exampleDbTable = new DatabaseTable
-            {
-                Name = "alert_ui",
-                Schema = "machine"
-            };
-
-            var test = new FakeForeignKey();
+            var fk = CreateSelfRefFK();
 
             // Act
-            var result = sut.GetDependentEndCandidateNavigationPropertyName(test);
+            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+
+
+            //Assert
+            StringAssert.Contains(expected, result);
+            //Assert.AreSame(fk.PrincipalEntityType, fk.ResolveOtherEntityType(fk.DeclaringEntityType));
+        }
+
+        [Test]
+        public void GenerateIForeignKeyNameWithSchemaName()
+        {
+            //Arrange
+            var expected = "SchemaOneToManyPrincipal";
+            var exampleOption = new List<Schema>
+            {
+                new Schema{ SchemaName = "schema", UseSchemaName = true}
+            };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var fk = CreateOneToManyFK();
+
+            // Act
+            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
 
 
             //Assert
             StringAssert.Contains(expected, result);
         }
 
-        private class FakeForeignKey : IForeignKey
+        [Test]
+        public void GenerateIForeignKeyNameWithoutSchemaName()
         {
-            public object this[string name] => throw new System.NotImplementedException();
-
-            public IEntityType DeclaringEntityType => throw new System.NotImplementedException();
-
-            public IReadOnlyList<IProperty> Properties => throw new System.NotImplementedException();
-
-            public IEntityType PrincipalEntityType => throw new System.NotImplementedException();
-
-            public IKey PrincipalKey => throw new System.NotImplementedException();
-
-            public INavigation DependentToPrincipal => throw new System.NotImplementedException();
-
-            public INavigation PrincipalToDependent => throw new System.NotImplementedException();
-
-            public bool IsUnique => throw new System.NotImplementedException();
-
-            public bool IsRequired => throw new System.NotImplementedException();
-
-            public bool IsOwnership => throw new System.NotImplementedException();
-
-            public DeleteBehavior DeleteBehavior => throw new System.NotImplementedException();
-
-            public IAnnotation FindAnnotation(string name)
+            //Arrange
+            var expected = "OneToManyPrincipal";
+            var exampleOption = new List<Schema>
             {
-                throw new System.NotImplementedException();
-            }
+                new Schema{ SchemaName = "schema", UseSchemaName = false}
+            };
 
-            public IEnumerable<IAnnotation> GetAnnotations()
-            {
-                throw new System.NotImplementedException();
-            }
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var fk = CreateOneToManyFK();
+
+            // Act
+            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+
+
+            //Assert
+            StringAssert.Contains(expected, result);
         }
 
+        private ForeignKey CreateSelfRefFK(bool useAltKey = false)
+        {
+            var entityType = new Model().AddEntityType(typeof(SelfRef));
+            entityType.Scaffolding().Schema = "SchemaName";
+            var pk = entityType.GetOrSetPrimaryKey(entityType.AddProperty(SelfRef.IdProperty));
+            var fkProp = entityType.AddProperty(SelfRef.SelfRefIdProperty);
+
+            var property = entityType.AddProperty("AltId", typeof(int));
+            var principalKey = useAltKey
+                ? entityType.GetOrAddKey(property)
+                : pk;
+
+            var fk = entityType.AddForeignKey(new[] { fkProp }, principalKey, entityType);
+            fk.IsUnique = true;
+            fk.HasDependentToPrincipal(SelfRef.SelfRefPrincipalProperty);
+            fk.HasPrincipalToDependent(SelfRef.SelfRefDependentProperty);
+            return fk;
+        }
+
+        private class SelfRef
+        {
+            public static readonly PropertyInfo IdProperty = typeof(SelfRef).GetProperty(nameof(Id));
+            public static readonly PropertyInfo SelfRefIdProperty = typeof(SelfRef).GetProperty(nameof(SelfRefId));
+            public static readonly PropertyInfo SelfRefPrincipalProperty = typeof(SelfRef).GetProperty(nameof(SelfRefPrincipal));
+            public static readonly PropertyInfo SelfRefDependentProperty = typeof(SelfRef).GetProperty(nameof(SelfRefDependent));
+
+            public int Id { get; set; }
+            public SelfRef SelfRefPrincipal { get; set; }
+            public SelfRef SelfRefDependent { get; set; }
+            public int? SelfRefId { get; set; }
+        }
+
+        private ForeignKey CreateOneToManyFK()
+        {
+            var model = new Model();
+            var principalEntityType = model.AddEntityType(typeof(OneToManyPrincipal));
+
+            var property = principalEntityType.AddProperty(NavigationBase.IdProperty);
+            var pk = principalEntityType.GetOrSetPrimaryKey(property);
+
+            var dependentEntityType = model.AddEntityType(typeof(OneToManyDependent));
+            var fkProp = dependentEntityType.AddProperty(OneToManyDependent.ForeignKeyProperty);
+            var fk = dependentEntityType.AddForeignKey(new[] { fkProp }, pk, principalEntityType);
+            principalEntityType.Scaffolding().Schema = "schema";
+            fk.HasPrincipalToDependent(NavigationBase.OneToManyDependentsProperty);
+            fk.HasDependentToPrincipal(NavigationBase.OneToManyPrincipalProperty);
+            return fk;
+        }
+
+
+        public abstract class NavigationBase
+        {
+            public static readonly PropertyInfo IdProperty = typeof(NavigationBase).GetProperty(nameof(Id));
+            public static readonly PropertyInfo OneToManyDependentsProperty = typeof(NavigationBase).GetProperty(nameof(OneToManyDependents));
+            public static readonly PropertyInfo OneToManyPrincipalProperty = typeof(NavigationBase).GetProperty(nameof(OneToManyPrincipal));
+
+            public int Id { get; set; }
+            public IEnumerable<OneToManyDependent> OneToManyDependents { get; set; }
+            public OneToManyPrincipal OneToManyPrincipal { get; set; }
+        }
+
+        public class OneToManyPrincipal : NavigationBase
+        {
+            public IEnumerable<OneToManyDependent> OneToManyDependent { get; set; }
+        }
+
+        public class DerivedOneToManyPrincipal : OneToManyPrincipal
+        {
+        }
+
+        public class OneToManyDependent : NavigationBase
+        {
+            public static readonly PropertyInfo DeceptionProperty = typeof(OneToManyDependent).GetProperty(nameof(Deception));
+            public static readonly PropertyInfo ForeignKeyProperty = typeof(OneToManyDependent).GetProperty(nameof(OneToManyPrincipalId));
+            public int OneToManyPrincipalId { get; set; }
+            public OneToManyPrincipal Deception { get; set; }
+        }
     }
 }

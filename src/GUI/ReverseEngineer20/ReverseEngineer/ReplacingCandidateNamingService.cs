@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
-    public class ReplacingCandidateNamingService: CandidateNamingService
+    public class ReplacingCandidateNamingService : CandidateNamingService
     {
         private readonly List<Schema> _customNameOptions;
 
@@ -41,15 +41,14 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 return candidateStringBuilder.ToString();
             }
-            else if(schema.Tables.Count > 0)
+            else if (schema.Tables.Count > 0)
             {
-                var newTableName = _customNameOptions.Where(x => x.SchemaName == schema.SchemaName)
-                    .Select(x => x.Tables)
-                    .Select(x => x.Where(t => t.Name == originalTable.Name)
-                    .Select(table => table.NewName).FirstOrDefault())
-                    .FirstOrDefault();
+                var newTableName = _customNameOptions
+                    .FirstOrDefault(x => x.SchemaName == schema.SchemaName)
+                    .Tables?
+                    .FirstOrDefault(t => t.Name == originalTable.Name)?.NewName;
 
-                if(string.IsNullOrWhiteSpace(newTableName))
+                if (string.IsNullOrWhiteSpace(newTableName))
                 {
                     candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
 
@@ -73,25 +72,25 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var schema = GetSchema(originalColumn.Table.Schema);
 
-            if(schema == null)
+            if (schema == null)
             {
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
-            if(schema.Tables == null)
+            if (schema.Tables == null)
             {
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
             var columns = _customNameOptions
-                .Where(x => x.SchemaName == schema.SchemaName)
-                .Select(x => x.Tables)
-                .Select(x => x.Where(table => table.Name == originalColumn.Table.Name)
-                .FirstOrDefault()).FirstOrDefault()?.Columns?.Where(x => x.Name == originalColumn.Name)
-                .FirstOrDefault();
-                
+                .FirstOrDefault(s => s.SchemaName == schema.SchemaName)?
+                .Tables?
+                .FirstOrDefault(t => t.Name == originalColumn.Table.Name)?
+                .Columns?
+                .FirstOrDefault(c => c.Name == originalColumn.Name);
 
-            if(columns != null)
+
+            if (columns != null)
             {
                 candidateStringBuilder.Append(columns.NewName);
                 return candidateStringBuilder.ToString();
@@ -101,33 +100,39 @@ namespace ReverseEngineer20.ReverseEngineer
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
         }
-        
+
         public override string GetDependentEndCandidateNavigationPropertyName(IForeignKey foreignKey)
         {
-            var shortName = foreignKey.PrincipalEntityType.ShortName();
+            var baseName = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+            var originalSchema = foreignKey.PrincipalEntityType.Scaffolding().Schema;
+            //var originalTable = foreignKey.DeclaringEntityType.Scaffolding().TableName;
+            var schema = GetSchema(originalSchema);
 
-            if (string.IsNullOrWhiteSpace(shortName))
+            if (schema == null)
             {
                 return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
             }
+            else if (foreignKey.IsSelfReferencing())
+            {
+                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+            }
+            else if (schema.SchemaName == originalSchema)
+            {
+                if (schema.UseSchemaName)
+                {
+                    return ToPascalCase(schema.SchemaName) + baseName;
+                }
+                return baseName;
+            }
             else
             {
-                return shortName;
+                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
             }
         }
 
         private Schema GetSchema(string originalSchema)
-            =>_customNameOptions
-                  .Where(x => x.SchemaName.Contains(originalSchema))
-                  .Select(x =>
-                      new Schema
-                      {
-                          SchemaName = x.SchemaName,
-                          UseSchemaName = x.UseSchemaName,
-                          Tables = x.Tables
-
-                      })
-                  .FirstOrDefault();
+            => _customNameOptions?
+                    .FirstOrDefault(x => x.SchemaName == originalSchema);
 
         private static string ToPascalCase(string value)
         {
