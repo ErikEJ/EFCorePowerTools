@@ -6,6 +6,7 @@ namespace ReverseEngineer20
 {
     using System;
     using System.Linq;
+    using EFCorePowerTools.Shared.Models;
 
     public class ReverseEngineerOptions
     {
@@ -19,7 +20,7 @@ namespace ReverseEngineer20
         public string ProjectRootNamespace { get; set; }
         public bool UseFluentApiOnly { get; set; }
         public string ContextClassName { get; set; }
-        public List<TableInformation> Tables { get; set; }
+        public List<TableInformationModel> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
         public bool UseInflector { get; set; }
         public bool IdReplace { get; set; }
@@ -50,7 +51,7 @@ namespace ReverseEngineer20
                            .Select(m =>
                             {
                                 // Try to parse the strings
-                                TableInformation.TryParse(m, out var ti);
+                                TableInformationModel.TryParse(m, out var ti);
                                 return ti;
                             })
                            .Where(m => m != null) // Only select the table information that could be parsed

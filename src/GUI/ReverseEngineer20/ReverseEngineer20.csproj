@@ -215,7 +215,6 @@
     </Compile>
     <Compile Include="ReverseEngineer\ColumnNamer.cs" />
     <Compile Include="ReverseEngineer\Schema.cs" />
-    <Compile Include="ReverseEngineer\TableInformation.cs" />
     <Compile Include="ReverseEngineer\TableRenamer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
     <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />
@@ -241,6 +240,10 @@
     <ProjectReference Include="..\DacFxStronglyTypedModel\DacFxStronglyTypedModel.csproj">
       <Project>{832ECF86-C071-4628-A8B7-2529D8A7BDBC}</Project>
       <Name>DacFxStronglyTypedModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj">
+      <Project>{2bd0c616-7126-4e12-a37d-a08b04bbf5e9}</Project>
+      <Name>EFCorePowerTools.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -73,11 +73,11 @@ namespace EFCorePowerTools.Handlers
                 var ptd = new PickTablesDialog();
                 using (var repository = RepositoryHelper.CreateRepository(dbInfo))
                 {
-                    var ti = new List<TableInformation>();
+                    var ti = new List<TableInformationModel>();
                     var tables = repository.GetAllTableNamesForExclusion();
                     foreach (var table in tables)
                     {
-                        ti.Add(TableInformation.Parse(table));
+                        ti.Add(TableInformationModel.Parse(table));
                     }
                     ptd.Tables = ti;
                 }

@@ -1,16 +1,13 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ErikEJ.SqlCeToolbox.Helpers;
 using Xceed.Wpf.Toolkit;
 using System.Threading;
 
 namespace UnitTests
 {
-    using ReverseEngineer20.ReverseEngineer;
+    using EFCorePowerTools.Shared.Models;
 
     [TestFixture, Apartment(ApartmentState.STA)]
     public class CheckListBoxTest
@@ -21,10 +18,10 @@ namespace UnitTests
             // Arrange
             var source = new List<CheckListItem>
             {
-                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item1", true) },
-                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item2", true) },
-                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item3", true) },
-                new CheckListItem { IsChecked= true, TableInformation = new TableInformation("dbo", "Item4", true) },
+                new CheckListItem { IsChecked= true, TableInformationModel = new TableInformationModel("dbo", "Item1", true) },
+                new CheckListItem { IsChecked= true, TableInformationModel = new TableInformationModel("dbo", "Item2", true) },
+                new CheckListItem { IsChecked= true, TableInformationModel = new TableInformationModel("dbo", "Item3", true) },
+                new CheckListItem { IsChecked= true, TableInformationModel = new TableInformationModel("dbo", "Item4", true) },
             };
 
             var checkListBox = new CheckListBox
@@ -38,7 +35,7 @@ namespace UnitTests
 
             // Assert
             Assert.That(source[0].IsChecked, Is.False); // check if the first item has property IsChecked as false
-            Assert.That(source.SingleOrDefault(x => !x.IsChecked).TableInformation.UnsafeFullName, Is.EqualTo("dbo.Item1")); // check if the first item is the only item that has property IsChecked as false
+            Assert.That(source.SingleOrDefault(x => !x.IsChecked).TableInformationModel.UnsafeFullName, Is.EqualTo("dbo.Item1")); // check if the first item is the only item that has property IsChecked as false
         }
     }
 }

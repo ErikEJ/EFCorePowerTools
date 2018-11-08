@@ -10,8 +10,7 @@ using Microsoft.Win32;
 
 namespace ErikEJ.SqlCeToolbox.Dialogs
 {
-    using EFCorePowerTools.Contracts.Views;
-    using ReverseEngineer20.ReverseEngineer;
+    using EFCorePowerTools.Shared.Models;
 
     public partial class PickTablesDialog
     {
@@ -26,9 +25,9 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         private List<CheckListItem> items = new List<CheckListItem>();
 
-        public List<TableInformation> Tables { get; set; }
+        public List<TableInformationModel> Tables { get; set; }
 
-        public List<TableInformation> SelectedTables { get; set; }
+        public List<TableInformationModel> SelectedTables { get; set; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -37,7 +36,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 var isChecked = !table.UnsafeFullName.StartsWith("__");
                 isChecked = !table.UnsafeFullName.StartsWith("dbo.__");
                 isChecked = !table.UnsafeFullName.EndsWith(".sysdiagrams");
-                items.Add(new CheckListItem { IsChecked = isChecked, TableInformation = table });                
+                items.Add(new CheckListItem { IsChecked = isChecked, TableInformationModel = table });                
             }
             chkTables.ItemsSource = items;
 
@@ -51,13 +50,13 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
         {
             DialogResult = true;
             Tables.Clear();
-            foreach (var item in items.Where(m => m.TableInformation.HasPrimaryKey))
+            foreach (var item in items.Where(m => m.TableInformationModel.HasPrimaryKey))
             {
                 var checkItem = (CheckListItem)item;
                 if ((!checkItem.IsChecked && !IncludeTables) 
                     || (checkItem.IsChecked && IncludeTables))
                 {
-                    Tables.Add(checkItem.TableInformation);
+                    Tables.Add(checkItem.TableInformationModel);
                 }
             }
             Close();
@@ -104,7 +103,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 var checkItem = (CheckListItem)item;
                 if ((checkItem.IsChecked))
                 {
-                    tableList += checkItem.TableInformation.UnsafeFullName + Environment.NewLine;
+                    tableList += checkItem.TableInformationModel.UnsafeFullName + Environment.NewLine;
                 }
             }
 
@@ -130,14 +129,14 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             if (ofd.ShowDialog() != true) return;
 
             var lines = File.ReadAllLines(ofd.FileName);
-            SetChecked(lines.Select(TableInformation.Parse).ToArray());
+            SetChecked(lines.Select(TableInformationModel.Parse).ToArray());
         }
 
-        private void SetChecked(TableInformation[] tables)
+        private void SetChecked(TableInformationModel[] tables)
         {
             foreach (var item in items)
             {
-                item.IsChecked = tables.Any(m => m.UnsafeFullName == item.TableInformation.UnsafeFullName);
+                item.IsChecked = tables.Any(m => m.UnsafeFullName == item.TableInformationModel.UnsafeFullName);
             }
             chkTables.ItemsSource = null;
             chkTables.ItemsSource = items;
@@ -161,7 +160,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
                 return;
             }
 
-            var filteredItems = items.Where(x => x.TableInformation.UnsafeFullName.ToUpper().Contains(TxtSearchTable.Text.ToUpper())).ToList();
+            var filteredItems = items.Where(x => x.TableInformationModel.UnsafeFullName.ToUpper().Contains(TxtSearchTable.Text.ToUpper())).ToList();
             chkTables.ItemsSource = filteredItems;
         }
     }

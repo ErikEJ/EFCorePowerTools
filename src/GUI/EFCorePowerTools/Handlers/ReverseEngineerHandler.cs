@@ -255,7 +255,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private List<TableInformation> GetTablesFromRepository(DatabaseInfo dbInfo)
+        private List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo)
         {
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
@@ -266,12 +266,12 @@ namespace EFCorePowerTools.Handlers
             {
                 var allPks = repository.GetAllPrimaryKeys();
                 var tableList = repository.GetAllTableNamesForExclusion();
-                var tables = new List<TableInformation>();
+                var tables = new List<TableInformationModel>();
 
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    tables.Add(TableInformation.Parse(table, hasPrimaryKey));
+                    tables.Add(TableInformationModel.Parse(table, hasPrimaryKey));
                 }
                 return tables;
             }

@@ -1,10 +1,10 @@
 ﻿namespace ErikEJ.SqlCeToolbox.Helpers
 {
-    using ReverseEngineer20.ReverseEngineer;
+    using EFCorePowerTools.Shared.Models;
 
     public class CheckListItem
     {
-        public TableInformation TableInformation { get; set; }
+        public TableInformationModel TableInformationModel { get; set; }
 
         public bool IsChecked { get; set; }
 
@@ -12,7 +12,7 @@
 
         public override string ToString()
         {
-            return TableInformation.UnsafeFullName;
+            return TableInformationModel.UnsafeFullName;
         }
     }
 }
