@@ -58,6 +58,7 @@
     <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\ITableInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IViewModel.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
     <Compile Include="Contracts\Views\IDialog.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="DAL\VisualStudioAccess.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
+    <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\lib\efpt.exe.zip">

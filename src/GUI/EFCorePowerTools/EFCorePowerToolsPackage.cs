@@ -252,7 +252,8 @@ namespace EFCorePowerTools
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
-                    .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>();
+                    .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
+                    .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel());
 
             // Register BLL
             var messenger = new Messenger();
