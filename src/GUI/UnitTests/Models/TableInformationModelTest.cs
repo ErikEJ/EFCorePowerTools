@@ -1,6 +1,7 @@
 ﻿namespace UnitTests.Models
 {
     using System;
+    using System.Collections.Generic;
     using EFCorePowerTools.Shared.Models;
     using NUnit.Framework;
 
@@ -163,6 +164,128 @@
             Assert.IsTrue(ti.HasPrimaryKey);
             Assert.AreEqual("dbo.Album", ti.UnsafeFullName);
             Assert.AreEqual("[dbo].[Album]", ti.SafeFullName);
+        }
+
+        [Test]
+        public void PropertyChanged_Schema_SameValue()
+        {
+            // Arrange
+            var propertyChangedInvoked = false;
+            var schema = "dbo";
+            var name = "Album";
+            var hasPrimaryKey = true;
+            var ti = new TableInformationModel(schema, name, hasPrimaryKey);
+            ti.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
+
+            // Act
+            ti.Schema = schema;
+
+            // Assert
+            Assert.IsFalse(propertyChangedInvoked);
+        }
+
+        [Test]
+        public void PropertyChanged_Name_SameValue()
+        {
+            // Arrange
+            var propertyChangedInvoked = false;
+            var schema = "dbo";
+            var name = "Album";
+            var hasPrimaryKey = true;
+            var ti = new TableInformationModel(schema, name, hasPrimaryKey);
+            ti.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
+
+            // Act
+            ti.Name = name;
+
+            // Assert
+            Assert.IsFalse(propertyChangedInvoked);
+        }
+
+        [Test]
+        public void PropertyChanged_HasPrimaryKey_SameValue()
+        {
+            // Arrange
+            var propertyChangedInvoked = false;
+            var schema = "dbo";
+            var name = "Album";
+            var hasPrimaryKey = true;
+            var ti = new TableInformationModel(schema, name, hasPrimaryKey);
+            ti.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
+
+            // Act
+            ti.HasPrimaryKey = hasPrimaryKey;
+
+            // Assert
+            Assert.IsFalse(propertyChangedInvoked);
+        }
+
+        [Test]
+        public void PropertyChanged_Schema_DifferentValue()
+        {
+            // Arrange
+            var changedProperties = new List<string>();
+            var schema = "dbo";
+            var name = "Album";
+            var hasPrimaryKey = true;
+            var ti = new TableInformationModel(schema, name, hasPrimaryKey);
+            ti.PropertyChanged += (sender, args) => changedProperties.Add(args.PropertyName);
+
+            // Act
+            ti.Schema = "foo";
+
+            // Assert
+            Assert.AreEqual(3, changedProperties.Count);
+            Assert.IsTrue(changedProperties.Contains(nameof(TableInformationModel.Schema)));
+            Assert.IsTrue(changedProperties.Contains(nameof(TableInformationModel.UnsafeFullName)));
+            Assert.IsTrue(changedProperties.Contains(nameof(TableInformationModel.SafeFullName)));
+            Assert.AreEqual("foo", ti.Schema);
+            Assert.AreEqual("foo.Album", ti.UnsafeFullName);
+            Assert.AreEqual("[foo].[Album]", ti.SafeFullName);
+        }
+
+        [Test]
+        public void PropertyChanged_Name_DifferentValue()
+        {
+            // Arrange
+            var changedProperties = new List<string>();
+            var schema = "dbo";
+            var name = "Album";
+            var hasPrimaryKey = true;
+            var ti = new TableInformationModel(schema, name, hasPrimaryKey);
+            ti.PropertyChanged += (sender, args) => changedProperties.Add(args.PropertyName);
+
+            // Act
+            ti.Name = "bar";
+
+            // Assert
+            Assert.AreEqual(3, changedProperties.Count);
+            Assert.IsTrue(changedProperties.Contains(nameof(TableInformationModel.Name)));
+            Assert.IsTrue(changedProperties.Contains(nameof(TableInformationModel.UnsafeFullName)));
+            Assert.IsTrue(changedProperties.Contains(nameof(TableInformationModel.SafeFullName)));
+            Assert.AreEqual("bar", ti.Name);
+            Assert.AreEqual("dbo.bar", ti.UnsafeFullName);
+            Assert.AreEqual("[dbo].[bar]", ti.SafeFullName);
+        }
+
+        [Test]
+        public void PropertyChanged_HasPrimaryKey_DifferentValue()
+        {
+            // Arrange
+            var changedProperties = new List<string>();
+            var schema = "dbo";
+            var name = "Album";
+            var hasPrimaryKey = true;
+            var ti = new TableInformationModel(schema, name, hasPrimaryKey);
+            ti.PropertyChanged += (sender, args) => changedProperties.Add(args.PropertyName);
+
+            // Act
+            ti.HasPrimaryKey = false;
+
+            // Assert
+            Assert.AreEqual(1, changedProperties.Count);
+            Assert.AreEqual(nameof(TableInformationModel.HasPrimaryKey), changedProperties[0]);
+            Assert.IsFalse(ti.HasPrimaryKey);
         }
     }
 }

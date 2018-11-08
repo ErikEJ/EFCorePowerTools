@@ -1,33 +1,71 @@
 ﻿namespace EFCorePowerTools.Shared.Models
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics;
+    using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
+    using Annotations;
 
     /// <summary>
     /// A class holding a certain information about tables.
     /// </summary>
     [DataContract]
     [DebuggerDisplay("{" + nameof(SafeFullName) + ",nq}")]
-    public class TableInformationModel
+    public class TableInformationModel : INotifyPropertyChanged
     {
+        private string _schema;
+        private string _name;
+        private bool _hasPrimaryKey;
+
         /// <summary>
         /// Gets the schema name of the table.
         /// </summary>
         [DataMember]
-        public string Schema { get; set; }
+        public string Schema
+        {
+            get => _schema;
+            set
+            {
+                if (value == _schema) return;
+                _schema = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(UnsafeFullName));
+                OnPropertyChanged(nameof(SafeFullName));
+            }
+        }
 
         /// <summary>
         /// Gets the table name.
         /// </summary>
         [DataMember]
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name) return;
+                _name = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(UnsafeFullName));
+                OnPropertyChanged(nameof(SafeFullName));
+            }
+        }
 
         /// <summary>
         /// Gets whether a primary key exists for the table or not.
         /// </summary>
         [DataMember]
-        public bool HasPrimaryKey { get; set; }
+        public bool HasPrimaryKey
+        {
+            get => _hasPrimaryKey;
+            set
+            {
+                if (value == _hasPrimaryKey) return;
+                _hasPrimaryKey = value;
+                OnPropertyChanged();
+            }
+        }
 
         /// <summary>
         /// Gets the unsafe (unescaped) full name of the table.
@@ -131,6 +169,14 @@
             var name = split[1];
             tableInformationModel = new TableInformationModel(schema, name, true);
             return true;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
