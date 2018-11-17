@@ -161,7 +161,6 @@
   <ItemGroup>
     <Compile Include="BLL\ExtensionVersionServiceTests.cs" />
     <Compile Include="BLL\InstalledComponentsServiceTests.cs" />
-    <Compile Include="CheckListBoxTest.cs" />
     <Compile Include="Models\AboutExtensionModelTests.cs" />
     <Compile Include="Models\DatabaseConnectionModelTests.cs" />
     <Compile Include="Models\DatabaseDefinitionModelTests.cs" />

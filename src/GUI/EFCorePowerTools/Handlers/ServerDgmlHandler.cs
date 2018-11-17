@@ -70,20 +70,22 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var ptd = new PickTablesDialog();
+                var predefinedTables = new List<TableInformationModel>();
                 using (var repository = RepositoryHelper.CreateRepository(dbInfo))
                 {
-                    var ti = new List<TableInformationModel>();
                     var tables = repository.GetAllTableNamesForExclusion();
                     foreach (var table in tables)
                     {
-                        ti.Add(TableInformationModel.Parse(table));
+                        if (TableInformationModel.TryParse(table, out var t))
+                            predefinedTables.Add(t);
                     }
-                    ptd.Tables = ti;
                 }
 
-                var res = ptd.ShowModal();
-                if (!res.HasValue || !res.Value) return;
+                var ptd = _package.GetView<IPickTablesDialog>()
+                                  .AddTables(predefinedTables);
+
+                var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
+                if (!pickTablesResult.ClosedByOK) return;
 
                 var name = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
 
@@ -98,7 +100,7 @@ namespace EFCorePowerTools.Handlers
                 using (var repository = RepositoryHelper.CreateRepository(dbInfo))
                 {
                     var generator = RepositoryHelper.CreateGenerator(repository, path, dbInfo.DatabaseType);
-                    generator.GenerateSchemaGraph(dbInfo.ConnectionString, ptd.Tables.Select(m => m.UnsafeFullName).ToList());
+                    generator.GenerateSchemaGraph(dbInfo.ConnectionString, pickTablesResult.Payload.Select(m => m.UnsafeFullName).ToList());
                     File.SetAttributes(path, FileAttributes.ReadOnly);
                     _package.Dte2.ItemOperations.OpenFile(path);
                     _package.Dte2.ActiveDocument.Activate();

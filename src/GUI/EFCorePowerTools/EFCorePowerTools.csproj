@@ -58,6 +58,7 @@
     <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IPickTablesViewModel.cs" />
     <Compile Include="Contracts\ViewModels\ITableInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IViewModel.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
@@ -105,7 +106,6 @@
     <Compile Include="Handlers\ServerDgmlHandler.cs" />
     <Compile Include="Handlers\ReverseEngineerHandler.cs" />
     <Compile Include="Helpers\AssemblyBindingRedirectHelper.cs" />
-    <Compile Include="Helpers\CheckListItem.cs" />
     <Compile Include="Helpers\EnvDTEHelper.cs" />
     <Compile Include="Helpers\Model.cs" />
     <Compile Include="Helpers\NuGetHelper.cs" />
@@ -130,6 +130,7 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="DAL\VisualStudioAccess.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
+    <Compile Include="ViewModels\PickTablesViewModel.cs" />
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

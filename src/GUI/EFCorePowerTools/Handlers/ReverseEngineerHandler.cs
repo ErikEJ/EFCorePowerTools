@@ -98,29 +98,31 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var ptd = new PickTablesDialog { IncludeTables = true };
-                if (!string.IsNullOrEmpty(dacpacPath))
-                {
-                    ptd.Tables = revEng.GetDacpacTables(dacpacPath);
-                }
-                else
-                {
-                    ptd.Tables = GetTablesFromRepository(dbInfo);
-                }
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
+                var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
+                                           ? revEng.GetDacpacTables(dacpacPath)
+                                           : GetTablesFromRepository(dbInfo);
+
+                var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
                 {
                     dacpacSchema = options.DefaultDacpacSchema;
                     if (options.Tables.Count > 0)
                     {
-                        ptd.SelectedTables = options.Tables;
+                        preselectedTables.AddRange(options.Tables);
                     }
                 }
 
+                var ptd = _package.GetView<IPickTablesDialog>()
+                                  .IncludeTables()
+                                  .AddTables(predefinedTables)
+                                  .PreselectTables(preselectedTables);
+                
                 var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
 
-
-                if (ptd.ShowModal() != true) return;
+                var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
+                if (!pickTablesResult.ClosedByOK) return;
 
                 var classBasis = string.Empty;
                 if (dbInfo.DatabaseType == DatabaseType.Npgsql)
@@ -163,7 +165,7 @@ namespace EFCorePowerTools.Handlers
                     SelectedToBeGenerated = modelDialog.SelectedTobeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
-                    Tables = ptd.Tables,
+                    Tables = pickTablesResult.Payload.ToList(),
                     CustomReplacers = customNameOptions
                 };
 
