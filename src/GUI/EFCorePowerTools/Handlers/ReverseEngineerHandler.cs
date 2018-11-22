@@ -51,16 +51,24 @@ namespace EFCorePowerTools.Handlers
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution();
 
                 var psd = _package.GetView<IPickServerDatabaseDialog>();
-                psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
+
+                if (databaseList.Any())
                 {
-                    ConnectionName = m.Value.Caption,
-                    ConnectionString = m.Value.ConnectionString,
-                    DatabaseType = m.Value.DatabaseType
-                }));
-                psd.PublishDefinitions(dacpacList.Select(m => new DatabaseDefinitionModel
+                    psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
+                    {
+                        ConnectionName = m.Value.Caption,
+                        ConnectionString = m.Value.ConnectionString,
+                        DatabaseType = m.Value.DatabaseType
+                    }));
+                }
+
+                if (dacpacList.Any())
                 {
-                    FilePath = m
-                }));
+                    psd.PublishDefinitions(dacpacList.Select(m => new DatabaseDefinitionModel
+                    {
+                        FilePath = m
+                    }));
+                }
 
                 var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
                 if (!pickDataSourceResult.ClosedByOK)
