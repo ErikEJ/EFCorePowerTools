@@ -52,7 +52,7 @@ namespace EFCorePowerTools.Handlers
 
                 var psd = _package.GetView<IPickServerDatabaseDialog>();
 
-                if (databaseList.Any())
+                if (databaseList != null && databaseList.Any())
                 {
                     psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
                     {
@@ -62,7 +62,7 @@ namespace EFCorePowerTools.Handlers
                     }));
                 }
 
-                if (dacpacList.Any())
+                if (dacpacList != null && dacpacList.Any())
                 {
                     psd.PublishDefinitions(dacpacList.Select(m => new DatabaseDefinitionModel
                     {
