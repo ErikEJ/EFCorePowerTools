@@ -16,7 +16,7 @@ using System.Windows.Forms;
 namespace ErikEJ.SqlCeToolbox.Helpers
 {
     using EFCorePowerTools.Shared.Enums;
-    using ReverseEngineer20.ReverseEngineer;
+    using EFCorePowerTools.Shared.Models;
 
     internal class EnvDteHelper
     {
@@ -174,9 +174,9 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return pgBuilder.Database;
         }
 
-        internal static List<TableInformation> GetNpgsqlTableNames(string connectionString)
+        internal static List<TableInformationModel> GetNpgsqlTableNames(string connectionString)
         {
-            var result = new List<TableInformation>();
+            var result = new List<TableInformationModel>();
             using (var npgsqlConn = new NpgsqlConnection(connectionString))
             {
                 npgsqlConn.Open();
@@ -188,7 +188,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         && schema != "information_schema")
                     {
                         // TODO: Check if the table has a primary key
-                        result.Add(new TableInformation(schema, row["table_name"].ToString(), true));
+                        result.Add(new TableInformationModel(schema, row["table_name"].ToString(), true));
                     }
                 }
             }

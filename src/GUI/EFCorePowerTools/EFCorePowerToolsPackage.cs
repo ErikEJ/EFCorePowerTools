@@ -25,6 +25,7 @@ namespace EFCorePowerTools
     using Contracts.Views;
     using DAL;
     using Dialogs;
+    using ErikEJ.SqlCeToolbox.Dialogs;
     using GalaSoft.MvvmLight.Messaging;
     using Messages;
     using Microsoft.Extensions.DependencyInjection;
@@ -248,11 +249,14 @@ namespace EFCorePowerTools
 
             // Register views
             services.AddTransient<IAboutDialog, AboutDialog>()
-                    .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>();
+                    .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
+                    .AddTransient<IPickTablesDialog, PickTablesDialog>();
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
-                    .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>();
+                    .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
+                    .AddTransient<IPickTablesViewModel, PickTablesViewModel>()
+                    .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel());
 
             // Register BLL
             var messenger = new Messenger();

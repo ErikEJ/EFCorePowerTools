@@ -106,29 +106,31 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var ptd = new PickTablesDialog { IncludeTables = true };
-                if (!string.IsNullOrEmpty(dacpacPath))
-                {
-                    ptd.Tables = revEng.GetDacpacTables(dacpacPath);
-                }
-                else
-                {
-                    ptd.Tables = GetTablesFromRepository(dbInfo);
-                }
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
+                var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
+                                           ? revEng.GetDacpacTables(dacpacPath)
+                                           : GetTablesFromRepository(dbInfo);
+
+                var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
                 {
                     dacpacSchema = options.DefaultDacpacSchema;
                     if (options.Tables.Count > 0)
                     {
-                        ptd.SelectedTables = options.Tables;
+                        preselectedTables.AddRange(options.Tables);
                     }
                 }
 
+                var ptd = _package.GetView<IPickTablesDialog>()
+                                  .IncludeTables()
+                                  .AddTables(predefinedTables)
+                                  .PreselectTables(preselectedTables);
+                
                 var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
 
-
-                if (ptd.ShowModal() != true) return;
+                var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
+                if (!pickTablesResult.ClosedByOK) return;
 
                 var classBasis = string.Empty;
                 if (dbInfo.DatabaseType == DatabaseType.Npgsql)
@@ -171,7 +173,7 @@ namespace EFCorePowerTools.Handlers
                     SelectedToBeGenerated = modelDialog.SelectedTobeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
-                    Tables = ptd.Tables,
+                    Tables = pickTablesResult.Payload.ToList(),
                     CustomReplacers = customNameOptions
                 };
 
@@ -263,7 +265,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private List<TableInformation> GetTablesFromRepository(DatabaseInfo dbInfo)
+        private List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo)
         {
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
@@ -274,12 +276,12 @@ namespace EFCorePowerTools.Handlers
             {
                 var allPks = repository.GetAllPrimaryKeys();
                 var tableList = repository.GetAllTableNamesForExclusion();
-                var tables = new List<TableInformation>();
+                var tables = new List<TableInformationModel>();
 
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    tables.Add(TableInformation.Parse(table, hasPrimaryKey));
+                    tables.Add(TableInformationModel.Parse(table, hasPrimaryKey));
                 }
                 return tables;
             }

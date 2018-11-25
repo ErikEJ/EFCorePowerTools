@@ -1,7 +1,14 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    public interface IPickTablesDialog : IDialog<object>
+    using System.Collections.Generic;
+    using Shared.Models;
+
+    public interface IPickTablesDialog : IDialog<TableInformationModel[]>
     {
-        
+        IPickTablesDialog IncludeTables();
+
+        IPickTablesDialog AddTables(IEnumerable<TableInformationModel> tables);
+
+        IPickTablesDialog PreselectTables(IEnumerable<TableInformationModel> tables);
     }
 }

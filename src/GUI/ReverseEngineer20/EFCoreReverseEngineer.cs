@@ -19,6 +19,7 @@ using System.Text.RegularExpressions;
 namespace ReverseEngineer20
 {
     using System.Linq;
+    using EFCorePowerTools.Shared.Models;
 
     public class EfCoreReverseEngineer
     {
@@ -222,7 +223,7 @@ namespace ReverseEngineer20
             return className.Replace(" ", string.Empty);
         }
 
-        public List<TableInformation> GetDacpacTables(string dacpacPath)
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
         {
             var builder = new DacpacTableListBuilder(dacpacPath);
             return builder.GetTableDefinitions();

@@ -1,168 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using ErikEJ.SqlCeToolbox.Helpers;
-using Microsoft.Win32;
-
-namespace ErikEJ.SqlCeToolbox.Dialogs
+﻿namespace EFCorePowerTools.Dialogs
 {
-    using EFCorePowerTools.Contracts.Views;
-    using ReverseEngineer20.ReverseEngineer;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Contracts.ViewModels;
+    using Contracts.Views;
+    using Shared.DAL;
+    using Shared.Models;
 
-    public partial class PickTablesDialog
+    public partial class PickTablesDialog : IPickTablesDialog
     {
-        public PickTablesDialog()
+        private readonly Func<TableInformationModel[]> _getDialogResult;
+        private readonly Action _includeTables;
+        private readonly Action<TableInformationModel> _addTable;
+        private readonly Action<TableInformationModel> _selectTable;
+
+        public PickTablesDialog(ITelemetryAccess telemetryAccess,
+                                IPickTablesViewModel viewModel)
         {
-            Telemetry.TrackPageView(nameof(PickTablesDialog));
+            telemetryAccess.TrackPageView(nameof(PickTablesDialog));
+
+            DataContext = viewModel;
+            viewModel.CloseRequested += (sender, args) =>
+            {
+                DialogResult = args.DialogResult;
+                Close();
+            };
+            _getDialogResult = viewModel.GetResult;
+            _includeTables = () => viewModel.IncludeTables = true;
+            _addTable = viewModel.AddTable;
+            _selectTable = table =>
+            {
+                var t = viewModel.Tables.SingleOrDefault(m => m.Model.SafeFullName == table.SafeFullName);
+                if (t != null)
+                    t.IsSelected = true;
+            };
+
             InitializeComponent();
-            Background = VsThemes.GetWindowBackground();
         }
 
-        public bool IncludeTables { get; set; }
-
-        private List<CheckListItem> items = new List<CheckListItem>();
-
-        public List<TableInformation> Tables { get; set; }
-
-        public List<TableInformation> SelectedTables { get; set; }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        (bool ClosedByOK, TableInformationModel[] Payload) IDialog<TableInformationModel[]>.ShowAndAwaitUserResponse(bool modal)
         {
-            foreach (var table in Tables)
-            { 
-                var isChecked = !table.UnsafeFullName.StartsWith("__");
-                isChecked = !table.UnsafeFullName.StartsWith("dbo.__");
-                isChecked = !table.UnsafeFullName.EndsWith(".sysdiagrams");
-                items.Add(new CheckListItem { IsChecked = isChecked, TableInformation = table });                
-            }
-            chkTables.ItemsSource = items;
+            bool closedByOkay;
 
-            if (SelectedTables != null)
+            if (modal)
             {
-                SetChecked(SelectedTables.ToArray());
-            }
-        }
-
-        private void OkButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-            Tables.Clear();
-            foreach (var item in items.Where(m => m.TableInformation.HasPrimaryKey))
-            {
-                var checkItem = (CheckListItem)item;
-                if ((!checkItem.IsChecked && !IncludeTables) 
-                    || (checkItem.IsChecked && IncludeTables))
-                {
-                    Tables.Add(checkItem.TableInformation);
-                }
-            }
-            Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void chkClear_Click(object sender, RoutedEventArgs e)
-        {
-            if (chkClear.IsChecked != null && chkClear.IsChecked.Value)
-            {
-                foreach (var item in items)
-                {
-                    if (!item.IsChecked)
-                    {
-                        item.IsChecked = true;
-                    }
-                }
+                closedByOkay = ShowModal() == true;
             }
             else
             {
-                foreach (var item in items)
-                {
-                    if (item.IsChecked)
-                    {
-                        item.IsChecked = false;
-                    }
-                }
+                closedByOkay = ShowDialog() == true;
             }
-            chkTables.ItemsSource = null;
-            chkTables.ItemsSource = items;
 
-            TxtSearchTable.Text = string.Empty;
+            return (closedByOkay, _getDialogResult());
         }
 
-        private void BtnSaveSelection_OnClick(object sender, RoutedEventArgs e)
+        IPickTablesDialog IPickTablesDialog.IncludeTables()
         {
-            var tableList = string.Empty;
-            foreach (var item in items)
-            {
-                var checkItem = (CheckListItem)item;
-                if ((checkItem.IsChecked))
-                {
-                    tableList += checkItem.TableInformation.UnsafeFullName + Environment.NewLine;
-                }
-            }
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = "Text file (*.txt)|*.txt|All Files(*.*)|*.*",
-                ValidateNames = true,
-                Title = "Save list of tables as"
-            };
-            if (sfd.ShowDialog() != true) return;
-            File.WriteAllText(sfd.FileName, tableList, Encoding.UTF8);
+            _includeTables();
+            return this;
         }
 
-        private void BtnLoadSelection_OnClick(object sender, RoutedEventArgs e)
+        IPickTablesDialog IPickTablesDialog.AddTables(IEnumerable<TableInformationModel> tables)
         {
-            var ofd = new OpenFileDialog
-            {
-                Filter = "Text file (*.txt)|*.txt|All Files(*.*)|*.*",
-                CheckFileExists = true,
-                Multiselect = false,
-                Title = "Select list of tables to load"
-            };
-            if (ofd.ShowDialog() != true) return;
-
-            var lines = File.ReadAllLines(ofd.FileName);
-            SetChecked(lines.Select(TableInformation.Parse).ToArray());
+            if (tables == null) return this;
+            foreach (var table in tables)
+                _addTable(table);
+            return this;
         }
 
-        private void SetChecked(TableInformation[] tables)
+        IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<TableInformationModel> tables)
         {
-            foreach (var item in items)
-            {
-                item.IsChecked = tables.Any(m => m.UnsafeFullName == item.TableInformation.UnsafeFullName);
-            }
-            chkTables.ItemsSource = null;
-            chkTables.ItemsSource = items;
-
-            TxtSearchTable.Text = string.Empty;
-        }
-
-        private async void TxtSearchTable_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            var search = TxtSearchTable.Text;
-
-            await Task.Delay(500); // Add a delay (like a debounce) so that not every character change triggers a search
-            if (search != TxtSearchTable.Text)
-            {
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(search))
-            {
-                chkTables.ItemsSource = items;
-                return;
-            }
-
-            var filteredItems = items.Where(x => x.TableInformation.UnsafeFullName.ToUpper().Contains(TxtSearchTable.Text.ToUpper())).ToList();
-            chkTables.ItemsSource = filteredItems;
+            if (tables == null) return this;
+            foreach (var table in tables)
+                _selectTable(table);
+            return this;
         }
     }
 }

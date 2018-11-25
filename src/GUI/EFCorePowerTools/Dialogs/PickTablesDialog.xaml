@@ -1,9 +1,27 @@
-﻿<dw:DialogWindow x:Class="ErikEJ.SqlCeToolbox.Dialogs.PickTablesDialog"
-        xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:extToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-        Title="Select Tables to Script" ShowInTaskbar="False" Height="455.056" Width="420" Loaded="Window_Loaded" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.PickTablesDialog"
+                 xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:extToolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                 mc:Ignorable="d" 
+                 Title="Select Tables to Script"
+                 ShowInTaskbar="False"
+                 Height="455.056"
+                 Width="420"
+                 ResizeMode="NoResize"
+                 WindowStartupLocation="CenterOwner"
+                 d:DataContext="{d:DesignInstance Type=viewModels:PickTablesViewModel, IsDesignTimeCreatable=False}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,23 +30,66 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </dw:DialogWindow.Resources>
+
+    <dw:DialogWindow.Background>
+        <StaticResource ResourceKey="DialogWindowBackgroundColor" />
+    </dw:DialogWindow.Background>
+
     <Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal" Margin="6,6,6,3" Width="390" >
-                <dw:DialogButton ToolTip="Save the seletion of tables."  Margin="178,0,0,0" x:Name="BtnSaveSelection"  Content="Save Selection" Click="BtnSaveSelection_OnClick" Width="102" MinWidth="20" Height="10" ></dw:DialogButton>
-                <dw:DialogButton ToolTip="Load a selection of tables." Margin="3,0,0,0" x:Name="BtnLoadSelection"  Content="Load Selection" Click="BtnLoadSelection_OnClick" Width="101" RenderTransformOrigin="0.474,0.566" Height="23" MinWidth="20" HorizontalAlignment="Left" />
+                <dw:DialogButton ToolTip="Save the seletion of tables."
+                                 Margin="178,0,0,0"
+                                 Content="Save Selection"
+                                 Width="102"
+                                 MinWidth="20"
+                                 Height="10"
+                                 Command="{Binding SaveSelectionCommand}"/>
+                <dw:DialogButton ToolTip="Load a selection of tables."
+                                 Margin="3,0,0,0"
+                                 Content="Load Selection"
+                                 Width="101"
+                                 RenderTransformOrigin="0.474,0.566"
+                                 Height="23"
+                                 MinWidth="20"
+                                 HorizontalAlignment="Left"
+                                 Command="{Binding LoadSelectionCommand}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="6,0,6,6" Width="390" >
-                <CheckBox x:Name="chkClear" Content="Tables" IsChecked="True" Click="chkClear_Click" Margin="10,0,0,0"  BorderThickness="2" IsThreeState="False" VerticalAlignment="Center" ></CheckBox>
-                <Label Content="Search" Margin="43,0,0,0" Width="47"/>
-                <TextBox ToolTip="Search for table" x:Name="TxtSearchTable" Height="22" TextWrapping="Wrap" Width="230" Margin="0,0,5,0" TextChanged="TxtSearchTable_TextChanged" Background="White" Foreground="Black"/>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="6,0,6,6"
+                        Width="390" >
+                <CheckBox Content="Tables"
+                          IsChecked="{Binding TableSelectionThreeState}"
+                          Margin="10,0,0,0"
+                          BorderThickness="2"
+                          IsThreeState="True"
+                          VerticalAlignment="Center"/>
+                <Label Content="Search"
+                       Margin="43,0,0,0"
+                       Width="47"/>
+                <TextBox ToolTip="Search for table"
+                         Height="22"
+                         TextWrapping="Wrap"
+                         Width="230"
+                         Margin="0,0,5,0"
+                         Background="White"
+                         Foreground="Black"
+                         Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
-            <extToolkit:CheckListBox x:Name="chkTables" Margin="12,0" SelectedMemberPath="IsChecked" Height="302">
+
+            <!-- Do not remove the name of the extToolkit:CheckListBox: https://stackoverflow.com/a/41605335/2132796 -->
+            <extToolkit:CheckListBox x:Name="TableSelectionCheckListBox"
+                                     Margin="12,0"
+                                     SelectedMemberPath="IsSelected"
+                                     Height="302"
+                                     ItemsSource="{Binding FilteredTables}">
                 <extToolkit:CheckListBox.ItemTemplate>
                     <DataTemplate>
-                       <StackPanel Orientation="Horizontal">
-                           <TextBlock Text="{Binding TableInformation.UnsafeFullName}"/>
-                            <Image Visibility="{Binding TableInformation.HasPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}"
+                       <StackPanel Orientation="Horizontal"
+                                   d:DataContext="{d:DesignInstance Type=viewModels:TableInformationViewModel, IsDesignTimeCreatable=false}">
+                           <TextBlock Text="{Binding Model.UnsafeFullName}"/>
+                            <Image Visibility="{Binding Model.HasPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}"
                                    Width="16"
                                    Height="16"
                                    Margin="5, 0, 0, 0"
@@ -38,9 +99,23 @@
                     </DataTemplate>
                 </extToolkit:CheckListBox.ItemTemplate>
             </extToolkit:CheckListBox>
+
             <StackPanel Orientation="Horizontal">
-                <dw:DialogButton Content="OK" IsDefault="True" Grid.Row="5" Margin="230,12,12,12" Name="OkButton" TabIndex="6" Click="OkButton_Click" Width="75" />
-                <dw:DialogButton Content="Cancel" IsCancel="True" Grid.Row="5" HorizontalAlignment="Right" Margin="0,12,12,12" Name="CancelButton" TabIndex="7" SnapsToDevicePixels="False" Click="CancelButton_Click" Height="23" VerticalAlignment="Bottom" />
+                <dw:DialogButton Content="OK"
+                                 IsDefault="True"
+                                 Margin="230,12,12,12"
+                                 TabIndex="6"
+                                 Width="75"
+                                 Command="{Binding OkCommand}"/>
+                <dw:DialogButton Content="Cancel"
+                                 IsCancel="True"
+                                 HorizontalAlignment="Right"
+                                 Margin="0,12,12,12"
+                                 TabIndex="7"
+                                 SnapsToDevicePixels="False"
+                                 Height="23"
+                                 VerticalAlignment="Bottom"
+                                 Command="{Binding CancelCommand}"/>
             </StackPanel>
         </StackPanel>
     </Grid>
