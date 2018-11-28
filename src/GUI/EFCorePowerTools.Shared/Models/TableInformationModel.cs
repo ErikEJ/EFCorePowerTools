@@ -19,7 +19,7 @@
         private bool _hasPrimaryKey;
 
         /// <summary>
-        /// Gets the schema name of the table.
+        /// Gets or sets the schema name of the table.
         /// </summary>
         [DataMember]
         public string Schema
@@ -36,7 +36,7 @@
         }
 
         /// <summary>
-        /// Gets the table name.
+        /// Gets or sets the table name.
         /// </summary>
         [DataMember]
         public string Name
@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Gets whether a primary key exists for the table or not.
+        /// Gets or sets whether a primary key exists for the table or not.
         /// </summary>
         [DataMember]
         public bool HasPrimaryKey
