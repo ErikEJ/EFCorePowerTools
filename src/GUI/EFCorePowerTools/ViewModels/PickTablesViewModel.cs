@@ -85,9 +85,9 @@
                                    IFileSystemAccess fileSystemAccess,
                                    Func<ITableInformationViewModel> tableInformationViewModelFactory)
         {
-            _operatingSystemAccess = operatingSystemAccess;
-            _fileSystemAccess = fileSystemAccess;
-            _tableInformationViewModelFactory = tableInformationViewModelFactory;
+            _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
+            _fileSystemAccess = fileSystemAccess ?? throw new ArgumentNullException(nameof(fileSystemAccess));
+            _tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             SaveSelectionCommand = new RelayCommand(SaveSelection_Executed, SaveSelection_CanExecute);
@@ -115,7 +115,7 @@
             if (resultFileName == null)
                 return;
 
-            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected).Select(m => m.Model.UnsafeFullName));
+            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey).Select(m => m.Model.UnsafeFullName));
         }
 
         private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
@@ -194,13 +194,17 @@
             FilteredTables.Refresh();
         }
 
-        private bool FilterTable(ITableInformationViewModel tableInformationViewModel) => tableInformationViewModel.Model.UnsafeFullName.ToUpper().Contains(SearchText.ToUpper());
+        private bool FilterTable(ITableInformationViewModel tableInformationViewModel)
+        {
+            return string.IsNullOrWhiteSpace(SearchText)
+                || tableInformationViewModel.Model.UnsafeFullName.ToUpper().Contains(SearchText.ToUpper());
+        }
 
         private static void PredefineSelection(ITableInformationViewModel t)
         {
-            t.IsSelected = !t.Model.UnsafeFullName.StartsWith("__");
-            t.IsSelected = !t.Model.UnsafeFullName.StartsWith("dbo.__");
-            t.IsSelected = !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
+            t.IsSelected = !t.Model.UnsafeFullName.StartsWith("__")
+                        && !t.Model.UnsafeFullName.StartsWith("dbo.__")
+                        && !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
         }
 
         void IPickTablesViewModel.AddTable(TableInformationModel table)
