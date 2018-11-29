@@ -56,10 +56,16 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
 
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, t);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Assert
             Assert.IsNotNull(vm.LoadedCommand);
@@ -75,10 +81,16 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
 
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, t);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Assert
             Assert.IsNotNull(vm.Tables);
@@ -91,10 +103,16 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
 
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, t);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Assert
             Assert.IsNull(vm.TableSelectionThreeState);
@@ -106,10 +124,16 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
 
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, t);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Assert
             Assert.AreEqual(string.Empty, vm.SearchText);
@@ -121,8 +145,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.LoadedCommand.CanExecute(null);
@@ -137,8 +168,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
                 vm.Tables.Add(tvm);
@@ -160,8 +198,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.SaveSelectionCommand.CanExecute(null);
@@ -176,8 +221,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -198,8 +250,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -220,8 +279,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -242,8 +308,15 @@ namespace UnitTests.ViewModels
             var osaMock = new Mock<IOperatingSystemAccess>();
             osaMock.Setup(m => m.RequestSaveFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), true)).Returns<string>(null);
             var fsaMock = new Mock<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -266,8 +339,15 @@ namespace UnitTests.ViewModels
             var osaMock = new Mock<IOperatingSystemAccess>();
             osaMock.Setup(m => m.RequestSaveFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), true)).Returns(testFilePath);
             var fsaMock = new Mock<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -288,8 +368,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.LoadSelectionCommand.CanExecute(null);
@@ -304,8 +391,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -326,8 +420,15 @@ namespace UnitTests.ViewModels
             var osaMock = new Mock<IOperatingSystemAccess>();
             osaMock.Setup(m => m.RequestLoadFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), false, true)).Returns<string>(null);
             var fsaMock = new Mock<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -358,13 +459,21 @@ namespace UnitTests.ViewModels
             osaMock.Setup(m => m.RequestLoadFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), false, true)).Returns(filePath);
             var fsaMock = new Mock<IFileSystemAccess>();
             fsaMock.Setup(m => m.ReadAllLines(filePath)).Returns(tl);
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
                 vm.Tables.Add(tvm);
             }
+
             vm.SearchText = "test";
 
             // Act
@@ -387,8 +496,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.OkCommand.CanExecute(null);
@@ -403,8 +519,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -426,8 +549,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -449,9 +579,17 @@ namespace UnitTests.ViewModels
             bool? dialogResult = null;
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
-            vm.CloseRequested += (sender, args) =>
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            vm.CloseRequested += (sender,
+                                  args) =>
             {
                 closeRequested = true;
                 dialogResult = args.DialogResult;
@@ -477,8 +615,15 @@ namespace UnitTests.ViewModels
             // Arrange
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.CancelCommand.CanExecute(null);
@@ -495,9 +640,17 @@ namespace UnitTests.ViewModels
             bool? dialogResult = null;
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
-            Func<ITableInformationViewModel> t = Mock.Of<ITableInformationViewModel>;
-            var vm = new PickTablesViewModel(osa, fsa, t);
-            vm.CloseRequested += (sender, args) =>
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            vm.CloseRequested += (sender,
+                                  args) =>
             {
                 closeRequested = true;
                 dialogResult = args.DialogResult;
@@ -515,6 +668,523 @@ namespace UnitTests.ViewModels
             Assert.IsTrue(closeRequested);
             Assert.IsFalse(dialogResult);
             Assert.IsEmpty(vm.Tables);
+        }
+
+        [Test]
+        public void AddTables_Null()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+
+            // Act
+            vm.AddTables(null);
+
+            // Assert
+            Assert.IsEmpty(vm.Tables);
+        }
+
+        [Test]
+        public void AddTables_EmptyCollection()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var c = new TableInformationModel[0];
+
+            // Act
+            vm.AddTables(c);
+
+            // Assert
+            Assert.IsEmpty(vm.Tables);
+        }
+
+        [Test]
+        public void AddTables_Collection()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            var c = tt.Select(m => m.Model).ToArray();
+
+            // Act
+            vm.AddTables(c);
+
+            // Assert
+            Assert.IsNotEmpty(vm.Tables);
+            Assert.AreEqual(tt.Length, vm.Tables.Count);
+            Assert.AreSame(tt[0].Model, vm.Tables[0].Model);
+            Assert.IsTrue(vm.Tables[0].IsSelected);
+            Assert.AreSame(tt[1].Model, vm.Tables[1].Model);
+            Assert.IsFalse(vm.Tables[1].IsSelected);
+            Assert.AreSame(tt[2].Model, vm.Tables[2].Model);
+            Assert.IsFalse(vm.Tables[2].IsSelected);
+            Assert.AreSame(tt[3].Model, vm.Tables[3].Model);
+            Assert.IsFalse(vm.Tables[3].IsSelected);
+            Assert.AreSame(tt[4].Model, vm.Tables[4].Model);
+            Assert.IsTrue(vm.Tables[4].IsSelected);
+        }
+
+        [Test]
+        public void SelectTables_Null([Values(true, false)] bool hasTables)
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            ITableInformationViewModel[] tt = null;
+            if (hasTables)
+            {
+                tt = GetTestViewModels();
+                foreach (var table in tt)
+                {
+                    table.IsSelected = false;
+                    vm.Tables.Add(table);
+                }
+            }
+
+            // Act
+            vm.SelectTables(null);
+
+            // Assert
+            if (hasTables)
+            {
+                CollectionAssert.AreEqual(tt, vm.Tables);
+                Assert.IsTrue(vm.Tables.All(m => m.IsSelected == false));
+            }
+            else
+            {
+                Assert.IsEmpty(vm.Tables);
+            }
+        }
+
+        [Test]
+        public void SelectTables_EmptyCollection([Values(true, false)] bool hasTables)
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var c = new TableInformationModel[0];
+            ITableInformationViewModel[] tt = null;
+            if (hasTables)
+            {
+                tt = GetTestViewModels();
+                foreach (var table in tt)
+                {
+                    table.IsSelected = false;
+                    vm.Tables.Add(table);
+                }
+            }
+
+            // Act
+            vm.SelectTables(c);
+
+            // Assert
+            if (hasTables)
+            {
+                CollectionAssert.AreEqual(tt, vm.Tables);
+                Assert.IsTrue(vm.Tables.All(m => m.IsSelected == false));
+            }
+            else
+            {
+                Assert.IsEmpty(vm.Tables);
+            }
+        }
+
+        [Test]
+        public void SelectTables_Collection([Values(true, false)] bool hasTables)
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var c = new[]
+            {
+                new TableInformationModel("unit", "test", true)
+            };
+            ITableInformationViewModel[] tt = null;
+            if (hasTables)
+            {
+                tt = GetTestViewModels();
+                foreach (var table in tt)
+                {
+                    table.IsSelected = false;
+                    vm.Tables.Add(table);
+                }
+            }
+
+            // Act
+            vm.SelectTables(c);
+
+            // Assert
+            if (hasTables)
+            {
+                CollectionAssert.AreEqual(tt, vm.Tables);
+                var selectedTableModel = c.Single();
+                Assert.IsTrue(vm.Tables.Single(m => m.Model.SafeFullName == selectedTableModel.SafeFullName).IsSelected);
+                Assert.IsTrue(vm.Tables.Where(m => m.Model.SafeFullName != selectedTableModel.SafeFullName).All(m => m.IsSelected == false));
+            }
+            else
+            {
+                Assert.IsEmpty(vm.Tables);
+            }
+        }
+
+        [Test]
+        public void Update_TableSelectionThreeState_OnCollectionChanged_SelectedTable()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+
+            // Act
+            vm.Tables.Add(tt[1]);
+
+            // Assert
+            Assert.IsTrue(vm.TableSelectionThreeState);
+        }
+
+        [Test]
+        public void Update_TableSelectionThreeState_OnCollectionChanged_UnselectedTable()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+
+            // Act
+            vm.Tables.Add(tt[0]);
+
+            // Assert
+            Assert.IsFalse(vm.TableSelectionThreeState);
+        }
+
+        [Test]
+        public void Update_TableSelectionThreeState_OnCollectionChanged_MixedTableSelection()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+
+            // Act
+            vm.Tables.Add(tt[0]);
+            vm.Tables.Add(tt[1]);
+
+            // Assert
+            Assert.IsNull(vm.TableSelectionThreeState);
+        }
+
+        [Test]
+        public void Update_TableSelectionThreeState_OnTableSelectionChanged_AllTablesSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            // Test relies on PropertyChanged, so we rely on the real view model here
+            ITableInformationViewModel CreateTableInformationViewModel() => new TableInformationViewModel();
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel);
+            var tt = GetTestViewModels();
+            vm.AddTables(tt.Select(m => m.Model));
+
+            // Act
+            foreach (var table in vm.Tables)
+            {
+                table.IsSelected = true;
+            }
+
+            // Assert
+            Assert.IsTrue(vm.TableSelectionThreeState);
+        }
+
+        [Test]
+        public void Update_TableSelectionThreeState_OnTableSelectionChanged_NoTablesSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            // Test relies on PropertyChanged, so we rely on the real view model here
+            ITableInformationViewModel CreateTableInformationViewModel() => new TableInformationViewModel();
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel);
+            var tt = GetTestViewModels();
+            vm.AddTables(tt.Select(m => m.Model));
+
+            // Act
+            foreach (var table in vm.Tables)
+            {
+                table.IsSelected = false;
+            }
+
+            // Assert
+            Assert.IsFalse(vm.TableSelectionThreeState);
+        }
+
+        [Test]
+        public void Update_TableSelectionThreeState_OnTableSelectionChanged_MixedTableSelection()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            // Test relies on PropertyChanged, so we rely on the real view model here
+            ITableInformationViewModel CreateTableInformationViewModel() => new TableInformationViewModel();
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel);
+            var tt = GetTestViewModels();
+            vm.AddTables(tt.Select(m => m.Model));
+
+            // Act
+            for (var i = 0; i < vm.Tables.Count; i++)
+            {
+                var table = vm.Tables[i];
+                table.IsSelected = i % 2 == 0;
+            }
+
+            // Assert
+            Assert.IsNull(vm.TableSelectionThreeState);
+        }
+
+        [Test]
+        public void TableSelectionThreeState_AllSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+            vm.SearchText = "foo";
+
+            // Act
+            vm.TableSelectionThreeState = true;
+
+            // Assert
+            Assert.IsTrue(vm.Tables.All(m => m.IsSelected));
+            Assert.AreEqual(string.Empty, vm.SearchText);
+        }
+
+        [Test]
+        public void TableSelectionThreeState_NoneSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+            vm.SearchText = "foo";
+
+            // Act
+            vm.TableSelectionThreeState = false;
+
+            // Assert
+            Assert.IsTrue(vm.Tables.All(m => !m.IsSelected));
+            Assert.AreEqual(string.Empty, vm.SearchText);
+        }
+
+        [Test]
+        public void TableSelectionThreeState_NullSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+            vm.SearchText = "foo";
+
+            // Act
+            vm.TableSelectionThreeState = null;
+
+            // Assert
+            Assert.IsFalse(vm.Tables.All(m => m.IsSelected));
+            Assert.IsFalse(vm.Tables.All(m => !m.IsSelected));
+            Assert.AreEqual("foo", vm.SearchText);
+        }
+
+        [Test]
+        public void SearchText_NoDirectFilter()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+
+            var preFilter = vm.FilteredTables.OfType<ITableInformationViewModel>().ToArray();
+
+            // Act
+            vm.SearchText = "dbo";
+
+            // Assert
+            Assert.AreEqual(tt.Length, preFilter.Length);
+            var postFilter = vm.FilteredTables.OfType<ITableInformationViewModel>().ToArray();
+            Assert.AreEqual(tt.Length, postFilter.Length);
+        }
+
+        [Test]
+        public void SearchText_FilterAfterDelay()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+
+            var preFilter = vm.FilteredTables.OfType<ITableInformationViewModel>().ToArray();
+
+            // Act
+            vm.SearchText = "dbo";
+
+            // Assert
+            Assert.AreEqual(tt.Length, preFilter.Length);
+            Assert.That(() =>
+            {
+                var postFilter = vm.FilteredTables.OfType<ITableInformationViewModel>().ToArray();
+                return postFilter.Length < tt.Length && postFilter.All(m => m.Model.UnsafeFullName.Contains("dbo"));
+            }, Is.True.After(1500, 200));
         }
 
         private static ITableInformationViewModel[] GetTestViewModels()
