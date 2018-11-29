@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Contracts.ViewModels;
     using Contracts.Views;
     using Shared.DAL;
@@ -12,8 +11,8 @@
     {
         private readonly Func<TableInformationModel[]> _getDialogResult;
         private readonly Action _includeTables;
-        private readonly Action<TableInformationModel> _addTable;
-        private readonly Action<TableInformationModel> _selectTable;
+        private readonly Action<IEnumerable<TableInformationModel>> _addTables;
+        private readonly Action<IEnumerable<TableInformationModel>> _selectTables;
 
         public PickTablesDialog(ITelemetryAccess telemetryAccess,
                                 IPickTablesViewModel viewModel)
@@ -28,13 +27,8 @@
             };
             _getDialogResult = viewModel.GetResult;
             _includeTables = () => viewModel.IncludeTables = true;
-            _addTable = viewModel.AddTable;
-            _selectTable = table =>
-            {
-                var t = viewModel.Tables.SingleOrDefault(m => m.Model.SafeFullName == table.SafeFullName);
-                if (t != null)
-                    t.IsSelected = true;
-            };
+            _addTables = viewModel.AddTables;
+            _selectTables = viewModel.SelectTables;
 
             InitializeComponent();
         }
@@ -63,17 +57,13 @@
 
         IPickTablesDialog IPickTablesDialog.AddTables(IEnumerable<TableInformationModel> tables)
         {
-            if (tables == null) return this;
-            foreach (var table in tables)
-                _addTable(table);
+            _addTables(tables);
             return this;
         }
 
         IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<TableInformationModel> tables)
         {
-            if (tables == null) return this;
-            foreach (var table in tables)
-                _selectTable(table);
+            _selectTables(tables);
             return this;
         }
     }

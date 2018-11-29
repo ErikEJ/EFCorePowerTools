@@ -36,15 +36,7 @@
 
         public ObservableCollection<ITableInformationViewModel> Tables { get; }
 
-        public ICollectionView FilteredTables
-        {
-            get
-            {
-                var source = CollectionViewSource.GetDefaultView(Tables);
-                source.Filter = t => FilterTable((ITableInformationViewModel) t);
-                return source;
-            }
-        }
+        public ICollectionView FilteredTables { get; }
 
         public bool IncludeTables
         {
@@ -97,6 +89,10 @@
             
             Tables = new ObservableCollection<ITableInformationViewModel>();
             Tables.CollectionChanged += Tables_CollectionChanged;
+
+            var filteredTablesSource = CollectionViewSource.GetDefaultView(Tables);
+            filteredTablesSource.Filter = t => FilterTable((ITableInformationViewModel)t);
+            FilteredTables = filteredTablesSource;
 
             SearchText = string.Empty;
         }
@@ -207,19 +203,32 @@
                         && !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
         }
 
-        void IPickTablesViewModel.AddTable(TableInformationModel table)
+        void IPickTablesViewModel.AddTables(IEnumerable<TableInformationModel> tables)
         {
-            // Don't create a new ViewModel instance if the table parameter is null
-#pragma warning disable IDE0016
-            if (table == null) throw new ArgumentNullException(nameof(table));
-#pragma warning restore IDE0016
+            if (tables == null) return;
 
-            var tvm = _tableInformationViewModelFactory();
-            tvm.Model = table;
-            PredefineSelection(tvm);
-            Tables.Add(tvm);
-            tvm.PropertyChanged += TableViewModel_PropertyChanged;
+            foreach (var table in tables)
+            {
+                var tvm = _tableInformationViewModelFactory();
+                tvm.Model = table;
+                PredefineSelection(tvm);
+                Tables.Add(tvm);
+                tvm.PropertyChanged += TableViewModel_PropertyChanged;
+            }
+
             FilteredTables.Refresh();
+        }
+
+        void IPickTablesViewModel.SelectTables(IEnumerable<TableInformationModel> tables)
+        {
+            if (tables == null) return;
+
+            foreach (var table in tables)
+            {
+                var t = Tables.SingleOrDefault(m => m.Model.SafeFullName == table.SafeFullName);
+                if (t != null)
+                    t.IsSelected = true;
+            }
         }
 
         TableInformationModel[] IPickTablesViewModel.GetResult()
