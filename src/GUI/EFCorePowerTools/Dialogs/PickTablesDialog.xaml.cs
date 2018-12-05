@@ -10,7 +10,6 @@
     public partial class PickTablesDialog : IPickTablesDialog
     {
         private readonly Func<TableInformationModel[]> _getDialogResult;
-        private readonly Action _includeTables;
         private readonly Action<IEnumerable<TableInformationModel>> _addTables;
         private readonly Action<IEnumerable<TableInformationModel>> _selectTables;
 
@@ -26,7 +25,6 @@
                 Close();
             };
             _getDialogResult = viewModel.GetResult;
-            _includeTables = () => viewModel.IncludeTables = true;
             _addTables = viewModel.AddTables;
             _selectTables = viewModel.SelectTables;
 
@@ -47,12 +45,6 @@
             }
 
             return (closedByOkay, _getDialogResult());
-        }
-
-        IPickTablesDialog IPickTablesDialog.IncludeTables()
-        {
-            _includeTables();
-            return this;
         }
 
         IPickTablesDialog IPickTablesDialog.AddTables(IEnumerable<TableInformationModel> tables)

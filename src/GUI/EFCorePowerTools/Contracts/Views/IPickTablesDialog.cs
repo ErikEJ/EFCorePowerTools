@@ -5,8 +5,6 @@
 
     public interface IPickTablesDialog : IDialog<TableInformationModel[]>
     {
-        IPickTablesDialog IncludeTables();
-
         IPickTablesDialog AddTables(IEnumerable<TableInformationModel> tables);
 
         IPickTablesDialog PreselectTables(IEnumerable<TableInformationModel> tables);
