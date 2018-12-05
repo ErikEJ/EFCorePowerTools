@@ -22,7 +22,6 @@
         private readonly IFileSystemAccess _fileSystemAccess;
         private readonly Func<ITableInformationViewModel> _tableInformationViewModelFactory;
 
-        private bool _includeTables;
         private bool? _tableSelectionThreeState;
         private string _searchText;
 
@@ -37,17 +36,6 @@
         public ObservableCollection<ITableInformationViewModel> Tables { get; }
 
         public ICollectionView FilteredTables { get; }
-
-        public bool IncludeTables
-        {
-            get => _includeTables;
-            set
-            {
-                if (Equals(value, _includeTables)) return;
-                _includeTables = value;
-                RaisePropertyChanged();
-            }
-        }
 
         public bool? TableSelectionThreeState
         {
@@ -233,10 +221,9 @@
 
         TableInformationModel[] IPickTablesViewModel.GetResult()
         {
-            return (from t in Tables.Where(m => m.Model.HasPrimaryKey)
-                    where IncludeTables && t.IsSelected || !IncludeTables && !t.IsSelected
-                    select t.Model)
-               .ToArray();
+            return Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey)
+                         .Select(m => m.Model)
+                         .ToArray();
         }
 
         private void Tables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

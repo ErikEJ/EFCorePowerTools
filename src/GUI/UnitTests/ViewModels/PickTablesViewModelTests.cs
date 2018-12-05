@@ -1187,6 +1187,126 @@ namespace UnitTests.ViewModels
             }, Is.True.After(1500, 200));
         }
 
+        [Test]
+        public void GetResults_NoTables()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+
+            // Act
+            var result = vm.GetResult();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public void GetResults_WithTables_NoneSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                table.IsSelected = false;
+                vm.Tables.Add(table);
+            }
+
+            // Act
+            var result = vm.GetResult();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public void GetResults_WithTables_AllSelected()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                table.IsSelected = true;
+                vm.Tables.Add(table);
+            }
+
+            // Act
+            var result = vm.GetResult();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(4, result.Length);
+            Assert.AreSame(tt[0].Model, result[0]);
+            Assert.AreSame(tt[2].Model, result[1]);
+            Assert.AreSame(tt[3].Model, result[2]);
+            Assert.AreSame(tt[4].Model, result[3]);
+        }
+
+        [Test]
+        public void GetResults_WithTables_PartialSelection()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+
+            // Act
+            var result = vm.GetResult();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Length);
+            Assert.AreSame(tt[2].Model, result[0]);
+            Assert.AreSame(tt[3].Model, result[1]);
+            Assert.AreSame(tt[4].Model, result[2]);
+        }
+
         private static ITableInformationViewModel[] GetTestViewModels()
         {
             var r = new ITableInformationViewModel[5];

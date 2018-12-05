@@ -123,7 +123,6 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 var ptd = _package.GetView<IPickTablesDialog>()
-                                  .IncludeTables()
                                   .AddTables(predefinedTables)
                                   .PreselectTables(preselectedTables);
                 

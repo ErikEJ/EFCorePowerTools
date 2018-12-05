@@ -84,8 +84,9 @@ namespace EFCorePowerTools.Handlers
                 var ptd = _package.GetView<IPickTablesDialog>()
                                   .AddTables(predefinedTables);
 
-                var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
-                if (!pickTablesResult.ClosedByOK) return;
+                var (closedByOk, selectedTables) = ptd.ShowAndAwaitUserResponse(true);
+                if (!closedByOk) return;
+                var unselectedTables = predefinedTables.Except(selectedTables).Select(m => m.UnsafeFullName).ToList();
 
                 var name = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
 
@@ -100,7 +101,7 @@ namespace EFCorePowerTools.Handlers
                 using (var repository = RepositoryHelper.CreateRepository(dbInfo))
                 {
                     var generator = RepositoryHelper.CreateGenerator(repository, path, dbInfo.DatabaseType);
-                    generator.GenerateSchemaGraph(dbInfo.ConnectionString, pickTablesResult.Payload.Select(m => m.UnsafeFullName).ToList());
+                    generator.GenerateSchemaGraph(dbInfo.ConnectionString, unselectedTables);
                     File.SetAttributes(path, FileAttributes.ReadOnly);
                     _package.Dte2.ItemOperations.OpenFile(path);
                     _package.Dte2.ActiveDocument.Activate();

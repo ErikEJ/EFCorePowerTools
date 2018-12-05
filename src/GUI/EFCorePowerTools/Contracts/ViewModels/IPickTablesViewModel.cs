@@ -21,7 +21,6 @@
         ObservableCollection<ITableInformationViewModel> Tables { get; }
         ICollectionView FilteredTables { get; }
 
-        bool IncludeTables { get; set; }
         bool? TableSelectionThreeState { get; set; }
         string SearchText { get; set; }
 
