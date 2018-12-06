@@ -9,5 +9,6 @@
     </Style>
 
     <SolidColorBrush x:Key="DialogWindowBackgroundColor" Color="#FFF0F0F0"/>
+    <SolidColorBrush x:Key="DisabledTextBlockTextColor" Color="#FF707070"/>
 
 </ResourceDictionary>
