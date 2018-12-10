@@ -190,16 +190,16 @@ namespace ReverseEngineer20
 
         private void PostProcess(string file, bool idReplace)
         {
+            var text = File.ReadAllText(file, Encoding.UTF8);
             if (idReplace)
             {
-                var text = File.ReadAllText(file);
                 text = text.Replace("Id, ", "ID, ");
                 text = text.Replace("Id }", "ID }");
                 text = text.Replace("Id }", "ID }");
                 text = text.Replace("Id)", "ID)");
-                text = text.Replace("Id { get; set; }", "ID { get; set; }");
-                File.WriteAllText(file, text, Encoding.UTF8);
+                text = text.Replace("Id { get; set; }", "ID { get; set; }");                
             }
+            File.WriteAllText(file, text.TrimEnd(), Encoding.UTF8);
         }
 
         public string GenerateClassName(string value)
