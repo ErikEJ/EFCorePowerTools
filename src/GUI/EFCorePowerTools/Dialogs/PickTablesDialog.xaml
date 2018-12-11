@@ -32,7 +32,7 @@
                         <Setter Property="Margin" Value="0, 0, 5, 0"/>
                     </Style>
                     <Style x:Key="NoPrimaryKeyImageStyle" TargetType="Image">
-                        <Setter Property="ToolTip" Value="No primary key defined. Table will be ignored."/>
+                        <Setter Property="ToolTip" Value="This table has no primary key defined. It cannot be selected and will be ignored."/>
                         <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/StatusInvalid_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>

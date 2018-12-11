@@ -190,6 +190,7 @@ namespace UnitTests.ViewModels
             Assert.IsFalse(tt[2].IsSelected);
             Assert.IsFalse(tt[3].IsSelected);
             Assert.IsTrue(tt[4].IsSelected);
+            Assert.IsFalse(tt[5].IsSelected);
         }
 
         [Test]
@@ -453,7 +454,8 @@ namespace UnitTests.ViewModels
                 "unit.test",
                 "__.RefactorLog",
                 "foo.bar",
-                "foo"
+                "foo",
+                "unit.foo"
             };
             var osaMock = new Mock<IOperatingSystemAccess>();
             osaMock.Setup(m => m.RequestLoadFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), false, true)).Returns(filePath);
@@ -483,10 +485,11 @@ namespace UnitTests.ViewModels
             osaMock.Verify(m => m.RequestLoadFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), false, true), Times.Once);
             fsaMock.Verify(m => m.ReadAllLines(filePath), Times.Once);
             Assert.IsFalse(tt[0].IsSelected);
-            Assert.IsTrue(tt[1].IsSelected);
+            Assert.IsFalse(tt[1].IsSelected);
             Assert.IsFalse(tt[2].IsSelected);
             Assert.IsFalse(tt[3].IsSelected);
             Assert.IsTrue(tt[4].IsSelected);
+            Assert.IsFalse(tt[5].IsSelected);
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -751,6 +754,8 @@ namespace UnitTests.ViewModels
             Assert.IsFalse(vm.Tables[3].IsSelected);
             Assert.AreSame(tt[4].Model, vm.Tables[4].Model);
             Assert.IsTrue(vm.Tables[4].IsSelected);
+            Assert.AreSame(tt[5].Model, vm.Tables[5].Model);
+            Assert.IsFalse(vm.Tables[5].IsSelected);
         }
 
         [Test]
@@ -1055,7 +1060,8 @@ namespace UnitTests.ViewModels
             vm.TableSelectionThreeState = true;
 
             // Assert
-            Assert.IsTrue(vm.Tables.All(m => m.IsSelected));
+            Assert.IsTrue(vm.Tables.Where(m => m.Model.HasPrimaryKey).All(m => m.IsSelected));
+            Assert.IsTrue(vm.Tables.Where(m => !m.Model.HasPrimaryKey).All(m => !m.IsSelected));
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -1309,7 +1315,7 @@ namespace UnitTests.ViewModels
 
         private static ITableInformationViewModel[] GetTestViewModels()
         {
-            var r = new ITableInformationViewModel[5];
+            var r = new ITableInformationViewModel[6];
 
             r[0] = new TableInformationViewModel
             {
@@ -1335,6 +1341,11 @@ namespace UnitTests.ViewModels
             {
                 IsSelected = true,
                 Model = new TableInformationModel("unit", "test", true)
+            };
+            r[5] = new TableInformationViewModel
+            {
+                IsSelected = true,
+                Model = new TableInformationModel("unit", "foo", false)
             };
 
             return r;
