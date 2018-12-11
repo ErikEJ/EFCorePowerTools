@@ -122,7 +122,7 @@
             foreach (var t in Tables)
             {
                 var parsedTable = parsedTables.SingleOrDefault(m => m.SafeFullName == t.Model.SafeFullName);
-                t.IsSelected = parsedTable != null;
+                t.IsSelected = t.Model.HasPrimaryKey && parsedTable != null;
             }
 
             SearchText = string.Empty;
@@ -155,17 +155,18 @@
                 return;
 
             foreach (var t in Tables)
-                t.IsSelected = selectionMode.Value;
+                t.IsSelected = t.Model.HasPrimaryKey && selectionMode.Value;
 
             SearchText = string.Empty;
         }
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = Tables.All(m => m.IsSelected)
+            TableSelectionThreeState = Tables.Where(m => m.Model.HasPrimaryKey)
+                                             .All(m => m.IsSelected)
                                            ? true
                                            : Tables.All(m => !m.IsSelected)
-                                               ? (bool?)false
+                                               ? (bool?) false
                                                : null;
         }
 
@@ -186,7 +187,8 @@
 
         private static void PredefineSelection(ITableInformationViewModel t)
         {
-            t.IsSelected = !t.Model.UnsafeFullName.StartsWith("__")
+            t.IsSelected = t.Model.HasPrimaryKey
+                        && !t.Model.UnsafeFullName.StartsWith("__")
                         && !t.Model.UnsafeFullName.StartsWith("dbo.__")
                         && !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
         }
