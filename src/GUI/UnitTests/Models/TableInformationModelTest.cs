@@ -67,13 +67,14 @@
         {
             // Arrange
             var table1 = "Album";
+            //TODO dbo.Test.Table is a valid table name, must update parser!
             var table2 = "[config.legacy].Album";
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => TableInformationModel.Parse(table1));
-            Assert.Throws<ArgumentException>(() => TableInformationModel.Parse(table2));
-            Assert.Throws<ArgumentException>(() => TableInformationModel.Parse(table1, true));
-            Assert.Throws<ArgumentException>(() => TableInformationModel.Parse(table2, true));
+            TableInformationModel.Parse(table1);
+            TableInformationModel.Parse(table2);
+            TableInformationModel.Parse(table1, true);
+            TableInformationModel.Parse(table2, true);
         }
 
         [Test]

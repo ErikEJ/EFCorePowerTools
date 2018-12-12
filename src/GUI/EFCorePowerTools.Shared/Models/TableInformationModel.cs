@@ -71,14 +71,34 @@
         /// Gets the unsafe (unescaped) full name of the table.
         /// </summary>
         [IgnoreDataMember]
-        public string UnsafeFullName => $"{Schema}.{Name}";
+        public string UnsafeFullName
+        {
+            get
+            {
+                if (Schema == null)
+                {
+                    return Name;
+                }
+                return $"{Schema}.{Name}";
+            }
+        }
 
         /// <summary>
         /// Gets the safe (escaped) full name of the table.
         /// </summary>
         [IgnoreDataMember]
-        public string SafeFullName => $"[{Schema}].[{Name}]";
-
+        public string SafeFullName
+        {
+            get
+            {
+                if (Schema == null)
+                {
+                    return $"[{Name}]"; ;
+                }
+                 return $"[{Schema}].[{Name}]";
+            }
+            
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="TableInformationModel"/> class for a specific table.
         /// </summary>
@@ -90,8 +110,6 @@
                                      string name,
                                      bool hasPrimaryKey)
         {
-            if (string.IsNullOrWhiteSpace(schema))
-                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(schema));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
 
@@ -112,12 +130,19 @@
             if (string.IsNullOrWhiteSpace(table))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(table));
 
-            var split = table.Split('.');
-            if (split.Length != 2)
-                throw new ArgumentException(@"Value cannot be parsed.", nameof(table));
+            string schema = null;
+            string name = null;
 
-            var schema = split[0];
-            var name = split[1];
+            var split = table.Split('.');
+            if (split.Length == 2)
+            {
+                schema = split[0];
+                name = split[1];
+            }
+            else
+            {
+                name = table;
+            }
             return new TableInformationModel(schema, name, true);
         }
 
@@ -134,12 +159,20 @@
             if (string.IsNullOrWhiteSpace(table))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(table));
 
-            var split = table.Split('.');
-            if (split.Length != 2)
-                throw new ArgumentException(@"Value cannot be parsed.", nameof(table));
+            string schema = null;
+            string name = null;
 
-            var schema = split[0];
-            var name = split[1];
+            var split = table.Split('.');
+            if (split.Length == 2)
+            {
+                schema = split[0];
+                name = split[1];
+            }
+            else
+            {
+                name = table;
+            }
+            
             return new TableInformationModel(schema, name, hasPrimaryKey);
         }
 

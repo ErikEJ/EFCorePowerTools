@@ -1,5 +1,5 @@
 ﻿using EFCore.SqlCe.Design.Internal;
-using EntityFrameworkCore.Scaffolding.Handlebars;
+//using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -40,13 +40,13 @@ namespace ReverseEngineer20
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>();
                 
-            if (reverseEngineerOptions.UseHandleBars)
-            {
-                //TODO Consider being selective based on SelectedToBeGenerated
-                serviceCollection.AddHandlebarsScaffolding();
-                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
+            //if (reverseEngineerOptions.UseHandleBars)
+            //{
+            //    //TODO Consider being selective based on SelectedToBeGenerated
+            //    serviceCollection.AddHandlebarsScaffolding();
+            //    serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
                 
-            }
+            //}
 
             if(reverseEngineerOptions.CustomReplacers != null)
             {
