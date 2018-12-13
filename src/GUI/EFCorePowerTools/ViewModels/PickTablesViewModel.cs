@@ -99,7 +99,7 @@
             if (resultFileName == null)
                 return;
 
-            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey).Select(m => m.Model.UnsafeFullName));
+            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey).Select(m => m.Model.Name));
         }
 
         private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
@@ -116,12 +116,11 @@
             var lines = _fileSystemAccess.ReadAllLines(resultFileName);
             var parsedTables = new List<TableInformationModel>();
             foreach (var line in lines)
-                if (TableInformationModel.TryParse(line, out var t))
-                    parsedTables.Add(t);
+                parsedTables.Add(new TableInformationModel(line, true));
 
             foreach (var t in Tables)
             {
-                var parsedTable = parsedTables.SingleOrDefault(m => m.SafeFullName == t.Model.SafeFullName);
+                var parsedTable = parsedTables.SingleOrDefault(m => m.Name == t.Model.Name);
                 t.IsSelected = parsedTable != null;
             }
 
@@ -181,14 +180,14 @@
         private bool FilterTable(ITableInformationViewModel tableInformationViewModel)
         {
             return string.IsNullOrWhiteSpace(SearchText)
-                || tableInformationViewModel.Model.UnsafeFullName.ToUpper().Contains(SearchText.ToUpper());
+                || tableInformationViewModel.Model.Name.ToUpper().Contains(SearchText.ToUpper());
         }
 
         private static void PredefineSelection(ITableInformationViewModel t)
         {
-            t.IsSelected = !t.Model.UnsafeFullName.StartsWith("__")
-                        && !t.Model.UnsafeFullName.StartsWith("dbo.__")
-                        && !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
+            t.IsSelected = !t.Model.Name.StartsWith("__")
+                        && !t.Model.Name.StartsWith("dbo.__")
+                        && !t.Model.Name.EndsWith(".sysdiagrams");
         }
 
         void IPickTablesViewModel.AddTables(IEnumerable<TableInformationModel> tables)
@@ -213,7 +212,7 @@
 
             foreach (var table in tables)
             {
-                var t = Tables.SingleOrDefault(m => m.Model.SafeFullName == table.SafeFullName);
+                var t = Tables.SingleOrDefault(m => m.Model.Name == table.Name);
                 if (t != null)
                     t.IsSelected = true;
             }

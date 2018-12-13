@@ -116,7 +116,7 @@ namespace ReverseEngineer20
                     reverseEngineerOptions.Dacpac != null
                         ? reverseEngineerOptions.Dacpac
                         : reverseEngineerOptions.ConnectionString,
-                    reverseEngineerOptions.Tables.Select(m => m.UnsafeFullName).ToArray(),
+                    reverseEngineerOptions.Tables.Select(m => m.Name).ToArray(),
                     schemas,
                     @namespace,
                     "C#",

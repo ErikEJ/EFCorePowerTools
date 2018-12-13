@@ -280,7 +280,7 @@ namespace EFCorePowerTools.Handlers
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    tables.Add(TableInformationModel.Parse(table, hasPrimaryKey));
+                    tables.Add(new TableInformationModel(table, hasPrimaryKey));
                 }
                 return tables;
             }
