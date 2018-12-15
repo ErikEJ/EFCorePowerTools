@@ -108,7 +108,7 @@
                             <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}"
                                       IsChecked="{Binding IsSelected}"
                                       IsEnabled="{Binding Model.HasPrimaryKey}"/>
-                            <TextBlock Text="{Binding Model.UnsafeFullName}" 
+                            <TextBlock Text="{Binding Model.Name}" 
                                        Style="{StaticResource TableNameTextBlockStyle}"/>
                             <Image Style="{StaticResource NoPrimaryKeyImageStyle}"
                                    Visibility="{Binding Model.HasPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}"/>
