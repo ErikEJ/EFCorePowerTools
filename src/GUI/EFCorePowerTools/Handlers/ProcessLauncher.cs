@@ -13,11 +13,13 @@ namespace EFCorePowerTools.Handlers
     {
         private readonly bool _isNetCore;
         private readonly bool _isNetCore21;
+        private readonly bool _isNetCore22;
 
-        public ProcessLauncher(bool isNetCore, bool isNetCore21)
+        public ProcessLauncher(bool isNetCore, bool isNetCore21, bool isNetCore22)
         {
             _isNetCore = isNetCore;
             _isNetCore21 = isNetCore21;
+            _isNetCore22 = isNetCore22;
         }
 
         public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
@@ -131,12 +133,16 @@ namespace EFCorePowerTools.Handlers
                 var fvi = FileVersionInfo.GetVersionInfo(testFile);
                 version = Version.Parse(fvi.FileVersion);
 
-                if (version.ToString(3) == "2.0.0") testVersion = "2.0.0";
-                if (version.ToString(3) == "2.0.1") testVersion = "2.0.1";
-                if (version.ToString(3) == "2.0.2") testVersion = "2.0.2";
-                if (version.ToString(3) == "2.0.3") testVersion = "2.0.3";
-                if (version.ToString(3) == "2.1.0") testVersion = "2.1.0";
-                if (version.ToString(3) == "2.1.4") testVersion = "2.1.4";
+                if (version.ToString(3) == "2.0.0"
+                    || version.ToString(3) == "2.0.1"
+                    || version.ToString(3) == "2.0.2"
+                    || version.ToString(3) == "2.0.3"
+                    || version.ToString(3) == "2.1.0" 
+                    || version.ToString(3) == "2.1.4"
+                    || version.ToString(3) == "2.2.0")
+                {
+                    testVersion = version.ToString(3);
+                }
             }
             else
             {
@@ -149,7 +155,7 @@ namespace EFCorePowerTools.Handlers
                 throw new Exception(
                     $"Unable to find a supported version of Microsoft.EntityFrameworkCore.dll in folder {toDir}. Version found: {version}");
             }
-            if (testVersion == "2.1.0" || testVersion == "2.1.4")
+            if (testVersion == "2.1.0" || testVersion == "2.1.4" || testVersion == "2.2.0")
             {
                 File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
             }
@@ -181,6 +187,10 @@ namespace EFCorePowerTools.Handlers
             if (_isNetCore21)
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt21.exe.zip"), toDir);
+            }
+            else if (_isNetCore22)
+            {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt22.exe.zip"), toDir);
             }
             else
             {

@@ -162,6 +162,12 @@
     <Content Include="efpt\2.1.4\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="efpt\2.2.0\efpt.exe">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.2.0\Microsoft.EntityFrameworkCore.Design.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="e_sqlite3.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -197,8 +203,15 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\lib\efpt22.exe.zip">
+      <Link>efpt22.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="app.config" />
     <None Include="efpt.renaming.json" />
+    <Content Include="efpt\2.2.0\efpt.exe.config">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

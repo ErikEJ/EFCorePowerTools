@@ -89,7 +89,7 @@ namespace ReverseEngineer20
             //TODO Use OperationHandler output!!
             var reporter = new OperationReporter(new OperationReportHandler());
 
-#if CORE21
+#if CORE21 || CORE22 
             return new DbContextOperations(reporter, assembly, assembly, Array.Empty<string>());
 #else
             return new DbContextOperations(reporter, assembly, assembly);

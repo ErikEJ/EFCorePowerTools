@@ -40,7 +40,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21());
+                var processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21(), project.IsNetCore22());
 
                 var processResult = processLauncher.GetOutput(outputPath, generationType, null);
 
@@ -86,7 +86,7 @@ namespace EFCorePowerTools.Handlers
         private void GenerateDgml(string processResult, Project project)
         {
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
-            var processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21());
+            var processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21(), project.IsNetCore22());
 
             var result = processLauncher.BuildModelResult(processResult);
             ProjectItem item = null;
