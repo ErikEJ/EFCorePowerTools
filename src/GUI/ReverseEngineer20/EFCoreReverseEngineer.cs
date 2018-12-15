@@ -130,14 +130,14 @@ namespace ReverseEngineer20
                 Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath),
                 overwriteFiles: true);
 
+            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
+
             foreach (var file in filePaths.AdditionalFiles)
             {
                 PostProcess(file, reverseEngineerOptions.IdReplace);
             }
             PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
-
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
-
+            
             var result = new EfCoreReverseEngineerResult
             {
                 EntityErrors = errors,

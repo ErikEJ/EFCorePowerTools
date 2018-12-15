@@ -1345,7 +1345,7 @@ namespace UnitTests.ViewModels
             r[5] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("unit", "foo", false)
+                Model = new TableInformationModel("unit.foo", false)
             };
 
             return r;

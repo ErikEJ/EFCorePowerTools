@@ -187,9 +187,9 @@
         private static void PredefineSelection(ITableInformationViewModel t)
         {
             t.IsSelected = t.Model.HasPrimaryKey
-                        && !t.Model.UnsafeFullName.StartsWith("__")
-                        && !t.Model.UnsafeFullName.StartsWith("dbo.__")
-                        && !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
+                        && !t.Model.Name.StartsWith("__")
+                        && !t.Model.Name.StartsWith("dbo.__")
+                        && !t.Model.Name.EndsWith(".sysdiagrams");
         }
 
         void IPickTablesViewModel.AddTables(IEnumerable<TableInformationModel> tables)
