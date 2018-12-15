@@ -188,12 +188,12 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         && schema != "information_schema")
                     {
                         // TODO: Check if the table has a primary key
-                        result.Add(new TableInformationModel(schema, row["table_name"].ToString(), true));
+                        result.Add(new TableInformationModel(schema + "." + row["table_name"].ToString(), true));
                     }
                 }
             }
 
-            return result.OrderBy(l => l.UnsafeFullName).ToList();
+            return result.OrderBy(l => l.Name).ToList();
         }
 
         private static string GetFilePath(string connectionString, DatabaseType dbType)

@@ -48,13 +48,7 @@ namespace ReverseEngineer20
                 UseFluentApiOnly = v1.UseFluentApiOnly,
                 ContextClassName = v1.ContextClassName,
                 Tables = v1.Tables
-                           .Select(m =>
-                            {
-                                // Try to parse the strings
-                                TableInformationModel.TryParse(m, out var ti);
-                                return ti;
-                            })
-                           .Where(m => m != null) // Only select the table information that could be parsed
+                           .Select(m => new TableInformationModel(m, true))
                            .ToList(),
                 UseDatabaseNames = v1.UseDatabaseNames,
                 UseInflector = v1.UseInflector,

@@ -858,7 +858,7 @@ namespace UnitTests.ViewModels
             IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
             var c = new[]
             {
-                new TableInformationModel("unit", "test", true)
+                new TableInformationModel("unit.test", true)
             };
             ITableInformationViewModel[] tt = null;
             if (hasTables)
@@ -879,8 +879,8 @@ namespace UnitTests.ViewModels
             {
                 CollectionAssert.AreEqual(tt, vm.Tables);
                 var selectedTableModel = c.Single();
-                Assert.IsTrue(vm.Tables.Single(m => m.Model.SafeFullName == selectedTableModel.SafeFullName).IsSelected);
-                Assert.IsTrue(vm.Tables.Where(m => m.Model.SafeFullName != selectedTableModel.SafeFullName).All(m => m.IsSelected == false));
+                Assert.IsTrue(vm.Tables.Single(m => m.Model.Name == selectedTableModel.Name).IsSelected);
+                Assert.IsTrue(vm.Tables.Where(m => m.Model.Name != selectedTableModel.Name).All(m => m.IsSelected == false));
             }
             else
             {
@@ -1189,7 +1189,7 @@ namespace UnitTests.ViewModels
             Assert.That(() =>
             {
                 var postFilter = vm.FilteredTables.OfType<ITableInformationViewModel>().ToArray();
-                return postFilter.Length < tt.Length && postFilter.All(m => m.Model.UnsafeFullName.Contains("dbo"));
+                return postFilter.Length < tt.Length && postFilter.All(m => m.Model.Name.Contains("dbo"));
             }, Is.True.After(1500, 200));
         }
 
@@ -1320,32 +1320,32 @@ namespace UnitTests.ViewModels
             r[0] = new TableInformationViewModel
             {
                 IsSelected = false,
-                Model = new TableInformationModel("dbo", "Atlas", true)
+                Model = new TableInformationModel("dbo.Atlas", true)
             };
             r[1] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("__", "RefactorLog", false)
+                Model = new TableInformationModel("__.RefactorLog", false)
             };
             r[2] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("dbo", "__RefactorLog", true)
+                Model = new TableInformationModel("dbo.__RefactorLog", true)
             };
             r[3] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("dbo", "sysdiagrams", true)
+                Model = new TableInformationModel("dbo.sysdiagrams", true)
             };
             r[4] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("unit", "test", true)
+                Model = new TableInformationModel("unit.test", true)
             };
             r[5] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("unit", "foo", false)
+                Model = new TableInformationModel("unit.foo", false)
             };
 
             return r;

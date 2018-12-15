@@ -76,8 +76,7 @@ namespace EFCorePowerTools.Handlers
                     var tables = repository.GetAllTableNamesForExclusion();
                     foreach (var table in tables)
                     {
-                        if (TableInformationModel.TryParse(table, out var t))
-                            predefinedTables.Add(t);
+                        predefinedTables.Add(new TableInformationModel(table, true));
                     }
                 }
 
@@ -86,7 +85,7 @@ namespace EFCorePowerTools.Handlers
 
                 var (closedByOk, selectedTables) = ptd.ShowAndAwaitUserResponse(true);
                 if (!closedByOk) return;
-                var unselectedTables = predefinedTables.Except(selectedTables).Select(m => m.UnsafeFullName).ToList();
+                var unselectedTables = predefinedTables.Except(selectedTables).Select(m => m.Name).ToList();
 
                 var name = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
 

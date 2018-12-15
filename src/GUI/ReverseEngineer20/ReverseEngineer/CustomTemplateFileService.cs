@@ -1,25 +1,27 @@
-﻿using EntityFrameworkCore.Scaffolding.Handlebars;
+﻿//using EntityFrameworkCore.Scaffolding.Handlebars;
 using System.IO;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
-    public class CustomTemplateFileService : FileSystemTemplateFileService
-    {
-        public string RootDirectory { get; }
+    //TODO re-eanble
 
-        public CustomTemplateFileService(string rootDirectory)
-        {
-            RootDirectory = rootDirectory;
-        }
+    //public class CustomTemplateFileService : FileSystemTemplateFileService
+    //{
+    //    public string RootDirectory { get; }
 
-        public override string RetrieveTemplateFileContents(
-            string relativeDirectory,
-            string fileName,
-            string altRelativeDirectory = null)
-        {
-            var localDirectory = Path.Combine(RootDirectory, relativeDirectory);
-            var contents = RetrieveFileContents(localDirectory, fileName);
-            return contents;
-        }
-    }
+    //    public CustomTemplateFileService(string rootDirectory)
+    //    {
+    //        RootDirectory = rootDirectory;
+    //    }
+
+    //    public override string RetrieveTemplateFileContents(
+    //        string relativeDirectory,
+    //        string fileName,
+    //        string altRelativeDirectory = null)
+    //    {
+    //        var localDirectory = Path.Combine(RootDirectory, relativeDirectory);
+    //        var contents = RetrieveFileContents(localDirectory, fileName);
+    //        return contents;
+    //    }
+    //}
 }

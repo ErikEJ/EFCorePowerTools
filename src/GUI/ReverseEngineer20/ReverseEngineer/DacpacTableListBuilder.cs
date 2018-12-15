@@ -30,7 +30,7 @@ namespace ReverseEngineer20
         {
             var model = new TSqlTypedModel(_dacpacPath);
             return model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
-                        .Select(m => new TableInformationModel(m.Name.Parts[0], m.Name.Parts[1], m.PrimaryKeyConstraints.Any()))
+                        .Select(m => new TableInformationModel(m.Name.Parts[0] + "." + m.Name.Parts[1], m.PrimaryKeyConstraints.Any()))
                         .ToList();
         }
     }

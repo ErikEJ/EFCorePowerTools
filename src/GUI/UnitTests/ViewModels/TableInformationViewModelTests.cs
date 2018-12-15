@@ -14,7 +14,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var propertyChangedInvoked = false;
-            var tim = new TableInformationModel("dbo", "Album", true);
+            var tim = new TableInformationModel("dbo.Album", true);
             var vm = new TableInformationViewModel
             {
                 Model = tim,
@@ -34,7 +34,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var propertyChangedInvoked = false;
-            var tim = new TableInformationModel("dbo", "Album", true);
+            var tim = new TableInformationModel("dbo.Album", true);
             var vm = new TableInformationViewModel
             {
                 Model = tim,
@@ -54,7 +54,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var changedProperties = new List<string>();
-            var tim = new TableInformationModel("dbo", "Album", true);
+            var tim = new TableInformationModel("dbo.Album", true);
             var vm = new TableInformationViewModel
             {
                 Model = tim,
@@ -75,7 +75,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var changedProperties = new List<string>();
-            var tim = new TableInformationModel("dbo", "Album", true);
+            var tim = new TableInformationModel("dbo.Album", true);
             var vm = new TableInformationViewModel
             {
                 Model = tim,

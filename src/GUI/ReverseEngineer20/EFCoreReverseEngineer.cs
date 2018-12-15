@@ -1,5 +1,5 @@
 ﻿using EFCore.SqlCe.Design.Internal;
-using EntityFrameworkCore.Scaffolding.Handlebars;
+//using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -40,13 +40,13 @@ namespace ReverseEngineer20
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>();
                 
-            if (reverseEngineerOptions.UseHandleBars)
-            {
-                //TODO Consider being selective based on SelectedToBeGenerated
-                serviceCollection.AddHandlebarsScaffolding();
-                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
+            //if (reverseEngineerOptions.UseHandleBars)
+            //{
+            //    //TODO Consider being selective based on SelectedToBeGenerated
+            //    serviceCollection.AddHandlebarsScaffolding();
+            //    serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
                 
-            }
+            //}
 
             if(reverseEngineerOptions.CustomReplacers != null)
             {
@@ -116,7 +116,7 @@ namespace ReverseEngineer20
                     reverseEngineerOptions.Dacpac != null
                         ? reverseEngineerOptions.Dacpac
                         : reverseEngineerOptions.ConnectionString,
-                    reverseEngineerOptions.Tables.Select(m => m.UnsafeFullName).ToArray(),
+                    reverseEngineerOptions.Tables.Select(m => m.Name).ToArray(),
                     schemas,
                     @namespace,
                     "C#",
@@ -130,14 +130,14 @@ namespace ReverseEngineer20
                 Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath),
                 overwriteFiles: true);
 
+            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
+
             foreach (var file in filePaths.AdditionalFiles)
             {
                 PostProcess(file, reverseEngineerOptions.IdReplace);
             }
             PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
-
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
-
+            
             var result = new EfCoreReverseEngineerResult
             {
                 EntityErrors = errors,
