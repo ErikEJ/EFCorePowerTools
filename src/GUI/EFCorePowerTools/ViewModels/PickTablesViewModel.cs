@@ -121,7 +121,7 @@
             foreach (var t in Tables)
             {
                 var parsedTable = parsedTables.SingleOrDefault(m => m.Name == t.Model.Name);
-                t.IsSelected = parsedTable != null;
+                t.IsSelected = t.Model.HasPrimaryKey && parsedTable != null;
             }
 
             SearchText = string.Empty;
@@ -154,17 +154,18 @@
                 return;
 
             foreach (var t in Tables)
-                t.IsSelected = selectionMode.Value;
+                t.IsSelected = t.Model.HasPrimaryKey && selectionMode.Value;
 
             SearchText = string.Empty;
         }
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = Tables.All(m => m.IsSelected)
+            TableSelectionThreeState = Tables.Where(m => m.Model.HasPrimaryKey)
+                                             .All(m => m.IsSelected)
                                            ? true
                                            : Tables.All(m => !m.IsSelected)
-                                               ? (bool?)false
+                                               ? (bool?) false
                                                : null;
         }
 
@@ -185,9 +186,10 @@
 
         private static void PredefineSelection(ITableInformationViewModel t)
         {
-            t.IsSelected = !t.Model.Name.StartsWith("__")
-                        && !t.Model.Name.StartsWith("dbo.__")
-                        && !t.Model.Name.EndsWith(".sysdiagrams");
+            t.IsSelected = t.Model.HasPrimaryKey
+                        && !t.Model.UnsafeFullName.StartsWith("__")
+                        && !t.Model.UnsafeFullName.StartsWith("dbo.__")
+                        && !t.Model.UnsafeFullName.EndsWith(".sysdiagrams");
         }
 
         void IPickTablesViewModel.AddTables(IEnumerable<TableInformationModel> tables)
