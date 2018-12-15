@@ -32,7 +32,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             _package = package;
             _outputPath = outputPath;
             _project = project;
-            _processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21());
+            _processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21(), project.IsNetCore22());
         }
 
         public string ProjectName

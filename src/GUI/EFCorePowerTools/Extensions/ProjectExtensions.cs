@@ -82,6 +82,11 @@ namespace EFCorePowerTools.Extensions
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.1");
         }
 
+        public static bool IsNetCore22(this Project project)
+        {
+            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.2");
+        }
+
         private static string GetOutputPath(Project project)
         {
             var configManager = project.ConfigurationManager;
