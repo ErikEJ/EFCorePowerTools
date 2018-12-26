@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
@@ -65,10 +64,6 @@ namespace ReverseEngineer20
                 case DatabaseType.SQLCE40:
                     var sqlCeProvider = new SqlCeDesignTimeServices();
                     sqlCeProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-                case DatabaseType.Npgsql:
-                    var npgsqlProvider = new NpgsqlDesignTimeServices();
-                    npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
                 case DatabaseType.SQLServer:
                     var provider = new SqlServerDesignTimeServices();

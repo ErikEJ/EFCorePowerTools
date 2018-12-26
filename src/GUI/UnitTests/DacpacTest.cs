@@ -122,8 +122,7 @@ namespace UnitTests
             Assert.AreEqual("TypeAlias", dbModel.Tables[0].Name);
             Assert.AreEqual(2, dbModel.Tables[0].Columns.Count);
 
-            Assert.AreEqual("TestTypeAlias", dbModel.Tables[0].Columns[1].StoreType);
-            Assert.AreEqual("nvarchar(max)", dbModel.Tables[0].Columns[1].GetUnderlyingStoreType());
+            Assert.AreEqual("nvarchar(max)", dbModel.Tables[0].Columns[1].StoreType);
         }
 
         [Test]

@@ -262,15 +262,13 @@ namespace ReverseEngineer20
             {
                 var def = defaultConstraints.Where(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString()).FirstOrDefault();
                 string storeType = null;
-                string underlyingStoreType = null;
                 string systemTypeName = null;
 
                 if (col.DataType.First().Name.Parts.Count > 1)
                 {
                     if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
                     {
-                        underlyingStoreType = value.storeType;
-                        storeType = col.DataType.First().Name.Parts[1];
+                        storeType = value.storeType;
                         systemTypeName = value.typeName;
                     }
                 }
@@ -279,7 +277,6 @@ namespace ReverseEngineer20
                     var dataTypeName = col.DataType.First().Name.Parts[0];
                     int maxLength = col.IsMax ? -1 : col.Length;
                     storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
-                    underlyingStoreType = null;
                     systemTypeName = dataTypeName;
                 }
 
@@ -299,13 +296,10 @@ namespace ReverseEngineer20
                 {
                     dbColumn.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.OnAdd;
                 }
-                if ((underlyingStoreType ?? storeType) == "rowversion")
+                if (storeType == "rowversion")
                 {
-                    dbColumn.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.OnAddOrUpdate;
                     dbColumn["ConcurrencyToken"] = true;
                 }
-
-                dbColumn.SetUnderlyingStoreType(underlyingStoreType);
 
                 dbTable.Columns.Add(dbColumn);
             }
