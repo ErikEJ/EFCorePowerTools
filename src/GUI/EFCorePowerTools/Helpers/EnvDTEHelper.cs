@@ -1,4 +1,6 @@
 ﻿using EFCorePowerTools;
+using EFCorePowerTools.Shared.Enums;
+using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
@@ -15,9 +17,6 @@ using System.Windows.Forms;
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
 {
-    using EFCorePowerTools.Shared.Enums;
-    using EFCorePowerTools.Shared.Models;
-
     internal class EnvDteHelper
     {
         internal static Dictionary<string, DatabaseInfo> GetDataConnections(EFCorePowerToolsPackage package)

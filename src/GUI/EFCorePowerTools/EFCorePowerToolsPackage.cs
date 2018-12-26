@@ -25,7 +25,6 @@ namespace EFCorePowerTools
     using Contracts.Views;
     using DAL;
     using Dialogs;
-    using ErikEJ.SqlCeToolbox.Dialogs;
     using GalaSoft.MvvmLight.Messaging;
     using Messages;
     using Microsoft.Extensions.DependencyInjection;
