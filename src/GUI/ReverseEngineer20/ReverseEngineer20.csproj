@@ -45,11 +45,11 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFrameworkCore.Scaffolding.Handlebars, Version=1.6.0.0, Culture=neutral, PublicKeyToken=b10b51e7b9be6a2e, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFrameworkCore.Scaffolding.Handlebars.1.6.0\lib\netstandard2.0\EntityFrameworkCore.Scaffolding.Handlebars.dll</HintPath>
+    <Reference Include="EntityFrameworkCore.Scaffolding.Handlebars, Version=1.7.1.0, Culture=neutral, PublicKeyToken=b10b51e7b9be6a2e, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFrameworkCore.Scaffolding.Handlebars.1.7.1\lib\netstandard2.0\EntityFrameworkCore.Scaffolding.Handlebars.dll</HintPath>
     </Reference>
     <Reference Include="EntityFrameworkCore.SqlServerCompact40, Version=2.2.0.0, Culture=neutral, PublicKeyToken=9af395b34ac99006, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFrameworkCore.SqlServerCompact40.2.2.0.2\lib\net461\EntityFrameworkCore.SqlServerCompact40.dll</HintPath>
+      <HintPath>..\packages\EntityFrameworkCore.SqlServerCompact40.Core.2.2.0.7\lib\net461\EntityFrameworkCore.SqlServerCompact40.dll</HintPath>
     </Reference>
     <Reference Include="Handlebars, Version=1.9.5.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
       <HintPath>..\packages\Handlebars.Net.1.9.5\lib\net452\Handlebars.dll</HintPath>
@@ -175,9 +175,6 @@
     <Reference Include="System.Data.SqlClient, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.6.0\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
-    </Reference>
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -255,10 +252,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
-    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
