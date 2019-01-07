@@ -133,6 +133,7 @@ namespace EFCorePowerTools
                     OnProjectMenuBeforeQueryStatus, menuCommandId11);
                 oleMenuCommandService.AddCommand(menuItem11);
             }
+            typeof(System.Windows.Interactivity.Behavior).ToString();
         }
 
         private void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
