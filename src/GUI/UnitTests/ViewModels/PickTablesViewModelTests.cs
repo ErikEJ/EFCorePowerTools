@@ -185,12 +185,12 @@ namespace UnitTests.ViewModels
             vm.LoadedCommand.Execute(null);
 
             // Assert
-            Assert.IsTrue(tt[0].IsSelected);
+            Assert.IsFalse(tt[0].IsSelected);
             Assert.IsFalse(tt[1].IsSelected);
             Assert.IsFalse(tt[2].IsSelected);
             Assert.IsFalse(tt[3].IsSelected);
             Assert.IsTrue(tt[4].IsSelected);
-            Assert.IsFalse(tt[5].IsSelected);
+            Assert.IsTrue(tt[5].IsSelected);
         }
 
         [Test]
@@ -745,7 +745,7 @@ namespace UnitTests.ViewModels
             Assert.IsNotEmpty(vm.Tables);
             Assert.AreEqual(tt.Length, vm.Tables.Count);
             Assert.AreSame(tt[0].Model, vm.Tables[0].Model);
-            Assert.IsTrue(vm.Tables[0].IsSelected);
+            Assert.IsFalse(vm.Tables[0].IsSelected);
             Assert.AreSame(tt[1].Model, vm.Tables[1].Model);
             Assert.IsFalse(vm.Tables[1].IsSelected);
             Assert.AreSame(tt[2].Model, vm.Tables[2].Model);
@@ -753,7 +753,7 @@ namespace UnitTests.ViewModels
             Assert.AreSame(tt[3].Model, vm.Tables[3].Model);
             Assert.IsFalse(vm.Tables[3].IsSelected);
             Assert.AreSame(tt[4].Model, vm.Tables[4].Model);
-            Assert.IsTrue(vm.Tables[4].IsSelected);
+            Assert.IsFalse(vm.Tables[4].IsSelected);
             Assert.AreSame(tt[5].Model, vm.Tables[5].Model);
             Assert.IsFalse(vm.Tables[5].IsSelected);
         }
