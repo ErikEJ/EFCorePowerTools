@@ -140,9 +140,6 @@
       <Link>efpt.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="efpt\2.0.2\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="efpt\2.0.3\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -170,6 +167,12 @@
     <Content Include="efpt\2.2.0\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="efpt\2.2.1\efpt.exe">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.2.1\Microsoft.EntityFrameworkCore.Design.dll">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="e_sqlite3.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -180,12 +183,6 @@
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
     <Content Include="CodeTemplates.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.0.1\efpt.exe.config">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.0.2\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="efpt\2.0.3\efpt.exe.config">
@@ -211,6 +208,9 @@
     </Content>
     <None Include="efpt.renaming.json" />
     <Content Include="efpt\2.2.0\efpt.exe.config">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.2.1\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
@@ -509,9 +509,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <EmbeddedResource Include="DgmlBuilder\readme.txt" />
-    <Content Include="efpt\2.0.1\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Resource Include="Resources\Diagram_16x.png" />
     <Content Include="Resources\efcreveng2.png" />
     <Resource Include="Resources\ImportPackage_16x.png" />

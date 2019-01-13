@@ -127,19 +127,17 @@ namespace EFCorePowerTools.Handlers
             Version version = null;
             var testFile = Path.Combine(toDir, "Microsoft.EntityFrameworkCore.dll");
 
-
             if (File.Exists(testFile))
             {
                 var fvi = FileVersionInfo.GetVersionInfo(testFile);
                 version = Version.Parse(fvi.FileVersion);
 
                 if (version.ToString(3) == "2.0.0"
-                    || version.ToString(3) == "2.0.1"
-                    || version.ToString(3) == "2.0.2"
                     || version.ToString(3) == "2.0.3"
                     || version.ToString(3) == "2.1.0" 
                     || version.ToString(3) == "2.1.4"
-                    || version.ToString(3) == "2.2.0")
+                    || version.ToString(3) == "2.2.0"
+                    || version.ToString(3) == "2.2.1")
                 {
                     testVersion = version.ToString(3);
                 }
@@ -155,7 +153,7 @@ namespace EFCorePowerTools.Handlers
                 throw new Exception(
                     $"Unable to find a supported version of Microsoft.EntityFrameworkCore.dll in folder {toDir}. Version found: {version}");
             }
-            if (testVersion == "2.1.0" || testVersion == "2.1.4" || testVersion == "2.2.0")
+            if (testVersion == "2.1.0" || testVersion == "2.1.4" || testVersion == "2.2.0" || testVersion == "2.2.1")
             {
                 File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
             }
