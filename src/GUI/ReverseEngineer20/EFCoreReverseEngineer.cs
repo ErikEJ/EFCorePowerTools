@@ -164,13 +164,13 @@ namespace ReverseEngineer20
 
                 if (line.Contains("OnModelCreating")) inModelCreating = true;
 
-                if (inModelCreating && line.StartsWith("        }"))
+                if (!options.UseHandleBars && inModelCreating && line.StartsWith("        }"))
                 {
                     finalLines.Add(string.Empty);
                     finalLines.Add("            OnModelCreatingPartial(modelBuilder);");
                 }
 
-                if (inModelCreating && line.StartsWith("    }"))
+                if (!options.UseHandleBars && inModelCreating && line.StartsWith("    }"))
                 {
                     finalLines.Add(string.Empty);
                     finalLines.Add("        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);");
