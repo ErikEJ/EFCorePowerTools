@@ -1,4 +1,5 @@
 ﻿using EFCore.SqlCe.Design.Internal;
+using EFCorePowerTools.Shared.Models;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -7,19 +8,18 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ReverseEngineer20
 {
-    using System.Linq;
-    using EFCorePowerTools.Shared.Models;
-
     public class EfCoreReverseEngineer
     {
         public EfCoreReverseEngineerResult GenerateFiles(ReverseEngineerOptions reverseEngineerOptions)
@@ -72,6 +72,10 @@ namespace ReverseEngineer20
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
                     }
+                    break;
+                case DatabaseType.Npgsql:
+                    var npgsqlProvider = new NpgsqlDesignTimeServices();
+                    npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
