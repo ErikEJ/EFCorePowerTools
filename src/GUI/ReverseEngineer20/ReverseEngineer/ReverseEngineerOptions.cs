@@ -16,6 +16,7 @@ namespace ReverseEngineer20
         public string ConnectionString { get; set; }
         [IgnoreDataMember]
         public string ProjectPath { get; set; }
+        public string AssemblyPath { get; set; }
         public string OutputPath { get; set; }
         public string ProjectRootNamespace { get; set; }
         public bool UseFluentApiOnly { get; set; }

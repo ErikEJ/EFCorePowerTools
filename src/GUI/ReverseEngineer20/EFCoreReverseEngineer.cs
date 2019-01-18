@@ -81,7 +81,9 @@ namespace ReverseEngineer20
                     throw new ArgumentOutOfRangeException();
             }
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var servicesBuilder = new DesignTimeServicesBuilder(reverseEngineerOptions.AssemblyPath, reporter);
+            var serviceProvider = servicesBuilder.Build(serviceCollection);
+
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
                 
             var schemas = new List<string>();

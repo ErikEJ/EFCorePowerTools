@@ -180,7 +180,8 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
-                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
                 path = LocateProjectAssemblyPath(project);
                 if (path == null) return;
@@ -188,7 +189,7 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
-                _reverseEngineerHandler.ReverseEngineerCodeFirst(project);
+                _reverseEngineerHandler.ReverseEngineerCodeFirst(path, project);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDgml)
             {

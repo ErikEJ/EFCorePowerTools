@@ -28,7 +28,7 @@ namespace EFCorePowerTools.Handlers
             _package = package;
         }
 
-        public async void ReverseEngineerCodeFirst(Project project)
+        public async void ReverseEngineerCodeFirst(string assemblyPath, Project project)
         {
             try
             {
@@ -40,6 +40,11 @@ namespace EFCorePowerTools.Handlers
                 {
                     EnvDteHelper.ShowError("Cannot generate code while debugging");
                     return;
+                }
+
+                if (string.IsNullOrEmpty(assemblyPath))
+                {
+                    throw new ArgumentException(assemblyPath, nameof(assemblyPath));
                 }
 
                 var startTime = DateTime.Now;
@@ -162,6 +167,7 @@ namespace EFCorePowerTools.Handlers
                     ContextClassName = modelDialog.ModelName,
                     DatabaseType = (ReverseEngineer20.DatabaseType)dbInfo.DatabaseType,
                     ProjectPath = projectPath,
+                    AssemblyPath = assemblyPath,
                     OutputPath = modelDialog.OutputPath,
                     ProjectRootNamespace = modelDialog.NameSpace,
                     UseDatabaseNames = modelDialog.UseDatabaseNames,
