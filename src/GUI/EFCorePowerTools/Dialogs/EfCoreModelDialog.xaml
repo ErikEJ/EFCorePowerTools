@@ -1,4 +1,4 @@
-﻿<dw:DialogWindow x:Class="ErikEJ.SqlCeToolbox.Dialogs.EfCoreModelDialog"
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.EfCoreModelDialog"
         xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Generate EF Core Model in Project" 

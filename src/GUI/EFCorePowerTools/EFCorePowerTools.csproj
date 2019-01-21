@@ -61,14 +61,15 @@
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickTablesViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IModelingOptionsViewModel.cs" />
     <Compile Include="Contracts\ViewModels\ITableInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IViewModel.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
     <Compile Include="Contracts\Views\IDialog.cs" />
     <Compile Include="Contracts\Views\IEfCoreMigrationsDialog.cs" />
-    <Compile Include="Contracts\Views\IEfCoreModelDialog.cs" />
     <Compile Include="Contracts\Views\IPickServerDatabaseDialog.cs" />
     <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
+    <Compile Include="Contracts\Views\IModelingOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IView.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\FilePathToDisplayNameConverter.cs" />

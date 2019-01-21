@@ -26,7 +26,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
 
         public EfCoreMigrationsDialog(EFCorePowerTools.EFCorePowerToolsPackage package, string outputPath, Project project)
         {
-            Telemetry.TrackPageView(nameof(EfCoreModelDialog));
+            Telemetry.TrackPageView(nameof(EfCoreMigrationsDialog));
             InitializeComponent();
             Background = VsThemes.GetWindowBackground();
             _package = package;

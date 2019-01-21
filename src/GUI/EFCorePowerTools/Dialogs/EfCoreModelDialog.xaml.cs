@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using ErikEJ.SqlCeToolbox.Helpers;
-using ReverseEngineer20;
-
-namespace ErikEJ.SqlCeToolbox.Dialogs
+﻿namespace EFCorePowerTools.Dialogs
 {
+    using System.Collections.Generic;
+    using System.Windows;
+    using ErikEJ.SqlCeToolbox.Helpers;
+    using ReverseEngineer20;
+
     public partial class EfCoreModelDialog
     {
         private readonly ReverseEngineerOptions _options;
