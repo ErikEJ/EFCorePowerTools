@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using Microsoft.SqlServer.Dac.Extensions.Prototype;
+﻿using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using NUnit.Framework;
 using ReverseEngineer20;
 using System.Collections.Generic;

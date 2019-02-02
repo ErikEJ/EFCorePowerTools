@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
@@ -290,12 +291,12 @@ namespace ReverseEngineer20
                     StoreType = storeType,
                     DefaultValueSql = defaultValue,
                     ComputedColumnSql = col.Expression,
-                    ValueGenerated = null
+                    ValueGenerated = col.IsIdentity
+                        ? ValueGenerated.OnAdd
+                        : storeType == "rowversion"
+                            ? ValueGenerated.OnAddOrUpdate
+                            : default(ValueGenerated?)
                 };
-                if (col.IsIdentity)
-                {
-                    dbColumn.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.OnAdd;
-                }
                 if (storeType == "rowversion")
                 {
                     dbColumn["ConcurrencyToken"] = true;
