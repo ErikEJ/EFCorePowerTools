@@ -4,6 +4,6 @@
 
     public interface IModelingOptionsDialog : IDialog<ModelingOptionsModel>
     {
-        
+        IModelingOptionsDialog ApplyPresets(ModelingOptionsModel presets);
     }
 }

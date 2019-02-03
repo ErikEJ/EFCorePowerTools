@@ -71,6 +71,7 @@
     <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
     <Compile Include="Contracts\Views\IModelingOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IView.cs" />
+    <Compile Include="Converter\BoolInvertConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\FilePathToDisplayNameConverter.cs" />
     <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
@@ -132,6 +133,7 @@
     </Compile>
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="DAL\VisualStudioAccess.cs" />
+    <Compile Include="ViewModels\ModelingOptionsViewModel.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
     <Compile Include="ViewModels\PickTablesViewModel.cs" />
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
