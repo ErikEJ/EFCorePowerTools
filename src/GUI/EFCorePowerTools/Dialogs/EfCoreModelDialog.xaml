@@ -27,8 +27,17 @@
                 <ResourceDictionary Source="Converter.xaml" />
                 <ResourceDictionary Source="../Dialogs/Style.xaml" />
                 <ResourceDictionary>
-                    <Style TargetType="CheckBox">
-                        <Setter Property="Margin" Value="0, 9, 0, 9"/>
+                    <Style x:Key="GenerationOptionsCheckBoxStyle"
+                           TargetType="CheckBox">
+                        <Setter Property="Margin" Value="0, 8, 0, 8"/>
+                    </Style>
+                    <Style x:Key="GenerationOptionsNamingCheckBoxStyle"
+                           TargetType="CheckBox">
+                        <Setter Property="Margin" Value="5, 6, 5, 6"/>
+                    </Style>
+                    <Style x:Key="LastGenerationOptionsNamingCheckBoxStyle"
+                           TargetType="CheckBox">
+                        <Setter Property="Margin" Value="5, 6, 5, 0"/>
                     </Style>
                     <Style TargetType="TextBox" x:Key="TextInputStyle">
                         <Setter Property="Height" Value="26"/>
@@ -112,33 +121,40 @@
                 <CheckBox TabIndex="4"
                           Content="Pluralize or singularize generated object names (English)"
                           IsChecked="{Binding Model.UsePluralizer}"
-                          IsEnabled="{Binding Model.UseDatabaseNames, Converter={StaticResource BoolInvertConverter}}"/>
+                          IsEnabled="{Binding Model.UseDatabaseNames, Converter={StaticResource BoolInvertConverter}}"
+                          Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
                 <CheckBox TabIndex="5"
                           Content="Use table and column names directly from the database"
                           IsChecked="{Binding Model.UseDatabaseNames}"
-                          IsEnabled="{Binding Model.UsePluralizer, Converter={StaticResource BoolInvertConverter}}"/>
+                          IsEnabled="{Binding Model.UsePluralizer, Converter={StaticResource BoolInvertConverter}}"
+                          Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
                 <CheckBox TabIndex="6"
                           Content="Replace Id with ID (experimental!)"
-                          IsChecked="{Binding Model.ReplaceId}"/>
+                          IsChecked="{Binding Model.ReplaceId}"
+                          Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>
         <CheckBox TabIndex="10"
                   Content="Use DataAnnotation attributes to configure the model"
                   Grid.Row="8"
-                  IsChecked="{Binding Model.UseDataAnnotations}"/>
+                  IsChecked="{Binding Model.UseDataAnnotations}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <CheckBox TabIndex="11"
                   Content="Customize code using Handlebars templates (preview)"
                   Grid.Row="9"
-                  IsChecked="{Binding Model.UseHandelbars}"/>
+                  IsChecked="{Binding Model.UseHandelbars}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <CheckBox TabIndex="12"
                   Content="Include connection string in generated code"
                   Grid.Row="10"
                   IsChecked="{Binding Model.IncludeConnectionString}"
-                  IsEnabled="{Binding MayIncludeConnectionString}"/>
+                  IsEnabled="{Binding MayIncludeConnectionString}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <CheckBox TabIndex="13"
                   Content="Install the EF Core provider package in the project"
                   Grid.Row="11"
-                  IsChecked="{Binding Model.InstallNuGetPackage}" />
+                  IsChecked="{Binding Model.InstallNuGetPackage}" 
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <StackPanel Grid.Row="12"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
