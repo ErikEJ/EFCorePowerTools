@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="clr-namespace:EFCorePowerTools.Converter">
 
+    <converter:BoolInvertConverter x:Key="BoolInvertConverter"/>
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <converter:FilePathToDisplayNameConverter x:Key="FilePathToDisplayNameConverter"/>
     <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter"/>

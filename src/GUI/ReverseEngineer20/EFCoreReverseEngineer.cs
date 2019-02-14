@@ -125,7 +125,7 @@ namespace ReverseEngineer20
 
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
-                Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath),
+                Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty),
                 overwriteFiles: true);
 
             PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
