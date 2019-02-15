@@ -38,8 +38,5 @@ If you encounter a bug or have a feature request, please use the [Issue Tracker]
 
 # Building and debugging
 
-In order to build the source code, use Visual Studio 2017.
-- `Blend for Visual Studio SDK for .NET` (via Visual Studio Installer) or `Blend` (standalone) must be installed
-
 To debug, run Visual Studio as Administrator. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, x86 (not AnyCPU).
 

@@ -399,6 +399,9 @@
       <HintPath>..\packages\Microsoft.VisualStudio.Validation.15.3.15\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.0.1\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=4.0.4.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.0.4\lib\net451\Npgsql.dll</HintPath>
     </Reference>
@@ -451,9 +454,6 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
