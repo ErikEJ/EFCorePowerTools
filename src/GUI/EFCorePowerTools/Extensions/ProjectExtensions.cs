@@ -59,6 +59,10 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Npgsql.EntityFrameworkCore.PostgreSQL";
             }
+            if (dbType == DatabaseType.Mysql)
+            {
+                providerPackage = "Pomelo.EntityFrameworkCore.MySql";
+            }
 
             var vsProject = project.Object as VSProject;
             if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);

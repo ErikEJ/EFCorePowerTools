@@ -13,6 +13,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
@@ -29,6 +30,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             Guid providerSqLite = new Guid(EFCorePowerTools.Shared.Resources.SQLiteProvider);
             Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Shared.Resources.SQLitePrivateProvider);
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
+            Guid providerMysql = new Guid(Resources.MysqlVSProvider);
 
             bool isV40Installed = RepositoryHelper.IsV40Installed() &&
                 (DdexProviderIsInstalled(provider40) || DdexProviderIsInstalled(provider40Private));
@@ -63,6 +65,12 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                             || objProviderGuid == providerNpgsql)
                         {
                             info.DatabaseType = objProviderGuid == providerNpgsql ? DatabaseType.Npgsql : DatabaseType.SQLServer;
+                        }
+
+                        // This provider depends on https://dev.mysql.com/downloads/windows/visualstudio/
+                        if (objProviderGuid == providerMysql)
+                        {
+                            info.DatabaseType = DatabaseType.Mysql;
                         }
 
                         if (info.DatabaseType != DatabaseType.SQLCE35
@@ -157,6 +165,12 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     dbType = DatabaseType.Npgsql;
                     providerGuid = Resources.NpgsqlProvider;
                 }
+
+                if (providerInvariant == "Mysql")
+                {
+                    dbType = DatabaseType.Mysql;
+                    providerGuid = Resources.MysqlVSProvider;
+                }
             }
             return new DatabaseInfo
             {
@@ -195,6 +209,52 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return result.OrderBy(l => l.Name).ToList();
         }
 
+        internal static string GetMysqlDatabaseName(string connectionString)
+        {
+            var myBuilder = new MySqlConnectionStringBuilder(connectionString);
+            return myBuilder.Database;
+        }
+
+        internal static List<TableInformationModel> GetMysqlTableNames(string connectionString)
+        {
+            var result = new List<TableInformationModel>();
+            using (var mysqlConn = new MySqlConnection(connectionString))
+            {
+                mysqlConn.Open();
+                var tablesDataTable = mysqlConn.GetSchema("Tables");
+                foreach (DataRow row in tablesDataTable.Rows)
+                {
+                    var schema = row["table_schema"].ToString();
+                    if (schema != "information_schema")
+                    {
+                        string tableName = row["table_name"].ToString();
+                        bool hasPrimaryKey = HasMysqlPrimaryKey(schema, tableName, mysqlConn);
+                        result.Add(new TableInformationModel(row["table_name"].ToString(), hasPrimaryKey));
+                    }
+                }
+            }
+
+            return result.OrderBy(l => l.Name).ToList();
+        }
+
+        private static bool HasMysqlPrimaryKey(string schemaName, string tableName, MySqlConnection mysqlConn)
+        {
+            /**
+             * A Unique index can unexpectedly be shown as a primary key here:             *
+             * https://dev.mysql.com/doc/mysql-infoschema-excerpt/5.6/en/columns-table.html
+             * "A UNIQUE index may be displayed as PRI if it cannot contain NULL values and there is no PRIMARY KEY in the table.
+             * A UNIQUE index may display as MUL if several columns form a composite UNIQUE index; although the combination of
+             * the columns is unique, each column can still hold multiple occurrences of a given value."
+             */
+            MySqlCommand cmd = mysqlConn.CreateCommand();
+            cmd.CommandText = "SELECT EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema = @schema AND table_name = @table AND column_key = 'PRI') AS HasPrimaryKey";
+            cmd.Parameters.AddWithValue("@schema", schemaName);
+            cmd.Parameters.AddWithValue("@table", tableName);
+            string value = cmd.ExecuteScalar().ToString();
+
+            return value == "1";
+        }
+
         private static string GetFilePath(string connectionString, DatabaseType dbType)
         {
             var helper = RepositoryHelper.CreateEngineHelper(dbType);
@@ -210,6 +270,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             }
             if (dbType == DatabaseType.Npgsql)
                 return GetNpgsqlDatabaseName(connectionString);
+            if (dbType == DatabaseType.Mysql)
+                return GetMysqlDatabaseName(connectionString);
 
             var filePath = GetFilePath(connectionString, dbType);
             return Path.GetFileName(filePath);

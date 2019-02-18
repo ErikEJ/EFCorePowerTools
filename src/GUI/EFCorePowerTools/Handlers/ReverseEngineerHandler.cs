@@ -136,6 +136,10 @@ namespace EFCorePowerTools.Handlers
                 {
                     classBasis = EnvDteHelper.GetNpgsqlDatabaseName(dbInfo.ConnectionString);
                 }
+                else if (dbInfo.DatabaseType == DatabaseType.Mysql)
+                {
+                    classBasis = EnvDteHelper.GetMysqlDatabaseName(dbInfo.ConnectionString);
+                }
                 else
                 {
                     classBasis = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
@@ -287,6 +291,11 @@ namespace EFCorePowerTools.Handlers
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
                 return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString);
+            }
+
+            if (dbInfo.DatabaseType == DatabaseType.Mysql)
+            {
+                return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString);
             }
 
             using (var repository = RepositoryHelper.CreateRepository(dbInfo))
