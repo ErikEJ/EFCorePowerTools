@@ -192,15 +192,6 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to c3d4f4ce-2c48-4381-b4d6-34fa50c51c86.
-        /// </summary>
-        internal static string MysqlDataOdbcProvider {
-            get {
-                return ResourceManager.GetString("MysqlDataOdbcProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to c6882346-e592-4da5-80ba-d2eadcda0359.
         /// </summary>
         internal static string MysqlVSProvider {
