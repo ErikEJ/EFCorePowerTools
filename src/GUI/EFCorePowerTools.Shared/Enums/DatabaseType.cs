@@ -9,6 +9,7 @@ namespace EFCorePowerTools.Shared.Enums
         SQLCE40 = 2,
         SQLServer = 3,
         SQLite = 4,
-        Npgsql = 5
+        Npgsql = 5,
+        Mysql = 6
     }
 }
