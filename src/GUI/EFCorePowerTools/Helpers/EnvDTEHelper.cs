@@ -120,16 +120,18 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
             if (info.Size == Guid.Empty.ToString()) return new DatabaseInfo { DatabaseType = DatabaseType.Undefined };
 
-            SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.Size));
+            var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.Size));
+            info.Caption = savedName;
             return info;
         }
 
-        internal static void SaveDataConnection(EFCorePowerToolsPackage package, string encryptedConnectionString,
+        internal static string SaveDataConnection(EFCorePowerToolsPackage package, string encryptedConnectionString,
             DatabaseType dbType, Guid provider)
         {
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
             var savedName = GetFileName(DataProtection.DecryptString(encryptedConnectionString), dbType);
             dataExplorerConnectionManager.AddConnection(savedName, provider, encryptedConnectionString, true);
+            return savedName;
         }
 
         private static DatabaseInfo GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
