@@ -141,8 +141,8 @@
       <HintPath>..\lib\Microsoft.SqlServer.Types.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MySqlConnector, Version=0.49.3.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySqlConnector.0.49.3\lib\net471\MySqlConnector.dll</HintPath>
+    <Reference Include="MySqlConnector, Version=0.49.2.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySqlConnector.0.49.2\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -253,9 +253,6 @@
     <Compile Include="ReverseEngineer\ReverseEngineerOptions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

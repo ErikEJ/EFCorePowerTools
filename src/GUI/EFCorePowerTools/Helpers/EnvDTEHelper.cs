@@ -221,20 +221,40 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             using (var mysqlConn = new MySqlConnection(connectionString))
             {
                 mysqlConn.Open();
-                var tablesDataTable = mysqlConn.GetSchema("Tables");
-                foreach (DataRow row in tablesDataTable.Rows)
+
+                var tables = GetMysqlTables(mysqlConn, mysqlConn.Database);
+                string schema = mysqlConn.Database;
+                if (schema != "information_schema")
                 {
-                    var schema = row["table_schema"].ToString();
-                    if (schema != "information_schema")
+                    foreach (string table in tables)
                     {
-                        string tableName = row["table_name"].ToString();
-                        bool hasPrimaryKey = HasMysqlPrimaryKey(schema, tableName, mysqlConn);
-                        result.Add(new TableInformationModel(row["table_name"].ToString(), hasPrimaryKey));
+                        bool hasPrimaryKey = HasMysqlPrimaryKey(schema, table, mysqlConn);
+                        result.Add(new TableInformationModel(table, hasPrimaryKey));
                     }
                 }
             }
 
             return result.OrderBy(l => l.Name).ToList();
+        }
+
+        // We could use Mysql.Data for this as MysqlConnector doesn't support GetSchema("Tables").
+        // I will just pluck the data we need for now.
+        private static List<string> GetMysqlTables(MySqlConnection mysqlConn, string schema)
+        {
+            List<string> tables = new List<string>();
+            string sql = $@"SHOW TABLE STATUS FROM `{schema}`";
+
+            MySqlCommand cmd = new MySqlCommand(sql, mysqlConn);
+            using (MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    tables.Add(reader.GetString(0));
+                }
+            }
+
+
+            return tables;
         }
 
         private static bool HasMysqlPrimaryKey(string schemaName, string tableName, MySqlConnection mysqlConn)

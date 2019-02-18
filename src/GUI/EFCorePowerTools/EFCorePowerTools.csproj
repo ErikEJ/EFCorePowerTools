@@ -209,9 +209,6 @@
       <Link>efpt22.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="efpt.renaming.json" />
     <Content Include="efpt\2.2.0\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -405,8 +402,8 @@
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.0.1\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
-    <Reference Include="MySqlConnector, Version=0.49.3.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySqlConnector.0.49.3\lib\net471\MySqlConnector.dll</HintPath>
+    <Reference Include="MySqlConnector, Version=0.49.2.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySqlConnector.0.49.2\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql, Version=4.0.4.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.0.4\lib\net451\Npgsql.dll</HintPath>
