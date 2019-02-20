@@ -10,7 +10,7 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 # Documentation
 
-Get started with the [Wiki post](https://github.com/ErikEJ/EFCorePowerTools/wiki/Power-Tools)
+Get started with the [Wiki post](https://github.com/ErikEJ/EFCorePowerTools/wiki)
 
 # Downloads/builds
 
