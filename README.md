@@ -10,11 +10,11 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 # Documentation
 
-Get started with the [Wiki post](https://github.com/ErikEJ/EFCorePowerTools/wiki)
+[Getting started](https://github.com/ErikEJ/EFCorePowerTools/wiki)
 
 # Downloads/builds
 
-The EF Core Power Tools contains DbContext design time feature: Reverse Engineering, Model inspection and more to come - see the [wiki page](https://github.com/ErikEJ/SqlCeToolbox/wiki/EF-Core-Power-Tools) for more information
+The EF Core Power Tools contains DbContext design time feature: Reverse Engineering, Model inspection and more to come - see the [wiki page](https://github.com/ErikEJ/EFCorePowerTools/wiki) for more information
 
 **Release**
 
