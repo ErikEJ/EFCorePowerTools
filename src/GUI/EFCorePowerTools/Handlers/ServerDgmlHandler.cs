@@ -1,5 +1,4 @@
 ﻿using EnvDTE;
-using ErikEJ.SqlCeToolbox.Dialogs;
 using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;

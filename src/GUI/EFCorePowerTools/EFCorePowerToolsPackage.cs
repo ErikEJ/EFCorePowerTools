@@ -251,14 +251,16 @@ namespace EFCorePowerTools
             services.AddTransient<IAboutDialog, AboutDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
                     .AddTransient<IPickTablesDialog, PickTablesDialog>()
-                    .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>();
+                    .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>()
+                    .AddTransient<IMigrationOptionsDialog, EfCoreMigrationsDialog>();
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
                     .AddTransient<IPickTablesViewModel, PickTablesViewModel>()
                     .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel())
-                    .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>();
+                    .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>()
+                    .AddTransient<IMigrationOptionsViewModel, MigrationOptionsViewModel>();
 
             // Register BLL
             var messenger = new Messenger();

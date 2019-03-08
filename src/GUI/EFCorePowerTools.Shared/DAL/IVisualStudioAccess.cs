@@ -11,5 +11,13 @@
 
         bool IsDdexProviderInstalled(Guid id);
         bool IsSqLiteDbProviderInstalled();
+
+        void StartStatusBarAnimation(ref object icon);
+        void StopStatusBarAnimation(ref object icon);
+
+        void SetStatusBarText(string text);
+        void ShowError(string error);
+
+        void OpenFile(string fileName);
     }
 }

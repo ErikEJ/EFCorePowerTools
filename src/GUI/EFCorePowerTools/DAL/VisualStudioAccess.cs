@@ -3,6 +3,7 @@
     using System;
     using EnvDTE80;
     using ErikEJ.SqlCeToolbox.Helpers;
+    using Microsoft.VisualStudio.Shell.Interop;
     using Shared.DAL;
     using Shared.Enums;
     using Shared.Models;
@@ -56,5 +57,32 @@
         }
 
         bool IVisualStudioAccess.IsSqLiteDbProviderInstalled() => EnvDteHelper.IsSqLiteDbProviderInstalled();
+
+        void IVisualStudioAccess.StartStatusBarAnimation(ref object icon)
+        {
+            var statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
+            statusBar.Animation(1, ref icon);
+        }
+
+        void IVisualStudioAccess.StopStatusBarAnimation(ref object icon)
+        {
+            var statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
+            statusBar.Animation(0, ref icon);
+        }
+
+        void IVisualStudioAccess.SetStatusBarText(string text)
+        {
+            _package.Dte2.StatusBar.Text = text;
+        }
+
+        void IVisualStudioAccess.ShowError(string error)
+        {
+            EnvDteHelper.ShowError(error);
+        }
+
+        void IVisualStudioAccess.OpenFile(string fileName)
+        {
+            _package.Dte2.ItemOperations.OpenFile(fileName);
+        }
     }
 }
