@@ -177,7 +177,7 @@
     </Content>
     <Content Include="Resources\7.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
-    <EmbeddedResource Include="Resources\Unicorn.png" />
+    <Resource Include="Resources\Unicorn.png" />
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>

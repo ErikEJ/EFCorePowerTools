@@ -25,7 +25,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Converter.xaml" />
-                <ResourceDictionary Source="../Dialogs/Style.xaml" />
+                <ResourceDictionary Source="Style.xaml" />
                 <ResourceDictionary>
                     <Style x:Key="GenerationOptionsCheckBoxStyle"
                            TargetType="CheckBox">

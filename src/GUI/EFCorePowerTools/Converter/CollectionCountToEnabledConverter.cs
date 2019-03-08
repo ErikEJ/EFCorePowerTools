@@ -12,6 +12,9 @@
             if (targetType != typeof(bool))
                 throw new ArgumentException(@"Value must be of type System.Boolean.", nameof(targetType));
 
+            if (value == null)
+                return false;
+
             if (!(value is ICollection c))
                 throw new ArgumentException(@"Value must implement type System.Collections.ICollection.", nameof(value));
 
