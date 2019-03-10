@@ -133,7 +133,7 @@ namespace EFCorePowerTools
                     OnProjectMenuBeforeQueryStatus, menuCommandId11);
                 oleMenuCommandService.AddCommand(menuItem11);
             }
-            typeof(System.Windows.Interactivity.Behavior).ToString();
+            typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
         }
 
         private void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
@@ -250,13 +250,15 @@ namespace EFCorePowerTools
             // Register views
             services.AddTransient<IAboutDialog, AboutDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
-                    .AddTransient<IPickTablesDialog, PickTablesDialog>();
+                    .AddTransient<IPickTablesDialog, PickTablesDialog>()
+                    .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>();
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
                     .AddTransient<IPickTablesViewModel, PickTablesViewModel>()
-                    .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel());
+                    .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel())
+                    .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>();
 
             // Register BLL
             var messenger = new Messenger();

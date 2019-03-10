@@ -136,6 +136,10 @@ namespace EFCorePowerTools.Handlers
                 {
                     classBasis = EnvDteHelper.GetNpgsqlDatabaseName(dbInfo.ConnectionString);
                 }
+                else if (dbInfo.DatabaseType == DatabaseType.Mysql)
+                {
+                    classBasis = EnvDteHelper.GetMysqlDatabaseName(dbInfo.ConnectionString);
+                }
                 else
                 {
                     classBasis = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
@@ -143,33 +147,51 @@ namespace EFCorePowerTools.Handlers
                 var model = revEng.GenerateClassName(classBasis) + "Context";
                 var packageResult = project.ContainsEfCoreReference(dbInfo.DatabaseType);
 
-                var modelDialog = new EfCoreModelDialog(options)
+                var presets = new ModelingOptionsModel
                 {
                     InstallNuGetPackage = !packageResult.Item1,
                     ModelName = options != null ? options.ContextClassName : model,
                     ProjectName = project.Name,
-                    NameSpace = options != null ? options.ProjectRootNamespace : project.Properties.Item("DefaultNamespace").Value.ToString(),
-                    DacpacPath = dacpacPath
+                    Namespace = options != null ? options.ProjectRootNamespace : project.Properties.Item("DefaultNamespace").Value.ToString(),
+                    DacpacPath = dacpacPath,
                 };
+                if (options != null)
+                {
+                    presets.UseDataAnnotations = !options.UseFluentApiOnly;
+                    presets.UseDatabaseNames = options.UseDatabaseNames;
+                    presets.UsePluralizer = options.UseInflector;
+                    presets.UseHandelbars = options.UseHandleBars;
+                    presets.ReplaceId = options.IdReplace;
+                    presets.IncludeConnectionString = options.IncludeConnectionString;
+                    presets.ModelName = options.ContextClassName;
+                    presets.Namespace = options.ProjectRootNamespace;
+                    presets.OutputPath = options.OutputPath;
+                    presets.SelectedTobeGenerated = options.SelectedToBeGenerated;
+                }
+
+                var modelDialog = _package.GetView<IModelingOptionsDialog>()
+                                          .ApplyPresets(presets);
 
                 _package.Dte2.StatusBar.Text = "Getting options...";
-                if (modelDialog.ShowModal() != true) return;
+
+                var modelingOptionsResult = modelDialog.ShowAndAwaitUserResponse(true);
+                if (!modelingOptionsResult.ClosedByOK) return;
 
                 options = new ReverseEngineerOptions
                 {
-                    UseFluentApiOnly = !modelDialog.UseDataAnnotations,
+                    UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations,
                     ConnectionString = dbInfo.ConnectionString,
-                    ContextClassName = modelDialog.ModelName,
+                    ContextClassName = modelingOptionsResult.Payload.ModelName,
                     DatabaseType = (ReverseEngineer20.DatabaseType)dbInfo.DatabaseType,
                     ProjectPath = projectPath,
-                    OutputPath = modelDialog.OutputPath,
-                    ProjectRootNamespace = modelDialog.NameSpace,
-                    UseDatabaseNames = modelDialog.UseDatabaseNames,
-                    UseInflector = modelDialog.UsePluralizer,
-                    IdReplace = modelDialog.ReplaceId,
-                    UseHandleBars = modelDialog.UseHandelbars,
-                    IncludeConnectionString = modelDialog.IncludeConnectionString,
-                    SelectedToBeGenerated = modelDialog.SelectedTobeGenerated,
+                    OutputPath = modelingOptionsResult.Payload.OutputPath,
+                    ProjectRootNamespace = modelingOptionsResult.Payload.Namespace,
+                    UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
+                    UseInflector = modelingOptionsResult.Payload.UsePluralizer,
+                    IdReplace = modelingOptionsResult.Payload.ReplaceId,
+                    UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
+                    IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
+                    SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedTobeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.ToList(),
@@ -181,7 +203,7 @@ namespace EFCorePowerTools.Handlers
                 var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
                 bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.0");
 
-                if (modelDialog.UseHandelbars)
+                if (modelingOptionsResult.Payload.UseHandelbars)
                 {
                     var dropped = (DropTemplates(projectPath));
                     if (dropped && !project.IsNetCore() && !isNetStandard)
@@ -192,25 +214,25 @@ namespace EFCorePowerTools.Handlers
 
                 var revEngResult = revEng.GenerateFiles(options);
 
-                if (modelDialog.SelectedTobeGenerated == 0 || modelDialog.SelectedTobeGenerated == 2)
+                if (modelingOptionsResult.Payload.SelectedTobeGenerated == 0 || modelingOptionsResult.Payload.SelectedTobeGenerated == 2)
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
                     {
                         project.ProjectItems.AddFromFile(filePath);
                     }
-                    if (modelDialog.SelectedTobeGenerated == 2)
+                    if (modelingOptionsResult.Payload.SelectedTobeGenerated == 2)
                     {
                         if (File.Exists(revEngResult.ContextFilePath)) File.Delete(revEngResult.ContextFilePath);
                     }
                 }
-                if (modelDialog.SelectedTobeGenerated == 0 || modelDialog.SelectedTobeGenerated == 1)
+                if (modelingOptionsResult.Payload.SelectedTobeGenerated == 0 || modelingOptionsResult.Payload.SelectedTobeGenerated == 1)
                 {
                     project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
                     if (!project.IsNetCore() && !isNetStandard)
                     {
                         _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
                     }
-                    if (modelDialog.SelectedTobeGenerated == 1)
+                    if (modelingOptionsResult.Payload.SelectedTobeGenerated == 1)
                     {
                         foreach (var filePath in revEngResult.EntityTypeFilePaths)
                         {
@@ -220,7 +242,7 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 var missingProviderPackage = packageResult.Item1 ? null : packageResult.Item2;
-                if (modelDialog.InstallNuGetPackage || modelDialog.SelectedTobeGenerated == 2)
+                if (modelingOptionsResult.Payload.InstallNuGetPackage || modelingOptionsResult.Payload.SelectedTobeGenerated == 2)
                 {
                     missingProviderPackage = null;
                 }
@@ -230,7 +252,7 @@ namespace EFCorePowerTools.Handlers
 
                 SaveOptions(project, optionsPath, options);
 
-                if (modelDialog.InstallNuGetPackage)
+                if (modelingOptionsResult.Payload.InstallNuGetPackage)
                 {
                     _package.Dte2.StatusBar.Text = "Installing EF Core provider package";
                     var nuGetHelper = new NuGetHelper();
@@ -269,6 +291,11 @@ namespace EFCorePowerTools.Handlers
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
                 return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString);
+            }
+
+            if (dbInfo.DatabaseType == DatabaseType.Mysql)
+            {
+                return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString);
             }
 
             using (var repository = RepositoryHelper.CreateRepository(dbInfo))

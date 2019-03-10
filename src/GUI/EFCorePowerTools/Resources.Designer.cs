@@ -192,6 +192,15 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to c6882346-e592-4da5-80ba-d2eadcda0359.
+        /// </summary>
+        internal static string MysqlVSProvider {
+            get {
+                return ResourceManager.GetString("MysqlVSProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fixed-length Unicode data with a maximum length of 4000 characters. Default length = 1.
         ///Storage size, in bytes, is two times the number of characters entered..
         /// </summary>
