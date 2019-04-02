@@ -355,7 +355,7 @@
             HideInformation();
 
             await GetMigrationStatus();
-            if (StatusList.Count > 0) return;
+            if (StatusList != null && StatusList.Count > 0) return;
 
             _visualStudioAccess.ShowMessage("No valid DbContext classes found in the current project.");
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
