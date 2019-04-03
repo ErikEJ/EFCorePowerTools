@@ -375,13 +375,14 @@
                 bool success;
                 switch (selectedStatusValue)
                 {
-                    case "Add Migration":
+                    case "NoMigrations":
+                    case "Changes":
                         success = await AddMigration();
                         break;
-                    case "Update Database":
+                    case "Pending":
                         success = await UpdateDatabase();
                         break;
-                    case "Script Migrations":
+                    case "InSync":
                         success = await ScriptMigration();
                         break;
                     default:
