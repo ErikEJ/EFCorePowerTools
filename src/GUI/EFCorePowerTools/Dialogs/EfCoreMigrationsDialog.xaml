@@ -25,6 +25,31 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Converter.xaml"/>
                 <ResourceDictionary Source="Style.xaml"/>
+                <ResourceDictionary>
+                    <Style x:Key="StatusListComboBoxStyle" TargetType="ComboBox">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="IsEditable" Value="False"/>
+                        <Setter Property="MinWidth" Value="250"/>
+                        <Setter Property="Margin" Value="0,5,0,25"/>
+                    </Style>
+                    <Style x:Key="StatusMessageTextBlockStyle" TargetType="dw:LiveTextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style x:Key="MigrationNameInputTextBoxStyle" TargetType="TextBox">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="0,5,0,25"/>
+                        <Setter Property="Height" Value="23"/>
+                    </Style>
+                    <Style x:Key="ApplyButtonStyle" TargetType="Button">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Height" Value="23"/>
+                    </Style>
+                    <Style x:Key="CloseButtonStyle" TargetType="dw:DialogButton">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Height" Value="23"/>
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </dw:DialogWindow.Resources>
@@ -37,7 +62,7 @@
         <Binding Path="Title"/>
     </dw:DialogWindow.Title>
 
-    <Grid Margin="5">
+    <Grid Margin="10">
         <Grid.Background>
             <ImageBrush ImageSource="../Resources/Unicorn.png"
                         Opacity="{Binding BackgroundOpacity}"/>
@@ -46,57 +71,52 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
 
         <!-- Context name selection -->
         <dw:LiveTextBlock Grid.Row="0"
-                          Grid.Column="0"
                           Text="Context name"/>
-        <ComboBox Grid.Row="0"
-                  Grid.Column="1"
+        <ComboBox Grid.Row="1"
                   TabIndex="0"
                   ItemsSource="{Binding StatusList, Mode=OneWay}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Key"
                   SelectedValue="{Binding SelectedStatusKey, Mode=TwoWay}"
-                  IsEditable="False"
+                  Style="{StaticResource StatusListComboBoxStyle}"
                   IsEnabled="{Binding StatusList, Mode=OneWay, Converter={StaticResource CollectionCountToEnabledConverter}}"/>
 
         <!-- Status message -->
-        <dw:LiveTextBlock Grid.Row="1"
+        <dw:LiveTextBlock Grid.Row="2"
                           Grid.Column="0"
-                          Grid.ColumnSpan="2"
+                          Style="{StaticResource StatusMessageTextBlockStyle}"
                           Text="{Binding StatusMessage, Mode=OneWay}"/>
 
         <!-- Migration name input -->
-        <dw:LiveTextBlock Grid.Row="2"
+        <dw:LiveTextBlock Grid.Row="3"
                           Grid.Column="0"
                           Text="Migration Name"
                           Visibility="{Binding MigrationNameVisibility, Mode=OneWay}"/>
-        <TextBox Grid.Row="2"
-                 Grid.Column="1"
+        <TextBox Grid.Row="4"
                  TabIndex="2"
                  Text="{Binding MigrationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource MigrationNameInputTextBoxStyle}"
                  Visibility="{Binding MigrationNameVisibility, Mode=OneWay}"/>
 
         <!-- Apply & Cancel -->
-        <Button Grid.Row="3"
-                Grid.Column="1"
+        <Button Grid.Row="5"
                 Command="{Binding ApplyCommand}"
                 Content="{Binding ApplyButtonContent}"
+                Style="{StaticResource ApplyButtonStyle}"
                 Visibility="{Binding StatusList, Mode=OneWay, Converter={StaticResource CollectionCountToVisibilityConverter}}"/>
-        <dw:DialogButton Grid.Row="4"
-                         Grid.Column="1"
+        <dw:DialogButton Grid.Row="5"
                          TabIndex="21"
                          Content="Close"
                          IsCancel="True"
+                         Style="{StaticResource CloseButtonStyle}"
                          Command="{Binding CancelCommand}" />
     </Grid>
 </dw:DialogWindow>
