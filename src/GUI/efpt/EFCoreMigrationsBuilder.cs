@@ -168,11 +168,7 @@ namespace ReverseEngineer20
             }
             EnsureMigrationsAssembly(services, assembly);
 
-            //For 2.1 use:
-            //var scaffolder = services.GetRequiredService<IMigrationsScaffolder>();
-            //var migration = scaffolder.ScaffoldMigration(name, nameSpace, subNamespace, _language);
-
-            var scaffolder = services.GetRequiredService<MigrationsScaffolder>();
+            var scaffolder = services.GetRequiredService<IMigrationsScaffolder>();
             var migration = scaffolder.ScaffoldMigration(name, nameSpace);
 
             return scaffolder.Save(projectPath, migration, null);

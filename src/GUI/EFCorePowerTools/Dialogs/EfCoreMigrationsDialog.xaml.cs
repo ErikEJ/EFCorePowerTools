@@ -286,7 +286,7 @@ namespace ErikEJ.SqlCeToolbox.Dialogs
             foreach (var context in contexts)
             {
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(parts[0].Trim(), parts[1].Trim());
+                result.Add(parts[0].Trim(),  parts.Length > 1 ? parts[1].Trim() : string.Empty);
             }
 
             return result;
