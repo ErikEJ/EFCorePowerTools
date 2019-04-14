@@ -6,6 +6,8 @@ using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
 {
+    using Microsoft.VisualStudio.ProjectSystem;
+    using Microsoft.VisualStudio.ProjectSystem.Properties;
     using Shared.Enums;
 
     internal static class ProjectExtensions
@@ -42,6 +44,20 @@ namespace EFCorePowerTools.Extensions
             }
 
             return null;
+        }
+
+        public static string GetCspProperty(this Project project, string propertyName)
+        {
+            var unconfiguredProject = GetUnconfiguredProject(project);
+            var configuredProject = unconfiguredProject.GetSuggestedConfiguredProjectAsync().Result;
+            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            return properties.GetEvaluatedPropertyValueAsync(propertyName).Result;
+        }
+
+        private static UnconfiguredProject GetUnconfiguredProject(EnvDTE.Project project)
+        {
+            var context = project as IVsBrowseObjectContext;
+            return context?.UnconfiguredProject;
         }
 
         public static Tuple<bool, string> ContainsEfCoreReference(this Project project, DatabaseType dbType)
