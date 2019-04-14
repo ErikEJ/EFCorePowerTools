@@ -92,18 +92,19 @@ namespace EFCorePowerTools.Handlers
 
             if (_isNetCore)
             {
-                startInfo.WorkingDirectory = launchPath;
+                startInfo.WorkingDirectory = Path.GetDirectoryName(outputPath);
+                var efptPath = " " + Path.Combine(launchPath, "efpt.dll");
                 startInfo.FileName = "dotnet";
                 if (generationType == GenerationType.Ddl
                     || generationType == GenerationType.MigrationApply
                     || generationType == GenerationType.MigrationAdd
                     || generationType == GenerationType.MigrationStatus)
                 {
-                    startInfo.Arguments = " efpt.dll " + startInfo.Arguments;
+                    startInfo.Arguments = efptPath + " " + startInfo.Arguments;
                 }
                 else
                 {
-                    startInfo.Arguments = " efpt.dll \"" + outputPath + "\"";
+                    startInfo.Arguments = efptPath + " \"" + outputPath + "\"";
                 }
             }
 
