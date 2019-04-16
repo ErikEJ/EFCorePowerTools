@@ -1,4 +1,8 @@
-﻿using System;
+﻿using EFCorePowerTools.Extensions;
+using EnvDTE;
+using ErikEJ.SqlCeToolbox.Helpers;
+using NuGet.ProjectModel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,19 +15,18 @@ namespace EFCorePowerTools.Handlers
 {
     public class ProcessLauncher
     {
-        private readonly bool _isNetCore;
-        private readonly bool _isNetCore21;
-        private readonly bool _isNetCore22;
+        private readonly Project _project;
 
-        public ProcessLauncher(bool isNetCore, bool isNetCore21, bool isNetCore22)
+        public ProcessLauncher(Project project)
         {
-            _isNetCore = isNetCore;
-            _isNetCore21 = isNetCore21;
-            _isNetCore22 = isNetCore22;
-            if (!isNetCore21 && !isNetCore22)
+            if (project.IsNetCore())
             {
-                throw new ArgumentException("Only .NET Core 2.1 and 2.2 are supported");
+                if (!project.IsNetCore21() && !project.IsNetCore22())
+                {
+                    throw new ArgumentException("Only .NET Core 2.1 and 2.2 are supported");
+                }
             }
+            _project = project;
         }
 
         public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
@@ -49,8 +52,10 @@ namespace EFCorePowerTools.Handlers
 
             foreach (var context in contexts)
             {
+                if (context.StartsWith("info:")) continue;
+
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(new Tuple<string, string>(parts[0].Trim(), parts[1].Trim()));
+                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
             }
 
             return result;
@@ -58,7 +63,7 @@ namespace EFCorePowerTools.Handlers
 
         private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = _isNetCore ? DropNetCoreFiles() : DropFiles(outputPath);
+            var launchPath = _project.IsNetCore() ? DropNetCoreFiles() : DropFiles(outputPath);
 
             var startInfo = new ProcessStartInfo
             {
@@ -90,26 +95,78 @@ namespace EFCorePowerTools.Handlers
                 startInfo.Arguments = "scriptmigration \"" + outputPath + "\" " + contextName;
             }
 
-            if (_isNetCore)
+            if (_project.IsNetCore())
             {
+                //TODO Consider improving by getting Startup project!
+                // See EF Core .psm1 file
+
+                var result = _project.ContainsEfCoreDesignReference();
+                if (string.IsNullOrEmpty(result.Item2))
+                {
+                    throw new Exception("EF Core 2.1 or 2.2 not found in project");
+                }
+
+                if (!result.Item1)
+                {
+                    var version = new Version(result.Item2);
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _project, version);
+                    throw new Exception($"Installing EFCore.Design version {version}, please retry");
+                }
+
+                var fileRoot =  Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
+                var efptPath = Path.Combine(launchPath, "efpt.dll");
+
+                var depsFile =  fileRoot + ".deps.json";
+                var runtimeConfig = fileRoot + ".runtimeconfig.json";
+
+                var projectAssetsFile = _project.GetCspProperty("ProjectAssetsFile");
+                var runtimeFrameworkVersion = _project.GetCspProperty("RuntimeFrameworkVersion");
+
+                var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
+
+                if (projectAssetsFile != null && File.Exists(projectAssetsFile.ToString()) )
+                {
+                    var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile.ToString(), NuGet.Common.NullLogger.Instance);
+
+                    if (lockFile != null)
+                    {
+                        foreach (var packageFolder in lockFile.PackageFolders)
+                        {
+                            var path = packageFolder.Path.TrimEnd('\\');
+                            dotNetParams += $"--additionalprobingpath \"{path}\" ";
+                        }
+                    }
+                }
+
+                if (File.Exists(runtimeConfig))
+                {
+                    dotNetParams += $"--runtimeconfig \"{runtimeConfig}\" ";
+                }
+                else if (runtimeFrameworkVersion != null)
+                {
+                    dotNetParams += $"--fx-version {runtimeFrameworkVersion} ";
+                }
+
+                dotNetParams += $"\"{efptPath}\" ";
+
                 startInfo.WorkingDirectory = Path.GetDirectoryName(outputPath);
-                var efptPath = " " + Path.Combine(launchPath, "efpt.dll");
                 startInfo.FileName = "dotnet";
                 if (generationType == GenerationType.Ddl
                     || generationType == GenerationType.MigrationApply
                     || generationType == GenerationType.MigrationAdd
                     || generationType == GenerationType.MigrationStatus)
                 {
-                    startInfo.Arguments = efptPath + " " + startInfo.Arguments;
+                    startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
                 }
                 else
                 {
-                    startInfo.Arguments = efptPath + " \"" + outputPath + "\"";
+                    startInfo.Arguments = dotNetParams + " \"" + outputPath + "\"";
                 }
             }
 
             var standardOutput = new StringBuilder();
-            using (var process = Process.Start(startInfo))
+            using (var process = System.Diagnostics.Process.Start(startInfo))
             {
                 while (process != null && !process.HasExited)
                 {
@@ -128,41 +185,51 @@ namespace EFCorePowerTools.Handlers
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
-            var testVersion = string.Empty;
-            Version version = null;
-            var testFile = Path.Combine(toDir, "Microsoft.EntityFrameworkCore.dll");
-
-            if (File.Exists(testFile))
-            {
-                var fvi = FileVersionInfo.GetVersionInfo(testFile);
-                version = Version.Parse(fvi.FileVersion);
-
-                if (version.ToString(3) == "2.1.0" 
-                    || version.ToString(3) == "2.1.4"
-                    || version.ToString(3) == "2.2.0"
-                    || version.ToString(3) == "2.2.1"
-                    || version.ToString(3) == "2.2.2"
-                    )
-                {
-                    testVersion = version.ToString(3);
-                }
-            }
-            else
-            {
-                throw new Exception(
-                    $"Unable to find Microsoft.EntityFrameworkCore.dll in folder {toDir}.");
-            }
+            var testVersion = GetEfCoreSupportedVersion(toDir);
 
             if (string.IsNullOrEmpty(testVersion))
             {
                 throw new Exception(
-                    $"Unable to find a supported version of Microsoft.EntityFrameworkCore.dll in folder {toDir}. Version found: {version}");
+                    $"Unable to find a supported version of Microsoft.EntityFrameworkCore.dll in folder {toDir}.");
             }
             File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
             File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe.config"), Path.Combine(toDir, "efpt.exe.config"), true);
             File.Copy(Path.Combine(fromDir, testVersion, "Microsoft.EntityFrameworkCore.Design.dll"), Path.Combine(toDir, "Microsoft.EntityFrameworkCore.Design.dll"), true);
 
             return outputPath;
+        }
+
+        private string GetEfCoreSupportedVersion(string toDir)
+        {
+            var version = GetEfCoreVersion(toDir);
+
+            if (version.ToString(3) == "2.1.0"
+                || version.ToString(3) == "2.1.4"
+                || version.ToString(3) == "2.2.0"
+                || version.ToString(3) == "2.2.1"
+                || version.ToString(3) == "2.2.2"
+                )
+            {
+                return version.ToString(3);
+            }
+
+            return string.Empty;
+        }
+
+        private Version GetEfCoreVersion(string folder)
+        {
+            var testFile = Path.Combine(folder, "Microsoft.EntityFrameworkCore.dll");
+
+            if (File.Exists(testFile))
+            {
+                var fvi = FileVersionInfo.GetVersionInfo(testFile);
+                return Version.Parse(fvi.FileVersion);
+            }
+            else
+            {
+                throw new Exception(
+                    $"Unable to find Microsoft.EntityFrameworkCore.dll in folder {folder}.");
+            }
         }
 
         private string DropNetCoreFiles()
@@ -180,11 +247,11 @@ namespace EFCorePowerTools.Handlers
 
             Directory.CreateDirectory(toDir);
 
-            if (_isNetCore21)
+            if (_project.IsNetCore21())
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt21.exe.zip"), toDir);
             }
-            else if (_isNetCore22)
+            else if (_project.IsNetCore22())
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt22.exe.zip"), toDir);
             }

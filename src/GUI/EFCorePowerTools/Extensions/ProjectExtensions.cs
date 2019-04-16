@@ -6,6 +6,8 @@ using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
 {
+    using Microsoft.VisualStudio.ProjectSystem;
+    using Microsoft.VisualStudio.ProjectSystem.Properties;
     using Shared.Enums;
 
     internal static class ProjectExtensions
@@ -44,6 +46,20 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
+        public static string GetCspProperty(this Project project, string propertyName)
+        {
+            var unconfiguredProject = GetUnconfiguredProject(project);
+            var configuredProject = unconfiguredProject.GetSuggestedConfiguredProjectAsync().Result;
+            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
+            return properties.GetEvaluatedPropertyValueAsync(propertyName).Result;
+        }
+
+        private static UnconfiguredProject GetUnconfiguredProject(EnvDTE.Project project)
+        {
+            var context = project as IVsBrowseObjectContext;
+            return context?.UnconfiguredProject;
+        }
+
         public static Tuple<bool, string> ContainsEfCoreReference(this Project project, DatabaseType dbType)
         {
             var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
@@ -74,6 +90,31 @@ namespace EFCorePowerTools.Extensions
                 }
             }
             return new Tuple<bool, string>(false, providerPackage);
+        }
+
+        public static Tuple<bool, string> ContainsEfCoreDesignReference(this Project project)
+        {
+            var designPackage = "Microsoft.EntityFrameworkCore.Design";
+            var corePackage = "Microsoft.EntityFrameworkCore";
+
+            bool hasDesign = false;
+            string coreVersion = string.Empty;
+
+            var vsProject = project.Object as VSProject;
+            if (vsProject == null) return new Tuple<bool, string>(false, null);
+            for (var i = 1; i < vsProject.References.Count + 1; i++)
+            {
+                if (vsProject.References.Item(i).Name.Equals(designPackage))
+                {
+                    hasDesign = true;
+                }
+                if (vsProject.References.Item(i).Name.Equals(corePackage))
+                {
+                    coreVersion = vsProject.References.Item(i).Version;
+                }
+            }
+
+            return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
         public static bool IsNetCore(this Project project)
