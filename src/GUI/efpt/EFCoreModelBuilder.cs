@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -89,11 +88,7 @@ namespace ReverseEngineer20
             //TODO Use OperationHandler output!!
             var reporter = new OperationReporter(new OperationReportHandler());
 
-#if CORE21 || CORE22 
             return new DbContextOperations(reporter, assembly, assembly, Array.Empty<string>());
-#else
-            return new DbContextOperations(reporter, assembly, assembly);
-#endif
         }
 
         private Assembly Load(string assemblyPath)

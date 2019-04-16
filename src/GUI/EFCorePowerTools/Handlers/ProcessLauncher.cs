@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
+using ErikEJ.SqlCeToolbox.Helpers;
 using NuGet.ProjectModel;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,12 @@ namespace EFCorePowerTools.Handlers
 
         public ProcessLauncher(Project project)
         {
-            if (!project.IsNetCore21() && !project.IsNetCore22())
+            if (project.IsNetCore())
             {
-                throw new ArgumentException("Only .NET Core 2.1 and 2.2 are supported");
+                if (!project.IsNetCore21() && !project.IsNetCore22())
+                {
+                    throw new ArgumentException("Only .NET Core 2.1 and 2.2 are supported");
+                }
             }
             _project = project;
         }
@@ -48,6 +52,8 @@ namespace EFCorePowerTools.Handlers
 
             foreach (var context in contexts)
             {
+                if (context.StartsWith("info:")) continue;
+
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
                 result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
             }
@@ -91,7 +97,22 @@ namespace EFCorePowerTools.Handlers
 
             if (_project.IsNetCore())
             {
-                //TODO Improve by getting Startup project!
+                //TODO Consider improving by getting Startup project!
+                // See EF Core .psm1 file
+
+                var result = _project.ContainsEfCoreDesignReference();
+                if (string.IsNullOrEmpty(result.Item2))
+                {
+                    throw new Exception("EF Core 2.1 or 2.2 not found in project");
+                }
+
+                if (!result.Item1)
+                {
+                    var version = new Version(result.Item2);
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _project, version);
+                    throw new Exception($"Installing EFCore.Design version {version}, please retry");
+                }
 
                 var fileRoot =  Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
                 var efptPath = Path.Combine(launchPath, "efpt.dll");
@@ -164,41 +185,51 @@ namespace EFCorePowerTools.Handlers
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
-            var testVersion = string.Empty;
-            Version version = null;
-            var testFile = Path.Combine(toDir, "Microsoft.EntityFrameworkCore.dll");
-
-            if (File.Exists(testFile))
-            {
-                var fvi = FileVersionInfo.GetVersionInfo(testFile);
-                version = Version.Parse(fvi.FileVersion);
-
-                if (version.ToString(3) == "2.1.0" 
-                    || version.ToString(3) == "2.1.4"
-                    || version.ToString(3) == "2.2.0"
-                    || version.ToString(3) == "2.2.1"
-                    || version.ToString(3) == "2.2.2"
-                    )
-                {
-                    testVersion = version.ToString(3);
-                }
-            }
-            else
-            {
-                throw new Exception(
-                    $"Unable to find Microsoft.EntityFrameworkCore.dll in folder {toDir}.");
-            }
+            var testVersion = GetEfCoreSupportedVersion(toDir);
 
             if (string.IsNullOrEmpty(testVersion))
             {
                 throw new Exception(
-                    $"Unable to find a supported version of Microsoft.EntityFrameworkCore.dll in folder {toDir}. Version found: {version}");
+                    $"Unable to find a supported version of Microsoft.EntityFrameworkCore.dll in folder {toDir}.");
             }
             File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe"), Path.Combine(toDir, "efpt.exe"), true);
             File.Copy(Path.Combine(fromDir, testVersion, "efpt.exe.config"), Path.Combine(toDir, "efpt.exe.config"), true);
             File.Copy(Path.Combine(fromDir, testVersion, "Microsoft.EntityFrameworkCore.Design.dll"), Path.Combine(toDir, "Microsoft.EntityFrameworkCore.Design.dll"), true);
 
             return outputPath;
+        }
+
+        private string GetEfCoreSupportedVersion(string toDir)
+        {
+            var version = GetEfCoreVersion(toDir);
+
+            if (version.ToString(3) == "2.1.0"
+                || version.ToString(3) == "2.1.4"
+                || version.ToString(3) == "2.2.0"
+                || version.ToString(3) == "2.2.1"
+                || version.ToString(3) == "2.2.2"
+                )
+            {
+                return version.ToString(3);
+            }
+
+            return string.Empty;
+        }
+
+        private Version GetEfCoreVersion(string folder)
+        {
+            var testFile = Path.Combine(folder, "Microsoft.EntityFrameworkCore.dll");
+
+            if (File.Exists(testFile))
+            {
+                var fvi = FileVersionInfo.GetVersionInfo(testFile);
+                return Version.Parse(fvi.FileVersion);
+            }
+            else
+            {
+                throw new Exception(
+                    $"Unable to find Microsoft.EntityFrameworkCore.dll in folder {folder}.");
+            }
         }
 
         private string DropNetCoreFiles()

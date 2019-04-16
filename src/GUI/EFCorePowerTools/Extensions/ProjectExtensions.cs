@@ -92,6 +92,31 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(false, providerPackage);
         }
 
+        public static Tuple<bool, string> ContainsEfCoreDesignReference(this Project project)
+        {
+            var designPackage = "Microsoft.EntityFrameworkCore.Design";
+            var corePackage = "Microsoft.EntityFrameworkCore";
+
+            bool hasDesign = false;
+            string coreVersion = string.Empty;
+
+            var vsProject = project.Object as VSProject;
+            if (vsProject == null) return new Tuple<bool, string>(false, null);
+            for (var i = 1; i < vsProject.References.Count + 1; i++)
+            {
+                if (vsProject.References.Item(i).Name.Equals(designPackage))
+                {
+                    hasDesign = true;
+                }
+                if (vsProject.References.Item(i).Name.Equals(corePackage))
+                {
+                    coreVersion = vsProject.References.Item(i).Version;
+                }
+            }
+
+            return new Tuple<bool, string>(hasDesign, coreVersion);
+        }
+
         public static bool IsNetCore(this Project project)
         {
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.");
