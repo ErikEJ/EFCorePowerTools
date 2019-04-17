@@ -233,7 +233,7 @@
             foreach (var context in contexts)
             {
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(parts[0].Trim(), parts[1].Trim());
+                result.Add(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty);
             }
 
             return result;
@@ -414,7 +414,7 @@
         {
             Title = baseTitle + " " + project.Name;
             _project = project;
-            _processLauncher = new ProcessLauncher(project.IsNetCore(), project.IsNetCore21(), project.IsNetCore22());
+            _processLauncher = new ProcessLauncher(project);
         }
 
         void IMigrationOptionsViewModel.UseOutputPath(string outputPath)
