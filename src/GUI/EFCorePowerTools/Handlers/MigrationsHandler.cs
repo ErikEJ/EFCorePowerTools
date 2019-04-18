@@ -1,6 +1,5 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Dialogs;
 using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,8 @@ using System.IO;
 
 namespace EFCorePowerTools.Handlers
 {
+    using Contracts.Views;
+
     internal class MigrationsHandler
     {
         private readonly EFCorePowerToolsPackage _package;
@@ -52,12 +53,11 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var msd = new EfCoreMigrationsDialog(_package, outputPath, project)
-                {
-                    ProjectName = project.Name
-                };
+                var migrationsDialog = _package.GetView<IMigrationOptionsDialog>();
+                migrationsDialog.UseProjectForMigration(project)
+                                .UseOutputPath(outputPath);
 
-                msd.ShowModal();
+                migrationsDialog.ShowAndAwaitUserResponse(true);
             }
             catch (Exception exception)
             {

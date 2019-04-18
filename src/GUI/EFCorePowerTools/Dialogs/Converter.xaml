@@ -7,5 +7,6 @@
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <converter:FilePathToDisplayNameConverter x:Key="FilePathToDisplayNameConverter"/>
     <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter"/>
+    <converter:CollectionCountToEnabledConverter x:Key="CollectionCountToEnabledConverter"/>
 
 </ResourceDictionary>

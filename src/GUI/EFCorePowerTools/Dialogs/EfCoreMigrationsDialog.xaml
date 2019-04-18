@@ -1,34 +1,122 @@
-﻿<dw:DialogWindow x:Class="ErikEJ.SqlCeToolbox.Dialogs.EfCoreMigrationsDialog"
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.EfCoreMigrationsDialog"
         xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Manage Migrations in Project" 
-        ShowInTaskbar="False" Height="280" Width="450" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        ShowInTaskbar="False"
+        Height="280"
+        Width="450"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=viewModels:MigrationOptionsViewModel, IsDesignTimeCreatable=False}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Dialogs/Style.xaml"/>
+                <ResourceDictionary Source="Converter.xaml"/>
+                <ResourceDictionary Source="Style.xaml"/>
+                <ResourceDictionary>
+                    <Style x:Key="StatusListComboBoxStyle" TargetType="ComboBox">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="IsEditable" Value="False"/>
+                        <Setter Property="MinWidth" Value="250"/>
+                        <Setter Property="Margin" Value="0,5,0,25"/>
+                    </Style>
+                    <Style x:Key="StatusMessageTextBlockStyle" TargetType="dw:LiveTextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style x:Key="MigrationNameInputTextBoxStyle" TargetType="TextBox">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="0,5,0,25"/>
+                        <Setter Property="Height" Value="23"/>
+                    </Style>
+                    <Style x:Key="ApplyButtonStyle" TargetType="Button">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="Height" Value="23"/>
+                    </Style>
+                    <Style x:Key="CloseButtonStyle" TargetType="dw:DialogButton">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Height" Value="23"/>
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </dw:DialogWindow.Resources>
-    <Grid>
+
+    <dw:DialogWindow.Background>
+        <StaticResource ResourceKey="DialogWindowBackgroundColor" />
+    </dw:DialogWindow.Background>
+
+    <dw:DialogWindow.Title>
+        <Binding Path="Title"/>
+    </dw:DialogWindow.Title>
+
+    <Grid Margin="10">
         <Grid.Background>
-            <ImageBrush x:Name="imgUnicorn" Opacity="0.6" ></ImageBrush>
+            <ImageBrush ImageSource="../Resources/Unicorn.png"
+                        Opacity="{Binding BackgroundOpacity}"/>
         </Grid.Background>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="63*" />
-            <RowDefinition Height="40*" />
-            <RowDefinition Height="63*" />
-            <RowDefinition Height="35*" />
-            <RowDefinition Height="35*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ComboBox TabIndex="0" Grid.Row="0" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" Name="cmbDbContext" VerticalAlignment="Top" Width="223" ItemsSource="{Binding}" IsEditable="False" />
-        <TextBox TabIndex="2" Height="23" HorizontalAlignment="Left" Margin="13,25,0,0" x:Name="txtMigrationName" VerticalAlignment="Top" Width="371" Grid.Row="2" />
-        <Button Grid.Row="3" Height="23" Width="100" HorizontalAlignment="Left" Click="btnApply_Click" Margin="13,0,0,0" x:Name="btnApply" >Update</Button>
+        <!-- Context name selection -->
+        <dw:LiveTextBlock Grid.Row="0"
+                          Text="Context name"/>
+        <ComboBox Grid.Row="1"
+                  TabIndex="0"
+                  ItemsSource="{Binding StatusList, Mode=OneWay}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Key"
+                  SelectedValue="{Binding SelectedStatusKey, Mode=TwoWay}"
+                  Style="{StaticResource StatusListComboBoxStyle}"
+                  IsEnabled="{Binding StatusList, Mode=OneWay, Converter={StaticResource CollectionCountToEnabledConverter}}"/>
 
-        <dw:LiveTextBlock Grid.Row="0" Text="Context name" Margin="14,6,0,36"></dw:LiveTextBlock>
-        <dw:LiveTextBlock Grid.Row="1" x:Name="txtMessage"  Margin="14,8,-0.4,64" Grid.RowSpan="2"></dw:LiveTextBlock>
-        <dw:LiveTextBlock Grid.Row="2" x:Name="lblMigration" Text="Migration Name" Margin="14,6,0,36"></dw:LiveTextBlock>
-        <dw:DialogButton TabIndex="21" Content="Close" IsCancel="True" Grid.Row="4" Height="23" HorizontalAlignment="Right" Margin="0,0,59.6,12.2" Name="button2" VerticalAlignment="Bottom" Width="75" Click="button2_Click" />
+        <!-- Status message -->
+        <dw:LiveTextBlock Grid.Row="2"
+                          Grid.Column="0"
+                          Style="{StaticResource StatusMessageTextBlockStyle}"
+                          Text="{Binding StatusMessage, Mode=OneWay}"/>
+
+        <!-- Migration name input -->
+        <dw:LiveTextBlock Grid.Row="3"
+                          Grid.Column="0"
+                          Text="Migration Name"
+                          Visibility="{Binding MigrationNameVisibility, Mode=OneWay}"/>
+        <TextBox Grid.Row="4"
+                 TabIndex="2"
+                 Text="{Binding MigrationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Style="{StaticResource MigrationNameInputTextBoxStyle}"
+                 Visibility="{Binding MigrationNameVisibility, Mode=OneWay}"/>
+
+        <!-- Apply & Cancel -->
+        <Button Grid.Row="5"
+                Command="{Binding ApplyCommand}"
+                Content="{Binding ApplyButtonContent}"
+                Style="{StaticResource ApplyButtonStyle}"
+                Visibility="{Binding StatusList, Mode=OneWay, Converter={StaticResource CollectionCountToVisibilityConverter}}"/>
+        <dw:DialogButton Grid.Row="5"
+                         TabIndex="21"
+                         Content="Close"
+                         IsCancel="True"
+                         Style="{StaticResource CloseButtonStyle}"
+                         Command="{Binding CancelCommand}" />
     </Grid>
 </dw:DialogWindow>
