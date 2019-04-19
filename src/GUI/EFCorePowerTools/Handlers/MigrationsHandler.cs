@@ -55,7 +55,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (project.IsNetCore())
                 {
-                    var result = _project.ContainsEfCoreDesignReference();
+                    var result = project.ContainsEfCoreDesignReference();
 
                     if (string.IsNullOrEmpty(result.Item2))
                     {
@@ -67,7 +67,7 @@ namespace EFCorePowerTools.Handlers
                     {
                         var version = new Version(result.Item2);
                         var nugetHelper = new NuGetHelper();
-                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _project, version);
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
                         EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
                         return;
                     }

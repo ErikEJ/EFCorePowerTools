@@ -42,7 +42,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (project.IsNetCore())
                 {
-                    var result = _project.ContainsEfCoreDesignReference();
+                    var result = project.ContainsEfCoreDesignReference();
                     if (string.IsNullOrEmpty(result.Item2))
                     {
                         EnvDteHelper.ShowError("EF Core 2.1 or 2.2 not found in project");
@@ -53,7 +53,7 @@ namespace EFCorePowerTools.Handlers
                     {
                         var version = new Version(result.Item2);
                         var nugetHelper = new NuGetHelper();
-                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _project, version);
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
                         EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
                         return;
                     }
