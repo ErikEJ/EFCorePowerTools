@@ -40,6 +40,25 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
+                if (project.IsNetCore())
+                {
+                    var result = _project.ContainsEfCoreDesignReference();
+                    if (string.IsNullOrEmpty(result.Item2))
+                    {
+                        EnvDteHelper.ShowError("EF Core 2.1 or 2.2 not found in project");
+                        return;
+                    }
+
+                    if (!result.Item1)
+                    {
+                        var version = new Version(result.Item2);
+                        var nugetHelper = new NuGetHelper();
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _project, version);
+                        EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
+                        return;
+                    }
+                }
+
                 var processLauncher = new ProcessLauncher(project);
 
                 var processResult = processLauncher.GetOutput(outputPath, generationType, null);

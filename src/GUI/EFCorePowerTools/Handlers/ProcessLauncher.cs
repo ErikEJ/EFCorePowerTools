@@ -100,20 +100,6 @@ namespace EFCorePowerTools.Handlers
                 //TODO Consider improving by getting Startup project!
                 // See EF Core .psm1 file
 
-                var result = _project.ContainsEfCoreDesignReference();
-                if (string.IsNullOrEmpty(result.Item2))
-                {
-                    throw new Exception("EF Core 2.1 or 2.2 not found in project");
-                }
-
-                if (!result.Item1)
-                {
-                    var version = new Version(result.Item2);
-                    var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _project, version);
-                    throw new Exception($"Installing EFCore.Design version {version}, please retry");
-                }
-
                 var fileRoot =  Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
                 var efptPath = Path.Combine(launchPath, "efpt.dll");
 
