@@ -125,7 +125,8 @@
         {
             var subset = DatabaseDefinitions.Where(m =>
                                              {
-                                                 if (!m.FilePath.EndsWith(".sqlproj"))
+                                                 if (string.IsNullOrWhiteSpace(m.FilePath)
+                                                  || !m.FilePath.EndsWith(".sqlproj"))
                                                  {
                                                      return false;
                                                  }
