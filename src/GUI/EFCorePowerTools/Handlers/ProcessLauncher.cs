@@ -194,6 +194,7 @@ namespace EFCorePowerTools.Handlers
                 || version.ToString(3) == "2.2.0"
                 || version.ToString(3) == "2.2.1"
                 || version.ToString(3) == "2.2.2"
+                || version.ToString(3) == "2.2.4"
                 )
             {
                 return version.ToString(3);

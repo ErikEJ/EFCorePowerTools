@@ -172,6 +172,10 @@
     <Content Include="efpt\2.2.2\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="efpt\2.2.4\efpt.exe">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.2.4\Microsoft.EntityFrameworkCore.Design.dll" />
     <Content Include="e_sqlite3.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -207,6 +211,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="efpt\2.2.2\efpt.exe.config">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="efpt\2.2.4\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
