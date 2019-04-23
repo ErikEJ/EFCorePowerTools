@@ -81,7 +81,7 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void LoadedCommand_Executed()
+        public void LoadedCommand_Executed_OnlyDatabaseConnections()
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
@@ -96,6 +96,135 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.AreSame(dbConnection1, vm.SelectedDatabaseConnection);
+            Assert.IsNull(vm.SelectedDatabaseDefinition);
+        }
+
+        [Test]
+        public void LoadedCommand_Executed_DatabaseConnectionsAndDefinitions()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var vm = new PickServerDatabaseViewModel(vsa);
+            var dbConnection1 = new DatabaseConnectionModel();
+            var dbConnection2 = new DatabaseConnectionModel();
+            var dbDefinition1 = new DatabaseDefinitionModel();
+            var dbDefinition2 = new DatabaseDefinitionModel();
+            vm.DatabaseConnections.Add(dbConnection1);
+            vm.DatabaseConnections.Add(dbConnection2);
+            vm.DatabaseDefinitions.Add(dbDefinition1);
+            vm.DatabaseDefinitions.Add(dbDefinition2);
+
+            // Act
+            vm.LoadedCommand.Execute(null);
+
+            // Assert
+            Assert.AreSame(dbConnection1, vm.SelectedDatabaseConnection);
+            Assert.IsNull(vm.SelectedDatabaseDefinition);
+        }
+
+        [Test]
+        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_SimpleSortOrder()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var vm = new PickServerDatabaseViewModel(vsa);
+            var dbDefinition1 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseB.sqlproj"
+            };
+            var dbDefinition2 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseA.sqlproj"
+            };
+            vm.DatabaseDefinitions.Add(dbDefinition1);
+            vm.DatabaseDefinitions.Add(dbDefinition2);
+
+            // Act
+            vm.LoadedCommand.Execute(null);
+
+            // Assert
+            Assert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.AreSame(dbDefinition2, vm.SelectedDatabaseDefinition);
+        }
+
+        [Test]
+        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_ExtendedSortOrder()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var vm = new PickServerDatabaseViewModel(vsa);
+            var dbDefinition1 = new DatabaseDefinitionModel
+            {
+                FilePath = "TestExampleDatabaseA.sqlproj"
+            };
+            var dbDefinition2 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseB.sqlproj"
+            };
+            var dbDefinition3 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseCtest.sqlproj"
+            };
+            vm.DatabaseDefinitions.Add(dbDefinition1);
+            vm.DatabaseDefinitions.Add(dbDefinition2);
+            vm.DatabaseDefinitions.Add(dbDefinition3);
+
+            // Act
+            vm.LoadedCommand.Execute(null);
+
+            // Assert
+            Assert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.AreSame(dbDefinition2, vm.SelectedDatabaseDefinition);
+        }
+
+        [Test]
+        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_FilePathNull()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var vm = new PickServerDatabaseViewModel(vsa);
+            var dbDefinition = new DatabaseDefinitionModel
+            {
+                FilePath = null
+            };
+            vm.DatabaseDefinitions.Add(dbDefinition);
+
+            // Act
+            vm.LoadedCommand.Execute(null);
+
+            // Assert
+            Assert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.IsNull(vm.SelectedDatabaseDefinition);
+        }
+
+        [Test]
+        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_WithOtherFiles()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var vm = new PickServerDatabaseViewModel(vsa);
+            var dbDefinition1 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseA.dacpac"
+            };
+            var dbDefinition2 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseB.sqlproj"
+            };
+            var dbDefinition3 = new DatabaseDefinitionModel
+            {
+                FilePath = "ExampleDatabaseC.txt"
+            };
+            vm.DatabaseDefinitions.Add(dbDefinition1);
+            vm.DatabaseDefinitions.Add(dbDefinition2);
+            vm.DatabaseDefinitions.Add(dbDefinition3);
+
+            // Act
+            vm.LoadedCommand.Execute(null);
+
+            // Assert
+            Assert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.AreSame(dbDefinition2, vm.SelectedDatabaseDefinition);
         }
 
         [Test]

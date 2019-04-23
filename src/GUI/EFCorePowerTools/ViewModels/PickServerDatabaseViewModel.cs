@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.IO;
     using System.Linq;
     using System.Windows.Input;
     using Contracts.EventArgs;
@@ -72,8 +73,18 @@
 
         private void Loaded_Executed()
         {
+            // Database first
             if (DatabaseConnections.Any())
+            {
                 SelectedDatabaseConnection = DatabaseConnections.First();
+                return;
+            }
+
+            // Database definition (SQL project) first
+            if (DatabaseDefinitions.Any())
+            {
+                SelectedDatabaseDefinition = PreSelectDatabaseDefinition();
+            }
         }
 
         private void AddDatabaseConnection_Executed()
@@ -108,6 +119,15 @@
             SelectedDatabaseConnection = null;
             SelectedDatabaseDefinition = null;
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
+        }
+
+        private DatabaseDefinitionModel PreSelectDatabaseDefinition()
+        {
+            var subset = DatabaseDefinitions.Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
+                                            .ToArray();
+            return subset.Any()
+                       ? subset.OrderBy(m => Path.GetFileNameWithoutExtension(m.FilePath)).First()
+                       : null;
         }
     }
 }
