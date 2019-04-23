@@ -123,7 +123,7 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_NoTestProjects()
+        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_SimpleSortOrder()
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
@@ -148,7 +148,7 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_WithTestProjects()
+        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_ExtendedSortOrder()
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();

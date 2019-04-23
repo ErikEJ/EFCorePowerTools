@@ -123,18 +123,7 @@
 
         private DatabaseDefinitionModel PreSelectDatabaseDefinition()
         {
-            var subset = DatabaseDefinitions.Where(m =>
-                                             {
-                                                 if (string.IsNullOrWhiteSpace(m.FilePath)
-                                                  || !m.FilePath.EndsWith(".sqlproj"))
-                                                 {
-                                                     return false;
-                                                 }
-
-                                                 var fileName = Path.GetFileNameWithoutExtension(m.FilePath).ToLower();
-                                                 return !fileName.StartsWith("test")
-                                                     && !fileName.EndsWith("test");
-                                             })
+            var subset = DatabaseDefinitions.Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
                                             .ToArray();
             return subset.Any()
                        ? subset.OrderBy(m => Path.GetFileNameWithoutExtension(m.FilePath)).First()
