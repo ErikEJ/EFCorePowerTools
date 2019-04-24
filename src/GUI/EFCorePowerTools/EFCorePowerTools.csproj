@@ -394,15 +394,15 @@
       <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.7.10.6070\lib\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.ProjectSystem, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\lib\net46\Microsoft.VisualStudio.ProjectSystem.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.ProjectSystem, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.ProjectSystem.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\lib\net46\Microsoft.VisualStudio.ProjectSystem.Interop.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.ProjectSystem.Interop, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.ProjectSystem.VS, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\lib\net46\Microsoft.VisualStudio.ProjectSystem.VS.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.ProjectSystem.VS, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.VS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
@@ -719,11 +719,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.170\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.6.170\build\Microsoft.VSSDK.BuildTools.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.170\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.6.170\build\Microsoft.VSSDK.BuildTools.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.132\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.132\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\build\Microsoft.VisualStudio.ProjectSystem.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\build\Microsoft.VisualStudio.ProjectSystem.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\build\Microsoft.VisualStudio.ProjectSystem.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\build\Microsoft.VisualStudio.ProjectSystem.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.6.170\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.6.170\build\Microsoft.VSSDK.BuildTools.targets')" />
   <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.132\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.132\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
-  <Import Project="..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\build\Microsoft.VisualStudio.ProjectSystem.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.ProjectSystem.15.8.243\build\Microsoft.VisualStudio.ProjectSystem.targets')" />
+  <Import Project="..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\build\Microsoft.VisualStudio.ProjectSystem.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\build\Microsoft.VisualStudio.ProjectSystem.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
