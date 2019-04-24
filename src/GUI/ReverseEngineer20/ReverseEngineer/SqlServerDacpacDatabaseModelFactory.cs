@@ -197,12 +197,20 @@ namespace ReverseEngineer20
                 foreach (var uqCol in uq.Columns)
                 {
                     var dbCol = dbTable.Columns
-                        .Single(c => c.Name == uqCol.Name.Parts[2]);
+                        .SingleOrDefault(c => c.Name == uqCol.Name.Parts[2]);
+
+                    if (dbCol == null)
+                    {
+                        continue;
+                    }
 
                     uniqueConstraint.Columns.Add(dbCol);
                 }
 
-                dbTable.UniqueConstraints.Add(uniqueConstraint);
+                if (uniqueConstraint.Columns.Count > 0)
+                {
+                    dbTable.UniqueConstraints.Add(uniqueConstraint);
+                }
             }
         }
 

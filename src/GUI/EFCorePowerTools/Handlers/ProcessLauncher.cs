@@ -1,6 +1,5 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
 using NuGet.ProjectModel;
 using System;
 using System.Collections.Generic;

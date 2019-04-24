@@ -194,6 +194,9 @@
     <None Include="graph.dgml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Issue208.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
