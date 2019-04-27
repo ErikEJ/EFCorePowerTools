@@ -169,6 +169,20 @@ namespace UnitTests
             Assert.AreEqual(1, dbModel.Tables.Count());
         }
 
+        [Test]
+        public void Issue210ComputedConstraintIsFK()
+        {
+            // Arrange
+            var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var tables = new List<string>();
+
+            // Act
+            var dbModel = factory.Create(TestPath("Issue210.dacpac"), null, new List<string>());
+
+            // Assert
+            Assert.AreEqual(2, dbModel.Tables.Count());
+        }
+
         private string TestPath(string file)
         {
             return Path.Combine(TestContext.CurrentContext.TestDirectory, file);

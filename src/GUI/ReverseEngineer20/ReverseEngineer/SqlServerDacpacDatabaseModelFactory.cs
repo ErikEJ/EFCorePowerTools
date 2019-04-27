@@ -165,12 +165,18 @@ namespace ReverseEngineer20
                 foreach (var fkCol in fk.ForeignColumns)
                 {
                     var dbCol = foreignTable.Columns
-                        .Single(c => c.Name == fkCol.Name.Parts[2]);
+                        .SingleOrDefault(c => c.Name == fkCol.Name.Parts[2]);
 
-                    foreignKey.PrincipalColumns.Add(dbCol);
+                    if (dbCol != null)
+                    {
+                        foreignKey.PrincipalColumns.Add(dbCol);
+                    }
                 }
 
-                dbTable.ForeignKeys.Add(foreignKey);
+                if (foreignKey.PrincipalColumns.Count > 0)
+                {
+                    dbTable.ForeignKeys.Add(foreignKey);
+                }
             }
         }
 
