@@ -57,7 +57,7 @@
                 if (Equals(value, _searchText)) return;
                 _searchText = value;
                 RaisePropertyChanged();
-                HandleSearchTextChange(value);
+                HandleSearchTextChangeAsync(value);
             }
         }
 
@@ -169,7 +169,7 @@
                                                : null;
         }
 
-        private async void HandleSearchTextChange(string text)
+        private async void HandleSearchTextChangeAsync(string text)
         {
             await Task.Delay(500); // Add a delay (like a debounce) so that not every character change triggers a search
             if (text != SearchText)

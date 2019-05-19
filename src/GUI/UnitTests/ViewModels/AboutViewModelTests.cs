@@ -278,25 +278,6 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void OpenSourcesCommand_Executed_NavigateInVisualStudio()
-        {
-            // Arrange
-            var aem = new AboutExtensionModel();
-            var evs = Mock.Of<IExtensionVersionService>();
-            var ics = Mock.Of<IInstalledComponentsService>();
-            var osa = Mock.Of<IOperatingSystemAccess>();
-            var vsaMock = new Mock<IVisualStudioAccess>();
-            var messenger = Mock.Of<IMessenger>();
-            var avm = new AboutViewModel(aem, evs, ics, osa, vsaMock.Object, messenger);
-
-            // Act
-            avm.OpenSourcesCommand.Execute(null);
-
-            // Assert
-            vsaMock.Verify(m => m.NavigateToUrl(aem.SourceCodeUrl), Times.Once);
-        }
-
-        [Test]
         public void OpenMarketplaceCommand_CanExecute()
         {
             // Arrange
