@@ -109,7 +109,7 @@
 
         private void OpenSources_Executed()
         {
-            _visualStudioAccess.NavigateToUrl(_aboutExtensionModel.SourceCodeUrl);
+            _operatingSystemAccess.StartProcess(_aboutExtensionModel.SourceCodeUrl);
         }
 
         private void OpenMarketplace_Executed()

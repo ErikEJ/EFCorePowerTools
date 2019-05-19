@@ -5,7 +5,6 @@
 
     public interface IVisualStudioAccess
     {
-        void NavigateToUrl(string url);
         DatabaseConnectionModel PromptForNewDatabaseConnection();
         void ShowMessage(string message);
 

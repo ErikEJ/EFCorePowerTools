@@ -20,11 +20,6 @@
             _dte2 = dte2;
         }
 
-        void IVisualStudioAccess.NavigateToUrl(string url)
-        {
-            _dte2.ItemOperations.Navigate(url);
-        }
-
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
         {
             var info = EnvDteHelper.PromptForInfo(_package);
