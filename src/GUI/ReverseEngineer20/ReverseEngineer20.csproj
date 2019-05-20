@@ -162,6 +162,10 @@
     <Reference Include="Npgsql.EntityFrameworkCore.PostgreSQL, Version=2.2.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.EntityFrameworkCore.PostgreSQL.2.2.0\lib\netstandard2.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
     </Reference>
+    <Reference Include="Pluralize.NET, Version=0.1.84.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pluralize.NET.0.1.84\lib\net46\Pluralize.NET.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Pomelo.EntityFrameworkCore.MySql, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Pomelo.EntityFrameworkCore.MySql.2.2.0\lib\netstandard2.0\Pomelo.EntityFrameworkCore.MySql.dll</HintPath>
     </Reference>
@@ -258,7 +262,6 @@
     <Compile Include="PathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseEngineer\InflectorPluralizer.cs" />
-    <Compile Include="ReverseEngineer\Pluralizer.cs" />
     <Compile Include="ReverseEngineer\ReverseEngineerOptions.cs" />
   </ItemGroup>
   <ItemGroup>

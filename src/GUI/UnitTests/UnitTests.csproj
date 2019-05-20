@@ -106,6 +106,9 @@
     <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Pluralize.NET, Version=0.1.84.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pluralize.NET.0.1.84\lib\net46\Pluralize.NET.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
