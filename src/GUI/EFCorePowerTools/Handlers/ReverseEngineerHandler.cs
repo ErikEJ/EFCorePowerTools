@@ -276,7 +276,6 @@ namespace EFCorePowerTools.Handlers
                     _package.LogError(revEngResult.EntityWarnings, null);
                 }
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
-                throw new Exception("Test");
             }
             catch (AggregateException ae)
             {
