@@ -17,7 +17,8 @@
         private bool _usePluralizer;
         private bool _useDatabaseNames;
         private string _ns;
-        private string _outputPath;
+        private string _outputPathContext;
+        private string _outputPathModels;
         private string _modelName;
         private bool _useDataAnnotations;
         private string _projectName;
@@ -45,13 +46,24 @@
             }
         }
 
-        public string OutputPath
+        public string OutputPathContext
         {
-            get => _outputPath;
+            get => _outputPathContext;
             set
             {
-                if (value == _outputPath) return;
-                _outputPath = value;
+                if (value == _outputPathContext) return;
+                _outputPathContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputPathModels
+        {
+            get => _outputPathModels;
+            set
+            {
+                if (value == _outputPathModels) return;
+                _outputPathModels = value;
                 OnPropertyChanged();
             }
         }

@@ -24,6 +24,10 @@ namespace EFCorePowerTools.Extensions
             if (couldRead)
                 return deserialized;
 
+            couldRead = TryRead(optionsPath, out ReverseEngineerOptionsV2 deserializedV2);
+            if (couldRead)
+                return ReverseEngineerOptions.FromV2(deserializedV2);
+
             couldRead = TryRead(optionsPath, out ReverseEngineerOptionsV1 deserializedV1);
             if (couldRead)
                 return ReverseEngineerOptions.FromV1(deserializedV1);

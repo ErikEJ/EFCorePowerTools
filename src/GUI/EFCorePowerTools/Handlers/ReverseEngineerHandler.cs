@@ -164,7 +164,8 @@ namespace EFCorePowerTools.Handlers
                     presets.IncludeConnectionString = options.IncludeConnectionString;
                     presets.ModelName = options.ContextClassName;
                     presets.Namespace = options.ProjectRootNamespace;
-                    presets.OutputPath = options.OutputPath;
+                    presets.OutputPathContext = options.OutputPath.Context;
+                    presets.OutputPathModels = options.OutputPath.Models;
                     presets.SelectedTobeGenerated = options.SelectedToBeGenerated;
                 }
 
@@ -183,7 +184,11 @@ namespace EFCorePowerTools.Handlers
                     ContextClassName = modelingOptionsResult.Payload.ModelName,
                     DatabaseType = (ReverseEngineer20.DatabaseType)dbInfo.DatabaseType,
                     ProjectPath = projectPath,
-                    OutputPath = modelingOptionsResult.Payload.OutputPath,
+                    OutputPath = new OutputPath()
+                    {
+                        Context = modelingOptionsResult.Payload.OutputPathContext,
+                        Models = modelingOptionsResult.Payload.OutputPathModels,
+                    },
                     ProjectRootNamespace = modelingOptionsResult.Payload.Namespace,
                     UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,
@@ -271,6 +276,7 @@ namespace EFCorePowerTools.Handlers
                     _package.LogError(revEngResult.EntityWarnings, null);
                 }
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
+                throw new Exception("Test");
             }
             catch (AggregateException ae)
             {

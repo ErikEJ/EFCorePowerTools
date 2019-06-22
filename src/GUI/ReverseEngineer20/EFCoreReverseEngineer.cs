@@ -96,24 +96,21 @@ namespace ReverseEngineer20
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
-                
+
             var schemas = new List<string>();
             if (reverseEngineerOptions.DefaultDacpacSchema != null)
             {
                 schemas.Add(reverseEngineerOptions.DefaultDacpacSchema);
             }
 
-            var @namespace = reverseEngineerOptions.ProjectRootNamespace;
+            string contextNamespace = buildNamespace(reverseEngineerOptions.ProjectRootNamespace, reverseEngineerOptions.OutputPath.Context);
+            string modelNamespace = buildNamespace(reverseEngineerOptions.ProjectRootNamespace, reverseEngineerOptions.OutputPath.Models);
 
-            if (!string.IsNullOrEmpty(reverseEngineerOptions.OutputPath))
-            {
-                @namespace += "." + reverseEngineerOptions.OutputPath.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
-            }
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames
             };
-                        
+
             var codeOptions = new ModelCodeGenerationOptions
             {
                 UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly
@@ -125,7 +122,7 @@ namespace ReverseEngineer20
                         : reverseEngineerOptions.ConnectionString,
                     reverseEngineerOptions.Tables.Select(m => m.Name).ToArray(),
                     schemas,
-                    @namespace,
+                    modelNamespace,
                     "C#",
                     null,
                     reverseEngineerOptions.ContextClassName,
@@ -134,30 +131,57 @@ namespace ReverseEngineer20
 
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
-                Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty),
+                Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath.Models ?? string.Empty),
                 overwriteFiles: true);
-
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
 
             foreach (var file in filePaths.AdditionalFiles)
             {
                 PostProcess(file, reverseEngineerOptions.IdReplace);
             }
             PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
-            
+
+            var contextFile = PostProcessContext(filePaths.ContextFile, reverseEngineerOptions, contextNamespace, modelNamespace);
+
             var result = new EfCoreReverseEngineerResult
             {
                 EntityErrors = errors,
                 EntityWarnings = warnings,
                 EntityTypeFilePaths = filePaths.AdditionalFiles,
-                ContextFilePath = filePaths.ContextFile,
+                ContextFilePath = contextFile,
             };
 
             return result;
         }
 
-        private void PostProcessContext(string contextFile, ReverseEngineerOptions options)
+        private static string buildNamespace(string root, string path)
         {
+            var @namespace = root;
+            if (!string.IsNullOrEmpty(path))
+            {
+                @namespace += "." + path.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
+            }
+
+            return @namespace;
+        }
+
+        private string PostProcessContext(string contextFile, ReverseEngineerOptions options, string contextNamespace, string modelNamespace)
+        {
+            var reasonToMoveContext = !string.IsNullOrEmpty(options.OutputPath.Context)
+                && (options.OutputPath.Context != options.OutputPath.Models
+                    || string.IsNullOrEmpty(options.OutputPath.Models));
+            if (reasonToMoveContext)
+            {
+                var contextDir = options.ProjectPath + options.OutputPath.Context;
+                if (!Directory.Exists(contextDir))
+                {
+                    Directory.CreateDirectory(contextDir);
+                }
+
+                var newFile = contextDir + Path.DirectorySeparatorChar + options.ContextClassName + ".cs";
+                File.Move(contextFile, newFile);
+                contextFile = newFile;
+            }
+
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
 
@@ -173,6 +197,20 @@ namespace ReverseEngineer20
 
                     if (line.Trim().StartsWith("optionsBuilder.Use"))
                         continue;
+                }
+
+                if (reasonToMoveContext)
+                {
+                    if (line.Contains("using System;"))
+                    {
+                        finalLines.Add("using " + modelNamespace + ";");
+                    }
+
+                    if (line.Contains("namespace"))
+                    {
+                        finalLines.Add("namespace " + contextNamespace);
+                        continue;
+                    }
                 }
 
                 if (line.Contains("OnModelCreating")) inModelCreating = true;
@@ -193,6 +231,7 @@ namespace ReverseEngineer20
                 i++;
             }
             File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
+            return contextFile;
         }
 
         private void PostProcess(string file, bool idReplace)

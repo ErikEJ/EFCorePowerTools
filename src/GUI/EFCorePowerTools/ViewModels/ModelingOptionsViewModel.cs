@@ -118,7 +118,8 @@
             Model.UsePluralizer = presets.UsePluralizer;
             Model.UseDatabaseNames = presets.UseDatabaseNames;
             Model.Namespace = presets.Namespace;
-            Model.OutputPath = presets.OutputPath;
+            Model.OutputPathContext = presets.OutputPathContext;
+            Model.OutputPathModels = presets.OutputPathModels;
             Model.ModelName = presets.ModelName;
             Model.UseDataAnnotations = presets.UseDataAnnotations;
             Model.ProjectName = presets.ProjectName;

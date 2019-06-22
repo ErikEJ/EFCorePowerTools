@@ -8,7 +8,7 @@
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 Height="550"
+                 Height="600"
                  Width="418"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
@@ -82,6 +82,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <dw:LiveTextBlock Grid.Row="0"
@@ -100,21 +102,28 @@
                  Text="{Binding Model.Namespace, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="4"
-                          Text="Project path (f.ex. Model) - optional"/>
+                          Text="Project path for context - optional"/>
         <TextBox Grid.Row="5"
                  TabIndex="2"
                  Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
+                 Text="{Binding Model.OutputPathContext, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="6"
+                          Text="Project path for model - optional"/>
+        <TextBox Grid.Row="7"
+                 TabIndex="2"
+                 Style="{StaticResource TextInputStyle}"
+                 Text="{Binding Model.OutputPathModels, Mode=TwoWay}"/>
+
+        <dw:LiveTextBlock Grid.Row="8"
                           Text="What to generate"/>
-        <ComboBox Grid.Row="6"
+        <ComboBox Grid.Row="8"
                   TabIndex="3"
                   ItemsSource="{Binding GenerationModeList}"
                   Style="{StaticResource GenerationMethodComboBoxStyle}"
                   SelectedIndex="{Binding Model.SelectedTobeGenerated, Mode=TwoWay}" />
 
-        <GroupBox Grid.Row="7"
+        <GroupBox Grid.Row="9"
                   Header="Naming"
                   Style="{StaticResource NamingGroupBoxStyle}">
             <StackPanel>
@@ -136,26 +145,26 @@
         </GroupBox>
         <CheckBox TabIndex="10"
                   Content="Use DataAnnotation attributes to configure the model"
-                  Grid.Row="8"
+                  Grid.Row="10"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <CheckBox TabIndex="11"
                   Content="Customize code using Handlebars templates (preview)"
-                  Grid.Row="9"
+                  Grid.Row="11"
                   IsChecked="{Binding Model.UseHandelbars}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <CheckBox TabIndex="12"
                   Content="Include connection string in generated code"
-                  Grid.Row="10"
+                  Grid.Row="12"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <CheckBox TabIndex="13"
                   Content="Install the EF Core provider package in the project"
-                  Grid.Row="11"
+                  Grid.Row="13"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <StackPanel Grid.Row="12"
+        <StackPanel Grid.Row="14"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
                              Content="OK"
