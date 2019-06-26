@@ -17,6 +17,7 @@
         ModelingOptionsModel Model { get; }
 
         IReadOnlyList<string> GenerationModeList { get; }
+        IReadOnlyList<string> HandlebarsLanguageList { get; }
         string Title { get; }
         bool MayIncludeConnectionString { get; }
 

@@ -43,7 +43,9 @@ namespace ReverseEngineer20
             if (reverseEngineerOptions.UseHandleBars)
             {
                 //TODO Consider being selective based on SelectedToBeGenerated
-                serviceCollection.AddHandlebarsScaffolding();
+                var options = Microsoft.EntityFrameworkCore.Design.ReverseEngineerOptions.DbContextAndEntities;
+                var language = (LanguageOptions)reverseEngineerOptions.SelectedHandlebarsLanguage;
+                serviceCollection.AddHandlebarsScaffolding(options, language);
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
             }
 
