@@ -287,7 +287,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo)
+        private List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo, bool includeViews = false)
         {
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
@@ -310,6 +310,16 @@ namespace EFCorePowerTools.Handlers
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
                     tables.Add(new TableInformationModel(table, hasPrimaryKey));
                 }
+
+                if (includeViews)
+                {
+                    var views = repository.GetAllViews();
+                    foreach (var view in views)
+                    {
+                        tables.Add(new TableInformationModel(view.ViewName, false));
+                    }
+                }
+
                 return tables;
             }
         }
