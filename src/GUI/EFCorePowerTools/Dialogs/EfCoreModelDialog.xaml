@@ -53,10 +53,18 @@
                         <Setter Property="Margin" Value="0,10,0,0"/>
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                     </Style>
-                    <Style TargetType="ComboBox" x:Key="GenerationMethodComboBoxStyle">
+                    <Style x:Key="GenerationMethodComboBoxStyle"
+                        TargetType="ComboBox">
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                         <Setter Property="IsEditable" Value="False"/>
                         <Setter Property="MinWidth" Value="200"/>
+                    </Style>
+                    <Style x:Key="HandlebarsLanguageComboBoxStyle"
+                        TargetType="ComboBox">
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="IsEditable" Value="False"/>
+                        <Setter Property="MinWidth" Value="105"/>
+                        <Setter Property="Height" Value="23"/>
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
@@ -112,7 +120,7 @@
                   TabIndex="3"
                   ItemsSource="{Binding GenerationModeList}"
                   Style="{StaticResource GenerationMethodComboBoxStyle}"
-                  SelectedIndex="{Binding Model.SelectedTobeGenerated, Mode=TwoWay}" />
+                  SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
 
         <GroupBox Grid.Row="7"
                   Header="Naming"
@@ -139,18 +147,27 @@
                   Grid.Row="8"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <CheckBox TabIndex="11"
-                  Content="Customize code using Handlebars templates (preview)"
-                  Grid.Row="9"
+        <StackPanel Orientation="Horizontal"
+                  Grid.Row="9">
+            <CheckBox TabIndex="11"
+                  Name="UseHandlebarsCheckbox"
+                  Content="Customize code using Handlebars templates"
                   IsChecked="{Binding Model.UseHandelbars}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <CheckBox TabIndex="12"
+            <ComboBox
+                  TabIndex="12"
+                  ItemsSource="{Binding HandlebarsLanguageList}"
+                  Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
+                  SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
+                  IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
+        </StackPanel>
+        <CheckBox TabIndex="13"
                   Content="Include connection string in generated code"
                   Grid.Row="10"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <CheckBox TabIndex="13"
+        <CheckBox TabIndex="14"
                   Content="Install the EF Core provider package in the project"
                   Grid.Row="11"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 

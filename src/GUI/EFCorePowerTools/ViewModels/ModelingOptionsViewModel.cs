@@ -25,6 +25,7 @@
 
         public ModelingOptionsModel Model { get; }
         public IReadOnlyList<string> GenerationModeList { get; }
+        public IReadOnlyList<string> HandlebarsLanguageList { get; }
 
         public string Title
         {
@@ -65,11 +66,16 @@
                 "DbContext only",
                 "EntityTypes only"
             };
+            HandlebarsLanguageList = new[]
+            {
+                "C#",
+                "TypeScript"
+            };
         }
 
         private void Loaded_Executed()
         {
-            Model.SelectedTobeGenerated = 0;
+            Model.SelectedToBeGenerated = 0;
         }
 
         private void Ok_Executed()
@@ -111,7 +117,8 @@
         void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
         {
             Model.InstallNuGetPackage = presets.InstallNuGetPackage;
-            Model.SelectedTobeGenerated = presets.SelectedTobeGenerated;
+            Model.SelectedToBeGenerated = presets.SelectedToBeGenerated;
+            Model.SelectedHandlebarsLanguage = presets.SelectedHandlebarsLanguage;
             Model.IncludeConnectionString = presets.IncludeConnectionString;
             Model.UseHandelbars = presets.UseHandelbars;
             Model.ReplaceId = presets.ReplaceId;

@@ -25,6 +25,7 @@ namespace ReverseEngineer20
         public bool UseInflector { get; set; }
         public bool IdReplace { get; set; }
         public bool UseHandleBars { get; set; }
+        public int SelectedHandlebarsLanguage { get; set; }
         public bool IncludeConnectionString { get; set; }
         public int SelectedToBeGenerated { get; set; }
         [IgnoreDataMember]
@@ -54,6 +55,7 @@ namespace ReverseEngineer20
                 UseInflector = v1.UseInflector,
                 IdReplace = v1.IdReplace,
                 UseHandleBars = v1.UseHandleBars,
+                SelectedHandlebarsLanguage = 0,
                 IncludeConnectionString = v1.IncludeConnectionString,
                 SelectedToBeGenerated = v1.SelectedToBeGenerated,
                 Dacpac = v1.Dacpac,

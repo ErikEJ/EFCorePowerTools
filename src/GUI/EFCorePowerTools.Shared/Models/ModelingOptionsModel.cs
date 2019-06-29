@@ -10,9 +10,10 @@
     public class ModelingOptionsModel : INotifyPropertyChanged
     {
         private bool _installNuGetPackage;
-        private int _selectedTobeGenerated;
+        private int _selectedToBeGenerated;
         private bool _includeConnectionString;
         private bool _useHandelbars;
+        private int _selectedHandlebarsLanguage;
         private bool _replaceId;
         private bool _usePluralizer;
         private bool _useDatabaseNames;
@@ -111,6 +112,17 @@
             }
         }
 
+        public int SelectedHandlebarsLanguage
+        {
+            get => _selectedHandlebarsLanguage;
+            set
+            {
+                if (value == _selectedHandlebarsLanguage) return;
+                _selectedHandlebarsLanguage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IncludeConnectionString
         {
             get => _includeConnectionString;
@@ -122,13 +134,13 @@
             }
         }
 
-        public int SelectedTobeGenerated
+        public int SelectedToBeGenerated
         {
-            get => _selectedTobeGenerated;
+            get => _selectedToBeGenerated;
             set
             {
-                if (value == _selectedTobeGenerated) return;
-                _selectedTobeGenerated = value;
+                if (value == _selectedToBeGenerated) return;
+                _selectedToBeGenerated = value;
                 OnPropertyChanged();
             }
         }

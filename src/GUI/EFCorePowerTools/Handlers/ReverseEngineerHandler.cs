@@ -160,12 +160,13 @@ namespace EFCorePowerTools.Handlers
                     presets.UseDatabaseNames = options.UseDatabaseNames;
                     presets.UsePluralizer = options.UseInflector;
                     presets.UseHandelbars = options.UseHandleBars;
+                    presets.SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage;
                     presets.ReplaceId = options.IdReplace;
                     presets.IncludeConnectionString = options.IncludeConnectionString;
                     presets.ModelName = options.ContextClassName;
                     presets.Namespace = options.ProjectRootNamespace;
                     presets.OutputPath = options.OutputPath;
-                    presets.SelectedTobeGenerated = options.SelectedToBeGenerated;
+                    presets.SelectedToBeGenerated = options.SelectedToBeGenerated;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -189,8 +190,9 @@ namespace EFCorePowerTools.Handlers
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,
                     IdReplace = modelingOptionsResult.Payload.ReplaceId,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
+                    SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage,
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
-                    SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedTobeGenerated,
+                    SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.ToList(),
@@ -213,25 +215,25 @@ namespace EFCorePowerTools.Handlers
 
                 var revEngResult = revEng.GenerateFiles(options);
 
-                if (modelingOptionsResult.Payload.SelectedTobeGenerated == 0 || modelingOptionsResult.Payload.SelectedTobeGenerated == 2)
+                if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
                     {
                         project.ProjectItems.AddFromFile(filePath);
                     }
-                    if (modelingOptionsResult.Payload.SelectedTobeGenerated == 2)
+                    if (modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                     {
                         if (File.Exists(revEngResult.ContextFilePath)) File.Delete(revEngResult.ContextFilePath);
                     }
                 }
-                if (modelingOptionsResult.Payload.SelectedTobeGenerated == 0 || modelingOptionsResult.Payload.SelectedTobeGenerated == 1)
+                if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
                 {
                     project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
                     if (!project.IsNetCore() && !isNetStandard)
                     {
                         _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
                     }
-                    if (modelingOptionsResult.Payload.SelectedTobeGenerated == 1)
+                    if (modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
                     {
                         foreach (var filePath in revEngResult.EntityTypeFilePaths)
                         {
@@ -241,7 +243,7 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 var missingProviderPackage = packageResult.Item1 ? null : packageResult.Item2;
-                if (modelingOptionsResult.Payload.InstallNuGetPackage || modelingOptionsResult.Payload.SelectedTobeGenerated == 2)
+                if (modelingOptionsResult.Payload.InstallNuGetPackage || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
                     missingProviderPackage = null;
                 }
