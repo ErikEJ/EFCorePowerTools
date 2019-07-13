@@ -33,6 +33,7 @@ namespace ReverseEngineer20
         [IgnoreDataMember]
         public List<Schema> CustomReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
+        public bool UseLegacyPluralizer { get; set; }
 
         public static ReverseEngineerOptions FromV1(ReverseEngineerOptionsV1 v1)
         {

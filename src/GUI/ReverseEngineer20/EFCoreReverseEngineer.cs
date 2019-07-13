@@ -1,16 +1,8 @@
-﻿using EFCore.SqlCe.Design.Internal;
-using EFCorePowerTools.Shared.Models;
-using EntityFrameworkCore.Scaffolding.Handlebars;
+﻿using EFCorePowerTools.Shared.Models;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
-using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
-using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,73 +24,9 @@ namespace ReverseEngineer20
                     m => errors.Add(m),
                     m => warnings.Add(m)));
 
-            // Add base services for scaffolding
-            var serviceCollection = new ServiceCollection();
-
-            serviceCollection
-                .AddEntityFrameworkDesignTimeServices()
-                .AddSingleton<IOperationReporter, OperationReporter>()
-                .AddSingleton<IOperationReportHandler, OperationReportHandler>();
-
-            if (reverseEngineerOptions.UseHandleBars)
-            {
-                //TODO Consider being selective based on SelectedToBeGenerated
-                var options = Microsoft.EntityFrameworkCore.Design.ReverseEngineerOptions.DbContextAndEntities;
-                var language = (LanguageOptions)reverseEngineerOptions.SelectedHandlebarsLanguage;
-                serviceCollection.AddHandlebarsScaffolding(options, language);
-                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(reverseEngineerOptions.ProjectPath));
-            }
-
-            if (reverseEngineerOptions.CustomReplacers != null)
-            {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(reverseEngineerOptions.CustomReplacers));
-            }
-
-            if (reverseEngineerOptions.UseInflector)
-            {
-                serviceCollection.AddSingleton<IPluralizer, InflectorPluralizer>();
-            }
-
-            // Add database provider services
-            switch (reverseEngineerOptions.DatabaseType)
-            {
-                case DatabaseType.SQLCE35:
-                    throw new NotImplementedException();
-                case DatabaseType.SQLCE40:
-                    var sqlCeProvider = new SqlCeDesignTimeServices();
-                    sqlCeProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-                case DatabaseType.SQLServer:
-                    var provider = new SqlServerDesignTimeServices();
-                    provider.ConfigureDesignTimeServices(serviceCollection);
-
-                    var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
-                    spatial.ConfigureDesignTimeServices(serviceCollection);
-
-                    if (!string.IsNullOrEmpty(reverseEngineerOptions.Dacpac))
-                    {
-                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
-                    }
-                    break;
-                case DatabaseType.Npgsql:
-                    var npgsqlProvider = new NpgsqlDesignTimeServices();
-                    npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-                case DatabaseType.Mysql:
-                    var mysqlProvider = new MySqlDesignTimeServices();
-                    mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-                case DatabaseType.SQLite:
-                    var sqliteProvider = new SqliteDesignTimeServices();
-                    sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var serviceProvider = ServiceProviderBuilder.Build(reverseEngineerOptions);
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
-                
+
             var schemas = new List<string>();
             if (reverseEngineerOptions.DefaultDacpacSchema != null)
             {
@@ -115,7 +43,7 @@ namespace ReverseEngineer20
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames
             };
-                        
+
             var codeOptions = new ModelCodeGenerationOptions
             {
                 UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly
@@ -146,7 +74,7 @@ namespace ReverseEngineer20
                 PostProcess(file, reverseEngineerOptions.IdReplace);
             }
             PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
-            
+
             var result = new EfCoreReverseEngineerResult
             {
                 EntityErrors = errors,
@@ -157,6 +85,7 @@ namespace ReverseEngineer20
 
             return result;
         }
+
 
         private void PostProcessContext(string contextFile, ReverseEngineerOptions options)
         {
