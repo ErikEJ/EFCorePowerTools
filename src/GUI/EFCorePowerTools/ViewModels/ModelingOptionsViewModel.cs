@@ -122,6 +122,7 @@
             Model.IncludeConnectionString = presets.IncludeConnectionString;
             Model.UseHandelbars = presets.UseHandelbars;
             Model.ReplaceId = presets.ReplaceId;
+            Model.DoNotCombineNamespace = presets.DoNotCombineNamespace;
             Model.UsePluralizer = presets.UsePluralizer;
             Model.UseDatabaseNames = presets.UseDatabaseNames;
             Model.Namespace = presets.Namespace;

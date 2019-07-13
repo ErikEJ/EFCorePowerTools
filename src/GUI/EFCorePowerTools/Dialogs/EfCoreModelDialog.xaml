@@ -137,8 +137,8 @@
                           IsEnabled="{Binding Model.UsePluralizer, Converter={StaticResource BoolInvertConverter}}"
                           Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
                 <CheckBox TabIndex="6"
-                          Content="Replace Id with ID (experimental!)"
-                          IsChecked="{Binding Model.ReplaceId}"
+                          Content="Do not combine Namespace and Project Path"
+                          IsChecked="{Binding Model.DoNotCombineNamespace}"
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>

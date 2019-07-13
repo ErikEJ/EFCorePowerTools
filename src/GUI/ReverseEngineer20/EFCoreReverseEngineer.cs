@@ -35,7 +35,7 @@ namespace ReverseEngineer20
 
             var @namespace = reverseEngineerOptions.ProjectRootNamespace;
 
-            if (!string.IsNullOrEmpty(reverseEngineerOptions.OutputPath))
+            if (!string.IsNullOrEmpty(reverseEngineerOptions.OutputPath) && !reverseEngineerOptions.DoNotCombineNamespace)
             {
                 @namespace += "." + reverseEngineerOptions.OutputPath.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
             }

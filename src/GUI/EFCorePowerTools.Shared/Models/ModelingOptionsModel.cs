@@ -15,6 +15,7 @@
         private bool _useHandelbars;
         private int _selectedHandlebarsLanguage;
         private bool _replaceId;
+        private bool _dontCombineNamespace;
         private bool _usePluralizer;
         private bool _useDatabaseNames;
         private string _ns;
@@ -97,6 +98,17 @@
             {
                 if (value == _replaceId) return;
                 _replaceId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool DoNotCombineNamespace
+        {
+            get => _dontCombineNamespace;
+            set
+            {
+                if (value == _dontCombineNamespace) return;
+                _dontCombineNamespace = value;
                 OnPropertyChanged();
             }
         }

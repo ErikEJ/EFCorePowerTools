@@ -162,6 +162,7 @@ namespace EFCorePowerTools.Handlers
                     presets.UseHandelbars = options.UseHandleBars;
                     presets.SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage;
                     presets.ReplaceId = options.IdReplace;
+                    presets.DoNotCombineNamespace = options.DoNotCombineNamespace;
                     presets.IncludeConnectionString = options.IncludeConnectionString;
                     presets.ModelName = options.ContextClassName;
                     presets.Namespace = options.ProjectRootNamespace;
@@ -189,6 +190,7 @@ namespace EFCorePowerTools.Handlers
                     UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,
                     IdReplace = modelingOptionsResult.Payload.ReplaceId,
+                    DoNotCombineNamespace = modelingOptionsResult.Payload.DoNotCombineNamespace,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
                     SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage,
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
