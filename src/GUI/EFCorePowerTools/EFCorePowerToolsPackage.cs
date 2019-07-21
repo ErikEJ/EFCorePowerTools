@@ -1,38 +1,33 @@
-﻿using System;
+﻿using EFCorePowerTools.BLL;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.DAL;
+using EFCorePowerTools.Dialogs;
+using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Handlers;
+using EFCorePowerTools.Messages;
+using EFCorePowerTools.Shared.BLL;
+using EFCorePowerTools.Shared.DAL;
+using EFCorePowerTools.Shared.Models;
+using EFCorePowerTools.ViewModels;
+using EnvDTE;
+using EnvDTE80;
+using ErikEJ.SqlCeToolbox.Helpers;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
-
-using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Handlers;
-
-using EnvDTE;
-using EnvDTE80;
-
-using ErikEJ.SqlCeToolbox.Helpers;
-
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
+using System.Windows;
 
 namespace EFCorePowerTools
 {
-    using System.Windows;
-    using BLL;
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using DAL;
-    using Dialogs;
-    using GalaSoft.MvvmLight.Messaging;
-    using Messages;
-    using Microsoft.Extensions.DependencyInjection;
-    using Shared.BLL;
-    using Shared.DAL;
-    using Shared.Models;
-    using ViewModels;
-
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [SqlCe40ProviderRegistration]
     [SqliteProviderRegistration]
@@ -134,6 +129,7 @@ namespace EFCorePowerTools
                 oleMenuCommandService.AddCommand(menuItem11);
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
+            typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
         }
 
         private void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
