@@ -6,6 +6,8 @@ Entity Framework Core Power Tools - reverse engineering and model visualization 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](http://twitter.com/ErikEJ) 
 
+[EF Core Power Tools presentation](https://erikej.github.io/EFCorePowerTools/index.html)
+
 [My tools and utilities for embedded database development](http://erikej.github.io/SqlCeToolbox/)
 
 If you use my free tools, I would be very grateful for a [rating or review here](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools#review-details)
