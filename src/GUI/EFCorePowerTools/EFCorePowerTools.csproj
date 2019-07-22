@@ -142,6 +142,14 @@
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.dll">
+      <Link>Microsoft.VisualStudio.ProjectSystem.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\packages\Microsoft.VisualStudio.ProjectSystem.16.0.374-pre\lib\net46\Microsoft.VisualStudio.ProjectSystem.VS.dll">
+      <Link>Microsoft.VisualStudio.ProjectSystem.VS.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="efpt\2.1.0\efpt.exe">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
