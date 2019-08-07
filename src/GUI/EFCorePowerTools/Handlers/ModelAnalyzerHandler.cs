@@ -49,7 +49,9 @@ namespace EFCorePowerTools.Handlers
                         return;
                     }
 
-                    if (!result.Item1)
+                    // TODO Handle EFCore.Design 3!!
+
+                    if (!result.Item1 && result.Item2 != "3.0.0.0")
                     {
                         var version = new Version(result.Item2);
                         var nugetHelper = new NuGetHelper();
