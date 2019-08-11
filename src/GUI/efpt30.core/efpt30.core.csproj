@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;CORE22</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CORE22</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

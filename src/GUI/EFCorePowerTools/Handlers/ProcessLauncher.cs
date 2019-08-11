@@ -61,6 +61,13 @@ namespace EFCorePowerTools.Handlers
         {
             var launchPath = _project.IsNetCore21OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
 
+            //Fix for "Bad IL format" with .NET Core 3.0 - test again after release
+            if (_project.IsNetCore30() && outputPath.EndsWith(".exe"))
+            {
+                outputPath = outputPath.Remove(outputPath.Length - 4, 4);
+                outputPath += ".dll";
+            }
+
             var startInfo = new ProcessStartInfo
             {
                 FileName = Path.Combine(Path.GetDirectoryName(launchPath) ?? throw new InvalidOperationException(), "efpt.exe"),

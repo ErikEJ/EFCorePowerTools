@@ -45,12 +45,11 @@ namespace EFCorePowerTools.Handlers
                     var result = project.ContainsEfCoreDesignReference();
                     if (string.IsNullOrEmpty(result.Item2))
                     {
-                        EnvDteHelper.ShowError("EF Core 2.1 or 2.2 not found in project");
+                        EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
                         return;
                     }
 
-                    // TODO Handle EFCore.Design 3!!
-
+                    // TODO Handle EFCore.Design 3.0 release version!
                     if (!result.Item1 && result.Item2 != "3.0.0.0")
                     {
                         var version = new Version(result.Item2);
