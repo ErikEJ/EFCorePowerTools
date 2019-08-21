@@ -168,7 +168,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     providerGuid = Resources.NpgsqlProvider;
                 }
 
-                if (providerInvariant == "Mysql")
+                if (providerInvariant == "Mysql" || providerInvariant == "MySql.Data.MySqlClient")
                 {
                     dbType = DatabaseType.Mysql;
                     providerGuid = Resources.MysqlVSProvider;
