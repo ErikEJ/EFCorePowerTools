@@ -63,7 +63,6 @@ namespace EFCorePowerTools.Handlers
                         return;
                     }
 
-                    // TODO Handle EFCore.Design 3.0 release version!
                     if (!result.Item1 && result.Item2 != "3.0.0.0")
                     {
                         var version = new Version(result.Item2);
