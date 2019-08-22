@@ -8,8 +8,6 @@
     </NuGetPackageImportStamp>
     <UseCodebase>true</UseCodebase>
     <TargetFrameworkProfile />
-    <Version>2.3.0</Version>
-    <AssemblyVersion>2.3.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
