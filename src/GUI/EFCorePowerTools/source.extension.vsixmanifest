@@ -20,7 +20,7 @@ About - Displays version and other diagnostic information about your Visual Stud
         <Tags>sql sqlite sqlce entityframework efcore codegeneration database</Tags>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.8.28010.0,17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0.27130.0,17.0)" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.7.1,)" />
