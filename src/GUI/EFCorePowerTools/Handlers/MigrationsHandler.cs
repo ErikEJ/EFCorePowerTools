@@ -59,11 +59,11 @@ namespace EFCorePowerTools.Handlers
 
                     if (string.IsNullOrEmpty(result.Item2))
                     {
-                        EnvDteHelper.ShowError("EF Core 2.1 or 2.2 not found in project");
+                        EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
                         return;
                     }
 
-                    if (!result.Item1)
+                    if (!result.Item1 && result.Item2 != "3.0.0.0")
                     {
                         var version = new Version(result.Item2);
                         var nugetHelper = new NuGetHelper();

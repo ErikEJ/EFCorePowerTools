@@ -18,12 +18,9 @@ namespace EFCorePowerTools.Handlers
 
         public ProcessLauncher(Project project)
         {
-            if (project.IsNetCore())
+            if (project.IsNetCore() && !project.IsNetCore21OrHigher())
             {
-                if (!project.IsNetCore21() && !project.IsNetCore22())
-                {
-                    throw new ArgumentException("Only .NET Core 2.1 and 2.2 are supported");
-                }
+                throw new ArgumentException("Only .NET Core 2.1, 2.2 and 3.0 and 2.2 are supported");
             }
             _project = project;
         }
@@ -62,7 +59,14 @@ namespace EFCorePowerTools.Handlers
 
         private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = _project.IsNetCore() ? DropNetCoreFiles() : DropFiles(outputPath);
+            var launchPath = _project.IsNetCore21OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
+
+            //Fix for "Bad IL format" with .NET Core 3.0 - test again after release
+            if (_project.IsNetCore30() && outputPath.EndsWith(".exe"))
+            {
+                outputPath = outputPath.Remove(outputPath.Length - 4, 4);
+                outputPath += ".dll";
+            }
 
             var startInfo = new ProcessStartInfo
             {
@@ -188,12 +192,14 @@ namespace EFCorePowerTools.Handlers
         {
             var version = GetEfCoreVersion(toDir);
 
-            if (version.ToString(3) == "2.1.0"
-                || version.ToString(3) == "2.1.4"
-                || version.ToString(3) == "2.2.0"
-                || version.ToString(3) == "2.2.1"
-                || version.ToString(3) == "2.2.2"
-                || version.ToString(3) == "2.2.4"
+            var checkVer = version.ToString(3);
+
+            if (checkVer == "2.1.0"
+                || checkVer == "2.1.4"
+                || checkVer == "2.2.0"
+                || checkVer == "2.2.1"
+                || checkVer == "2.2.2"
+                || checkVer == "2.2.4"
                 )
             {
                 return version.ToString(3);
@@ -240,6 +246,10 @@ namespace EFCorePowerTools.Handlers
             else if (_project.IsNetCore22())
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt22.exe.zip"), toDir);
+            }
+            else if (_project.IsNetCore30())
+            {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
             }
             return toDir;
         }
