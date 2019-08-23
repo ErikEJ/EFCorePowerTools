@@ -127,7 +127,6 @@ Global
 		{4562597A-EBAA-4CD4-9F89-AD45AB08FF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4562597A-EBAA-4CD4-9F89-AD45AB08FF56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4562597A-EBAA-4CD4-9F89-AD45AB08FF56}.Release|x86.ActiveCfg = Release|Any CPU
-		{4562597A-EBAA-4CD4-9F89-AD45AB08FF56}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
