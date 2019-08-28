@@ -189,7 +189,7 @@ namespace EFCorePowerTools.Handlers
                     ProjectRootNamespace = modelingOptionsResult.Payload.Namespace,
                     UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,
-                    UseLegacyPluralizer = options.UseLegacyPluralizer,
+                    UseLegacyPluralizer =  options?.UseLegacyPluralizer ?? false,
                     IdReplace = modelingOptionsResult.Payload.ReplaceId,
                     DoNotCombineNamespace = modelingOptionsResult.Payload.DoNotCombineNamespace,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
