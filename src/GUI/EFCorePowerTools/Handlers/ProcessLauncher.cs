@@ -197,9 +197,8 @@ namespace EFCorePowerTools.Handlers
             if (checkVer == "2.1.0"
                 || checkVer == "2.1.4"
                 || checkVer == "2.2.0"
-                || checkVer == "2.2.1"
-                || checkVer == "2.2.2"
                 || checkVer == "2.2.4"
+                || checkVer == "2.2.6"
                 )
             {
                 return version.ToString(3);
