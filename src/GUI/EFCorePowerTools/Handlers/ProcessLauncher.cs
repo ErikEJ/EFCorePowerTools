@@ -114,9 +114,9 @@ namespace EFCorePowerTools.Handlers
 
                 var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
 
-                if (projectAssetsFile != null && File.Exists(projectAssetsFile.ToString()) )
+                if (projectAssetsFile != null && File.Exists(projectAssetsFile) )
                 {
-                    var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile.ToString(), NuGet.Common.NullLogger.Instance);
+                    var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile, NuGet.Common.NullLogger.Instance);
 
                     if (lockFile != null)
                     {
@@ -152,6 +152,8 @@ namespace EFCorePowerTools.Handlers
                 {
                     startInfo.Arguments = dotNetParams + " \"" + outputPath + "\"";
                 }
+
+                Debug.WriteLine(dotNetParams);
             }
 
             var standardOutput = new StringBuilder();

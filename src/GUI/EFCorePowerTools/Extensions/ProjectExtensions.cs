@@ -8,6 +8,7 @@ namespace EFCorePowerTools.Extensions
 {
     using Microsoft.VisualStudio.ProjectSystem;
     using Microsoft.VisualStudio.ProjectSystem.Properties;
+    using NuGet.ProjectModel;
     using Shared.Enums;
 
     internal static class ProjectExtensions
@@ -99,18 +100,25 @@ namespace EFCorePowerTools.Extensions
 
             bool hasDesign = false;
             string coreVersion = string.Empty;
+            var projectAssetsFile = project.GetCspProperty("ProjectAssetsFile");
 
-            var vsProject = project.Object as VSProject;
-            if (vsProject == null) return new Tuple<bool, string>(false, null);
-            for (var i = 1; i < vsProject.References.Count + 1; i++)
+            if (projectAssetsFile != null && File.Exists(projectAssetsFile))
             {
-                if (vsProject.References.Item(i).Name.Equals(designPackage))
+                var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile, NuGet.Common.NullLogger.Instance);
+
+                if (lockFile != null)
                 {
-                    hasDesign = true;
-                }
-                if (vsProject.References.Item(i).Name.Equals(corePackage))
-                {
-                    coreVersion = vsProject.References.Item(i).Version;
+                    foreach (var lib in lockFile.Libraries)
+                    {
+                        if (lib.Name.Equals(corePackage))
+                        {
+                            coreVersion = lib.Version.ToString();
+                        }
+                        if (lib.Name.Equals(designPackage))
+                        {
+                            hasDesign = true;
+                        }
+                    }
                 }
             }
 

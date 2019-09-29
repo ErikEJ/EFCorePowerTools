@@ -63,7 +63,7 @@ namespace EFCorePowerTools.Handlers
                         return;
                     }
 
-                    if (!result.Item1 && result.Item2 != "3.0.0.0")
+                    if (!result.Item1)
                     {
                         var version = new Version(result.Item2);
                         var nugetHelper = new NuGetHelper();
