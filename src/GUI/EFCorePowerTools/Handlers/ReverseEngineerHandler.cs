@@ -87,6 +87,14 @@ namespace EFCorePowerTools.Handlers
 
                 if (dbInfo == null) dbInfo = new DatabaseInfo();
 
+                var includeViews = pickDataSourceResult.Payload.IncludeViews;
+
+                if (includeViews && !string.IsNullOrEmpty(dacpacPath))
+                {
+                    EnvDteHelper.ShowMessage("Dacpac not currently supported with views");
+                    return;
+                }
+
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
                     dbInfo.DatabaseType = DatabaseType.SQLServer;
@@ -105,13 +113,11 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var result = revEng.GetDacpacTables("xx");
-
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? revEng.GetDacpacTables(dacpacPath)
-                                           : GetTablesFromRepository(dbInfo);
+                                           : GetTablesFromRepository(dbInfo, includeViews);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -313,7 +319,9 @@ namespace EFCorePowerTools.Handlers
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    tables.Add(new TableInformationModel(table, hasPrimaryKey));
+                    var info = new TableInformationModel(table, hasPrimaryKey);
+                    info.HasKey = includeViews ? true : hasPrimaryKey;
+                    tables.Add(info);
                 }
 
                 if (includeViews)
@@ -321,7 +329,9 @@ namespace EFCorePowerTools.Handlers
                     var views = repository.GetAllViews();
                     foreach (var view in views)
                     {
-                        tables.Add(new TableInformationModel(view.ViewName, false));
+                        var info = new TableInformationModel(view.ViewName, false);
+                        info.HasKey = true;
+                        tables.Add(info);
                     }
                 }
 

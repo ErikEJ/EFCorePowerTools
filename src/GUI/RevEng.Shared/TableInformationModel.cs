@@ -16,6 +16,7 @@
     {
         private string _name;
         private bool _hasPrimaryKey;
+        private bool _isKeyLess;
 
         /// <summary>
         /// Gets or sets the table name.
@@ -48,6 +49,21 @@
         }
 
         /// <summary>
+        /// Gets or sets whether a key exists for the table/view or not.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool HasKey
+        {
+            get => _isKeyLess;
+            set
+            {
+                if (value == _isKeyLess) return;
+                _isKeyLess = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TableInformationModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>
@@ -61,6 +77,7 @@
 
             Name = name;
             HasPrimaryKey = hasPrimaryKey;
+            HasKey = !hasPrimaryKey;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

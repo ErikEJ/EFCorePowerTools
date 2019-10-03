@@ -18,6 +18,7 @@
 
         private DatabaseConnectionModel _selectedDatabaseConnection;
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
+        private bool _includeViews;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -28,6 +29,17 @@
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
         public ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
+
+        public bool IncludeViews
+        {
+            get => _includeViews;
+            set
+            {
+                if (value == _includeViews) return;
+                _includeViews = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public DatabaseConnectionModel SelectedDatabaseConnection
         {
