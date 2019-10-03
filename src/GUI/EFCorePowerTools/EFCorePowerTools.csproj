@@ -247,6 +247,10 @@
       <Project>{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}</Project>
       <Name>EFCorePowerTools.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
+      <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
+      <Name>RevEng.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReverseEngineer20\ReverseEngineer20.csproj">
       <Project>{4c0f2979-fcd9-4e93-8e4f-2a43055d42fe}</Project>
       <Name>ReverseEngineer20</Name>

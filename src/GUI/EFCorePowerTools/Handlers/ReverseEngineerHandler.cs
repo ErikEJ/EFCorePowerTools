@@ -105,9 +105,11 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
+                var result = revEng.GetDacpacTables("xx");
+
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
-                var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
+                List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? revEng.GetDacpacTables(dacpacPath)
                                            : GetTablesFromRepository(dbInfo);
 
