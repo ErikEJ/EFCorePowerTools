@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
+using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +11,9 @@ using System.Text;
 
 namespace ReverseEngineer20
 {
-    public class EfCoreReverseEngineer
+    public class ReverseEngineerRunner
     {
-        public EfCoreReverseEngineerResult GenerateFiles(ReverseEngineerOptions reverseEngineerOptions)
+        public EfCoreReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions reverseEngineerOptions)
         {
             var errors = new List<string>();
             var warnings = new List<string>();
@@ -38,24 +39,29 @@ namespace ReverseEngineer20
             }
             var modelOptions = new ModelReverseEngineerOptions
             {
-                UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames
+                UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,                  
             };
 
             var codeOptions = new ModelCodeGenerationOptions
             {
-                UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly
+                UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly,
+                Language = "C#",
+                //TODO!
+                ContextDir = null,
+                ContextName = reverseEngineerOptions.ContextClassName,
+                RootNamespace = @namespace,
+                //TODO Test!
+                ContextNamespace = null,
+                ModelNamespace = null,
+                SuppressConnectionStringWarning = false,
+                ConnectionString = reverseEngineerOptions.ConnectionString,
             };
 
+            var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
+
             var scaffoldedModel = scaffolder.ScaffoldModel(
-                    reverseEngineerOptions.Dacpac != null
-                        ? reverseEngineerOptions.Dacpac
-                        : reverseEngineerOptions.ConnectionString,
-                    reverseEngineerOptions.Tables.Select(m => m.Name).ToArray(),
-                    schemas,
-                    @namespace,
-                    "C#",
-                    null,
-                    reverseEngineerOptions.ContextClassName,
+                    reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString,
+                    dbOptions,
                     modelOptions,
                     codeOptions);
 
@@ -68,9 +74,10 @@ namespace ReverseEngineer20
 
             foreach (var file in filePaths.AdditionalFiles)
             {
-                PostProcess(file, reverseEngineerOptions.IdReplace);
+                PostProcess(file);
             }
-            PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
+
+            PostProcess(filePaths.ContextFile);
 
             var result = new EfCoreReverseEngineerResult
             {
@@ -83,14 +90,12 @@ namespace ReverseEngineer20
             return result;
         }
 
-
-        private void PostProcessContext(string contextFile, ReverseEngineerOptions options)
+        private void PostProcessContext(string contextFile, ReverseEngineerCommandOptions options)
         {
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
 
             int i = 1;
-            var inModelCreating = false;
 
             foreach (var line in lines)
             {
@@ -103,37 +108,15 @@ namespace ReverseEngineer20
                         continue;
                 }
 
-                if (line.Contains("OnModelCreating")) inModelCreating = true;
-
-                if (!options.UseHandleBars && inModelCreating && line.StartsWith("        }"))
-                {
-                    finalLines.Add(string.Empty);
-                    finalLines.Add("            OnModelCreatingPartial(modelBuilder);");
-                }
-
-                if (!options.UseHandleBars && inModelCreating && line.StartsWith("    }"))
-                {
-                    finalLines.Add(string.Empty);
-                    finalLines.Add("        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);");
-                }
-
                 finalLines.Add(line);
                 i++;
             }
             File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
         }
 
-        private void PostProcess(string file, bool idReplace)
+        private void PostProcess(string file)
         {
             var text = File.ReadAllText(file, Encoding.UTF8);
-            if (idReplace)
-            {
-                text = text.Replace("Id, ", "ID, ");
-                text = text.Replace("Id }", "ID }");
-                text = text.Replace("Id }", "ID }");
-                text = text.Replace("Id)", "ID)");
-                text = text.Replace("Id { get; set; }", "ID { get; set; }");
-            }
             File.WriteAllText(file, "// <auto-generated> This file has been auto generated by EF Core Power Tools. </auto-generated>" + Environment.NewLine + text.TrimEnd(), Encoding.UTF8);
         }
     }

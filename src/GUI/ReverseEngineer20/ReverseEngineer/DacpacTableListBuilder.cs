@@ -28,20 +28,22 @@ namespace ReverseEngineer20
 
         public List<TableInformationModel> GetTableDefinitions(bool includeViews = false)
         {
-            var model = new TSqlTypedModel(_dacpacPath);
-            var result = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
-                        .Select(m => new TableInformationModel(m.Name.Parts[0] + "." + m.Name.Parts[1], m.PrimaryKeyConstraints.Any()))
-                        .ToList();
-
-            if (includeViews)
+            using (var model = new TSqlTypedModel(_dacpacPath))
             {
-                var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
-                            .Select(m => new TableInformationModel(m.Name.Parts[0] + "." + m.Name.Parts[1], false))
+                var result = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
+                            .Select(m => new TableInformationModel(m.Name.Parts[0] + "." + m.Name.Parts[1], m.PrimaryKeyConstraints.Any()))
                             .ToList();
-                result = result.Concat(views).ToList();
-            }
 
-            return result;
+                if (includeViews)
+                {
+                    var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
+                                .Select(m => new TableInformationModel(m.Name.Parts[0] + "." + m.Name.Parts[1], false))
+                                .ToList();
+                    result = result.Concat(views).ToList();
+                }
+
+                return result;
+            }
         }
     }
 }

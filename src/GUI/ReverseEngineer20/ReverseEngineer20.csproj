@@ -250,6 +250,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>ModelBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="ReverseEngineerOptions.cs" />
     <Compile Include="ReverseEngineer\LegacyInflectorPluralizer.cs" />
     <Compile Include="ReverseEngineer\Pluralizer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
@@ -277,10 +278,6 @@
     <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj">
       <Project>{2bd0c616-7126-4e12-a37d-a08b04bbf5e9}</Project>
       <Name>EFCorePowerTools.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RevEng.Interfaces\RevEng.Interfaces.csproj">
-      <Project>{8e5ed6b3-c63f-4e85-a2ce-940da2a48a5b}</Project>
-      <Name>RevEng.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
