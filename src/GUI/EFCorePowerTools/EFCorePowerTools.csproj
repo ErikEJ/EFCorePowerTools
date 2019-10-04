@@ -150,6 +150,7 @@
       <Link>Microsoft.VisualStudio.ProjectSystem.VS.dll</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Dialogs\TableWarning_16x.png" />
     <Content Include="efpt\2.1.0\efpt.exe">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -184,6 +185,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\7.png" />
+    <Resource Include="Resources\TableWarning_16x.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
     <Resource Include="Resources\Unicorn.png" />
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
