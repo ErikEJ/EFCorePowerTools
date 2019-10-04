@@ -3,7 +3,7 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using Annotations;
-    using Enums;
+    using ReverseEngineer20;
 
     /// <summary>
     /// A model holding data about a database connection.

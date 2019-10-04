@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using EFCorePowerTools.Shared.Enums;
+using ReverseEngineer20;
 
 [DefaultProperty("Caption")]
 // ReSharper disable once CheckNamespace

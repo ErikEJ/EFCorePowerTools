@@ -1,10 +1,9 @@
-﻿using NUnit.Framework;
+﻿using EFCorePowerTools.Shared.Models;
+using NUnit.Framework;
+using ReverseEngineer20;
 
 namespace UnitTests.Models
 {
-    using EFCorePowerTools.Shared.Enums;
-    using EFCorePowerTools.Shared.Models;
-
     [TestFixture]
     public class DatabaseConnectionModelTests
     {

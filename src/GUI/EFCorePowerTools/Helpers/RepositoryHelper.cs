@@ -1,8 +1,8 @@
 ﻿using EFCorePowerTools;
-using EFCorePowerTools.Shared.Enums;
 using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using ErikEJ.SQLiteScripting;
+using ReverseEngineer20;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;

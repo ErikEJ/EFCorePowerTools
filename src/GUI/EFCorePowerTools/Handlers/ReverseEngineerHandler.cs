@@ -1,23 +1,21 @@
-﻿using EFCorePowerTools.Extensions;
+﻿using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Shared.Models;
 using EnvDTE;
 using ErikEJ.SqlCeToolbox.Helpers;
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace EFCorePowerTools.Handlers
 {
-    using Contracts.Views;
-    using Dialogs;
-    using ReverseEngineer20.ReverseEngineer;
-    using Shared.Enums;
-    using Shared.Models;
-
     internal class ReverseEngineerHandler
     {
         private readonly EFCorePowerToolsPackage _package;
@@ -116,8 +114,8 @@ namespace EFCorePowerTools.Handlers
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
-                                           ? revEng.GetDacpacTables(dacpacPath)
-                                          : RepositoryHelper.GetTablesFromRepository(dbInfo, includeViews);
+                                           ? GetDacpacTables(dacpacPath)
+                                           : RepositoryHelper.GetTablesFromRepository(dbInfo, includeViews);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -151,7 +149,7 @@ namespace EFCorePowerTools.Handlers
                 {
                     classBasis = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
                 }
-                var model = revEng.GenerateClassName(classBasis) + "Context";
+                var model = GenerateClassName(classBasis) + "Context";
                 var packageResult = project.ContainsEfCoreReference(dbInfo.DatabaseType);
 
                 var presets = new ModelingOptionsModel
@@ -347,6 +345,33 @@ namespace EFCorePowerTools.Handlers
             }
 
             return false;
+        }
+
+        private string GenerateClassName(string value)
+        {
+            var className = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
+            var isValid = System.CodeDom.Compiler.CodeDomProvider.CreateProvider("C#").IsValidIdentifier(className);
+
+            if (!isValid)
+            {
+                // File name contains invalid chars, remove them
+                var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
+                className = regex.Replace(className, "");
+
+                // Class name doesn't begin with a letter, insert an underscore
+                if (!char.IsLetter(className, 0))
+                {
+                    className = className.Insert(0, "_");
+                }
+            }
+
+            return className.Replace(" ", string.Empty);
+        }
+
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
+        {
+            var builder = new DacpacTableListBuilder(dacpacPath);
+            return builder.GetTableDefinitions();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace EFCorePowerTools.Extensions
     using Microsoft.VisualStudio.ProjectSystem;
     using Microsoft.VisualStudio.ProjectSystem.Properties;
     using NuGet.ProjectModel;
-    using Shared.Enums;
+    using ReverseEngineer20;
 
     internal static class ProjectExtensions
     {

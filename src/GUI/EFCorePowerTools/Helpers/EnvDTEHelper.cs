@@ -1,5 +1,4 @@
 ﻿using EFCorePowerTools;
-using EFCorePowerTools.Shared.Enums;
 using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using Microsoft.VisualStudio.Data.Core;
@@ -14,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using ReverseEngineer20;
 
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
