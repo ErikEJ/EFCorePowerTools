@@ -195,16 +195,19 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             using (var npgsqlConn = new NpgsqlConnection(connectionString))
             {
                 npgsqlConn.Open();
+
                 var tablesDataTable = npgsqlConn.GetSchema("Tables");
                 foreach (DataRow row in tablesDataTable.Rows)
                 {
-                    var schema = row["table_schema"].ToString();
-                    if (schema != "pg_catalog"
-                        && schema != "information_schema")
-                    {
-                        // TODO: Check if the table has a primary key
-                        result.Add(new TableInformationModel(schema + "." + row["table_name"].ToString(), true));
-                    }
+                    // TODO: Check if the table has a primary key
+                    result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true));
+                }
+
+                var viewsDataTable = npgsqlConn.GetSchema("Views");
+                foreach (DataRow row in viewsDataTable.Rows)
+                {
+                    // TODO: Check if the table has a primary key
+                    result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true));
                 }
             }
 
