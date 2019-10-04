@@ -14,13 +14,11 @@ namespace UnitTests
 
         private string dacpacQuirk;
 
-        private TSqlTypedModel model;
         [SetUp]
         public void Setup()
         {
             dacpacQuirk = TestPath("TestDb.dacpac");
             dacpac = TestPath("Chinook.dacpac");
-            model = new TSqlTypedModel(dacpac);
         }
 
         [Test]
