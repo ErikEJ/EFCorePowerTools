@@ -117,7 +117,7 @@ namespace EFCorePowerTools.Handlers
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? revEng.GetDacpacTables(dacpacPath)
-                                           : GetTablesFromRepository(dbInfo, includeViews);
+                                          : RepositoryHelper.GetTablesFromRepository(dbInfo, includeViews);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -298,46 +298,6 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo, bool includeViews = false)
-        {
-            if (dbInfo.DatabaseType == DatabaseType.Npgsql)
-            {
-                return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString);
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Mysql)
-            {
-                return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString);
-            }
-
-            using (var repository = RepositoryHelper.CreateRepository(dbInfo))
-            {
-                var allPks = repository.GetAllPrimaryKeys();
-                var tableList = repository.GetAllTableNamesForExclusion();
-                var tables = new List<TableInformationModel>();
-
-                foreach (var table in tableList)
-                {
-                    var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    var info = new TableInformationModel(table, hasPrimaryKey);
-                    info.HasKey = includeViews ? true : hasPrimaryKey;
-                    tables.Add(info);
-                }
-
-                if (includeViews)
-                {
-                    var views = repository.GetAllViews();
-                    foreach (var view in views)
-                    {
-                        var info = new TableInformationModel(view.ViewName, false);
-                        info.HasKey = true;
-                        tables.Add(info);
-                    }
-                }
-
-                return tables;
-            }
-        }
 
         private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options)
         {
