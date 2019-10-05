@@ -1,0 +1,39 @@
+{
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Cloudsense;Integrated Security=True",
+   "ContextClassName": "CloudsenseContext",
+   "CustomReplacers": null,
+   "Dacpac": null,
+   "DatabaseType": 3,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": false,
+   "OutputPath": null,
+   "ProjectPath": "C:\\Users\\ErikEjlskovJensen\\Source\\Repos\\ConsoleApp2\\ConsoleApp2\\",
+   "ProjectRootNamespace": "ConsoleApp2",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Clients"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.ClientsLogs"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Domains"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Forests"
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false
+}

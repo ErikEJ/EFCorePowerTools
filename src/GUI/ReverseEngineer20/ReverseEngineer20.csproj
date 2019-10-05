@@ -257,6 +257,7 @@
     <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />
     <Compile Include="ReverseEngineer\CustomTemplateFileService.cs" />
     <Compile Include="ReverseEngineer\DacpacTableListBuilder.cs" />
+    <Compile Include="ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
     <Compile Include="ReverseEngineer\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="EFCoreReverseEngineer.cs" />
     <Compile Include="PathHelper.cs" />

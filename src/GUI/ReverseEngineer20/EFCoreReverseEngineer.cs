@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
+using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,13 @@ namespace ReverseEngineer20
 {
     public class EfCoreReverseEngineer
     {
-        public EfCoreReverseEngineerResult GenerateFiles(ReverseEngineerOptions reverseEngineerOptions)
+        public ReverseEngineerResult GenerateFiles(ReverseEngineerOptions reverseEngineerOptions, bool includeViews)
         {
+            if (includeViews)
+            {
+                return LaunchExternalRunner(reverseEngineerOptions);
+            }
+
             var errors = new List<string>();
             var warnings = new List<string>();
             var reporter = new OperationReporter(
@@ -72,7 +78,7 @@ namespace ReverseEngineer20
             }
             PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
 
-            var result = new EfCoreReverseEngineerResult
+            var result = new ReverseEngineerResult
             {
                 EntityErrors = errors,
                 EntityWarnings = warnings,
@@ -83,6 +89,37 @@ namespace ReverseEngineer20
             return result;
         }
 
+        private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options)
+        {
+            var commandOptions = new ReverseEngineerCommandOptions
+            {
+                ConnectionString = options.ConnectionString,
+                ContextClassName = options.ContextClassName,
+                CustomReplacers = options.CustomReplacers,
+                Dacpac = options.Dacpac,
+                DatabaseType = options.DatabaseType,
+                DefaultDacpacSchema = options.DefaultDacpacSchema,
+                DoNotCombineNamespace = options.DoNotCombineNamespace,
+                IdReplace = options.IdReplace,
+                IncludeConnectionString = options.IncludeConnectionString,
+                OutputPath = options.OutputPath,
+                ProjectPath = options.ProjectPath,
+                ProjectRootNamespace = options.ProjectRootNamespace,
+                SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
+                SelectedToBeGenerated = options.SelectedToBeGenerated,
+                Tables = options.Tables,
+                UseDatabaseNames = options.UseDatabaseNames,
+                UseFluentApiOnly = options.UseFluentApiOnly,
+                UseHandleBars = options.UseHandleBars,
+                UseInflector = options.UseInflector,
+                UseLegacyPluralizer = options.UseLegacyPluralizer,
+            };
+
+            var optionString = commandOptions.Write();
+            //TODO Call tool and get result! :-)
+
+            return null;
+        }
 
         private void PostProcessContext(string contextFile, ReverseEngineerOptions options)
         {
