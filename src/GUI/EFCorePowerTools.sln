@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efpt30.core", "efpt30.core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Shared", "RevEng.Shared\RevEng.Shared.csproj", "{D4594A0C-B02F-469D-9521-F0BDD5A30FC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efreveng", "efreveng\efreveng.csproj", "{EBD761ED-96D2-44F6-9099-9D376CE7181F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efreveng", "efreveng\efreveng.csproj", "{EBD761ED-96D2-44F6-9099-9D376CE7181F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -146,7 +146,6 @@ Global
 		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|x86.ActiveCfg = Release|Any CPU
-		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

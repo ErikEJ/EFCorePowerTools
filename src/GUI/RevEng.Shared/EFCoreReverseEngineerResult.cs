@@ -2,7 +2,7 @@
 
 namespace ReverseEngineer20
 {
-    public class EfCoreReverseEngineerResult
+    public class ReverseEngineerResult
     {
         public IList<string> EntityTypeFilePaths { get; set; }
         public string ContextFilePath { get; set; }

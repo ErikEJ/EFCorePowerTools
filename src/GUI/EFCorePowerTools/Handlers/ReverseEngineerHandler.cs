@@ -222,7 +222,7 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                var revEngResult = revEng.GenerateFiles(options);
+                var revEngResult = revEng.GenerateFiles(options, includeViews);
 
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
@@ -306,7 +306,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private string ReportRevEngErrors(EfCoreReverseEngineerResult revEngResult, string missingProviderPackage)
+        private string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
         {
             var errors = new StringBuilder();
             if (revEngResult.EntityErrors.Count == 0)

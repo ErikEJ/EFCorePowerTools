@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace EFCorePowerTools.Extensions
+namespace ReverseEngineer20.ReverseEngineer
 {
     internal static class ReverseEngineerOptionsExtensions
     {

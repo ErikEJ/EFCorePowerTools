@@ -9,11 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ReverseEngineer20
+namespace ReverseEngineer20.ReverseEngineer
 {
     public class ReverseEngineerRunner
     {
-        public EfCoreReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions reverseEngineerOptions)
+        public ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions reverseEngineerOptions)
         {
             var errors = new List<string>();
             var warnings = new List<string>();
@@ -79,7 +79,7 @@ namespace ReverseEngineer20
 
             PostProcess(filePaths.ContextFile);
 
-            var result = new EfCoreReverseEngineerResult
+            var result = new ReverseEngineerResult
             {
                 EntityErrors = errors,
                 EntityWarnings = warnings,
