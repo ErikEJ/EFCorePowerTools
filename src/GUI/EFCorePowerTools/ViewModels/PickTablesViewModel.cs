@@ -99,10 +99,10 @@
             if (resultFileName == null)
                 return;
 
-            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey).Select(m => m.Model.Name));
+            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected).Select(m => m.Model.Name));
         }
 
-        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
+        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected);
 
         private void LoadSelection_Executed()
         {
@@ -137,7 +137,7 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
+        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected);
 
         private void Cancel_Executed()
         {
@@ -154,15 +154,14 @@
                 return;
 
             foreach (var t in Tables)
-                t.IsSelected = t.Model.HasPrimaryKey && selectionMode.Value;
+                t.IsSelected = selectionMode.Value;
 
             SearchText = string.Empty;
         }
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = Tables.Where(m => m.Model.HasPrimaryKey)
-                                             .All(m => m.IsSelected)
+            TableSelectionThreeState = Tables.All(m => m.IsSelected)
                                            ? true
                                            : Tables.All(m => !m.IsSelected)
                                                ? (bool?) false
@@ -222,7 +221,7 @@
 
         TableInformationModel[] IPickTablesViewModel.GetResult()
         {
-            return Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey)
+            return Tables.Where(m => m.IsSelected)
                          .Select(m => m.Model)
                          .ToArray();
         }

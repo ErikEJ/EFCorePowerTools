@@ -95,7 +95,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center">
-            <CheckBox x:Name="IncludeViews" IsChecked="{Binding IncludeViews}" >Include views (requires EF Core 3.0)</CheckBox>
+            <CheckBox x:Name="IncludeViews" IsChecked="{Binding IncludeViews}" >Use EF Core 3.0</CheckBox>
         </StackPanel>
         
         <StackPanel Grid.Row="3"

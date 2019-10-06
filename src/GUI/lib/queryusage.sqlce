@@ -1,4 +1,0 @@
-SELECT SUM(1) AS Uses, Feature
-FROM UsageLog
-GROUP BY Feature
-ORDER BY Uses DESC;

@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 //using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
-using ReverseEngineer20.ReverseEngineer;
 using System;
 
 namespace ReverseEngineer20.ReverseEngineer
@@ -35,8 +34,6 @@ namespace ReverseEngineer20.ReverseEngineer
             //    serviceCollection.AddHandlebarsScaffolding(selected, language);
             //    serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
             //}
-
-            //TODO Add later!
 
             //if (options.CustomReplacers != null)
             //{
@@ -77,6 +74,8 @@ namespace ReverseEngineer20.ReverseEngineer
                     var npgsqlProvider = new NpgsqlDesignTimeServices();
                     npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
+
+                //TODO Add later!
 
                 //case DatabaseType.Mysql:
                 //    var mysqlProvider = new MySqlDesignTimeServices();

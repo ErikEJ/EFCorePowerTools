@@ -85,7 +85,6 @@ namespace ReverseEngineer20
                 throw new ArgumentException("Unable to load project assembly");
             }
 
-            //TODO Use OperationHandler output!!
             var reporter = new OperationReporter(new OperationReportHandler());
 
             return new DbContextOperations(reporter, assembly, assembly, Array.Empty<string>());

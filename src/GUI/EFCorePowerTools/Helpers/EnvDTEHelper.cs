@@ -206,7 +206,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 var viewsDataTable = npgsqlConn.GetSchema("Views");
                 foreach (DataRow row in viewsDataTable.Rows)
                 {
-                    // TODO: Check if the table has a primary key
                     result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true));
                 }
             }
@@ -242,8 +241,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return result.OrderBy(l => l.Name).ToList();
         }
 
-        // We could use Mysql.Data for this as MysqlConnector doesn't support GetSchema("Tables").
-        // I will just pluck the data we need for now.
         private static List<string> GetMysqlTables(MySqlConnection mysqlConn, string schema)
         {
             List<string> tables = new List<string>();
@@ -257,7 +254,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     tables.Add(reader.GetString(0));
                 }
             }
-
 
             return tables;
         }

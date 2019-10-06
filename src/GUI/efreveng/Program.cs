@@ -1,5 +1,6 @@
 ﻿using ReverseEngineer20.ReverseEngineer;
 using System;
+using System.IO;
 
 namespace efreveng
 {
@@ -11,7 +12,14 @@ namespace efreveng
             {
                 if (args.Length > 0)
                 {
-                    var options = ReverseEngineerOptionsExtensions.TryDeserialize(args[0]);
+                    if (!File.Exists(args[0]))
+                    {
+                        Console.Out.WriteLine("Error:");
+                        Console.Out.WriteLine($"Could not open options file: {args[0]}");
+                        return 1;
+                    }
+
+                    var options = ReverseEngineerOptionsExtensions.TryDeserialize(File.ReadAllText(args[0], System.Text.Encoding.UTF8));
 
                     if (options == null)
                     {

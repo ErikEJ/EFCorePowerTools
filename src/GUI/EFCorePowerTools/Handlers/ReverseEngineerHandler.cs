@@ -174,6 +174,7 @@ namespace EFCorePowerTools.Handlers
                     presets.Namespace = options.ProjectRootNamespace;
                     presets.OutputPath = options.OutputPath;
                     presets.SelectedToBeGenerated = options.SelectedToBeGenerated;
+                    presets.DacpacPath = options.Dacpac;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -211,7 +212,7 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Generating code...";
 
                 var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
-                bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.0");
+                bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.");
 
                 if (modelingOptionsResult.Payload.UseHandelbars)
                 {
@@ -295,7 +296,6 @@ namespace EFCorePowerTools.Handlers
                 _package.LogError(new List<string>(), exception);
             }
         }
-
 
         private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options)
         {
