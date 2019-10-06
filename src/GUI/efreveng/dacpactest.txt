@@ -1,8 +1,8 @@
 {
-   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Cloudsense;Integrated Security=True",
-   "ContextClassName": "CloudsenseContext",
+   "ConnectionString": null,
+   "ContextClassName": "DacpacContext",
    "CustomReplacers": null,
-   "Dacpac": null,
+   "Dacpac": "C:\\Code\\EFCorePowerTools\\src\\GUI\\UnitTests\\Chinook.dacpac",
    "DatabaseType": 3,
    "DefaultDacpacSchema": null,
    "DoNotCombineNamespace": false,
@@ -16,23 +16,11 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Clients"
+         "Name": "dbo.Album"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.ClientsLogs"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "dbo.Domains"
-      },
-	  {
-         "HasPrimaryKey": false,
-         "Name": "dbo.BlogsView"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "dbo.Forests"
+         "Name": "dbo.Artist"
       }
    ],
    "UseDatabaseNames": false,
