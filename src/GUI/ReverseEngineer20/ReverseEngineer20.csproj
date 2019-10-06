@@ -211,6 +211,12 @@
     <Reference Include="System.Interactive.Async, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Interactive.Async.3.2.0\lib\net46\System.Interactive.Async.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.1\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
@@ -254,6 +260,7 @@
     <Compile Include="ReverseEngineer\LegacyInflectorPluralizer.cs" />
     <Compile Include="ReverseEngineer\Pluralizer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
+    <Compile Include="ReverseEngineer\EfRevEngLauncher.cs" />
     <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />
     <Compile Include="ReverseEngineer\CustomTemplateFileService.cs" />
     <Compile Include="ReverseEngineer\DacpacTableListBuilder.cs" />

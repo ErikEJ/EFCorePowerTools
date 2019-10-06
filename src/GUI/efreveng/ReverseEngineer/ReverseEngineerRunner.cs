@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,13 +45,12 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly,
                 Language = "C#",
-                //TODO!
-                ContextDir = null,
                 ContextName = reverseEngineerOptions.ContextClassName,
-                RootNamespace = @namespace,
-                //TODO Test!
-                ContextNamespace = null,
-                ModelNamespace = null,
+                //TODO - understand
+                ContextDir = null,
+                RootNamespace = null,
+                ContextNamespace = @namespace,
+                ModelNamespace = @namespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = reverseEngineerOptions.ConnectionString,
             };

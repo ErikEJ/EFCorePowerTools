@@ -115,10 +115,8 @@ namespace ReverseEngineer20
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
             };
 
-            var optionString = commandOptions.Write();
-            //TODO Call tool and get result! :-)
-
-            return null;
+            var launcher = new EfRevEngLauncher(commandOptions);
+            return launcher.GetOutput();
         }
 
         private void PostProcessContext(string contextFile, ReverseEngineerOptions options)

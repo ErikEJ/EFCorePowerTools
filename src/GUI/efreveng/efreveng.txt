@@ -9,7 +9,7 @@
    "IdReplace": false,
    "IncludeConnectionString": false,
    "OutputPath": null,
-   "ProjectPath": "C:\\Users\\ErikEjlskovJensen\\Source\\Repos\\ConsoleApp2\\ConsoleApp2\\",
+   "ProjectPath": "C:\\Temp\\Test\\",
    "ProjectRootNamespace": "ConsoleApp2",
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
@@ -34,6 +34,6 @@
    "UseDatabaseNames": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
-   "UseInflector": false,
+   "UseInflector": true,
    "UseLegacyPluralizer": false
 }
