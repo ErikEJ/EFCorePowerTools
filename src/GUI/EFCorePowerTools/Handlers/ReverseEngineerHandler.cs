@@ -111,6 +111,12 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
+                if (includeViews && (dbInfo.DatabaseType == DatabaseType.SQLCE40 || dbInfo.DatabaseType == DatabaseType.Mysql))
+                {
+                    EnvDteHelper.ShowError($"Unsupported provider with EF Core 3.0: {dbInfo.DatabaseType}");
+                    return;
+                }
+
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
