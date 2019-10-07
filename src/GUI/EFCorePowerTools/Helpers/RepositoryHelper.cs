@@ -52,7 +52,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     }
                 }
 
-                return tables;
+                return tables.OrderBy(l => l.Name).ToList();
             }
         }
 

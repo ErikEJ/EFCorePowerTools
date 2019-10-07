@@ -197,10 +197,17 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 npgsqlConn.Open();
 
                 var tablesDataTable = npgsqlConn.GetSchema("Tables");
+                var constraints = npgsqlConn.GetSchema("Constraints");
                 foreach (DataRow row in tablesDataTable.Rows)
                 {
-                    // TODO: Check if the table has a primary key
-                    result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true));
+                    var primaryKey = constraints
+                        .AsEnumerable()
+                        .Where(myRow => myRow.Field<string>("table_name") == row["table_name"].ToString()
+                        && myRow.Field<string>("table_schema") == row["table_schema"].ToString()
+                        && myRow.Field<string>("constraint_type") == "PRIMARY KEY")
+                        .FirstOrDefault();
+                    
+                    result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), primaryKey != null));
                 }
 
                 var viewsDataTable = npgsqlConn.GetSchema("Views");
