@@ -248,8 +248,10 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     foreach (string table in tables)
                     {
                         bool hasPrimaryKey = HasMysqlPrimaryKey(schema, table, mysqlConn);
-                        var info = new TableInformationModel(table, hasPrimaryKey);
-                        info.HasKey = includeViews ? true : hasPrimaryKey;
+                        var info = new TableInformationModel(table, hasPrimaryKey)
+                        {
+                            HasKey = includeViews ? true : hasPrimaryKey
+                        };
                         result.Add(new TableInformationModel(table, hasPrimaryKey));
                     }
                 }
