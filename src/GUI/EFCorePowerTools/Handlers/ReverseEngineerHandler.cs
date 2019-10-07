@@ -87,12 +87,6 @@ namespace EFCorePowerTools.Handlers
 
                 var includeViews = pickDataSourceResult.Payload.IncludeViews;
 
-                if (includeViews && !string.IsNullOrEmpty(dacpacPath))
-                {
-                    EnvDteHelper.ShowMessage("Dacpac not currently supported with views");
-                    return;
-                }
-
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
                     dbInfo.DatabaseType = DatabaseType.SQLServer;

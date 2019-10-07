@@ -35,10 +35,10 @@ namespace ReverseEngineer20.ReverseEngineer
             //    serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
             //}
 
-            //if (options.CustomReplacers != null)
-            //{
-            //    serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
-            //}
+            if (options.CustomReplacers != null)
+            {
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
+            }
 
             if (options.UseInflector)
             {
@@ -62,12 +62,10 @@ namespace ReverseEngineer20.ReverseEngineer
                     var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                     spatial.ConfigureDesignTimeServices(serviceCollection);
 
-                    //TODO Add later!
-
-                    //if (!string.IsNullOrEmpty(options.Dacpac))
-                    //{
-                    //    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
-                    //}
+                    if (!string.IsNullOrEmpty(options.Dacpac))
+                    {
+                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
+                    }
                     break;
 
                 case DatabaseType.Npgsql:
