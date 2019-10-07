@@ -53,6 +53,7 @@
         {
             _visualStudioAccess = visualStudioAccess;
             Title = string.Empty;
+            MayIncludeConnectionString = true;
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             OkCommand = new RelayCommand(Ok_Executed);
@@ -110,6 +111,11 @@
                         MayIncludeConnectionString = false;
                         Model.IncludeConnectionString = false;
                     }
+                    else
+                    {
+                        MayIncludeConnectionString = true;
+                    }
+
                     break;
             }
         }
