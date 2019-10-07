@@ -189,7 +189,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return pgBuilder.Database;
         }
 
-        internal static List<TableInformationModel> GetNpgsqlTableNames(string connectionString)
+        internal static List<TableInformationModel> GetNpgsqlTableNames(string connectionString, bool includeViews)
         {
             var result = new List<TableInformationModel>();
             using (var npgsqlConn = new NpgsqlConnection(connectionString))
@@ -206,14 +206,22 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         && myRow.Field<string>("table_schema") == row["table_schema"].ToString()
                         && myRow.Field<string>("constraint_type") == "PRIMARY KEY")
                         .FirstOrDefault();
-                    
-                    result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), primaryKey != null));
+
+                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), primaryKey != null)
+                    {
+                        HasKey = includeViews ? true : primaryKey != null
+                    };
+                    result.Add(info);
                 }
 
                 var viewsDataTable = npgsqlConn.GetSchema("Views");
                 foreach (DataRow row in viewsDataTable.Rows)
                 {
-                    result.Add(new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true));
+                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true)
+                    {
+                        HasKey = true
+                    };
+                    result.Add(info);
                 }
             }
 
@@ -226,7 +234,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return myBuilder.Database;
         }
 
-        internal static List<TableInformationModel> GetMysqlTableNames(string connectionString)
+        internal static List<TableInformationModel> GetMysqlTableNames(string connectionString, bool includeViews)
         {
             var result = new List<TableInformationModel>();
             using (var mysqlConn = new MySqlConnection(connectionString))
@@ -240,6 +248,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     foreach (string table in tables)
                     {
                         bool hasPrimaryKey = HasMysqlPrimaryKey(schema, table, mysqlConn);
+                        var info = new TableInformationModel(table, hasPrimaryKey);
+                        info.HasKey = includeViews ? true : hasPrimaryKey;
                         result.Add(new TableInformationModel(table, hasPrimaryKey));
                     }
                 }

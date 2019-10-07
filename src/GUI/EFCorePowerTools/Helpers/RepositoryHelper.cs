@@ -13,18 +13,18 @@ namespace ErikEJ.SqlCeToolbox.Helpers
     internal static class RepositoryHelper
     {
         //TODO Update this when SQLite provider is updated!
-        public static string SqliteEngineVersion = "3.22";
+        public static string SqliteEngineVersion = "3.28";
 
         public static List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo, bool includeViews = false)
         {
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
-                return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString);
+                return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString, includeViews);
             }
 
             if (dbInfo.DatabaseType == DatabaseType.Mysql)
             {
-                return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString);
+                return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString, includeViews);
             }
 
             using (var repository = RepositoryHelper.CreateRepository(dbInfo))
@@ -36,8 +36,10 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    var info = new TableInformationModel(table, hasPrimaryKey);
-                    info.HasKey = includeViews ? true : hasPrimaryKey;
+                    var info = new TableInformationModel(table, hasPrimaryKey)
+                    {
+                        HasKey = includeViews ? true : hasPrimaryKey
+                    };
                     tables.Add(info);
                 }
 
@@ -46,8 +48,10 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     var views = repository.GetAllViews();
                     foreach (var view in views)
                     {
-                        var info = new TableInformationModel(view.ViewName, false);
-                        info.HasKey = true;
+                        var info = new TableInformationModel(view.ViewName, false)
+                        {
+                            HasKey = true
+                        };
                         tables.Add(info);
                     }
                 }
