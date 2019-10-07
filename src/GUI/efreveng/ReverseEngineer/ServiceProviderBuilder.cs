@@ -35,10 +35,10 @@ namespace ReverseEngineer20.ReverseEngineer
             //    serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
             //}
 
-            //if (options.CustomReplacers != null)
-            //{
-            //    serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
-            //}
+            if (options.CustomReplacers != null)
+            {
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
+            }
 
             if (options.UseInflector)
             {
