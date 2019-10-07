@@ -62,12 +62,10 @@ namespace ReverseEngineer20.ReverseEngineer
                     var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                     spatial.ConfigureDesignTimeServices(serviceCollection);
 
-                    //TODO Add later!
-
-                    //if (!string.IsNullOrEmpty(options.Dacpac))
-                    //{
-                    //    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
-                    //}
+                    if (!string.IsNullOrEmpty(options.Dacpac))
+                    {
+                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
+                    }
                     break;
 
                 case DatabaseType.Npgsql:

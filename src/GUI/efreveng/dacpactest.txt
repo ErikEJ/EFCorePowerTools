@@ -2,7 +2,7 @@
    "ConnectionString": null,
    "ContextClassName": "DacpacContext",
    "CustomReplacers": null,
-   "Dacpac": "C:\\Code\\EFCorePowerTools\\src\\GUI\\UnitTests\\Chinook.dacpac",
+   "Dacpac": "C:\\Code\\EFCorePowerTools\\src\\GUI\\UnitTests\\ChinookView.dacpac",
    "DatabaseType": 3,
    "DefaultDacpacSchema": null,
    "DoNotCombineNamespace": false,
@@ -17,6 +17,10 @@
       {
          "HasPrimaryKey": true,
          "Name": "dbo.Album"
+      },
+	  {
+         "HasPrimaryKey": false,
+         "Name": "dbo.AlbumView"
       },
       {
          "HasPrimaryKey": true,

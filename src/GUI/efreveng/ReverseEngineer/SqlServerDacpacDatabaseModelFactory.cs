@@ -90,23 +90,6 @@ namespace ReverseEngineer20
                 GetIndexes(item, dbModel);
             }
 
-            var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
-                .Where(t => tables == null || tables.Contains($"{t.Name.Parts[0]}.{t.Name.Parts[1]}"))
-                .ToList();
-
-            foreach (var view in views)
-            {
-                var dbTable = new DatabaseTable
-                {
-                    Name = view.Name.Parts[1],
-                    Schema = view.Name.Parts[0],
-                };
-
-                GetViewColumns(view, dbTable, typeAliases);
-
-                dbModel.Tables.Add(dbTable);
-            }
-
             return dbModel;
         }
 
@@ -342,49 +325,6 @@ namespace ReverseEngineer20
                 {
                     dbColumn["ConcurrencyToken"] = true;
                 }
-
-                dbTable.Columns.Add(dbColumn);
-            }
-        }
-
-        private void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases)
-        {
-            var tableColumns = item.Columns
-                .Where(i => !i.GetProperty<bool>(Column.IsHidden)
-                && i.ColumnType != ColumnType.ColumnSet
-                // Computed columns not supported for now
-                // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                && i.ColumnType != ColumnType.ComputedColumn
-                );
-
-            foreach (var col in tableColumns)
-            {
-                string storeType = null;
-                string systemTypeName = null;
-
-                if (col.DataType.First().Name.Parts.Count > 1)
-                {
-                    if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
-                    {
-                        storeType = value.storeType;
-                        systemTypeName = value.typeName;
-                    }
-                }
-                else
-                {
-                    var dataTypeName = col.DataType.First().Name.Parts[0];
-                    int maxLength = col.IsMax ? -1 : col.Length;
-                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
-                    systemTypeName = dataTypeName;
-                }
-
-                var dbColumn = new DatabaseColumn
-                {
-                    Table = dbTable,
-                    Name = col.Name.Parts[2],
-                    IsNullable = col.Nullable,
-                    StoreType = storeType,
-                };
 
                 dbTable.Columns.Add(dbColumn);
             }
