@@ -252,7 +252,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         {
                             HasKey = includeViews ? true : hasPrimaryKey
                         };
-                        result.Add(new TableInformationModel(table, hasPrimaryKey));
+                        result.Add(info);
                     }
                 }
             }
