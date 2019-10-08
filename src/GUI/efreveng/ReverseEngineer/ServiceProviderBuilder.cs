@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-//using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
+using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using System;
 
 namespace ReverseEngineer20.ReverseEngineer
@@ -73,12 +73,10 @@ namespace ReverseEngineer20.ReverseEngineer
                     npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
-                //TODO Add later!
-
-                //case DatabaseType.Mysql:
-                //    var mysqlProvider = new MySqlDesignTimeServices();
-                //    mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
-                //    break;
+                case DatabaseType.Mysql:
+                    var mysqlProvider = new MySqlDesignTimeServices();
+                    mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
 
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();

@@ -105,7 +105,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (includeViews && (dbInfo.DatabaseType == DatabaseType.SQLCE40 || dbInfo.DatabaseType == DatabaseType.Mysql))
+                if (includeViews && dbInfo.DatabaseType == DatabaseType.SQLCE40)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 3.0: {dbInfo.DatabaseType}");
                     return;
