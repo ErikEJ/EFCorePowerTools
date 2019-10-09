@@ -32,15 +32,15 @@
                         <Setter Property="Margin" Value="0, 0, 5, 0"/>
                     </Style>
                     <Style x:Key="NoPrimaryKeyImageStyle" TargetType="Image">
-                        <Setter Property="ToolTip" Value="This table (or view) has no primary key defined."/>
-                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning_16x.png"/>
+                        <Setter Property="ToolTip" Value="This table has no primary key defined. It cannot be selected and will be ignored."/>
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/StatusInvalid_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="5, 0, 0, 0"/>
                     </Style>
                     <Style x:Key="TableNameTextBlockStyle" TargetType="TextBlock">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Model.HasKey}" Value="False">
+                            <DataTrigger Binding="{Binding Model.HasPrimaryKey}" Value="False">
                                 <Setter Property="Foreground" Value="{StaticResource DisabledTextBlockTextColor}"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -106,7 +106,7 @@
                                     d:DataContext="{d:DesignInstance Type=viewModels:TableInformationViewModel, IsDesignTimeCreatable=false}">
                             <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}"
                                       IsChecked="{Binding IsSelected}"
-                                      IsEnabled="{Binding Model.HasKey}"/>
+                                      IsEnabled="{Binding Model.HasPrimaryKey}"/>
                             <TextBlock Text="{Binding Model.Name}" 
                                        Style="{StaticResource TableNameTextBlockStyle}"/>
                             <Image Style="{StaticResource NoPrimaryKeyImageStyle}"

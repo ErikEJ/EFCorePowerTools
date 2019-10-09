@@ -207,21 +207,18 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         && myRow.Field<string>("constraint_type") == "PRIMARY KEY")
                         .FirstOrDefault();
 
-                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), primaryKey != null)
-                    {
-                        HasKey = includeViews ? true : primaryKey != null
-                    };
+                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), includeViews ? true : primaryKey != null);
                     result.Add(info);
                 }
 
-                var viewsDataTable = npgsqlConn.GetSchema("Views");
-                foreach (DataRow row in viewsDataTable.Rows)
+                if (includeViews)
                 {
-                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true)
+                    var viewsDataTable = npgsqlConn.GetSchema("Views");
+                    foreach (DataRow row in viewsDataTable.Rows)
                     {
-                        HasKey = true
-                    };
-                    result.Add(info);
+                        var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true);
+                        result.Add(info);
+                    }
                 }
             }
 
@@ -248,10 +245,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     foreach (string table in tables)
                     {
                         bool hasPrimaryKey = HasMysqlPrimaryKey(schema, table, mysqlConn);
-                        var info = new TableInformationModel(table, hasPrimaryKey)
-                        {
-                            HasKey = includeViews ? true : hasPrimaryKey
-                        };
+                        var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey);
                         result.Add(info);
                     }
                 }

@@ -74,7 +74,7 @@
             LoadSelectionCommand = new RelayCommand(LoadSelection_Executed, LoadSelection_CanExecute);
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
-            
+
             Tables = new ObservableCollection<ITableInformationViewModel>();
             Tables.CollectionChanged += Tables_CollectionChanged;
 
@@ -99,10 +99,10 @@
             if (resultFileName == null)
                 return;
 
-            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected).Select(m => m.Model.Name));
+            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey).Select(m => m.Model.Name));
         }
 
-        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected);
+        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
 
         private void LoadSelection_Executed()
         {
@@ -137,7 +137,7 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected);
+        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
 
         private void Cancel_Executed()
         {
@@ -154,17 +154,18 @@
                 return;
 
             foreach (var t in Tables)
-                t.IsSelected = selectionMode.Value;
+                t.IsSelected = t.Model.HasPrimaryKey && selectionMode.Value;
 
             SearchText = string.Empty;
         }
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = Tables.All(m => m.IsSelected)
+            TableSelectionThreeState = Tables.Where(m => m.Model.HasPrimaryKey)
+                                             .All(m => m.IsSelected)
                                            ? true
                                            : Tables.All(m => !m.IsSelected)
-                                               ? (bool?) false
+                                               ? (bool?)false
                                                : null;
         }
 
@@ -221,7 +222,7 @@
 
         TableInformationModel[] IPickTablesViewModel.GetResult()
         {
-            return Tables.Where(m => m.IsSelected)
+            return Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey)
                          .Select(m => m.Model)
                          .ToArray();
         }
