@@ -119,18 +119,18 @@
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="6"
-                          Text="Placeholder 1"/>
+                          Text="Not used 1"/>
         <TextBox Grid.Row="7"
                  TabIndex="3"
                  Style="{StaticResource TextInputStyle}"
-                 Text="Placeholder 1 Text"/>
+                 Text=""/>
 
         <dw:LiveTextBlock Grid.Row="8"
-                          Text="Placeholder 2"/>
+                          Text="Not used 2"/>
         <TextBox Grid.Row="9"
                  TabIndex="4"
                  Style="{StaticResource TextInputStyle}"
-                 Text="Placeholder 2 Text"/>
+                 Text=""/>
 
         <dw:LiveTextBlock Grid.Row="10"
                           Text="What to generate"/>

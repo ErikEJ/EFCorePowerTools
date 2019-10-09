@@ -271,7 +271,7 @@ namespace UnitTests.ViewModels
             var canExecute = vm.SaveSelectionCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            Assert.IsFalse(canExecute);
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             osaMock.Verify(m => m.RequestSaveFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), true), Times.Once);
-            fsaMock.Verify(m => m.WriteAllLines(testFilePath, It.Is<IEnumerable<string>>(c => c.Count() == 5)), Times.Once);
+            fsaMock.Verify(m => m.WriteAllLines(testFilePath, It.Is<IEnumerable<string>>(c => c.Count() == 3)), Times.Once);
         }
 
         [Test]
@@ -1061,7 +1061,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsTrue(vm.Tables.Where(m => m.Model.HasPrimaryKey).All(m => m.IsSelected));
-            Assert.IsTrue(vm.Tables.Where(m => !m.Model.HasPrimaryKey).All(m => m.IsSelected));
+            Assert.IsTrue(vm.Tables.Where(m => !m.Model.HasPrimaryKey).All(m => !m.IsSelected));
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -1274,11 +1274,43 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(6, result.Length);
+            Assert.AreEqual(4, result.Length);
             Assert.AreSame(tt[0].Model, result[0]);
-            Assert.AreSame(tt[1].Model, result[1]);
-            Assert.AreSame(tt[2].Model, result[2]);
-            Assert.AreSame(tt[3].Model, result[3]);
+            Assert.AreSame(tt[2].Model, result[1]);
+            Assert.AreSame(tt[3].Model, result[2]);
+            Assert.AreSame(tt[4].Model, result[3]);
+        }
+
+        [Test]
+        public void GetResults_WithTables_PartialSelection()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+
+            // Act
+            var result = vm.GetResult();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Length);
+            Assert.AreSame(tt[2].Model, result[0]);
+            Assert.AreSame(tt[3].Model, result[1]);
+            Assert.AreSame(tt[4].Model, result[2]);
         }
 
         private static ITableInformationViewModel[] GetTestViewModels()
