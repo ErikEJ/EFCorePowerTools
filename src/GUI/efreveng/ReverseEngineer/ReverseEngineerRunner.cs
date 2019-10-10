@@ -30,12 +30,20 @@ namespace ReverseEngineer20.ReverseEngineer
                 schemas.Add(reverseEngineerOptions.DefaultDacpacSchema);
             }
 
-            var @namespace = reverseEngineerOptions.ProjectRootNamespace;
+            var outputDir = reverseEngineerOptions.OutputPath != null
+               ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath))
+               : reverseEngineerOptions.ProjectPath;
 
-            if (!string.IsNullOrEmpty(reverseEngineerOptions.OutputPath) && !reverseEngineerOptions.DoNotCombineNamespace)
-            {
-                @namespace += "." + reverseEngineerOptions.OutputPath.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
-            }
+            var outputContextDir = reverseEngineerOptions.OutputContextPath != null
+                ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
+                : outputDir;
+
+            var modelNamespace = reverseEngineerOptions.ModelNamespace 
+                ?? PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+
+            var contextNamespace = reverseEngineerOptions.ContextNamespace 
+                ?? PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,                  
@@ -46,11 +54,10 @@ namespace ReverseEngineer20.ReverseEngineer
                 UseDataAnnotations = !reverseEngineerOptions.UseFluentApiOnly,
                 Language = "C#",
                 ContextName = reverseEngineerOptions.ContextClassName,
-                //TODO - understand
-                ContextDir = null,
+                ContextDir = outputContextDir,
                 RootNamespace = null,
-                ContextNamespace = @namespace,
-                ModelNamespace = @namespace,
+                ContextNamespace = contextNamespace,
+                ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = reverseEngineerOptions.ConnectionString,
             };
@@ -68,7 +75,11 @@ namespace ReverseEngineer20.ReverseEngineer
                 Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty),
                 overwriteFiles: true);
 
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
+            string fixedNamespace = modelNamespace != contextNamespace
+                ? modelNamespace
+                : null;
+
+            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions, fixedNamespace);
 
             foreach (var file in filePaths.AdditionalFiles)
             {
@@ -88,7 +99,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return result;
         }
 
-        private void PostProcessContext(string contextFile, ReverseEngineerCommandOptions options)
+        private void PostProcessContext(string contextFile, ReverseEngineerCommandOptions options, string fixedNamespace)
         {
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
@@ -97,6 +108,14 @@ namespace ReverseEngineer20.ReverseEngineer
 
             foreach (var line in lines)
             {
+                if (fixedNamespace != null)
+                {
+                    if (line.Contains("using System;"))
+                    {
+                        finalLines.Add("using " + fixedNamespace + ";");
+                    }
+                }
+
                 if (!options.IncludeConnectionString)
                 {
                     if (line.Trim().StartsWith("#warning To protect"))
