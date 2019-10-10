@@ -17,7 +17,10 @@ namespace ReverseEngineer20
         [IgnoreDataMember]
         public string ProjectPath { get; set; }
         public string OutputPath { get; set; }
+        public string OutputContextPath { get; set; }
         public string ProjectRootNamespace { get; set; }
+        public string ModelNamespace { get; set; }
+        public string ContextNamespace { get; set; }
         public bool UseFluentApiOnly { get; set; }
         public string ContextClassName { get; set; }
         public List<TableInformationModel> Tables { get; set; }

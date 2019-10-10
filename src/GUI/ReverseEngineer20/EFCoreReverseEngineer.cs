@@ -36,12 +36,20 @@ namespace ReverseEngineer20
                 schemas.Add(reverseEngineerOptions.DefaultDacpacSchema);
             }
 
-            var @namespace = reverseEngineerOptions.ProjectRootNamespace;
+            var outputDir = reverseEngineerOptions.OutputPath != null
+               ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath))
+               : reverseEngineerOptions.ProjectPath;
 
-            if (!string.IsNullOrEmpty(reverseEngineerOptions.OutputPath) && !reverseEngineerOptions.DoNotCombineNamespace)
-            {
-                @namespace += "." + reverseEngineerOptions.OutputPath.Replace(Path.DirectorySeparatorChar, '.').Replace(Path.AltDirectorySeparatorChar, '.');
-            }
+            var outputContextDir = reverseEngineerOptions.OutputContextPath != null
+                ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
+                : outputDir;
+
+            var modelNamespace = reverseEngineerOptions.ModelNamespace
+                ?? PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+
+            var contextNamespace = reverseEngineerOptions.ContextNamespace
+               ?? PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames
@@ -58,19 +66,19 @@ namespace ReverseEngineer20
                         : reverseEngineerOptions.ConnectionString,
                     reverseEngineerOptions.Tables.Select(m => m.Name).ToArray(),
                     schemas,
-                    @namespace,
+                    modelNamespace,
                     "C#",
-                    null,
+                    outputContextDir,
                     reverseEngineerOptions.ContextClassName,
                     modelOptions,
                     codeOptions);
 
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
-                Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty),
+                outputDir,
                 overwriteFiles: true);
 
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
+            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions, modelNamespace, contextNamespace);
 
             foreach (var file in filePaths.AdditionalFiles)
             {
@@ -103,6 +111,9 @@ namespace ReverseEngineer20
                 IdReplace = options.IdReplace,
                 IncludeConnectionString = options.IncludeConnectionString,
                 OutputPath = options.OutputPath,
+                ContextNamespace = options.ContextNamespace,
+                ModelNamespace = options.ModelNamespace,
+                OutputContextPath = options.OutputContextPath,
                 ProjectPath = options.ProjectPath,
                 ProjectRootNamespace = options.ProjectRootNamespace,
                 SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
@@ -119,7 +130,7 @@ namespace ReverseEngineer20
             return launcher.GetOutput();
         }
 
-        private void PostProcessContext(string contextFile, ReverseEngineerOptions options)
+        private void PostProcessContext(string contextFile, ReverseEngineerOptions options, string modelNamespace, string contextNamespace)
         {
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
@@ -136,6 +147,19 @@ namespace ReverseEngineer20
 
                     if (line.Trim().StartsWith("optionsBuilder.Use"))
                         continue;
+                }
+
+                if (modelNamespace != contextNamespace)
+                {
+                    if (line.Contains("using System;"))
+                    {
+                        finalLines.Add("using " + modelNamespace + ";");
+                    }
+                    if (line.Contains("namespace"))
+                    {
+                        finalLines.Add("namespace " + contextNamespace);
+                        continue;
+                    }
                 }
 
                 if (line.Contains("OnModelCreating")) inModelCreating = true;
