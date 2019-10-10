@@ -267,7 +267,6 @@
     <Compile Include="ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
     <Compile Include="ReverseEngineer\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="EFCoreReverseEngineer.cs" />
-    <Compile Include="PathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseEngineer\InflectorPluralizer.cs" />
     <Compile Include="ServiceProviderBuilder.cs" />
