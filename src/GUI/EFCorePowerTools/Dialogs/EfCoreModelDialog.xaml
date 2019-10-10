@@ -8,7 +8,7 @@
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 Height="650"
+                 Height="700"
                  Width="418"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
@@ -94,6 +94,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <dw:LiveTextBlock Grid.Row="0"
@@ -112,62 +114,68 @@
                  Text="{Binding Model.Namespace, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="4"
-                          Text="Project path (f.ex. Model) - optional"/>
+                          Text="EntityTypes path (f.ex. Models) - optional"/>
         <TextBox Grid.Row="5"
                  TabIndex="2"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="6"
-                          Text="Not used 1"/>
+                          Text="EntityTypes namespace (overrides path) - optional"/>
         <TextBox Grid.Row="7"
+                 IsEnabled="False"
                  TabIndex="3"
                  Style="{StaticResource TextInputStyle}"
                  Text=""/>
 
         <dw:LiveTextBlock Grid.Row="8"
-                          Text="Not used 2"/>
+                          Text="DbContext path - optional"/>
         <TextBox Grid.Row="9"
+                 IsEnabled="False"
                  TabIndex="4"
                  Style="{StaticResource TextInputStyle}"
                  Text=""/>
 
         <dw:LiveTextBlock Grid.Row="10"
+                          Text="DbContext namespace (overrides path) - optional"/>
+        <TextBox Grid.Row="11"
+                 IsEnabled="False"
+                 TabIndex="5"
+                 Style="{StaticResource TextInputStyle}"
+                 Text=""/>
+
+        <dw:LiveTextBlock Grid.Row="12"
                           Text="What to generate"/>
-        <ComboBox Grid.Row="10"
-                  TabIndex="5"
+        <ComboBox Grid.Row="12"
+                  TabIndex="6"
                   ItemsSource="{Binding GenerationModeList}"
                   Style="{StaticResource GenerationMethodComboBoxStyle}"
                   SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
 
-        <GroupBox Grid.Row="11"
+        <GroupBox Grid.Row="13"
                   Header="Naming"
                   Style="{StaticResource NamingGroupBoxStyle}">
             <StackPanel>
-                <CheckBox TabIndex="6"
+                <CheckBox TabIndex="7"
                           Content="Pluralize or singularize generated object names (English)"
                           IsChecked="{Binding Model.UsePluralizer}"
                           IsEnabled="{Binding Model.UseDatabaseNames, Converter={StaticResource BoolInvertConverter}}"
                           Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
-                <CheckBox TabIndex="7"
+                <CheckBox TabIndex="8"
                           Content="Use table and column names directly from the database"
                           IsChecked="{Binding Model.UseDatabaseNames}"
                           IsEnabled="{Binding Model.UsePluralizer, Converter={StaticResource BoolInvertConverter}}"
-                          Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
-                <CheckBox TabIndex="8"
-                          Content="Do not combine Namespace and Project Path"
-                          IsChecked="{Binding Model.DoNotCombineNamespace}"
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>
 
-        <CheckBox Grid.Row="12"
+        <CheckBox Grid.Row="14"
                   TabIndex="9"
                   Content="Use DataAnnotation attributes to configure the model"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="13">
+                    Grid.Row="15">
             <CheckBox TabIndex="10"
                       Name="UseHandlebarsCheckbox"
                       Content="Customize code using Handlebars templates"
@@ -179,18 +187,18 @@
                       SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
-        <CheckBox Grid.Row="14"
+        <CheckBox Grid.Row="16"
                   TabIndex="12"
                   Content="Include connection string in generated code"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <CheckBox Grid.Row="15"
+        <CheckBox Grid.Row="17"
                   TabIndex="13"
                   Content="Install the EF Core provider package in the project"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <StackPanel Grid.Row="16"
+        <StackPanel Grid.Row="18"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
                              Content="OK"
