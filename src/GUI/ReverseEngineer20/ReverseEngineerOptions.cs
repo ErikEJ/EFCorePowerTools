@@ -54,7 +54,7 @@ namespace ReverseEngineer20
                 UseFluentApiOnly = v1.UseFluentApiOnly,
                 ContextClassName = v1.ContextClassName,
                 Tables = v1.Tables
-                           .Select(m => new TableInformationModel(m, true))
+                           .Select(m => new TableInformationModel(m, true, false))
                            .ToList(),
                 UseDatabaseNames = v1.UseDatabaseNames,
                 UseInflector = v1.UseInflector,

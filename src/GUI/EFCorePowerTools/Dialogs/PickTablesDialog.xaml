@@ -38,6 +38,13 @@
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="5, 0, 0, 0"/>
                     </Style>
+                    <Style x:Key="KeylessImageStyle" TargetType="Image">
+                        <Setter Property="ToolTip" Value="This table (or view) has no primary key defined."/>
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning_16x.png"/>
+                        <Setter Property="Width" Value="16"/>
+                        <Setter Property="Height" Value="16"/>
+                        <Setter Property="Margin" Value="5, 0, 0, 0"/>
+                    </Style>                    
                     <Style x:Key="TableNameTextBlockStyle" TargetType="TextBlock">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Model.HasPrimaryKey}" Value="False">
@@ -111,6 +118,8 @@
                                        Style="{StaticResource TableNameTextBlockStyle}"/>
                             <Image Style="{StaticResource NoPrimaryKeyImageStyle}"
                                    Visibility="{Binding Model.HasPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}"/>
+                            <Image Style="{StaticResource KeylessImageStyle}"
+                                   Visibility="{Binding Model.IsKeyless, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -116,7 +116,7 @@
             var lines = _fileSystemAccess.ReadAllLines(resultFileName);
             var parsedTables = new List<TableInformationModel>();
             foreach (var line in lines)
-                parsedTables.Add(new TableInformationModel(line, true));
+                parsedTables.Add(new TableInformationModel(line, true, false));
 
             foreach (var t in Tables)
             {

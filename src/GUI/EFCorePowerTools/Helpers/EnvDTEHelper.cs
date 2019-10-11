@@ -207,7 +207,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         && myRow.Field<string>("constraint_type") == "PRIMARY KEY")
                         .FirstOrDefault();
 
-                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), includeViews ? true : primaryKey != null);
+                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), includeViews ? true : primaryKey != null, includeViews ? primaryKey == null : false);
                     result.Add(info);
                 }
 
@@ -216,7 +216,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     var viewsDataTable = npgsqlConn.GetSchema("Views");
                     foreach (DataRow row in viewsDataTable.Rows)
                     {
-                        var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true);
+                        var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true, includeViews ? true : false);
                         result.Add(info);
                     }
                 }
@@ -245,7 +245,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     foreach (string table in tables)
                     {
                         bool hasPrimaryKey = HasMysqlPrimaryKey(schema, table, mysqlConn);
-                        var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey);
+                        var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
                         result.Add(info);
                     }
                 }
