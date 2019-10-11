@@ -20,6 +20,9 @@
         private bool _useDatabaseNames;
         private string _ns;
         private string _outputPath;
+        private string _outputContextPath;
+        private string _modelNamespace;
+        private string _contextNamespace;
         private string _modelName;
         private bool _useDataAnnotations;
         private string _projectName;
@@ -54,6 +57,39 @@
             {
                 if (value == _outputPath) return;
                 _outputPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string OutputContextPath
+        {
+            get => _outputContextPath;
+            set
+            {
+                if (value == _outputContextPath) return;
+                _outputContextPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ModelNamespace
+        {
+            get => _modelNamespace;
+            set
+            {
+                if (value == _modelNamespace) return;
+                _modelNamespace = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ContextNamespace
+        {
+            get => _contextNamespace;
+            set
+            {
+                if (value == _contextNamespace) return;
+                _contextNamespace = value;
                 OnPropertyChanged();
             }
         }

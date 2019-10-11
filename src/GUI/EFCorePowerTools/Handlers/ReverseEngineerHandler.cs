@@ -173,6 +173,9 @@ namespace EFCorePowerTools.Handlers
                     presets.ModelName = options.ContextClassName;
                     presets.Namespace = options.ProjectRootNamespace;
                     presets.OutputPath = options.OutputPath;
+                    presets.OutputContextPath = options.OutputContextPath;
+                    presets.ModelNamespace = options.ModelNamespace;
+                    presets.ContextNamespace = options.ContextNamespace;
                     presets.SelectedToBeGenerated = options.SelectedToBeGenerated;
                     presets.DacpacPath = options.Dacpac;
                 }
@@ -193,6 +196,9 @@ namespace EFCorePowerTools.Handlers
                     DatabaseType = (ReverseEngineer20.DatabaseType)dbInfo.DatabaseType,
                     ProjectPath = projectPath,
                     OutputPath = modelingOptionsResult.Payload.OutputPath,
+                    OutputContextPath = modelingOptionsResult.Payload.OutputContextPath,
+                    ContextNamespace = modelingOptionsResult.Payload.ContextNamespace,
+                    ModelNamespace = modelingOptionsResult.Payload.ModelNamespace,
                     ProjectRootNamespace = modelingOptionsResult.Payload.Namespace,
                     UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,

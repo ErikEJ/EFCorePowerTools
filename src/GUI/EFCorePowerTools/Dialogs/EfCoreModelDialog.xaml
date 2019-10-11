@@ -123,26 +123,23 @@
         <dw:LiveTextBlock Grid.Row="6"
                           Text="EntityTypes namespace (overrides path) - optional"/>
         <TextBox Grid.Row="7"
-                 IsEnabled="False"
                  TabIndex="3"
                  Style="{StaticResource TextInputStyle}"
-                 Text=""/>
+                 Text="{Binding Model.ModelNamespace, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="8"
-                          Text="DbContext path - optional"/>
+                          Text="DbContext path (f.ex. Data) - optional"/>
         <TextBox Grid.Row="9"
-                 IsEnabled="False"
                  TabIndex="4"
                  Style="{StaticResource TextInputStyle}"
-                 Text=""/>
+                 Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="10"
                           Text="DbContext namespace (overrides path) - optional"/>
         <TextBox Grid.Row="11"
-                 IsEnabled="False"
                  TabIndex="5"
                  Style="{StaticResource TextInputStyle}"
-                 Text=""/>
+                 Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="12"
                           Text="What to generate"/>
