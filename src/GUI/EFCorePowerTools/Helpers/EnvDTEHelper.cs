@@ -216,7 +216,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     var viewsDataTable = npgsqlConn.GetSchema("Views");
                     foreach (DataRow row in viewsDataTable.Rows)
                     {
-                        var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true, includeViews ? true : false);
+                        var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true, true);
                         result.Add(info);
                     }
                 }

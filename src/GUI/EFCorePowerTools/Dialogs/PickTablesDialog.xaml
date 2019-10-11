@@ -119,7 +119,7 @@
                             <Image Style="{StaticResource NoPrimaryKeyImageStyle}"
                                    Visibility="{Binding Model.HasPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}"/>
                             <Image Style="{StaticResource KeylessImageStyle}"
-                                   Visibility="{Binding Model.IsKeyless, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                   Visibility="{Binding Model.ShowKeylessWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

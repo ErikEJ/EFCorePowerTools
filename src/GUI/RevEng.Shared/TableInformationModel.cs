@@ -16,7 +16,7 @@
     {
         private string _name;
         private bool _hasPrimaryKey;
-        private bool _isKeyless;
+        private bool _showKeylessWarning;
 
         /// <summary>
         /// Gets or sets the table name.
@@ -49,16 +49,16 @@
         }
 
         /// <summary>
-        /// Gets or sets whether the table or view is keyless - always false for EF Core 2.0.
+        /// Show wether the table is keyless - always false for EF Core 2.0.
         /// </summary>
         [IgnoreDataMember]
-        public bool IsKeyless
+        public bool ShowKeylessWarning
         {
-            get => _isKeyless;
+            get => _showKeylessWarning;
             set
             {
-                if (value == _isKeyless) return;
-                _isKeyless = value;
+                if (value == _showKeylessWarning) return;
+                _showKeylessWarning = value;
                 OnPropertyChanged();
             }
         }
@@ -68,17 +68,18 @@
         /// </summary>
         /// <param name="name">The table name.</param>
         /// <param name="hasPrimaryKey">Whether or not a primary key exists for the table.</param>
+        /// <param name="showKeylessWarning">Show warning that the table or view is keyless.</param>
         /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
         public TableInformationModel(string name,
                                      bool hasPrimaryKey,
-                                     bool isKeyless = false)
+                                     bool showKeylessWarning = false)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
 
             Name = name;
             HasPrimaryKey = hasPrimaryKey;
-            IsKeyless = isKeyless;
+            ShowKeylessWarning = showKeylessWarning;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

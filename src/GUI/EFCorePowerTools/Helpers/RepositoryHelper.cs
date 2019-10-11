@@ -45,7 +45,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     var views = repository.GetAllViews();
                     foreach (var view in views)
                     {
-                        var info = new TableInformationModel(view.ViewName, true, includeViews ? true : false);
+                        var info = new TableInformationModel(view.ViewName, true, true);
                         tables.Add(info);
                     }
                 }
