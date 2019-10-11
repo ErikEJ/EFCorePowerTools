@@ -61,7 +61,9 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (dbInfo.DatabaseType == DatabaseType.SQLCE35)
+                if (dbInfo.DatabaseType == DatabaseType.SQLCE35 
+                    || dbInfo.DatabaseType == DatabaseType.Mysql
+                    || dbInfo.DatabaseType == DatabaseType.Npgsql)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider: {dbInfo.ServerVersion}");
                     return;
