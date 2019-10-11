@@ -133,6 +133,9 @@
             Model.UseDatabaseNames = presets.UseDatabaseNames;
             Model.Namespace = presets.Namespace;
             Model.OutputPath = presets.OutputPath;
+            Model.OutputContextPath = presets.OutputContextPath;
+            Model.ModelNamespace = presets.ModelNamespace;
+            Model.ContextNamespace = presets.ContextNamespace;
             Model.ModelName = presets.ModelName;
             Model.UseDataAnnotations = presets.UseDataAnnotations;
             Model.ProjectName = presets.ProjectName;

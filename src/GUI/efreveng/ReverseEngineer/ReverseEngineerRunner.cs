@@ -38,11 +38,13 @@ namespace ReverseEngineer20.ReverseEngineer
                 ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
                 : outputDir;
 
-            var modelNamespace = reverseEngineerOptions.ModelNamespace 
-                ?? PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+            var modelNamespace = reverseEngineerOptions.ModelNamespace != null
+                ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ModelNamespace
+                : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
-            var contextNamespace = reverseEngineerOptions.ContextNamespace 
-                ?? PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+            var contextNamespace = reverseEngineerOptions.ContextNamespace != null
+                ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
+                : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
             var modelOptions = new ModelReverseEngineerOptions
             {
