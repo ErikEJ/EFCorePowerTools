@@ -73,7 +73,7 @@ namespace EFCorePowerTools.Handlers
                     var tables = repository.GetAllTableNamesForExclusion();
                     foreach (var table in tables)
                     {
-                        predefinedTables.Add(new TableInformationModel(table, true));
+                        predefinedTables.Add(new TableInformationModel(table, true, false));
                     }
                 }
 

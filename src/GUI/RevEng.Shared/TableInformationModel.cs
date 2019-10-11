@@ -16,6 +16,7 @@
     {
         private string _name;
         private bool _hasPrimaryKey;
+        private bool _isKeyless;
 
         /// <summary>
         /// Gets or sets the table name.
@@ -48,19 +49,36 @@
         }
 
         /// <summary>
+        /// Gets or sets whether the table or view is keyless - always false for EF Core 2.0.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool IsKeyless
+        {
+            get => _isKeyless;
+            set
+            {
+                if (value == _isKeyless) return;
+                _isKeyless = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TableInformationModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>
         /// <param name="hasPrimaryKey">Whether or not a primary key exists for the table.</param>
         /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
         public TableInformationModel(string name,
-                                     bool hasPrimaryKey)
+                                     bool hasPrimaryKey,
+                                     bool isKeyless = false)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
 
             Name = name;
             HasPrimaryKey = hasPrimaryKey;
+            IsKeyless = isKeyless;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

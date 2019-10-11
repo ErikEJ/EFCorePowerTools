@@ -36,7 +36,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey);
+                    var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
                     tables.Add(info);
                 }
 
@@ -45,7 +45,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     var views = repository.GetAllViews();
                     foreach (var view in views)
                     {
-                        var info = new TableInformationModel(view.ViewName, true);
+                        var info = new TableInformationModel(view.ViewName, true, includeViews ? true : false);
                         tables.Add(info);
                     }
                 }

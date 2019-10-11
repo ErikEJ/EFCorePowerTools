@@ -1,9 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="template.dgml" />
   </ItemGroup>
@@ -13,13 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
-    <PackageVersion>2.1.1</PackageVersion>
+    <PackageVersion>3.0.0</PackageVersion>
     <Authors>ErikEJ</Authors>
     <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -29,7 +25,7 @@
     <RootNamespace>DgmlBuilder</RootNamespace>
     <MinClientVersion>4.0</MinClientVersion>
     <Dependencies>
-      <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="2.1.0" />
+      <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.0.0" />
     </Dependencies>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
