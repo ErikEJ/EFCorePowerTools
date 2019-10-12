@@ -31,11 +31,15 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             var outputDir = reverseEngineerOptions.OutputPath != null
-               ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath))
-               : reverseEngineerOptions.ProjectPath;
+               ? Path.IsPathFullyQualified(reverseEngineerOptions.OutputPath)
+                    ? reverseEngineerOptions.OutputPath
+                    : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath))
+                : reverseEngineerOptions.ProjectPath;
 
             var outputContextDir = reverseEngineerOptions.OutputContextPath != null
-                ? Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
+               ? Path.IsPathFullyQualified(reverseEngineerOptions.OutputContextPath)
+                    ? reverseEngineerOptions.OutputContextPath
+                    : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
                 : outputDir;
 
             var modelNamespace = reverseEngineerOptions.ModelNamespace != null

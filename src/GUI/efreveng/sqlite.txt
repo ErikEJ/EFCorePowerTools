@@ -1,5 +1,5 @@
 {
-   "ConnectionString": "Data Source=C:\\temp\chips.db",
+   "ConnectionString": "Data Source=C:\\Code\\SqlCeToolbox\\src\\API\\SQLiteScripting\\chinook.db",
    "ContextClassName": "SqliteContext",
    "CustomReplacers": null,
    "Dacpac": null,
