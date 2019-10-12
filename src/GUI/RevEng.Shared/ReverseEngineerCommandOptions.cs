@@ -11,7 +11,6 @@ namespace ReverseEngineer20
         public string ConnectionString { get; set; }
         public string ProjectPath { get; set; }
         public string OutputPath { get; set; }
-        //TODO Populate for UI!
         public string OutputContextPath { get; set; }
         public string ModelNamespace { get; set; }
         public string ContextNamespace { get; set; }

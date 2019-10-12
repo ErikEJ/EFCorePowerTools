@@ -121,7 +121,7 @@
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="6"
-                          Text="EntityTypes namespace (overrides path) - optional"/>
+                          Text="EntityTypes sub-namespace (overrides path) - optional"/>
         <TextBox Grid.Row="7"
                  TabIndex="3"
                  Style="{StaticResource TextInputStyle}"
@@ -135,7 +135,7 @@
                  Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="10"
-                          Text="DbContext namespace (overrides path) - optional"/>
+                          Text="DbContext sub-namespace (overrides path) - optional"/>
         <TextBox Grid.Row="11"
                  TabIndex="5"
                  Style="{StaticResource TextInputStyle}"
