@@ -36,7 +36,11 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 foreach (var table in tableList)
                 {
                     var hasPrimaryKey = allPks.Any(m => m.TableName == table.TableName);
-                    var info = new TableInformationModel($"[{table.Schema}].[{table.Name}]", includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
+                    var name = string.IsNullOrEmpty(table.Schema)
+                        ? table.TableName
+                        : $"[{table.Schema}].[{table.Name}]";
+
+                    var info = new TableInformationModel(name, includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
                     tables.Add(info);
                 }
 

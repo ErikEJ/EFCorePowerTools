@@ -1320,22 +1320,22 @@ namespace UnitTests.ViewModels
             r[0] = new TableInformationViewModel
             {
                 IsSelected = false,
-                Model = new TableInformationModel("dbo.Atlas", true)
+                Model = new TableInformationModel("[dbo].[Atlas]", true)
             };
             r[1] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("__.RefactorLog", false)
+                Model = new TableInformationModel("[__].[RefactorLog]", false)
             };
             r[2] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("dbo.__RefactorLog", true)
+                Model = new TableInformationModel("[dbo].[__RefactorLog]", true)
             };
             r[3] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("dbo.sysdiagrams", true)
+                Model = new TableInformationModel("[dbo].[sysdiagrams]", true)
             };
             r[4] = new TableInformationViewModel
             {
