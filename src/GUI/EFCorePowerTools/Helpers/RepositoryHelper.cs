@@ -30,13 +30,13 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             using (var repository = RepositoryHelper.CreateRepository(dbInfo))
             {
                 var allPks = repository.GetAllPrimaryKeys();
-                var tableList = repository.GetAllTableNamesForExclusion();
+                var tableList = repository.GetTableNamesForExclusion();
                 var tables = new List<TableInformationModel>();
 
                 foreach (var table in tableList)
                 {
-                    var hasPrimaryKey = allPks.Any(m => m.TableName == table);
-                    var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
+                    var hasPrimaryKey = allPks.Any(m => m.TableName == table.TableName);
+                    var info = new TableInformationModel($"[{table.Schema}].[{table.Name}]", includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
                     tables.Add(info);
                 }
 
