@@ -16,7 +16,7 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Clients"
+         "Name": "Album"
       },
       {
          "HasPrimaryKey": true,
