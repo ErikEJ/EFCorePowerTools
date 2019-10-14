@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\ReverseEngineer20\ReverseEngineer\CustomTemplateFileService.cs" Link="ReverseEngineer\CustomTemplateFileService.cs" />
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\InflectorPluralizer.cs" Link="ReverseEngineer\InflectorPluralizer.cs" />
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\LegacyInflectorPluralizer.cs" Link="ReverseEngineer\LegacyInflectorPluralizer.cs" />
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\Pluralizer.cs" Link="ReverseEngineer\Pluralizer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="3.0.0" />
     <PackageReference Include="Humanizer.Core" Version="2.7.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.0.0" />

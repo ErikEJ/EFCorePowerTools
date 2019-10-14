@@ -1,4 +1,4 @@
-﻿//using EntityFrameworkCore.Scaffolding.Handlebars;
+﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -24,16 +24,14 @@ namespace ReverseEngineer20.ReverseEngineer
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>();
 
-            //TODO Add later!
-
-            //if (options.UseHandleBars)
-            //{
-            //    //TODO Consider being selective based on SelectedToBeGenerated
-            //    var selected = Microsoft.EntityFrameworkCore.Design.ReverseEngineerOptions.DbContextAndEntities;
-            //    var language = (LanguageOptions)options.SelectedHandlebarsLanguage;
-            //    serviceCollection.AddHandlebarsScaffolding(selected, language);
-            //    serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
-            //}
+            if (options.UseHandleBars)
+            {
+                //TODO Consider being selective based on SelectedToBeGenerated
+                var selected = ReverseEngineerOptions.DbContextAndEntities;
+                var language = (LanguageOptions)options.SelectedHandlebarsLanguage;
+                serviceCollection.AddHandlebarsScaffolding(selected, language);
+                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
+            }
 
             if (options.CustomReplacers != null)
             {
