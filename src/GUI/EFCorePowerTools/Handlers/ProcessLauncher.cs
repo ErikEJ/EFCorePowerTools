@@ -20,7 +20,7 @@ namespace EFCorePowerTools.Handlers
         {
             if (project.IsNetCore() && !project.IsNetCore21OrHigher())
             {
-                throw new ArgumentException("Only .NET Core 2.1, 2.2 and 3.0 and 2.2 are supported");
+                throw new ArgumentException("Only .NET Core 2.1, 2.2 and 3.0, and 3.1 are supported");
             }
             _project = project;
         }
@@ -62,7 +62,7 @@ namespace EFCorePowerTools.Handlers
             var launchPath = _project.IsNetCore21OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
 
             //Fix for "Bad IL format" with .NET Core 3.0 - test again after release
-            if (_project.IsNetCore30() && outputPath.EndsWith(".exe"))
+            if ((_project.IsNetCore30() || _project.IsNetCore31()) && outputPath.EndsWith(".exe"))
             {
                 outputPath = outputPath.Remove(outputPath.Length - 4, 4);
                 outputPath += ".dll";
@@ -248,7 +248,7 @@ namespace EFCorePowerTools.Handlers
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt22.exe.zip"), toDir);
             }
-            else if (_project.IsNetCore30())
+            else if (_project.IsNetCore30() || _project.IsNetCore31())
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
             }

@@ -132,7 +132,7 @@ namespace EFCorePowerTools.Extensions
 
         public static bool IsNetCore21OrHigher(this Project project)
         {
-            return IsNetCore21(project) || IsNetCore22(project) || IsNetCore30(project);
+            return IsNetCore21(project) || IsNetCore22(project) || IsNetCore30(project) || IsNetCore31(project);
         }
 
         public static bool IsNetCore21(this Project project)
@@ -148,6 +148,11 @@ namespace EFCorePowerTools.Extensions
         public static bool IsNetCore30(this Project project)
         {
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v3.0");
+        }
+
+        public static bool IsNetCore31(this Project project)
+        {
+            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v3.1");
         }
 
         private static string GetOutputPath(Project project)
