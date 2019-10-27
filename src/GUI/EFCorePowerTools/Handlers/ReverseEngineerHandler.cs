@@ -235,7 +235,10 @@ namespace EFCorePowerTools.Handlers
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
                     {
-                        project.ProjectItems.AddFromFile(filePath);
+                        if (!project.IsNetCore() && !isNetStandard)
+                        {
+                            project.ProjectItems.AddFromFile(filePath);
+                        }
                     }
                     if (modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                     {
@@ -244,9 +247,9 @@ namespace EFCorePowerTools.Handlers
                 }
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
                 {
-                    project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
                     if (!project.IsNetCore() && !isNetStandard)
                     {
+                        project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
                         _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
                     }
                     if (modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
