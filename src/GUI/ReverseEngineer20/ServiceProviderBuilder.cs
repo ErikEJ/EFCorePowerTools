@@ -65,9 +65,6 @@ namespace ReverseEngineer20
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
-                    var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
-                    spatial.ConfigureDesignTimeServices(serviceCollection);
-
                     if (!string.IsNullOrEmpty(options.Dacpac))
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();

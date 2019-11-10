@@ -30,23 +30,23 @@ namespace ReverseEngineer20.ReverseEngineer
                 schemas.Add(reverseEngineerOptions.DefaultDacpacSchema);
             }
 
-            var outputDir = reverseEngineerOptions.OutputPath != null
+            var outputDir = !string.IsNullOrEmpty(reverseEngineerOptions.OutputPath)
                ? Path.IsPathFullyQualified(reverseEngineerOptions.OutputPath)
                     ? reverseEngineerOptions.OutputPath
                     : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath))
                 : reverseEngineerOptions.ProjectPath;
 
-            var outputContextDir = reverseEngineerOptions.OutputContextPath != null
+            var outputContextDir = !string.IsNullOrEmpty(reverseEngineerOptions.OutputContextPath)
                ? Path.IsPathFullyQualified(reverseEngineerOptions.OutputContextPath)
                     ? reverseEngineerOptions.OutputContextPath
                     : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
                 : outputDir;
 
-            var modelNamespace = reverseEngineerOptions.ModelNamespace != null
+            var modelNamespace =  !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
                 ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ModelNamespace
                 : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
-            var contextNamespace = reverseEngineerOptions.ContextNamespace != null
+            var contextNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ContextNamespace)
                 ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
                 : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
