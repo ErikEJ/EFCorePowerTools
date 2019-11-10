@@ -12,6 +12,7 @@
                  Width="418"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
+                 SizeToContent="WidthAndHeight"
                  d:DataContext="{d:DesignInstance Type=viewModels:ModelingOptionsViewModel, IsDesignTimeCreatable=False}"
                  Title="{Binding Title, Mode=OneWay}">
 
