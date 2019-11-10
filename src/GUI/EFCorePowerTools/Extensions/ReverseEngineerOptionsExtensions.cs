@@ -1,14 +1,10 @@
-﻿using EnvDTE;
-using ReverseEngineer20;
-using System;
+﻿using ReverseEngineer20;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace EFCorePowerTools.Extensions
 {
-    using System.Runtime.Serialization;
-
     internal static class ReverseEngineerOptionsExtensions
     {
         public static ReverseEngineerOptions TryRead(string optionsPath)

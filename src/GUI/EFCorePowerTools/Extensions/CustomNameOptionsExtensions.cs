@@ -1,12 +1,8 @@
-﻿using ReverseEngineer20;
-using ReverseEngineer20.ReverseEngineer;
-using System;
+﻿using ReverseEngineer20.ReverseEngineer;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -17,16 +13,12 @@ namespace EFCorePowerTools.Extensions
             if (!File.Exists(optionsCustomNamePath)) return null;
             if (File.Exists(optionsCustomNamePath + ".ignore")) return null;
 
-            List<Schema> customNamingOptions = null;
-            try
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8))))
             {
-                var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8)));
                 var ser = new DataContractJsonSerializer(typeof(List<Schema>));
-                customNamingOptions = ser.ReadObject(ms) as List<Schema>;
-                ms.Close();
+                var customNamingOptions = ser.ReadObject(ms) as List<Schema>;
+                return customNamingOptions;
             }
-            catch{}
-            return customNamingOptions;
         }
     }
 }

@@ -57,8 +57,8 @@ namespace ReverseEngineer20.ReverseEngineer
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
-                    var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
-                    spatial.ConfigureDesignTimeServices(serviceCollection);
+                    //var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
+                    //spatial.ConfigureDesignTimeServices(serviceCollection);
 
                     if (!string.IsNullOrEmpty(options.Dacpac))
                     {
