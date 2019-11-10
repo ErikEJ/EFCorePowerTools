@@ -13,6 +13,7 @@
                  Height="455.056"
                  Width="420"
                  ResizeMode="NoResize"
+                 SizeToContent="WidthAndHeight"
                  WindowStartupLocation="CenterOwner"
                  d:DataContext="{d:DesignInstance Type=viewModels:PickTablesViewModel, IsDesignTimeCreatable=False}">
 
@@ -92,8 +93,8 @@
                           IsThreeState="False"
                           VerticalAlignment="Center" />
                 <Label Content="Search"
-                       Margin="43,0,0,0"
-                       Width="47" />
+                       Margin="30,0,0,0"
+                       Width="81" RenderTransformOrigin="0.138,0.471" />
                 <TextBox ToolTip="Search for table"
                          Height="22"
                          TextWrapping="Wrap"

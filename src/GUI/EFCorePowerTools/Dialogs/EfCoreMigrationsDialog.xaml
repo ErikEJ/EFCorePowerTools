@@ -11,6 +11,7 @@
         Width="450"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModels:MigrationOptionsViewModel, IsDesignTimeCreatable=False}">
 
