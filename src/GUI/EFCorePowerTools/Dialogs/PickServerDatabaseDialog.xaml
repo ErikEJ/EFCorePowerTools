@@ -14,8 +14,8 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  Loaded="Window_Loaded"
-                 Width="420"
-                 Height="200"
+                 MinWidth="420"
+                 MinHeight="200"
                  d:DataContext="{d:DesignInstance Type=viewModels:PickServerDatabaseViewModel, IsDesignTimeCreatable=False}">
 
     <i:Interaction.Triggers>
