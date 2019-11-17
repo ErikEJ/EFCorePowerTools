@@ -165,6 +165,7 @@
   <ItemGroup>
     <Compile Include="BLL\ExtensionVersionServiceTests.cs" />
     <Compile Include="BLL\InstalledComponentsServiceTests.cs" />
+    <Compile Include="ReverseEngineerTest.cs" />
     <Compile Include="Models\AboutExtensionModelTests.cs" />
     <Compile Include="Models\DatabaseConnectionModelTests.cs" />
     <Compile Include="Models\DatabaseDefinitionModelTests.cs" />

@@ -116,6 +116,7 @@
     <Compile Include="Helpers\Model.cs" />
     <Compile Include="Helpers\NuGetHelper.cs" />
     <Compile Include="Helpers\RepositoryHelper.cs" />
+    <Compile Include="Helpers\ReverseEngineerHelper.cs" />
     <Compile Include="Helpers\SqlCe40ProviderRegistration.cs" />
     <Compile Include="Helpers\SqliteProviderRegistration.cs" />
     <Compile Include="Helpers\Telemetry.cs" />
