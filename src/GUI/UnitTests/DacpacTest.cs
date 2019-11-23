@@ -53,7 +53,7 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string> { "dbo.Album", "dbo.Artist", "dbo.InvoiceLine" };
+            var tables = new List<string> { "[dbo].[Album]", "[dbo].[Artist]", "[dbo].[InvoiceLine]" };
 
             // Act
             var dbModel = factory.Create(dacpac, tables, new List<string>());
@@ -70,7 +70,7 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string> { "dbo.FilteredIndexTable", "dbo.DefaultComputedValues" };
+            var tables = new List<string> { "[dbo].[FilteredIndexTable]", "[dbo].[DefaultComputedValues]" };
 
             // Act
             var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
@@ -91,7 +91,7 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string> { "dbo.DefaultComputedValues" };
+            var tables = new List<string> { "[dbo].[DefaultComputedValues]" };
 
             // Act
             var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
@@ -108,7 +108,7 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string> { "dbo.TypeAlias" };
+            var tables = new List<string> { "[dbo].[TypeAlias]" };
 
             // Act
             var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
@@ -127,7 +127,7 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string> { "dbo.DefaultValues" };
+            var tables = new List<string> { "[dbo].[DefaultValues]" };
 
             // Act
             var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
