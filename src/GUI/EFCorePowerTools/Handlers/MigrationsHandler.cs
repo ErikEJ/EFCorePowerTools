@@ -65,7 +65,11 @@ namespace EFCorePowerTools.Handlers
 
                     if (!result.Item1)
                     {
-                        var version = new Version(result.Item2);
+                        if (!Version.TryParse(result.Item2, out Version version))
+                        {
+                            EnvDteHelper.ShowError($"Cannot support version {version}, notice that previews are not supported.");
+                            return;
+                        }
                         var nugetHelper = new NuGetHelper();
                         nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
                         EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
