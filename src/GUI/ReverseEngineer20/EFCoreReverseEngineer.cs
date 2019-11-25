@@ -126,6 +126,7 @@ namespace ReverseEngineer20
                 UseHandleBars = options.UseHandleBars,
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
+                UseSpatial = options.UseSpatial,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions);
