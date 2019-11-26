@@ -37,7 +37,11 @@ namespace ReverseEngineer20
 
             if (options.CustomReplacers != null)
             {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
+                serviceCollection.AddSingleton(provider => options.CustomReplacers)
+                                 .AddSingleton<CustomerOptionSelector>()
+                                 .AddSingleton<IEnhanceCandidateNamingService, ReplacingCandidateNamingService>()
+                                 .AddSingleton<IScaffoldingModelFactory, CustomerRelationalScaffoldingModelFactory>();
+
             }
 
             if (options.UseInflector)

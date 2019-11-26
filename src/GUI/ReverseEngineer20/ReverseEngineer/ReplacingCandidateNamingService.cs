@@ -3,17 +3,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
-    public class ReplacingCandidateNamingService : CandidateNamingService
+    public class ReplacingCandidateNamingService : CandidateNamingService, IEnhanceCandidateNamingService
     {
-        private readonly List<Schema> _customNameOptions;
+        private readonly CustomerOptionSelector _customNameOptions;
 
-        public ReplacingCandidateNamingService(List<Schema> customNameOptions)
+        public ReplacingCandidateNamingService(CustomerOptionSelector customNameOptions)
         {
             _customNameOptions = customNameOptions;
         }
@@ -29,76 +27,28 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var schema = GetSchema(originalTable.Schema);
 
-            if (schema == null)
-            {
-                return base.GenerateCandidateIdentifier(originalTable);
-            }
+            candidateStringBuilder.Append(AddSchemaName(originalTable));
 
-            if (schema.UseSchemaName)
-            {
-                candidateStringBuilder.Append(ToPascalCase(originalTable.Schema));
+            if (schema?.HasCustomTableName(originalTable.Name) ?? false)
+                candidateStringBuilder.Append(schema.GetNewTableName(originalTable.Name));
+            else
                 candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
 
-                return candidateStringBuilder.ToString();
-            }
-            else if (schema.Tables.Count > 0)
-            {
-                var newTableName = _customNameOptions
-                    .FirstOrDefault(x => x.SchemaName == schema.SchemaName)
-                    .Tables?
-                    .FirstOrDefault(t => t.Name == originalTable.Name)?.NewName;
-
-                if (string.IsNullOrWhiteSpace(newTableName))
-                {
-                    candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
-
-                    return candidateStringBuilder.ToString();
-                }
-
-                candidateStringBuilder.Append(newTableName);
-
-                return candidateStringBuilder.ToString();
-            }
-            else
-            {
-                return base.GenerateCandidateIdentifier(originalTable);
-            }
+            return candidateStringBuilder.ToString();
         }
 
         public override string GenerateCandidateIdentifier(DatabaseColumn originalColumn)
         {
-            string temp = string.Empty;
-            var candidateStringBuilder = new StringBuilder();
+            var schema = originalColumn.Table.Schema;
+            var table = originalColumn.Table.Name;
+            var column = originalColumn.Name;
 
-            var schema = GetSchema(originalColumn.Table.Schema);
+            var result = _customNameOptions.GetCustomColumnName(schema, table, column);
 
-            if (schema == null)
-            {
+            if (string.IsNullOrWhiteSpace(result))
                 return base.GenerateCandidateIdentifier(originalColumn);
-            }
-
-            if (schema.Tables == null)
-            {
-                return base.GenerateCandidateIdentifier(originalColumn);
-            }
-
-            var columns = _customNameOptions
-                .FirstOrDefault(s => s.SchemaName == schema.SchemaName)?
-                .Tables?
-                .FirstOrDefault(t => t.Name == originalColumn.Table.Name)?
-                .Columns?
-                .FirstOrDefault(c => c.Name == originalColumn.Name);
-
-
-            if (columns != null)
-            {
-                candidateStringBuilder.Append(columns.NewName);
-                return candidateStringBuilder.ToString();
-            }
             else
-            {
-                return base.GenerateCandidateIdentifier(originalColumn);
-            }
+                return result;
         }
 
         public override string GetDependentEndCandidateNavigationPropertyName(IForeignKey foreignKey)
@@ -114,7 +64,8 @@ namespace ReverseEngineer20.ReverseEngineer
             }
             else if (foreignKey.IsSelfReferencing())
             {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+                var test = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+                return test;
             }
             else if (schema.SchemaName == originalSchema)
             {
@@ -126,13 +77,13 @@ namespace ReverseEngineer20.ReverseEngineer
             }
             else
             {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+                var test = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+                return test;
             }
         }
 
-        private Schema GetSchema(string originalSchema)
-            => _customNameOptions?
-                    .FirstOrDefault(x => x.SchemaName == originalSchema);
+        private SchemaSelector GetSchema(string originalSchema)
+            => _customNameOptions.GetSchema(originalSchema);
 
         private static string ToPascalCase(string value)
         {
@@ -164,6 +115,36 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             return candidateStringBuilder.ToString();
+        }
+
+        public string GenerateDbSetCandidateIdentifier(DatabaseTable originalTable)
+        {
+            if (originalTable == null)
+            {
+                throw new ArgumentException("Argument is empty", nameof(originalTable));
+            }
+
+            var candidateStringBuilder = new StringBuilder();
+
+            var schema = GetSchema(originalTable.Schema);
+
+            candidateStringBuilder.Append(AddSchemaName(originalTable));
+
+            if (schema.HasCustomVariableName(originalTable.Name))
+                candidateStringBuilder.Append(schema.GetVariableName(originalTable.Name));
+            else
+                candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
+
+            return candidateStringBuilder.ToString();
+        }
+
+        public string AddSchemaName(DatabaseTable originalTable)
+        {
+            var schema = GetSchema(originalTable.Schema);
+
+            if (schema?.UseSchemaName ?? false)
+                return ToPascalCase(originalTable.Schema);
+            return null;
         }
     }
 }

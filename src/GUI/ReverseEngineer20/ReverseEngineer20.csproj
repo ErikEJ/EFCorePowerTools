@@ -271,13 +271,17 @@
       <Link>ModelBuilder\DgmlBuilder.cs</Link>
     </Compile>
     <Compile Include="ReverseEngineerOptions.cs" />
+    <Compile Include="ReverseEngineer\CustomerCSharpUniqueNamer.cs" />
+    <Compile Include="ReverseEngineer\CustomerOptionSelector.cs" />
+    <Compile Include="ReverseEngineer\CustomerRelationalScaffoldingModelFactory.cs" />
+    <Compile Include="ReverseEngineer\IEnhanceCandidateNamingService.cs" />
     <Compile Include="ReverseEngineer\LegacyInflectorPluralizer.cs" />
     <Compile Include="ReverseEngineer\Pluralizer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
     <Compile Include="ReverseEngineer\EfRevEngLauncher.cs" />
-    <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />
     <Compile Include="ReverseEngineer\CustomTemplateFileService.cs" />
     <Compile Include="ReverseEngineer\DacpacTableListBuilder.cs" />
+    <Compile Include="ReverseEngineer\ReplacingCandidateNamingService.cs" />
     <Compile Include="ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
     <Compile Include="ReverseEngineer\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="EFCoreReverseEngineer.cs" />

@@ -24,7 +24,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var exampleDbTable = new DatabaseTable
             {
@@ -58,7 +58,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var exampleDbTable = new DatabaseTable
             {
@@ -66,8 +66,8 @@ namespace UnitTests.Services
                 Schema = "machine"
             };
 
-            // Act
-            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+           //Act
+           var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
 
             //Assert
@@ -102,7 +102,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var exampleDbTables = new List<DatabaseTable>
             {
@@ -124,7 +124,7 @@ namespace UnitTests.Services
                 }
             };
 
-            // Act
+            //Act
 
             List<string> results = new List<string>();
             foreach (var table in exampleDbTables)
@@ -167,7 +167,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var exampleDbTables = new List<DatabaseTable>
             {
@@ -193,7 +193,7 @@ namespace UnitTests.Services
                 }
             };
 
-            // Act
+            //Act
             List<string> results = new List<string>();
             foreach (var table in exampleDbTables)
             {
@@ -229,7 +229,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var exampleDbTable = new DatabaseTable
             {
@@ -268,7 +268,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var exampleDbTables = new List<DatabaseTable>
             {
@@ -290,7 +290,7 @@ namespace UnitTests.Services
 
             var result = new List<string>();
 
-            // Act
+            //Act
             foreach (var exmapleTable in exampleDbTables)
             {
                 result.Add(sut.GenerateCandidateIdentifier(exmapleTable));
@@ -343,7 +343,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             //Act
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
@@ -393,7 +393,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             //Act
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
@@ -473,7 +473,7 @@ namespace UnitTests.Services
                   }
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             //Act
             var actResult = new List<string>();
@@ -497,17 +497,17 @@ namespace UnitTests.Services
             {
             };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var fk = CreateSelfRefFK();
 
-            // Act
-            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+           //Act
+           var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
 
 
             //Assert
             StringAssert.Contains(expected, result);
-            //Assert.AreSame(fk.PrincipalEntityType, fk.ResolveOtherEntityType(fk.DeclaringEntityType));
+            Assert.AreSame(fk.PrincipalEntityType, fk.ResolveOtherEntityType(fk.DeclaringEntityType));
         }
 
         [Test]
@@ -520,12 +520,12 @@ namespace UnitTests.Services
                 new Schema{ SchemaName = "schema", UseSchemaName = true}
             };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var fk = CreateOneToManyFK();
 
-            // Act
-            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+           //Act
+           var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
 
 
             //Assert
@@ -542,7 +542,7 @@ namespace UnitTests.Services
                 new Schema{ SchemaName = "schema", UseSchemaName = false}
             };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
 
             var fk = CreateOneToManyFK();
 
@@ -550,6 +550,38 @@ namespace UnitTests.Services
             var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
 
 
+            //Assert
+            StringAssert.Contains(expected, result);
+        }
+        
+        [Test]
+        public void GenerateDbSetName()
+        {
+            //Arrange
+            var expected = "Hello_Worlds";
+            var exampleOption = new List<Schema>
+            {
+                new Schema{ 
+                    SchemaName = "dbo",
+                    UseSchemaName = false,
+                    Tables = new List<TableRenamer>()
+                    {
+                        new TableRenamer()
+                        {
+                            Name = "Master",
+                            NewName = "Hello",
+                            VariableName = "Hello_Worlds"
+                        }
+                    }
+                }
+            };
+
+            var sut = new ReplacingCandidateNamingService(new CustomerOptionSelector(exampleOption));
+            var result = sut.GenerateDbSetCandidateIdentifier(new DatabaseTable()
+            {
+                Schema = "dbo",
+                Name = "Master",
+            });
             //Assert
             StringAssert.Contains(expected, result);
         }
