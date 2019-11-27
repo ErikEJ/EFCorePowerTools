@@ -36,8 +36,8 @@ namespace ReverseEngineer20.ReverseEngineer
 
             if (schema.UseSchemaName)
             {
-                candidateStringBuilder.Append(ToPascalCase(originalTable.Schema));
-                candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
+                candidateStringBuilder.Append(originalTable.Schema.ToPascalCase());
+                candidateStringBuilder.Append(originalTable.Name.ToPascalCase());
 
                 return candidateStringBuilder.ToString();
             }
@@ -50,7 +50,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 if (string.IsNullOrWhiteSpace(newTableName))
                 {
-                    candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
+                    candidateStringBuilder.Append(originalTable.Name.ToPascalCase());
 
                     return candidateStringBuilder.ToString();
                 }
@@ -120,7 +120,7 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 if (schema.UseSchemaName)
                 {
-                    return ToPascalCase(schema.SchemaName) + baseName;
+                    return schema.SchemaName.ToPascalCase() + baseName;
                 }
                 return baseName;
             }
@@ -133,37 +133,5 @@ namespace ReverseEngineer20.ReverseEngineer
         private Schema GetSchema(string originalSchema)
             => _customNameOptions?
                     .FirstOrDefault(x => x.SchemaName == originalSchema);
-
-        private static string ToPascalCase(string value)
-        {
-            var candidateStringBuilder = new StringBuilder();
-            var previousLetterCharInWordIsLowerCase = false;
-            var isFirstCharacterInWord = true;
-
-            foreach (var c in value)
-            {
-                var isNotLetterOrDigit = !char.IsLetterOrDigit(c);
-                if (isNotLetterOrDigit
-                    || (previousLetterCharInWordIsLowerCase && char.IsUpper(c)))
-                {
-                    isFirstCharacterInWord = true;
-                    previousLetterCharInWordIsLowerCase = false;
-                    if (isNotLetterOrDigit)
-                    {
-                        continue;
-                    }
-                }
-
-                candidateStringBuilder.Append(
-                    isFirstCharacterInWord ? char.ToUpperInvariant(c) : char.ToLowerInvariant(c));
-                isFirstCharacterInWord = false;
-                if (char.IsLower(c))
-                {
-                    previousLetterCharInWordIsLowerCase = true;
-                }
-            }
-
-            return candidateStringBuilder.ToString();
-        }
     }
 }

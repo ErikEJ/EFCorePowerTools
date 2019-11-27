@@ -8,6 +8,8 @@ namespace ReverseEngineer20.ReverseEngineer
 
         public string NewName { get; set; }
 
+        public string VariableName { get; set; }
+
         public List<ColumnNamer> Columns { get; set; }
     }
 }

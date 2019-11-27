@@ -283,6 +283,7 @@
     <Compile Include="EFCoreReverseEngineer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReverseEngineer\InflectorPluralizer.cs" />
+    <Compile Include="ReverseEngineer\StringExtension.cs" />
     <Compile Include="ServiceProviderBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
