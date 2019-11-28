@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
 using Humanizer;
+using System.Collections.Generic;
+using ReverseEngineer20.ReverseEngineer;
 
 namespace UnitTests
 {
@@ -404,6 +406,97 @@ namespace UnitTests
 
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void InflectorPluralizerVariables()
+        {
+            var expectedResult = "AndroidOtas";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "machine",
+                       UseSchemaName = false,
+                       Tables = new List<TableRenamer>
+                       {
+                          new TableRenamer
+                          {
+                            Name = "android_ota",
+                            VariableName = "AndroidOtas",
+                          }
+                       }
+                  }
+              };
+
+            var sut = new InflectorPluralizer(exampleOption);
+
+            //Act
+            var result = sut.Pluralize("AndroidOta");
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void InflectorOriginalPluralizerVariables()
+        {
+            var expectedResult = "AndroidOtas";
+
+            
+            var sut = new InflectorPluralizer();
+
+            //Act
+            var result = sut.Pluralize("AndroidOta");//output is AndroidOta
+
+            //Assert
+            Assert.That(result, Is.Not.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void InflectorSingularizeNewName()
+        {
+            var expectedResult = "WeatherData";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "machine",
+                       UseSchemaName = false,
+                       Tables = new List<TableRenamer>
+                       {
+                          new TableRenamer
+                          {
+                            Name = "weather_data",
+                            NewName = "WeatherData",
+                          }
+                       }
+                  }
+              };
+
+            var sut = new InflectorPluralizer(exampleOption);
+
+            //Act
+            var result = sut.Singularize("WeatherData");
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void InflectorOriginalSingularizeNewName()
+        {
+            var expectedResult = "WeatherData";
+
+            var sut = new InflectorPluralizer();
+
+            //Act
+            var result = sut.Singularize("WeatherData"); // Output is WeatherDatum
+
+            //Assert
+            Assert.That(result, Is.Not.EqualTo(expectedResult));
         }
     }
 }
