@@ -109,6 +109,7 @@
 
         <!-- Apply & Cancel -->
         <Button Grid.Row="5"
+                TabIndex="3"
                 Command="{Binding ApplyCommand}"
                 Content="{Binding ApplyButtonContent}"
                 Style="{StaticResource ApplyButtonStyle}"
