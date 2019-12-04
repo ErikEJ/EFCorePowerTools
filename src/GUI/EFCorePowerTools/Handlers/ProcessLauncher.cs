@@ -144,7 +144,8 @@ namespace EFCorePowerTools.Handlers
                 if (generationType == GenerationType.Ddl
                     || generationType == GenerationType.MigrationApply
                     || generationType == GenerationType.MigrationAdd
-                    || generationType == GenerationType.MigrationStatus)
+                    || generationType == GenerationType.MigrationStatus
+                    || generationType == GenerationType.MigrationScript)
                 {
                     startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
                 }
