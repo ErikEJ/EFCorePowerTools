@@ -285,19 +285,26 @@ namespace EFCorePowerTools
         {
             _dte2.StatusBar.Text = "An error occurred. See the Output window for details.";
 
-            var buildOutputWindow = _dte2.ToolWindows.OutputWindow.OutputWindowPanes.Item("Build");
-            buildOutputWindow.OutputString(Environment.NewLine);
-
-            foreach (var error in statusMessages)
+            try
             {
-                buildOutputWindow.OutputString(error + Environment.NewLine);
-            }
-            if (exception != null)
-            {
-                buildOutputWindow.OutputString(exception + Environment.NewLine);
-            }
+                var buildOutputWindow = _dte2.ToolWindows.OutputWindow.OutputWindowPanes.Item("Build");
+                buildOutputWindow.OutputString(Environment.NewLine);
 
-            buildOutputWindow.Activate();
+                foreach (var error in statusMessages)
+                {
+                    buildOutputWindow.OutputString(error + Environment.NewLine);
+                }
+                if (exception != null)
+                {
+                    buildOutputWindow.OutputString(exception + Environment.NewLine);
+                }
+
+                buildOutputWindow.Activate();
+            }
+            catch
+            {
+                EnvDteHelper.ShowError(exception.ToString());
+            }
         }
 
         private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], CultureInfo.InvariantCulture), 0);
