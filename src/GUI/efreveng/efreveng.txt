@@ -40,7 +40,7 @@
    ],
    "UseDatabaseNames": false,
    "UseFluentApiOnly": true,
-   "UseHandleBars": false,
+   "UseHandleBars": true,
    "UseInflector": true,
    "UseLegacyPluralizer": false
 }
