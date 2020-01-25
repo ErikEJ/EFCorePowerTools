@@ -77,7 +77,7 @@ namespace EFCorePowerTools.Handlers
                 switch (generationType)
                 {
                     case GenerationType.Dgml:
-                        GenerateDgml(processResult, project);
+                        GenerateDgml(modelResult, project);
                         Telemetry.TrackEvent("PowerTools.GenerateModelDgml");
                         break;
                     case GenerationType.Ddl:
@@ -106,19 +106,15 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private void GenerateDgml(string processResult, Project project)
+        private void GenerateDgml(List<Tuple<string, string>> modelResult, Project project)
         {
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
-            var processLauncher = new ProcessLauncher(project);
-
-            var result = processLauncher.BuildModelResult(processResult);
             ProjectItem item = null;
 
-            foreach (var info in result)
+            foreach (var info in modelResult)
             {
                 var dgmlText = dgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
-
-                var path = Path.GetTempPath() + info.Item1 + ".dgml";
+                var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
                 File.WriteAllText(path, dgmlText, Encoding.UTF8);
                 item = project.ProjectItems.GetItem(Path.GetFileName(path));
                 if (item != null)
