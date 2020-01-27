@@ -49,6 +49,7 @@ namespace EFCorePowerTools.Handlers
             foreach (var context in contexts)
             {
                 if (context.StartsWith("info:")) continue;
+                if (context.StartsWith("dbug:")) continue;
 
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
                 result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
@@ -61,7 +62,6 @@ namespace EFCorePowerTools.Handlers
         {
             var launchPath = _project.IsNetCore21OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
 
-            //Fix for "Bad IL format" with .NET Core 3.0 - test again after release
             if ((_project.IsNetCore30() || _project.IsNetCore31()) && outputPath.EndsWith(".exe"))
             {
                 outputPath = outputPath.Remove(outputPath.Length - 4, 4);
