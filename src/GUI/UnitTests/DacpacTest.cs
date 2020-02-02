@@ -45,7 +45,7 @@ namespace UnitTests
             var dbModel = factory.Create(dacpac, new List<string>(), new List<string>());
 
             // Assert
-            Assert.AreEqual(0, dbModel.Tables.Count());
+            Assert.AreEqual(11, dbModel.Tables.Count());
         }
 
         [Test]
