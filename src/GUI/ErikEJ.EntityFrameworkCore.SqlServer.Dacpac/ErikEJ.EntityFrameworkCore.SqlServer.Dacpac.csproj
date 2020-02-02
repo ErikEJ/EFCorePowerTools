@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageVersion>3.1.0</PackageVersion>
+    <Authors>ErikEJ</Authors>
+    <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
+    <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+    <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
+    <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4573.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\DacFxStrongTypedCore\bin\$(Configuration)\netstandard2.0\DacFxStrongTypedCore.dll">
+      <Visible>false</Visible>
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework)</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
