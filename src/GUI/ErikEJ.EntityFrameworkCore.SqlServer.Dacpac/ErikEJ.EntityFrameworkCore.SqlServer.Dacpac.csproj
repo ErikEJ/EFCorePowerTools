@@ -6,6 +6,7 @@
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+    <!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.md</DocumentationFile>-->
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
