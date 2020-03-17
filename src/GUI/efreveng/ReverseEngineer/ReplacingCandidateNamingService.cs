@@ -45,9 +45,9 @@ namespace ReverseEngineer20.ReverseEngineer
             else if (schema.Tables.Count > 0)
             {
                 var newTableName = _customNameOptions
-                    .FirstOrDefault(x => x.SchemaName == schema.SchemaName)
-                    .Tables?
-                    .FirstOrDefault(t => t.Name == originalTable.Name)?.NewName;
+                    .Where(s => s.SchemaName == schema.SchemaName)
+                    .SelectMany(t => t.Tables.Where(n => n.Name == originalTable.Name))
+                    .FirstOrDefault()?.NewName;
 
                 if (string.IsNullOrWhiteSpace(newTableName))
                 {
@@ -83,17 +83,15 @@ namespace ReverseEngineer20.ReverseEngineer
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
-            var columns = _customNameOptions
-                .FirstOrDefault(s => s.SchemaName == schema.SchemaName)?
-                .Tables?
-                .FirstOrDefault(t => t.Name == originalColumn.Table.Name)?
-                .Columns?
-                .FirstOrDefault(c => c.Name == originalColumn.Name);
+            var column = _customNameOptions
+                .Where(s => s.SchemaName == schema.SchemaName)
+                .SelectMany(t => t.Tables.Where(n => n.Name == originalColumn.Table.Name))
+                .SelectMany(c => c.Columns.Where(n => n.Name == originalColumn.Name))
+                .FirstOrDefault();
 
-
-            if (columns != null)
+            if (column != null)
             {
-                candidateStringBuilder.Append(columns.NewName);
+                candidateStringBuilder.Append(column.NewName);
                 return candidateStringBuilder.ToString();
             }
             else
