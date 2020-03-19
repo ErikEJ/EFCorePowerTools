@@ -155,7 +155,23 @@ namespace UnitTests.Services
                   {
                        SchemaName = "stg",
                        UseSchemaName = false,
-                       Tables = new List<TableRenamer>{ new TableRenamer {  Name = "Jobs", NewName = "stg_Jobs" } }
+                       Tables = new List<TableRenamer>
+                       { 
+                           new TableRenamer 
+                           {  
+                               Name = "Jobs", 
+                               NewName = "stg_Jobs",
+                               Columns = new List<ColumnNamer>
+                               {
+                                   new ColumnNamer
+                                   { 
+                                     Name = "JobName",
+                                     NewName = "JobRename",
+                                   }
+                               }
+                           }
+                           
+                       }
                   },
               };
 
@@ -180,7 +196,7 @@ namespace UnitTests.Services
                 results.Add(sut.GenerateCandidateIdentifier(table));
             }
 
-            //Assert
+            //Assert    
             StringAssert.AreEqualIgnoringCase("stg_Jobs", results[1]);
             StringAssert.AreEqualIgnoringCase("stg_DeliveryAddress", results[0]);
         }
@@ -268,7 +284,7 @@ namespace UnitTests.Services
                         {
                          new TableRenamer{
                              NewName = "new_name_of_the_table",
-                             Name = "OldTableName"
+                             Name = "OldTableName",
                          }
                         }
 

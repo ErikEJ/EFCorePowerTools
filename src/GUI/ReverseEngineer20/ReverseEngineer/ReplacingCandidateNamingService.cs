@@ -72,31 +72,30 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var schema = GetSchema(originalColumn.Table.Schema);
 
-            if (schema == null)
+            if (schema == null || schema.Tables == null)
             {
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
-            if (schema.Tables == null)
-            {
-                return base.GenerateCandidateIdentifier(originalColumn);
-            }
-
-            var column = _customNameOptions
+            var renamers = _customNameOptions
                 .Where(s => s.SchemaName == schema.SchemaName)
-                .SelectMany(t => t.Tables.Where(n => n.Name == originalColumn.Table.Name))
-                .SelectMany(c => c.Columns.Where(n => n.Name == originalColumn.Name))
-                .FirstOrDefault();
+                .SelectMany(t => t.Tables.Where(n => n.Name == originalColumn.Table.Name && n.Columns != null))
+                .ToList();
 
-            if (column != null)
+            if (renamers.Count > 0)
             {
-                candidateStringBuilder.Append(column.NewName);
-                return candidateStringBuilder.ToString();
+                var column = renamers                    
+                    .SelectMany(c => c.Columns.Where(n => n.Name == originalColumn.Name))
+                    .FirstOrDefault();
+
+                if (column != null)
+                {
+                    candidateStringBuilder.Append(column.NewName);
+                    return candidateStringBuilder.ToString();
+                }
             }
-            else
-            {
-                return base.GenerateCandidateIdentifier(originalColumn);
-            }
+            
+            return base.GenerateCandidateIdentifier(originalColumn);
         }
 
         public override string GetDependentEndCandidateNavigationPropertyName(IForeignKey foreignKey)
