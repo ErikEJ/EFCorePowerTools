@@ -18,7 +18,7 @@
 
         private DatabaseConnectionModel _selectedDatabaseConnection;
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
-        private bool _includeViews;
+        private bool _includeViews = true;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
