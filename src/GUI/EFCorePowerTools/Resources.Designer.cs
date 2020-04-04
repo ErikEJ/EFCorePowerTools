@@ -19,7 +19,7 @@ namespace EFCorePowerTools {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -246,6 +246,15 @@ namespace EFCorePowerTools {
         internal static string nvarchar {
             get {
                 return ResourceManager.GetString("nvarchar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 9D8FDBB9-EE60-4787-B7AE-49831D34AD4B.
+        /// </summary>
+        internal static string OracleProvider {
+            get {
+                return ResourceManager.GetString("OracleProvider", resourceCulture);
             }
         }
         

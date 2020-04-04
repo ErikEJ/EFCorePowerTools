@@ -277,4 +277,7 @@ Storage size varies. It is the length of the value in bytes.</value>
   <data name="MysqlVSProvider" xml:space="preserve">
     <value>c6882346-e592-4da5-80ba-d2eadcda0359</value>
   </data>
+  <data name="OracleProvider" xml:space="preserve">
+    <value>9D8FDBB9-EE60-4787-B7AE-49831D34AD4B</value>
+  </data>
 </root>

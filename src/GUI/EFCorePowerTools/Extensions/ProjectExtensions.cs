@@ -80,6 +80,10 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Pomelo.EntityFrameworkCore.MySql";
             }
+            if (dbType == DatabaseType.Oracle)
+            {
+                providerPackage = "Oracle.EntityFrameworkCore";
+            }
 
             var vsProject = project.Object as VSProject;
             if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
