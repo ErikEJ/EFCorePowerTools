@@ -111,6 +111,7 @@ namespace ReverseEngineer20.ReverseEngineer
             var lines = File.ReadAllLines(contextFile);
 
             int i = 1;
+            var inConfiguring = false;
 
             foreach (var line in lines)
             {
@@ -124,11 +125,22 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 if (!options.IncludeConnectionString)
                 {
-                    if (line.Trim().StartsWith("#warning To protect"))
+                    if (line.Trim().Contains("protected override void OnConfiguring"))
+                    {
+                        inConfiguring = true;
                         continue;
+                    }
 
-                    if (line.Trim().StartsWith("optionsBuilder.Use"))
+                    if (inConfiguring && line.Trim() != string.Empty)
+                    {
                         continue;
+                    }
+
+                    if (inConfiguring && line.Trim() == string.Empty)
+                    {
+                        inConfiguring = false;
+                        continue;
+                    }
                 }
 
                 finalLines.Add(line);

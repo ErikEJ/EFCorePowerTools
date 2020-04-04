@@ -140,16 +140,28 @@ namespace ReverseEngineer20
 
             int i = 1;
             var inModelCreating = false;
+            var inConfiguring = false;
 
             foreach (var line in lines)
             {
                 if (!options.IncludeConnectionString)
                 {
-                    if (line.Trim().StartsWith("#warning To protect"))
+                    if (line.Trim().Contains("protected override void OnConfiguring"))
+                    {
+                        inConfiguring = true;
                         continue;
+                    }
 
-                    if (line.Trim().StartsWith("optionsBuilder.Use"))
+                    if (inConfiguring && line.Trim() != string.Empty)
+                    {
                         continue;
+                    }
+
+                    if (inConfiguring && line.Trim() == string.Empty)
+                    {
+                        inConfiguring = false;
+                        continue;
+                    }
                 }
 
                 if (modelNamespace != contextNamespace)
