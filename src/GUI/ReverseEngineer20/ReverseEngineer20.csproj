@@ -180,6 +180,12 @@
     <Reference Include="Npgsql.EntityFrameworkCore.PostgreSQL, Version=2.2.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.EntityFrameworkCore.PostgreSQL.2.2.0\lib\netstandard2.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll</HintPath>
     </Reference>
+    <Reference Include="Oracle.EntityFrameworkCore, Version=2.0.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.EntityFrameworkCore.2.19.60\lib\netstandard2.0\Oracle.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=2.0.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.Core.2.19.60\lib\netstandard2.0\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="Pomelo.EntityFrameworkCore.MySql, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Pomelo.EntityFrameworkCore.MySql.2.2.0\lib\netstandard2.0\Pomelo.EntityFrameworkCore.MySql.dll</HintPath>
       <Private>True</Private>

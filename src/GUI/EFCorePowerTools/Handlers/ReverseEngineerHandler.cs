@@ -106,7 +106,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (includeViews && dbInfo.DatabaseType == DatabaseType.SQLCE40)
+                if (includeViews && (dbInfo.DatabaseType == DatabaseType.SQLCE40 || dbInfo.DatabaseType == DatabaseType.Oracle))
                 {
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 3.0: {dbInfo.DatabaseType}");
                     return;
@@ -146,6 +146,10 @@ namespace EFCorePowerTools.Handlers
                 else if (dbInfo.DatabaseType == DatabaseType.Mysql)
                 {
                     classBasis = EnvDteHelper.GetMysqlDatabaseName(dbInfo.ConnectionString);
+                }
+                else if (dbInfo.DatabaseType == DatabaseType.Oracle)
+                {
+                    classBasis = EnvDteHelper.GetOracleDatabaseName(dbInfo.ConnectionString);
                 }
                 else
                 {

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using ReverseEngineer20;
+using Oracle.ManagedDataAccess.Client;
 
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
@@ -31,6 +32,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Shared.Resources.SQLitePrivateProvider);
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
+            Guid providerOracle = new Guid(Resources.OracleProvider);
 
             bool isV40Installed = RepositoryHelper.IsV40Installed() &&
                 (DdexProviderIsInstalled(provider40) || DdexProviderIsInstalled(provider40Private));
@@ -71,6 +73,11 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         if (objProviderGuid == providerMysql)
                         {
                             info.DatabaseType = DatabaseType.Mysql;
+                        }
+
+                        if (objProviderGuid == providerOracle)
+                        {
+                            info.DatabaseType = DatabaseType.Oracle;
                         }
 
                         if (info.DatabaseType != DatabaseType.SQLCE35
@@ -167,11 +174,15 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     dbType = DatabaseType.Npgsql;
                     providerGuid = Resources.NpgsqlProvider;
                 }
-
                 if (providerInvariant == "Mysql" || providerInvariant == "MySql.Data.MySqlClient")
                 {
                     dbType = DatabaseType.Mysql;
                     providerGuid = Resources.MysqlVSProvider;
+                }
+                if (providerInvariant == "Oracle.ManagedDataAccess.Client")
+                {
+                    dbType = DatabaseType.Oracle;
+                    providerGuid = Resources.OracleProvider;
                 }
             }
             return new DatabaseInfo
@@ -223,6 +234,35 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             }
 
             return result.OrderBy(l => l.Name).ToList();
+        }
+
+        internal static string GetOracleDatabaseName(string connectionString)
+        {
+            var myBuilder = new OracleConnectionStringBuilder(connectionString);
+            return myBuilder.DataSource;
+        }
+
+        internal static List<TableInformationModel> GetOracleTableNames(string connectionString, bool includeViews)
+        {
+            var result = new List<TableInformationModel>();
+            using (var oracleConn = new OracleConnection(connectionString))
+            {
+                oracleConn.Open();
+                string sql = $@"SELECT table_name, owner FROM user_tables ORDER BY owner, table_name";
+
+                using (var cmd = new OracleCommand(sql, oracleConn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add(new TableInformationModel(reader.GetString(0), true));
+                        }
+                    }
+                }
+
+                return result;
+            }
         }
 
         internal static string GetMysqlDatabaseName(string connectionString)
@@ -302,10 +342,15 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 var helper = new SqlServerHelper();
                 return helper.PathFromConnectionString(connectionString);
             }
+            
             if (dbType == DatabaseType.Npgsql)
                 return GetNpgsqlDatabaseName(connectionString);
+            
             if (dbType == DatabaseType.Mysql)
                 return GetMysqlDatabaseName(connectionString);
+
+            if (dbType == DatabaseType.Oracle)
+                return GetOracleDatabaseName(connectionString);
 
             var filePath = GetFilePath(connectionString, dbType);
             return Path.GetFileName(filePath);
