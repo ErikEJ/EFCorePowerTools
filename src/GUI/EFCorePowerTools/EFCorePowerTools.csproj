@@ -98,7 +98,7 @@
     </Compile>
     <Compile Include="EFCorePowerToolsPackage.cs" />
     <Compile Include="Extensions\CustomNameOptionsExtensions.cs" />
-    <Compile Include="Extensions\EvnDTEExtensions.cs" />
+    <Compile Include="Extensions\EnvDTEExtensions.cs" />
     <Compile Include="Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemsExtensions.cs" />

@@ -2,41 +2,52 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace EFCorePowerTools.Extensions
 {
-    internal static class EvnDTEExtensions
+    internal static class EnvDTEExtensions
     {
-        public static string[] GetDacpacFilesInActiveSolution(this DTE dte)
+        public static string[] GetDacpacFilesInActiveSolution(this DTE dte, string[] projectPaths)
         {
             var result = new List<string>();
 
             if (!dte.Solution.IsOpen)
                 return null;
 
-            TryGetInitialPath(dte, out var path);
-
-            if (path != null)
+            foreach (var projectPath in projectPaths)
             {
-                var files = DirSearch(path, "*.sqlproj");
-                foreach (var file in files)
+                var folder = Path.GetDirectoryName(projectPath);
+                if (Directory.Exists(folder))
                 {
-                    if (!result.Contains(file))
-                        result.Add(file);
-                }
-
-                files = DirSearch(path, "*.dacpac");
-                foreach (var file in files)
-                {
-                    if (!result.Contains(file))
-                        result.Add(file);
-                }
+                    AddFiles(result, folder);
+                }                
             }
 
             if (result.Count == 0)
                 return null;
 
-            return result.ToArray();
+            return result
+                .Where(s => s.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                .Concat(result.Where(s => s.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)))
+                .ToArray();
+        }
+
+        private static void AddFiles(List<string> result, string path)
+        {
+            var files = DirSearch(path, "*.sqlproj");
+            foreach (var file in files)
+            {
+                if (!result.Contains(file))
+                    result.Add(file);
+            }
+
+            files = DirSearch(path, "*.dacpac");
+            foreach (var file in files)
+            {
+                if (!result.Contains(file))
+                    result.Add(file);
+            }
         }
 
         public static string BuildSqlProj(this DTE dte, string sqlprojPath)
@@ -129,27 +140,6 @@ namespace EFCorePowerTools.Extensions
                 }
             }
             return list;
-        }
-
-        private static bool TryGetInitialPath(DTE dte, out string path)
-        {
-            try
-            {
-                path = GetInitialFolder(dte);
-                return true;
-            }
-            catch
-            {
-                path = null;
-                return false;
-            }
-        }
-
-        private static string GetInitialFolder(DTE dte)
-        {
-            if (!dte.Solution.IsOpen)
-                return null;
-            return Path.GetDirectoryName(dte.Solution.FullName);
         }
 
         public static List<string> DirSearch(string sDir, string pattern)

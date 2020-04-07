@@ -1,20 +1,21 @@
 ﻿using EFCorePowerTools;
 using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using MySql.Data.MySqlClient;
 using Npgsql;
+using Oracle.ManagedDataAccess.Client;
+using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using ReverseEngineer20;
-using Oracle.ManagedDataAccess.Client;
 
 // ReSharper disable once CheckNamespace
 namespace ErikEJ.SqlCeToolbox.Helpers
@@ -367,6 +368,18 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 return false;
             }
             return true;
+        }
+
+        internal static string[] GetProjectFilesInSolution(EFCorePowerToolsPackage package)
+        {
+            IVsSolution sol = package.GetService<IVsSolution>();
+            uint numProjects;
+            ErrorHandler.ThrowOnFailure(sol.GetProjectFilesInSolution((uint)__VSGETPROJFILESFLAGS.GPFF_SKIPUNLOADEDPROJECTS, 0, null, out numProjects));
+            string[] projects = new string[numProjects];
+            ErrorHandler.ThrowOnFailure(sol.GetProjectFilesInSolution((uint)__VSGETPROJFILESFLAGS.GPFF_SKIPUNLOADEDPROJECTS, numProjects, projects, out numProjects));
+            //GetProjectFilesInSolution also returns solution folders, so we want to do some filtering
+            //things that don't exist on disk certainly can't be project files
+            return projects.Where(p => !string.IsNullOrEmpty(p) && File.Exists(p)).ToArray();
         }
 
         // <summary>

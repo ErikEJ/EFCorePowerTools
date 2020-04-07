@@ -46,7 +46,7 @@ namespace EFCorePowerTools.Handlers
                 var renamingPath = Path.Combine(projectPath, "efpt.renaming.json");
 
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
-                var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution();
+                var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
 
                 var psd = _package.GetView<IPickServerDatabaseDialog>();
 
