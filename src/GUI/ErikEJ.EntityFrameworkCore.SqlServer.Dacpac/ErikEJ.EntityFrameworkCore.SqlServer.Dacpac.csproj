@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -15,8 +15,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacHacFactory.cs" Link="DacpacConsolidate\DacHacFactory.cs" />
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacpacMerger.cs" Link="DacpacConsolidate\DacpacMerger.cs" />
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
+    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4573.2" />
+    <PackageReference Include="System.IO.Packaging" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +42,10 @@
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DacpacConsolidate\" />
   </ItemGroup>
 
 </Project>

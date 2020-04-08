@@ -1,5 +1,6 @@
 ﻿using GOEddie.Dacpac.References;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,6 +10,19 @@ namespace ReverseEngineer20.DacpacConsolidate
     {
         public string Consolidate(string dacpacPath)
         {
+            var fileNames = GetAllReferences(dacpacPath);
+
+            fileNames.Insert(0, dacpacPath);
+
+            var target = Path.Combine(Path.GetDirectoryName(dacpacPath), $"efpt-{Guid.NewGuid()}.dacpac");
+            var merger = new DacpacMerger(target, fileNames.ToArray());
+            merger.Merge();
+
+            return target;
+        }
+
+        private List<string> GetAllReferences(string dacpacPath)
+        {
             var parser = new HeaderParser(dacpacPath);
 
             var references = parser.GetCustomData()
@@ -17,11 +31,8 @@ namespace ReverseEngineer20.DacpacConsolidate
 
             if (references.Count == 0)
             {
-                return dacpacPath;
+                return Enumerable.Empty<string>().ToList();
             }
-
-            //TODO Resolve nested references!
-
 
             var fileNames = references
                 .SelectMany(r => r.Items)
@@ -31,15 +42,18 @@ namespace ReverseEngineer20.DacpacConsolidate
 
             if (fileNames.Count() == 0)
             {
-                return dacpacPath;
+                return Enumerable.Empty<string>().ToList();
             }
-            fileNames.Insert(0, dacpacPath);
 
-            var target = Path.Combine(Path.GetDirectoryName(dacpacPath), $"efpt-{Guid.NewGuid()}.dacpac");
-            var merger = new DacpacMerger(target, fileNames.ToArray());
-            merger.Merge();
+            var additionalFiles = new List<string>();
+            foreach (var fileName in fileNames)
+            {
+                additionalFiles.AddRange(GetAllReferences(fileName));
+            }
 
-            return target;
+            fileNames.AddRange(additionalFiles);
+
+            return fileNames.Distinct().ToList();
         }
     }
 }

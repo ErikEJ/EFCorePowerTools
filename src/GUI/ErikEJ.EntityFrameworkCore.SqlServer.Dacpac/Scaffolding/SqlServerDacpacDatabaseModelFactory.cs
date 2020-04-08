@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
+using ReverseEngineer20.DacpacConsolidate;
 
 namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
@@ -53,6 +54,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 DefaultSchema = schemas.Count() > 0 ? schemas.First() : "dbo"                
             };
             //Sequences not created - not needed for scaffolding
+
+            var consolidator = new DacpacConsolidator();
+            dacpacPath = consolidator.Consolidate(dacpacPath);
 
             var model = new TSqlTypedModel(dacpacPath);
 
