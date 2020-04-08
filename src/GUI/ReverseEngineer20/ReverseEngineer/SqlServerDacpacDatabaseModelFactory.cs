@@ -42,9 +42,12 @@ namespace ReverseEngineer20
             var dbModel = new DatabaseModel
             {
                 DatabaseName = Path.GetFileNameWithoutExtension(dacpacPath),
-                DefaultSchema = schemas.Count() > 0 ? schemas.First() : "dbo"                
+                DefaultSchema = schemas.Count() > 0 ? schemas.First() : "dbo"
             };
             //Sequences not created - not needed for scaffolding
+
+            var consolidator = new DacpacConsolidate.DacpacConsolidator();
+            dacpacPath = consolidator.Consolidate(dacpacPath);
 
             var model = new TSqlTypedModel(dacpacPath);
 

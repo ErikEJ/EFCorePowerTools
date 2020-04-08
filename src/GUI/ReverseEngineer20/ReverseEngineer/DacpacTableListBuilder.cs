@@ -28,7 +28,11 @@ namespace ReverseEngineer20
 
         public List<TableInformationModel> GetTableDefinitions()
         {
-            using (var model = new TSqlTypedModel(_dacpacPath))
+            var consolidator = new DacpacConsolidate.DacpacConsolidator();
+
+            var dacpacPath = consolidator.Consolidate(_dacpacPath);
+
+            using (var model = new TSqlTypedModel(dacpacPath))
             {
                 var result = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
                             .Select(m => new TableInformationModel($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", m.PrimaryKeyConstraints.Any(), false))
