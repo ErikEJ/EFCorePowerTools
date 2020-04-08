@@ -6,7 +6,7 @@ namespace UnitTests
     [TestFixture]
     public class DacpacConsolidatorTest
     {
-        [Test]
+        [Test, Ignore("only run locally")]
         public void CanConsolidate_Issue_274()
         {
             // Arrange
