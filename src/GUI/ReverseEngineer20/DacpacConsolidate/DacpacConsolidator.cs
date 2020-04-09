@@ -12,6 +12,11 @@ namespace ReverseEngineer20.DacpacConsolidate
         {
             var fileNames = GetAllReferences(dacpacPath);
 
+            if (fileNames.Count == 0)
+            {
+                return dacpacPath;
+            }
+
             fileNames.Insert(0, dacpacPath);
 
             var target = Path.Combine(Path.GetDirectoryName(dacpacPath), $"efpt-{Guid.NewGuid()}.dacpac");
