@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using Humanizer;
+using ReverseEngineer20.ReverseEngineer;
 
 namespace UnitTests
 {
@@ -401,6 +402,30 @@ namespace UnitTests
         {
             // Act
             var result = word.Singularize(false);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("Oranges", "Orange")]
+        [TestCase(null, null)]
+        public void PluralizerWorks(string word, string expectedResult)
+        {
+            // Act
+            var result = new HumanizerPluralizer().Singularize(word);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        [TestCase("Orange", "Oranges")]
+        [TestCase(null, null)]
+        public void PluralizerWorks2(string word, string expectedResult)
+        {
+            // Act
+            var result = new HumanizerPluralizer().Pluralize(word);
 
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));

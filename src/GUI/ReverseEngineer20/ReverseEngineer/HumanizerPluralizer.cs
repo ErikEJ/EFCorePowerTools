@@ -1,18 +1,18 @@
-﻿using Bricelam.EntityFrameworkCore.Design;
+﻿using Humanizer;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
-    public class LegacyInflectorPluralizer : IPluralizer
+    public class HumanizerPluralizer : IPluralizer
     {
         public string Pluralize(string name)
         {
-            return new Pluralizer().Pluralize(name) ?? name;
+            return name?.Pluralize(inputIsKnownToBeSingular: false);
         }
 
         public string Singularize(string name)
         {
-            return new Pluralizer().Singularize(name) ?? name;
+            return name?.Singularize(inputIsKnownToBePlural: false);
         }
     }
 }

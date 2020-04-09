@@ -45,11 +45,11 @@ namespace ReverseEngineer20
             {
                 if (options.UseLegacyPluralizer)
                 {
-                    serviceCollection.AddSingleton<IPluralizer, LegacyInflectorPluralizer>();
+                    serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
                 }
                 else
                 {
-                    serviceCollection.AddSingleton<IPluralizer, InflectorPluralizer>();
+                    serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
                 }
             }
 

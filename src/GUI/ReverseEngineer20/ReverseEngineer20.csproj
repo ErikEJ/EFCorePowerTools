@@ -287,7 +287,7 @@
     <Compile Include="DacpacConsolidate\DacpacXml.cs" />
     <Compile Include="DacpacConsolidate\HeaderParser.cs" />
     <Compile Include="DacpacConsolidate\Metadata.cs" />
-    <Compile Include="ReverseEngineer\LegacyInflectorPluralizer.cs" />
+    <Compile Include="ReverseEngineer\LegacyPluralizer.cs" />
     <Compile Include="ReverseEngineer\Pluralizer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />
     <Compile Include="ReverseEngineer\EfRevEngLauncher.cs" />
@@ -298,7 +298,7 @@
     <Compile Include="ReverseEngineer\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="EFCoreReverseEngineer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReverseEngineer\InflectorPluralizer.cs" />
+    <Compile Include="ReverseEngineer\HumanizerPluralizer.cs" />
     <Compile Include="ServiceProviderBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
