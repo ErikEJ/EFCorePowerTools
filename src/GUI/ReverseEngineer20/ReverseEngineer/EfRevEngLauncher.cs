@@ -65,7 +65,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 throw new Exception("Reverse engineer error: " + Environment.NewLine + result[0]);
             }
 
-            return null;
+            throw new Exception("Reverse engineer error: Unable to launch external process");
         }
 
         private static bool TryRead<T>(string options, out T deserialized) where T : class, new()
