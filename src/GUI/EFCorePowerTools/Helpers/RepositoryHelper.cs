@@ -27,11 +27,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString, includeViews);
             }
 
-            if (dbInfo.DatabaseType == DatabaseType.Oracle)
-            {
-                return EnvDteHelper.GetOracleTableNames(dbInfo.ConnectionString, false);
-            }
-
             using (var repository = RepositoryHelper.CreateRepository(dbInfo))
             {
                 var allPks = repository.GetAllPrimaryKeys();

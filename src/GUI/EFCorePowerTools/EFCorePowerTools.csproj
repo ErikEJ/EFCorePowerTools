@@ -170,12 +170,6 @@
     <Content Include="efpt\2.2.0\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="efpt\2.2.4\efpt.exe">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.2.4\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="efpt\2.2.6\efpt.exe">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -220,9 +214,6 @@
     </Content>
     <None Include="efpt.renaming.json" />
     <Content Include="efpt\2.2.0\efpt.exe.config">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.2.4\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="efpt\2.2.6\efpt.exe.config">
@@ -526,9 +517,6 @@
     <Reference Include="NuGet.VisualStudio">
       <HintPath>..\References\2010\NuGet.VisualStudio.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.19.6.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
