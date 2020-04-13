@@ -218,7 +218,7 @@ namespace ReverseEngineer20
         {
             var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
 
-            var allFiles = filePaths.AdditionalFiles.Concat(new List<string> { filePaths.ContextFile });
+            var allFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).ToList();
 
             foreach (var contextFolderFile in contextFolderFiles)
             {

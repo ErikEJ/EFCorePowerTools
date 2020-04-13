@@ -17,7 +17,7 @@ namespace ReverseEngineer20.ReverseEngineer
             string fileName,
             string altRelativeDirectory = null)
         {
-            var localDirectory = Path.Combine(RootDirectory, relativeDirectory);
+            var localDirectory = Path.GetFullPath(Path.Combine(RootDirectory, relativeDirectory));
             var contents = RetrieveFileContents(localDirectory, fileName);
             return contents;
         }

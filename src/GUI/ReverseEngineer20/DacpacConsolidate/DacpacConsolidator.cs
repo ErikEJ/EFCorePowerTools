@@ -19,7 +19,7 @@ namespace ReverseEngineer20.DacpacConsolidate
 
             fileNames.Insert(0, dacpacPath);
 
-            var target = Path.Combine(Path.GetDirectoryName(dacpacPath), $"efpt-{Guid.NewGuid()}.dacpac");
+            var target = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dacpacPath), $"efpt-{Guid.NewGuid()}.dacpac"));
             var merger = new DacpacMerger(target, fileNames.ToArray());
             merger.Merge();
 

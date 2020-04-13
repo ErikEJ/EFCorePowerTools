@@ -78,7 +78,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
-                Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty),
+                Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
                 overwriteFiles: true);
 
             string fixedNamespace = modelNamespace != contextNamespace
@@ -161,7 +161,7 @@ namespace ReverseEngineer20.ReverseEngineer
         {
             var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
 
-            var allFiles = filePaths.AdditionalFiles.Concat(new List<string> { filePaths.ContextFile });
+            var allFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).ToList();
 
             foreach (var contextFolderFile in contextFolderFiles)
             {
