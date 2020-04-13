@@ -175,7 +175,7 @@
 
         <CheckBox Grid.Row="14"
                   TabIndex="9"
-                  Content="Split DbContext into IEntityTypeConfiguration classes"
+                  Content="Split DbContext into Configuration classes (preview)"
                   IsChecked="{Binding Model.UseDbContextSplitting}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         
