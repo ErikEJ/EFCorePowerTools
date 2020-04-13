@@ -8,7 +8,7 @@
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 MinHeight="700"
+                 MinHeight="680"
                  MinWidth="418"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
@@ -97,22 +97,28 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <dw:LiveTextBlock Grid.Row="0"
-                          Text="Context name" />
-        <TextBox Grid.Row="1"
-                 x:Name="FirstTextBox"
-                 TabIndex="0"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.ModelName, Mode=TwoWay}"/>
+        <DockPanel Grid.Row="0"  >
+            <dw:LiveTextBlock Margin="5" 
+                Text="Context name"/>
+            <TextBox 
+                x:Name="FirstTextBox"
+                Margin="5"
+                Style="{StaticResource TextInputStyle}"
+                TabIndex="0"                 
+                Text="{Binding Model.ModelName, Mode=TwoWay}" />
+        </DockPanel>
 
-        <dw:LiveTextBlock Grid.Row="2"
-                          Text="Namespace"/>
-        <TextBox Grid.Row="3"
-                 TabIndex="1"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.Namespace, Mode=TwoWay}"/>
+        <DockPanel Grid.Row="1">
+            <dw:LiveTextBlock Margin="5,5,18,5" 
+                Text="Namespace"/>
+            <TextBox TabIndex="1"
+                Margin="5"
+                Style="{StaticResource TextInputStyle}"
+                Text="{Binding Model.Namespace, Mode=TwoWay}"/>
+        </DockPanel>
 
         <dw:LiveTextBlock Grid.Row="4"
                           Text="EntityTypes path (f.ex. Models) - optional"/>
@@ -169,12 +175,19 @@
 
         <CheckBox Grid.Row="14"
                   TabIndex="9"
+                  Content="Split DbContext into IEntityTypeConfiguration classes"
+                  IsChecked="{Binding Model.UseDbContextSplitting}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+        
+        <CheckBox Grid.Row="15"
+                  TabIndex="10"
                   Content="Use DataAnnotation attributes to configure the model"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="15">
-            <CheckBox TabIndex="10"
+                    Grid.Row="16">
+            <CheckBox TabIndex="11"
                       Name="UseHandlebarsCheckbox"
                       Content="Customize code using Handlebars templates"
                       IsChecked="{Binding Model.UseHandelbars}"
@@ -185,18 +198,19 @@
                       SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
-        <CheckBox Grid.Row="16"
+        <CheckBox Grid.Row="17"
                   TabIndex="12"
                   Content="Include connection string in generated code"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <CheckBox Grid.Row="17"
+        <CheckBox Grid.Row="18"
                   TabIndex="13"
                   Content="Install the EF Core provider package in the project"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <StackPanel Grid.Row="18"
+        
+        <StackPanel Grid.Row="19"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
                              Content="OK"

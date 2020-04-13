@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\CustomTemplateFileService.cs" Link="ReverseEngineer\CustomTemplateFileService.cs" />
+    <Compile Include="..\ReverseEngineer20\ReverseEngineer\DbContextSplitter.cs" Link="ReverseEngineer\DbContextSplitter.cs" />
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\HumanizerPluralizer.cs" Link="ReverseEngineer\HumanizerPluralizer.cs" />
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\LegacyPluralizer.cs" Link="ReverseEngineer\LegacyPluralizer.cs" />
     <Compile Include="..\ReverseEngineer20\ReverseEngineer\Pluralizer.cs" Link="ReverseEngineer\Pluralizer.cs" />
