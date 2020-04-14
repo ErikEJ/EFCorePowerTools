@@ -27,6 +27,7 @@
         private bool _useDataAnnotations;
         private string _projectName;
         private string _dacpacPath;
+        private bool _useDbContextSplitting;
 
         public bool UseDataAnnotations
         {
@@ -123,6 +124,17 @@
             {
                 if (value == _usePluralizer) return;
                 _usePluralizer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseDbContextSplitting
+        {
+            get => _useDbContextSplitting;
+            set
+            {
+                if (value == _useDbContextSplitting) return;
+                _useDbContextSplitting = value;
                 OnPropertyChanged();
             }
         }

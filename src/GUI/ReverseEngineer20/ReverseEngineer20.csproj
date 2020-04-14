@@ -287,6 +287,7 @@
     <Compile Include="DacpacConsolidate\DacpacXml.cs" />
     <Compile Include="DacpacConsolidate\HeaderParser.cs" />
     <Compile Include="DacpacConsolidate\Metadata.cs" />
+    <Compile Include="ReverseEngineer\DbContextSplitter.cs" />
     <Compile Include="ReverseEngineer\LegacyPluralizer.cs" />
     <Compile Include="ReverseEngineer\Pluralizer.cs" />
     <Compile Include="ReverseEngineer\CustomNameOptions.cs" />

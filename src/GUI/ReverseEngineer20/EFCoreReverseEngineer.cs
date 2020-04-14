@@ -89,7 +89,9 @@ namespace ReverseEngineer20
             
             PostProcess(filePaths.ContextFile, reverseEngineerOptions.IdReplace);
 
-            CleanUp(filePaths);
+            var entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, reverseEngineerOptions.UseDbContextSplitting, contextNamespace);
+
+            CleanUp(filePaths, entityTypeConfigurationPaths);
 
             var result = new ReverseEngineerResult
             {
@@ -100,6 +102,16 @@ namespace ReverseEngineer20
             };
 
             return result;
+        }
+
+        private List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace)
+        {
+            if (!useDbContextSplitting)
+            {
+                return new List<string>();
+            }
+
+            return DbContextSplitter.Split(contextFile, contextNamespace);
         }
 
         private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options)
@@ -130,6 +142,7 @@ namespace ReverseEngineer20
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UseSpatial = options.UseSpatial,
+                UseDbContextSplitting = options.UseDbContextSplitting,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions);
@@ -214,15 +227,15 @@ namespace ReverseEngineer20
             File.WriteAllText(file, PathHelper.Header + Environment.NewLine + text.TrimEnd(), Encoding.UTF8);
         }
 
-        private void CleanUp(SavedModelFiles filePaths)
+        private void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
         {
             var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
 
-            var allFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).ToList();
+            var allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).Concat(entityTypeConfigurationPaths).ToList();
 
             foreach (var contextFolderFile in contextFolderFiles)
             {
-                if (allFiles.Contains(contextFolderFile, StringComparer.OrdinalIgnoreCase))
+                if (allGeneratedFiles.Contains(contextFolderFile, StringComparer.OrdinalIgnoreCase))
                 {
                     continue;
                 }
@@ -235,7 +248,7 @@ namespace ReverseEngineer20
 
             foreach (var modelFile in Directory.GetFiles(Path.GetDirectoryName(filePaths.AdditionalFiles.First()), "*.cs"))
             {
-                if (allFiles.Contains(modelFile, StringComparer.OrdinalIgnoreCase))
+                if (allGeneratedFiles.Contains(modelFile, StringComparer.OrdinalIgnoreCase))
                 {
                     continue;
                 }

@@ -167,6 +167,7 @@ namespace EFCorePowerTools.Handlers
                     presets.UseDataAnnotations = !options.UseFluentApiOnly;
                     presets.UseDatabaseNames = options.UseDatabaseNames;
                     presets.UsePluralizer = options.UseInflector;
+                    presets.UseDbContextSplitting = options.UseDbContextSplitting;
                     presets.UseHandelbars = options.UseHandleBars;
                     presets.SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage;
                     presets.ReplaceId = options.IdReplace;
@@ -205,7 +206,8 @@ namespace EFCorePowerTools.Handlers
                     UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,
                     UseLegacyPluralizer = options?.UseLegacyPluralizer ?? false,
-                    UseSpatial = options?.UseSpatial ?? false,
+                    UseSpatial = options?.UseSpatial ?? false,                    
+                    UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting,
                     IdReplace = modelingOptionsResult.Payload.ReplaceId,
                     DoNotCombineNamespace = modelingOptionsResult.Payload.DoNotCombineNamespace,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
