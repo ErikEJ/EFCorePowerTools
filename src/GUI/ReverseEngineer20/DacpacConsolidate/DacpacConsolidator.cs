@@ -41,8 +41,8 @@ namespace ReverseEngineer20.DacpacConsolidate
 
             var fileNames = references
                 .SelectMany(r => r.Items)
-                .Where(i => i.Name == "FileName")
-                .Select(i => i.Value)
+                .Where(i => i.Name == "LogicalName")
+                .Select(i => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dacpacPath), i.Value)))
                 .ToList();
 
             if (fileNames.Count() == 0)

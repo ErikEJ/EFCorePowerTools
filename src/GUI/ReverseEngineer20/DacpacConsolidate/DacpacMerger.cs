@@ -36,6 +36,11 @@ namespace ReverseEngineer20.DacpacConsolidate
 
             foreach (var source in _sources)
             {
+                if (!File.Exists(source))
+                {
+                    continue;
+                }
+
                 var model = getModel(source);
                 foreach (var obj in model.GetObjects(DacQueryScopes.UserDefined))
                 {
