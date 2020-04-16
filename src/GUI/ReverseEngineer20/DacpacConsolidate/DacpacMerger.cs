@@ -100,7 +100,7 @@ namespace ReverseEngineer20.DacpacConsolidate
             catch (DacModelException e) when (e.Message.Contains("Required references are missing."))
             {
                 throw new DacModelException("Failed to load model from DACPAC. "
-                    + "A reason might be that the \"SuppressMissingDependenciesErrors\" isn't set to true consitenty. ",
+                    + "A reason might be that the \"SuppressMissingDependenciesErrors\" isn't set to 'true' consistently. ",
                     e);
             }
         }
