@@ -65,12 +65,14 @@ namespace EFCorePowerTools.Extensions
                 File.Delete(file);
             }
 
+            var buildStartTime = DateTime.Now;
             if (!project.TryBuild()) return null;
 
             files = DirSearch(searchPath, "*.dacpac");
             foreach (var file in files)
             {
-                if (File.GetLastWriteTime(file) > DateTime.Now.AddSeconds(-2))
+                var lastWriteTime = File.GetLastWriteTime(file);
+                if (lastWriteTime > buildStartTime)
                 {
                     return file;
                 }
@@ -84,9 +86,21 @@ namespace EFCorePowerTools.Extensions
             var projects = Projects(dte);
             foreach (var project in projects)
             {
-                if (project.FullName == projectItemPath)
+                // Accessing project.FullName might throw a NotImplementedException (from COM).
+                // In that case, the best match we can find is using the UniqueName.
+                try
                 {
-                    return project;
+                    if (project.FullName == projectItemPath)
+                    {
+                        return project;
+                    }
+                }
+                catch (NotImplementedException)
+                {
+                    if (projectItemPath.EndsWith(project.UniqueName))
+                    {
+                        return project;
+                    }
                 }
             }
             return null;

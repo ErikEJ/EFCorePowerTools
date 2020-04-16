@@ -54,6 +54,14 @@ namespace ReverseEngineer20.DacpacConsolidate
                 .Select(i => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dacpacPath), i.Value)))
                 .ToList();
 
+            if (!isRootDacpac)
+            {
+                // If we're looking for references of a non-root DACPAC,
+                // any reference is optional (see SuppressMissingDependenciesErrors = true).
+                // Therefore this DACPACs won't be included, if they don't exist in the build output directory.
+                fileNames = fileNames.Where(File.Exists).ToList();
+            }
+
             if (fileNames.Count() == 0)
             {
                 return Enumerable.Empty<string>().ToList();

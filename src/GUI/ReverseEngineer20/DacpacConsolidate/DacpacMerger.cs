@@ -93,7 +93,16 @@ namespace ReverseEngineer20.DacpacConsolidate
                 return _first;
             }
 
-            return new TSqlModel(source);
+            try
+            {
+                return new TSqlModel(source);
+            }
+            catch (DacModelException e) when (e.Message.Contains("Required references are missing."))
+            {
+                throw new DacModelException("Failed to load model from DACPAC. "
+                    + "A reason might be that the \"SuppressMissingDependenciesErrors\" isn't set to true consitenty. ",
+                    e);
+            }
         }
 
         private void AddScripts(string pre, string post, string dacpacPath)
