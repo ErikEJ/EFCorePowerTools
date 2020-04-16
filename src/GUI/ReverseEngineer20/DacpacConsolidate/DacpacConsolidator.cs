@@ -39,8 +39,8 @@ namespace ReverseEngineer20.DacpacConsolidate
             var parser = new HeaderParser(dacpacPath);
 
             var references = parser.GetCustomData()
-                                   .Where(p => p.Category == "Reference" && p.Type == "SqlSchema")
-                                   .ToList();
+                .Where(p => p.Category == "Reference" && p.Type == "SqlSchema")
+                .ToList();
 
             if (references.Count == 0)
             {
