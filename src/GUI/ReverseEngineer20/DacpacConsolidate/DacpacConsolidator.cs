@@ -10,7 +10,7 @@ namespace ReverseEngineer20.DacpacConsolidate
     {
         public string Consolidate(string dacpacPath)
         {
-            var fileNames = GetAllReferences(dacpacPath);
+            var fileNames = GetAllReferences(dacpacPath, true);
 
             if (fileNames.Count == 0)
             {
@@ -26,13 +26,21 @@ namespace ReverseEngineer20.DacpacConsolidate
             return target;
         }
 
-        private List<string> GetAllReferences(string dacpacPath)
+        private List<string> GetAllReferences(string dacpacPath, bool isRootDacpac)
         {
+            if (!isRootDacpac && !File.Exists(dacpacPath))
+            {
+                // When the root DACPAC has a reference with SuppressMissingDependenciesErrors = true,
+                // second-level references of that first-level reference don't have to be referenced from the root project.
+                // For that case, DACPACs not referenced directly by the root DACPAC are optional.
+                return Enumerable.Empty<string>().ToList();
+            }
+
             var parser = new HeaderParser(dacpacPath);
 
             var references = parser.GetCustomData()
-                .Where(p => p.Category == "Reference" && p.Type == "SqlSchema")
-                .ToList();
+                                   .Where(p => p.Category == "Reference" && p.Type == "SqlSchema")
+                                   .ToList();
 
             if (references.Count == 0)
             {
@@ -53,7 +61,7 @@ namespace ReverseEngineer20.DacpacConsolidate
             var additionalFiles = new List<string>();
             foreach (var fileName in fileNames)
             {
-                additionalFiles.AddRange(GetAllReferences(fileName));
+                additionalFiles.AddRange(GetAllReferences(fileName, false));
             }
 
             fileNames.AddRange(additionalFiles);
