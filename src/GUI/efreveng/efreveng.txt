@@ -9,7 +9,7 @@
    "IdReplace": false,
    "IncludeConnectionString": false,
    "OutputPath": "Models",
-   "OutputContextPath": "C:\\Code\\Context",
+   "OutputContextPath": null,
    "ModelNamespace": "Modelos",
    "ContextNamespace": "Context",
    "ProjectPath": "C:\\Temp\\Test\\",
@@ -40,7 +40,7 @@
    ],
    "UseDatabaseNames": false,
    "UseFluentApiOnly": true,
-   "UseHandleBars": true,
+   "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false
 }
