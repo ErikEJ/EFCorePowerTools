@@ -22,6 +22,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
+                .AddSingleton<ICSharpEntityTypeGenerator, CommentCSharpEntityTypeGenerator>()
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>();
 

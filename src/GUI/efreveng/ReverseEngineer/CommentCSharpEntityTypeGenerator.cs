@@ -70,6 +70,8 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 GenerateEntityTypeDataAnnotations(entityType);
             }
 
+            WriteComment(entityType.GetComment());
+
             _sb.AppendLine($"public partial class {entityType.Name}");
 
             _sb.AppendLine("{");
@@ -153,7 +155,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 {
                     GeneratePropertyDataAnnotations(property);
                 }
-                
+
+                WriteComment(property.GetComment());
+
                 _sb.AppendLine($"public {_code.Reference(property.ClrType)} {property.Name} {{ get; set; }}");
             }
         }
@@ -165,6 +169,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             GenerateRequiredAttribute(property);
             GenerateColumnAttribute(property);
             GenerateMaxLengthAttribute(property);
+        }
+
+        private void WriteComment(string comment)
+        {
+            if (!string.IsNullOrWhiteSpace(comment))
+            {
+                _sb.AppendLine("/// <summary>");
+                _sb.AppendLine($"/// {comment}");
+                _sb.AppendLine("/// </summary>");
+            }
         }
 
         private void GenerateKeyAttribute(IProperty property)
