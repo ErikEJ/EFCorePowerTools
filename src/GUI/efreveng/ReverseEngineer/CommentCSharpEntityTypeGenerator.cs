@@ -176,7 +176,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             if (!string.IsNullOrWhiteSpace(comment))
             {
                 _sb.AppendLine("/// <summary>");
-                _sb.AppendLine($"/// {comment}");
+                _sb.AppendLine($"/// {System.Security.SecurityElement.Escape(comment)}");
                 _sb.AppendLine("/// </summary>");
             }
         }
