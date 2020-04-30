@@ -19,6 +19,11 @@ namespace ReverseEngineer20.ReverseEngineer
 
         public ReverseEngineerResult GetOutput()
         {
+            if (!IsDotnetInstalled())
+            {
+                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3. Do you have it installed?");
+            }
+
             var path = Path.GetTempFileName() + "json";
             File.WriteAllText(path, options.Write());
 
@@ -34,6 +39,30 @@ namespace ReverseEngineer20.ReverseEngineer
                 CreateNoWindow = true
             };
 
+            var standardOutput = RunProcess(startInfo);
+
+            return BuildResult(standardOutput);
+        }
+
+        private bool IsDotnetInstalled()
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                Arguments = "--version",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            var result = RunProcess(startInfo);
+
+            return result.StartsWith("3.", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string RunProcess(ProcessStartInfo startInfo)
+        {
             var standardOutput = new StringBuilder();
             using (var process = Process.Start(startInfo))
             {
@@ -44,7 +73,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 if (process != null) standardOutput.Append(process.StandardOutput.ReadToEnd());
             }
 
-            return BuildResult(standardOutput.ToString());
+            return standardOutput.ToString();
         }
 
         private ReverseEngineerResult BuildResult(string output)
