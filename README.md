@@ -19,7 +19,7 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 # Downloads/builds
 
-The EF Core Power Tools contains DbContext design time feature: Reverse Engineering, Model inspection and more to come - see the [wiki page](https://github.com/ErikEJ/EFCorePowerTools/wiki) for more information. .NET Framework 4.7.1 or later is required.
+The EF Core Power Tools contains DbContext design time feature: Reverse Engineering, Model inspection and more to come - see the [wiki page](https://github.com/ErikEJ/EFCorePowerTools/wiki) for more information. .NET Framework 4.7.1 or later is required. For EF Core 3 reverse engineering, .NET Core 3 must be installed.
 
 **Release**
 
