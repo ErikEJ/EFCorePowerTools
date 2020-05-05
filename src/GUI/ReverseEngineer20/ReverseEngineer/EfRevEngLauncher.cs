@@ -21,7 +21,7 @@ namespace ReverseEngineer20.ReverseEngineer
         {
             if (!IsDotnetInstalled())
             {
-                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3. Do you have it installed?");
+                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3 or newer. Do you have it installed?");
             }
 
             var path = Path.GetTempFileName() + "json";
@@ -58,7 +58,8 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var result = RunProcess(startInfo);
 
-            return result.StartsWith("3.", StringComparison.OrdinalIgnoreCase);
+            return result.StartsWith("3.", StringComparison.OrdinalIgnoreCase)
+                || result.StartsWith("5.", StringComparison.OrdinalIgnoreCase);
         }
 
         private static string RunProcess(ProcessStartInfo startInfo)
