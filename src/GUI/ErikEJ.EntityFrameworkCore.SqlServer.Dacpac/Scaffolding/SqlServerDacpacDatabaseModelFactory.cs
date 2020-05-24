@@ -81,8 +81,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     dbTable["SqlServer:MemoryOptimized"] = true;
                 }
 
-                GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList());
+                GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList(), model);
                 GetPrimaryKey(item, dbTable);
+
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 4)
+                    .Where(p => p.Name.Parts[0] == "SqlTableBase")
+                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                    .Where(p => p.Name.Parts[3] == "MS_Description")
+                    .FirstOrDefault();
+
+                dbTable.Comment = FixExtendedPropertyValue(description?.Value);
 
                 dbModel.Tables.Add(dbTable);
             }
@@ -294,7 +304,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints)
+        private void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
                 .Where(i => !i.GetProperty<bool>(Column.IsHidden)
@@ -347,6 +357,17 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     dbColumn["ConcurrencyToken"] = true;
                 }
 
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 5)
+                    .Where(p => p.Name.Parts[0] == "SqlColumn")
+                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
+                    .Where(p => p.Name.Parts[4] == "MS_Description")
+                    .FirstOrDefault();
+
+                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
+
                 dbTable.Columns.Add(dbColumn);
             }
         }
@@ -359,7 +380,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 string storeType = null;
 
-                var referenced = column.GetReferenced().FirstOrDefault();
+                var referenced = column.GetReferenced(DacQueryScopes.UserDefined).FirstOrDefault();
 
                 if (referenced == null)
                 {
@@ -513,6 +534,26 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 default:
                     return null;
             }
+        }
+
+        private string FixExtendedPropertyValue(string value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            if (value.StartsWith("N'", StringComparison.Ordinal))
+            {
+                value = value.Substring(2);
+            }
+
+            if (value.EndsWith("'", StringComparison.OrdinalIgnoreCase))
+            { 
+                value = value.Remove(value.Length - 1, 1);
+            }
+
+            return value;
         }
     }
 }

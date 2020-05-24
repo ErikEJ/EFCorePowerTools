@@ -16,7 +16,7 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[Categories]"
+         "Name": "[dbo].[Shippers]"
       },
 	  {
          "HasPrimaryKey": false,
