@@ -94,6 +94,23 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 GetIndexes(item, dbModel);
             }
 
+            var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
+                .Where(t => tables == null || !tables.Any() || tables.Contains($"[{t.Name.Parts[0]}].[{t.Name.Parts[1]}]"))
+                .ToList();
+
+            foreach (var view in views)
+            {
+                var dbView = new DatabaseTable
+                {
+                    Name = view.Name.Parts[1],
+                    Schema = view.Name.Parts[0],
+                };
+
+                GetViewColumns(view, dbView, typeAliases);
+
+                dbModel.Tables.Add(dbView);
+            }
+
             return dbModel;
         }
 
@@ -329,6 +346,49 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     dbColumn["ConcurrencyToken"] = true;
                 }
+
+                dbTable.Columns.Add(dbColumn);
+            }
+        }
+
+        private void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases)
+        {
+            var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
+
+            foreach (var column in viewColumns)
+            {
+                string storeType = null;
+
+                var referenced = column.GetReferenced().FirstOrDefault();
+
+                if (referenced == null)
+                {
+                    continue;
+                }
+
+                var col = (TSqlColumn)TSqlModelElement.AdaptInstance(referenced);
+
+                if (col.DataType.First().Name.Parts.Count > 1)
+                {
+                    if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
+                    {
+                        storeType = value.storeType;
+                    }
+                }
+                else
+                {
+                    var dataTypeName = col.DataType.First().Name.Parts[0];
+                    int maxLength = col.IsMax ? -1 : col.Length;
+                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
+                }
+
+                var dbColumn = new DatabaseColumn
+                {
+                    Table = dbTable,
+                    Name = col.Name.Parts[2],
+                    IsNullable = col.Nullable,
+                    StoreType = storeType,
+                };
 
                 dbTable.Columns.Add(dbColumn);
             }
