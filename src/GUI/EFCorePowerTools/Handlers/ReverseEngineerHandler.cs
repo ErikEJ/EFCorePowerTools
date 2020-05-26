@@ -115,7 +115,7 @@ namespace EFCorePowerTools.Handlers
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
-                                           ? GetDacpacTables(dacpacPath)
+                                           ? GetDacpacTables(dacpacPath, includeViews)
                                            : RepositoryHelper.GetTablesFromRepository(dbInfo, includeViews);
 
                 var preselectedTables = new List<TableInformationModel>();
@@ -335,10 +335,10 @@ namespace EFCorePowerTools.Handlers
             return false;
         }
 
-        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath, bool includeViews)
         {
             var builder = new DacpacTableListBuilder(dacpacPath);
-            return builder.GetTableDefinitions();
+            return builder.GetTableDefinitions(includeViews);
         }
     }
 }
