@@ -406,7 +406,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 var dbColumn = new DatabaseColumn
                 {
                     Table = dbTable,
-                    Name = col.Name.Parts[2],
+                    Name = column.Name.Parts[2],
                     IsNullable = col.Nullable,
                     StoreType = storeType,
                 };
