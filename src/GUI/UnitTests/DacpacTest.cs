@@ -28,7 +28,7 @@ namespace UnitTests
             var builder = new DacpacTableListBuilder(dacpac);
 
             // Act
-            var result = builder.GetTableDefinitions();
+            var result = builder.GetTableDefinitions(false);
 
             // Assert
             Assert.AreEqual("[dbo].[Album]", result[0].Name);
