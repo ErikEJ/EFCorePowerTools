@@ -31,7 +31,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 	using System.Linq;
 	using System.Collections.Generic;
     using System.Globalization;
-    using Microsoft.SqlServer.Server;
+    using Microsoft.Data.SqlClient.Server;
 	using Microsoft.SqlServer.Dac.Model;
     using Index = Model.Index;
 

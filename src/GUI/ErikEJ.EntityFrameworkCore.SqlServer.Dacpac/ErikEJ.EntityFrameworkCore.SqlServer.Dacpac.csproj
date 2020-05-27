@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageVersion>3.1.2</PackageVersion>
+    <PackageVersion>3.1.3</PackageVersion>
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4573.2" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4769.1" />
     <PackageReference Include="System.IO.Packaging" Version="4.7.0" />
   </ItemGroup>
 

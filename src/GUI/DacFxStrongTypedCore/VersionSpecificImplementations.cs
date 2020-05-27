@@ -29,7 +29,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
 	using System;
 	using System.Linq;
-	using Microsoft.SqlServer.Server;
+	using Microsoft.Data.SqlClient.Server;
 	using Microsoft.SqlServer.Dac.Model;
 	using System.Collections.Generic;
 	/// <summary>

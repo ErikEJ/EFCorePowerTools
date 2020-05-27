@@ -29,9 +29,10 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
 	using System;
 	using System.Linq; 
-	using Microsoft.SqlServer.Server;
 	using Microsoft.SqlServer.Dac.Model;
 	using System.Collections.Generic;
+    using Microsoft.Data.SqlClient.Server;
+
     public interface ISql90TSqlColumnReference : ISql90TSqlColumn
 	{
     }
