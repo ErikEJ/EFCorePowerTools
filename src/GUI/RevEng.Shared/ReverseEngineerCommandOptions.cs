@@ -32,5 +32,6 @@ namespace ReverseEngineer20
         public bool DoNotCombineNamespace { get; set; }
         public bool UseSpatial { get; set; }
         public bool UseDbContextSplitting { get; set; }
+        public bool UseNodaTime { get; set; }
     }
 }

@@ -75,6 +75,13 @@ namespace ReverseEngineer20.ReverseEngineer
                 case DatabaseType.Npgsql:
                     var npgsqlProvider = new NpgsqlDesignTimeServices();
                     npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
+
+                    if (options.UseNodaTime)
+                    {
+                        var nodaTime = new NpgsqlNodaTimeDesignTimeServices();
+                        nodaTime.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
                     break;
 
                 case DatabaseType.Mysql:

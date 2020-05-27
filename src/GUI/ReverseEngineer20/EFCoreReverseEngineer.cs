@@ -143,6 +143,7 @@ namespace ReverseEngineer20
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UseSpatial = options.UseSpatial,
                 UseDbContextSplitting = options.UseDbContextSplitting,
+                UseNodaTime = options.UseNodaTime,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions);
