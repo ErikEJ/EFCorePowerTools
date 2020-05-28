@@ -82,6 +82,12 @@ namespace ReverseEngineer20.ReverseEngineer
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+                    if (options.UseSpatial)
+                    {
+                        var spatial = new NpgsqlNetTopologySuiteDesignTimeServices();
+                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
                     break;
 
                 case DatabaseType.Mysql:
