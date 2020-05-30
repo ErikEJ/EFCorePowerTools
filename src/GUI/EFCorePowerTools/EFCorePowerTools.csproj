@@ -153,18 +153,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Dialogs\TableWarning_16x.png" />
-    <Content Include="efpt\2.1.0\efpt.exe">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.1.0\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.1.4\efpt.exe">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.1.4\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="efpt\2.2.0\efpt.exe">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -189,17 +177,6 @@
     </EmbeddedResource>
     <Content Include="CodeTemplates.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.1.0\efpt.exe.config">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efpt21.exe.zip">
-      <Link>efpt21.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.1.4\efpt.exe.config">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\lib\efpt22.exe.zip">
       <Link>efpt22.exe.zip</Link>
@@ -525,6 +502,9 @@
     <Reference Include="NuGet.VisualStudio">
       <HintPath>..\References\2010\NuGet.VisualStudio.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.19.7.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

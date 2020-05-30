@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using MySql.Data.MySqlClient;
 using Npgsql;
+using Oracle.ManagedDataAccess.Client;
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,11 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         if (objProviderGuid == providerMysql)
                         {
                             info.DatabaseType = DatabaseType.Mysql;
+                        }
+
+                        if (objProviderGuid == providerOracle)
+                        {
+                            info.DatabaseType = DatabaseType.Oracle;
                         }
 
                         if (info.DatabaseType != DatabaseType.SQLCE35
@@ -169,6 +175,11 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     dbType = DatabaseType.Npgsql;
                     providerGuid = Resources.NpgsqlProvider;
                 }
+                if (providerInvariant == "Oracle.ManagedDataAccess.Client")
+                {
+                    dbType = DatabaseType.Oracle;
+                    providerGuid = Resources.OracleProvider;
+                }
                 if (providerInvariant == "Mysql" || providerInvariant == "MySql.Data.MySqlClient")
                 {
                     dbType = DatabaseType.Mysql;
@@ -253,6 +264,35 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             }
 
             return result.OrderBy(l => l.Name).ToList();
+        }
+
+        internal static string GetOracleDatabaseName(string connectionString)
+        {
+            var myBuilder = new OracleConnectionStringBuilder(connectionString);
+            return myBuilder.DataSource;
+        }
+
+        internal static List<TableInformationModel> GetOracleTableNames(string connectionString, bool includeViews)
+        {
+            var result = new List<TableInformationModel>();
+            using (var oracleConn = new OracleConnection(connectionString))
+            {
+                oracleConn.Open();
+                string sql = $@"SELECT table_name, owner FROM user_tables ORDER BY owner, table_name";
+
+                using (var cmd = new OracleCommand(sql, oracleConn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add(new TableInformationModel(reader.GetString(0), true));
+                        }
+                    }
+                }
+
+                return result;
+            }
         }
 
         private static List<string> GetMysqlTables(MySqlConnection mysqlConn, string schema)

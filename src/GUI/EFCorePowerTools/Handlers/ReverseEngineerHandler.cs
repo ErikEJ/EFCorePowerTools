@@ -147,6 +147,10 @@ namespace EFCorePowerTools.Handlers
                 {
                     classBasis = EnvDteHelper.GetMysqlDatabaseName(dbInfo.ConnectionString);
                 }
+                else if (dbInfo.DatabaseType == DatabaseType.Oracle)
+                {
+                    classBasis = EnvDteHelper.GetOracleDatabaseName(dbInfo.ConnectionString);
+                }
                 else
                 {
                     classBasis = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);

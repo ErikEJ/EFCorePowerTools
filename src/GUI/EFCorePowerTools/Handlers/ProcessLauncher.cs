@@ -18,9 +18,9 @@ namespace EFCorePowerTools.Handlers
 
         public ProcessLauncher(Project project)
         {
-            if (project.IsNetCore() && !project.IsNetCore21OrHigher())
+            if (project.IsNetCore() && !project.IsNetCore22OrHigher())
             {
-                throw new ArgumentException("Only .NET Core 2.1, 2.2 and 3.0, and 3.1 are supported");
+                throw new ArgumentException("Only .NET Core 2.2 and 3.0, and 3.1 are supported");
             }
             _project = project;
         }
@@ -60,7 +60,7 @@ namespace EFCorePowerTools.Handlers
 
         private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = _project.IsNetCore21OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
+            var launchPath = _project.IsNetCore22OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
 
             if ((_project.IsNetCore30() || _project.IsNetCore31()) && outputPath.EndsWith(".exe"))
             {
@@ -197,9 +197,7 @@ namespace EFCorePowerTools.Handlers
 
             var checkVer = version.ToString(3);
 
-            if (checkVer == "2.1.0"
-                || checkVer == "2.1.4"
-                || checkVer == "2.2.0"
+            if (checkVer == "2.2.0"
                 || checkVer == "2.2.6"
                 )
             {
@@ -240,11 +238,7 @@ namespace EFCorePowerTools.Handlers
 
             Directory.CreateDirectory(toDir);
 
-            if (_project.IsNetCore21())
-            {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt21.exe.zip"), toDir);
-            }
-            else if (_project.IsNetCore22())
+            if (_project.IsNetCore22())
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt22.exe.zip"), toDir);
             }

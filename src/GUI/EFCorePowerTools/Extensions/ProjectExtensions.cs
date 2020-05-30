@@ -80,6 +80,10 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Pomelo.EntityFrameworkCore.MySql";
             }
+            if (dbType == DatabaseType.Oracle)
+            {
+                providerPackage = "Oracle.EntityFrameworkCore";
+            }
 
             var vsProject = project.Object as VSProject;
             if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
@@ -130,14 +134,9 @@ namespace EFCorePowerTools.Extensions
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v");
         }
 
-        public static bool IsNetCore21OrHigher(this Project project)
+        public static bool IsNetCore22OrHigher(this Project project)
         {
-            return IsNetCore21(project) || IsNetCore22(project) || IsNetCore30(project) || IsNetCore31(project);
-        }
-
-        public static bool IsNetCore21(this Project project)
-        {
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v2.1");
+            return IsNetCore22(project) || IsNetCore30(project) || IsNetCore31(project);
         }
 
         public static bool IsNetCore22(this Project project)
