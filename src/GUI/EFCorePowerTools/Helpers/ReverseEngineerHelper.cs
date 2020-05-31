@@ -53,9 +53,13 @@ namespace EFCorePowerTools.Helpers
             return errors.ToString();
         }
 
-        public string GenerateClassName(string value)
+        public string GenerateClassName(string classBasis)
         {
-            var className = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
+            if (string.IsNullOrWhiteSpace(classBasis))
+            {
+                throw new ArgumentNullException(nameof(classBasis));
+            }
+            var className = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(classBasis);
             var isValid = System.CodeDom.Compiler.CodeDomProvider.CreateProvider("C#").IsValidIdentifier(className);
 
             if (!isValid)
