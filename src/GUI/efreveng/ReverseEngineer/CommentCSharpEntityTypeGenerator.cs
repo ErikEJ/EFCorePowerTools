@@ -65,12 +65,12 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         protected override void GenerateClass(
             [NotNull] IEntityType entityType)
         {
+            WriteComment(entityType.GetComment());
+
             if (_useDataAnnotations)
             {
                 GenerateEntityTypeDataAnnotations(entityType);
             }
-
-            WriteComment(entityType.GetComment());
 
             _sb.AppendLine($"public partial class {entityType.Name}");
 
@@ -151,12 +151,12 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         {
             foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrdinal()))
             {
+                WriteComment(property.GetComment());
+
                 if (_useDataAnnotations)
                 {
                     GeneratePropertyDataAnnotations(property);
                 }
-
-                WriteComment(property.GetComment());
 
                 _sb.AppendLine($"public {_code.Reference(property.ClrType)} {property.Name} {{ get; set; }}");
             }
