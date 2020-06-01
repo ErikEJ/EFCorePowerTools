@@ -18,9 +18,21 @@
          "HasPrimaryKey": true,
          "Name": "[dbo].[Shippers]"
       },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Orders]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Order Details]"
+      },
 	  {
          "HasPrimaryKey": false,
-         "Name": "[dbo].[Alphabetical list of products]"
+         "Name": "[dbo].[Order Subtotals]"
+      },
+      	{
+         "HasPrimaryKey": false,
+         "Name": "[dbo].[Summary of Sales by Year]"
       },
       {
          "HasPrimaryKey": true,
