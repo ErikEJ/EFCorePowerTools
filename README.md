@@ -1,6 +1,6 @@
 # EF Core Power Tools
 
-Entity Framework Core Power Tools - reverse engineering and model visualization for EF Core.
+Reverse engineering, model visualization and migrations UI for EF Core.
 
 Hopes to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineeering of an existing database, creating migrations and visualizing your DbContext model.
 
