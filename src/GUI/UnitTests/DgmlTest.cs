@@ -82,6 +82,19 @@ namespace UnitTests
         }
 
         [Test]
+        public void BuildChinook()
+        {
+            // Act
+            var builder = new DgmlBuilder.DgmlBuilder();
+            var result = builder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
+
+            // Assert
+            Assert.AreNotEqual(result, null);
+
+            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Chinook.dgml"), result, Encoding.UTF8);
+        }
+
+        [Test]
         public void BuildSample1()
         {
             // Act

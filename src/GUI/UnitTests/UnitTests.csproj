@@ -219,6 +219,9 @@
     <None Include="graph.dgml">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="ChinookContext.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Issue208.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

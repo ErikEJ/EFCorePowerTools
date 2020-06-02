@@ -389,6 +389,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var col = (TSqlColumn)TSqlModelElement.AdaptInstance(referenced);
 
+                if (col.ColumnType == ColumnType.ComputedColumn)
+                {
+                    continue;
+                }
+
                 if (col.DataType.First().Name.Parts.Count > 1)
                 {
                     if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))

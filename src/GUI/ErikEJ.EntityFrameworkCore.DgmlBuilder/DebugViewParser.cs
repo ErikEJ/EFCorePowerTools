@@ -240,13 +240,25 @@ namespace DgmlBuilder
                 
                 var name = parts[0];
 
-                var fieldStripped = parts[1].Remove(parts[1].Length - 1, 1).Remove(0, 1);
-                var typeStripped = parts[2].Remove(parts[2].Length - 1);
+                var noField = !parts[2].EndsWith(")");
 
-                var field =  System.Security.SecurityElement.Escape(fieldStripped);
+                var fieldStripped = parts[1].StartsWith("(")
+                    ? parts[1].Remove(parts[1].Length - 1, 1).Remove(0, 1)
+                    : parts[1];
+                var typeStripped = parts[2].EndsWith(")")
+                    ? parts[2].Remove(parts[2].Length - 1)
+                    : parts[1];
+                
+                var field = System.Security.SecurityElement.Escape(fieldStripped);
                 var type = System.Security.SecurityElement.Escape(typeStripped);
 
-                parts.RemoveRange(0, 3);
+                if (noField)
+                {
+                    type = field;
+                    field = string.Empty;
+                }
+
+                parts.RemoveRange(0, 2);
 
                 var dependent = string.Empty;
                 var inverse = string.Empty;

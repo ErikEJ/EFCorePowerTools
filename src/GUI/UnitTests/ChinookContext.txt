@@ -1,0 +1,409 @@
+Model: 
+  EntityType: Album
+    Properties: 
+      AlbumId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      ArtistId (int) Required FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Title (string) Required MaxLength160
+        Annotations: 
+          MaxLength: 160
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Artist (Artist) ToPrincipal Artist Inverse: Album
+      Track (ICollection<Track>) Collection ToDependent Track Inverse: Album
+    Keys: 
+      AlbumId PK
+    Foreign keys: 
+      Album {'ArtistId'} -> Artist {'ArtistId'} ToDependent: Album ToPrincipal: Artist
+        Annotations: 
+          Relational:Name: FK_AlbumArtistId
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Album
+  EntityType: Artist
+    Properties: 
+      ArtistId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Name (string) MaxLength120
+        Annotations: 
+          MaxLength: 120
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Album (ICollection<Album>) Collection ToDependent Album Inverse: Artist
+    Keys: 
+      ArtistId PK
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Artist
+  EntityType: Customer
+    Properties: 
+      CustomerId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Address (string) MaxLength70
+        Annotations: 
+          MaxLength: 70
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      City (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Company (string) MaxLength80
+        Annotations: 
+          MaxLength: 80
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Country (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Email (string) Required MaxLength60
+        Annotations: 
+          MaxLength: 60
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Fax (string) MaxLength24
+        Annotations: 
+          MaxLength: 24
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      FirstName (string) Required MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      LastName (string) Required MaxLength20
+        Annotations: 
+          MaxLength: 20
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Phone (string) MaxLength24
+        Annotations: 
+          MaxLength: 24
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      PostalCode (string) MaxLength10
+        Annotations: 
+          MaxLength: 10
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      State (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      SupportRepId (Nullable<int>) FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      Invoice (ICollection<Invoice>) Collection ToDependent Invoice Inverse: Customer
+      SupportRep (Employee) ToPrincipal Employee Inverse: Customer
+    Keys: 
+      CustomerId PK
+    Foreign keys: 
+      Customer {'SupportRepId'} -> Employee {'EmployeeId'} ToDependent: Customer ToPrincipal: SupportRep
+        Annotations: 
+          Relational:Name: FK_CustomerSupportRepId
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Customer
+  EntityType: Employee
+    Properties: 
+      EmployeeId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Address (string) MaxLength70
+        Annotations: 
+          MaxLength: 70
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      BirthDate (Nullable<DateTime>)
+        Annotations: 
+          Relational:ColumnType: datetime
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      City (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Country (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Email (string) MaxLength60
+        Annotations: 
+          MaxLength: 60
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Fax (string) MaxLength24
+        Annotations: 
+          MaxLength: 24
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      FirstName (string) Required MaxLength20
+        Annotations: 
+          MaxLength: 20
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      HireDate (Nullable<DateTime>)
+        Annotations: 
+          Relational:ColumnType: datetime
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastName (string) Required MaxLength20
+        Annotations: 
+          MaxLength: 20
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Phone (string) MaxLength24
+        Annotations: 
+          MaxLength: 24
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      PostalCode (string) MaxLength10
+        Annotations: 
+          MaxLength: 10
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      ReportsTo (Nullable<int>) FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      State (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Title (string) MaxLength30
+        Annotations: 
+          MaxLength: 30
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Customer (ICollection<Customer>) Collection ToDependent Customer Inverse: SupportRep
+      InverseReportsToNavigation (ICollection<Employee>) Collection ToDependent Employee Inverse: ReportsToNavigation
+      ReportsToNavigation (Employee) ToPrincipal Employee Inverse: InverseReportsToNavigation
+    Keys: 
+      EmployeeId PK
+    Foreign keys: 
+      Employee {'ReportsTo'} -> Employee {'EmployeeId'} ToDependent: InverseReportsToNavigation ToPrincipal: ReportsToNavigation
+        Annotations: 
+          Relational:Name: FK_EmployeeReportsTo
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Employee
+  EntityType: Genre
+    Properties: 
+      GenreId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Name (string) MaxLength120
+        Annotations: 
+          MaxLength: 120
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Track (ICollection<Track>) Collection ToDependent Track Inverse: Genre
+    Keys: 
+      GenreId PK
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Genre
+  EntityType: Invoice
+    Properties: 
+      InvoiceId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      BillingAddress (string) MaxLength70
+        Annotations: 
+          MaxLength: 70
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      BillingCity (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      BillingCountry (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      BillingPostalCode (string) MaxLength10
+        Annotations: 
+          MaxLength: 10
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      BillingState (string) MaxLength40
+        Annotations: 
+          MaxLength: 40
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      CustomerId (int) Required FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      InvoiceDate (DateTime) Required
+        Annotations: 
+          Relational:ColumnType: datetime
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      Total (decimal) Required
+        Annotations: 
+          Relational:ColumnType: numeric(10, 2)
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping
+    Navigations: 
+      Customer (Customer) ToPrincipal Customer Inverse: Invoice
+      InvoiceLine (ICollection<InvoiceLine>) Collection ToDependent InvoiceLine Inverse: Invoice
+    Keys: 
+      InvoiceId PK
+    Foreign keys: 
+      Invoice {'CustomerId'} -> Customer {'CustomerId'} ToDependent: Invoice ToPrincipal: Customer
+        Annotations: 
+          Relational:Name: FK_InvoiceCustomerId
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Invoice
+  EntityType: InvoiceLine
+    Properties: 
+      InvoiceLineId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      InvoiceId (int) Required FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Quantity (int) Required
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      TrackId (int) Required FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      UnitPrice (decimal) Required
+        Annotations: 
+          Relational:ColumnType: numeric(10, 2)
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping
+    Navigations: 
+      Invoice (Invoice) ToPrincipal Invoice Inverse: InvoiceLine
+      Track (Track) ToPrincipal Track Inverse: InvoiceLine
+    Keys: 
+      InvoiceLineId PK
+    Foreign keys: 
+      InvoiceLine {'InvoiceId'} -> Invoice {'InvoiceId'} ToDependent: InvoiceLine ToPrincipal: Invoice
+        Annotations: 
+          Relational:Name: FK_InvoiceLineInvoiceId
+      InvoiceLine {'TrackId'} -> Track {'TrackId'} ToDependent: InvoiceLine ToPrincipal: Track
+        Annotations: 
+          Relational:Name: FK_InvoiceLineTrackId
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: InvoiceLine
+  EntityType: MediaType
+    Properties: 
+      MediaTypeId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Name (string) MaxLength120
+        Annotations: 
+          MaxLength: 120
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      Track (ICollection<Track>) Collection ToDependent Track Inverse: MediaType
+    Keys: 
+      MediaTypeId PK
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: MediaType
+  EntityType: Playlist
+    Properties: 
+      PlaylistId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Name (string) MaxLength120
+        Annotations: 
+          MaxLength: 120
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Navigations: 
+      PlaylistTrack (ICollection<PlaylistTrack>) Collection ToDependent PlaylistTrack Inverse: Playlist
+    Keys: 
+      PlaylistId PK
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Playlist
+  EntityType: PlaylistTrack
+    Properties: 
+      PlaylistId (int) Required PK FK AfterSave:Throw
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      TrackId (int) Required PK FK Index AfterSave:Throw
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+    Navigations: 
+      Playlist (Playlist) ToPrincipal Playlist Inverse: PlaylistTrack
+      Track (Track) ToPrincipal Track Inverse: PlaylistTrack
+    Keys: 
+      PlaylistId, TrackId PK
+        Annotations: 
+          SqlServer:Clustered: False
+    Foreign keys: 
+      PlaylistTrack {'PlaylistId'} -> Playlist {'PlaylistId'} ToDependent: PlaylistTrack ToPrincipal: Playlist
+        Annotations: 
+          Relational:Name: FK_PlaylistTrackPlaylistId
+      PlaylistTrack {'TrackId'} -> Track {'TrackId'} ToDependent: PlaylistTrack ToPrincipal: Track
+        Annotations: 
+          Relational:Name: FK_PlaylistTrackTrackId
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: PlaylistTrack
+  EntityType: Titles Keyless
+    Properties: 
+      AlbumTitle (string) Required MaxLength160
+        Annotations: 
+          MaxLength: 160
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Titles
+      Relational:ViewDefinition: 
+  EntityType: Track
+    Properties: 
+      TrackId (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      AlbumId (Nullable<int>) FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Bytes (Nullable<int>)
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Composer (string) MaxLength220
+        Annotations: 
+          MaxLength: 220
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      GenreId (Nullable<int>) FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      MediaTypeId (int) Required FK Index
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Milliseconds (int) Required
+        Annotations: 
+          TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping
+      Name (string) Required MaxLength200
+        Annotations: 
+          MaxLength: 200
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      UnitPrice (decimal) Required
+        Annotations: 
+          Relational:ColumnType: numeric(10, 2)
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping
+    Navigations: 
+      Album (Album) ToPrincipal Album Inverse: Track
+      Genre (Genre) ToPrincipal Genre Inverse: Track
+      InvoiceLine (ICollection<InvoiceLine>) Collection ToDependent InvoiceLine Inverse: Track
+      MediaType (MediaType) ToPrincipal MediaType Inverse: Track
+      PlaylistTrack (ICollection<PlaylistTrack>) Collection ToDependent PlaylistTrack Inverse: Track
+    Keys: 
+      TrackId PK
+    Foreign keys: 
+      Track {'AlbumId'} -> Album {'AlbumId'} ToDependent: Track ToPrincipal: Album
+        Annotations: 
+          Relational:Name: FK_TrackAlbumId
+      Track {'GenreId'} -> Genre {'GenreId'} ToDependent: Track ToPrincipal: Genre
+        Annotations: 
+          Relational:Name: FK_TrackGenreId
+      Track {'MediaTypeId'} -> MediaType {'MediaTypeId'} ToDependent: Track ToPrincipal: MediaType
+        Annotations: 
+          Relational:Name: FK_TrackMediaTypeId
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableName: Track
+Annotations: 
+  ProductVersion: 3.1.4
+  Relational:MaxIdentifierLength: 128
+  SqlServer:ValueGenerationStrategy: IdentityColumn
