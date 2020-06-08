@@ -286,7 +286,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     {
                         while (reader.Read())
                         {
-                            result.Add(new TableInformationModel(reader.GetString(0), true));
+                            result.Add(new TableInformationModel($"{reader.GetString(1)}.{reader.GetString(0)}", true));
                         }
                     }
                 }
