@@ -278,7 +278,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             using (var oracleConn = new OracleConnection(connectionString))
             {
                 oracleConn.Open();
-                string sql = $@"SELECT table_name, owner FROM user_tables ORDER BY owner, table_name";
+                string sql = $@"SELECT table_name, owner FROM all_tables ORDER BY owner, table_name";
 
                 using (var cmd = new OracleCommand(sql, oracleConn))
                 {
@@ -286,7 +286,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                     {
                         while (reader.Read())
                         {
-                            result.Add(new TableInformationModel(reader.GetString(0), true));
+                            result.Add(new TableInformationModel($"{reader.GetString(1)}.{reader.GetString(0)}", true));
                         }
                     }
                 }
