@@ -5,7 +5,6 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
-                 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
                  MinHeight="680"
@@ -15,12 +14,6 @@
                  SizeToContent="WidthAndHeight"
                  d:DataContext="{d:DesignInstance Type=viewModels:ModelingOptionsViewModel, IsDesignTimeCreatable=False}"
                  Title="{Binding Title, Mode=OneWay}">
-
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
 
     <dw:DialogWindow.Resources>
         <ResourceDictionary>

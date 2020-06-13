@@ -10,7 +10,6 @@
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        ICommand LoadedCommand { get; }
         ICommand OkCommand { get; }
         ICommand CancelCommand { get; }
 
