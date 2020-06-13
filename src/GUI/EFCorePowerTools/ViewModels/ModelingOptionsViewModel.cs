@@ -19,7 +19,6 @@
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        public ICommand LoadedCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -55,7 +54,6 @@
             Title = string.Empty;
             MayIncludeConnectionString = true;
 
-            LoadedCommand = new RelayCommand(Loaded_Executed);
             OkCommand = new RelayCommand(Ok_Executed);
             CancelCommand = new RelayCommand(Cancel_Executed);
 
@@ -72,11 +70,6 @@
                 "C#",
                 "TypeScript"
             };
-        }
-
-        private void Loaded_Executed()
-        {
-            Model.SelectedToBeGenerated = 0;
         }
 
         private void Ok_Executed()
