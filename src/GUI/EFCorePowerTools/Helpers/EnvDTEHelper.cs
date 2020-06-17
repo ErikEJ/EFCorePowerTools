@@ -1,4 +1,4 @@
-﻿using EFCorePowerTools;
+﻿    using EFCorePowerTools;
 using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using Microsoft.VisualStudio;
@@ -46,6 +46,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                         var sConnectionString = DataProtection.DecryptString(connection.EncryptedConnectionString);
                         var info = new DatabaseInfo()
                         {
+                            RequireCredentials = ContainsSensitiveData(connection.Connection),
                             Caption = connection.DisplayName,
                             FromServerExplorer = true,
                             DatabaseType = DatabaseType.SQLCE35,
@@ -352,6 +353,25 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
             var filePath = GetFilePath(connectionString, dbType);
             return Path.GetFileName(filePath);
+        }
+
+        private static bool ContainsSensitiveData(IVsDataConnection dataConnection)
+        {
+            if (dataConnection == null)
+            {
+                return false;
+            }
+
+            // need to compare ignoring case as DecryptConnectionString() can turn e.g. 'Integrated Security' into 'integrated security'
+            if (dataConnection.DisplayConnectionString.Equals(
+                DataProtection.DecryptString(dataConnection.EncryptedConnectionString), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         internal static bool IsSqLiteDbProviderInstalled()
