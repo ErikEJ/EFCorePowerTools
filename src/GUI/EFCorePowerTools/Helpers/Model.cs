@@ -14,10 +14,6 @@ public class DatabaseInfo
     [ReadOnly(true)]
     public DatabaseType DatabaseType { get; set; }
 
-    [Browsable(false)]
-    [ReadOnly(true)]
-    public bool RequireCredentials { get; set; }
-
     [Category("MetaData")]
     [ReadOnly(true)]
     public string Caption { get; set; }
