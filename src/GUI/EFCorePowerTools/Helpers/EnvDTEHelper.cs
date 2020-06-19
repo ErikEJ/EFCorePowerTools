@@ -43,7 +43,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                 {
                     try
                     {
-                        connection.Connection.Open();
                         var sConnectionString = DataProtection.DecryptString(connection.EncryptedConnectionString);
                         var info = new DatabaseInfo()
                         {
