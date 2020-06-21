@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System;
 using ReverseEngineer20;
+using Microsoft.VisualStudio.Data.Services;
 
 [DefaultProperty("Caption")]
 // ReSharper disable once CheckNamespace
@@ -13,6 +14,10 @@ public class DatabaseInfo
     [Browsable(false)]
     [ReadOnly(true)]
     public DatabaseType DatabaseType { get; set; }
+
+    [Browsable(false)]
+    [ReadOnly(true)]
+    public IVsDataConnection DataConnection { get; set; }
 
     [Category("MetaData")]
     [ReadOnly(true)]

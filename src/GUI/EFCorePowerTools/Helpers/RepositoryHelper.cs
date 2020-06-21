@@ -2,6 +2,7 @@
 using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using ErikEJ.SQLiteScripting;
+using Microsoft.VisualStudio.Data.Services;
 using ReverseEngineer20;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -17,6 +18,12 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         public static List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo, bool includeViews = false)
         {
+            if (dbInfo.DataConnection != null)
+            {
+                dbInfo.DataConnection.Open();
+                dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
+            }
+
             if (dbInfo.DatabaseType == DatabaseType.Npgsql)
             {
                 return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString, includeViews);

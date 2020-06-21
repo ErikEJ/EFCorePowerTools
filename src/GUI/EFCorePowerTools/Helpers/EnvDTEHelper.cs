@@ -1,4 +1,4 @@
-﻿    using EFCorePowerTools;
+﻿using EFCorePowerTools;
 using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using Microsoft.VisualStudio;
@@ -49,7 +49,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                             Caption = connection.DisplayName,
                             FromServerExplorer = true,
                             DatabaseType = DatabaseType.SQLCE35,
-                            ConnectionString = sConnectionString
+                            ConnectionString = sConnectionString,
+                            DataConnection = connection.Connection,
                         };
                         var objProviderGuid = connection.Provider;
 
@@ -130,6 +131,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
             var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.Size));
             info.Caption = savedName;
+            info.DataConnection = dialogResult;
             return info;
         }
 
