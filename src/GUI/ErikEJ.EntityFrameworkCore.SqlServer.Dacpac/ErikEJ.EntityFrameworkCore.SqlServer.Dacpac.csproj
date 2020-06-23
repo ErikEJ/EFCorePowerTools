@@ -16,13 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacHacFactory.cs" Link="DacpacConsolidate\DacHacFactory.cs" />
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacpacMerger.cs" Link="DacpacConsolidate\DacpacMerger.cs" />
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
-    <Compile Include="..\ReverseEngineer20\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacHacFactory.cs" Link="DacpacConsolidate\DacHacFactory.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacpacMerger.cs" Link="DacpacConsolidate\DacpacMerger.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
+    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +43,10 @@
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DacpacConsolidate\" />
   </ItemGroup>
 
 </Project>

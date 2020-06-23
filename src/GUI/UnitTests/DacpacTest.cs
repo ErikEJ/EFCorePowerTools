@@ -1,4 +1,6 @@
-﻿using Microsoft.SqlServer.Dac.Extensions.Prototype;
+﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using NUnit.Framework;
 using ReverseEngineer20;
 using System.Collections.Generic;
@@ -40,9 +42,10 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var options = new DatabaseModelFactoryOptions(new List<string>(), new List<string>());
 
             // Act
-            var dbModel = factory.Create(dacpac, new List<string>(), new List<string>());
+            var dbModel = factory.Create(dacpac, options);
 
             // Assert
             Assert.AreEqual(11, dbModel.Tables.Count());
@@ -54,9 +57,10 @@ namespace UnitTests
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
             var tables = new List<string> { "[dbo].[Album]", "[dbo].[Artist]", "[dbo].[InvoiceLine]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
 
             // Act
-            var dbModel = factory.Create(dacpac, tables, new List<string>());
+            var dbModel = factory.Create(dacpac, options);
 
             // Assert
             Assert.AreEqual(3, dbModel.Tables.Count());
@@ -71,9 +75,10 @@ namespace UnitTests
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
             var tables = new List<string> { "[dbo].[FilteredIndexTable]", "[dbo].[DefaultComputedValues]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
 
             // Act
-            var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
+            var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
             Assert.AreEqual(2, dbModel.Tables.Count());
@@ -92,9 +97,10 @@ namespace UnitTests
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
             var tables = new List<string> { "[dbo].[DefaultComputedValues]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
 
             // Act
-            var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
+            var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
             Assert.AreEqual(1, dbModel.Tables.Count());
@@ -109,9 +115,10 @@ namespace UnitTests
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
             var tables = new List<string> { "[dbo].[TypeAlias]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
 
             // Act
-            var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
+            var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
             Assert.AreEqual(1, dbModel.Tables.Count());
@@ -128,9 +135,10 @@ namespace UnitTests
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
             var tables = new List<string> { "[dbo].[DefaultValues]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
 
             // Act
-            var dbModel = factory.Create(dacpacQuirk, tables, new List<string>());
+            var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
             Assert.AreEqual(1, dbModel.Tables.Count());
@@ -144,10 +152,10 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string>();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
 
             // Act
-            var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), null, new List<string>());
+            var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
 
             // Assert
             Assert.AreEqual(71, dbModel.Tables.Count());
@@ -158,10 +166,10 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string>();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
 
             // Act
-            var dbModel = factory.Create(TestPath("Issue208.dacpac"), null, new List<string>());
+            var dbModel = factory.Create(TestPath("Issue208.dacpac"), options);
 
             // Assert
             Assert.AreEqual(1, dbModel.Tables.Count());
@@ -172,10 +180,10 @@ namespace UnitTests
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
-            var tables = new List<string>();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
 
             // Act
-            var dbModel = factory.Create(TestPath("Issue210.dacpac"), null, new List<string>());
+            var dbModel = factory.Create(TestPath("Issue210.dacpac"), options);
 
             // Assert
             Assert.AreEqual(2, dbModel.Tables.Count());

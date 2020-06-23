@@ -1,5 +1,7 @@
-﻿using Microsoft.SqlServer.Dac.Extensions.Prototype;
+﻿using EFCorePowerTools.Shared.Models;
+using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
+using ReverseEngineer20.DacpacConsolidate;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,8 +9,6 @@ using System.Linq;
 
 namespace ReverseEngineer20
 {
-    using EFCorePowerTools.Shared.Models;
-
     public class DacpacTableListBuilder
     {
         private readonly string _dacpacPath;
@@ -28,7 +28,7 @@ namespace ReverseEngineer20
 
         public List<TableInformationModel> GetTableDefinitions(bool includeViews)
         {
-            var consolidator = new DacpacConsolidate.DacpacConsolidator();
+            var consolidator = new DacpacConsolidator();
 
             var dacpacPath = consolidator.Consolidate(_dacpacPath);
 
