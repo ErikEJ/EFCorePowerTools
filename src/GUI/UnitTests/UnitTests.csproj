@@ -197,7 +197,6 @@
     <Compile Include="Models\AboutExtensionModelTests.cs" />
     <Compile Include="Models\DatabaseConnectionModelTests.cs" />
     <Compile Include="Models\DatabaseDefinitionModelTests.cs" />
-    <Compile Include="DacpacTest.cs" />
     <Compile Include="PathHelperTest.cs" />
     <Compile Include="DgmlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -212,12 +211,6 @@
       <Link>template.dgml</Link>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Chinook.dacpac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AdventureWorks2014.dacpac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="app.config" />
     <None Include="graph.dgml">
       <SubType>Designer</SubType>
@@ -225,20 +218,10 @@
     <Content Include="ChinookContext.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Issue208.dacpac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Issue210.dacpac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="NorthwindViews.dacpac" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
     <Content Include="Identity.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestDb.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
