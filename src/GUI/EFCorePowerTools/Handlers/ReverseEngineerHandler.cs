@@ -31,7 +31,6 @@ namespace EFCorePowerTools.Handlers
             try
             {
                 var dteH = new EnvDteHelper();
-                var revEng = new EfCoreReverseEngineer();
                 string dacpacSchema = null;
 
                 if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
@@ -86,8 +85,6 @@ namespace EFCorePowerTools.Handlers
 
                 if (dbInfo == null) dbInfo = new DatabaseInfo();
 
-                var includeViews = pickDataSourceResult.Payload.IncludeViews;
-
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
                     dbInfo.DatabaseType = DatabaseType.SQLServer;
@@ -106,7 +103,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (includeViews && (dbInfo.DatabaseType == DatabaseType.SQLCE40))
+                if (dbInfo.DatabaseType == DatabaseType.SQLCE40)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 3.0: {dbInfo.DatabaseType}");
                     return;
@@ -115,8 +112,8 @@ namespace EFCorePowerTools.Handlers
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
-                                           ? GetDacpacTables(dacpacPath, includeViews)
-                                           : RepositoryHelper.GetTablesFromRepository(dbInfo, includeViews);
+                                           ? GetDacpacTables(dacpacPath)
+                                           : RepositoryHelper.GetTablesFromRepository(dbInfo, true);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -239,7 +236,7 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                var revEngResult = revEng.GenerateFiles(options, includeViews);
+                var revEngResult = LaunchExternalRunner(options);
 
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
@@ -340,10 +337,46 @@ namespace EFCorePowerTools.Handlers
             return false;
         }
 
-        public List<TableInformationModel> GetDacpacTables(string dacpacPath, bool includeViews)
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
         {
             var builder = new DacpacTableListBuilder(dacpacPath);
-            return builder.GetTableDefinitions(includeViews);
+            return builder.GetTableDefinitions();
+        }
+
+        private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options)
+        {
+            var commandOptions = new ReverseEngineerCommandOptions
+            {
+                ConnectionString = options.ConnectionString,
+                ContextClassName = options.ContextClassName,
+                CustomReplacers = options.CustomReplacers,
+                Dacpac = options.Dacpac,
+                DatabaseType = options.DatabaseType,
+                DefaultDacpacSchema = options.DefaultDacpacSchema,
+                DoNotCombineNamespace = options.DoNotCombineNamespace,
+                IdReplace = options.IdReplace,
+                IncludeConnectionString = options.IncludeConnectionString,
+                OutputPath = options.OutputPath,
+                ContextNamespace = options.ContextNamespace,
+                ModelNamespace = options.ModelNamespace,
+                OutputContextPath = options.OutputContextPath,
+                ProjectPath = options.ProjectPath,
+                ProjectRootNamespace = options.ProjectRootNamespace,
+                SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
+                SelectedToBeGenerated = options.SelectedToBeGenerated,
+                Tables = options.Tables,
+                UseDatabaseNames = options.UseDatabaseNames,
+                UseFluentApiOnly = options.UseFluentApiOnly,
+                UseHandleBars = options.UseHandleBars,
+                UseInflector = options.UseInflector,
+                UseLegacyPluralizer = options.UseLegacyPluralizer,
+                UseSpatial = options.UseSpatial,
+                UseDbContextSplitting = options.UseDbContextSplitting,
+                UseNodaTime = options.UseNodaTime,
+            };
+
+            var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions);
+            return launcher.GetOutput();
         }
     }
 }
