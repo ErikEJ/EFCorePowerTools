@@ -20,7 +20,5 @@
 
         DatabaseConnectionModel SelectedDatabaseConnection { get; set; }
         DatabaseDefinitionModel SelectedDatabaseDefinition { get; set; }
-
-        bool IncludeViews { get; set; }
     }
 }

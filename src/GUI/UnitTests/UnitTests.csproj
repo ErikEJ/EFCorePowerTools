@@ -193,18 +193,15 @@
   <ItemGroup>
     <Compile Include="BLL\ExtensionVersionServiceTests.cs" />
     <Compile Include="BLL\InstalledComponentsServiceTests.cs" />
-    <Compile Include="DacpacConsolidatorTest.cs" />
     <Compile Include="ReverseEngineerTest.cs" />
     <Compile Include="Models\AboutExtensionModelTests.cs" />
     <Compile Include="Models\DatabaseConnectionModelTests.cs" />
     <Compile Include="Models\DatabaseDefinitionModelTests.cs" />
-    <Compile Include="PluralizerTest.cs" />
     <Compile Include="DacpacTest.cs" />
     <Compile Include="PathHelperTest.cs" />
     <Compile Include="DgmlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TableInformationModelTest.cs" />
-    <Compile Include="Services\ReplacingCandidateNamingServiceTests.cs" />
     <Compile Include="ViewModels\AboutViewModelTests.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModelTests.cs" />
     <Compile Include="ViewModels\PickTablesViewModelTests.cs" />

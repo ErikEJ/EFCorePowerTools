@@ -85,8 +85,6 @@ namespace EFCorePowerTools.Handlers
 
                 if (dbInfo == null) dbInfo = new DatabaseInfo();
 
-                var includeViews = pickDataSourceResult.Payload.IncludeViews;
-
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
                     dbInfo.DatabaseType = DatabaseType.SQLServer;
@@ -105,7 +103,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (includeViews && (dbInfo.DatabaseType == DatabaseType.SQLCE40))
+                if (dbInfo.DatabaseType == DatabaseType.SQLCE40)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 3.0: {dbInfo.DatabaseType}");
                     return;
@@ -114,8 +112,8 @@ namespace EFCorePowerTools.Handlers
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
-                                           ? GetDacpacTables(dacpacPath, includeViews)
-                                           : RepositoryHelper.GetTablesFromRepository(dbInfo, includeViews);
+                                           ? GetDacpacTables(dacpacPath)
+                                           : RepositoryHelper.GetTablesFromRepository(dbInfo, true);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -339,10 +337,10 @@ namespace EFCorePowerTools.Handlers
             return false;
         }
 
-        public List<TableInformationModel> GetDacpacTables(string dacpacPath, bool includeViews)
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
         {
             var builder = new DacpacTableListBuilder(dacpacPath);
-            return builder.GetTableDefinitions(includeViews);
+            return builder.GetTableDefinitions();
         }
 
         private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options)

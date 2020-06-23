@@ -1,4 +1,5 @@
-﻿using ReverseEngineer20.ReverseEngineer;
+﻿using ReverseEngineer20;
+using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.IO;
 
@@ -12,6 +13,11 @@ namespace efreveng
             {
                 if (args.Length > 0)
                 {
+                    if (args[0].EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
+                    { 
+                        return BuildDacpacList(args[0]);
+                    }
+
                     if (!File.Exists(args[0]))
                     {
                         Console.Out.WriteLine("Error:");
@@ -49,6 +55,25 @@ namespace efreveng
                 Console.Out.WriteLine(ex);
                 return 1;
             }
+        }
+
+        private static int BuildDacpacList(string dacpacPath)
+        {
+            if (!File.Exists(dacpacPath))
+            {
+                Console.Out.WriteLine("Error:");
+                Console.Out.WriteLine($"Could not open .dacpac file: {dacpacPath}");
+                return 1;
+            }
+
+            var builder = new DacpacTableListBuilder(dacpacPath);
+
+            var result = builder.GetTableDefinitions();
+
+            Console.Out.WriteLine("Result:");
+            Console.Out.WriteLine(result.Write());
+
+            return 0;
         }
     }
 }

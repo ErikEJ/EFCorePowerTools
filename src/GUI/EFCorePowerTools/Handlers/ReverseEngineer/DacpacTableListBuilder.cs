@@ -1,11 +1,8 @@
 ﻿using EFCorePowerTools.Shared.Models;
-using Microsoft.SqlServer.Dac.Extensions.Prototype;
-using Microsoft.SqlServer.Dac.Model;
-using ReverseEngineer20.DacpacConsolidate;
+using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace ReverseEngineer20
 {
@@ -17,7 +14,7 @@ namespace ReverseEngineer20
         {
             if (string.IsNullOrEmpty(dacpacPath))
             {
-                throw new ArgumentException(@"invalid path", nameof(dacpacPath));
+                throw new ArgumentNullException(@"invalid path", nameof(dacpacPath));
             }
             if (!File.Exists(dacpacPath))
             {
@@ -26,29 +23,22 @@ namespace ReverseEngineer20
             _dacpacPath = dacpacPath;
         }
 
-        public List<TableInformationModel> GetTableDefinitions(bool includeViews)
+        public List<TableInformationModel> GetTableDefinitions()
         {
-            var consolidator = new DacpacConsolidator();
+            var launcher = new EfRevEngLauncher(null);
 
-            var dacpacPath = consolidator.Consolidate(_dacpacPath);
+            var tables = launcher.GetDacpacTables(_dacpacPath);
 
-            using (var model = new TSqlTypedModel(dacpacPath))
+            foreach (var item in tables)
             {
-                var result = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
-                            .Select(m => new TableInformationModel($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", m.PrimaryKeyConstraints.Any(), false))
-                            .ToList();
-
-                if (includeViews)
+                if (!item.HasPrimaryKey)
                 {
-                    var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
-                            .Select(m => new TableInformationModel($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", true, true))
-                            .ToList();
-
-                    result = result.Concat(views).ToList();
+                    item.HasPrimaryKey = true;
+                    item.ShowKeylessWarning = true;
                 }
-
-                return result;
             }
+
+            return tables;
         }
     }
 }

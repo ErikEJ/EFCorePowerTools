@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EFCorePowerTools.Shared.Models;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -15,6 +17,30 @@ namespace ReverseEngineer20.ReverseEngineer
         public EfRevEngLauncher(ReverseEngineerCommandOptions options)
         {
             this.options = options;
+        }
+
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
+        {
+            if (!IsDotnetInstalled())
+            {
+                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3 or newer. Do you have it installed?");
+            }
+
+            var launchPath = DropNetCoreFiles();
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), "efreveng.exe"),
+                Arguments = "\"" + dacpacPath + "\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            var standardOutput = RunProcess(startInfo);
+
+            return BuildDacpacResult(standardOutput);
         }
 
         public ReverseEngineerResult GetOutput()
@@ -96,6 +122,27 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             throw new Exception($"Reverse engineer error: Unable to launch external process: {output}");
+        }
+
+        private List<TableInformationModel> BuildDacpacResult(string output)
+        {
+            if (output.StartsWith("Result:" + Environment.NewLine))
+            {
+                var result = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                TryRead(result[0], out List<TableInformationModel> deserialized);
+
+                return deserialized;
+            }
+
+            if (output.StartsWith("Error:" + Environment.NewLine))
+            {
+                var result = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+                throw new Exception("Dacpac list error: " + Environment.NewLine + result[0]);
+            }
+
+            throw new Exception($"Dacpac list error: Unable to launch external process: {output}");
         }
 
         private static bool TryRead<T>(string options, out T deserialized) where T : class, new()

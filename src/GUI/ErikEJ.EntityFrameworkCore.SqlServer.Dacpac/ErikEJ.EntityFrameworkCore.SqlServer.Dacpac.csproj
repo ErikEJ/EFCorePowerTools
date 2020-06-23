@@ -16,19 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacHacFactory.cs" Link="DacpacConsolidate\DacHacFactory.cs" />
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacpacMerger.cs" Link="DacpacConsolidate\DacpacMerger.cs" />
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
-    <Compile Include="..\EFCorePowerTools\Handlers\ReverseEngineer\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4769.1" />
-    <PackageReference Include="System.IO.Packaging" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,10 +32,6 @@
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)</PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DacpacConsolidate\" />
   </ItemGroup>
 
 </Project>

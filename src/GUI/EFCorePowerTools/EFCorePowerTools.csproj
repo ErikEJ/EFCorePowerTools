@@ -109,13 +109,6 @@
     <Compile Include="Handlers\MigrationsHandler.cs" />
     <Compile Include="Handlers\ModelAnalyzerHandler.cs" />
     <Compile Include="Handlers\ProcessLauncher.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\CustomData.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\DacHacFactory.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\DacpacConsolidator.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\DacpacMerger.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\DacpacXml.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\HeaderParser.cs" />
-    <Compile Include="Handlers\ReverseEngineer\DacpacConsolidate\Metadata.cs" />
     <Compile Include="Handlers\ReverseEngineer\DacpacTableListBuilder.cs" />
     <Compile Include="Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
@@ -200,6 +193,7 @@
       <Link>efreveng.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="app.config" />
     <None Include="efpt.renaming.json" />
     <Content Include="efpt\2.2.0\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -286,12 +280,6 @@
       <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.8.166\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.x86.150.4769.1\lib\net46\Microsoft.Data.Tools.Schema.Sql.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Tools.Utilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.x86.150.4769.1\lib\net46\Microsoft.Data.Tools.Utilities.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.2.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -300,18 +288,6 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Dac, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.x86.150.4769.1\lib\net46\Microsoft.SqlServer.Dac.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Dac.Extensions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.x86.150.4769.1\lib\net46\Microsoft.SqlServer.Dac.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.TransactSql.ScriptDom, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.x86.150.4769.1\lib\net46\Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Types, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.x86.150.4769.1\lib\net46\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -473,9 +449,6 @@
     </Reference>
     <Reference Include="QuickGraph.Graphviz">
       <HintPath>..\lib\QuickGraph.Graphviz.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="SqlCeScripting">
       <HintPath>..\lib\SqlCeScripting.dll</HintPath>
