@@ -13,7 +13,7 @@ View DbContext Model SQL DDL - View a SQL DDL script from your DbContext Model.
 View Database Schema as Graph - Generates a DGML graph of your database schema, viewable in Visual Studio.
 About - Displays version and other diagnostic information about your Visual Studio instance. 
         </Description>
-        <MoreInfo>https://github.com/ErikEJ/EFCorePowerTools/wiki/Power-Tools</MoreInfo>
+        <MoreInfo>https://github.com/ErikEJ/EFCorePowerTools/wiki/</MoreInfo>
         <License>Resources\license.txt</License>
         <Icon>db.png</Icon>
         <PreviewImage>Resources\pt.png</PreviewImage>
