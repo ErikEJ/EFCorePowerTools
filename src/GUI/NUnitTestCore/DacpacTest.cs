@@ -158,7 +158,7 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(71, dbModel.Tables.Count());
+            Assert.AreEqual(91, dbModel.Tables.Count());
         }
 
         [Test]

@@ -387,6 +387,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     continue;
                 }
 
+                if (referenced.ObjectType.Name != "Column")
+                {
+                    continue;
+                }
+
                 var col = (TSqlColumn)TSqlModelElement.AdaptInstance(referenced);
 
                 if (col.ColumnType == ColumnType.ComputedColumn)

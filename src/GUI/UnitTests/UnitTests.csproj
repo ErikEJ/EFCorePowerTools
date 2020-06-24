@@ -226,10 +226,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DacFxStronglyTypedModel\DacFxStronglyTypedModel.csproj">
-      <Project>{832ecf86-c071-4628-a8b7-2529d8a7bdbc}</Project>
-      <Name>DacFxStronglyTypedModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EFCorePowerTools.BLL\EFCorePowerTools.BLL.csproj">
       <Project>{F7BBF46C-7EA9-44FE-9DF0-43FA60B7CB3C}</Project>
       <Name>EFCorePowerTools.BLL</Name>
