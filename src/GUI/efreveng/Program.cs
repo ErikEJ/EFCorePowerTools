@@ -1,7 +1,10 @@
-﻿using ReverseEngineer20;
+﻿using EFCorePowerTools.Shared.Models;
+using ReverseEngineer20;
 using ReverseEngineer20.ReverseEngineer;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace efreveng
 {
@@ -68,7 +71,10 @@ namespace efreveng
 
             var builder = new DacpacTableListBuilder(dacpacPath);
 
-            var result = builder.GetTableDefinitions();
+            var value = builder.GetTableDefinitions();
+
+            var result = new List<TableInformationModel>();
+            result.AddRange(value.Select(v => new TableInformationModel(v.Item1, v.Item2)).ToList());
 
             Console.Out.WriteLine("Result:");
             Console.Out.WriteLine(result.Write());

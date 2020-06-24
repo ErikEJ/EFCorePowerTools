@@ -3,28 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="3.7.0" />
-    <PackageReference Include="Humanizer.Core" Version="2.8.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="3.1.4" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="3.1.4" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="3.1.4" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.0-beta1" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
-    <PackageReference Include="System.IO.Packaging" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj" />
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+    <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using NUnit.Framework;
 using ReverseEngineer20;
 using System.Collections.Generic;
@@ -33,7 +32,7 @@ namespace UnitTests
             var result = builder.GetTableDefinitions();
 
             // Assert
-            Assert.AreEqual("[dbo].[Album]", result[0].Name);
+            Assert.AreEqual("[dbo].[Album]", result[0].Item1);
             Assert.AreEqual(11, result.Count);
         }
 
@@ -158,7 +157,7 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(71, dbModel.Tables.Count());
+            Assert.AreEqual(91, dbModel.Tables.Count());
         }
 
         [Test]

@@ -550,90 +550,90 @@ namespace UnitTests.Services
             StringAssert.Contains(expected1, actResult[1]);
         }
 
-        [Test]
-        public void GenerateIForeignKeyForSelfReferenceTable()
-        {
-            //Arrange
-            var expected = "SelfRef";
-            var exampleOption = new List<Schema>
-            {
-            };
+        //[Test]
+        //public void GenerateIForeignKeyForSelfReferenceTable()
+        //{
+        //    //Arrange
+        //    var expected = "SelfRef";
+        //    var exampleOption = new List<Schema>
+        //    {
+        //    };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+        //    var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            var fk = CreateSelfRefFK();
+        //    var fk = CreateSelfRefFK();
 
-            // Act
-            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
-
-
-            //Assert
-            StringAssert.Contains(expected, result);
-            //Assert.AreSame(fk.PrincipalEntityType, fk.ResolveOtherEntityType(fk.DeclaringEntityType));
-        }
-
-        [Test]
-        public void GenerateIForeignKeyNameWithSchemaName()
-        {
-            //Arrange
-            var expected = "SchemaOneToManyPrincipal";
-            var exampleOption = new List<Schema>
-            {
-                new Schema{ SchemaName = "schema", UseSchemaName = true}
-            };
-
-            var sut = new ReplacingCandidateNamingService(exampleOption);
-
-            var fk = CreateOneToManyFK();
-
-            // Act
-            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+        //    // Act
+        //    var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
 
 
-            //Assert
-            StringAssert.Contains(expected, result);
-        }
+        //    //Assert
+        //    StringAssert.Contains(expected, result);
+        //    //Assert.AreSame(fk.PrincipalEntityType, fk.ResolveOtherEntityType(fk.DeclaringEntityType));
+        //}
 
-        [Test]
-        public void GenerateIForeignKeyNameWithoutSchemaName()
-        {
-            //Arrange
-            var expected = "OneToManyPrincipal";
-            var exampleOption = new List<Schema>
-            {
-                new Schema{ SchemaName = "schema", UseSchemaName = false}
-            };
+        //[Test]
+        //public void GenerateIForeignKeyNameWithSchemaName()
+        //{
+        //    //Arrange
+        //    var expected = "SchemaOneToManyPrincipal";
+        //    var exampleOption = new List<Schema>
+        //    {
+        //        new Schema{ SchemaName = "schema", UseSchemaName = true}
+        //    };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+        //    var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            var fk = CreateOneToManyFK();
+        //    var fk = CreateOneToManyFK();
 
-            // Act
-            var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+        //    // Act
+        //    var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
 
 
-            //Assert
-            StringAssert.Contains(expected, result);
-        }
+        //    //Assert
+        //    StringAssert.Contains(expected, result);
+        //}
 
-        private ForeignKey CreateSelfRefFK(bool useAltKey = false)
-        {
-            var entityType = new Model().AddEntityType(typeof(SelfRef));
-            entityType.Scaffolding().Schema = "SchemaName";
-            var pk = entityType.GetOrSetPrimaryKey(entityType.AddProperty(SelfRef.IdProperty));
-            var fkProp = entityType.AddProperty(SelfRef.SelfRefIdProperty);
+        //[Test]
+        //public void GenerateIForeignKeyNameWithoutSchemaName()
+        //{
+        //    //Arrange
+        //    var expected = "OneToManyPrincipal";
+        //    var exampleOption = new List<Schema>
+        //    {
+        //        new Schema{ SchemaName = "schema", UseSchemaName = false}
+        //    };
 
-            var property = entityType.AddProperty("AltId", typeof(int));
-            var principalKey = useAltKey
-                ? entityType.GetOrAddKey(property)
-                : pk;
+        //    var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            var fk = entityType.AddForeignKey(new[] { fkProp }, principalKey, entityType);
-            fk.IsUnique = true;
-            fk.HasDependentToPrincipal(SelfRef.SelfRefPrincipalProperty);
-            fk.HasPrincipalToDependent(SelfRef.SelfRefDependentProperty);
-            return fk;
-        }
+        //    var fk = CreateOneToManyFK();
+
+        //    // Act
+        //    var result = sut.GetDependentEndCandidateNavigationPropertyName(fk);
+
+
+        //    //Assert
+        //    StringAssert.Contains(expected, result);
+        //}
+
+        //private ForeignKey CreateSelfRefFK(bool useAltKey = false)
+        //{
+        //    var entityType = new Model().AddEntityType(typeof(SelfRef));
+        //    entityType.Scaffolding().Schema = "SchemaName";
+        //    var pk = entityType.GetOrSetPrimaryKey(entityType.AddProperty(SelfRef.IdProperty));
+        //    var fkProp = entityType.AddProperty(SelfRef.SelfRefIdProperty);
+
+        //    var property = entityType.AddProperty("AltId", typeof(int));
+        //    var principalKey = useAltKey
+        //        ? entityType.GetOrAddKey(property)
+        //        : pk;
+
+        //    var fk = entityType.AddForeignKey(new[] { fkProp }, principalKey, entityType);
+        //    fk.IsUnique = true;
+        //    fk.HasDependentToPrincipal(SelfRef.SelfRefPrincipalProperty);
+        //    fk.HasPrincipalToDependent(SelfRef.SelfRefDependentProperty);
+        //    return fk;
+        //}
 
         private class SelfRef
         {
@@ -648,23 +648,22 @@ namespace UnitTests.Services
             public int? SelfRefId { get; set; }
         }
 
-        private ForeignKey CreateOneToManyFK()
-        {
-            var model = new Model();
-            var principalEntityType = model.AddEntityType(typeof(OneToManyPrincipal));
+        //private ForeignKey CreateOneToManyFK()
+        //{
+        //    var model = new Model();
+        //    var principalEntityType = model.AddEntityType(typeof(OneToManyPrincipal));
 
-            var property = principalEntityType.AddProperty(NavigationBase.IdProperty);
-            var pk = principalEntityType.GetOrSetPrimaryKey(property);
+        //    var property = principalEntityType.AddProperty(NavigationBase.IdProperty);
+        //    var pk = principalEntityType.GetOrSetPrimaryKey(property);
 
-            var dependentEntityType = model.AddEntityType(typeof(OneToManyDependent));
-            var fkProp = dependentEntityType.AddProperty(OneToManyDependent.ForeignKeyProperty);
-            var fk = dependentEntityType.AddForeignKey(new[] { fkProp }, pk, principalEntityType);
-            principalEntityType.Scaffolding().Schema = "schema";
-            fk.HasPrincipalToDependent(NavigationBase.OneToManyDependentsProperty);
-            fk.HasDependentToPrincipal(NavigationBase.OneToManyPrincipalProperty);
-            return fk;
-        }
-
+        //    var dependentEntityType = model.AddEntityType(typeof(OneToManyDependent));
+        //    var fkProp = dependentEntityType.AddProperty(OneToManyDependent.ForeignKeyProperty);
+        //    var fk = dependentEntityType.AddForeignKey(new[] { fkProp }, pk, principalEntityType);
+        //    principalEntityType.Scaffolding().Schema = "schema";
+        //    fk.HasPrincipalToDependent(NavigationBase.OneToManyDependentsProperty);
+        //    fk.HasDependentToPrincipal(NavigationBase.OneToManyPrincipalProperty);
+        //    return fk;
+        //}
 
         public abstract class NavigationBase
         {
