@@ -198,6 +198,19 @@ namespace UnitTests
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Identity.dgml"), result, Encoding.UTF8);
         }
 
+        [Test]
+        public void BuildLongView50()
+        {
+            // Act
+            var builder = new DgmlBuilder.DgmlBuilder();
+            var result = builder.Build(ReadAllText("longview50.txt"), "test", _template);
+
+            // Assert
+            Assert.AreNotEqual(result, null);
+
+            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"LongView50.dgml"), result, Encoding.UTF8);
+        }
+
         private static string GetTemplate()
         {
             var resourceName = "UnitTests.template.dgml";
