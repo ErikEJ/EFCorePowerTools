@@ -254,6 +254,9 @@
     <Content Include="Issue604.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="longview50.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="NoFk.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

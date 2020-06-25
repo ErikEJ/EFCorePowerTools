@@ -98,11 +98,16 @@ namespace ReverseEngineer20
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
 
+#if CORE50
+            var pendingModelChanges
+                = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
+                    && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model.GetRelationalModel(), context.Model.GetRelationalModel());
+#else
             var pendingModelChanges
                 = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
                     && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
-
-            if (pendingModelChanges) return "Changes";
+#endif
+                if (pendingModelChanges) return "Changes";
 
             var migrations = context.Database.GetMigrations().ToArray();
 
@@ -212,7 +217,7 @@ namespace ReverseEngineer20
 #if CORE21
             return new DesignTimeServicesBuilder(assembly, reporter, Array.Empty<string>());
 #else
-#if CORE22
+#if CORE22 || CORE50
             return new DesignTimeServicesBuilder(assembly, assembly, reporter, Array.Empty<string>());
 #endif
 #endif

@@ -60,7 +60,7 @@ namespace EFCorePowerTools.Handlers
 
         private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = _project.IsNetCore22OrHigher() ? DropNetCoreFiles() : DropFiles(outputPath);
+            var launchPath = _project.IsNetCore22OrHigher() ? DropNetCoreFiles(outputPath) : DropFiles(outputPath);
 
             if ((_project.IsNetCore30() || _project.IsNetCore31()) && outputPath.EndsWith(".exe"))
             {
@@ -154,7 +154,7 @@ namespace EFCorePowerTools.Handlers
                     startInfo.Arguments = dotNetParams + " \"" + outputPath + "\"";
                 }
 
-                Debug.WriteLine(dotNetParams);
+                Debug.WriteLine(startInfo.Arguments);
             }
 
             var standardOutput = new StringBuilder();
@@ -223,7 +223,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private string DropNetCoreFiles()
+        private string DropNetCoreFiles(string outputPath)
         {
             var toDir = Path.Combine(Path.GetTempPath(), "efpt");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -244,7 +244,17 @@ namespace EFCorePowerTools.Handlers
             }
             else if (_project.IsNetCore30() || _project.IsNetCore31())
             {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
+                var projectDir = Path.GetDirectoryName(outputPath);
+                var version = GetEfCoreVersion(projectDir);
+
+                if (version.Major == 5)
+                {
+                    ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt50.exe.zip"), toDir);
+                }
+                else
+                {
+                    ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
+                }
             }
             return toDir;
         }

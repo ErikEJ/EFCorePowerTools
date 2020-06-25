@@ -317,9 +317,9 @@ namespace DgmlBuilder
                         continue;
                     }
 
-                    var annotation = GetFkAnnotations(i, foreignKeysFragments.ToArray());
-
                     if (trim.StartsWith("Relational:")) continue;
+
+                    var annotation = GetFkAnnotations(i, foreignKeysFragments.ToArray());
 
                     //Multi key FKs!
                     trim = trim.Replace("', '", ",");
@@ -384,6 +384,7 @@ namespace DgmlBuilder
 
                 if (debugViewLines[x].StartsWith("    Annotations:")
                     || debugViewLines[x].StartsWith("Annotations:")
+                    || trim.StartsWith("Indexes:")
                     || trim.StartsWith("EntityType:"))
                 {
                     break;

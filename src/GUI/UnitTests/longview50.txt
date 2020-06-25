@@ -1,0 +1,284 @@
+DbContext:
+CloudsenseContext
+DebugView:
+Model: 
+  EntityType: Clients
+    Properties: 
+      Id (long) Required PK AfterSave:Throw
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      Created (DateTime) Required ValueGenerated.OnAdd
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getutcdate())
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      DacpacVersion (string) MaxLength(25) Ansi
+        Annotations: 
+          MaxLength: 25
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      IndustryId (Nullable<byte>)
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerByteTypeMapping
+      IpAddress (string) MaxLength(15) Ansi
+        Annotations: 
+          MaxLength: 15
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      LatestScannerVersion (string) MaxLength(20) Ansi
+        Annotations: 
+          MaxLength: 20
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      Name (string) Required MaxLength(256)
+        Annotations: 
+          MaxLength: 256
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Size (string) MaxLength(15) Ansi
+        Annotations: 
+          MaxLength: 15
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+    Navigations: 
+      Forests (ICollection<Forests>) Collection ToDependent Forests Inverse: Client
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: Clients
+  EntityType: ClientsLogs
+    Properties: 
+      Id (long) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      ClientId (long) Required
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      Context (string) MaxLength(256) Ansi
+        Annotations: 
+          MaxLength: 256
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      Date (DateTime) Required
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      Message (string) Required MaxLength(8000) Ansi
+        Annotations: 
+          MaxLength: 8000
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      TraceLevel (byte) Required
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerByteTypeMapping
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: ClientsLogs
+  EntityType: Domains
+    Properties: 
+      Id (long) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      Created (DateTime) Required ValueGenerated.OnAdd
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:DefaultValueSql: (getutcdate())
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      DacpacVersion (string) MaxLength(25) Ansi
+        Annotations: 
+          MaxLength: 25
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      DomainType (byte) Required
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerByteTypeMapping
+      ForestId (long) Required FK Index
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      FoundByMaptool (bool) Required
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerBoolTypeMapping
+      IpAddress (string) MaxLength(15) Ansi
+        Annotations: 
+          MaxLength: 15
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      LastScanEnded (Nullable<DateTime>)
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      LastScanStarted (Nullable<DateTime>)
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      LatestScannerVersion (string) MaxLength(20) Ansi
+        Annotations: 
+          MaxLength: 20
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+      Name (string) Required MaxLength(1024)
+        Annotations: 
+          MaxLength: 1024
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      ReferenceId (Nullable<long>)
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      ScannerFqdn (string) MaxLength(255) Ansi
+        Annotations: 
+          MaxLength: 255
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+          Unicode: False
+    Navigations: 
+      Forest (Forests) ToPrincipal Forests Inverse: Domains
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Foreign keys: 
+      Domains {'ForestId'} -> Forests {'Id'} ToDependent: Domains ToPrincipal: Forest ClientSetNull
+        Annotations: 
+          Relational:ForeignKeyMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ForeignKeyConstraint]
+          Relational:Name: FK_Forest_Domains
+    Indexes: 
+      ForestId
+        Annotations: 
+          Relational:TableIndexMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableIndex]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: Domains
+  EntityType: FileShares
+    Properties: 
+      Id (long) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      Caption (string) MaxLength(2048)
+        Annotations: 
+          MaxLength: 2048
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Created (Nullable<DateTime>)
+        Annotations: 
+          Relational:ColumnType: datetime
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping
+      Description (string) MaxLength(2048)
+        Annotations: 
+          MaxLength: 2048
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Name (string) MaxLength(128)
+        Annotations: 
+          MaxLength: 128
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      Path (string) MaxLength(2048)
+        Annotations: 
+          MaxLength: 2048
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      ServerId (long) Required Index
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      Type (Nullable<long>) Index
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Indexes: 
+      Type, ServerId
+        Annotations: 
+          Relational:Name: IX_FileShares_ServerId
+          Relational:TableIndexMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableIndex]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: FileShares
+  EntityType: Forests
+    Properties: 
+      Id (long) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      ClientId (long) Required FK Index
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+      Name (string) MaxLength(512)
+        Annotations: 
+          MaxLength: 512
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+      ReferenceId (Nullable<long>)
+        Annotations: 
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerLongTypeMapping
+    Navigations: 
+      Client (Clients) ToPrincipal Clients Inverse: Forests
+      Domains (ICollection<Domains>) Collection ToDependent Domains Inverse: Forest
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Foreign keys: 
+      Forests {'ClientId'} -> Clients {'Id'} ToDependent: Forests ToPrincipal: Client ClientSetNull
+        Annotations: 
+          Relational:ForeignKeyMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ForeignKeyConstraint]
+          Relational:Name: FK_Client_Forests
+    Indexes: 
+      ClientId
+        Annotations: 
+          Relational:TableIndexMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableIndex]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:TableMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: Forests
+Annotations: 
+  ProductVersion: 2.2.0-rtm-35687
+  Relational:MaxIdentifierLength: 128
+  Relational:RelationalModel: Microsoft.EntityFrameworkCore.Metadata.Internal.RelationalModel
+  SqlServer:ValueGenerationStrategy: IdentityColumn
