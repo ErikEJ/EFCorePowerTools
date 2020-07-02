@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
+    <Compile Include="..\efreveng\TableInformationModelExtensions.cs" Link="TableInformationModelExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevEng.Core.50\RevEng.Core.50.csproj" />
+  </ItemGroup>
+
+</Project>
+

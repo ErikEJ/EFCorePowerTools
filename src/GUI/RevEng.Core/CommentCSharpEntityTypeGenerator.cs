@@ -6,6 +6,9 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
+#if CORE50
+using Microsoft.EntityFrameworkCore.Infrastructure;
+#endif
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -99,7 +102,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             var defaultSchema = entityType.Model.GetDefaultSchema();
 
             var schemaParameterNeeded = schema != null && schema != defaultSchema;
+#if CORE50
+            var isView = entityType.GetViewName() != null;
+#else
             var isView = entityType.FindAnnotation(RelationalAnnotationNames.ViewDefinition) != null;
+#endif
             var tableAttributeNeeded = !isView && (schemaParameterNeeded || tableName != null && tableName != entityType.GetDbSetName());
 
             if (tableAttributeNeeded)
@@ -186,7 +193,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             var key = property.FindContainingPrimaryKey();
             if (key != null)
             {
+#if CORE50
+                _sb.AppendLine(new AttributeWriter(nameof(KeyAttribute)).ToString());
+#else
                 _sb.AppendLine(new AttributeWriter(nameof(KeyAttribute)));
+#endif
             }
         }
 
@@ -211,8 +222,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 {
                     columnAttribute.AddParameter($"{nameof(ColumnAttribute.TypeName)} = {delimitedColumnType}");
                 }
-
+#if CORE50
+                _sb.AppendLine(columnAttribute.ToString());
+#else
                 _sb.AppendLine(columnAttribute);
+#endif
             }
         }
 

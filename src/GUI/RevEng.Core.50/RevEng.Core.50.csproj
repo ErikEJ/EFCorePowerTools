@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <RootNamespace>RevEng.Core</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>TRACE;CORE50</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\RevEng.Core\CommentCSharpEntityTypeGenerator.cs" Link="CommentCSharpEntityTypeGenerator.cs" />
+    <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
+    <Compile Include="..\RevEng.Core\HumanizerPluralizer.cs" Link="HumanizerPluralizer.cs" />
+    <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
+    <Compile Include="..\RevEng.Core\Pluralizer.cs" Link="Pluralizer.cs" />
+    <Compile Include="..\RevEng.Core\ReplacingCandidateNamingService.cs" Link="ReplacingCandidateNamingService.cs" />
+    <Compile Include="..\RevEng.Core\ReverseEngineerOptionsExtensions.cs" Link="ReverseEngineerOptionsExtensions.cs" />
+    <Compile Include="..\RevEng.Core\ReverseEngineerResultExtensions.cs" Link="ReverseEngineerResultExtensions.cs" />
+    <Compile Include="..\RevEng.Core\ReverseEngineerRunner.cs" Link="ReverseEngineerRunner.cs" />
+    <Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Humanizer.Core" Version="2.8.11" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-preview.6.20312.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-preview.6.20312.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-preview.6.20312.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="5.0.0-preview.6.20312.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-preview6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="5.0.0-preview6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="5.0.0-preview6" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+  </ItemGroup>  
+
+</Project>
