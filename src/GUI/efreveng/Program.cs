@@ -20,7 +20,23 @@ namespace efreveng
                     { 
                         return BuildDacpacList(args[0]);
                     }
+#if CORE50
+#else
+                    if (args.Count() == 2 && int.TryParse(args[0], out int dbTypeInt))
+                    {
+                        var builder = new TableListBuilder(dbTypeInt, args[1]);
 
+                        var value = builder.GetTableDefinitions();
+
+                        var buildResult = new List<TableInformationModel>();
+                        buildResult.AddRange(value.Select(v => new TableInformationModel(v.Item1, v.Item2)).ToList());
+
+                        Console.Out.WriteLine("Result:");
+                        Console.Out.WriteLine(buildResult.Write());
+
+                        return 0;
+                    }
+#endif
                     if (!File.Exists(args[0]))
                     {
                         Console.Out.WriteLine("Error:");

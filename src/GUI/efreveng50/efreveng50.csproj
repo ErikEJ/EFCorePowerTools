@@ -6,6 +6,14 @@
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;CORE50</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;CORE50</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
     <Compile Include="..\efreveng\TableInformationModelExtensions.cs" Link="TableInformationModelExtensions.cs" />
