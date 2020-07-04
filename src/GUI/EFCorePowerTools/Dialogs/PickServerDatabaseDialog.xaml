@@ -90,7 +90,15 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        
+
+        <StackPanel 
+            Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+            <CheckBox IsEnabled="False" x:Name="IncludeViews" IsChecked="{Binding IncludeViews}" >Use EF Core 5 (preview)</CheckBox>
+        </StackPanel>
+
         <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"

@@ -24,16 +24,12 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
             Dictionary<string, DatabaseInfo> databaseList = new Dictionary<string, DatabaseInfo>();
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-            Guid provider40 = new Guid(EFCorePowerTools.Shared.Resources.SqlCompact40Provider);
-            Guid provider40Private = new Guid(EFCorePowerTools.Shared.Resources.SqlCompact40PrivateProvider);
             Guid providerSqLite = new Guid(EFCorePowerTools.Shared.Resources.SQLiteProvider);
             Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Shared.Resources.SQLitePrivateProvider);
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
 
-            bool isV40Installed = RepositoryHelper.IsV40Installed() &&
-                (DdexProviderIsInstalled(provider40) || DdexProviderIsInstalled(provider40Private));
             if (dataExplorerConnectionManager != null)
             {
                 foreach (var connection in dataExplorerConnectionManager.Connections.Values)
@@ -49,14 +45,9 @@ namespace ErikEJ.SqlCeToolbox.Helpers
                             ConnectionString = sConnectionString,
                             DataConnection = connection.Connection,
                         };
+
                         var objProviderGuid = connection.Provider;
 
-                        if ((objProviderGuid == provider40 && isV40Installed ||
-                            objProviderGuid == provider40Private && isV40Installed)
-                            && !sConnectionString.Contains("Mobile Device"))
-                        {
-                            info.DatabaseType = DatabaseType.SQLCE40;
-                        }
                         if (objProviderGuid == providerSqLite
                             || objProviderGuid == providerSqlitePrivate)
                         {
@@ -154,37 +145,38 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             {
                 providerInvariant = (string)dp.GetProperty("InvariantName");
                 dbType = DatabaseType.SQLCE35;
-                if (providerInvariant == "System.Data.SqlServerCe.4.0")
-                {
-                    dbType = DatabaseType.SQLCE40;
-                    providerGuid = EFCorePowerTools.Shared.Resources.SqlCompact40PrivateProvider;
-                }
+
                 if (providerInvariant == "System.Data.SQLite.EF6")
                 {
                     dbType = DatabaseType.SQLite;
                     providerGuid = EFCorePowerTools.Shared.Resources.SQLitePrivateProvider;
                 }
+
                 if (providerInvariant == "System.Data.SqlClient")
                 {
                     dbType = DatabaseType.SQLServer;
                     providerGuid = Resources.SqlServerDotNetProvider;
                 }
+
                 if (providerInvariant == "Npgsql")
                 {
                     dbType = DatabaseType.Npgsql;
                     providerGuid = Resources.NpgsqlProvider;
                 }
+
                 if (providerInvariant == "Oracle.ManagedDataAccess.Client")
                 {
                     dbType = DatabaseType.Oracle;
                     providerGuid = Resources.OracleProvider;
                 }
+
                 if (providerInvariant == "Mysql" || providerInvariant == "MySql.Data.MySqlClient")
                 {
                     dbType = DatabaseType.Mysql;
                     providerGuid = Resources.MysqlVSProvider;
                 }
             }
+
             return new DatabaseInfo
             {
                 DatabaseType = dbType,

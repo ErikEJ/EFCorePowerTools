@@ -8,19 +8,7 @@
     using Shared.DAL;
 
     public class FileSystemAccess : IFileSystemAccess
-    {
-        Version IFileSystemAccess.GetInstalledSqlCe40Version()
-        {
-            try
-            {
-                return new SqlCeHelper4().IsV40Installed();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
+    {  
         void IFileSystemAccess.WriteAllLines(string fileName, IEnumerable<string> lines)
         {
             if (fileName == null)

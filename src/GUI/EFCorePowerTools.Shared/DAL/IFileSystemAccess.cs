@@ -6,8 +6,6 @@
 
     public interface IFileSystemAccess
     {
-        Version GetInstalledSqlCe40Version();
-
         /// <summary>
         /// Writes the <paramref name="lines"/> to the <paramref name="fileName"/> using the <see cref="Encoding.UTF8"/> encoding.
         /// </summary>
