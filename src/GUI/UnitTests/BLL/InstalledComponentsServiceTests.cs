@@ -68,9 +68,7 @@ namespace UnitTests.BLL
             var vsaMock = new Mock<IVisualStudioAccess>();
             vsaMock.Setup(m => m.IsDdexProviderInstalled(It.IsAny<Guid>())).Returns(true);
             vsaMock.Setup(m => m.IsSqLiteDbProviderInstalled()).Returns(true);
-            var sqlCe40Version = new Version(30, 0, 14);
             var fsaMock = new Mock<IFileSystemAccess>();
-            fsaMock.Setup(m => m.GetInstalledSqlCe40Version()).Returns(sqlCe40Version);
             var adoNetProviderVersion = new Version(50, 10);
             var dnaMock = new Mock<IDotNetAccess>();
             dnaMock.Setup(m => m.DoesDbProviderFactoryExist(It.IsNotNull<string>())).Returns(true);
@@ -82,10 +80,6 @@ namespace UnitTests.BLL
             ics.SetMissingComponentData(aem);
 
             // Assert
-            Assert.AreSame(sqlCe40Version, aem.SqlServerCompact40GacVersion);
-            Assert.IsTrue(aem.SqlServerCompact40DbProviderInstalled);
-            Assert.IsTrue(aem.SqlServerCompact40DdexProviderInstalled);
-            Assert.IsTrue(aem.SqlServerCompact40SimpleDdexProviderInstalled);
             Assert.AreSame(adoNetProviderVersion, aem.SqLiteAdoNetProviderVersion);
             Assert.IsTrue(aem.SqLiteEf6DbProviderInstalled);
             Assert.IsTrue(aem.SqLiteDdexProviderInstalled);
@@ -99,9 +93,7 @@ namespace UnitTests.BLL
             var vsaMock = new Mock<IVisualStudioAccess>();
             vsaMock.Setup(m => m.IsDdexProviderInstalled(It.IsAny<Guid>())).Returns(true);
             vsaMock.Setup(m => m.IsSqLiteDbProviderInstalled()).Returns(true);
-            var sqlCe40Version = new Version(30, 0, 14);
             var fsaMock = new Mock<IFileSystemAccess>();
-            fsaMock.Setup(m => m.GetInstalledSqlCe40Version()).Returns(sqlCe40Version);
             var adoNetProviderVersion = new Version(50, 10);
             var dnaMock = new Mock<IDotNetAccess>();
             dnaMock.Setup(m => m.DoesDbProviderFactoryExist(It.IsNotNull<string>())).Returns(true);
@@ -109,24 +101,16 @@ namespace UnitTests.BLL
             IInstalledComponentsService ics = new InstalledComponentsService(vsaMock.Object, fsaMock.Object, dnaMock.Object);
             var aem = new AboutExtensionModel
             {
-                SqlServerCompact40GacVersion = new Version(1, 0, 1),
                 SqlLiteSimpleDdexProviderInstalled = false,
                 SqLiteDdexProviderInstalled = false,
                 SqLiteEf6DbProviderInstalled = false,
                 SqLiteAdoNetProviderVersion = new Version(4, 0, 1),
-                SqlServerCompact40SimpleDdexProviderInstalled = false,
-                SqlServerCompact40DbProviderInstalled = false,
-                SqlServerCompact40DdexProviderInstalled = false
             };
 
             // Act
             ics.SetMissingComponentData(aem);
 
             // Assert
-            Assert.AreNotSame(sqlCe40Version, aem.SqlServerCompact40GacVersion);
-            Assert.IsFalse(aem.SqlServerCompact40DbProviderInstalled);
-            Assert.IsFalse(aem.SqlServerCompact40DdexProviderInstalled);
-            Assert.IsFalse(aem.SqlServerCompact40SimpleDdexProviderInstalled);
             Assert.AreNotSame(adoNetProviderVersion, aem.SqLiteAdoNetProviderVersion);
             Assert.IsFalse(aem.SqLiteEf6DbProviderInstalled);
             Assert.IsFalse(aem.SqLiteDdexProviderInstalled);

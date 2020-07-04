@@ -115,13 +115,10 @@
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
     <Compile Include="Handlers\ServerDgmlHandler.cs" />
     <Compile Include="Handlers\ReverseEngineerHandler.cs" />
-    <Compile Include="Helpers\AssemblyBindingRedirectHelper.cs" />
     <Compile Include="Helpers\EnvDTEHelper.cs" />
     <Compile Include="Helpers\Model.cs" />
     <Compile Include="Helpers\NuGetHelper.cs" />
-    <Compile Include="Helpers\RepositoryHelper.cs" />
     <Compile Include="Helpers\ReverseEngineerHelper.cs" />
-    <Compile Include="Helpers\SqlCe40ProviderRegistration.cs" />
     <Compile Include="Helpers\SqliteProviderRegistration.cs" />
     <Compile Include="Helpers\Telemetry.cs" />
     <Compile Include="Helpers\VsTheming.cs" />
@@ -168,9 +165,6 @@
     <Content Include="efpt\2.2.6\Microsoft.EntityFrameworkCore.Design.dll">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="e_sqlite3.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\7.png" />
     <Resource Include="Resources\TableWarning_16x.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
@@ -195,6 +189,10 @@
     </Content>
     <Content Include="..\lib\efpt50.exe.zip">
       <Link>efpt50.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\lib\efreveng50.exe.zip">
+      <Link>efreveng50.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="efpt.renaming.json" />
@@ -428,23 +426,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="QuickGraph">
-      <HintPath>..\lib\QuickGraph.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Data">
-      <HintPath>..\lib\QuickGraph.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickGraph.Graphviz">
-      <HintPath>..\lib\QuickGraph.Graphviz.dll</HintPath>
-    </Reference>
-    <Reference Include="SqlCeScripting">
-      <HintPath>..\lib\SqlCeScripting.dll</HintPath>
-    </Reference>
     <Reference Include="SqlCeScripting40">
       <HintPath>..\lib\SqlCeScripting40.dll</HintPath>
-    </Reference>
-    <Reference Include="SQLiteScripting">
-      <HintPath>..\lib\SQLiteScripting.dll</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -473,9 +456,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.SQLite, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <HintPath>..\lib\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>

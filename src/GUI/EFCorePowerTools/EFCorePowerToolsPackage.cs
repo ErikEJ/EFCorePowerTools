@@ -29,7 +29,6 @@ using System.Windows;
 namespace EFCorePowerTools
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [SqlCe40ProviderRegistration]
     [SqliteProviderRegistration]
     [InstalledProductRegistration("#110", "#112", "2.4", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(GuidList.guidDbContextPackagePkgString)]
@@ -73,8 +72,6 @@ namespace EFCorePowerTools
             }
 
             var oleMenuCommandService = await GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-
-            AssemblyBindingRedirectHelper.ConfigureBindingRedirects();
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

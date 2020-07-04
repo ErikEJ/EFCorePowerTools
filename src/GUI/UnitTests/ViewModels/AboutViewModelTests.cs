@@ -150,7 +150,6 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var extensionVersion = new Version(10, 14, 15, 0);
-            var sqlServerCompact40GacVersion = new Version(1, 5, 0, 15);
             var sqLiteAdoNetProviderVersion = new Version(15, 0, 1, 2);
             var aem = new AboutExtensionModel();
             var evsMock = new Mock<IExtensionVersionService>();
@@ -158,10 +157,6 @@ namespace UnitTests.ViewModels
             var icsMock = new Mock<IInstalledComponentsService>();
             icsMock.Setup(m => m.SetMissingComponentData(aem)).Callback<AboutExtensionModel>(m =>
             {
-                m.SqlServerCompact40GacVersion = sqlServerCompact40GacVersion;
-                m.SqlServerCompact40DbProviderInstalled = true;
-                m.SqlServerCompact40DdexProviderInstalled = true;
-                m.SqlServerCompact40SimpleDdexProviderInstalled = true;
                 m.SqLiteAdoNetProviderVersion = sqLiteAdoNetProviderVersion;
                 m.SqLiteEf6DbProviderInstalled = true;
                 m.SqLiteDdexProviderInstalled = true;
@@ -187,15 +182,10 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var extensionVersion = new Version(10, 14, 15, 0);
-            var sqlServerCompact40GacVersion = new Version(1, 5, 0, 15);
             var sqLiteAdoNetProviderVersion = new Version(15, 0, 1, 2);
             var aem = new AboutExtensionModel
             {
                 ExtensionVersion = extensionVersion,
-                SqlServerCompact40GacVersion = sqlServerCompact40GacVersion,
-                SqlServerCompact40DbProviderInstalled = true,
-                SqlServerCompact40DdexProviderInstalled = true,
-                SqlServerCompact40SimpleDdexProviderInstalled = true,
                 SqLiteAdoNetProviderVersion = sqLiteAdoNetProviderVersion,
                 SqLiteEf6DbProviderInstalled = true,
                 SqLiteDdexProviderInstalled = true,
@@ -339,15 +329,10 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var extensionVersion = new Version(10, 14, 15, 0);
-            var sqlServerCompact40GacVersion = new Version(1, 5, 0, 15);
             var sqLiteAdoNetProviderVersion = new Version(15, 0, 1, 2);
             var aem = new AboutExtensionModel
             {
                 ExtensionVersion = extensionVersion,
-                SqlServerCompact40GacVersion = sqlServerCompact40GacVersion,
-                SqlServerCompact40DbProviderInstalled = true,
-                SqlServerCompact40DdexProviderInstalled = true,
-                SqlServerCompact40SimpleDdexProviderInstalled = true,
                 SqLiteAdoNetProviderVersion = sqLiteAdoNetProviderVersion,
                 SqLiteEf6DbProviderInstalled = true,
                 SqLiteDdexProviderInstalled = true,
@@ -374,14 +359,9 @@ namespace UnitTests.ViewModels
             // Arrange
             string clipboardText = null;
             var extensionVersion = new Version(10, 14, 15, 0);
-            var sqlServerCompact40GacVersion = new Version(1, 5, 0, 15);
             var sqLiteAdoNetProviderVersion = new Version(15, 0, 1, 2);
             var aem = new AboutExtensionModel
             {
-                SqlServerCompact40GacVersion = sqlServerCompact40GacVersion,
-                SqlServerCompact40DbProviderInstalled = true,
-                SqlServerCompact40DdexProviderInstalled = true,
-                SqlServerCompact40SimpleDdexProviderInstalled = true,
                 SqLiteAdoNetProviderVersion = sqLiteAdoNetProviderVersion,
                 SqLiteEf6DbProviderInstalled = true,
                 SqLiteDdexProviderInstalled = true,

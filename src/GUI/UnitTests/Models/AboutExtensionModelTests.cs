@@ -44,10 +44,6 @@ namespace UnitTests.Models
             aem.PropertyChanged += (sender, args) => invokes++;
 
             // Act
-            aem.SqlServerCompact40GacVersion = null;
-            aem.SqlServerCompact40DbProviderInstalled = null;
-            aem.SqlServerCompact40DdexProviderInstalled = null;
-            aem.SqlServerCompact40SimpleDdexProviderInstalled = null;
             aem.SqLiteAdoNetProviderVersion = null;
             aem.SqLiteEf6DbProviderInstalled = null;
             aem.SqLiteDdexProviderInstalled = null;
@@ -55,10 +51,6 @@ namespace UnitTests.Models
 
             // Assert
             Assert.AreEqual(0, invokes);
-            Assert.IsNull(aem.SqlServerCompact40GacVersion);
-            Assert.IsNull(aem.SqlServerCompact40DbProviderInstalled);
-            Assert.IsNull(aem.SqlServerCompact40DdexProviderInstalled);
-            Assert.IsNull(aem.SqlServerCompact40SimpleDdexProviderInstalled);
             Assert.IsNull(aem.SqLiteAdoNetProviderVersion);
             Assert.IsNull(aem.SqLiteEf6DbProviderInstalled);
             Assert.IsNull(aem.SqLiteDdexProviderInstalled);
@@ -76,33 +68,21 @@ namespace UnitTests.Models
             var v2 = new Version(6, 7, 10, 0);
 
             // Act
-            aem.SqlServerCompact40GacVersion = v1;
-            aem.SqlServerCompact40DbProviderInstalled = true;
-            aem.SqlServerCompact40DdexProviderInstalled = true;
-            aem.SqlServerCompact40SimpleDdexProviderInstalled = true;
             aem.SqLiteAdoNetProviderVersion = v2;
             aem.SqLiteEf6DbProviderInstalled = true;
             aem.SqLiteDdexProviderInstalled = true;
             aem.SqlLiteSimpleDdexProviderInstalled = true;
 
             // Assert
-            Assert.AreEqual(8, invokes.Count);
-            Assert.AreSame(v1, aem.SqlServerCompact40GacVersion);
-            Assert.IsTrue(aem.SqlServerCompact40DbProviderInstalled);
-            Assert.IsTrue(aem.SqlServerCompact40DdexProviderInstalled);
-            Assert.IsTrue(aem.SqlServerCompact40SimpleDdexProviderInstalled);
+            Assert.AreEqual(4, invokes.Count);
             Assert.AreSame(v2, aem.SqLiteAdoNetProviderVersion);
             Assert.IsTrue(aem.SqLiteEf6DbProviderInstalled);
             Assert.IsTrue(aem.SqLiteDdexProviderInstalled);
             Assert.IsTrue(aem.SqlLiteSimpleDdexProviderInstalled);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqlServerCompact40GacVersion), invokes[0]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqlServerCompact40DbProviderInstalled), invokes[1]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqlServerCompact40DdexProviderInstalled), invokes[2]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqlServerCompact40SimpleDdexProviderInstalled), invokes[3]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteAdoNetProviderVersion), invokes[4]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteEf6DbProviderInstalled), invokes[5]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteDdexProviderInstalled), invokes[6]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqlLiteSimpleDdexProviderInstalled), invokes[7]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteAdoNetProviderVersion), invokes[0]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteEf6DbProviderInstalled), invokes[1]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteDdexProviderInstalled), invokes[2]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqlLiteSimpleDdexProviderInstalled), invokes[3]);
         }
     }
 }

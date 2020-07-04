@@ -231,7 +231,7 @@
       <Name>EFCorePowerTools.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj">
-      <Project>{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}</Project>
+      <Project>{2bd0c616-7126-4e12-a37d-a08b04bbf5e9}</Project>
       <Name>EFCorePowerTools.Shared</Name>
     </ProjectReference>
     <ProjectReference Include="..\EFCorePowerTools\EFCorePowerTools.csproj">

@@ -11,10 +11,6 @@
         public string MarketplaceUrl => "https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools#review-details";
 
         private Version _extensionVersion;
-        private Version _sqlServerCompact40GacVersion;
-        private bool? _sqlServerCompact40DbProviderInstalled;
-        private bool? _sqlServerCompact40DdexProviderInstalled;
-        private bool? _sqlServerCompact40SimpleDdexProviderInstalled;
         private Version _sqLiteAdoNetProviderVersion;
         private bool? _sqLiteEf6DbProviderInstalled;
         private bool? _sqLiteDdexProviderInstalled;
@@ -27,50 +23,6 @@
             {
                 if (Equals(value, _extensionVersion)) return;
                 _extensionVersion = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Version SqlServerCompact40GacVersion
-        {
-            get => _sqlServerCompact40GacVersion;
-            set
-            {
-                if (Equals(value, _sqlServerCompact40GacVersion)) return;
-                _sqlServerCompact40GacVersion = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool? SqlServerCompact40DbProviderInstalled
-        {
-            get => _sqlServerCompact40DbProviderInstalled;
-            set
-            {
-                if (Equals(value, _sqlServerCompact40DbProviderInstalled)) return;
-                _sqlServerCompact40DbProviderInstalled = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool? SqlServerCompact40DdexProviderInstalled
-        {
-            get => _sqlServerCompact40DdexProviderInstalled;
-            set
-            {
-                if (Equals(value, _sqlServerCompact40DdexProviderInstalled)) return;
-                _sqlServerCompact40DdexProviderInstalled = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool? SqlServerCompact40SimpleDdexProviderInstalled
-        {
-            get => _sqlServerCompact40SimpleDdexProviderInstalled;
-            set
-            {
-                if (Equals(value, _sqlServerCompact40SimpleDdexProviderInstalled)) return;
-                _sqlServerCompact40SimpleDdexProviderInstalled = value;
                 OnPropertyChanged();
             }
         }

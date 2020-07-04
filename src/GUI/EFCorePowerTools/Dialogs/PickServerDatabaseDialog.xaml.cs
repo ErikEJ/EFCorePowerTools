@@ -10,7 +10,7 @@
 
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition)> _getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews)> _getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
         private readonly Action<IEnumerable<DatabaseDefinitionModel>> _addDefinitions;
 
@@ -25,7 +25,7 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition);
+            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition, viewModel.IncludeViews);
             _addConnections = models =>
             {
                 foreach (var model in models)
@@ -45,7 +45,7 @@
             DatabaseConnectionCombobox.Focus();
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews) Payload) ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
