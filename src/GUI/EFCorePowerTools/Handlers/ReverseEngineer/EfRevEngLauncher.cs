@@ -21,6 +21,18 @@ namespace ReverseEngineer20.ReverseEngineer
 
         public List<TableInformationModel> GetDacpacTables(string dacpacPath)
         {
+            var arguments = "\"" + dacpacPath + "\"";
+            return GetTablesInternal(arguments);
+        }
+
+        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType)
+        {
+            var arguments = ((int)databaseType).ToString() + " \"" + connectionString + "\"";
+            return GetTablesInternal(arguments);
+        }
+
+        private List<TableInformationModel> GetTablesInternal(string arguments)
+        {
             if (!IsDotnetInstalled())
             {
                 throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3 or newer. Do you have it installed?");
@@ -31,7 +43,7 @@ namespace ReverseEngineer20.ReverseEngineer
             var startInfo = new ProcessStartInfo
             {
                 FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), "efreveng.exe"),
-                Arguments = "\"" + dacpacPath + "\"",
+                Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -40,7 +52,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var standardOutput = RunProcess(startInfo);
 
-            return BuildDacpacResult(standardOutput);
+            return BuildTableResult(standardOutput);
         }
 
         public ReverseEngineerResult GetOutput()
@@ -124,7 +136,7 @@ namespace ReverseEngineer20.ReverseEngineer
             throw new Exception($"Reverse engineer error: Unable to launch external process: {output}");
         }
 
-        private List<TableInformationModel> BuildDacpacResult(string output)
+        private List<TableInformationModel> BuildTableResult(string output)
         {
             if (output.StartsWith("Result:" + Environment.NewLine))
             {
@@ -139,10 +151,10 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 var result = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-                throw new Exception("Dacpac list error: " + Environment.NewLine + result[0]);
+                throw new Exception("Table list error: " + Environment.NewLine + result[0]);
             }
 
-            throw new Exception($"Dacpac list error: Unable to launch external process: {output}");
+            throw new Exception($"Table list error: Unable to launch external process: {output}");
         }
 
         private static bool TryRead<T>(string options, out T deserialized) where T : class, new()

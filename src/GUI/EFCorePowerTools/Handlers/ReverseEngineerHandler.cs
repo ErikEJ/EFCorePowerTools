@@ -113,7 +113,7 @@ namespace EFCorePowerTools.Handlers
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? GetDacpacTables(dacpacPath)
-                                           : RepositoryHelper.GetTablesFromRepository(dbInfo, true);
+                                           : GetTables(dbInfo.ConnectionString, dbInfo.DatabaseType);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -135,23 +135,7 @@ namespace EFCorePowerTools.Handlers
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
                 if (!pickTablesResult.ClosedByOK) return;
 
-                var classBasis = string.Empty;
-                if (dbInfo.DatabaseType == DatabaseType.Npgsql)
-                {
-                    classBasis = EnvDteHelper.GetNpgsqlDatabaseName(dbInfo.ConnectionString);
-                }
-                else if (dbInfo.DatabaseType == DatabaseType.Mysql)
-                {
-                    classBasis = EnvDteHelper.GetMysqlDatabaseName(dbInfo.ConnectionString);
-                }
-                else if (dbInfo.DatabaseType == DatabaseType.Oracle)
-                {
-                    classBasis = EnvDteHelper.GetOracleDatabaseName(dbInfo.ConnectionString);
-                }
-                else
-                {
-                    classBasis = RepositoryHelper.GetClassBasis(dbInfo.ConnectionString, dbInfo.DatabaseType);
-                }
+                var classBasis = EnvDteHelper.GetDatabaseName(dbInfo.ConnectionString, dbInfo.DatabaseType);
                 var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
                 var packageResult = project.ContainsEfCoreReference(dbInfo.DatabaseType);
 
@@ -339,7 +323,13 @@ namespace EFCorePowerTools.Handlers
 
         public List<TableInformationModel> GetDacpacTables(string dacpacPath)
         {
-            var builder = new DacpacTableListBuilder(dacpacPath);
+            var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined);
+            return builder.GetTableDefinitions();
+        }
+
+        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType)
+        {
+            var builder = new TableListBuilder(connectionString, databaseType);
             return builder.GetTableDefinitions();
         }
 
