@@ -1,18 +1,15 @@
 ﻿using EFCorePowerTools;
-using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using MySql.Data.MySqlClient;
-using Npgsql;
-using Oracle.ManagedDataAccess.Client;
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -139,7 +136,7 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             DatabaseType dbType, Guid provider)
         {
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-            var savedName = GetFileName(DataProtection.DecryptString(encryptedConnectionString), dbType);
+            var savedName = GetSavedConnectionName(DataProtection.DecryptString(encryptedConnectionString), dbType);
             dataExplorerConnectionManager.AddConnection(savedName, provider, encryptedConnectionString, true);
             return savedName;
         }
@@ -197,163 +194,62 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             };
         }
 
-        internal static string GetNpgsqlDatabaseName(string connectionString)
-        {
-            var pgBuilder = new NpgsqlConnectionStringBuilder(connectionString);
-            return pgBuilder.Database;
-        }
-
-        internal static List<TableInformationModel> GetNpgsqlTableNames(string connectionString, bool includeViews)
-        {
-            var result = new List<TableInformationModel>();
-            using (var npgsqlConn = new NpgsqlConnection(connectionString))
-            {
-                npgsqlConn.Open();
-
-                var tablesDataTable = npgsqlConn.GetSchema("Tables");
-                var constraints = npgsqlConn.GetSchema("Constraints");
-                foreach (DataRow row in tablesDataTable.Rows)
-                {
-                    var primaryKey = constraints
-                        .AsEnumerable()
-                        .Where(myRow => myRow.Field<string>("table_name") == row["table_name"].ToString()
-                        && myRow.Field<string>("table_schema") == row["table_schema"].ToString()
-                        && myRow.Field<string>("constraint_type") == "PRIMARY KEY")
-                        .FirstOrDefault();
-
-                    var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), includeViews ? true : primaryKey != null, includeViews ? primaryKey == null : false);
-                    result.Add(info);
-                }
-
-                if (includeViews)
-                {
-                    var viewsDataTable = npgsqlConn.GetSchema("Views");
-                    foreach (DataRow row in viewsDataTable.Rows)
-                    {
-                        var info = new TableInformationModel(row["table_schema"].ToString() + "." + row["table_name"].ToString(), true, true);
-                        result.Add(info);
-                    }
-                }
-            }
-
-            return result.OrderBy(l => l.Name).ToList();
-        }
-
-        internal static string GetMysqlDatabaseName(string connectionString)
-        {
-            var myBuilder = new MySqlConnectionStringBuilder(connectionString);
-            return myBuilder.Database;
-        }
-
-        internal static List<TableInformationModel> GetMysqlTableNames(string connectionString, bool includeViews)
-        {
-            var result = new List<TableInformationModel>();
-            using (var mysqlConn = new MySqlConnection(connectionString))
-            {
-                mysqlConn.Open();
-
-                var tables = GetMysqlTables(mysqlConn, mysqlConn.Database);
-                string schema = mysqlConn.Database;
-                if (schema != "information_schema")
-                {
-                    foreach (string table in tables)
-                    {
-                        bool hasPrimaryKey = HasMysqlPrimaryKey(schema, table, mysqlConn);
-                        var info = new TableInformationModel(table, includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
-                        result.Add(info);
-                    }
-                }
-            }
-
-            return result.OrderBy(l => l.Name).ToList();
-        }
-
-        internal static string GetOracleDatabaseName(string connectionString)
-        {
-            var myBuilder = new OracleConnectionStringBuilder(connectionString);
-            return myBuilder.DataSource;
-        }
-
-        internal static List<TableInformationModel> GetOracleTableNames(string connectionString, bool includeViews)
-        {
-            var result = new List<TableInformationModel>();
-            using (var oracleConn = new OracleConnection(connectionString))
-            {
-                oracleConn.Open();
-                string sql = $@"SELECT table_name, owner FROM all_tables ORDER BY owner, table_name";
-
-                using (var cmd = new OracleCommand(sql, oracleConn))
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            result.Add(new TableInformationModel($"{reader.GetString(1)}.{reader.GetString(0)}", true));
-                        }
-                    }
-                }
-
-                return result;
-            }
-        }
-
-        private static List<string> GetMysqlTables(MySqlConnection mysqlConn, string schema)
-        {
-            List<string> tables = new List<string>();
-            string sql = $@"SHOW TABLE STATUS FROM `{schema}`";
-
-            MySqlCommand cmd = new MySqlCommand(sql, mysqlConn);
-            using (MySqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    tables.Add(reader.GetString(0));
-                }
-            }
-
-            return tables;
-        }
-
-        private static bool HasMysqlPrimaryKey(string schemaName, string tableName, MySqlConnection mysqlConn)
-        {
-            /**
-             * A Unique index can unexpectedly be shown as a primary key here:             *
-             * https://dev.mysql.com/doc/mysql-infoschema-excerpt/5.6/en/columns-table.html
-             * "A UNIQUE index may be displayed as PRI if it cannot contain NULL values and there is no PRIMARY KEY in the table.
-             * A UNIQUE index may display as MUL if several columns form a composite UNIQUE index; although the combination of
-             * the columns is unique, each column can still hold multiple occurrences of a given value."
-             */
-            MySqlCommand cmd = mysqlConn.CreateCommand();
-            cmd.CommandText = "SELECT EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema = @schema AND table_name = @table AND column_key = 'PRI') AS HasPrimaryKey";
-            cmd.Parameters.AddWithValue("@schema", schemaName);
-            cmd.Parameters.AddWithValue("@table", tableName);
-            string value = cmd.ExecuteScalar().ToString();
-
-            return value == "1";
-        }
-
-        private static string GetFilePath(string connectionString, DatabaseType dbType)
-        {
-            var helper = RepositoryHelper.CreateEngineHelper(dbType);
-            return helper.PathFromConnectionString(connectionString);
-        }
-
-        private static string GetFileName(string connectionString, DatabaseType dbType)
+        public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
             if (dbType == DatabaseType.SQLServer)
             {
                 var helper = new SqlServerHelper();
                 return helper.PathFromConnectionString(connectionString);
             }
-            
-            if (dbType == DatabaseType.Npgsql)
-                return GetNpgsqlDatabaseName(connectionString);
-            
-            if (dbType == DatabaseType.Mysql)
-                return GetMysqlDatabaseName(connectionString);
 
-            var filePath = GetFilePath(connectionString, dbType);
-            return Path.GetFileName(filePath);
+            var builder = new DbConnectionStringBuilder();
+            builder.ConnectionString = connectionString;
+
+            var result = string.Empty;
+
+            if (builder.TryGetValue("Data Source", out object dataSource))
+            {
+                result += dataSource.ToString();
+            }
+
+            if (builder.TryGetValue("DataSource", out object dataSource2))
+            {
+                result +=  dataSource2.ToString();
+            }
+
+            if (builder.TryGetValue("Database", out object database))
+            {
+                result+=  "." + database.ToString();
+            }
+
+            return result;
+        }
+
+        public static string GetDatabaseName(string connectionString, DatabaseType dbType)
+        {
+            var builder = new DbConnectionStringBuilder();
+            builder.ConnectionString = connectionString;
+
+            if (builder.TryGetValue("Initial Catalog", out object catalog))
+            {
+                return catalog.ToString();
+            }
+
+            if (builder.TryGetValue("Database", out object database))
+            {
+                return database.ToString();
+            }
+
+            if (builder.TryGetValue("Data Source", out object dataSource))
+            {
+                return dataSource.ToString();
+            }
+
+            if (builder.TryGetValue("DataSource", out object dataSource2))
+            {
+                return dataSource2.ToString();
+            }
+            return dbType.ToString();
         }
 
         internal static bool IsSqLiteDbProviderInstalled()

@@ -1,13 +1,9 @@
 ﻿using EFCorePowerTools;
-using EFCorePowerTools.Shared.Models;
 using ErikEJ.SqlCeScripting;
 using ErikEJ.SQLiteScripting;
-using Microsoft.VisualStudio.Data.Services;
 using ReverseEngineer20;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 
 namespace ErikEJ.SqlCeToolbox.Helpers
 {
@@ -15,60 +11,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
     {
         //TODO Update this when SQLite provider is updated!
         public static string SqliteEngineVersion = "3.28";
-
-        public static List<TableInformationModel> GetTablesFromRepository(DatabaseInfo dbInfo, bool includeViews = false)
-        {
-            if (dbInfo.DataConnection != null)
-            {
-                dbInfo.DataConnection.Open();
-                dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Npgsql)
-            {
-                return EnvDteHelper.GetNpgsqlTableNames(dbInfo.ConnectionString, includeViews);
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Mysql)
-            {
-                return EnvDteHelper.GetMysqlTableNames(dbInfo.ConnectionString, includeViews);
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Oracle)
-            {
-                return EnvDteHelper.GetOracleTableNames(dbInfo.ConnectionString, includeViews);
-            }
-
-            using (var repository = RepositoryHelper.CreateRepository(dbInfo))
-            {
-                var allPks = repository.GetAllPrimaryKeys();
-                var tableList = repository.GetTableNamesForExclusion();
-                var tables = new List<TableInformationModel>();
-
-                foreach (var table in tableList)
-                {
-                    var hasPrimaryKey = allPks.Any(m => m.TableName == table.TableName);
-                    var name = string.IsNullOrEmpty(table.Schema)
-                        ? table.TableName
-                        : $"[{table.Schema}].[{table.Name}]";
-
-                    var info = new TableInformationModel(name, includeViews ? true : hasPrimaryKey, includeViews ? !hasPrimaryKey : false);
-                    tables.Add(info);
-                }
-
-                if (includeViews)
-                {
-                    var views = repository.GetAllViews();
-                    foreach (var view in views)
-                    {
-                        var info = new TableInformationModel(view.ViewName, true, true);
-                        tables.Add(info);
-                    }
-                }
-
-                return tables.OrderBy(l => l.Name).ToList();
-            }
-        }
 
         internal static IRepository CreateRepository(DatabaseInfo databaseInfo)
         {
@@ -152,41 +94,9 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return helper.PathFromConnectionString(connectionString);
         }
 
-        public static bool IsMissing(DatabaseInfo info)
-        {
-            if (info.DatabaseType == DatabaseType.SQLServer)
-            {
-                return false;
-            }
-            try
-            {
-                var path = GetFilePath(info.ConnectionString, info.DatabaseType);
-                return !File.Exists(path);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         internal static bool IsV40Installed()
         {
             return new SqlCeHelper4().IsV40Installed() != null;
-        }
-
-        internal static bool IsV35Installed()
-        {
-            return new SqlCeHelper().IsV35Installed() != null;
-        }
-
-        internal static bool IsV40DbProviderInstalled()
-        {
-            return new SqlCeHelper4().IsV40DbProviderInstalled();
-        }
-
-        internal static bool IsV35DbProviderInstalled()
-        {
-            return new SqlCeHelper4().IsV35DbProviderInstalled();
         }
     }
 }
