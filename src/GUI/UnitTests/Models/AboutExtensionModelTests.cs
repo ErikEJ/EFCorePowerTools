@@ -74,15 +74,15 @@ namespace UnitTests.Models
             aem.SqlLiteSimpleDdexProviderInstalled = true;
 
             // Assert
-            Assert.AreEqual(8, invokes.Count);
+            Assert.AreEqual(4, invokes.Count);
             Assert.AreSame(v2, aem.SqLiteAdoNetProviderVersion);
             Assert.IsTrue(aem.SqLiteEf6DbProviderInstalled);
             Assert.IsTrue(aem.SqLiteDdexProviderInstalled);
             Assert.IsTrue(aem.SqlLiteSimpleDdexProviderInstalled);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteAdoNetProviderVersion), invokes[4]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteEf6DbProviderInstalled), invokes[5]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteDdexProviderInstalled), invokes[6]);
-            Assert.AreEqual(nameof(AboutExtensionModel.SqlLiteSimpleDdexProviderInstalled), invokes[7]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteAdoNetProviderVersion), invokes[0]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteEf6DbProviderInstalled), invokes[1]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqLiteDdexProviderInstalled), invokes[2]);
+            Assert.AreEqual(nameof(AboutExtensionModel.SqlLiteSimpleDdexProviderInstalled), invokes[3]);
         }
     }
 }
