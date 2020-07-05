@@ -71,6 +71,8 @@ namespace EFCorePowerTools.Handlers
                 if (!pickDataSourceResult.ClosedByOK)
                     return;
 
+                var useEFCore5 = pickDataSourceResult.Payload.IncludeViews;
+
                 _package.Dte2.StatusBar.Text = "Loading schema information...";
 
                 // Reload the database list, in case the user has added a new database in the dialog
@@ -112,8 +114,8 @@ namespace EFCorePowerTools.Handlers
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
-                                           ? GetDacpacTables(dacpacPath)
-                                           : GetTables(dbInfo.ConnectionString, dbInfo.DatabaseType);
+                                           ? GetDacpacTables(dacpacPath, useEFCore5)
+                                           : GetTables(dbInfo.ConnectionString, dbInfo.DatabaseType, useEFCore5);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -220,7 +222,7 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                var revEngResult = LaunchExternalRunner(options);
+                var revEngResult = LaunchExternalRunner(options, useEFCore5);
 
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
@@ -321,19 +323,19 @@ namespace EFCorePowerTools.Handlers
             return false;
         }
 
-        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
+        public List<TableInformationModel> GetDacpacTables(string dacpacPath, bool useEFCore5)
         {
             var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined);
-            return builder.GetTableDefinitions();
+            return builder.GetTableDefinitions(useEFCore5);
         }
 
-        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType)
+        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType, bool useEFCore5)
         {
             var builder = new TableListBuilder(connectionString, databaseType);
-            return builder.GetTableDefinitions();
+            return builder.GetTableDefinitions(useEFCore5);
         }
 
-        private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options)
+        private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options, bool useEFCore5)
         {
             var commandOptions = new ReverseEngineerCommandOptions
             {
@@ -365,7 +367,7 @@ namespace EFCorePowerTools.Handlers
                 UseNodaTime = options.UseNodaTime,
             };
 
-            var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions);
+            var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions, useEFCore5);
             return launcher.GetOutput();
         }
     }

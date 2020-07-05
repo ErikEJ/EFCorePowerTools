@@ -13,10 +13,12 @@ namespace ReverseEngineer20.ReverseEngineer
     public class EfRevEngLauncher
     {
         private readonly ReverseEngineerCommandOptions options;
+        private readonly bool useEFCore5;
 
-        public EfRevEngLauncher(ReverseEngineerCommandOptions options)
+        public EfRevEngLauncher(ReverseEngineerCommandOptions options, bool useEFCore5)
         {
             this.options = options;
+            this.useEFCore5 = useEFCore5;
         }
 
         public List<TableInformationModel> GetDacpacTables(string dacpacPath)
@@ -42,7 +44,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), "efreveng.exe"),
+                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), GetExeName()),
                 Arguments = arguments,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -57,19 +59,14 @@ namespace ReverseEngineer20.ReverseEngineer
 
         public ReverseEngineerResult GetOutput()
         {
-            if (!IsDotnetInstalled())
-            {
-                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3 or newer. Do you have it installed?");
-            }
-
             var path = Path.GetTempFileName() + "json";
             File.WriteAllText(path, options.Write());
 
-            var launchPath = DropNetCoreFiles();
+            var launchPath = Path.Combine(Path.GetTempPath(), "efreveng");
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), "efreveng.exe"),
+                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), GetExeName()),
                 Arguments = "\"" + path + "\"",
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -80,6 +77,11 @@ namespace ReverseEngineer20.ReverseEngineer
             var standardOutput = RunProcess(startInfo);
 
             return BuildResult(standardOutput);
+        }
+
+        private string GetExeName()
+        {
+            return useEFCore5 ? "efreveng50.exe" : "efreveng.exe";
         }
 
         private bool IsDotnetInstalled()
@@ -190,7 +192,15 @@ namespace ReverseEngineer20.ReverseEngineer
             Directory.CreateDirectory(toDir);
 
             ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
-            
+
+            if (useEFCore5)
+            {
+                using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng50.exe.zip"), ZipArchiveMode.Read))
+                {
+                    archive.ExtractToDirectory(toDir, true);
+                }
+            }
+
             return toDir;
         }
     }
