@@ -21,11 +21,11 @@ namespace ReverseEngineer20
             _databaseType = databaseType;
         }
 
-        public List<TableInformationModel> GetTableDefinitions()
+        public List<TableInformationModel> GetTableDefinitions(bool useEFCore5)
         {
-            var launcher = new EfRevEngLauncher(null);
+            var launcher = new EfRevEngLauncher(null, useEFCore5);
 
-            var tables = new List<TableInformationModel>();
+            List<TableInformationModel> tables;
 
             if (_databaseType == DatabaseType.Undefined)
             {

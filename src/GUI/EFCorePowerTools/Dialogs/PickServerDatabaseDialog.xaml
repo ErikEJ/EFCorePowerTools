@@ -96,7 +96,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center">
-            <CheckBox IsEnabled="False" x:Name="IncludeViews" IsChecked="{Binding IncludeViews}" >Use EF Core 5 (preview)</CheckBox>
+            <CheckBox x:Name="IncludeViews" IsChecked="{Binding IncludeViews}" >Use EF Core 5 (preview)</CheckBox>
         </StackPanel>
 
         <StackPanel Grid.Row="3"

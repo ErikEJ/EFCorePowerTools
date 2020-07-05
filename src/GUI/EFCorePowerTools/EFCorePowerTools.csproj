@@ -102,6 +102,7 @@
     <Compile Include="Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemsExtensions.cs" />
+    <Compile Include="Extensions\ZipArchiveExtensions.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Handlers\AboutHandler.cs" />
     <Compile Include="Handlers\DgmlNugetHandler.cs" />
