@@ -176,14 +176,15 @@ namespace EFCorePowerTools.Extensions
 
             foreach (var item in result)
             {
-                var filePath = Path.Combine(Path.GetTempPath(),
-                    item.Item1 + extension);
-
-                if (filePath.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+                if (item.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+                    || item.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 {
-                    EnvDteHelper.ShowError("Invald path: " + filePath);
+                    EnvDteHelper.ShowError("Invalid name: " + item.Item1);
                     return list;
                 }
+
+                var filePath = Path.Combine(Path.GetTempPath(),
+                    item.Item1 + extension);
 
                 if (File.Exists(filePath))
                 {
