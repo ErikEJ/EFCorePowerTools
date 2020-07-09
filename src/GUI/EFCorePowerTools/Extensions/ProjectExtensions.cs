@@ -6,10 +6,12 @@ using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
 {
+    using ErikEJ.SqlCeToolbox.Helpers;
     using Microsoft.VisualStudio.ProjectSystem;
     using Microsoft.VisualStudio.ProjectSystem.Properties;
     using NuGet.ProjectModel;
     using ReverseEngineer20;
+    using System.Linq;
 
     internal static class ProjectExtensions
     {
@@ -176,6 +178,12 @@ namespace EFCorePowerTools.Extensions
             {
                 var filePath = Path.Combine(Path.GetTempPath(),
                     item.Item1 + extension);
+
+                if (Path.GetInvalidPathChars().Any())
+                {
+                    EnvDteHelper.ShowError("Invald path: " + filePath);
+                    return list;
+                }
 
                 if (File.Exists(filePath))
                 {

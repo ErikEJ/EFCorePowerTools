@@ -4,6 +4,7 @@ using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -115,6 +116,13 @@ namespace EFCorePowerTools.Handlers
             {
                 var dgmlText = dgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
                 var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
+
+                if (Path.GetInvalidPathChars().Any())
+                {
+                    EnvDteHelper.ShowError("Invalid path: " + path);
+                    return;
+                }
+
                 File.WriteAllText(path, dgmlText, Encoding.UTF8);
                 item = project.ProjectItems.GetItem(Path.GetFileName(path));
                 if (item != null)
