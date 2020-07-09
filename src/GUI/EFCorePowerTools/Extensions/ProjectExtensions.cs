@@ -179,7 +179,7 @@ namespace EFCorePowerTools.Extensions
                 var filePath = Path.Combine(Path.GetTempPath(),
                     item.Item1 + extension);
 
-                if (Path.GetInvalidPathChars().Any())
+                if (filePath.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
                 {
                     EnvDteHelper.ShowError("Invald path: " + filePath);
                     return list;

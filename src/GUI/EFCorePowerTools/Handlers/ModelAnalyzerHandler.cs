@@ -117,7 +117,7 @@ namespace EFCorePowerTools.Handlers
                 var dgmlText = dgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
                 var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
 
-                if (Path.GetInvalidPathChars().Any())
+                if (path.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
                 {
                     EnvDteHelper.ShowError("Invalid path: " + path);
                     return;
