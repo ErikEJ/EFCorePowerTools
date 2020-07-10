@@ -61,10 +61,10 @@
       <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.0\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4769.1\lib\net46\Microsoft.Data.Tools.Schema.Sql.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4826.1\lib\net46\Microsoft.Data.Tools.Schema.Sql.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Tools.Utilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4769.1\lib\net46\Microsoft.Data.Tools.Utilities.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4826.1\lib\net46\Microsoft.Data.Tools.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=3.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.3.1.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
@@ -112,16 +112,16 @@
       <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Dac, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4769.1\lib\net46\Microsoft.SqlServer.Dac.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4826.1\lib\net46\Microsoft.SqlServer.Dac.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Dac.Extensions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4769.1\lib\net46\Microsoft.SqlServer.Dac.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4826.1\lib\net46\Microsoft.SqlServer.Dac.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.TransactSql.ScriptDom, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4769.1\lib\net46\Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4826.1\lib\net46\Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.Types, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4769.1\lib\net46\Microsoft.SqlServer.Types.dll</HintPath>
+      <HintPath>..\packages\Microsoft.SqlServer.DacFx.150.4826.1\lib\net46\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.10.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.10.0\lib\net45\Moq.dll</HintPath>
