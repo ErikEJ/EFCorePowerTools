@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
-    internal static class TableInformationModelExtensions
+    public static class TableInformationModelExtensions
     {
         public static string Write(this List<TableInformationModel> result)
         {

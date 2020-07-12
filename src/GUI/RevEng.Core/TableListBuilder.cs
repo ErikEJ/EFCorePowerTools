@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+#if CORE50
+#else
 using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,6 +87,8 @@ namespace ReverseEngineer20
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
+#if CORE50
+#else
 
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
@@ -94,7 +99,7 @@ namespace ReverseEngineer20
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-
+#endif
                 default:
                     throw new ArgumentOutOfRangeException();
             }

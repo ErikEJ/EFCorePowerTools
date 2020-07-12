@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
-    <Compile Include="..\efreveng\TableInformationModelExtensions.cs" Link="TableInformationModelExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,6 +21,7 @@
     <Compile Include="..\RevEng.Core\ReverseEngineerResultExtensions.cs" Link="ReverseEngineerResultExtensions.cs" />
     <Compile Include="..\RevEng.Core\ReverseEngineerRunner.cs" Link="ReverseEngineerRunner.cs" />
     <Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
+    <Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
   </ItemGroup>
   
   <ItemGroup>
