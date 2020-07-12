@@ -43,9 +43,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Core", "RevEng.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efpt50.core", "efpt50.core\efpt50.core.csproj", "{077ADE2E-0B69-4359-A3F0-D69DB720689A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efreveng50", "efreveng50\efreveng50.csproj", "{845EE2FF-6BF3-44A2-BA96-9617360A815F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efreveng50", "efreveng50\efreveng50.csproj", "{845EE2FF-6BF3-44A2-BA96-9617360A815F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevEng.Core.50", "RevEng.Core.50\RevEng.Core.50.csproj", "{587362CD-AE24-4A4C-B434-34ECE66DB397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Core.50", "RevEng.Core.50\RevEng.Core.50.csproj", "{587362CD-AE24-4A4C-B434-34ECE66DB397}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.preview", "ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.preview\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.preview.csproj", "{0857286F-BA6C-43C8-AD8E-8679E3BB091B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,6 +183,14 @@ Global
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|Any CPU.Build.0 = Release|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|x86.ActiveCfg = Release|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|x86.Build.0 = Release|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Debug|x86.Build.0 = Debug|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +217,7 @@ Global
 		{077ADE2E-0B69-4359-A3F0-D69DB720689A} = {D1EDDE24-5DC8-407E-BE37-77AD0B75759D}
 		{845EE2FF-6BF3-44A2-BA96-9617360A815F} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{587362CD-AE24-4A4C-B434-34ECE66DB397} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
+		{0857286F-BA6C-43C8-AD8E-8679E3BB091B} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}

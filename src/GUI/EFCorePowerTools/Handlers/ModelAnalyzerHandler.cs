@@ -4,6 +4,7 @@ using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -114,7 +115,16 @@ namespace EFCorePowerTools.Handlers
             foreach (var info in modelResult)
             {
                 var dgmlText = dgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
+
+                if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+                    || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                {
+                    EnvDteHelper.ShowError("Invalid name: " + info.Item1);
+                    return;
+                }
+
                 var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
+
                 File.WriteAllText(path, dgmlText, Encoding.UTF8);
                 item = project.ProjectItems.GetItem(Path.GetFileName(path));
                 if (item != null)

@@ -50,6 +50,7 @@ namespace EFCorePowerTools.Handlers
             {
                 if (context.StartsWith("info:")) continue;
                 if (context.StartsWith("dbug:")) continue;
+                if (context.StartsWith("warn:")) continue;
 
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
                 result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
