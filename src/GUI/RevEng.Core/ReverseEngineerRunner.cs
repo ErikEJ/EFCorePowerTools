@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
+using RevEng.Core.Procedures;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,6 +68,9 @@ namespace ReverseEngineer20.ReverseEngineer
                 SuppressConnectionStringWarning = false,
                 ConnectionString = reverseEngineerOptions.ConnectionString,
             };
+
+            //var procedureModelFactory = new SqlServerProcedureModelFactory(null);
+            //var procModel = procedureModelFactory.Create(reverseEngineerOptions.ConnectionString, null);
 
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 
