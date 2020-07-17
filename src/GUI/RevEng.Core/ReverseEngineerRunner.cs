@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-using RevEng.Core.Procedures;
+//using RevEng.Core.Procedures;
 using System;
 using System.Collections.Generic;
 using System.IO;
