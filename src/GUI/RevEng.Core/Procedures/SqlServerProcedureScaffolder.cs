@@ -75,7 +75,6 @@ namespace RevEng.Core.Procedures
 
         private void GenerateClass(StoredProcedure storedProcedure, string name)
         {
-            //TODO C#-ify the name!
             _sb.AppendLine($"public partial class {name}");
 
             _sb.AppendLine("{");
@@ -92,10 +91,7 @@ namespace RevEng.Core.Procedures
         {
             foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
             {
-                var type = property.ClrType().UnwrapNullableType();
-                var nullable = property.ClrType().IsNullableValueType() ? "?" : string.Empty;
-
-                _sb.AppendLine($"public {type.Name}{nullable} {property.Name} {{ get; set; }}");
+                _sb.AppendLine($"public {property.ClrTypeName()} {property.Name} {{ get; set; }}");
             }
         }
 
