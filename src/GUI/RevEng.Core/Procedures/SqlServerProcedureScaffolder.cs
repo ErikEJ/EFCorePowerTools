@@ -15,6 +15,12 @@ namespace RevEng.Core.Procedures
 
         public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions)
         {
+            var model = procedureModelFactory.Create(connectionString, new ProcedureModelFactoryOptions { Procedures = procedureScaffolderOptions.Procedures });
+
+            foreach (var procedure in model.Procedures)
+            {
+            }
+
             //TODO Generate code and file names here!
 
             return null;

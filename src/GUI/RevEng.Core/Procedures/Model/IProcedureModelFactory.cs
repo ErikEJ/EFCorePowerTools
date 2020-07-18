@@ -1,4 +1,4 @@
-﻿using RevEng.Core.Procedures.Model;
+﻿using RevEng.Core.Procedures.Model.Metadata;
 
 namespace RevEng.Core.Procedures.Model
 {

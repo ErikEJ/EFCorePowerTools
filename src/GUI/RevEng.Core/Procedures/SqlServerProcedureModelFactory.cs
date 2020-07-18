@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using RevEng.Core.Procedures.Model;
+using RevEng.Core.Procedures.Model.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace RevEng.Core.Procedures
 {
@@ -118,16 +118,14 @@ SELECT
                 var parameter = new StoredProcedureParameter()
                 {
                     Name = par["Parameter"].ToString().Replace("@", ""),
+                    StoreType = par["Type"].ToString(),
                     Length = par["Length"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Length"].ToString()),
                     Precision = par["Precision"].GetType() == typeof(DBNull) ? (byte?)null : byte.Parse(par["Precision"].ToString()),
                     Scale = par["Scale"].GetType() == typeof(DBNull) ? (byte?)null : byte.Parse(par["Scale"].ToString()),
-                    Order = int.Parse(par["Order"].ToString()),
+                    Ordinal = int.Parse(par["Order"].ToString()),
                     Output = (bool)par["output"],
                     Nullable = (bool)par["nullable"],
-                    SqlDbType = (SqlDbType)Enum.Parse(typeof(SqlDbType), par["Type"].ToString(), true),
                 };
-
-                parameter.ClrType = GetClrType(parameter.SqlDbType, parameter.Nullable);
 
                 result.Add(parameter);
             }
@@ -153,17 +151,13 @@ SELECT
 
             foreach (DataRow res in dtResult.Rows)
             {
-                var cleanedTypeName = RemoveMatchingBraces(res["system_type_name"].ToString());
-
                 var parameter = new StoredProcedureResultElement()
                 {
-                    Name = (string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString()),
-                    Order = int.Parse(res["column_ordinal"].ToString()),
+                    Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
+                    StoreType = res["system_type_name"].ToString(),
+                    Ordinal = int.Parse(res["column_ordinal"].ToString()),
                     Nullable = (bool)res["is_nullable"],
-                    SqlDbType = (SqlDbType)Enum.Parse(typeof(SqlDbType), cleanedTypeName, true),
                 };
-
-                parameter.ClrType = GetClrType(parameter.SqlDbType, parameter.Nullable);
 
                 result.Add(parameter);
 
@@ -173,107 +167,5 @@ SELECT
             return result;
         }
 
-        private static string RemoveMatchingBraces(string s)
-        {
-            var stack = new Stack<char>();
-            int count = 0;
-            foreach (char ch in s)
-            {
-                switch (ch)
-                {
-                    case '(':
-                        count += 1;
-                        stack.Push(ch);
-                        break;
-                    case ')':
-                        if (count == 0)
-                            stack.Push(ch);
-                        else
-                        {
-                            char popped;
-                            do
-                            {
-                                popped = stack.Pop();
-                            } while (popped != '(');
-                            count -= 1;
-                        }
-                        break;
-                    default:
-                        stack.Push(ch);
-                        break;
-                }
-            }
-            return string.Join("", stack.Reverse());
-        }
-
-        private static Type GetClrType(SqlDbType sqlType, bool isNullable)
-        {
-            switch (sqlType)
-            {
-                case SqlDbType.BigInt:
-                    return isNullable ? typeof(long?) : typeof(long);
-
-                case SqlDbType.Binary:
-                case SqlDbType.Image:
-                case SqlDbType.Timestamp:
-                case SqlDbType.VarBinary:
-                    return typeof(byte[]);
-
-                case SqlDbType.Bit:
-                    return isNullable ? typeof(bool?) : typeof(bool);
-
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                case SqlDbType.NText:
-                case SqlDbType.NVarChar:
-                case SqlDbType.Text:
-                case SqlDbType.VarChar:
-                case SqlDbType.Xml:
-                    return typeof(string);
-
-                case SqlDbType.DateTime:
-                case SqlDbType.SmallDateTime:
-                case SqlDbType.Date:
-                case SqlDbType.Time:
-                case SqlDbType.DateTime2:
-                    return isNullable ? typeof(DateTime?) : typeof(DateTime);
-
-                case SqlDbType.Decimal:
-                case SqlDbType.Money:
-                case SqlDbType.SmallMoney:
-                    return isNullable ? typeof(decimal?) : typeof(decimal);
-
-                case SqlDbType.Float:
-                    return isNullable ? typeof(double?) : typeof(double);
-
-                case SqlDbType.Int:
-                    return isNullable ? typeof(int?) : typeof(int);
-
-                case SqlDbType.Real:
-                    return isNullable ? typeof(float?) : typeof(float);
-
-                case SqlDbType.UniqueIdentifier:
-                    return isNullable ? typeof(Guid?) : typeof(Guid);
-
-                case SqlDbType.SmallInt:
-                    return isNullable ? typeof(short?) : typeof(short);
-
-                case SqlDbType.TinyInt:
-                    return isNullable ? typeof(byte?) : typeof(byte);
-
-                case SqlDbType.Variant:
-                case SqlDbType.Udt:
-                    return typeof(object);
-
-                case SqlDbType.Structured:
-                    return typeof(DataTable);
-
-                case SqlDbType.DateTimeOffset:
-                    return isNullable ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
-
-                default:
-                    throw new ArgumentOutOfRangeException("sqlType");
-            }
-        }
     }
 }

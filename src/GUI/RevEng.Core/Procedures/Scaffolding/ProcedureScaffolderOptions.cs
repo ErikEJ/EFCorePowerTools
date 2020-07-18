@@ -1,9 +1,12 @@
-﻿namespace RevEng.Core.Procedures.Scaffolding
+﻿using System.Collections.Generic;
+
+namespace RevEng.Core.Procedures.Scaffolding
 {
     public class ProcedureScaffolderOptions
     {
-        public string ContextName { get; set; }
-        public string ContextNamespace { get; set; }
-        public string ModelNamespace { get; set; }
+        public virtual IEnumerable<string> Procedures { get; }
+        public virtual string ContextName { get; set; }
+        public virtual string ContextNamespace { get; set; }
+        public virtual string ModelNamespace { get; set; }
     }
 }

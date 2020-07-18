@@ -4,6 +4,6 @@ namespace RevEng.Core.Procedures.Model
 {
     public class ProcedureModelFactoryOptions
     {
-        public virtual IEnumerable<string> Procedures { get; }
+        public IEnumerable<string> Procedures { get; set; }
     }
 }
