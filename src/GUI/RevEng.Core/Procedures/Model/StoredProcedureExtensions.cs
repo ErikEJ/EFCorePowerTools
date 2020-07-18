@@ -30,7 +30,7 @@ namespace RevEng.Core
 
         private static SqlDbType GetSqlDbType(string storeType)
         {
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), storeType);
+            return (SqlDbType)Enum.Parse(typeof(SqlDbType), storeType, true);
         }
 
         private static Type GetClrType(string storeType, bool isNullable)

@@ -12,6 +12,8 @@ namespace System
     [DebuggerStepThrough]
     internal static class SharedTypeExtensions
     {
+        public static Type UnwrapNullableType(this Type type) => Nullable.GetUnderlyingType(type) ?? type;
+
         public static bool IsNullableValueType(this Type type)
             => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 

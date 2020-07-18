@@ -2,7 +2,12 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-//using RevEng.Core.Procedures;
+#if CORE50
+#else
+using RevEng.Core.Procedures;
+using RevEng.Core.Procedures.Model;
+using RevEng.Core.Procedures.Scaffolding;
+#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -69,9 +74,18 @@ namespace ReverseEngineer20.ReverseEngineer
                 ConnectionString = reverseEngineerOptions.ConnectionString,
             };
 
-            //var procedureModelFactory = new SqlServerProcedureModelFactory(null);
-            //var procModel = procedureModelFactory.Create(reverseEngineerOptions.ConnectionString, null);
-
+#if CORE50
+#else
+            var options = new ProcedureScaffolderOptions
+            {
+                ContextDir = outputContextDir,
+                ContextName = reverseEngineerOptions.ContextClassName,
+                ContextNamespace = contextNamespace,
+                ModelNamespace = modelNamespace,
+            };
+            var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null));
+            procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options);
+#endif
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 
             var scaffoldedModel = scaffolder.ScaffoldModel(

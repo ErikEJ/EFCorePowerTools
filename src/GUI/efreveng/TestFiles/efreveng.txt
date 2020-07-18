@@ -1,6 +1,6 @@
 {
-   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Cloudsense;Integrated Security=True",
-   "ContextClassName": "CloudsenseContext",
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
+   "ContextClassName": "NorthwindContext",
    "CustomReplacers": null,
    "Dacpac": null,
    "DatabaseType": 3,
@@ -19,23 +19,11 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Clients"
+         "Name": "dbo.Categories"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.ClientsLogs"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "dbo.Domains"
-      },
-	  {
-         "HasPrimaryKey": false,
-         "Name": "dbo.BlogsView"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "dbo.Forests"
+         "Name": "dbo.Shippers"
       }
    ],
    "UseDatabaseNames": false,
