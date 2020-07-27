@@ -2,7 +2,7 @@
    "ConnectionString": null,
    "ContextClassName": "DacpacContext",
    "CustomReplacers": null,
-   "Dacpac": "C:\\Code\\EFCorePowerTools\\src\\GUI\\UnitTests\\NorthwindViews.dacpac",
+   "Dacpac": "C:\\Code\\EFCorePowerTools\\src\\GUI\\NUnitTestCore\\NorthwindViews.dacpac",
    "DatabaseType": 3,
    "DefaultDacpacSchema": null,
    "DoNotCombineNamespace": false,

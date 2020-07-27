@@ -6,29 +6,25 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
-#if CORE50
-using Microsoft.EntityFrameworkCore.Infrastructure;
-#endif
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 {
-    public class CommentCSharpEntityTypeGenerator : CSharpEntityTypeGenerator
+    public class CommentCSharpEntityTypeGenerator : ICSharpEntityTypeGenerator
     {
         private readonly ICSharpHelper _code;
 
         private IndentedStringBuilder _sb;
         private bool _useDataAnnotations;
 
-        public CommentCSharpEntityTypeGenerator(
-            [NotNull] ICSharpHelper cSharpHelper) : base(cSharpHelper)
+        public CommentCSharpEntityTypeGenerator([NotNull] ICSharpHelper cSharpHelper)
         {
             _code = cSharpHelper;
         }
 
-        public override string WriteCode(IEntityType entityType, string @namespace, bool useDataAnnotations)
+        public string WriteCode(IEntityType entityType, string @namespace, bool useDataAnnotations)
         {
             _sb = new IndentedStringBuilder();
             _useDataAnnotations = useDataAnnotations;
@@ -65,7 +61,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             return _sb.ToString();
         }
 
-        protected override void GenerateClass(
+        protected void GenerateClass(
             [NotNull] IEntityType entityType)
         {
             WriteComment(entityType.GetComment());
@@ -89,7 +85,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             _sb.AppendLine("}");
         }
 
-        protected override void GenerateEntityTypeDataAnnotations(
+        protected void GenerateEntityTypeDataAnnotations(
             [NotNull] IEntityType entityType)
         {
             GenerateTableAttribute(entityType);
@@ -102,11 +98,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             var defaultSchema = entityType.Model.GetDefaultSchema();
 
             var schemaParameterNeeded = schema != null && schema != defaultSchema;
-#if CORE50
-            var isView = entityType.GetViewName() != null;
-#else
             var isView = entityType.FindAnnotation(RelationalAnnotationNames.ViewDefinition) != null;
-#endif
             var tableAttributeNeeded = !isView && (schemaParameterNeeded || tableName != null && tableName != entityType.GetDbSetName());
 
             if (tableAttributeNeeded)
@@ -124,13 +116,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
-        /// <summary>
-        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
-        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
-        ///     any release. You should only use it directly in your code with extreme caution and knowing that
-        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
-        /// </summary>
-        protected override void GenerateConstructor(
+        protected void GenerateConstructor(
             [NotNull] IEntityType entityType)
         {
             var collectionNavigations = entityType.GetNavigations().Where(n => n.IsCollection()).ToList();
@@ -153,7 +139,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
-        protected override void GenerateProperties(
+        protected void GenerateProperties(
             [NotNull] IEntityType entityType)
         {
             foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrdinal()))
@@ -169,7 +155,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
-        protected override void GeneratePropertyDataAnnotations(
+        protected void GeneratePropertyDataAnnotations(
             [NotNull] IProperty property)
         {
             GenerateKeyAttribute(property);
@@ -193,11 +179,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             var key = property.FindContainingPrimaryKey();
             if (key != null)
             {
-#if CORE50
-                _sb.AppendLine(new AttributeWriter(nameof(KeyAttribute)).ToString());
-#else
                 _sb.AppendLine(new AttributeWriter(nameof(KeyAttribute)));
-#endif
             }
         }
 
@@ -222,11 +204,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 {
                     columnAttribute.AddParameter($"{nameof(ColumnAttribute.TypeName)} = {delimitedColumnType}");
                 }
-#if CORE50
-                _sb.AppendLine(columnAttribute.ToString());
-#else
                 _sb.AppendLine(columnAttribute);
-#endif
             }
         }
 
@@ -257,7 +235,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
-        protected override void GenerateNavigationProperties(
+        protected void GenerateNavigationProperties(
             [NotNull] IEntityType entityType)
         {
             var sortedNavigations = entityType.GetNavigations()

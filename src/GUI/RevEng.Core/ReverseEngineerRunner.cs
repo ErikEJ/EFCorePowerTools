@@ -90,8 +90,12 @@ namespace ReverseEngineer20.ReverseEngineer
                 Procedures = new List<string>(),
             };
 
-            var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null), serviceProvider.GetService<ICSharpHelper>());
-            procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);
+            if (string.IsNullOrEmpty(reverseEngineerOptions.Dacpac)
+                && reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer)
+            {
+                var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null), serviceProvider.GetService<ICSharpHelper>());
+                procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);
+            }
 #endif
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 

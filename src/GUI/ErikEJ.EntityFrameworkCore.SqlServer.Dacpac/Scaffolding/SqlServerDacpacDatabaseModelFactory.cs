@@ -42,7 +42,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
             if (!File.Exists(dacpacPath))
             {
-                throw new ArgumentException("Dacpac file not found");
+                throw new ArgumentException($"Dacpac file not found: {dacpacPath}");
             }
 
             var schemas = options.Schemas;
