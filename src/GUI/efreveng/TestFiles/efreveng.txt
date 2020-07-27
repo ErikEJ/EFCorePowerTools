@@ -1,6 +1,5 @@
 {
-   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
-   "ContextClassName": "NorthwindContext",
+   "ConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Northwind;Integrated Security=True",   "ContextClassName": "NorthwindContext",
    "CustomReplacers": null,
    "Dacpac": null,
    "DatabaseType": 3,
@@ -29,6 +28,7 @@
    "UseDatabaseNames": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
+   "UseDbContextSplitting": true,
    "UseInflector": true,
    "UseLegacyPluralizer": false
 }

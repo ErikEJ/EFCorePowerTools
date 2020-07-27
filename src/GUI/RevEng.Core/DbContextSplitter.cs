@@ -18,14 +18,29 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
 
-            var contextUsingStatements = Regex.Matches(source, @"^using\s+.*?;", RegexOptions.Multiline | RegexOptions.Singleline)
-                .Cast<Match>()
-                .Select(m => m.Value)
-                .ToList();
 
             var contextNamespace = Regex.Match(source, @"(?<=(?:^|\s|;)namespace\s+).*?(?=(?:\s|\{))", RegexOptions.Multiline | RegexOptions.Singleline).Value;
 
             var configurationNamespace = configNamespace ?? contextNamespace;
+
+            var contextUsingStatements = Regex.Matches(source, @"^using\s+.*?;", RegexOptions.Multiline | RegexOptions.Singleline)
+                .Cast<Match>()
+                .Select(m => m.Value)
+                .Distinct()
+                .OrderBy(m => m)
+                .ToList();
+
+            if (configurationNamespace != contextNamespace)
+            {
+                contextUsingStatements.Add($"using {contextNamespace};");
+            }
+
+            contextUsingStatements.Add("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
+
+            contextUsingStatements = contextUsingStatements
+                .Distinct()
+                .OrderBy(m => m)
+                .ToList();
 
             const string statementsInnerBlockPattern = @"(?<=modelBuilder\.Entity<(?<EntityName>.*?)>\((?<EntityParameterName>.*?)\s*=>\s*\{).*?(?=\s{2,}\}\);)";
 
@@ -52,11 +67,6 @@ namespace ReverseEngineer20.ReverseEngineer
                 var configuration = new StringBuilder();
                 configuration.AppendLine(PathHelper.Header);
                 configuration.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
-                configuration.AppendLine("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
-                if (configurationNamespace != contextNamespace)
-                {
-                    configuration.AppendLine($"using {contextNamespace};");
-                }
                 configuration.AppendLine();
                 configuration.AppendLine($"namespace {configurationNamespace}");
                 configuration.AppendLine("{");
@@ -79,8 +89,6 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 configurationLines.Add( $"{new string(' ', 12)}modelBuilder.ApplyConfiguration(new {entityName}Configuration());");
             }
-
-            configurationLines.Add(string.Empty);
 
             var sourceLines = File.ReadAllLines(dbContextFilePath, Encoding.UTF8);
 
