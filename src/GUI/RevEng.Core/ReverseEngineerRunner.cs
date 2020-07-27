@@ -48,7 +48,7 @@ namespace ReverseEngineer20.ReverseEngineer
                     : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
                 : outputDir;
 
-            var modelNamespace =  !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
+            var modelNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
                 ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ModelNamespace
                 : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
@@ -58,7 +58,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var modelOptions = new ModelReverseEngineerOptions
             {
-                UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,                  
+                UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,
             };
 
             var codeOptions = new ModelCodeGenerationOptions
@@ -83,8 +83,15 @@ namespace ReverseEngineer20.ReverseEngineer
                 ContextNamespace = contextNamespace,
                 ModelNamespace = modelNamespace,
             };
-            var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null));
-            procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options);
+
+            var procedureModelOptions = new ProcedureModelFactoryOptions
+            {
+                //TODO Select procedures in UI
+                Procedures = new List<string>(),
+            };
+
+            var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null), serviceProvider.GetService<ICSharpHelper>());
+            procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);
 #endif
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 

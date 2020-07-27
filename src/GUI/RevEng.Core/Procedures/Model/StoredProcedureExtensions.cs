@@ -8,14 +8,14 @@ namespace RevEng.Core
 {
     public static class StoredProcedureExtensions
     {
-        public static string ClrType(this StoredProcedureParameter storedProcedureParameter)
+        public static Type ClrType(this StoredProcedureParameter storedProcedureParameter)
         {
-            var clrType = GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
+            return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
 
-            var type = clrType.UnwrapNullableType();
-            var nullable = clrType.IsNullableValueType() ? "?" : string.Empty;
+            //var type = clrType.UnwrapNullableType();
+            //var nullable = clrType.IsNullableValueType() ? "?" : string.Empty;
 
-            return $"{type.Name}{nullable}";
+            //return $"{type.Name}{nullable}";
         }
 
         public static SqlDbType DbType(this StoredProcedureParameter storedProcedureParameter)
@@ -23,14 +23,14 @@ namespace RevEng.Core
             return GetSqlDbType(storedProcedureParameter.StoreType);
         }
 
-        public static string ClrTypeName(this StoredProcedureResultElement storedProcedureResultElement)
+        public static Type ClrType(this StoredProcedureResultElement storedProcedureResultElement)
         {
-            var clrType = GetClrType(storedProcedureResultElement.StoreType, storedProcedureResultElement.Nullable);
+            return GetClrType(storedProcedureResultElement.StoreType, storedProcedureResultElement.Nullable);
 
-            var type = clrType.UnwrapNullableType();
-            var nullable = clrType.IsNullableValueType() ? "?" : string.Empty;
+            //var type = clrType.UnwrapNullableType();
+            //var nullable = clrType.IsNullableValueType() ? "?" : string.Empty;
 
-            return $"{type.Name}{nullable}";
+            //return $"{type.Name}{nullable}";
         }
 
         public static SqlDbType DbType(this StoredProcedureResultElement storedProcedureResultElement)

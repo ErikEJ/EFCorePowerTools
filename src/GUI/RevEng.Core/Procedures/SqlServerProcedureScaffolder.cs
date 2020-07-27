@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
+﻿using EFCorePowerTools.Shared.Annotations;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Procedures.Model;
 using RevEng.Core.Procedures.Model.Metadata;
@@ -13,19 +15,21 @@ namespace RevEng.Core.Procedures
     public class SqlServerProcedureScaffolder : IProcedureScaffolder
     {
         private readonly IProcedureModelFactory procedureModelFactory;
+        private readonly ICSharpHelper code;
 
         private IndentedStringBuilder _sb;
 
-        public SqlServerProcedureScaffolder(IProcedureModelFactory procedureModelFactory)
+        public SqlServerProcedureScaffolder(IProcedureModelFactory procedureModelFactory, [NotNull] ICSharpHelper code)
         {
             this.procedureModelFactory = procedureModelFactory;
+            this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions)
+        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModelFactoryOptions procedureModelFactoryOptions)
         {
             var result = new ScaffoldedModel();
 
-            var model = procedureModelFactory.Create(connectionString, new ProcedureModelFactoryOptions());
+            var model = procedureModelFactory.Create(connectionString, procedureModelFactoryOptions);
 
             foreach (var procedure in model.Procedures)
             {
@@ -91,7 +95,7 @@ namespace RevEng.Core.Procedures
         {
             foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
             {
-                _sb.AppendLine($"public {property.ClrTypeName()} {property.Name} {{ get; set; }}");
+                _sb.AppendLine($"public {code.Reference(property.ClrType())} {property.Name} {{ get; set; }}");
             }
         }
 
