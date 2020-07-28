@@ -98,7 +98,6 @@ namespace RevEng.Core.Procedures
 
             _sb.AppendLine(PathHelper.Header);
 
-            //TODO Sort and distinct usings.
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Threading.Tasks;");
