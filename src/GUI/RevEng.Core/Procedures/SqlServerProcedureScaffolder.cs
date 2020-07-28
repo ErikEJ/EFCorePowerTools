@@ -100,9 +100,7 @@ namespace RevEng.Core.Procedures
 
             //TODO Sort and distinct usings.
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
-            _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using System;");
-            _sb.AppendLine("using System.Collections.Generic;");
             _sb.AppendLine("using System.Threading.Tasks;");
             _sb.AppendLine($"using {procedureScaffolderOptions.ModelNamespace};");
 
@@ -139,12 +137,23 @@ namespace RevEng.Core.Procedures
                     {
                         _sb.AppendLine();
 
-                        //TODO add support for out parameters
-                        var paramStrings = procedure.Parameters
-                            .Where(p => !p.Output)
+                        var inParams = procedure.Parameters.Where(p => !p.Output);
+                        var outParams = procedure.Parameters.Where(p => p.Output);
+
+                        var paramStrings = inParams
                             .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
 
-                        _sb.AppendLine($"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)})");
+                        var outParamStrings = outParams
+                            .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}");
+
+                        var line = $"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+
+                        if (outParamStrings.Count() > 0)
+                        {
+                            line += $", {string.Join(',', outParamStrings)}";
+                        }
+
+                        _sb.AppendLine($"{line})");
                         _sb.AppendLine("{");
 
                         using (_sb.Indent())
@@ -170,6 +179,11 @@ namespace RevEng.Core.Procedures
                                         _sb.AppendLine($"Size = {parameter.Length},");
                                     }
 
+                                    if (parameter.Output)
+                                    {
+                                        _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
+                                    }
+
                                     _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{parameter.DbType()},");
                                     _sb.AppendLine($"Value = {parameter.Name},");
                                 }
@@ -179,12 +193,15 @@ namespace RevEng.Core.Procedures
                             }
 
                             var paramNames = procedure.Parameters
-                                .Where(p => !p.Output)
                                 .Select(p => $"parameter{p.Name}");
 
-                            var paramProcNames = procedure.Parameters
-                                .Where(p => !p.Output)
+                            var paramProcNames = inParams
                                 .Select(p => $"@{p.Name}");
+
+                            var outparamProcNames = outParams
+                                .Select(p => $"@{p.Name} OUTPUT");
+
+                            var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
 
                             if (procedure.Parameters.Count == 0)
                             {
@@ -192,7 +209,15 @@ namespace RevEng.Core.Procedures
                             }
                             else
                             {
-                                _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)} \", {string.Join(',', paramNames)});");
+                                _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+
+                            }
+
+                            _sb.AppendLine();
+
+                            foreach (var parameter in outParams)
+                            {
+                                _sb.AppendLine($"{parameter.Name}.SetValueInternal(parameter{parameter.Name}.Value);");
                             }
 
                             _sb.AppendLine($"return result;");

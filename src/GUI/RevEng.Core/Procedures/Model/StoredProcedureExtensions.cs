@@ -11,11 +11,6 @@ namespace RevEng.Core
         public static Type ClrType(this StoredProcedureParameter storedProcedureParameter)
         {
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
-
-            //var type = clrType.UnwrapNullableType();
-            //var nullable = clrType.IsNullableValueType() ? "?" : string.Empty;
-
-            //return $"{type.Name}{nullable}";
         }
 
         public static SqlDbType DbType(this StoredProcedureParameter storedProcedureParameter)
@@ -26,11 +21,6 @@ namespace RevEng.Core
         public static Type ClrType(this StoredProcedureResultElement storedProcedureResultElement)
         {
             return GetClrType(storedProcedureResultElement.StoreType, storedProcedureResultElement.Nullable);
-
-            //var type = clrType.UnwrapNullableType();
-            //var nullable = clrType.IsNullableValueType() ? "?" : string.Empty;
-
-            //return $"{type.Name}{nullable}";
         }
 
         public static SqlDbType DbType(this StoredProcedureResultElement storedProcedureResultElement)
