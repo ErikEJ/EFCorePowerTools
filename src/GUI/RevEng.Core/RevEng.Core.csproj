@@ -4,6 +4,15 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DbContextExtensions" />
+    <None Remove="Procedures\DbContextExtensions.cs.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DbContextExtensions" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="3.7.0" />

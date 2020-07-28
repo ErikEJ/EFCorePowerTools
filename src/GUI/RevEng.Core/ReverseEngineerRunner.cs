@@ -92,7 +92,8 @@ namespace ReverseEngineer20.ReverseEngineer
             };
 
             if (string.IsNullOrEmpty(reverseEngineerOptions.Dacpac)
-                && reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer)
+                && reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer
+                && reverseEngineerOptions.UseStoredProcsPreview)
             {
                 var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null), serviceProvider.GetService<ICSharpHelper>());
                 var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);

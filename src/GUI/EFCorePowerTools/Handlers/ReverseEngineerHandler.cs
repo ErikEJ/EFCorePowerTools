@@ -195,6 +195,7 @@ namespace EFCorePowerTools.Handlers
                     UseLegacyPluralizer = options?.UseLegacyPluralizer ?? false,
                     UseSpatial = options?.UseSpatial ?? false,
                     UseNodaTime = options?.UseNodaTime ?? false,
+                    UseStoredProcsPreview = options?.UseStoredProcsPreview ?? false,
                     UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting,
                     IdReplace = modelingOptionsResult.Payload.ReplaceId,
                     DoNotCombineNamespace = modelingOptionsResult.Payload.DoNotCombineNamespace,
@@ -365,6 +366,7 @@ namespace EFCorePowerTools.Handlers
                 UseSpatial = options.UseSpatial,
                 UseDbContextSplitting = options.UseDbContextSplitting,
                 UseNodaTime = options.UseNodaTime,
+                UseStoredProcsPreview = options.UseStoredProcsPreview,
             };
 
             var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions, useEFCore5);

@@ -41,6 +41,7 @@ namespace ReverseEngineer20
         public bool UseSpatial { get; set; }
         public bool UseDbContextSplitting { get; set; }
         public bool UseNodaTime { get; set; }
+        public bool UseStoredProcsPreview { get; set; }
 
         public static ReverseEngineerOptions FromV1(ReverseEngineerOptionsV1 v1)
         {

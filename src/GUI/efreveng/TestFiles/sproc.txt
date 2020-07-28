@@ -42,5 +42,6 @@
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseInflector": true,
-   "UseLegacyPluralizer": false
+   "UseLegacyPluralizer": false,
+   "UseStoredProcsPreview": true
 }

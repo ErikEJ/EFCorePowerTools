@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -67,6 +68,12 @@ namespace RevEng.Core.Procedures
             File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
 
             var additionalFiles = new List<string>();
+
+            var dbContextExtensionsText = GetDbContextExtensionsText();
+            var dbContextExtensionsPath = Path.Combine(Path.GetDirectoryName(contextPath), "DbContextExtensions.cs");
+            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText, Encoding.UTF8);
+            additionalFiles.Add(dbContextExtensionsPath);
+
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
             {
                 var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
@@ -75,6 +82,14 @@ namespace RevEng.Core.Procedures
             }
 
             return new SavedModelFiles(contextPath, additionalFiles);
+        }
+
+        private string GetDbContextExtensionsText()
+        {
+            var assembly = typeof(SqlServerProcedureScaffolder).GetTypeInfo().Assembly;
+            using Stream stream = assembly.GetManifestResourceStream("RevEng.Core.DbContextExtensions");
+            using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+            return reader.ReadToEnd();
         }
 
         private string GenerateProcedureDbContext(ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
@@ -116,7 +131,9 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("}");
                 }
 
-                foreach (var procedure in model.Procedures)
+                foreach (var procedure in model.Procedures
+                    .Where(p => p.ResultElements.Count > 0)
+                    .ToList())
                 {
                     using (_sb.Indent())
                     {
