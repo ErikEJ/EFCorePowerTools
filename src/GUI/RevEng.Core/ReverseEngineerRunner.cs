@@ -74,6 +74,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 ConnectionString = reverseEngineerOptions.ConnectionString,
             };
 
+            SavedModelFiles procedurePaths = null;
 #if CORE50
 #else
             var options = new ProcedureScaffolderOptions
@@ -94,7 +95,10 @@ namespace ReverseEngineer20.ReverseEngineer
                 && reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer)
             {
                 var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null), serviceProvider.GetService<ICSharpHelper>());
-                procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);
+                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);
+                procedurePaths = procedureModelScaffolder.Save(
+                    procedureModel,
+                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)));
             }
 #endif
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
@@ -110,11 +114,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
                 overwriteFiles: true);
 
-            string fixedNamespace = modelNamespace != contextNamespace
-                ? modelNamespace
-                : null;
-
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions, fixedNamespace);
+            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
 
             foreach (var file in filePaths.AdditionalFiles)
             {
@@ -125,7 +125,17 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, reverseEngineerOptions.UseDbContextSplitting, contextNamespace);
 
-            CleanUp(filePaths, entityTypeConfigurationPaths);
+            var cleanUpPaths = new SavedModelFiles(filePaths.ContextFile, filePaths.AdditionalFiles);
+            if (procedurePaths != null)
+            {
+                cleanUpPaths.AdditionalFiles.Add(procedurePaths.ContextFile);
+                foreach (var additionalFile in procedurePaths.AdditionalFiles)
+                {
+                    cleanUpPaths.AdditionalFiles.Add(additionalFile);
+                }
+            }
+
+            CleanUp(cleanUpPaths, entityTypeConfigurationPaths);
 
             var result = new ReverseEngineerResult
             {
@@ -148,7 +158,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return DbContextSplitter.Split(contextFile, contextNamespace);
         }
 
-        private void PostProcessContext(string contextFile, ReverseEngineerCommandOptions options, string fixedNamespace)
+        private void PostProcessContext(string contextFile, ReverseEngineerCommandOptions options)
         {
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
@@ -158,14 +168,6 @@ namespace ReverseEngineer20.ReverseEngineer
 
             foreach (var line in lines)
             {
-                if (fixedNamespace != null)
-                {
-                    if (line.Contains("using System;"))
-                    {
-                        finalLines.Add("using " + fixedNamespace + ";");
-                    }
-                }
-
                 if (!options.IncludeConnectionString)
                 {
                     if (line.Trim().Contains("protected override void OnConfiguring"))

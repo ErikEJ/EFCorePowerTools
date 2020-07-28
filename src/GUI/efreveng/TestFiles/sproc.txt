@@ -7,19 +7,19 @@
    "DefaultDacpacSchema": null,
    "DoNotCombineNamespace": false,
    "IdReplace": false,
-   "IncludeConnectionString": false,
+   "IncludeConnectionString": true,
    "OutputPath": "Models",
    "OutputContextPath": null,
    "ModelNamespace": "Modelos",
    "ContextNamespace": "Context",
-   "ProjectPath": "C:\\Temp\\Test\\",
+   "ProjectPath": "C:\\Temp\\Test\\ConsoleApp1",
    "ProjectRootNamespace": "ConsoleApp2",
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Clients"
+         "Name": "dbo.Shippers"
       },
       {
          "HasPrimaryKey": true,

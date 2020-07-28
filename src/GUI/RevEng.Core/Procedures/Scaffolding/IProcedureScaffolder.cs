@@ -6,5 +6,6 @@ namespace RevEng.Core.Procedures.Scaffolding
     public interface IProcedureScaffolder
     {
         ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureOptions, ProcedureModelFactoryOptions procedureModelFactoryOptions);
+        SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir);
     }
 }
