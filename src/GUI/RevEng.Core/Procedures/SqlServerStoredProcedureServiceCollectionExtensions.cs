@@ -18,8 +18,8 @@ namespace RevEng.Core.Procedures
             }
 
             return services
-                .AddSingleton<IProcedureModelFactory, SqlServerProcedureModelFactory>()
-                .AddSingleton<IProcedureScaffolder, SqlServerProcedureScaffolder>()
+                .AddSingleton<IProcedureModelFactory, SqlServerStoredProcedureModelFactory>()
+                .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }
     }
