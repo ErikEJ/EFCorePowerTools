@@ -128,6 +128,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 EntityWarnings = warnings,
                 EntityTypeFilePaths = filePaths.AdditionalFiles,
                 ContextFilePath = filePaths.ContextFile,
+                ContextConfigurationFilePaths = entityTypeConfigurationPaths,
             };
 
             return result;

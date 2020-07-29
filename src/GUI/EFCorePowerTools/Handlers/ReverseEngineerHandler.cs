@@ -38,8 +38,7 @@ namespace EFCorePowerTools.Handlers
                     EnvDteHelper.ShowError("Cannot generate code while debugging");
                     return;
                 }
-
-                var startTime = DateTime.Now;
+                
                 var projectPath = project.Properties.Item("FullPath").Value.ToString();
                 var optionsPath = Path.Combine(projectPath, "efpt.config.json");
                 var renamingPath = Path.Combine(projectPath, "efpt.renaming.json");
@@ -220,6 +219,8 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
+                var startTime = DateTime.Now;
+
                 var revEngResult = LaunchExternalRunner(options, useEFCore5);
 
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
@@ -234,15 +235,26 @@ namespace EFCorePowerTools.Handlers
                     if (modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                     {
                         if (File.Exists(revEngResult.ContextFilePath)) File.Delete(revEngResult.ContextFilePath);
+                        foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
+                        {
+                            if (File.Exists(filePath)) File.Delete(filePath);
+                        }
                     }
                 }
+
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
                 {
                     if (!project.IsNetCore() && !isNetStandard)
                     {
+                        foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
+                        {
+                            project.ProjectItems.AddFromFile(filePath);
+                        }
                         project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
-                        _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
                     }
+                    
+                    _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
+
                     if (modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
                     {
                         foreach (var filePath in revEngResult.EntityTypeFilePaths)
