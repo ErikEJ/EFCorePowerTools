@@ -157,8 +157,6 @@ namespace EFCorePowerTools.Handlers
                     presets.UseDbContextSplitting = options.UseDbContextSplitting;
                     presets.UseHandelbars = options.UseHandleBars;
                     presets.SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage;
-                    presets.ReplaceId = options.IdReplace;
-                    presets.DoNotCombineNamespace = options.DoNotCombineNamespace;
                     presets.IncludeConnectionString = options.IncludeConnectionString;
                     presets.ModelName = options.ContextClassName;
                     presets.Namespace = options.ProjectRootNamespace;
@@ -168,6 +166,7 @@ namespace EFCorePowerTools.Handlers
                     presets.ContextNamespace = options.ContextNamespace;
                     presets.SelectedToBeGenerated = options.SelectedToBeGenerated;
                     presets.DacpacPath = options.Dacpac;
+                    presets.UseStoredProcedures = options.UseStoredProcedures;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -195,10 +194,8 @@ namespace EFCorePowerTools.Handlers
                     UseLegacyPluralizer = options?.UseLegacyPluralizer ?? false,
                     UseSpatial = options?.UseSpatial ?? false,
                     UseNodaTime = options?.UseNodaTime ?? false,
-                    UseStoredProcsPreview = options?.UseStoredProcsPreview ?? false,
+                    UseStoredProcedures = modelingOptionsResult.Payload.UseStoredProcedures,
                     UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting,
-                    IdReplace = modelingOptionsResult.Payload.ReplaceId,
-                    DoNotCombineNamespace = modelingOptionsResult.Payload.DoNotCombineNamespace,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
                     SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage,
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
@@ -346,8 +343,6 @@ namespace EFCorePowerTools.Handlers
                 Dacpac = options.Dacpac,
                 DatabaseType = options.DatabaseType,
                 DefaultDacpacSchema = options.DefaultDacpacSchema,
-                DoNotCombineNamespace = options.DoNotCombineNamespace,
-                IdReplace = options.IdReplace,
                 IncludeConnectionString = options.IncludeConnectionString,
                 OutputPath = options.OutputPath,
                 ContextNamespace = options.ContextNamespace,
@@ -366,7 +361,7 @@ namespace EFCorePowerTools.Handlers
                 UseSpatial = options.UseSpatial,
                 UseDbContextSplitting = options.UseDbContextSplitting,
                 UseNodaTime = options.UseNodaTime,
-                UseStoredProcsPreview = options.UseStoredProcsPreview,
+                UseStoredProcedures = options.UseStoredProcedures,
             };
 
             var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions, useEFCore5);

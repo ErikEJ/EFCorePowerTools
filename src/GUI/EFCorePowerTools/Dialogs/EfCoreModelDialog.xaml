@@ -7,7 +7,7 @@
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 MinHeight="680"
+                 MinHeight="700"
                  MinWidth="418"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
@@ -71,6 +71,7 @@
 
     <Grid Margin="15, 5, 15, 10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -191,19 +192,27 @@
                       SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
+        
         <CheckBox Grid.Row="17"
                   TabIndex="12"
                   Content="Include connection string in generated code"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+
         <CheckBox Grid.Row="18"
                   TabIndex="13"
+                  Content="Generate stored procedure mappings (preview)"
+                  IsChecked="{Binding Model.UseStoredProcedures}" 
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+
+        <CheckBox Grid.Row="19"
+                  TabIndex="14"
                   Content="Install the EF Core provider package in the project"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         
-        <StackPanel Grid.Row="19"
+        <StackPanel Grid.Row="20"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
                              Content="OK"

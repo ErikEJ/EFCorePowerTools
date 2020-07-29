@@ -44,7 +44,8 @@ del bin\Release\netcoreapp3.1\publish\Npgsql.NetTopologySuite.dll
 del bin\Release\netcoreapp3.1\publish\Npgsql.NodaTime.dll 
 del bin\Release\netcoreapp3.1\publish\RevEng.Shared.dll 
 del bin\Release\netcoreapp3.1\publish\RevEng.Shared.pdb 
-del bin\Release\netcoreapp3.1\publish\System.ComponentModel.Composition.dll 
+del bin\Release\netcoreapp3.1\publish\System.ComponentModel.Composition.dll
+del bin\Release\netcoreapp3.1\publish\System.CodeDom.dll
 del bin\Release\netcoreapp3.1\publish\System.Configuration.ConfigurationManager.dll 
 del bin\Release\netcoreapp3.1\publish\System.Drawing.Common.dll 
 del bin\Release\netcoreapp3.1\publish\System.IdentityModel.Tokens.Jwt.dll 
@@ -53,7 +54,7 @@ del bin\Release\netcoreapp3.1\publish\System.Security.Cryptography.ProtectedData
 del bin\Release\netcoreapp3.1\publish\System.Security.Permissions.dll 
 del bin\Release\netcoreapp3.1\publish\System.Windows.Extensions.dll
 
-"C:\Program Files\7-Zip\7z.exe" a efreveng50.exe.zip bin\Release\netcoreapp3.1\publish\*
+"C:\Program Files\7-Zip\7z.exe" a efreveng50.exe.zip .\bin\Release\netcoreapp3.1\publish\*
 
 move /Y efreveng50.exe.zip ..\lib\
 

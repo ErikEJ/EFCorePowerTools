@@ -14,8 +14,6 @@
         private bool _includeConnectionString;
         private bool _useHandelbars;
         private int _selectedHandlebarsLanguage;
-        private bool _replaceId;
-        private bool _dontCombineNamespace;
         private bool _usePluralizer;
         private bool _useDatabaseNames;
         private string _ns;
@@ -28,6 +26,7 @@
         private string _projectName;
         private string _dacpacPath;
         private bool _useDbContextSplitting;
+        private bool _useStoreProcedures;
 
         public bool UseDataAnnotations
         {
@@ -36,6 +35,17 @@
             {
                 if (value == _useDataAnnotations) return;
                 _useDataAnnotations = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseStoredProcedures
+        {
+            get => _useStoreProcedures;
+            set
+            {
+                if (value == _useStoreProcedures) return;
+                _useStoreProcedures = value;
                 OnPropertyChanged();
             }
         }
@@ -135,28 +145,6 @@
             {
                 if (value == _useDbContextSplitting) return;
                 _useDbContextSplitting = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ReplaceId
-        {
-            get => _replaceId;
-            set
-            {
-                if (value == _replaceId) return;
-                _replaceId = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool DoNotCombineNamespace
-        {
-            get => _dontCombineNamespace;
-            set
-            {
-                if (value == _dontCombineNamespace) return;
-                _dontCombineNamespace = value;
                 OnPropertyChanged();
             }
         }

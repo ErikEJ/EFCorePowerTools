@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Shared.Annotations;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Procedures.Model;
@@ -29,11 +30,11 @@ namespace RevEng.Core.Procedures
             this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModelFactoryOptions procedureModelFactoryOptions)
+        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions)
         {
             var result = new ScaffoldedModel();
 
-            var model = procedureModelFactory.Create(connectionString, procedureModelFactoryOptions);
+            var model = procedureModelFactory.Create(connectionString);
 
             foreach (var procedure in model.Procedures)
             {
@@ -48,7 +49,7 @@ namespace RevEng.Core.Procedures
                 });
             }
 
-            var dbContext = GenerateProcedureDbContext(procedureScaffolderOptions, model);
+            var dbContext = WriteProcedureDbContext(procedureScaffolderOptions, model);
 
             result.ContextFile = new ScaffoldedFile
             {
@@ -92,7 +93,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        private string GenerateProcedureDbContext(ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
+        private string WriteProcedureDbContext(ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -132,98 +133,7 @@ namespace RevEng.Core.Procedures
                     .Where(p => p.ResultElements.Count > 0)
                     .ToList())
                 {
-                    using (_sb.Indent())
-                    {
-                        _sb.AppendLine();
-
-                        var inParams = procedure.Parameters.Where(p => !p.Output);
-                        var outParams = procedure.Parameters.Where(p => p.Output);
-
-                        var paramStrings = inParams
-                            .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
-
-                        var outParamStrings = outParams
-                            .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}");
-
-                        var line = $"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
-
-                        if (outParamStrings.Count() > 0)
-                        {
-                            line += $", {string.Join(',', outParamStrings)}";
-                        }
-
-                        _sb.AppendLine($"{line})");
-                        _sb.AppendLine("{");
-
-                        using (_sb.Indent())
-                        {
-                            foreach (var parameter in procedure.Parameters)
-                            {
-                                _sb.AppendLine($"var parameter{parameter.Name} = new SqlParameter");
-                                _sb.AppendLine("{");
-
-                                using (_sb.Indent())
-                                {
-                                    _sb.AppendLine($"ParameterName = \"{parameter.Name}\",");
-                                    if (parameter.Precision > 0)
-                                    {
-                                        _sb.AppendLine($"Precision = {parameter.Precision},");
-                                    }
-                                    if (parameter.Scale > 0)
-                                    {
-                                        _sb.AppendLine($"Scale = {parameter.Scale},");
-                                    }
-                                    if (parameter.Length > 0)
-                                    {
-                                        _sb.AppendLine($"Size = {parameter.Length},");
-                                    }
-
-                                    if (parameter.Output)
-                                    {
-                                        _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
-                                    }
-
-                                    _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{parameter.DbType()},");
-                                    _sb.AppendLine($"Value = {parameter.Name},");
-                                }
-
-                                _sb.AppendLine("};");
-                                _sb.AppendLine();
-                            }
-
-                            var paramNames = procedure.Parameters
-                                .Select(p => $"parameter{p.Name}");
-
-                            var paramProcNames = inParams
-                                .Select(p => $"@{p.Name}");
-
-                            var outparamProcNames = outParams
-                                .Select(p => $"@{p.Name} OUTPUT");
-
-                            var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
-
-                            if (procedure.Parameters.Count == 0)
-                            {
-                                _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
-                            }
-                            else
-                            {
-                                _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
-
-                            }
-
-                            _sb.AppendLine();
-
-                            foreach (var parameter in outParams)
-                            {
-                                _sb.AppendLine($"{parameter.Name}.SetValueInternal(parameter{parameter.Name}.Value);");
-                            }
-
-                            _sb.AppendLine($"return result;");
-                        }
-
-                        _sb.AppendLine("}");
-                    }
+                    GenerateProcedure(procedure);
                 }
 
                 _sb.AppendLine("}");
@@ -232,6 +142,107 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("}");
 
             return _sb.ToString();
+        }
+
+        private void GenerateProcedure(StoredProcedure procedure)
+        {
+            using (_sb.Indent())
+            {
+                _sb.AppendLine();
+
+                var inParams = procedure.Parameters.Where(p => !p.Output);
+                var outParams = procedure.Parameters.Where(p => p.Output);
+
+                var paramStrings = inParams
+                    .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
+
+                var outParamStrings = outParams
+                    .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}");
+
+                var line = $"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+
+                if (outParamStrings.Count() > 0)
+                {
+                    line += $", {string.Join(',', outParamStrings)}";
+                }
+
+                _sb.AppendLine($"{line})");
+                _sb.AppendLine("{");
+
+                using (_sb.Indent())
+                {
+                    foreach (var parameter in procedure.Parameters)
+                    {
+                        GenerateParameters(parameter);
+                    }
+
+                    var paramNames = procedure.Parameters
+                        .Select(p => $"parameter{p.Name}");
+
+                    var paramProcNames = inParams
+                        .Select(p => $"@{p.Name}");
+
+                    var outparamProcNames = outParams
+                        .Select(p => $"@{p.Name} OUTPUT");
+
+                    var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
+
+                    if (procedure.Parameters.Count == 0)
+                    {
+                        _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                    }
+                    else
+                    {
+                        _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+
+                    }
+
+                    _sb.AppendLine();
+
+                    foreach (var parameter in outParams)
+                    {
+                        _sb.AppendLine($"{parameter.Name}.SetValueInternal(parameter{parameter.Name}.Value);");
+                    }
+
+                    _sb.AppendLine($"return result;");
+                }
+
+                _sb.AppendLine("}");
+            }
+        }
+
+        private void GenerateParameters(StoredProcedureParameter parameter)
+        {
+            _sb.AppendLine($"var parameter{parameter.Name} = new SqlParameter");
+            _sb.AppendLine("{");
+
+            using (_sb.Indent())
+            {
+                _sb.AppendLine($"ParameterName = \"{parameter.Name}\",");
+                if (parameter.Precision > 0)
+                {
+                    _sb.AppendLine($"Precision = {parameter.Precision},");
+                }
+                if (parameter.Scale > 0)
+                {
+                    _sb.AppendLine($"Scale = {parameter.Scale},");
+                }
+                if (parameter.Length > 0)
+                {
+                    _sb.AppendLine($"Size = {parameter.Length},");
+                }
+
+                if (parameter.Output)
+                {
+                    _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
+                }
+
+                _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{parameter.DbType()},");
+                _sb.AppendLine($"Value = {parameter.Name},");
+            }
+
+            _sb.AppendLine("};");
+            _sb.AppendLine();
         }
 
         private string WriteResultClass(StoredProcedure storedProcedure, string @namespace, string name)

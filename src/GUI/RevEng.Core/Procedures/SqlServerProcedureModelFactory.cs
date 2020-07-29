@@ -19,10 +19,8 @@ namespace RevEng.Core.Procedures
             _logger = logger;
         }
 
-        public ProcedureModel Create(string connectionString, ProcedureModelFactoryOptions options)
+        public ProcedureModel Create(string connectionString)
         {
-            //TODO Filter based on options later
-
             var model = new ProcedureModel
             {
                 Procedures = GetStoredProcedures(connectionString)

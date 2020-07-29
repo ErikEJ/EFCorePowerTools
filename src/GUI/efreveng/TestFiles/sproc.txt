@@ -43,5 +43,5 @@
    "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
-   "UseStoredProcsPreview": true
+   "UseStoredProcedures": true
 }

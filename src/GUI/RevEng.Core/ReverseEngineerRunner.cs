@@ -2,12 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-#if CORE50
-#else
-using RevEng.Core.Procedures;
-using RevEng.Core.Procedures.Model;
 using RevEng.Core.Procedures.Scaffolding;
-#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -75,33 +70,22 @@ namespace ReverseEngineer20.ReverseEngineer
             };
 
             SavedModelFiles procedurePaths = null;
-#if CORE50
-#else
-            var options = new ProcedureScaffolderOptions
+            var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
+            if (procedureModelScaffolder != null)
             {
-                ContextDir = outputContextDir,
-                ContextName = reverseEngineerOptions.ContextClassName,
-                ContextNamespace = contextNamespace,
-                ModelNamespace = modelNamespace,
-            };
+                var procedureOptions = new ProcedureScaffolderOptions
+                {
+                    ContextDir = outputContextDir,
+                    ContextName = reverseEngineerOptions.ContextClassName,
+                    ContextNamespace = contextNamespace,
+                    ModelNamespace = modelNamespace,
+                };
 
-            var procedureModelOptions = new ProcedureModelFactoryOptions
-            {
-                //TODO Select procedures in UI
-                Procedures = new List<string>(),
-            };
-
-            if (string.IsNullOrEmpty(reverseEngineerOptions.Dacpac)
-                && reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer
-                && reverseEngineerOptions.UseStoredProcsPreview)
-            {
-                var procedureModelScaffolder = new SqlServerProcedureScaffolder(new SqlServerProcedureModelFactory(null), serviceProvider.GetService<ICSharpHelper>());
-                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, options, procedureModelOptions);
+                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions);
                 procedurePaths = procedureModelScaffolder.Save(
                     procedureModel,
                     Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)));
             }
-#endif
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 
             var scaffoldedModel = scaffolder.ScaffoldModel(

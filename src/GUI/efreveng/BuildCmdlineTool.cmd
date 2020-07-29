@@ -12,7 +12,7 @@ rmdir bin\Release\netcoreapp3.1\publish\ru-RU /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\zh-CN /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\zh-TW /S /Q
 
-"C:\Program Files\7-Zip\7z.exe" a efreveng.exe.zip bin\Release\netcoreapp3.1\publish\*
+"C:\Program Files\7-Zip\7z.exe" a efreveng.exe.zip .\bin\Release\netcoreapp3.1\publish\*
 
 move /Y efreveng.exe.zip ..\lib\
 

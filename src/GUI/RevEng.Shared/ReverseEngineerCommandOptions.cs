@@ -20,7 +20,6 @@ namespace ReverseEngineer20
         public List<TableInformationModel> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
         public bool UseInflector { get; set; }
-        public bool IdReplace { get; set; }
         public bool UseHandleBars { get; set; }
         public int SelectedHandlebarsLanguage { get; set; }
         public bool IncludeConnectionString { get; set; }
@@ -29,10 +28,9 @@ namespace ReverseEngineer20
         public List<Schema> CustomReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
-        public bool DoNotCombineNamespace { get; set; }
         public bool UseSpatial { get; set; }
         public bool UseDbContextSplitting { get; set; }
         public bool UseNodaTime { get; set; }
-        public bool UseStoredProcsPreview { get; set; }
+        public bool UseStoredProcedures { get; set; }
     }
 }

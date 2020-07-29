@@ -15,6 +15,17 @@
     <Compile Include="..\RevEng.Core\HumanizerPluralizer.cs" Link="HumanizerPluralizer.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
     <Compile Include="..\RevEng.Core\Pluralizer.cs" Link="Pluralizer.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\IProcedureModelFactory.cs" Link="Procedures\Model\IProcedureModelFactory.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureModel.cs" Link="Procedures\Model\Metadata\ProcedureModel.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\StoredProcedure.cs" Link="Procedures\Model\Metadata\StoredProcedure.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\StoredProcedureParameter.cs" Link="Procedures\Model\Metadata\StoredProcedureParameter.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\StoredProcedureResultElement.cs" Link="Procedures\Model\Metadata\StoredProcedureResultElement.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\StoredProcedureExtensions.cs" Link="Procedures\Model\StoredProcedureExtensions.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Scaffolding\IProcedureScaffolder.cs" Link="Procedures\Scaffolding\IProcedureScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Scaffolding\ProcedureScaffolderOptions.cs" Link="Procedures\Scaffolding\ProcedureScaffolderOptions.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\SqlServerProcedureModelFactory.cs" Link="Procedures\SqlServerProcedureModelFactory.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\SqlServerProcedureScaffolder.cs" Link="Procedures\SqlServerProcedureScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureServiceCollectionExtensions.cs" Link="Procedures\SqlServerStoredProcedureServiceCollectionExtensions.cs" />
     <Compile Include="..\RevEng.Core\ReplacingCandidateNamingService.cs" Link="ReplacingCandidateNamingService.cs" />
     <Compile Include="..\RevEng.Core\ReverseEngineerOptionsExtensions.cs" Link="ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="..\RevEng.Core\ReverseEngineerResultExtensions.cs" Link="ReverseEngineerResultExtensions.cs" />
@@ -33,11 +44,17 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-preview7" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="5.0.0-preview7" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="5.0.0-preview7" />
+    <PackageReference Include="System.CodeDom" Version="4.7.0" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Procedures\Model\Metadata\" />
+    <Folder Include="Procedures\Scaffolding\" />
   </ItemGroup>  
 
 </Project>

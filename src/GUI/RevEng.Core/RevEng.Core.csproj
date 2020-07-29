@@ -16,16 +16,16 @@
   
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="3.7.0" />
-    <PackageReference Include="Humanizer.Core" Version="2.8.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="3.1.4" />
+    <PackageReference Include="Humanizer.Core" Version="2.8.26" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="3.1.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="3.1.4" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.0-beta2" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
     <PackageReference Include="System.CodeDom" Version="4.7.0" />
   </ItemGroup>
   
