@@ -31,7 +31,7 @@ Or just install from Tools, Extensions and Updates in Visual Studio! ![](https:/
 
 **Daily build**
 
-You can download the daily build from [VSIX Gallery](https://vsixgallery.com/extensions/f4c4712c-ceae-4803-8e52-0e2049d5de9f/extension.vsix)
+You can download the daily build from [VSIX Gallery](https://www.vsixgallery.com/extension/f4c4712c-ceae-4803-8e52-0e2049d5de9f)
 
 Ensure you always have the latest daily build (if you are brave) by installing [this extension](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.VSIXGallery-nightlybuilds)
 
