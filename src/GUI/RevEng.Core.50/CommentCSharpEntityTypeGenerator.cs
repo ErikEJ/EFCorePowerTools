@@ -224,6 +224,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             GenerateKeyAttribute(property);
             GenerateRequiredAttribute(property);
             GenerateColumnAttribute(property);
+            GenerateMaxLengthAttribute(property);
 
             var annotations = _annotationCodeGenerator
                 .FilterIgnoredAnnotations(property.GetAnnotations())
@@ -272,6 +273,23 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 }
 
                 _sb.AppendLine(columnAttribute.ToString());
+            }
+        }
+
+        private void GenerateMaxLengthAttribute(IProperty property)
+        {
+            var maxLength = property.GetMaxLength();
+
+            if (maxLength.HasValue)
+            {
+                var lengthAttribute = new AttributeWriter(
+                    property.ClrType == typeof(string)
+                        ? nameof(StringLengthAttribute)
+                        : nameof(MaxLengthAttribute));
+
+                lengthAttribute.AddParameter(_code.Literal(maxLength.Value));
+
+                _sb.AppendLine(lengthAttribute.ToString());
             }
         }
 
