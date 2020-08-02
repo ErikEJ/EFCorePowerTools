@@ -68,6 +68,11 @@ namespace EFCorePowerTools.Handlers
 
                 var processResult = processLauncher.GetOutput(outputPath, generationType, null);
 
+                if (string.IsNullOrEmpty(processResult))
+                {
+                    throw new ArgumentException("Unable to collect model information", nameof(processResult));
+                }
+
                 if (processResult.StartsWith("Error:"))
                 {
                     throw new ArgumentException(processResult, nameof(processResult));
