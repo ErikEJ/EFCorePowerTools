@@ -243,6 +243,12 @@
         {
             _visualStudioAccess.SetStatusBarText(string.Empty);
 
+            if (string.IsNullOrEmpty(processResult))
+            {
+                _visualStudioAccess.ShowError("Unable to get Migration status");
+                return;
+            }
+
             if (processResult.StartsWith("Error:"))
             {
                 _visualStudioAccess.ShowError(processResult);
