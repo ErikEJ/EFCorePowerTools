@@ -3,8 +3,14 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
+#if CORE50
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+#endif
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Design;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -78,8 +84,9 @@ namespace ReverseEngineer20
                     var dbContext = operations.CreateContext(type.Name);
                     result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException ex)
                 {
+                    Console.Error.WriteLine(ex);
                     continue;
                 }
             }
@@ -97,17 +104,32 @@ namespace ReverseEngineer20
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-
 #if CORE50
-            var pendingModelChanges
-                = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
-                    && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model.GetRelationalModel(), context.Model.GetRelationalModel());
+            var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
+            var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
+
+            var hasDifferences = false;
+
+            if (migrationsAssembly.ModelSnapshot != null)
+            {
+                var typeMappingConvention = new TypeMappingConvention(dependencies);
+                typeMappingConvention.ProcessModelFinalizing(((IConventionModel)migrationsAssembly.ModelSnapshot.Model).Builder, null);
+
+                var relationalModelConvention = new RelationalModelConvention(dependencies, relationalDependencies);
+                var sourceModel = relationalModelConvention.ProcessModelFinalized(migrationsAssembly.ModelSnapshot.Model);
+
+                hasDifferences = modelDiffer.HasDifferences(
+                     ((IMutableModel)sourceModel).FinalizeModel().GetRelationalModel(),
+                    context.Model.GetRelationalModel());
+            }
+
+            var pendingModelChanges = (!databaseExists || hasDifferences);
 #else
             var pendingModelChanges
                 = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
                     && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
 #endif
-                if (pendingModelChanges) return "Changes";
+            if (pendingModelChanges) return "Changes";
 
             var migrations = context.Database.GetMigrations().ToArray();
 
