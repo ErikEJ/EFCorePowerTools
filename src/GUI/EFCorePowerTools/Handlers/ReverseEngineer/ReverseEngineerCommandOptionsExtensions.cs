@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using ReverseEngineer20;
+using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
     public static class ReverseEngineerCommandOptionsExtensions
     {

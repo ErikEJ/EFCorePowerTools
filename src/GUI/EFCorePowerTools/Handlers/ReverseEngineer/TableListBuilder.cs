@@ -1,9 +1,10 @@
 ﻿using EFCorePowerTools.Shared.Models;
+using ReverseEngineer20;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 
-namespace ReverseEngineer20
+namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
     public class TableListBuilder
     {

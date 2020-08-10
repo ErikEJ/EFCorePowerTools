@@ -1,11 +1,11 @@
-﻿using EFCorePowerTools.Shared.Models;
+﻿using EFCorePowerTools.Handlers.ReverseEngineer;
+using EFCorePowerTools.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
-using System.Runtime.Serialization.Json;
 using System.Text;
 
 namespace ReverseEngineer20.ReverseEngineer
@@ -14,11 +14,13 @@ namespace ReverseEngineer20.ReverseEngineer
     {
         private readonly ReverseEngineerCommandOptions options;
         private readonly bool useEFCore5;
+        private readonly ResultDeserializer resultDeserializer;
 
         public EfRevEngLauncher(ReverseEngineerCommandOptions options, bool useEFCore5)
         {
             this.options = options;
             this.useEFCore5 = useEFCore5;
+            resultDeserializer = new ResultDeserializer();
         }
 
         public List<TableInformationModel> GetDacpacTables(string dacpacPath)
@@ -54,7 +56,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var standardOutput = RunProcess(startInfo);
 
-            return BuildTableResult(standardOutput);
+            return resultDeserializer.BuildTableResult(standardOutput);
         }
 
         public ReverseEngineerResult GetOutput()
@@ -76,7 +78,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var standardOutput = RunProcess(startInfo);
 
-            return BuildResult(standardOutput);
+            return resultDeserializer.BuildResult(standardOutput);
         }
 
         private string GetExeName()
@@ -115,65 +117,6 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             return standardOutput.ToString();
-        }
-
-        private ReverseEngineerResult BuildResult(string output)
-        {
-            if (output.StartsWith("Result:" + Environment.NewLine))
-            {
-                var result = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                TryRead(result[0], out ReverseEngineerResult deserialized);
-
-                return deserialized;
-            }
-
-            if (output.StartsWith("Error:" + Environment.NewLine))
-            {
-                var result = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                throw new Exception("Reverse engineer error: " + Environment.NewLine + result[0]);
-            }
-
-            throw new Exception($"Reverse engineer error: Unable to launch external process: {output}");
-        }
-
-        private List<TableInformationModel> BuildTableResult(string output)
-        {
-            if (output.StartsWith("Result:" + Environment.NewLine))
-            {
-                var result = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                TryRead(result[0], out List<TableInformationModel> deserialized);
-
-                return deserialized;
-            }
-
-            if (output.StartsWith("Error:" + Environment.NewLine))
-            {
-                var result = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                throw new Exception("Table list error: " + Environment.NewLine + result[0]);
-            }
-
-            throw new Exception($"Table list error: Unable to launch external process: {output}");
-        }
-
-        private static bool TryRead<T>(string options, out T deserialized) where T : class, new()
-        {
-            try
-            {
-                var ms = new MemoryStream(Encoding.UTF8.GetBytes(options));
-                var ser = new DataContractJsonSerializer(typeof(T));
-                deserialized = ser.ReadObject(ms) as T;
-                ms.Close();
-                return true;
-            }
-            catch
-            {
-                deserialized = null;
-                return false;
-            }
         }
 
         private string DropNetCoreFiles()

@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;

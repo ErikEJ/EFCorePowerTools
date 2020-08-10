@@ -1,13 +1,13 @@
-﻿using ReverseEngineer20.ReverseEngineer;
+﻿using EFCorePowerTools.Shared.Models;
+using ReverseEngineer20;
+using ReverseEngineer20.ReverseEngineer;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
-namespace ReverseEngineer20
+namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
-    using System;
-    using System.Linq;
-    using EFCorePowerTools.Shared.Models;
-
     public class ReverseEngineerOptions
     {
         [IgnoreDataMember]

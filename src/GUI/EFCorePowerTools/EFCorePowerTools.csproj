@@ -110,6 +110,7 @@
     <Compile Include="Handlers\MigrationsHandler.cs" />
     <Compile Include="Handlers\ModelAnalyzerHandler.cs" />
     <Compile Include="Handlers\ProcessLauncher.cs" />
+    <Compile Include="Handlers\ReverseEngineer\ResultDeserializer.cs" />
     <Compile Include="Handlers\ReverseEngineer\TableListBuilder.cs" />
     <Compile Include="Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />

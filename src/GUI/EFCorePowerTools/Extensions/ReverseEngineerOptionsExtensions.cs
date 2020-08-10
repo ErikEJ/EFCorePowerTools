@@ -1,4 +1,4 @@
-﻿using ReverseEngineer20;
+﻿using EFCorePowerTools.Handlers.ReverseEngineer;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
