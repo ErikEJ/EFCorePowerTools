@@ -11,6 +11,7 @@ namespace UnitTests
         [Test]
         public void ParseResult()
         {
+
             // Arrange
             var result = @"Result:
 {
