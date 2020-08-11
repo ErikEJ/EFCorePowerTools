@@ -31,7 +31,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
         public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType)
         {
-            var arguments = ((int)databaseType).ToString() + " \"" + connectionString + "\"";
+            var arguments = ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
             return GetTablesInternal(arguments);
         }
 
