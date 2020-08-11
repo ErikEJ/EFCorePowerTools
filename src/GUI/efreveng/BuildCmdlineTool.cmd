@@ -1,5 +1,5 @@
 
-dotnet publish -o bin\Release\netcoreapp3.1\publish -f netcoreapp3.1 -r win-x86 -c Release --no-self-contained
+dotnet publish -o bin\Release\netcoreapp3.1\publish -f netcoreapp3.1 -r win-x64 -c Release --no-self-contained
 
 rmdir bin\Release\netcoreapp3.1\publish\de-DE /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\es-ES /S /Q
