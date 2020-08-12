@@ -24,7 +24,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
             if (errorParts.Length == 2)
             {
-                throw new Exception("Reverse engineer error: " + Environment.NewLine + resultParts[1]);
+                throw new Exception("Reverse engineer error: " + Environment.NewLine + errorParts[1]);
             }
 
             throw new Exception($"Reverse engineer error: Unable to launch external process: {Environment.NewLine + output}");

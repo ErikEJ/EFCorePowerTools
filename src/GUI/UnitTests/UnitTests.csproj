@@ -208,6 +208,9 @@
     <Compile Include="ViewModels\TableInformationViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ErrorResult.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TableResult2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -37,6 +37,18 @@ namespace UnitTests
             Assert.AreEqual(29, parsed.Count);
         }
 
+        [Test, Ignore("Investigate build issue")]
+        public void ParseResultWithError()
+        {
+            // Arrange
+            var result = ReadAllText("ErrorResult.txt");
+
+            // Act
+            var parsed = _parser.BuildResult(result);
+
+            // Assert
+        }
+
         private string ReadAllText(string file)
         {
             return File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, file));
