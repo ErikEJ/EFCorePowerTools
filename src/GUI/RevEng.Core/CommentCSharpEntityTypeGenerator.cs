@@ -169,7 +169,12 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             if (!string.IsNullOrWhiteSpace(comment))
             {
                 _sb.AppendLine("/// <summary>");
-                _sb.AppendLine($"/// {System.Security.SecurityElement.Escape(comment)}");
+
+                foreach (var line in comment.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None))
+                {
+                    _sb.AppendLine($"/// {System.Security.SecurityElement.Escape(line)}");
+                }
+                
                 _sb.AppendLine("/// </summary>");
             }
         }
