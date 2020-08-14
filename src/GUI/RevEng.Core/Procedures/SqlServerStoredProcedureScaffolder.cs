@@ -162,7 +162,7 @@ namespace RevEng.Core.Procedures
 
                 if (procedure.ResultElements.Count == 0)
                 {
-                    line = $"public async Task {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+                    line = $"public async Task<int> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
                 }
                 else
                 {
@@ -199,11 +199,11 @@ namespace RevEng.Core.Procedures
                     {
                         if (procedure.Parameters.Count == 0)
                         {
-                            _sb.AppendLine($"await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                            _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
                         }
                         else
                         {
-                            _sb.AppendLine($"await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+                            _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
                         }
                     }
                     else
@@ -216,9 +216,8 @@ namespace RevEng.Core.Procedures
                         {
                             _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
                         }
+                        _sb.AppendLine();
                     }
-
-                    _sb.AppendLine();
 
                     foreach (var parameter in outParams)
                     {
