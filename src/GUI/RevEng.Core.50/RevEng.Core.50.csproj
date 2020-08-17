@@ -33,6 +33,10 @@
     <Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
     <Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\RevEng.Core\DbContextExtensions" Link="DbContextExtensions" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Humanizer.Core" Version="2.8.26" />

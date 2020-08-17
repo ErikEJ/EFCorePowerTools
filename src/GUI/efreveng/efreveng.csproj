@@ -11,14 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="TestFiles\DbContextExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="TestFiles\DbContextExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
   
