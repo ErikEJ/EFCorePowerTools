@@ -9,6 +9,8 @@ Hopes to lower the bar for getting started with EF Core, by providing GUI based 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
+[EF Core Power Tools demo on  .NET Community Standup](https://www.youtube.com/watch?v=OWuP_qOYwsk)
+
 [EF Core Power Tools presentation](https://erikej.github.io/EFCorePowerTools/index.html)
 
 [My tools and utilities for embedded database development](https://erikej.github.io/SqlCeToolbox/)

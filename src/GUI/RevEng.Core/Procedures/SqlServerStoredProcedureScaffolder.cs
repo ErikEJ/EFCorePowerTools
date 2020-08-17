@@ -99,6 +99,7 @@ namespace RevEng.Core.Procedures
 
             _sb.AppendLine(PathHelper.Header);
 
+            _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Threading.Tasks;");
@@ -129,9 +130,7 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("}");
                 }
 
-                foreach (var procedure in model.Procedures
-                    .Where(p => p.ResultElements.Count > 0)
-                    .ToList())
+                foreach (var procedure in model.Procedures)
                 {
                     GenerateProcedure(procedure);
                 }
@@ -159,7 +158,16 @@ namespace RevEng.Core.Procedures
                 var outParamStrings = outParams
                     .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}");
 
-                var line = $"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+                string line;
+
+                if (procedure.ResultElements.Count == 0)
+                {
+                    line = $"public async Task<int> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+                }
+                else
+                {
+                    line = $"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+                }
 
                 if (outParamStrings.Count() > 0)
                 {
@@ -187,24 +195,39 @@ namespace RevEng.Core.Procedures
 
                     var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
 
-                    if (procedure.Parameters.Count == 0)
+                    if (procedure.ResultElements.Count == 0)
                     {
-                        _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                        if (procedure.Parameters.Count == 0)
+                        {
+                            _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                        }
+                        else
+                        {
+                            _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+                        }
                     }
                     else
                     {
-                        _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
-
+                        if (procedure.Parameters.Count == 0)
+                        {
+                            _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                        }
+                        else
+                        {
+                            _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+                        }
+                        _sb.AppendLine();
                     }
-
-                    _sb.AppendLine();
 
                     foreach (var parameter in outParams)
                     {
                         _sb.AppendLine($"{parameter.Name}.SetValueInternal(parameter{parameter.Name}.Value);");
                     }
 
-                    _sb.AppendLine($"return result;");
+                    if (procedure.ResultElements.Count > 0)
+                    {
+                        _sb.AppendLine($"return result;");
+                    }
                 }
 
                 _sb.AppendLine("}");
