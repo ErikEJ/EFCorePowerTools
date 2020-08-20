@@ -1,24 +1,29 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
+    using Contracts.Views;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
     using Shared.Models;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Windows.Input;
+    using ReverseEngineer20.ReverseEngineer;
 
     public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
+        private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;
 
         private DatabaseConnectionModel _selectedDatabaseConnection;
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
         private bool _includeViews = false;
+        private bool _filterSchemas = false;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -26,9 +31,12 @@
         public ICommand AddDatabaseConnectionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand FilterSchemasCommand { get; }
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
         public ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
+
+        public List<SchemaInfo> Schemas { get; private set; }
 
         public bool IncludeViews
         {
@@ -37,6 +45,17 @@
             {
                 if (value == _includeViews) return;
                 _includeViews = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool FilterSchemas
+        {
+            get => _filterSchemas;
+            set
+            {
+                if (value == _filterSchemas) return;
+                _filterSchemas = value;
                 RaisePropertyChanged();
             }
         }
@@ -69,17 +88,20 @@
             }
         }
 
-        public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess)
+        public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess, Func<IPickSchemasDialog> pickSchemasDialogFactory)
         {
             _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            _pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
+            FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
             DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
+            Schemas = new List<SchemaInfo>();
             DatabaseDefinitions.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseDefinitions));
         }
 
@@ -132,6 +154,17 @@
             SelectedDatabaseDefinition = null;
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
+
+        private void FilterSchemas_Executed()
+        {
+            IPickSchemasDialog dialog = _pickSchemasDialogFactory();
+            dialog.AddSchemas(Schemas);
+            var dialogResult = dialog.ShowAndAwaitUserResponse(true);
+            if(dialogResult.ClosedByOK)
+                Schemas = new List<SchemaInfo>(dialogResult.Payload);
+        }
+
+        private bool FilterSchemas_CanExecute() => FilterSchemas;
 
         private DatabaseDefinitionModel PreSelectDatabaseDefinition()
         {

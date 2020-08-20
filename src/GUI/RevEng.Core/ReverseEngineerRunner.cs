@@ -31,6 +31,11 @@ namespace ReverseEngineer20.ReverseEngineer
                 schemas.Add(reverseEngineerOptions.DefaultDacpacSchema);
             }
 
+            if (reverseEngineerOptions.FilterSchemas)
+            {
+                schemas.AddRange(reverseEngineerOptions.Schemas.Select(s => s.Name));
+            }
+
             var outputDir = !string.IsNullOrEmpty(reverseEngineerOptions.OutputPath)
                ? Path.IsPathFullyQualified(reverseEngineerOptions.OutputPath)
                     ? reverseEngineerOptions.OutputPath

@@ -13,21 +13,24 @@ using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReverseEngineer20.ReverseEngineer;
 
 namespace ReverseEngineer20
 {
     public class TableListBuilder
     {
         private readonly string _connectionString;
+        private readonly SchemaInfo[] _schemas;
         private readonly DatabaseType _databaseType;
 
-        public TableListBuilder(int databaseType, string connectionString)
+        public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentNullException(@"invalid connection string", nameof(connectionString));
             }
             _connectionString = connectionString;
+            _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
        }
 
@@ -36,7 +39,8 @@ namespace ReverseEngineer20
             var serviceProvider = Build(_databaseType);
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
-            var dbModel = dbModelFactory.Create(_connectionString, new DatabaseModelFactoryOptions());
+            var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
+            var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
 
             var result = new List<Tuple<string, bool>>();
 

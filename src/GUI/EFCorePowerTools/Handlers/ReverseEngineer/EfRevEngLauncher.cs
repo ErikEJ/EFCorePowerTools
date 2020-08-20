@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -29,9 +30,13 @@ namespace ReverseEngineer20.ReverseEngineer
             return GetTablesInternal(arguments);
         }
 
-        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType)
+        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
             var arguments = ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+
+            if (schemas != null)
+                arguments += $" \"{string.Join(",", schemas.Select(s => s.Name.Replace("\"", "\\\"")))}\"";
+
             return GetTablesInternal(arguments);
         }
 
