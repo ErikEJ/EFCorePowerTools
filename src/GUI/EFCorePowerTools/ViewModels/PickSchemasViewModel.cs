@@ -1,4 +1,6 @@
-﻿namespace EFCorePowerTools.ViewModels
+﻿using System.Collections.Generic;
+
+namespace EFCorePowerTools.ViewModels
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
@@ -46,6 +48,13 @@
 
         private void Ok_Executed()
         {
+            // remove empty schemas
+            List<SchemaInfo> schemasToRemove = Schemas.Where(s => string.IsNullOrEmpty(s.Name)).ToList();
+            foreach (SchemaInfo schemaInfo in schemasToRemove)
+            {
+                Schemas.Remove(schemaInfo);
+            }
+
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 

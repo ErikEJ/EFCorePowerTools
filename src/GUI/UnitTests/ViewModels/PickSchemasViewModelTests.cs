@@ -60,6 +60,22 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
+        public void OkCommand_Executed_EmptySchemasRemoved()
+        {
+            // Arrange
+            var vm = new PickSchemasViewModel();
+
+            // Act
+            vm.Schemas.Add(new SchemaInfo { Name = "TestSchema" });
+            vm.Schemas.Add(new SchemaInfo { Name = "" });
+            vm.Schemas.Add(new SchemaInfo { Name = "" });
+            vm.OkCommand.Execute(null);
+
+            // Assert
+            Assert.AreEqual(1, vm.Schemas.Count);
+        }
+
+        [Test]
         public void CancelCommand_CanExecute()
         {
             // Arrange
