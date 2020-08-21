@@ -10,8 +10,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
     {
         private readonly string _connectionString;
         private readonly DatabaseType _databaseType;
+        private readonly SchemaInfo[] _schemas;
 
-        public TableListBuilder(string connectionString, DatabaseType databaseType)
+        public TableListBuilder(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -20,6 +21,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             _connectionString = connectionString;
             _databaseType = databaseType;
+            _schemas = schemas;
         }
 
         public List<TableInformationModel> GetTableDefinitions(bool useEFCore5)
@@ -34,7 +36,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
             else
             {
-                tables = launcher.GetTables(_connectionString, _databaseType);
+                tables = launcher.GetTables(_connectionString, _databaseType, _schemas);
             }
 
             foreach (var item in tables)

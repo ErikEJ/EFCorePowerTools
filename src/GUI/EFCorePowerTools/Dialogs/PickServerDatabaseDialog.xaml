@@ -51,6 +51,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -91,24 +92,46 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <StackPanel 
-            Grid.Row="3"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Left"
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Left" 
                     VerticalAlignment="Center">
-            <CheckBox x:Name="IncludeViews" IsChecked="{Binding IncludeViews}" >Use EF Core 5 (preview)</CheckBox>
+            <CheckBox x:Name="FilterSchemas" TabIndex="4" IsChecked="{Binding FilterSchemas}">Filter schemas</CheckBox>
         </StackPanel>
 
         <StackPanel Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
+                    VerticalAlignment="Center" 
+                    Margin="0,5">
+            <dw:DialogButton TabIndex="5"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="Schemas..."
+                             Command="{Binding FilterSchemasCommand}"/>
+        </StackPanel>
+
+        <StackPanel 
+            Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left"
                     VerticalAlignment="Center">
-            <dw:DialogButton TabIndex="4"
+            <CheckBox x:Name="IncludeViews" 
+                      IsChecked="{Binding IncludeViews}" 
+                      TabIndex="6" 
+                      Margin="0,5,0,0" >Use EF Core 5 (preview)</CheckBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,5,0,0">
+            <dw:DialogButton TabIndex="7"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="OK"
                              IsDefault="True"
                              Command="{Binding OkCommand}"/>
-            <dw:DialogButton TabIndex="5"
+            <dw:DialogButton TabIndex="8"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="Cancel"
                              Command="{Binding CancelCommand}"/>

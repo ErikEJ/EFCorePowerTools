@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
+using ReverseEngineer20.ReverseEngineer;
 
 namespace UnitTests.ViewModels
 {
     using System;
     using EFCorePowerTools.Contracts.ViewModels;
+    using EFCorePowerTools.Contracts.Views;
     using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
@@ -17,9 +19,21 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             IVisualStudioAccess vsa = null;
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa));
+            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, psdFactory));
+        }
+
+        [Test]
+        public void Constructor_Argument2NullException()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            Func<IPickSchemasDialog> psdFactory = null;
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, psdFactory));
         }
 
         [Test]
@@ -27,15 +41,17 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
 
             // Act
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Assert
             Assert.IsNotNull(vm.LoadedCommand);
             Assert.IsNotNull(vm.AddDatabaseConnectionCommand);
             Assert.IsNotNull(vm.OkCommand);
             Assert.IsNotNull(vm.CancelCommand);
+            Assert.IsNotNull(vm.FilterSchemasCommand);
         }
 
         [Test]
@@ -43,9 +59,10 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
 
             // Act
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Assert
             Assert.IsNotNull(vm.DatabaseConnections);
@@ -57,9 +74,10 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
 
             // Act
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Assert
             Assert.IsNull(vm.SelectedDatabaseConnection);
@@ -71,7 +89,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Act
             var canExecute = vm.LoadedCommand.CanExecute(null);
@@ -85,7 +104,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             var dbConnection1 = new DatabaseConnectionModel();
             var dbConnection2 = new DatabaseConnectionModel();
             vm.DatabaseConnections.Add(dbConnection1);
@@ -104,7 +124,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             var dbConnection1 = new DatabaseConnectionModel();
             var dbConnection2 = new DatabaseConnectionModel();
             var dbDefinition1 = new DatabaseDefinitionModel();
@@ -127,7 +148,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             var dbDefinition1 = new DatabaseDefinitionModel
             {
                 FilePath = "ExampleDatabaseB.sqlproj"
@@ -152,7 +174,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             var dbDefinition1 = new DatabaseDefinitionModel
             {
                 FilePath = "TestExampleDatabaseA.sqlproj"
@@ -182,7 +205,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             var dbDefinition = new DatabaseDefinitionModel
             {
                 FilePath = null
@@ -202,7 +226,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             var dbDefinition1 = new DatabaseDefinitionModel
             {
                 FilePath = "ExampleDatabaseA.dacpac"
@@ -232,7 +257,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Act
             var canExecute = vm.AddDatabaseConnectionCommand.CanExecute(null);
@@ -246,8 +272,9 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsaMock = new Mock<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             vsaMock.Setup(m => m.PromptForNewDatabaseConnection()).Throws<InvalidOperationException>();
-            var vm = new PickServerDatabaseViewModel(vsaMock.Object);
+            var vm = new PickServerDatabaseViewModel(vsaMock.Object, psdFactory);
 
             // Act
             vm.AddDatabaseConnectionCommand.Execute(null);
@@ -264,8 +291,9 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsaMock = new Mock<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             vsaMock.Setup(m => m.PromptForNewDatabaseConnection()).Returns<DatabaseConnectionModel>(null);
-            var vm = new PickServerDatabaseViewModel(vsaMock.Object);
+            var vm = new PickServerDatabaseViewModel(vsaMock.Object, psdFactory);
 
             // Act
             vm.AddDatabaseConnectionCommand.Execute(null);
@@ -283,8 +311,9 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbConnection = new DatabaseConnectionModel();
             var vsaMock = new Mock<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             vsaMock.Setup(m => m.PromptForNewDatabaseConnection()).Returns(dbConnection);
-            var vm = new PickServerDatabaseViewModel(vsaMock.Object);
+            var vm = new PickServerDatabaseViewModel(vsaMock.Object, psdFactory);
 
             // Act
             vm.AddDatabaseConnectionCommand.Execute(null);
@@ -301,7 +330,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Act
             var canExecute = vm.OkCommand.CanExecute(null);
@@ -316,7 +346,8 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbConnection = new DatabaseConnectionModel();
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseConnection = dbConnection
             };
@@ -334,7 +365,8 @@ namespace UnitTests.ViewModels
             // Arrange
             var dbDefinition = new DatabaseDefinitionModel();
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseDefinition = dbDefinition
             };
@@ -354,7 +386,8 @@ namespace UnitTests.ViewModels
             var closeRequested = false;
             bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseConnection = dbConnection
             };
@@ -382,7 +415,8 @@ namespace UnitTests.ViewModels
             var closeRequested = false;
             bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseDefinition = dbDefinition
             };
@@ -407,7 +441,8 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
 
             // Act
             var canExecute = vm.CancelCommand.CanExecute(null);
@@ -424,7 +459,8 @@ namespace UnitTests.ViewModels
             var closeRequested = false;
             bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseConnection = dbConnection
             };
@@ -452,7 +488,8 @@ namespace UnitTests.ViewModels
             var closeRequested = false;
             bool? dialogResult = null;
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseDefinition = dbDefinition
             };
@@ -473,14 +510,46 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
+        public void FilterSchemasCommand_CanNotExecute()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
+
+            // Act
+            var canExecute = vm.FilterSchemasCommand.CanExecute(null);
+
+            // Assert
+            Assert.IsFalse(canExecute);
+        }
+
+        [Test]
+        public void FilterSchemasCommand_CanExecute()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
+
+            // Act
+            vm.FilterSchemas = true;
+            var canExecute = vm.FilterSchemasCommand.CanExecute(null);
+
+            // Assert
+            Assert.IsTrue(canExecute);
+        }
+
+        [Test]
         public void Selection_OnlyConnectionOrDefinitionSelected_DatabaseConnection()
         {
             // Arrange
             var dbConnection = new DatabaseConnectionModel();
             var dbDefinition = new DatabaseDefinitionModel();
             var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseDefinition = dbDefinition
             };
@@ -500,8 +569,9 @@ namespace UnitTests.ViewModels
             var dbConnection = new DatabaseConnectionModel();
             var dbDefinition = new DatabaseDefinitionModel();
             var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var vm = new PickServerDatabaseViewModel(vsa)
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory)
             {
                 SelectedDatabaseConnection = dbConnection
             };
@@ -521,7 +591,8 @@ namespace UnitTests.ViewModels
             string propertyChangedName = null;
             var dbDefinition = new DatabaseDefinitionModel();
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var vm = new PickServerDatabaseViewModel(vsa);
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
             vm.PropertyChanged += (sender, args) => propertyChangedName = args.PropertyName;
 
             // Act

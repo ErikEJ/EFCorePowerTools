@@ -21,9 +21,14 @@ namespace efreveng
                         return BuildDacpacList(args[0]);
                     }
 
-                    if (args.Count() == 2 && int.TryParse(args[0], out int dbTypeInt))
+                    if ((args.Count() == 2 || args.Count() == 3) && int.TryParse(args[0], out int dbTypeInt))
                     {
-                        var builder = new TableListBuilder(dbTypeInt, args[1]);
+                        SchemaInfo[] schemas = null;
+                        if (args.Length == 3)
+                        {
+                            schemas = args[2].Split(',').Select(s => new SchemaInfo {Name = s}).ToArray();
+                        }
+                        var builder = new TableListBuilder(dbTypeInt, args[1], schemas);
 
                         var value = builder.GetTableDefinitions();
 

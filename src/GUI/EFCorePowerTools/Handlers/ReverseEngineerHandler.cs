@@ -13,6 +13,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ReverseEngineer20.ReverseEngineer;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -47,6 +48,8 @@ namespace EFCorePowerTools.Handlers
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
 
+                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
                 var psd = _package.GetView<IPickServerDatabaseDialog>();
 
                 if (databaseList != null && databaseList.Any())
@@ -72,8 +75,10 @@ namespace EFCorePowerTools.Handlers
                     return;
 
                 var useEFCore5 = pickDataSourceResult.Payload.IncludeViews;
+                var filterSchemas = pickDataSourceResult.Payload.FilterSchemas;
+                var schemas = filterSchemas ? pickDataSourceResult.Payload.Schemas : null;
 
-                _package.Dte2.StatusBar.Text = "Loading schema information...";
+                _package.Dte2.StatusBar.Text = "Loading table list...";
 
                 // Reload the database list, in case the user has added a new database in the dialog
                 databaseList = EnvDteHelper.GetDataConnections(_package);
@@ -111,11 +116,9 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
-
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? GetDacpacTables(dacpacPath, useEFCore5)
-                                           : GetTables(dbInfo.ConnectionString, dbInfo.DatabaseType, useEFCore5);
+                                           : GetTables(dbInfo.ConnectionString, dbInfo.DatabaseType, useEFCore5, schemas);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -203,7 +206,9 @@ namespace EFCorePowerTools.Handlers
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.ToList(),
-                    CustomReplacers = customNameOptions
+                    CustomReplacers = customNameOptions,
+                    FilterSchemas = filterSchemas,
+                    Schemas = schemas.ToList()
                 };
 
                 _package.Dte2.StatusBar.Text = "Generating code...";
@@ -336,13 +341,13 @@ namespace EFCorePowerTools.Handlers
 
         public List<TableInformationModel> GetDacpacTables(string dacpacPath, bool useEFCore5)
         {
-            var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined);
+            var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined, null);
             return builder.GetTableDefinitions(useEFCore5);
         }
 
-        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType, bool useEFCore5)
+        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType, bool useEFCore5, SchemaInfo[] schemas)
         {
-            var builder = new TableListBuilder(connectionString, databaseType);
+            var builder = new TableListBuilder(connectionString, databaseType, schemas);
             return builder.GetTableDefinitions(useEFCore5);
         }
 

@@ -7,12 +7,14 @@
     using Contracts.Views;
     using Shared.DAL;
     using Shared.Models;
+    using ReverseEngineer20.ReverseEngineer;
 
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews)> _getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas)> _getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
         private readonly Action<IEnumerable<DatabaseDefinitionModel>> _addDefinitions;
+        private readonly Action<IEnumerable<SchemaInfo>> _addSchemas;
 
         public PickServerDatabaseDialog(ITelemetryAccess telemetryAccess,
                                         IPickServerDatabaseViewModel viewModel)
@@ -25,7 +27,7 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition, viewModel.IncludeViews);
+            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition, viewModel.IncludeViews, viewModel.FilterSchemas, viewModel.Schemas.ToArray());
             _addConnections = models =>
             {
                 foreach (var model in models)
@@ -36,6 +38,11 @@
                 foreach (var model in models)
                     viewModel.DatabaseDefinitions.Add(model);
             };
+            _addSchemas = models =>
+            {
+                foreach (var model in models)
+                    viewModel.Schemas.Add(model);
+            };
 
             InitializeComponent();
         }
@@ -45,7 +52,7 @@
             DatabaseConnectionCombobox.Focus();
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas) Payload) ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
@@ -69,6 +76,11 @@
         void IPickServerDatabaseDialog.PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions)
         {
             _addDefinitions(definitions);
+        }
+
+        public void PublishSchemas(IEnumerable<SchemaInfo> schemas)
+        {
+            _addSchemas(schemas);
         }
     }
 }
