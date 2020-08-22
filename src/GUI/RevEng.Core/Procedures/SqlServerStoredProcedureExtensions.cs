@@ -37,6 +37,16 @@ namespace RevEng.Core
         {
             var cleanedTypeName = RemoveMatchingBraces(storeType);
 
+            if (cleanedTypeName.ToLowerInvariant() == "numeric")
+            {
+                cleanedTypeName = "decimal";
+            }
+
+            if (cleanedTypeName.ToLowerInvariant() == "rowversion")
+            {
+                cleanedTypeName = "timestamp";
+            }
+
             var sqlType = GetSqlDbType(cleanedTypeName);
 
             switch (sqlType)
