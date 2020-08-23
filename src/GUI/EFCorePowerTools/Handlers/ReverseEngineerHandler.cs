@@ -208,7 +208,7 @@ namespace EFCorePowerTools.Handlers
                     Tables = pickTablesResult.Payload.ToList(),
                     CustomReplacers = customNameOptions,
                     FilterSchemas = filterSchemas,
-                    Schemas = schemas.ToList()
+                    Schemas = schemas?.ToList()
                 };
 
                 _package.Dte2.StatusBar.Text = "Generating code...";
