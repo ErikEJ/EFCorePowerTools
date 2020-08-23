@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+using RevEng.Core.Procedures;
 using System;
 
 namespace ReverseEngineer20.ReverseEngineer
@@ -57,6 +58,12 @@ namespace ReverseEngineer20.ReverseEngineer
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
+                    if (string.IsNullOrEmpty(options.Dacpac)
+                        && options.UseStoredProcedures)
+                    {
+                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }
 
                     break;
