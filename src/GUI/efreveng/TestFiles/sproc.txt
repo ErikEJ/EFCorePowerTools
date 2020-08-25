@@ -1,5 +1,5 @@
 {
-   "ConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Northwind;Integrated Security=True",
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
    "ContextClassName": "NorthwindContext",
    "CustomReplacers": null,
    "Dacpac": null,

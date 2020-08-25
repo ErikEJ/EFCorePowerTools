@@ -102,6 +102,7 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
             _sb.AppendLine("using System;");
+            _sb.AppendLine("using System.Data;");
             _sb.AppendLine("using System.Threading.Tasks;");
             _sb.AppendLine($"using {procedureScaffolderOptions.ModelNamespace};");
 

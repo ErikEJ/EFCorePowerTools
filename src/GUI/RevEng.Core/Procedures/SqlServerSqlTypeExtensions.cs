@@ -1,13 +1,23 @@
 using RevEng.Core.Procedures.Model.Metadata;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 
 namespace RevEng.Core
 {
-    public static class SqlServerStoredProcedureExtensions
+    public static class SqlServerSqlTypeExtensions
     {
+        private static readonly ReadOnlyDictionary<string, string> SqlTypeAliases
+        = new ReadOnlyDictionary<string, string>(
+            new Dictionary<string, string>()
+            {
+                { "numeric", "decimal" },
+                { "rowversion", "timestamp" },
+                { "table type", "structured" },
+            });
+
         public static Type ClrType(this ProcedureParameter storedProcedureParameter)
         {
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
@@ -30,24 +40,20 @@ namespace RevEng.Core
 
         private static SqlDbType GetSqlDbType(string storeType)
         {
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), storeType, true);
+            var cleanedTypeName = RemoveMatchingBraces(storeType);
+
+            if (SqlTypeAliases.TryGetValue(cleanedTypeName.ToLowerInvariant(), out string alias))
+            {
+                cleanedTypeName = alias;
+            }
+
+            return (SqlDbType)Enum.Parse(typeof(SqlDbType), cleanedTypeName, true);
         }
+
 
         private static Type GetClrType(string storeType, bool isNullable)
         {
-            var cleanedTypeName = RemoveMatchingBraces(storeType);
-
-            if (cleanedTypeName.ToLowerInvariant() == "numeric")
-            {
-                cleanedTypeName = "decimal";
-            }
-
-            if (cleanedTypeName.ToLowerInvariant() == "rowversion")
-            {
-                cleanedTypeName = "timestamp";
-            }
-
-            var sqlType = GetSqlDbType(cleanedTypeName);
+            var sqlType = GetSqlDbType(storeType);
 
             switch (sqlType)
             {

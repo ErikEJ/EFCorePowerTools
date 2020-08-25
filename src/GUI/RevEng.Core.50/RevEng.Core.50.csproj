@@ -21,7 +21,7 @@
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureResultElement.cs" Link="Procedures\Model\Metadata\ProcedureResultElement.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Scaffolding\IProcedureScaffolder.cs" Link="Procedures\Scaffolding\IProcedureScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Scaffolding\ProcedureScaffolderOptions.cs" Link="Procedures\Scaffolding\ProcedureScaffolderOptions.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureExtensions.cs" Link="Procedures\SqlServerStoredProcedureExtensions.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureModelFactory.cs" Link="Procedures\SqlServerStoredProcedureModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureScaffolder.cs" Link="Procedures\SqlServerStoredProcedureScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureServiceCollectionExtensions.cs" Link="Procedures\SqlServerStoredProcedureServiceCollectionExtensions.cs" />
