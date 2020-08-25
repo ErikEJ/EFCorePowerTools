@@ -14,7 +14,6 @@
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
     <Compile Include="..\RevEng.Core\HumanizerPluralizer.cs" Link="HumanizerPluralizer.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
-    <Compile Include="..\RevEng.Core\Pluralizer.cs" Link="Pluralizer.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\IProcedureModelFactory.cs" Link="Procedures\Model\IProcedureModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\Procedure.cs" Link="Procedures\Model\Metadata\Procedure.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureModel.cs" Link="Procedures\Model\Metadata\ProcedureModel.cs" />
@@ -39,6 +38,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="Humanizer.Core" Version="2.8.26" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.2.0-eap" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-preview.7.20365.15" />
