@@ -1,5 +1,4 @@
-﻿Security Warning: The negotiated TLS 1.0 is an insecure protocol and is supported for backward compatibility only. The recommended protocol version is TLS 1.2 and later.
-Result:
+﻿Result:
 [
    {
       "HasPrimaryKey": true,

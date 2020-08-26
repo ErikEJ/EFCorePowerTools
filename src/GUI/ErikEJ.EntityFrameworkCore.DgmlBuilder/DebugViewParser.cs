@@ -439,7 +439,7 @@ namespace DgmlBuilder
                 {
                     break;
                 }
-                if (inTheMix && !trim.StartsWith("Annotations:")) values.Add(trim);
+                if (inTheMix && !trim.StartsWith("Annotations:")) values.Add(System.Security.SecurityElement.Escape(trim));
             }
 
             return values;
@@ -454,7 +454,7 @@ namespace DgmlBuilder
             {
                 while (x++ < maxLength && debugViewLines[x].StartsWith("        "))
                 {
-                    annotations.Add(debugViewLines[x].Trim());
+                    annotations.Add(System.Security.SecurityElement.Escape(debugViewLines[x].Trim()));
                 }
             }
 
@@ -470,7 +470,7 @@ namespace DgmlBuilder
             {
                 if (debugViewLines[x].StartsWith("          "))
                 {
-                    annotations.Add(debugViewLines[x].Trim());
+                    annotations.Add(System.Security.SecurityElement.Escape(debugViewLines[x].Trim()));
                 }
 
                 if (debugViewLines[x].Substring(7, 1) != " ")
