@@ -11,7 +11,7 @@ public static class DbContextExtensions
     {
         using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
         {
-            return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync();
+            return await db2.Set<T>().FromSqlRaw(sql, parameters).AsNoTracking().ToArrayAsync();
         }
     }
 
