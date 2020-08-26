@@ -100,7 +100,8 @@ SELECT
                     case when system_type_id in (35, 99, 167, 175, 231, 239)  
                     then ServerProperty('collation') end),
     is_output AS output,
-	is_nullable AS nullable
+	is_nullable AS nullable,
+    'TypeName' = QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) + '.' + QUOTENAME(TYPE_NAME(user_type_id))
     from sys.parameters where object_id = object_id('{schema}.{name}')
     ORDER BY parameter_id;";
 
@@ -123,6 +124,7 @@ SELECT
                     Ordinal = int.Parse(par["Order"].ToString()),
                     Output = (bool)par["output"],
                     Nullable = (bool)par["nullable"],
+                    TypeName = par["TypeName"].ToString()
                 };
 
                 result.Add(parameter);

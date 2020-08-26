@@ -9,6 +9,8 @@
         public byte? Scale { get; set; }
         public int Ordinal { get; set; }
         public bool Output { get; set; }
-        public bool Nullable { get; set; }        
+        public bool Nullable { get; set; }
+        public string TypeName { get; set; }
+        
     }
 }
