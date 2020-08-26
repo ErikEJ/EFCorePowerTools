@@ -266,7 +266,7 @@ namespace RevEng.Core.Procedures
 
                 if (parameter.DbType() == System.Data.SqlDbType.Structured)
                 {
-                    _sb.AppendLine($"TypeName = {parameter.TypeName},");
+                    _sb.AppendLine($"TypeName = \"{parameter.TypeName}\",");
                 }
             }
 
