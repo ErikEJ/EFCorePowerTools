@@ -12,7 +12,6 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Windows.Forms;
 
 // ReSharper disable once CheckNamespace
