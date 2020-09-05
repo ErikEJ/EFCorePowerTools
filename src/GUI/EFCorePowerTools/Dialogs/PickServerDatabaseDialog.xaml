@@ -47,10 +47,6 @@
     </dw:DialogWindow.Background>
 
     <Grid Margin="12">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="139*"/>
-            <ColumnDefinition Width="56*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -60,7 +56,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-                   HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
+                   HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -120,7 +116,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center" 
-                    Margin="0,5" Grid.Column="1">
+                    Margin="0,5">
             <dw:DialogButton TabIndex="5"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="Schemas..."
@@ -142,7 +138,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Margin="0,5,0,0" Grid.ColumnSpan="2">
+                    Margin="0,5,0,0">
             <dw:DialogButton TabIndex="7"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="OK"
