@@ -6,6 +6,9 @@
     public interface IVisualStudioAccess
     {
         DatabaseConnectionModel PromptForNewDatabaseConnection();
+
+        DatabaseDefinitionModel PromptForNewDatabaseDefinition();
+
         void ShowMessage(string message);
 
         bool IsDdexProviderInstalled(Guid id);

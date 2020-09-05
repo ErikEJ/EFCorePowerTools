@@ -47,6 +47,10 @@
     </dw:DialogWindow.Background>
 
     <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="56*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -56,7 +60,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-                   HorizontalAlignment="Stretch">
+                   HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,-0.4,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -77,25 +81,38 @@
         </Grid>
 
         <TextBlock Grid.Row="1"
-                   Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
-                   Text="or SQL Server Database project (.dacpac)"/>
-        <ComboBox Grid.Row="2"
-                  Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
-                  TabIndex="3"
-                  Style="{StaticResource SourceSelectionComboBoxStyle}"
-                  ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
-                  SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+                   Text="or SQL Server Database project (.dacpac)" Grid.ColumnSpan="2" Margin="0,0,-0.4,0"/>
 
+        <Grid Grid.Row="2"
+              HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Margin="0,0,-0.4,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Grid.Column="0"
+                      Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
+                      TabIndex="3"
+                      Style="{StaticResource SourceSelectionComboBoxStyle}"
+                      ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <dw:DialogButton Grid.Column="1"
+                             TabIndex="2"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="Add..."
+                             Command="{Binding AddDatabaseDefinitionCommand}"/>
+        </Grid>
+        
         <StackPanel Grid.Row="3" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Margin="0,9,0,9.2">
             <CheckBox x:Name="FilterSchemas" TabIndex="4" IsChecked="{Binding FilterSchemas}">Filter schemas</CheckBox>
         </StackPanel>
 
@@ -103,7 +120,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center" 
-                    Margin="0,5">
+                    Margin="0,5,-0.4,5.2" Grid.Column="1">
             <dw:DialogButton TabIndex="5"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="Schemas..."
@@ -114,7 +131,7 @@
             Grid.Row="4"
                     Orientation="Horizontal"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Margin="0,3.8,0,4.2">
             <CheckBox x:Name="IncludeViews" 
                       IsChecked="{Binding IncludeViews}" 
                       TabIndex="6" 
@@ -125,7 +142,7 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Margin="0,5,0,0">
+                    Margin="0,4.8,-0.4,0.2" Grid.ColumnSpan="2">
             <dw:DialogButton TabIndex="7"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="OK"

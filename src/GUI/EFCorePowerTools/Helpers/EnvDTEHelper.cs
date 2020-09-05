@@ -12,6 +12,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Windows.Forms;
 
 // ReSharper disable once CheckNamespace
@@ -121,6 +122,18 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             info.Caption = savedName;
             info.DataConnection = dialogResult;
             return info;
+        }
+
+        internal static string PromptForDacpac()
+        {
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "SQL Server Database Project|*.dacpac";
+            ofd.CheckFileExists = true;
+            ofd.Multiselect = false;
+            ofd.ValidateNames = true;
+            ofd.Title = "Select .dacpac File";
+            if (ofd.ShowDialog() != DialogResult.OK) return null;
+            return ofd.FileName;
         }
 
         internal static string SaveDataConnection(EFCorePowerToolsPackage package, string encryptedConnectionString,

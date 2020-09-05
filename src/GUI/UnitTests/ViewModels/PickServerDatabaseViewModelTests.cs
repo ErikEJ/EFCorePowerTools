@@ -49,6 +49,7 @@ namespace UnitTests.ViewModels
             // Assert
             Assert.IsNotNull(vm.LoadedCommand);
             Assert.IsNotNull(vm.AddDatabaseConnectionCommand);
+            Assert.IsNotNull(vm.AddDatabaseDefinitionCommand);
             Assert.IsNotNull(vm.OkCommand);
             Assert.IsNotNull(vm.CancelCommand);
             Assert.IsNotNull(vm.FilterSchemasCommand);
@@ -323,6 +324,58 @@ namespace UnitTests.ViewModels
             Assert.AreSame(dbConnection, vm.SelectedDatabaseConnection);
             vsaMock.Verify(m => m.PromptForNewDatabaseConnection(), Times.Once);
             vsaMock.Verify(m => m.ShowMessage(It.IsNotNull<string>()), Times.Never);
+        }
+
+        [Test]
+        public void AddDatabaseDefinitionCommand_CanExecute()
+        {
+            // Arrange
+            var vsa = Mock.Of<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            var vm = new PickServerDatabaseViewModel(vsa, psdFactory);
+
+            // Act
+            var canExecute = vm.AddDatabaseDefinitionCommand.CanExecute(null);
+
+            // Assert
+            Assert.IsTrue(canExecute);
+        }
+
+        [Test]
+        public void AddDatabaseDefinitionCommand_Executed_NoConnectionReturned()
+        {
+            // Arrange
+            var vsaMock = new Mock<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            vsaMock.Setup(m => m.PromptForNewDatabaseDefinition()).Returns<DatabaseDefinitionModel>(null);
+            var vm = new PickServerDatabaseViewModel(vsaMock.Object, psdFactory);
+
+            // Act
+            vm.AddDatabaseDefinitionCommand.Execute(null);
+
+            // Assert
+            CollectionAssert.IsEmpty(vm.DatabaseDefinitions);
+            Assert.IsNull(vm.SelectedDatabaseDefinition);
+            vsaMock.Verify(m => m.PromptForNewDatabaseDefinition(), Times.Once);
+        }
+
+        [Test]
+        public void AddDatabaseDefinitionCommand_Executed_NewDefinitionReturned()
+        {
+            // Arrange
+            var dbDefinition = new DatabaseDefinitionModel();
+            var vsaMock = new Mock<IVisualStudioAccess>();
+            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
+            vsaMock.Setup(m => m.PromptForNewDatabaseDefinition()).Returns(dbDefinition);
+            var vm = new PickServerDatabaseViewModel(vsaMock.Object, psdFactory);
+
+            // Act
+            vm.AddDatabaseDefinitionCommand.Execute(null);
+
+            // Assert
+            CollectionAssert.Contains(vm.DatabaseDefinitions, dbDefinition);
+            Assert.AreSame(dbDefinition, vm.SelectedDatabaseDefinition);
+            vsaMock.Verify(m => m.PromptForNewDatabaseDefinition(), Times.Once);
         }
 
         [Test]

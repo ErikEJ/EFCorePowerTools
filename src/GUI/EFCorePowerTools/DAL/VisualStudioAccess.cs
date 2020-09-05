@@ -34,6 +34,16 @@
             };
         }
 
+        DatabaseDefinitionModel IVisualStudioAccess.PromptForNewDatabaseDefinition()
+        {
+            var fileName = EnvDteHelper.PromptForDacpac();
+
+            return new DatabaseDefinitionModel
+            {
+                FilePath = fileName,
+            };
+        }
+
         void IVisualStudioAccess.ShowMessage(string message)
         {
             EnvDteHelper.ShowMessage(message);
