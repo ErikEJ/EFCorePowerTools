@@ -29,6 +29,7 @@
 
         public ICommand LoadedCommand { get; }
         public ICommand AddDatabaseConnectionCommand { get; }
+        public ICommand AddDatabaseDefinitionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand FilterSchemasCommand { get; }
@@ -95,6 +96,7 @@
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
+            AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
             FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
@@ -139,6 +141,26 @@
 
             DatabaseConnections.Add(newDatabaseConnection);
             SelectedDatabaseConnection = newDatabaseConnection;
+        }
+
+        private void AddDatabaseDefinition_Executed()
+        {
+            DatabaseDefinitionModel newDatabaseDefinition;
+            try
+            {
+                newDatabaseDefinition = _visualStudioAccess.PromptForNewDatabaseDefinition();
+            }
+            catch (Exception e)
+            {
+                _visualStudioAccess.ShowMessage("Unable to add to list: " + e.Message);
+                return;
+            }
+
+            if (newDatabaseDefinition == null)
+                return;
+
+            DatabaseDefinitions.Add(newDatabaseDefinition);
+            SelectedDatabaseDefinition = newDatabaseDefinition;
         }
 
         private void Ok_Executed()

@@ -77,26 +77,39 @@
         </Grid>
 
         <TextBlock Grid.Row="1"
-                   Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
-                   Text="or SQL Server Database project (.dacpac)"/>
-        <ComboBox Grid.Row="2"
-                  Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
-                  TabIndex="3"
-                  Style="{StaticResource SourceSelectionComboBoxStyle}"
-                  ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
-                  SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+                   Text="Choose SQL Server Database project (.dacpac)"/>
 
+        <Grid Grid.Row="2"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Grid.Column="0"
+                      Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
+                      TabIndex="4"
+                      Style="{StaticResource SourceSelectionComboBoxStyle}"
+                      ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <dw:DialogButton Grid.Column="1"
+                             TabIndex="2"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="Add..."
+                             Command="{Binding AddDatabaseDefinitionCommand}"/>
+        </Grid>
+        
         <StackPanel Grid.Row="3" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Center">
-            <CheckBox x:Name="FilterSchemas" TabIndex="4" IsChecked="{Binding FilterSchemas}">Filter schemas</CheckBox>
+            <CheckBox x:Name="FilterSchemas" IsTabStop="False" IsChecked="{Binding FilterSchemas}">Filter schemas</CheckBox>
         </StackPanel>
 
         <StackPanel Grid.Row="3"
@@ -104,7 +117,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center" 
                     Margin="0,5">
-            <dw:DialogButton TabIndex="5"
+            <dw:DialogButton IsTabStop="False"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="Schemas..."
                              Command="{Binding FilterSchemasCommand}"/>

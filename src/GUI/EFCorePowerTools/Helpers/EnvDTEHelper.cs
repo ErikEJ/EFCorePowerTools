@@ -123,6 +123,18 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             return info;
         }
 
+        internal static string PromptForDacpac()
+        {
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "SQL Server Database Project|*.dacpac";
+            ofd.CheckFileExists = true;
+            ofd.Multiselect = false;
+            ofd.ValidateNames = true;
+            ofd.Title = "Select .dacpac File";
+            if (ofd.ShowDialog() != DialogResult.OK) return null;
+            return ofd.FileName;
+        }
+
         internal static string SaveDataConnection(EFCorePowerToolsPackage package, string encryptedConnectionString,
             DatabaseType dbType, Guid provider)
         {
