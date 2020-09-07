@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.VisualStudio;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -10,7 +11,7 @@ namespace EFCorePowerTools.Extensions
     {
         public static string[] GetDacpacFilesInActiveSolution(this DTE dte, string[] projectPaths)
         {
-            var result = new List<string>();
+            var result = new HashSet<string>();
 
             if (!dte.Solution.IsOpen)
                 return null;
@@ -21,7 +22,15 @@ namespace EFCorePowerTools.Extensions
                 if (Directory.Exists(folder))
                 {
                     AddFiles(result, folder);
-                }                
+                }
+
+                var project = dte.Solution.Projects
+	                .OfType<Project>()
+	                .FirstOrDefault(p => p.FullName == projectPath);
+                if (project != null)
+                {
+                    AddLinkedFiles(result, project);
+                }
             }
 
             if (result.Count == 0)
@@ -33,21 +42,65 @@ namespace EFCorePowerTools.Extensions
                 .ToArray();
         }
 
-        private static void AddFiles(List<string> result, string path)
+        private static void AddFiles(HashSet<string> result, string path)
         {
             var files = DirSearch(path, "*.sqlproj");
             foreach (var file in files)
             {
-                if (!result.Contains(file))
-                    result.Add(file);
+	            result.Add(file);
             }
 
             files = DirSearch(path, "*.dacpac");
             foreach (var file in files)
             {
-                if (!result.Contains(file))
-                    result.Add(file);
+	            result.Add(file);
             }
+        }
+
+        /// <summary>
+        /// Looks for *.dacpac items which are added to the solution as links
+        /// </summary>
+        /// <param name="result">A collection with file paths. New unique paths will be added there</param>
+        /// <param name="project"></param>
+        private static void AddLinkedFiles(HashSet<string> result, Project project)
+        {
+	        LinkedFilesSearch(project.ProjectItems, result);
+        }
+
+        /// <summary>
+        /// Recursively walks over the project item tree and looks for *.dacpac linked files
+        /// </summary>
+        /// <param name="projectItems"></param>
+        /// <param name="files"></param>
+        private static void LinkedFilesSearch(ProjectItems projectItems, HashSet<string> files)
+        {
+	        foreach (ProjectItem item in projectItems)
+	        {
+		        if (item.ProjectItems.Count > 0)
+		        {
+			        LinkedFilesSearch(item.ProjectItems, files);
+		        }
+
+		        if (item.Kind == VSConstants.ItemTypeGuid.PhysicalFile_string)
+		        {
+			        try
+			        {
+				        var isLink = item.Properties.Item("IsLink").Value as bool?;
+				        var extension = item.Properties.Item("Extension").Value as string;
+				        if (isLink != null && isLink.Value &&
+				            extension != null && extension.Equals(".dacpac", StringComparison.OrdinalIgnoreCase))
+				        {
+					        var fullPath = item.Properties.Item("FullPath").Value as string;
+					        if (!string.IsNullOrEmpty(fullPath))
+						        files.Add(fullPath);
+				        }
+			        }
+			        catch
+			        {
+				        // Just in case 'index' parameter in Properties.Item(object index) is not a string
+			        }
+		        }
+	        }
         }
 
         public static string BuildSqlProj(this DTE dte, string sqlprojPath)
