@@ -82,7 +82,7 @@ namespace ReverseEngineer20
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerFasterDatabaseModelFactory>();
                     break;
 
                 case DatabaseType.Npgsql:
