@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ReverseEngineer20.ReverseEngineer;
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 
 namespace ReverseEngineer20
 {
@@ -80,6 +81,8 @@ namespace ReverseEngineer20
                 case DatabaseType.SQLServer:
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
+
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
                     break;
 
                 case DatabaseType.Npgsql:
