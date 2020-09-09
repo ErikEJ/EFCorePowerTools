@@ -52,7 +52,7 @@ namespace ReverseEngineer20.ReverseEngineer
             }
             else if (!string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null)
             {
-                newTableName = Regex.Replace(originalTable.Name, schema.TableRegexPattern, schema.TablePatternReplaceWith);
+                newTableName = RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith);
             }
             else
             {
@@ -103,7 +103,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             if (!string.IsNullOrEmpty(schema.ColumnRegexPattern) && schema.ColumnPatternReplaceWith != null)
             {
-                string newColumnName = Regex.Replace(originalColumn.Name, schema.ColumnRegexPattern, schema.ColumnPatternReplaceWith);
+                string newColumnName = RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith);
 
                 if (!string.IsNullOrWhiteSpace(newColumnName))
                 {
@@ -179,6 +179,22 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             return candidateStringBuilder.ToString();
+        }
+
+        private static string RegexNameReplace(string pattern, string originalName, string replacement, int timeout = 100)
+        {
+            string newName = string.Empty;
+
+            try
+            {
+                newName = Regex.Replace(originalName, pattern, replacement, RegexOptions.None, TimeSpan.FromMilliseconds(timeout));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                Console.WriteLine($"Regex pattern {pattern} time out when tryign to match {originalName}, name won't be replaced");
+            }
+
+            return newName;
         }
     }
 }
