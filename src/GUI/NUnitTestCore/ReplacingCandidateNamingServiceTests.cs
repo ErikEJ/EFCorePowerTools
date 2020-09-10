@@ -156,21 +156,21 @@ namespace UnitTests.Services
                        SchemaName = "stg",
                        UseSchemaName = false,
                        Tables = new List<TableRenamer>
-                       { 
-                           new TableRenamer 
-                           {  
-                               Name = "Jobs", 
+                       {
+                           new TableRenamer
+                           {
+                               Name = "Jobs",
                                NewName = "stg_Jobs",
                                Columns = new List<ColumnNamer>
                                {
                                    new ColumnNamer
-                                   { 
+                                   {
                                      Name = "JobName",
                                      NewName = "JobRename",
                                    }
                                }
                            }
-                           
+
                        }
                   },
               };
@@ -549,6 +549,180 @@ namespace UnitTests.Services
             StringAssert.Contains(expected, actResult[0]);
             StringAssert.Contains(expected1, actResult[1]);
         }
+
+        /// <summary>
+        /// Testing the table renaming method using Regex
+        /// </summary>
+        [Test]
+        public void GenerateCustomTableNameFromJsonUsingRegexRenaming()
+        {
+            //Arrange
+            var expected = "NewTableName";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^Old",
+                      TablePatternReplaceWith = "New"
+                  }
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "OldTableName",
+                Schema = "dbo"
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+
+            //Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        /// <summary>
+        /// This is to guarantee that the renaming using regex does not overwrite the current table renaming method
+        /// </summary>
+        [Test]
+        public void GenerateCustomTableNameFromJsonUsingRegexRenamingOverwritten()
+        {
+            //Arrange
+            var expected = "TableNameNotOverwritten";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^Old",
+                      TablePatternReplaceWith = "New",
+                      Tables = new List<TableRenamer>
+                        {
+                         new TableRenamer{
+                             NewName = "TableNameNotOverwritten",
+                             Name = "OldTableName",
+                         }
+                        }
+                  }
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "OldTableName",
+                Schema = "dbo"
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+
+            //Assert
+            StringAssert.Contains(expected, result);
+
+        }
+
+        /// <summary>
+        /// Testing the column renaming method using Regex
+        /// </summary>
+        [Test]
+        public void GenerateCustomColumnNameFromJsonUsingRegexRenaming()
+        {
+            //Arrange
+            var exampleColumn = new DatabaseColumn
+            {
+                Name = "OldColumnName",
+                Table = new DatabaseTable
+                {
+                    Name = "table_name",
+                    Schema = "dbo"
+
+                }
+            };
+
+            var expected = "NewColumnName";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "dbo",
+                       UseSchemaName = true,
+                       ColumnRegexPattern = "^Old",
+                       ColumnPatternReplaceWith = "New"
+                  }
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            //Act
+            var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
+
+            //Assert
+            StringAssert.Contains(expected, actResult);
+
+        }
+
+        /// <summary>
+        /// This is to guarantee that the renaming using regex does not overwrite the current column renaming method
+        /// </summary>
+        [Test]
+        public void GenerateCustomColumnNameFromJsonUsingRegexRenamingOverwritten()
+        {
+            //Arrange
+            var exampleColumn = new DatabaseColumn
+            {
+                Name = "OldColumnName",
+                Table = new DatabaseTable
+                {
+                    Name = "table_name",
+                    Schema = "dbo"
+
+                }
+            };
+
+            var expected = "ColumnNameNotOverwritten";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "dbo",
+                       UseSchemaName = true,
+                       ColumnRegexPattern = "^Old",
+                       ColumnPatternReplaceWith = "New",
+                       Tables = new List<TableRenamer>
+                       {
+                          new TableRenamer
+                          {
+                               Name = "table_name",
+                               Columns = new List<ColumnNamer>
+                               {
+                                   new ColumnNamer
+                                   {
+                                        Name = "OldColumnName",
+                                        NewName = "ColumnNameNotOverwritten"
+                                   }
+                               }
+                          }
+                       }
+                  }
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            //Act
+            var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
+
+            //Assert
+            StringAssert.Contains(expected, actResult);
+
+        }
+
 
         //[Test]
         //public void GenerateIForeignKeyForSelfReferenceTable()

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
@@ -42,28 +43,32 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 return candidateStringBuilder.ToString();
             }
-            else if (schema.Tables.Count > 0)
+
+            string newTableName = string.Empty;
+
+            if (schema.Tables.Any(t => t.Name == originalTable.Name))
             {
-                var newTableName = _customNameOptions
-                    .Where(s => s.SchemaName == schema.SchemaName)
-                    .SelectMany(t => t.Tables.Where(n => n.Name == originalTable.Name))
-                    .FirstOrDefault()?.NewName;
-
-                if (string.IsNullOrWhiteSpace(newTableName))
-                {
-                    candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
-
-                    return candidateStringBuilder.ToString();
-                }
-
-                candidateStringBuilder.Append(newTableName);
-
-                return candidateStringBuilder.ToString();
+                newTableName = schema.Tables.FirstOrDefault(t => t.Name == originalTable.Name)?.NewName;
+            }
+            else if (!string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null)
+            {
+                newTableName = RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith);
             }
             else
             {
                 return base.GenerateCandidateIdentifier(originalTable);
             }
+
+            if (string.IsNullOrWhiteSpace(newTableName))
+            {
+                candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
+
+                return candidateStringBuilder.ToString();
+            }
+
+            candidateStringBuilder.Append(newTableName);
+
+            return candidateStringBuilder.ToString();
         }
 
         public override string GenerateCandidateIdentifier(DatabaseColumn originalColumn)
@@ -78,9 +83,9 @@ namespace ReverseEngineer20.ReverseEngineer
                 return base.GenerateCandidateIdentifier(originalColumn);
             }
 
-            var renamers = _customNameOptions
-                .Where(s => s.SchemaName == schema.SchemaName)
-                .SelectMany(t => t.Tables.Where(n => n.Name == originalColumn.Table.Name && n.Columns != null))
+            var renamers = schema.Tables
+                .Where(t => t.Name == originalColumn.Table.Name && t.Columns != null)
+                .Select(t => t)
                 .ToList();
 
             if (renamers.Count > 0)
@@ -92,6 +97,17 @@ namespace ReverseEngineer20.ReverseEngineer
                 if (column != null)
                 {
                     candidateStringBuilder.Append(column.NewName);
+                    return candidateStringBuilder.ToString();
+                }
+            }
+
+            if (!string.IsNullOrEmpty(schema.ColumnRegexPattern) && schema.ColumnPatternReplaceWith != null)
+            {
+                string newColumnName = RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith);
+
+                if (!string.IsNullOrWhiteSpace(newColumnName))
+                {
+                    candidateStringBuilder.Append(newColumnName);
                     return candidateStringBuilder.ToString();
                 }
             }
@@ -163,6 +179,22 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             return candidateStringBuilder.ToString();
+        }
+
+        private static string RegexNameReplace(string pattern, string originalName, string replacement, int timeout = 100)
+        {
+            string newName = string.Empty;
+
+            try
+            {
+                newName = Regex.Replace(originalName, pattern, replacement, RegexOptions.None, TimeSpan.FromMilliseconds(timeout));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                Console.WriteLine($"Regex pattern {pattern} time out when tryign to match {originalName}, name won't be replaced");
+            }
+
+            return newName;
         }
     }
 }
