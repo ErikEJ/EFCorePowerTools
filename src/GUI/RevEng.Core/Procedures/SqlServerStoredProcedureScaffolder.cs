@@ -9,6 +9,7 @@ using RevEng.Core.Procedures.Scaffolding;
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -38,7 +39,7 @@ namespace RevEng.Core.Procedures
 
             foreach (var procedure in model.Procedures)
             {
-                var name = GenerateIdentifierName(procedure.Name) + "Result";
+                var name = GenerateIdentifierName(procedure, model) + "Result";
 
                 var classContent = WriteResultClass(procedure, procedureScaffolderOptions.ModelNamespace, name);
 
@@ -133,7 +134,7 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Procedures)
                 {
-                    GenerateProcedure(procedure);
+                    GenerateProcedure(procedure, model);
                 }
 
                 _sb.AppendLine("}");
@@ -144,7 +145,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Procedure procedure)
+        private void GenerateProcedure(Procedure procedure, ProcedureModel model)
         {
             using (_sb.Indent())
             {
@@ -161,13 +162,15 @@ namespace RevEng.Core.Procedures
 
                 string line;
 
+                var identifier = GenerateIdentifierName(procedure, model);
+
                 if (procedure.ResultElements.Count == 0)
                 {
-                    line = $"public async Task<int> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+                    line = $"public async Task<int> {identifier}({string.Join(',', paramStrings)}";
                 }
                 else
                 {
-                    line = $"public async Task<{GenerateIdentifierName(procedure.Name)}Result[]> {GenerateIdentifierName(procedure.Name)}({string.Join(',', paramStrings)}";
+                    line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(',', paramStrings)}";
                 }
 
                 if (outParamStrings.Count() > 0)
@@ -211,11 +214,11 @@ namespace RevEng.Core.Procedures
                     {
                         if (procedure.Parameters.Count == 0)
                         {
-                            _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
                         }
                         else
                         {
-                            _sb.AppendLine($"var result = await _context.SqlQuery<{GenerateIdentifierName(procedure.Name)}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
                         }
                         _sb.AppendLine();
                     }
@@ -317,12 +320,15 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private string GenerateIdentifierName(string name)
+        private string GenerateIdentifierName(Procedure procedure, ProcedureModel model)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (procedure == null)
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentNullException(nameof(procedure));
             }
+
+            var name = GenerateUniqueName(procedure, model);
+
             var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
 
             if (!isValid)
@@ -339,6 +345,18 @@ namespace RevEng.Core.Procedures
             }
 
             return name.Replace(" ", string.Empty);
+        }
+
+        private string GenerateUniqueName(Procedure procedure, ProcedureModel model)
+        {
+            var numberOfNames = model.Procedures.Where(p => p.Name == procedure.Name).Count();
+
+            if (numberOfNames > 1)
+            {
+                return procedure.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(procedure.Schema);
+            }
+
+            return procedure.Name;
         }
     }
 }
