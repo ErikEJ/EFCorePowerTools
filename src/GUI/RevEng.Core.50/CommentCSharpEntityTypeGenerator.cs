@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +16,12 @@ using Microsoft.EntityFrameworkCore.Utilities;
 
 namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 {
+    /// <summary>
+    ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+    ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+    ///     any release. You should only use it directly in your code with extreme caution and knowing that
+    ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+    /// </summary>
     public class CommentCSharpEntityTypeGenerator : ICSharpEntityTypeGenerator
     {
         private readonly IAnnotationCodeGenerator _annotationCodeGenerator;
@@ -21,16 +30,33 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         private IndentedStringBuilder _sb = null!;
         private bool _useDataAnnotations;
 
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
         public CommentCSharpEntityTypeGenerator(
             [NotNull] IAnnotationCodeGenerator annotationCodeGenerator,
             [NotNull] ICSharpHelper cSharpHelper)
         {
+            Check.NotNull(cSharpHelper, nameof(cSharpHelper));
+
             _annotationCodeGenerator = annotationCodeGenerator;
             _code = cSharpHelper;
         }
 
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
         public virtual string WriteCode(IEntityType entityType, string @namespace, bool useDataAnnotations)
         {
+            Check.NotNull(entityType, nameof(entityType));
+            Check.NotNull(@namespace, nameof(@namespace));
+
             _sb = new IndentedStringBuilder();
             _useDataAnnotations = useDataAnnotations;
 
@@ -70,8 +96,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             return _sb.ToString();
         }
 
-        private void GenerateClass([NotNull] IEntityType entityType)
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
+        protected virtual void GenerateClass([NotNull] IEntityType entityType)
         {
+            Check.NotNull(entityType, nameof(entityType));
+
             WriteComment(entityType.GetComment());
 
             if (_useDataAnnotations)
@@ -93,8 +127,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             _sb.AppendLine("}");
         }
 
-        private void GenerateEntityTypeDataAnnotations([NotNull] IEntityType entityType)
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
+        protected virtual void GenerateEntityTypeDataAnnotations([NotNull] IEntityType entityType)
         {
+            Check.NotNull(entityType, nameof(entityType));
+
             GenerateKeylessAttribute(entityType);
             GenerateTableAttribute(entityType);
             GenerateIndexAttributes(entityType);
@@ -150,8 +192,8 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         {
             // Do not generate IndexAttributes for indexes which
             // would be generated anyway by convention.
-            foreach (var index in entityType.GetIndexes().Where(i =>
-                ConfigurationSource.Convention != ((IConventionIndex)i).GetConfigurationSource()))
+            foreach (var index in entityType.GetIndexes().Where(
+                i => ConfigurationSource.Convention != ((IConventionIndex)i).GetConfigurationSource()))
             {
                 // If there are annotations that cannot be represented using an IndexAttribute then use fluent API instead.
                 var annotations = _annotationCodeGenerator
@@ -182,8 +224,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
-        private void GenerateConstructor([NotNull] IEntityType entityType)
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
+        protected virtual void GenerateConstructor([NotNull] IEntityType entityType)
         {
+            Check.NotNull(entityType, nameof(entityType));
+
             var collectionNavigations = entityType.GetNavigations().Where(n => n.IsCollection).ToList();
 
             if (collectionNavigations.Count > 0)
@@ -204,8 +254,17 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
         protected virtual void GenerateProperties([NotNull] IEntityType entityType)
         {
+            Check.NotNull(entityType, nameof(entityType));
+
+            
             foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrdinal()))
             {
                 WriteComment(property.GetComment());
@@ -219,8 +278,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
         protected virtual void GeneratePropertyDataAnnotations([NotNull] IProperty property)
         {
+            Check.NotNull(property, nameof(property));
+
             GenerateKeyAttribute(property);
             GenerateRequiredAttribute(property);
             GenerateColumnAttribute(property);
@@ -276,6 +343,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
+        private void GenerateRequiredAttribute(IProperty property)
+        {
+            if (!property.IsNullable
+                && property.ClrType.IsNullableType()
+                && !property.IsPrimaryKey())
+            {
+                _sb.AppendLine(new AttributeWriter(nameof(RequiredAttribute)).ToString());
+            }
+        }
+
         private void GenerateMaxLengthAttribute(IProperty property)
         {
             var maxLength = property.GetMaxLength();
@@ -293,18 +370,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             }
         }
 
-        private void GenerateRequiredAttribute(IProperty property)
+        /// <summary>
+        ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
+        ///     the same compatibility standards as public APIs. It may be changed or removed without notice in
+        ///     any release. You should only use it directly in your code with extreme caution and knowing that
+        ///     doing so can result in application failures when updating to a new Entity Framework Core release.
+        /// </summary>
+        protected virtual void GenerateNavigationProperties([NotNull] IEntityType entityType)
         {
-            if (!property.IsNullable
-                && property.ClrType.IsNullableType()
-                && !property.IsPrimaryKey())
-            {
-                _sb.AppendLine(new AttributeWriter(nameof(RequiredAttribute)).ToString());
-            }
-        }
+            Check.NotNull(entityType, nameof(entityType));
 
-        private void GenerateNavigationProperties([NotNull] IEntityType entityType)
-        {
             var sortedNavigations = entityType.GetNavigations()
                 .OrderBy(n => n.IsOnDependent ? 0 : 1)
                 .ThenBy(n => n.IsCollection ? 1 : 0)
@@ -370,7 +445,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
                     inversePropertyAttribute.AddParameter(
                         !navigation.DeclaringEntityType.GetPropertiesAndNavigations().Any(
-                                m => m.Name == inverseNavigation.DeclaringEntityType.Name)
+                            m => m.Name == inverseNavigation.DeclaringEntityType.Name)
                             ? $"nameof({inverseNavigation.DeclaringEntityType.Name}.{inverseNavigation.Name})"
                             : _code.Literal(inverseNavigation.Name));
 
@@ -401,18 +476,24 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
             public AttributeWriter([NotNull] string attributeName)
             {
+                Check.NotEmpty(attributeName, nameof(attributeName));
+
                 _attributeName = attributeName;
             }
 
             public void AddParameter([NotNull] string parameter)
             {
+                Check.NotEmpty(parameter, nameof(parameter));
+
                 _parameters.Add(parameter);
             }
 
             public override string ToString()
-                => "[" + (_parameters.Count == 0
-                       ? StripAttribute(_attributeName)
-                       : StripAttribute(_attributeName) + "(" + string.Join(", ", _parameters) + ")") + "]";
+                => "["
+                    + (_parameters.Count == 0
+                        ? StripAttribute(_attributeName)
+                        : StripAttribute(_attributeName) + "(" + string.Join(", ", _parameters) + ")")
+                    + "]";
 
             private static string StripAttribute([NotNull] string attributeName)
                 => attributeName.EndsWith("Attribute", StringComparison.Ordinal)

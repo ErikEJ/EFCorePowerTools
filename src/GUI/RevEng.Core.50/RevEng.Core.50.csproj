@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\RevEng.Core\Check.cs" Link="Check.cs" />
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
     <Compile Include="..\RevEng.Core\HumanizerPluralizer.cs" Link="HumanizerPluralizer.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
