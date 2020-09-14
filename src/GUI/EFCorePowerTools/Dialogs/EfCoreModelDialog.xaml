@@ -7,7 +7,7 @@
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 MinHeight="700"
+                 MinHeight="660"
                  MinWidth="418"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
@@ -166,12 +166,6 @@
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>
-
-        <CheckBox Grid.Row="14"
-                  TabIndex="9"
-                  Content="Split DbContext into Configuration classes (preview)"
-                  IsChecked="{Binding Model.UseDbContextSplitting}"
-                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         
         <CheckBox Grid.Row="15"
                   TabIndex="10"
@@ -200,12 +194,6 @@
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
-        <CheckBox Grid.Row="18"
-                  TabIndex="13"
-                  Content="Generate stored procedure mappings (preview)"
-                  IsChecked="{Binding Model.UseStoredProcedures}" 
-                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-
         <CheckBox Grid.Row="19"
                   TabIndex="14"
                   Content="Install the EF Core provider package in the project"
@@ -214,6 +202,10 @@
         
         <StackPanel Grid.Row="20"
                     Style="{StaticResource ButtonRowStyle}">
+            <dw:DialogButton TabIndex="20"
+                             Content="Advanced..."
+                             IsDefault="True"
+                             Command="{Binding AdvancedCommand}"/>
             <dw:DialogButton TabIndex="20"
                              Content="OK"
                              IsDefault="True"

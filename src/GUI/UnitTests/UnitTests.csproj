@@ -203,6 +203,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TableInformationModelTest.cs" />
     <Compile Include="ViewModels\AboutViewModelTests.cs" />
+    <Compile Include="ViewModels\AdvancedModelingOptionsViewModelTests.cs" />
     <Compile Include="ViewModels\PickSchemasViewModelTests.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModelTests.cs" />
     <Compile Include="ViewModels\PickTablesViewModelTests.cs" />
