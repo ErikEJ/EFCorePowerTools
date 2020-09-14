@@ -170,6 +170,9 @@ namespace EFCorePowerTools.Handlers
                     presets.SelectedToBeGenerated = options.SelectedToBeGenerated;
                     presets.DacpacPath = options.Dacpac;
                     presets.UseStoredProcedures = options.UseStoredProcedures;
+                    presets.UseEf6Pluralizer = options.UseLegacyPluralizer;
+                    presets.MapSpatialTypes = options.UseSpatial;
+                    presets.MapNodaTimeTypes = options.UseNodaTime;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -194,9 +197,9 @@ namespace EFCorePowerTools.Handlers
                     ProjectRootNamespace = modelingOptionsResult.Payload.Namespace,
                     UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames,
                     UseInflector = modelingOptionsResult.Payload.UsePluralizer,
-                    UseLegacyPluralizer = options?.UseLegacyPluralizer ?? false,
-                    UseSpatial = options?.UseSpatial ?? false,
-                    UseNodaTime = options?.UseNodaTime ?? false,
+                    UseLegacyPluralizer = modelingOptionsResult.Payload.UseEf6Pluralizer,
+                    UseSpatial = modelingOptionsResult.Payload.MapSpatialTypes,
+                    UseNodaTime = modelingOptionsResult.Payload.MapNodaTimeTypes,
                     UseStoredProcedures = modelingOptionsResult.Payload.UseStoredProcedures,
                     UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,

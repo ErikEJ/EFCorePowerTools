@@ -27,6 +27,9 @@
         private string _dacpacPath;
         private bool _useDbContextSplitting;
         private bool _useStoreProcedures;
+        private bool _mapSpatialTypes;
+        private bool _mapNodaTimeTypes;
+        private bool _useEf6Pluralizer;
 
         public bool UseDataAnnotations
         {
@@ -222,6 +225,39 @@
             {
                 if (value == _dacpacPath) return;
                 _dacpacPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool MapSpatialTypes
+        {
+            get => _mapSpatialTypes;
+            set
+            {
+                if (value == _mapSpatialTypes) return;
+                _mapSpatialTypes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool MapNodaTimeTypes
+        {
+            get => _mapNodaTimeTypes;
+            set
+            {
+                if (value == _mapNodaTimeTypes) return;
+                _mapNodaTimeTypes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseEf6Pluralizer
+        {
+            get => _useEf6Pluralizer;
+            set
+            {
+                if (value == _useEf6Pluralizer) return;
+                _useEf6Pluralizer = value;
                 OnPropertyChanged();
             }
         }
