@@ -38,6 +38,11 @@
         {
             var fileName = EnvDteHelper.PromptForDacpac();
 
+            if (string.IsNullOrEmpty(fileName))
+            {
+                return null;
+            }
+
             return new DatabaseDefinitionModel
             {
                 FilePath = fileName,
