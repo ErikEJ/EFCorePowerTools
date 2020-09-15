@@ -167,14 +167,14 @@
             </StackPanel>
         </GroupBox>
         
-        <CheckBox Grid.Row="15"
+        <CheckBox Grid.Row="14"
                   TabIndex="10"
                   Content="Use DataAnnotation attributes to configure the model"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="16">
+                    Grid.Row="15">
             <CheckBox TabIndex="11"
                       Name="UseHandlebarsCheckbox"
                       Content="Customize code using Handlebars templates"
@@ -187,20 +187,20 @@
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
         
-        <CheckBox Grid.Row="17"
+        <CheckBox Grid.Row="16"
                   TabIndex="12"
                   Content="Include connection string in generated code"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
-        <CheckBox Grid.Row="19"
+        <CheckBox Grid.Row="17"
                   TabIndex="14"
                   Content="Install the EF Core provider package in the project"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         
-        <StackPanel Grid.Row="20"
+        <StackPanel Grid.Row="18"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
                              Content="Advanced..."
