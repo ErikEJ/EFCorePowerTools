@@ -81,11 +81,7 @@ namespace ReverseEngineer20
                 case DatabaseType.SQLServer:
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
-
-#if CORE50
-#else
                     serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerFasterDatabaseModelFactory>();
-#endif
                     break;
 
                 case DatabaseType.Npgsql:
@@ -99,7 +95,6 @@ namespace ReverseEngineer20
                     break;
 #if CORE50
 #else
-
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);

@@ -53,6 +53,10 @@ namespace ReverseEngineer20.ReverseEngineer
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
                     }
+                    else
+                    {
+                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerFasterDatabaseModelFactory>();
+                    }
 
                     if (options.UseSpatial)
                     {

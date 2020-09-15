@@ -155,8 +155,11 @@ namespace ReverseEngineer20
             EnsureServices(services);
 
             var migrator = services.GetRequiredService<IMigrator>();
-
+#if CORE50
+            return migrator.GenerateScript(null, null, MigrationsSqlGenerationOptions.Idempotent);
+#else
             return migrator.GenerateScript(null, null, idempotent: true);
+#endif
         }
 
         private string ApplyMigrations(DbContext context)
