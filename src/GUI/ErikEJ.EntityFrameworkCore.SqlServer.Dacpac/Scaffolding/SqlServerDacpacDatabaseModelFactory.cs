@@ -300,18 +300,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     }
                 }
 
-                var includedColumns = new List<string>();
-
-                foreach (var includedColumn in ix.IncludedColumns)
-                {
-                    includedColumns.Add(includedColumn.Name.Parts[2]);
-                }
-
-                if (includedColumns.Count != 0)
-                {
-                    index["SqlServer:Include"] = includedColumns.ToArray();
-                }
-
                 if (index.Columns.Count > 0)
                 {
                     dbTable.Indexes.Add(index);
