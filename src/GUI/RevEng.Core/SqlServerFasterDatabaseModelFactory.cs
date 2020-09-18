@@ -986,33 +986,6 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]");
                         index[SqlServerAnnotationNames.Clustered] = true;
                     }
 
-                    var includedColumns = new List<string>();
-
-                    foreach (var dataRecord in indexGroup)
-                    {
-                        var columnName = dataRecord.GetValueOrDefault<string>("column_name");
-
-                        var isIncludedColumn = dataRecord.GetValueOrDefault<bool>("is_included_column");
-                        if (isIncludedColumn)
-                        {
-                            includedColumns.Add(columnName!);
-
-                            continue;
-                        }
-
-                        var column = table.Columns.FirstOrDefault(c => c.Name == columnName)
-                            ?? table.Columns.FirstOrDefault(
-                                c => c.Name!.Equals(columnName, StringComparison.OrdinalIgnoreCase));
-                        Check.DebugAssert(column != null, "column is null.");
-
-                        index.Columns.Add(column);
-                    }
-
-                    if (includedColumns.Count != 0)
-                    {
-                        index[SqlServerAnnotationNames.Include] = includedColumns.ToArray();
-                    }
-
                     table.Indexes.Add(index);
                 }
             }
