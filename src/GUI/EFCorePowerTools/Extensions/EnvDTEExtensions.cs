@@ -24,13 +24,21 @@ namespace EFCorePowerTools.Extensions
                     AddFiles(result, folder);
                 }
 
-                var project = dte.Solution.Projects
-	                .OfType<Project>()
-	                .FirstOrDefault(p => p.FullName == projectPath);
-                if (project != null)
+                try
                 {
-                    AddLinkedFiles(result, project);
+                    var project = dte.Solution.Projects
+                        .OfType<Project>()
+                        .FirstOrDefault(p => p.FullName == projectPath);
+                    if (project != null)
+                    {
+                        AddLinkedFiles(result, project);
+                    }
                 }
+                catch
+                { 
+                    // Ignore
+                }
+
             }
 
             if (result.Count == 0)

@@ -245,10 +245,9 @@ namespace EFCorePowerTools.Handlers
             }
             else if (_project.IsNetCore30() || _project.IsNetCore31())
             {
-                var projectDir = Path.GetDirectoryName(outputPath);
-                var version = GetEfCoreVersion(projectDir);
+                var versionInfo = _project.ContainsEfCoreDesignReference();
 
-                if (version.Major == 5)
+                if (versionInfo.Item2.StartsWith("5.", StringComparison.OrdinalIgnoreCase))
                 {
                     ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt50.exe.zip"), toDir);
                 }
