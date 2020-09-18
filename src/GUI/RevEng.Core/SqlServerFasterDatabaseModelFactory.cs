@@ -829,7 +829,6 @@ SELECT
     [i].[is_unique],
     [i].[has_filter],
     [i].[filter_definition],
-    [i].[fill_factor],
     COL_NAME([ic].[object_id], [ic].[column_id]) AS [column_name],
     [ic].[is_included_column]
 FROM [sys].[indexes] AS [i]
@@ -965,8 +964,7 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]");
                                 TypeDesc: ddr.GetValueOrDefault<string>("type_desc"),
                                 IsUnique: ddr.GetValueOrDefault<bool>("is_unique"),
                                 HasFilter: ddr.GetValueOrDefault<bool>("has_filter"),
-                                FilterDefinition: ddr.GetValueOrDefault<string>("filter_definition"),
-                                FillFactor: ddr.GetValueOrDefault<byte>("fill_factor")))
+                                FilterDefinition: ddr.GetValueOrDefault<string>("filter_definition")))
                     .ToArray();
 
                 foreach (var indexGroup in indexGroups)
@@ -984,6 +982,17 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]");
                     if (indexGroup.Key.TypeDesc == "CLUSTERED")
                     {
                         index[SqlServerAnnotationNames.Clustered] = true;
+                    }
+
+                    foreach (var dataRecord in indexGroup)
+                    {
+                        var columnName = dataRecord.GetValueOrDefault<string>("column_name");
+                        var column = table.Columns.FirstOrDefault(c => c.Name == columnName)
+                            ?? table.Columns.FirstOrDefault(
+                                c => c.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+                        Debug.Assert(column != null, "column is null.");
+
+                        index.Columns.Add(column);
                     }
 
                     table.Indexes.Add(index);
