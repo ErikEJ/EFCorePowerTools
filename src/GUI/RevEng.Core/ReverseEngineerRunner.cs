@@ -89,7 +89,8 @@ namespace ReverseEngineer20.ReverseEngineer
                 var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions);
                 procedurePaths = procedureModelScaffolder.Save(
                     procedureModel,
-                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)));
+                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
+                    contextNamespace);
             }
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 
