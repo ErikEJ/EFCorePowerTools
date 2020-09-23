@@ -105,6 +105,13 @@ namespace ReverseEngineer20.ReverseEngineer
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
+
+                    if (options.UseSpatial)
+                    {
+                        var spatial = new MySqlNetTopologySuiteDesignTimeServices();
+                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
                     break;
 
                 case DatabaseType.Oracle:

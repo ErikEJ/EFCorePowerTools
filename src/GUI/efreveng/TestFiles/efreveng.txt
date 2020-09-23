@@ -1,5 +1,5 @@
 {
-   "ConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Northwind;Integrated Security=True",   "ContextClassName": "NorthwindContext",
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",   "ContextClassName": "NorthwindContext",
    "CustomReplacers": null,
    "Dacpac": null,
    "DatabaseType": 3,
@@ -23,6 +23,14 @@
       {
          "HasPrimaryKey": true,
          "Name": "dbo.Shippers"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Region"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.RegionShippers"
       }
    ],
    "UseDatabaseNames": false,
