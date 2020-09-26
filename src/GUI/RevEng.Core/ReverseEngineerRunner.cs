@@ -192,7 +192,6 @@ namespace ReverseEngineer20.ReverseEngineer
         private void PostProcessModel(string modelFile, ReverseEngineerCommandOptions options)
         {
             var finalLines = new List<string>();
-            var debugLines = new List<string>();
             var lines = File.ReadAllLines(modelFile);
 
             int i = 1;
