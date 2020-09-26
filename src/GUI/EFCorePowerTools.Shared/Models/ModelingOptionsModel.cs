@@ -30,6 +30,7 @@
         private bool _mapSpatialTypes;
         private bool _mapNodaTimeTypes;
         private bool _useEf6Pluralizer;
+        private bool _generateNonNullableBoolsOnly;
 
         public bool UseDataAnnotations
         {
@@ -258,6 +259,17 @@
             {
                 if (value == _useEf6Pluralizer) return;
                 _useEf6Pluralizer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool GenerateNonNullableBoolsOnly
+        {
+            get => _generateNonNullableBoolsOnly;
+            set
+            {
+                if (value == _generateNonNullableBoolsOnly) return;
+                _generateNonNullableBoolsOnly = value;
                 OnPropertyChanged();
             }
         }

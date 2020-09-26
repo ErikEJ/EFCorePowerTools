@@ -58,6 +58,7 @@
             Model.MapSpatialTypes = presets.MapSpatialTypes;
             Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
+            Model.GenerateNonNullableBoolsOnly = presets.GenerateNonNullableBoolsOnly;
         }
     }
 }

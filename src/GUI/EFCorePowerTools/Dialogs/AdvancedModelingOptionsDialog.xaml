@@ -68,6 +68,11 @@
                       Content="Use EF6 pluralizer"
                       IsChecked="{Binding Model.UseEf6Pluralizer}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
+
+            <CheckBox TabIndex="5"
+                      Content="Always generate non nullable bools"
+                      IsChecked="{Binding Model.GenerateNonNullableBoolsOnly}" 
+                      Style="{StaticResource MarginCheckBlockStyle}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="20"

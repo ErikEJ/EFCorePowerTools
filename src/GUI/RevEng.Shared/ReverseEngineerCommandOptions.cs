@@ -34,5 +34,6 @@ namespace ReverseEngineer20
         public bool UseStoredProcedures { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
+        public bool GenerateNonNullableBoolsOnly { get; set; }
     }
 }

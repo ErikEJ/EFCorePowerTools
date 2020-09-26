@@ -173,6 +173,7 @@ namespace EFCorePowerTools.Handlers
                     presets.UseEf6Pluralizer = options.UseLegacyPluralizer;
                     presets.MapSpatialTypes = options.UseSpatial;
                     presets.MapNodaTimeTypes = options.UseNodaTime;
+                    presets.GenerateNonNullableBoolsOnly = options.GenerateNonNullableBoolsOnly;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -211,7 +212,8 @@ namespace EFCorePowerTools.Handlers
                     Tables = pickTablesResult.Payload.ToList(),
                     CustomReplacers = customNameOptions,
                     FilterSchemas = filterSchemas,
-                    Schemas = schemas?.ToList()
+                    Schemas = schemas?.ToList(),
+                    GenerateNonNullableBoolsOnly = modelingOptionsResult.Payload.GenerateNonNullableBoolsOnly
                 };
 
                 _package.Dte2.StatusBar.Text = "Generating code...";
@@ -383,6 +385,7 @@ namespace EFCorePowerTools.Handlers
                 UseDbContextSplitting = options.UseDbContextSplitting,
                 UseNodaTime = options.UseNodaTime,
                 UseStoredProcedures = options.UseStoredProcedures,
+                GenerateNonNullableBoolsOnly = options.GenerateNonNullableBoolsOnly
             };
 
             var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions, useEFCore5);

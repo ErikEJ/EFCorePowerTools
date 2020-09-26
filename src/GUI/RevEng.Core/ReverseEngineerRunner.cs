@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Procedures.Scaffolding;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 
 namespace ReverseEngineer20.ReverseEngineer
@@ -109,6 +111,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             foreach (var file in filePaths.AdditionalFiles)
             {
+                PostProcessModel(file, reverseEngineerOptions);
                 PostProcess(file);
             }
 
@@ -184,6 +187,40 @@ namespace ReverseEngineer20.ReverseEngineer
                 i++;
             }
             File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
+        }
+
+        private void PostProcessModel(string modelFile, ReverseEngineerCommandOptions options)
+        {
+            var finalLines = new List<string>();
+            var debugLines = new List<string>();
+            var lines = File.ReadAllLines(modelFile);
+
+            int i = 1;
+
+            foreach (var line in lines) {
+                if( i > 1 ) {
+                    string previousLine = lines[i - 2];
+                    string currentLine = line;
+
+                    if( options.GenerateNonNullableBoolsOnly ) {
+
+                        if( (  currentLine.Trim().StartsWith( "public bool? " ) || currentLine.Trim().StartsWith( "public bool " ) )
+                            && currentLine.Trim().EndsWith( " { get; set; }" )
+                            && previousLine.Trim() == "[Required]" )
+                        {
+                            // remove [Required] flag from the property
+                            finalLines.RemoveAt(finalLines.Count - 1);
+
+                            // make a non nullable bool
+                            currentLine = currentLine.Replace( "public bool? ", "public bool " );
+                        }
+                    }
+                    finalLines.Add(currentLine);
+                }
+
+                i++;
+            }
+            File.WriteAllLines(modelFile, finalLines, Encoding.UTF8);
         }
 
         private void PostProcess(string file)

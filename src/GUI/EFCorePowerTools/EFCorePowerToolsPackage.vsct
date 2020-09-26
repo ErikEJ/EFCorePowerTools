@@ -51,7 +51,7 @@
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMenuGroup" />
         <Strings>
           <CommandName>EF Core Power Tools</CommandName>
-          <ButtonText>EF Core Power Tools</ButtonText>
+          <ButtonText>EF Core Power Tools (SF)</ButtonText>
         </Strings>
       </Menu>
 
@@ -65,7 +65,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
-          <ButtonText>Reverse Engineer</ButtonText>
+          <ButtonText>Reverse Engineer (SF)</ButtonText>
         </Strings>
       </Button>
 
