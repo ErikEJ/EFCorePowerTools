@@ -59,6 +59,9 @@ namespace ReverseEngineer20.ReverseEngineer
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,
+#if CORE50
+                NoPluralize = !reverseEngineerOptions.UseInflector,
+#endif
             };
 
             var codeOptions = new ModelCodeGenerationOptions

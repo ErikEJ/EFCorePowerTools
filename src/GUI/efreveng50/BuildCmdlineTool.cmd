@@ -12,6 +12,8 @@ rmdir bin\Release\netcoreapp3.1\publish\ru-RU /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\zh-CN /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\zh-TW /S /Q
 
+del bin\Release\netcoreapp3.1\publish\Bricelam.EntityFrameworkCore.Pluralizer.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.DotNet.PlatformAbstractions.dll
 del bin\Release\netcoreapp3.1\publish\DacFxStrongTypedCore.dll 
 del bin\Release\netcoreapp3.1\publish\DacFxStrongTypedCore.pdb 
 del bin\Release\netcoreapp3.1\publish\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.dll 
