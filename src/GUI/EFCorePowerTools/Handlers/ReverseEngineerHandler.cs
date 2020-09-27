@@ -40,10 +40,10 @@ namespace EFCorePowerTools.Handlers
                     EnvDteHelper.ShowError("Cannot generate code while debugging");
                     return;
                 }
-                
-                var projectPath = project.Properties.Item("FullPath").Value.ToString();
-                var optionsPath = Path.Combine(projectPath, "efpt.config.json");
-                var renamingPath = Path.Combine(projectPath, "efpt.renaming.json");
+
+                var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+                var optionsPath = project.GetConfigFiles().FirstOrDefault();
+                var renamingPath = project.GetRenamingPath();
 
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
@@ -230,7 +230,7 @@ namespace EFCorePowerTools.Handlers
 
                 var startTime = DateTime.Now;
 
-                var revEngResult = LaunchExternalRunner(options, useEFCore5);
+                var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, useEFCore5);
 
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
@@ -352,41 +352,6 @@ namespace EFCorePowerTools.Handlers
         {
             var builder = new TableListBuilder(connectionString, databaseType, schemas);
             return builder.GetTableDefinitions(useEFCore5);
-        }
-
-        private ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options, bool useEFCore5)
-        {
-            var commandOptions = new ReverseEngineerCommandOptions
-            {
-                ConnectionString = options.ConnectionString,
-                ContextClassName = options.ContextClassName,
-                CustomReplacers = options.CustomReplacers,
-                Dacpac = options.Dacpac,
-                DatabaseType = options.DatabaseType,
-                DefaultDacpacSchema = options.DefaultDacpacSchema,
-                IncludeConnectionString = options.IncludeConnectionString,
-                OutputPath = options.OutputPath,
-                ContextNamespace = options.ContextNamespace,
-                ModelNamespace = options.ModelNamespace,
-                OutputContextPath = options.OutputContextPath,
-                ProjectPath = options.ProjectPath,
-                ProjectRootNamespace = options.ProjectRootNamespace,
-                SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
-                SelectedToBeGenerated = options.SelectedToBeGenerated,
-                Tables = options.Tables,
-                UseDatabaseNames = options.UseDatabaseNames,
-                UseFluentApiOnly = options.UseFluentApiOnly,
-                UseHandleBars = options.UseHandleBars,
-                UseInflector = options.UseInflector,
-                UseLegacyPluralizer = options.UseLegacyPluralizer,
-                UseSpatial = options.UseSpatial,
-                UseDbContextSplitting = options.UseDbContextSplitting,
-                UseNodaTime = options.UseNodaTime,
-                UseStoredProcedures = options.UseStoredProcedures,
-            };
-
-            var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions, useEFCore5);
-            return launcher.GetOutput();
         }
     }
 }
