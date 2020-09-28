@@ -243,6 +243,7 @@ namespace EFCorePowerTools
             // Register views
             services.AddTransient<IAboutDialog, AboutDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
+                    .AddTransient<IPickConfigDialog, PickConfigDialog>()
                     .AddTransient<IPickTablesDialog, PickTablesDialog>()
                     .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>()
                     .AddTransient<IMigrationOptionsDialog, EfCoreMigrationsDialog>()
@@ -253,6 +254,7 @@ namespace EFCorePowerTools
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
+                    .AddTransient<IPickConfigViewModel, PickConfigViewModel>()
                     .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
                     .AddTransient<IPickTablesViewModel, PickTablesViewModel>()
                     .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel())

@@ -42,12 +42,27 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
-                var optionsPath = project.GetConfigFiles().FirstOrDefault();
+                var optionsPaths = project.GetConfigFiles();
+                var optionsPath = optionsPaths.FirstOrDefault();
                 var renamingPath = project.GetRenamingPath();
+
+                if (optionsPaths.Count > 1)
+                {
+                    var pcd = _package.GetView<IPickConfigDialog>();
+                    pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
+                    {
+                        ConfigPath = m,
+                    }));
+
+                    var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
+                    if (!pickConfigResult.ClosedByOK)
+                        return;
+
+                    optionsPath = pickConfigResult.Payload.ConfigPath;
+                }
 
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
-
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
                 var psd = _package.GetView<IPickServerDatabaseDialog>();

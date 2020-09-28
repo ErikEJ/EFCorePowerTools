@@ -63,8 +63,8 @@ namespace EFCorePowerTools.Extensions
             var file = Directory.GetFiles(projectPath, "efpt.config.json");
             result.AddRange(file);
 
-            //var files = Directory.GetFiles(projectPath, "efpt.*.config.json");
-            //result.AddRange(files);
+            var files = Directory.GetFiles(projectPath, "efpt.*.config.json");
+            result.AddRange(files);
             
             return result.OrderBy(s => s).ToList();
         }
