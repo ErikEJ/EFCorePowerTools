@@ -229,7 +229,16 @@ namespace EFCorePowerTools.Handlers
                     Schemas = schemas?.ToList()
                 };
 
-                _package.Dte2.StatusBar.Text = "Generating code...";
+                if (options.DatabaseType == DatabaseType.SQLServer
+                    && string.IsNullOrEmpty(options.Dacpac))
+                {
+                    var hasRights = reverseEngineerHelper.HasSqlServerViewDefinitionRights(options.ConnectionString);
+
+                    if (hasRights == false)
+                    {
+                        EnvDteHelper.ShowMessage("The SQL Server user does not have 'VIEW DEFINITION' rights, default constraints may not be available.");        
+                    }
+                }
 
                 var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
                 bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.");
@@ -244,6 +253,8 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 var startTime = DateTime.Now;
+
+                _package.Dte2.StatusBar.Text = "Generating code...";
 
                 var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, useEFCore5);
 
