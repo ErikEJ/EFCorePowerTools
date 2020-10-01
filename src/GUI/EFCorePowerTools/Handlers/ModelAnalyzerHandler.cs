@@ -54,7 +54,7 @@ namespace EFCorePowerTools.Handlers
                     {
                         if (!Version.TryParse(result.Item2, out Version version))
                         {
-                            EnvDteHelper.ShowError($"Cannot support version {version}, notice that previews have limited supported. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
+                            EnvDteHelper.ShowError($"Cannot support version {result.Item2}, notice that previews have limited supported. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
                             return;
                         }
                         var nugetHelper = new NuGetHelper();

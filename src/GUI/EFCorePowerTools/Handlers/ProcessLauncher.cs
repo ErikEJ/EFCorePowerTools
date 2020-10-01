@@ -61,9 +61,9 @@ namespace EFCorePowerTools.Handlers
 
         private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = _project.IsNetCore22OrHigher() ? DropNetCoreFiles(outputPath) : DropFiles(outputPath);
+            var launchPath = _project.IsNetCore22OrHigher() ? DropNetCoreFiles(outputPath) : DropNetFXFiles(outputPath);
 
-            if ((_project.IsNetCore30() || _project.IsNetCore31()) && outputPath.EndsWith(".exe"))
+            if (_project.IsNetCore30OrHigher() && outputPath.EndsWith(".exe"))
             {
                 outputPath = outputPath.Remove(outputPath.Length - 4, 4);
                 outputPath += ".dll";
@@ -170,7 +170,7 @@ namespace EFCorePowerTools.Handlers
             return standardOutput.ToString();
         }
 
-        private string DropFiles(string outputPath)
+        private string DropNetFXFiles(string outputPath)
         {
             var toDir = Path.GetDirectoryName(outputPath);
             var fromDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "efpt");
@@ -243,7 +243,7 @@ namespace EFCorePowerTools.Handlers
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt22.exe.zip"), toDir);
             }
-            else if (_project.IsNetCore30() || _project.IsNetCore31())
+            else if (_project.IsNetCore30OrHigher())
             {
                 var versionInfo = _project.ContainsEfCoreDesignReference();
 
