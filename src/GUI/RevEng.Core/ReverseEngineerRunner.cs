@@ -59,6 +59,9 @@ namespace ReverseEngineer20.ReverseEngineer
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,
+#if CORE50
+                NoPluralize = !reverseEngineerOptions.UseInflector,
+#endif
             };
 
             var codeOptions = new ModelCodeGenerationOptions
@@ -72,6 +75,9 @@ namespace ReverseEngineer20.ReverseEngineer
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = reverseEngineerOptions.ConnectionString,
+#if CORE50
+                SuppressOnConfiguring = !reverseEngineerOptions.IncludeConnectionString,      
+#endif
             };
 
             SavedModelFiles procedurePaths = null;
@@ -89,7 +95,8 @@ namespace ReverseEngineer20.ReverseEngineer
                 var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions);
                 procedurePaths = procedureModelScaffolder.Save(
                     procedureModel,
-                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)));
+                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
+                    contextNamespace);
             }
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 
@@ -104,8 +111,10 @@ namespace ReverseEngineer20.ReverseEngineer
                 Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
                 overwriteFiles: true);
 
-            PostProcessContext(filePaths.ContextFile, reverseEngineerOptions);
-
+#if CORE50
+#else
+            RemoveOnConfiguring(filePaths.ContextFile, reverseEngineerOptions.IncludeConnectionString);
+#endif
             foreach (var file in filePaths.AdditionalFiles)
             {
                 PostProcess(file);
@@ -149,7 +158,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return DbContextSplitter.Split(contextFile, contextNamespace);
         }
 
-        private void PostProcessContext(string contextFile, ReverseEngineerCommandOptions options)
+        private void RemoveOnConfiguring(string contextFile, bool includeConnectionString)
         {
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
@@ -159,7 +168,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             foreach (var line in lines)
             {
-                if (!options.IncludeConnectionString)
+                if (!includeConnectionString)
                 {
                     if (line.Trim().Contains("protected override void OnConfiguring"))
                     {

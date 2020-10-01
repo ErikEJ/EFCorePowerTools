@@ -2,6 +2,7 @@
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,6 +26,19 @@ namespace EFCorePowerTools.Helpers
             }
 
             return result;
+        }
+
+        public bool HasSqlServerViewDefinitionRights(string connectionString)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand("SELECT HAS_PERMS_BY_NAME(NULL, 'DATABASE', 'VIEW DEFINITION');", connection))
+                {
+                    connection.Open();
+                    var result = (int)command.ExecuteScalar();
+                    return Convert.ToBoolean(result);
+                }
+            }
         }
 
         public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)

@@ -61,7 +61,7 @@ namespace RevEng.Core.Procedures
             return result;
         }
 
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir)
+        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
         {
             Directory.CreateDirectory(outputDir);
 
@@ -73,7 +73,7 @@ namespace RevEng.Core.Procedures
 
             var dbContextExtensionsText = GetDbContextExtensionsText();
             var dbContextExtensionsPath = Path.Combine(Path.GetDirectoryName(contextPath), "DbContextExtensions.cs");
-            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText, Encoding.UTF8);
+            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpace), Encoding.UTF8);
             additionalFiles.Add(dbContextExtensionsPath);
 
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)

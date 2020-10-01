@@ -49,6 +49,39 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
+        public static List<string> GetConfigFiles(this Project project)
+        {
+            var result = new List<string>();
+
+            var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+
+            if (string.IsNullOrEmpty(projectPath))
+            {
+                return result;
+            }
+
+            var file = Directory.GetFiles(projectPath, "efpt.config.json");
+            result.AddRange(file);
+
+            var files = Directory.GetFiles(projectPath, "efpt.*.config.json");
+            result.AddRange(files);
+            
+            return result.OrderBy(s => s).ToList();
+        }
+
+        public static string GetRenamingPath(this Project project)
+        {
+            var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+
+            if (string.IsNullOrEmpty(projectPath))
+            {
+                return null;
+            }
+
+            return Path.Combine(projectPath, "efpt.renaming.json");
+        }
+
+
         public static string GetCspProperty(this Project project, string propertyName)
         {
             var unconfiguredProject = GetUnconfiguredProject(project);

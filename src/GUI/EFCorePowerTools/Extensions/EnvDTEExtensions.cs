@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ProjectSystem;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -84,7 +85,7 @@ namespace EFCorePowerTools.Extensions
         {
 	        foreach (ProjectItem item in projectItems)
 	        {
-		        if (item.ProjectItems.Count > 0)
+		        if (item.ProjectItems?.Count > 0)
 		        {
 			        LinkedFilesSearch(item.ProjectItems, files);
 		        }
@@ -93,8 +94,8 @@ namespace EFCorePowerTools.Extensions
 		        {
 			        try
 			        {
-				        var isLink = item.Properties.Item("IsLink").Value as bool?;
-				        var extension = item.Properties.Item("Extension").Value as string;
+				        var isLink = item.Properties.Item("IsLink")?.Value as bool?;
+				        var extension = item.Properties.Item("Extension")?.Value as string;
 				        if (isLink != null && isLink.Value &&
 				            extension != null && extension.Equals(".dacpac", StringComparison.OrdinalIgnoreCase))
 				        {
