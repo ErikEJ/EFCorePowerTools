@@ -157,12 +157,10 @@
                 <CheckBox TabIndex="7"
                           Content="Pluralize or singularize generated object names (English)"
                           IsChecked="{Binding Model.UsePluralizer}"
-                          IsEnabled="{Binding Model.UseDatabaseNames, Converter={StaticResource BoolInvertConverter}}"
                           Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
                 <CheckBox TabIndex="8"
                           Content="Use table and column names directly from the database"
                           IsChecked="{Binding Model.UseDatabaseNames}"
-                          IsEnabled="{Binding Model.UsePluralizer, Converter={StaticResource BoolInvertConverter}}"
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>
