@@ -40,11 +40,13 @@ namespace RevEng.Core.Procedures
             this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions)
+        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
         {
             var result = new ScaffoldedModel();
 
             var model = procedureModelFactory.Create(connectionString);
+
+            errors = model.Errors;
 
             foreach (var procedure in model.Procedures)
             {

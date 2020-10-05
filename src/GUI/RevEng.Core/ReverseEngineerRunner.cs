@@ -92,12 +92,14 @@ namespace ReverseEngineer20.ReverseEngineer
                     ModelNamespace = modelNamespace,
                 };
 
-                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions);
+                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, ref errors);
+                
                 procedurePaths = procedureModelScaffolder.Save(
                     procedureModel,
                     Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
                     contextNamespace);
             }
+
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
 
             var scaffoldedModel = scaffolder.ScaffoldModel(

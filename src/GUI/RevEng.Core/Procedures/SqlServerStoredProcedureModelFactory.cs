@@ -21,19 +21,14 @@ namespace RevEng.Core.Procedures
 
         public ProcedureModel Create(string connectionString)
         {
-            var model = new ProcedureModel
-            {
-                Procedures = GetStoredProcedures(connectionString)
-            };
-
-            return model;
+            return GetStoredProcedures(connectionString);
         }
 
-
-        private List<Procedure> GetStoredProcedures(string connectionString)
+        private ProcedureModel GetStoredProcedures(string connectionString)
         {
             var dtResult = new DataTable();
             var result = new List<Procedure>();
+            var errors = new List<string>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -69,14 +64,17 @@ ORDER BY ROUTINE_NAME";
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Trace.WriteLine(ex);
-                        System.Diagnostics.Trace.WriteLine($"Unable to scaffold {row["ROUTINE_NAME"]}");
+                        errors.Add($"Unable to scaffold {row["ROUTINE_NAME"]}" + Environment.NewLine + ex.Message);
                         _logger?.Logger.LogWarning(ex, $"Unable to scaffold {row["ROUTINE_NAME"]}");
                     }
                 }
             }
 
-            return result;
+            return new ProcedureModel
+            {
+                Procedures = result,
+                Errors = errors,
+            };
         }
 
         private List<ProcedureParameter> GetStoredProcedureParameters(SqlConnection connection, string schema, string name)
