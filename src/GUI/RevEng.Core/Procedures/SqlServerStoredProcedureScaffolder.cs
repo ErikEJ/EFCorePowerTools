@@ -9,6 +9,7 @@ using RevEng.Core.Procedures.Scaffolding;
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,14 @@ namespace RevEng.Core.Procedures
     {
         private readonly IProcedureModelFactory procedureModelFactory;
         private readonly ICSharpHelper code;
+
+        private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
+        {
+            SqlDbType.DateTimeOffset,
+            SqlDbType.DateTime2,
+            SqlDbType.Time,
+            SqlDbType.Decimal,
+        };
 
         private IndentedStringBuilder _sb;
 
@@ -243,17 +252,24 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine($"var parameter{parameter.Name} = new SqlParameter");
             _sb.AppendLine("{");
 
+            var sqlDbType = parameter.DbType();
+
             using (_sb.Indent())
             {
                 _sb.AppendLine($"ParameterName = \"{parameter.Name}\",");
-                if (parameter.Precision > 0)
+
+                if (_scaleTypes.Contains(sqlDbType))
                 {
-                    _sb.AppendLine($"Precision = {parameter.Precision},");
+                    if (parameter.Precision > 0)
+                    {
+                        _sb.AppendLine($"Precision = {parameter.Precision},");
+                    }
+                    if (parameter.Scale > 0)
+                    {
+                        _sb.AppendLine($"Scale = {parameter.Scale},");
+                    }
                 }
-                if (parameter.Scale > 0)
-                {
-                    _sb.AppendLine($"Scale = {parameter.Scale},");
-                }
+
                 if (parameter.Length > 0)
                 {
                     _sb.AppendLine($"Size = {parameter.Length},");
@@ -264,10 +280,10 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
                 }
 
-                _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{parameter.DbType()},");
+                _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{sqlDbType},");
                 _sb.AppendLine($"Value = {parameter.Name},");
 
-                if (parameter.DbType() == System.Data.SqlDbType.Structured)
+                if (sqlDbType == System.Data.SqlDbType.Structured)
                 {
                     _sb.AppendLine($"TypeName = \"{parameter.TypeName}\",");
                 }
