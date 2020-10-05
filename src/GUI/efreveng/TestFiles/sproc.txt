@@ -29,6 +29,10 @@
          "HasPrimaryKey": true,
          "Name": "dbo.Domains"
       },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Crazy"
+      },
 	  {
          "HasPrimaryKey": false,
          "Name": "dbo.BlogsView"

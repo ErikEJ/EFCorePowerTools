@@ -717,7 +717,7 @@ ORDER BY [table_schema], [table_name], [c].[column_id]";
                     var column = new DatabaseColumn
                     {
                         Table = table,
-                        Name = columnName,
+                        Name = string.IsNullOrWhiteSpace(columnName) ? "_" : columnName,
                         StoreType = storeType,
                         IsNullable = nullable,
                         DefaultValueSql = defaultValue,
