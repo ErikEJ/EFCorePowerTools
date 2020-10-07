@@ -42,7 +42,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
             }
 
-            if (options.UseInflector)
+            if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)
                 {
