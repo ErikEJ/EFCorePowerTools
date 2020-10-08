@@ -14,7 +14,9 @@ namespace ReverseEngineer20.ReverseEngineer
         {
             var dbContextFilePath = Path.GetFullPath(dbContextPath);
 
-            var configurationsDirectoryPath = Path.GetDirectoryName(dbContextFilePath);
+            var configurationsDirectoryPath = Path.Combine(Path.GetDirectoryName(dbContextFilePath), "Configurations");
+            
+            Directory.CreateDirectory(configurationsDirectoryPath);
 
             var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
 
