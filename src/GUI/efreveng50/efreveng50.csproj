@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Security.Permissions" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RevEng.Core.50\RevEng.Core.50.csproj" />
   </ItemGroup>
 

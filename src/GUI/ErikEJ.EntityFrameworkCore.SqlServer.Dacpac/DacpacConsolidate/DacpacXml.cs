@@ -1,6 +1,6 @@
-﻿using Microsoft.Data.Tools.Schema.Sql.Packaging;
-using System;
+﻿using System;
 using System.IO;
+using System.IO.Packaging;
 using System.Text;
 
 namespace GOEddie.Dacpac.References
