@@ -220,26 +220,43 @@ namespace RevEng.Core.Procedures
 
                     var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
 
+                    var simpleExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}]\"";
+                    var fullExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)}";
+
                     if (procedure.ResultElements.Count == 0)
                     {
-                        if (procedure.Parameters.Count == 0)
+                        if (outParams.Count() > 0)
                         {
-                            _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                            if (procedure.Parameters.Count == 0)
+                            {
+                                _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({simpleExec});");
+                            }
+                            else
+                            {
+                                _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                            }
                         }
                         else
                         {
-                            _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+                            if (procedure.Parameters.Count == 0)
+                            {
+                                _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync({simpleExec});");
+                            }
+                            else
+                            {
+                                _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                            }
                         }
                     }
                     else
                     {
                         if (procedure.Parameters.Count == 0)
                         {
-                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}]\");");
+                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({simpleExec});");
                         }
                         else
                         {
-                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>(\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)});");
+                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({fullExec});");
                         }
                         _sb.AppendLine();
                     }
@@ -249,7 +266,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine($"{parameter.Name}.SetValueInternal(parameter{parameter.Name}.Value);");
                     }
 
-                    if (procedure.ResultElements.Count > 0)
+                    if (procedure.ResultElements.Count > 0 || outParams.Count() > 0)
                     {
                         _sb.AppendLine($"return result;");
                     }
@@ -294,11 +311,13 @@ namespace RevEng.Core.Procedures
                 {
                     _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
                 }
-
-                var value = parameter.Nullable ?  $"{parameter.Name} ?? Convert.DBNull": $"{parameter.Name}";
+                else
+                {
+                    var value = parameter.Nullable ? $"{parameter.Name} ?? Convert.DBNull" : $"{parameter.Name}";
+                    _sb.AppendLine($"Value = {value},");
+                }
 
                 _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{sqlDbType},");
-                _sb.AppendLine($"Value = {value},");
 
                 if (sqlDbType == System.Data.SqlDbType.Structured)
                 {
