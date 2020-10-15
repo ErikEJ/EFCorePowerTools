@@ -32,6 +32,16 @@ namespace RevEng.Core.Procedures
             SqlDbType.Decimal,
         };
 
+        private static readonly ISet<SqlDbType> _lengthRequiredTypes = new HashSet<SqlDbType>
+        {
+            SqlDbType.Binary,
+            SqlDbType.VarBinary,
+            SqlDbType.Char,
+            SqlDbType.VarChar,
+            SqlDbType.NChar,
+            SqlDbType.NVarChar,
+        };
+
         private IndentedStringBuilder _sb;
 
         public SqlServerStoredProcedureScaffolder(IProcedureModelFactory procedureModelFactory, [NotNull] ICSharpHelper code)
@@ -272,9 +282,12 @@ namespace RevEng.Core.Procedures
                     }
                 }
 
-                if (parameter.Length > 0)
+                if (_lengthRequiredTypes.Contains(sqlDbType))
                 {
-                    _sb.AppendLine($"Size = {parameter.Length},");
+                    if (parameter.Length > 0)
+                    {
+                        _sb.AppendLine($"Size = {parameter.Length},");
+                    }
                 }
 
                 if (parameter.Output)
@@ -282,8 +295,10 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
                 }
 
+                var value = parameter.Nullable ?  $"{parameter.Name} ?? Convert.DBNull": $"{parameter.Name}";
+
                 _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{sqlDbType},");
-                _sb.AppendLine($"Value = {parameter.Name},");
+                _sb.AppendLine($"Value = {value},");
 
                 if (sqlDbType == System.Data.SqlDbType.Structured)
                 {
