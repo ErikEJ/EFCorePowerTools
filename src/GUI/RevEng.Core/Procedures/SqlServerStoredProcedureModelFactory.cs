@@ -128,6 +128,16 @@ SELECT
                 result.Add(parameter);
             }
 
+            // Add parameter to hold the standard return value
+            result.Add(new ProcedureParameter()
+            {
+                Name = "returnValue",
+                StoreType = "int",
+                Ordinal = int.MaxValue,
+                Output = true,
+                Nullable = false,
+            });
+
             return result;
         }
 

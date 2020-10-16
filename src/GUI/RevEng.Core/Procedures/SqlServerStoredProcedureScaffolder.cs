@@ -168,36 +168,35 @@ namespace RevEng.Core.Procedures
 
         private void GenerateProcedure(Procedure procedure, ProcedureModel model)
         {
+            var paramStrings = procedure.Parameters.Where(p => !p.Output)
+                .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
+            var paramNames = procedure.Parameters
+                .Select(p => $"parameter{p.Name}");
+            var paramProcNames = procedure.Parameters.Where(p => !p.Output)
+                .Select(p => $"@{p.Name}");
+
+            var outParams = procedure.Parameters.Where(p => p.Output).ToList();
+            var retValueName = outParams.Last().Name;
+
+            outParams.RemoveAt(outParams.Count - 1);
+            
+            var outparamProcNames = outParams
+                .Select(p => $"@{p.Name} OUTPUT");
+            var outParamStrings = outParams
+                .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}")
+                .ToList();
+            
+            var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
+
+            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramProcNames)}{outProcs} {string.Join(", ", outparamProcNames)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
+
+            var identifier = GenerateIdentifierName(procedure, model);
+
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier);
+
             using (_sb.Indent())
             {
                 _sb.AppendLine();
-
-                var inParams = procedure.Parameters.Where(p => !p.Output);
-                var outParams = procedure.Parameters.Where(p => p.Output);
-
-                var paramStrings = inParams
-                    .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
-
-                var outParamStrings = outParams
-                    .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}");
-
-                string line;
-
-                var identifier = GenerateIdentifierName(procedure, model);
-
-                if (procedure.ResultElements.Count == 0)
-                {
-                    line = $"public async Task<int> {identifier}({string.Join(", ", paramStrings)}";
-                }
-                else
-                {
-                    line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
-                }
-
-                if (outParamStrings.Count() > 0)
-                {
-                    line += $", {string.Join(", ", outParamStrings)}";
-                }
 
                 _sb.AppendLine($"{line})");
                 _sb.AppendLine("{");
@@ -209,71 +208,71 @@ namespace RevEng.Core.Procedures
                         GenerateParameters(parameter);
                     }
 
-                    var paramNames = procedure.Parameters
-                        .Select(p => $"parameter{p.Name}");
-
-                    var paramProcNames = inParams
-                        .Select(p => $"@{p.Name}");
-
-                    var outparamProcNames = outParams
-                        .Select(p => $"@{p.Name} OUTPUT");
-
-                    var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
-
-                    var simpleExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}]\"";
-                    var fullExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramProcNames)}{outProcs} {string.Join(", ", outparamProcNames)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
-
                     if (procedure.ResultElements.Count == 0)
                     {
                         if (outParams.Count() > 0)
                         {
-                            if (procedure.Parameters.Count == 0)
-                            {
-                                _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({simpleExec});");
-                            }
-                            else
-                            {
-                                _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
-                            }
+                            _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                         }
                         else
                         {
-                            if (procedure.Parameters.Count == 0)
-                            {
-                                _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync({simpleExec});");
-                            }
-                            else
-                            {
-                                _sb.AppendLine($"return await _context.Database.ExecuteSqlRawAsync({fullExec});");
-                            }
+                            _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                         }
                     }
                     else
                     {
-                        if (procedure.Parameters.Count == 0)
-                        {
-                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({simpleExec});");
-                        }
-                        else
-                        {
-                            _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({fullExec});");
-                        }
-                        _sb.AppendLine();
+                        _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({fullExec});");
                     }
+
+                    _sb.AppendLine();
 
                     foreach (var parameter in outParams)
                     {
-                        _sb.AppendLine($"{parameter.Name}.SetValueInternal(parameter{parameter.Name}.Value);");
+                        _sb.AppendLine($"{parameter.Name}.SetValue(parameter{parameter.Name}.Value);");
                     }
 
-                    if (procedure.ResultElements.Count > 0 || outParams.Count() > 0)
-                    {
-                        _sb.AppendLine($"return result;");
-                    }
+                    _sb.AppendLine($"{retValueName}?.SetValue(parameter{retValueName}.Value);");
+
+                    _sb.AppendLine();
+
+                    _sb.AppendLine("return result;");
                 }
 
                 _sb.AppendLine("}");
             }
+        }
+
+        private static string GenerateMethodSignature(Procedure procedure, List<ProcedureParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        {
+            string line;
+
+            if (procedure.ResultElements.Count == 0)
+            {
+                line = $"public async Task<int> {identifier}({string.Join(", ", paramStrings)}";
+            }
+            else
+            {
+                line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
+            }
+
+            if (outParams.Count() > 0)
+            {
+                if (paramStrings.Count() > 0)
+                {
+                    line += ", ";
+                }
+
+                line += $"{string.Join(", ", outParamStrings)}";
+            }
+
+            if (paramStrings.Count() > 0 || outParams.Count > 0)
+            {
+                line += ", ";
+            }
+
+            line += $"OutputParameter<int> {retValueName} = null";
+            
+            return line;
         }
 
         private void GenerateParameters(ProcedureParameter parameter)
