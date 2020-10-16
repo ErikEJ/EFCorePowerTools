@@ -187,16 +187,16 @@ namespace RevEng.Core.Procedures
 
                 if (procedure.ResultElements.Count == 0)
                 {
-                    line = $"public async Task<int> {identifier}({string.Join(',', paramStrings)}";
+                    line = $"public async Task<int> {identifier}({string.Join(", ", paramStrings)}";
                 }
                 else
                 {
-                    line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(',', paramStrings)}";
+                    line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
                 }
 
                 if (outParamStrings.Count() > 0)
                 {
-                    line += $", {string.Join(',', outParamStrings)}";
+                    line += $", {string.Join(", ", outParamStrings)}";
                 }
 
                 _sb.AppendLine($"{line})");
@@ -221,7 +221,7 @@ namespace RevEng.Core.Procedures
                     var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
 
                     var simpleExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}]\"";
-                    var fullExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(',', paramProcNames)}{outProcs} {string.Join(',', outparamProcNames)} \",{string.Join(',', paramNames)}";
+                    var fullExec = $"\"EXEC [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramProcNames)}{outProcs} {string.Join(", ", outparamProcNames)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
 
                     if (procedure.ResultElements.Count == 0)
                     {
@@ -299,12 +299,9 @@ namespace RevEng.Core.Procedures
                     }
                 }
 
-                if (_lengthRequiredTypes.Contains(sqlDbType))
+                if (parameter.Length > 0 && _lengthRequiredTypes.Contains(sqlDbType))
                 {
-                    if (parameter.Length > 0)
-                    {
-                        _sb.AppendLine($"Size = {parameter.Length},");
-                    }
+                    _sb.AppendLine($"Size = {parameter.Length},");
                 }
 
                 if (parameter.Output)
