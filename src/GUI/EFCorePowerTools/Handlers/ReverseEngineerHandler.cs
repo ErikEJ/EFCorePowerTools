@@ -43,7 +43,7 @@ namespace EFCorePowerTools.Handlers
 
                 var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
                 var optionsPaths = project.GetConfigFiles();
-                var optionsPath = optionsPaths.FirstOrDefault();
+                var optionsPath = optionsPaths.First();
                 var renamingPath = project.GetRenamingPath();
 
                 if (optionsPaths.Count > 1)
