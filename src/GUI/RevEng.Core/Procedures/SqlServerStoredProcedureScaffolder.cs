@@ -210,14 +210,7 @@ namespace RevEng.Core.Procedures
 
                     if (procedure.ResultElements.Count == 0)
                     {
-                        if (outParams.Count() > 0)
-                        {
-                            _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
-                        }
-                        else
-                        {
-                            _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
-                        }
+                        _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
                     else
                     {

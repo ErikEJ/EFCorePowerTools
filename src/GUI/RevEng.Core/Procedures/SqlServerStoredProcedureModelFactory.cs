@@ -119,10 +119,9 @@ SELECT
                     Length = par["Length"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Length"].ToString()),
                     Precision = par["Precision"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()),
                     Scale = par["Scale"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()),
-                    Ordinal = int.Parse(par["Order"].ToString()),
                     Output = (bool)par["output"],
                     Nullable = (bool)par["nullable"],
-                    TypeName = par["TypeName"].ToString()
+                    TypeName = par["TypeName"].ToString(),
                 };
 
                 result.Add(parameter);
@@ -133,7 +132,6 @@ SELECT
             {
                 Name = "returnValue",
                 StoreType = "int",
-                Ordinal = int.MaxValue,
                 Output = true,
                 Nullable = false,
             });
@@ -174,6 +172,5 @@ SELECT
 
             return result;
         }
-
     }
 }
