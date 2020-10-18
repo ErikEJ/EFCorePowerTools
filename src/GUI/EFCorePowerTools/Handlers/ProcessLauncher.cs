@@ -8,6 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers
@@ -27,12 +28,28 @@ namespace EFCorePowerTools.Handlers
 
         public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            return Task.Factory.StartNew(() => GetOutput(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace));
+            TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            return Task.Factory.StartNew(
+                () =>
+                {
+                    return GetOutput(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                uiScheduler);
         }
 
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
-            return Task.Factory.StartNew(() => GetOutput(outputPath, null, generationType, contextName, null, null));
+            TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            return Task.Factory.StartNew(
+                () =>
+                {
+                    return GetOutput(outputPath, null, generationType, contextName, null, null);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                uiScheduler);
         }
 
         public string GetOutput(string outputPath, GenerationType generationType, string contextName)

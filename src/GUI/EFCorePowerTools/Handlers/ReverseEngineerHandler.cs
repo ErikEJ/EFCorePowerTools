@@ -28,7 +28,7 @@ namespace EFCorePowerTools.Handlers
             reverseEngineerHelper = new ReverseEngineerHelper();
         }
 
-        public async void ReverseEngineerCodeFirst(Project project)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
         {
             try
             {
@@ -306,6 +306,8 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
+                var duration = DateTime.Now - startTime;
+
                 var missingProviderPackage = packageResult.Item1 ? null : packageResult.Item2;
                 if (modelingOptionsResult.Payload.InstallNuGetPackage || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
@@ -323,7 +325,7 @@ namespace EFCorePowerTools.Handlers
                     var nuGetHelper = new NuGetHelper();
                     await nuGetHelper.InstallPackageAsync(packageResult.Item2, project);
                 }
-                var duration = DateTime.Now - startTime;
+
                 _package.Dte2.StatusBar.Text = $"Reverse engineer completed in {duration:h\\:mm\\:ss}";
 
                 EnvDteHelper.ShowMessage(errors);

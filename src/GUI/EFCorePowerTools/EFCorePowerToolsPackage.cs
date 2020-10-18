@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -79,83 +78,85 @@ namespace EFCorePowerTools
             {
                 var menuCommandId3 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDgmlBuild);
-                var menuItem3 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId3);
+                var menuItem3 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId3);
                 oleMenuCommandService.AddCommand(menuItem3);
 
                 var menuCommandId4 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidReverseEngineerDgml);
-                var menuItem4 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId4);
+                var menuItem4 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId4);
                 oleMenuCommandService.AddCommand(menuItem4);
 
                 var menuCommandId5 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
-                var menuItem5 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId5);
+                var menuItem5 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId5);
                 oleMenuCommandService.AddCommand(menuItem5);
 
                 var menuCommandId7 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidAbout);
-                var menuItem7 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId7);
+                var menuItem7 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId7);
                 oleMenuCommandService.AddCommand(menuItem7);
 
                 var menuCommandId8 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDgmlNuget);
-                var menuItem8 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId8);
+                var menuItem8 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId8);
                 oleMenuCommandService.AddCommand(menuItem8);
 
                 var menuCommandId9 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                    (int)PkgCmdIDList.cmdidSqlBuild);
-                var menuItem9 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId9);
+                var menuItem9 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId9);
                 oleMenuCommandService.AddCommand(menuItem9);
 
                 var menuCommandId10 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDebugViewBuild);
-                var menuItem10 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId10);
+                var menuItem10 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId10);
                 oleMenuCommandService.AddCommand(menuItem10);
 
                 var menuCommandId11 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidMigrationStatus);
-                var menuItem11 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                    OnProjectMenuBeforeQueryStatus, menuCommandId11);
+                var menuItem11 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId11);
                 oleMenuCommandService.AddCommand(menuItem11);
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
         }
 
-        private void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
+        private System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
         {
             var menuCommand = sender as MenuCommand;
 
             if (menuCommand == null)
             {
-                return;
+                return System.Threading.Tasks.Task.CompletedTask;
             }
 
             if (_dte2.SelectedItems.Count != 1)
             {
-                return;
+                return System.Threading.Tasks.Task.CompletedTask;
             }
 
             var project = _dte2.SelectedItems.Item(1).Project;
 
             if (project == null)
             {
-                return;
+                return System.Threading.Tasks.Task.CompletedTask;
             }
 
             menuCommand.Visible =
                 project.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" ||
                 project.Kind == "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"; // csproj
+            
+            return System.Threading.Tasks.Task.CompletedTask;
         }
 
-        private void OnProjectContextMenuInvokeHandler(object sender, EventArgs e)
+        private async System.Threading.Tasks.Task OnProjectContextMenuInvokeHandlerAsync(object sender, EventArgs e)
         {
             var menuCommand = sender as MenuCommand;
             if (menuCommand == null || _dte2.SelectedItems.Count != 1)
@@ -181,7 +182,7 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
-                _reverseEngineerHandler.ReverseEngineerCodeFirst(project);
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDgml)
             {
@@ -189,7 +190,7 @@ namespace EFCorePowerTools
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
             {
-                _dgmlNugetHandler.InstallDgmlNuget(project);
+                await _dgmlNugetHandler.InstallDgmlNugetAsync(project);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
             {
@@ -311,8 +312,6 @@ namespace EFCorePowerTools
                 EnvDteHelper.ShowError(exception.ToString());
             }
         }
-
-        private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], CultureInfo.InvariantCulture), 0);
 
         internal T GetService<T>()
             where T : class

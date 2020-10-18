@@ -18,7 +18,15 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         public Task InstallPackageAsync(string packageId, Project project, CancellationToken ct = default(CancellationToken))
         {
-            return Task.Factory.StartNew(() => InstallPackage(packageId, project), ct); 
+            TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            return Task.Factory.StartNew(
+                () =>
+                {
+                    InstallPackage(packageId, project);
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                uiScheduler);
         }
     }
 }
