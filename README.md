@@ -20,7 +20,7 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 # Downloads/builds
 
-**Requiremnts** 
+**Requirements** 
 
 .NET Framework 4.7.1 or later is required. For EF Core reverse engineering, .NET Core 3.1 x64 runtime must be installed.
 
