@@ -142,8 +142,8 @@
 
             Title = baseTitle;
 
-            LoadedCommand = new RelayCommand(async () => await Loaded_Executed());
-            _applyCommand = new RelayCommand(async () => await Apply_Executed(), () => !_applying);
+            LoadedCommand = new RelayCommand(async () => await Loaded_ExecutedAsync());
+            _applyCommand = new RelayCommand(async () => await Apply_ExecutedAsync(), () => !_applying);
             CancelCommand = new RelayCommand(Cancel_Executed);
 
             _progressIcon = (short)Constants.SBAI_Build;
@@ -259,7 +259,7 @@
             UpdateStatusList(result);
         }
 
-        private async Task GetMigrationStatus()
+        private async Task GetMigrationStatusAsync()
         {
             try
             {
@@ -287,7 +287,7 @@
             }
         }
 
-        private async Task<bool> AddMigration()
+        private async Task<bool> AddMigrationAsync()
         {
             if (string.IsNullOrEmpty(MigrationName))
             {
@@ -325,7 +325,7 @@
             return true;
         }
 
-        private async Task<bool> UpdateDatabase()
+        private async Task<bool> UpdateDatabaseAsync()
         {
             _visualStudioAccess.SetStatusBarText($"Updating Database from migrations in DbContext {SelectedStatusKey}");
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationApply, SelectedStatusKey);
@@ -336,7 +336,7 @@
 
         }
 
-        private async Task<bool> ScriptMigration()
+        private async Task<bool> ScriptMigrationAsync()
         {
             _visualStudioAccess.SetStatusBarText($"Scripting migrations in DbContext {SelectedStatusKey}");
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationScript, SelectedStatusKey);
@@ -356,17 +356,17 @@
             return true;
         }
 
-        private async Task Loaded_Executed()
+        private async Task Loaded_ExecutedAsync()
         {
             HideInformation();
 
-            await GetMigrationStatus();
+            await GetMigrationStatusAsync();
             if (StatusList != null && StatusList.Count > 0) return;
 
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
 
-        private async Task Apply_Executed()
+        private async Task Apply_ExecutedAsync()
         {
             try
             {
@@ -382,20 +382,20 @@
                 {
                     case "NoMigrations":
                     case "Changes":
-                        success = await AddMigration();
+                        success = await AddMigrationAsync();
                         break;
                     case "Pending":
-                        success = await UpdateDatabase();
+                        success = await UpdateDatabaseAsync();
                         break;
                     case "InSync":
-                        success = await ScriptMigration();
+                        success = await ScriptMigrationAsync();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(selectedStatusValue));
                 }
 
                 if (success)
-                    await GetMigrationStatus();
+                    await GetMigrationStatusAsync();
             }
             catch (Exception e)
             {

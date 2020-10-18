@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Usage", "VSTHRD101:Avoid unsupported async delegates", Justification = "<Pending>", Scope = "member", Target = "~M:EFCorePowerTools.EFCorePowerToolsPackage.InitializeAsync(System.Threading.CancellationToken,System.IProgress{Microsoft.VisualStudio.Shell.ServiceProgressData})~System.Threading.Tasks.Task")]
+[assembly: SuppressMessage("Usage", "VSTHRD101:Avoid unsupported async delegates", Justification = "<Pending>", Scope = "member", Target = "~M:EFCorePowerTools.ViewModels.MigrationOptionsViewModel.#ctor(EFCorePowerTools.Shared.DAL.IVisualStudioAccess)")]

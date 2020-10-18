@@ -87,12 +87,12 @@ namespace EFCorePowerTools.Extensions
         }
 
 
-        public static string GetCspProperty(this Project project, string propertyName)
+        public static async System.Threading.Tasks.Task<string> GetCspPropertyAsync(this Project project, string propertyName)
         {
             var unconfiguredProject = GetUnconfiguredProject(project);
-            var configuredProject = unconfiguredProject.GetSuggestedConfiguredProjectAsync().Result;
+            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync();
             var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            return properties.GetEvaluatedPropertyValueAsync(propertyName).Result;
+            return await properties.GetEvaluatedPropertyValueAsync(propertyName);
         }
 
         private static UnconfiguredProject GetUnconfiguredProject(EnvDTE.Project project)
@@ -137,14 +137,14 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(false, providerPackage);
         }
 
-        public static Tuple<bool, string> ContainsEfCoreDesignReference(this Project project)
+        public static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsEfCoreDesignReferenceAsync(this Project project)
         {
             var designPackage = "Microsoft.EntityFrameworkCore.Design";
             var corePackage = "Microsoft.EntityFrameworkCore";
 
             bool hasDesign = false;
             string coreVersion = string.Empty;
-            var projectAssetsFile = project.GetCspProperty("ProjectAssetsFile");
+            var projectAssetsFile = await project.GetCspPropertyAsync("ProjectAssetsFile");
 
             if (projectAssetsFile != null && File.Exists(projectAssetsFile))
             {

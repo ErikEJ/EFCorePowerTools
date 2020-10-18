@@ -8,7 +8,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers
@@ -28,33 +27,12 @@ namespace EFCorePowerTools.Handlers
 
         public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            return Task.Factory.StartNew(
-                () =>
-                {
-                    return GetOutput(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
-                },
-                CancellationToken.None,
-                TaskCreationOptions.None,
-                uiScheduler);
+                return GetOutputInternalAsync(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
         }
 
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
-            TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            return Task.Factory.StartNew(
-                () =>
-                {
-                    return GetOutput(outputPath, null, generationType, contextName, null, null);
-                },
-                CancellationToken.None,
-                TaskCreationOptions.None,
-                uiScheduler);
-        }
-
-        public string GetOutput(string outputPath, GenerationType generationType, string contextName)
-        {
-            return GetOutput(outputPath, null, generationType, contextName, null, null);
+                return GetOutputInternalAsync(outputPath, null, generationType, contextName, null, null);
         }
 
         public List<Tuple<string, string>> BuildModelResult(string modelInfo)
@@ -76,9 +54,9 @@ namespace EFCorePowerTools.Handlers
             return result;
         }
 
-        private string GetOutput(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        private async Task<string> GetOutputInternalAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = _project.IsNetCore22OrHigher() ? DropNetCoreFiles(outputPath) : DropNetFXFiles(outputPath);
+            var launchPath = _project.IsNetCore22OrHigher() ? await DropNetCoreFilesAsync(outputPath) : DropNetFXFiles(outputPath);
 
             if (_project.IsNetCore30OrHigher() && outputPath.EndsWith(".exe"))
             {
@@ -127,8 +105,8 @@ namespace EFCorePowerTools.Handlers
                 var depsFile =  fileRoot + ".deps.json";
                 var runtimeConfig = fileRoot + ".runtimeconfig.json";
 
-                var projectAssetsFile = _project.GetCspProperty("ProjectAssetsFile");
-                var runtimeFrameworkVersion = _project.GetCspProperty("RuntimeFrameworkVersion");
+                var projectAssetsFile = await _project.GetCspPropertyAsync("ProjectAssetsFile");
+                var runtimeFrameworkVersion = await _project.GetCspPropertyAsync("RuntimeFrameworkVersion");
 
                 var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
 
@@ -180,9 +158,9 @@ namespace EFCorePowerTools.Handlers
             {
                 while (process != null && !process.HasExited)
                 {
-                    standardOutput.Append(process.StandardOutput.ReadToEnd());
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
-                if (process != null) standardOutput.Append(process.StandardOutput.ReadToEnd());
+                if (process != null) standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
             }
             return standardOutput.ToString();
         }
@@ -241,7 +219,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private string DropNetCoreFiles(string outputPath)
+        private async Task<string> DropNetCoreFilesAsync(string outputPath)
         {
             var toDir = Path.Combine(Path.GetTempPath(), "efpt");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -262,7 +240,7 @@ namespace EFCorePowerTools.Handlers
             }
             else if (_project.IsNetCore30OrHigher())
             {
-                var versionInfo = _project.ContainsEfCoreDesignReference();
+                var versionInfo = await _project.ContainsEfCoreDesignReferenceAsync();
 
                 if (versionInfo.Item2.StartsWith("5.", StringComparison.OrdinalIgnoreCase))
                 {

@@ -169,7 +169,7 @@
                                                : null;
         }
 
-        private async void HandleSearchTextChangeAsync(string text)
+        private async Task HandleSearchTextChangeAsync(string text)
         {
             await Task.Delay(500); // Add a delay (like a debounce) so that not every character change triggers a search
             if (text != SearchText)

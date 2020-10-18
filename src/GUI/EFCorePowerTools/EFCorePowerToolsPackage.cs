@@ -194,19 +194,19 @@ namespace EFCorePowerTools
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
             {
-                _modelAnalyzerHandler.Generate(path, project, GenerationType.Dgml);
+                await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild)
             {
-                _modelAnalyzerHandler.Generate(path, project, GenerationType.Ddl);
+                await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Ddl);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild)
             {
-                _modelAnalyzerHandler.Generate(path, project, GenerationType.DebugView);
+                await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.DebugView);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
             {
-                _migrationsHandler.ManageMigrations(path, project);
+                await _migrationsHandler.ManageMigrationsAsync(path, project);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
             {

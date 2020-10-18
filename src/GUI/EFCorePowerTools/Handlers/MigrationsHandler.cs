@@ -18,7 +18,7 @@ namespace EFCorePowerTools.Handlers
             _package = package;
         }
 
-        public void ManageMigrations(string outputPath, Project project)
+        public async System.Threading.Tasks.Task ManageMigrationsAsync(string outputPath, Project project)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (project.IsNetCore())
                 {
-                    var result = project.ContainsEfCoreDesignReference();
+                    var result = await project.ContainsEfCoreDesignReferenceAsync();
 
                     if (string.IsNullOrEmpty(result.Item2))
                     {

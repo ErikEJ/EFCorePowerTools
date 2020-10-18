@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Handlers
             _package = package;
         }
 
-        public void Generate(string outputPath, Project project, GenerationType generationType)
+        public async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (project.IsNetCore())
                 {
-                    var result = project.ContainsEfCoreDesignReference();
+                    var result = await project.ContainsEfCoreDesignReferenceAsync();
                     if (string.IsNullOrEmpty(result.Item2))
                     {
                         EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
@@ -66,7 +66,7 @@ namespace EFCorePowerTools.Handlers
 
                 var processLauncher = new ProcessLauncher(project);
 
-                var processResult = processLauncher.GetOutput(outputPath, generationType, null);
+                var processResult = await processLauncher.GetOutputAsync(outputPath, generationType, null);
 
                 if (string.IsNullOrEmpty(processResult))
                 {
