@@ -28,17 +28,28 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public bool HasSqlServerViewDefinitionRights(string connectionString)
+        public Tuple<bool, Version> HasSqlServerViewDefinitionRightsAndVersion(string connectionString)
         {
+            var hasRights = false;
+            var version = new Version(12, 0);
             using (var connection = new SqlConnection(connectionString))
             {
+                connection.Open();
+                
                 using (var command = new SqlCommand("SELECT HAS_PERMS_BY_NAME(NULL, 'DATABASE', 'VIEW DEFINITION');", connection))
                 {
-                    connection.Open();
                     var result = (int)command.ExecuteScalar();
-                    return Convert.ToBoolean(result);
+                    hasRights = Convert.ToBoolean(result);
+                }
+
+                using (var command = new SqlCommand("SELECT SERVERPROPERTY('ProductVersion');", connection))
+                {
+                    var result = (string)command.ExecuteScalar();
+                    version = new Version(result);
                 }
             }
+
+            return new Tuple<bool, Version>(hasRights, version);
         }
 
         public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)

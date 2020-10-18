@@ -119,15 +119,17 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                if (dbInfo.DatabaseType == DatabaseType.SQLCE35)
+                if (dbInfo.DatabaseType == DatabaseType.SQLCE35 || dbInfo.DatabaseType == DatabaseType.SQLCE40)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider: {dbInfo.ServerVersion}");
                     return;
                 }
 
-                if (dbInfo.DatabaseType == DatabaseType.SQLCE40)
+                //TODO Enable when released
+                if (useEFCore5 && (dbInfo.DatabaseType == DatabaseType.Mysql
+                    || dbInfo.DatabaseType == DatabaseType.Oracle))
                 {
-                    EnvDteHelper.ShowError($"Unsupported provider with EF Core 3.0: {dbInfo.DatabaseType}");
+                    EnvDteHelper.ShowError($"Unsupported provider with EF Core 5.0: {dbInfo.DatabaseType}");
                     return;
                 }
 
@@ -232,11 +234,16 @@ namespace EFCorePowerTools.Handlers
                 if (options.DatabaseType == DatabaseType.SQLServer
                     && string.IsNullOrEmpty(options.Dacpac))
                 {
-                    var hasRights = reverseEngineerHelper.HasSqlServerViewDefinitionRights(options.ConnectionString);
+                    var rightsAndVersion = reverseEngineerHelper.HasSqlServerViewDefinitionRightsAndVersion(options.ConnectionString);
 
-                    if (hasRights == false)
+                    if (rightsAndVersion.Item1 == false)
                     {
                         EnvDteHelper.ShowMessage("The SQL Server user does not have 'VIEW DEFINITION' rights, default constraints may not be available.");        
+                    }
+
+                    if (rightsAndVersion.Item2.Major < 11)
+                    {
+                        EnvDteHelper.ShowMessage($"SQL Server version {rightsAndVersion.Item2} may not be supported.");
                     }
                 }
 
