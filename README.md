@@ -9,7 +9,9 @@ Hopes to lower the bar for getting started with EF Core, by providing GUI based 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
-Demo video [![Demo at EF Core Community Standup](https://img.youtube.com/vi/OWuP_qOYwsk/0.jpg)](https://www.youtube.com/watch?v=OWuP_qOYwsk "Demo")
+Demo video
+
+[![Demo at EF Core Community Standup](https://img.youtube.com/vi/OWuP_qOYwsk/1.jpg)](https://www.youtube.com/watch?v=OWuP_qOYwsk "Demo")
 
 [EF Core Power Tools presentation](https://erikej.github.io/EFCorePowerTools/index.html)
 
