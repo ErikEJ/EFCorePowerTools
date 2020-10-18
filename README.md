@@ -18,6 +18,8 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 [Getting started and user guide](https://github.com/ErikEJ/EFCorePowerTools/wiki)
 
+[Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes)
+
 # Downloads/builds
 
 ## Requirements 
