@@ -20,17 +20,17 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 # Downloads/builds
 
-**Requirements** 
+## Requirements 
 
 .NET Framework 4.7.1 or later is required. For EF Core reverse engineering, .NET Core 3.1 x64 runtime must be installed.
 
-**Release**
+## Release
 
 Download the latest version of the Visual Studio extension from [Visual Studio MarketPlace](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
 
-Or just install from Tools, Extensions and Updates in Visual Studio! ![](https://github.com/ErikEJ/SqlCeToolbox/blob/master/img/ext.png)
+Or just install from the Extensions dialog in Visual Studio.
 
-**Daily build**
+## Daily build
 
 You can download the daily build from [Open VSIX Gallery](https://www.vsixgallery.com/extension/f4c4712c-ceae-4803-8e52-0e2049d5de9f)
 
@@ -38,9 +38,8 @@ Ensure you always have the latest daily build (if you are brave) by installing [
 
 # How do I contribute
 
-If you encounter a bug or have a feature request, please use the [Issue Tracker](https://github.com/ErikEJ/EFCorePowerTools/issues/new). The project is also open for pull requests folliwng standard pull request guidelines
+If you encounter a bug or have a feature request, please use the [Issue Tracker](https://github.com/ErikEJ/EFCorePowerTools/issues/new). The project is also open for pull requests following [standard pull request guidelines](https://github.com/dotnet/aspnetcore/blob/master/CONTRIBUTING.md#identifying-the-scale)
 
 # Building and debugging
 
-To build and debug, run latest version of Visual Studio with the "Visual Studio extension development workload" installed - as Administrator. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, x86 (not AnyCPU).
-
+To build and debug, run latest version of Visual Studio as Administrator with the "Visual Studio extension development workload" installed. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, x86 (not AnyCPU).
