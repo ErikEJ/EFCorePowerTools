@@ -12,7 +12,7 @@
         private bool _installNuGetPackage;
         private int _selectedToBeGenerated;
         private bool _includeConnectionString;
-        private bool _useHandelbars;
+        private bool _useHandlebars;
         private int _selectedHandlebarsLanguage;
         private bool _usePluralizer;
         private bool _useDatabaseNames;
@@ -152,13 +152,13 @@
             }
         }
 
-        public bool UseHandelbars
+        public bool UseHandlebars
         {
-            get => _useHandelbars;
+            get => _useHandlebars;
             set
             {
-                if (value == _useHandelbars) return;
-                _useHandelbars = value;
+                if (value == _useHandlebars) return;
+                _useHandlebars = value;
                 OnPropertyChanged();
             }
         }

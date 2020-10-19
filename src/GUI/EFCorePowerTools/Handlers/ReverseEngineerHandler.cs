@@ -175,7 +175,7 @@ namespace EFCorePowerTools.Handlers
                     presets.UseDatabaseNames = options.UseDatabaseNames;
                     presets.UsePluralizer = options.UseInflector;
                     presets.UseDbContextSplitting = options.UseDbContextSplitting;
-                    presets.UseHandelbars = options.UseHandleBars;
+                    presets.UseHandlebars = options.UseHandleBars;
                     presets.SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage;
                     presets.IncludeConnectionString = options.IncludeConnectionString;
                     presets.ModelName = options.ContextClassName;
@@ -219,7 +219,7 @@ namespace EFCorePowerTools.Handlers
                     UseNodaTime = modelingOptionsResult.Payload.MapNodaTimeTypes,
                     UseStoredProcedures = modelingOptionsResult.Payload.UseStoredProcedures,
                     UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting,
-                    UseHandleBars = modelingOptionsResult.Payload.UseHandelbars,
+                    UseHandleBars = modelingOptionsResult.Payload.UseHandlebars,
                     SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage,
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
                     SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated,
@@ -250,9 +250,9 @@ namespace EFCorePowerTools.Handlers
                 var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
                 bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.");
 
-                if (modelingOptionsResult.Payload.UseHandelbars)
+                if (modelingOptionsResult.Payload.UseHandlebars)
                 {
-                    var dropped = (DropTemplates(projectPath));
+                    var dropped = (DropTemplates(projectPath, useEFCore5));
                     if (dropped && !project.IsNetCore() && !isNetStandard)
                     {
                         project.ProjectItems.AddFromDirectory(Path.Combine(projectPath, "CodeTemplates"));
@@ -362,15 +362,17 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private bool DropTemplates(string projectPath)
+        private bool DropTemplates(string projectPath, bool useEFCore5)
         {
+            var zipName = useEFCore5 ? "CodeTemplates5.zip" : "CodeTemplates.zip";
+
             var toDir = Path.Combine(projectPath, "CodeTemplates");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             if (!Directory.Exists(toDir))
             {
                 Directory.CreateDirectory(toDir);
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "CodeTemplates.zip"), toDir);
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, zipName), toDir);
                 return true;
             }
 

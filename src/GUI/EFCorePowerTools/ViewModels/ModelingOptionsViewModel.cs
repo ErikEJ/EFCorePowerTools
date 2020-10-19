@@ -142,7 +142,7 @@ namespace EFCorePowerTools.ViewModels
             Model.SelectedToBeGenerated = presets.SelectedToBeGenerated;
             Model.SelectedHandlebarsLanguage = presets.SelectedHandlebarsLanguage;
             Model.IncludeConnectionString = presets.IncludeConnectionString;
-            Model.UseHandelbars = presets.UseHandelbars;
+            Model.UseHandlebars = presets.UseHandlebars;
             Model.UsePluralizer = presets.UsePluralizer;
             Model.UseDatabaseNames = presets.UseDatabaseNames;
             Model.Namespace = presets.Namespace;

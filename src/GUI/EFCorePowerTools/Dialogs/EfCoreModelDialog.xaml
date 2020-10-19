@@ -176,7 +176,7 @@
             <CheckBox TabIndex="11"
                       Name="UseHandlebarsCheckbox"
                       Content="Customize code using Handlebars templates"
-                      IsChecked="{Binding Model.UseHandelbars}"
+                      IsChecked="{Binding Model.UseHandlebars}"
                       Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
             <ComboBox TabIndex="11"
                       ItemsSource="{Binding HandlebarsLanguageList}"

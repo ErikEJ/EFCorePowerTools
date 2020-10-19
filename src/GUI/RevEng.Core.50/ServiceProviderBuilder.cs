@@ -1,4 +1,5 @@
-﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+﻿using EntityFrameworkCore.Scaffolding.Handlebars;
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -30,16 +31,18 @@ namespace ReverseEngineer20.ReverseEngineer
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
             }
 
-            if (options.UseInflector || options.UseLegacyPluralizer)
+            if (options.UseHandleBars)
             {
-                if (options.UseLegacyPluralizer)
-                {
-                    serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
-                }
-                else
-                {
-                    serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
-                }
+                //TODO Consider being selective based on SelectedToBeGenerated
+                var selected = ReverseEngineerOptions.DbContextAndEntities;
+                var language = (LanguageOptions)options.SelectedHandlebarsLanguage;
+                serviceCollection.AddHandlebarsScaffolding(selected, language);
+                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
+            }
+
+            if (options.UseLegacyPluralizer)
+            {
+                serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
             }
 
             // Add database provider services

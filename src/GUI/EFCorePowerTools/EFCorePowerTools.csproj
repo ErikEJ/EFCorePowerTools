@@ -218,6 +218,9 @@
       <Link>efreveng50.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="CodeTemplates5.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="efpt.renaming.json" />
     <Content Include="efpt\2.2.0\efpt.exe.config">
       <IncludeInVSIX>true</IncludeInVSIX>

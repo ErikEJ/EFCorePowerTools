@@ -12,8 +12,8 @@
 
   <ItemGroup>
     <Compile Include="..\RevEng.Core\Check.cs" Link="Check.cs" />
+    <Compile Include="..\RevEng.Core\CustomTemplateFileService.cs" Link="CustomTemplateFileService.cs" />
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
-    <Compile Include="..\RevEng.Core\HumanizerPluralizer.cs" Link="HumanizerPluralizer.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\IProcedureModelFactory.cs" Link="Procedures\Model\IProcedureModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\Procedure.cs" Link="Procedures\Model\Metadata\Procedure.cs" />
@@ -40,7 +40,7 @@
   
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
-    <PackageReference Include="Humanizer.Core" Version="2.8.26" />
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="5.0.0-rc.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.2.0-eap" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-rc.2.20475.6" />
