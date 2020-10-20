@@ -4,6 +4,6 @@ namespace RevEng.Core.Procedures.Model
 {
     public interface IProcedureModelFactory
     {
-        ProcedureModel Create(string connectionString);
+        ProcedureModel Create(string connectionString, ProcedureModelFactoryOptions options);
     }
 }

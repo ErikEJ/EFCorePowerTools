@@ -41,6 +41,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             foreach (var item in tables)
             {
+                if (item.IsProcedure)
+                {
+                    continue;
+                }
+
                 if (!item.HasPrimaryKey)
                 {
                     item.HasPrimaryKey = true;

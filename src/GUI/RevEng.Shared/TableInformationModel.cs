@@ -6,9 +6,10 @@
     using System.Runtime.CompilerServices;
     using System.Runtime.Serialization;
     using Annotations;
+    using RevEng.Shared;
 
     /// <summary>
-    /// A class holding a certain information about tables.
+    /// A class holding information about database objects.
     /// </summary>
     [DataContract]
     [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
@@ -17,6 +18,7 @@
         private string _name;
         private bool _hasPrimaryKey;
         private bool _showKeylessWarning;
+        private ObjectType _objectType;
 
         /// <summary>
         /// Gets or sets the table name.
@@ -49,7 +51,7 @@
         }
 
         /// <summary>
-        /// Show wether the table is keyless - always false for EF Core 2.0.
+        /// Show if the table is keyless - always false for EF Core 2.0.
         /// </summary>
         [IgnoreDataMember]
         public bool ShowKeylessWarning
@@ -64,6 +66,30 @@
         }
 
         /// <summary>
+        /// Is this a procedure?
+        /// </summary>
+        [IgnoreDataMember]
+        public bool IsProcedure
+        {
+            get => _objectType == ObjectType.Procedure;
+        }
+
+        /// <summary>
+        /// Gets or sets the object type.
+        /// </summary>
+        [DataMember]
+        public ObjectType ObjectType
+        {
+            get => _objectType;
+            set
+            {
+                if (value == _objectType) return;
+                _objectType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TableInformationModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>
@@ -72,7 +98,8 @@
         /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
         public TableInformationModel(string name,
                                      bool hasPrimaryKey,
-                                     bool showKeylessWarning = false)
+                                     bool showKeylessWarning = false,
+                                     ObjectType objectType = ObjectType.Table)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
@@ -80,6 +107,7 @@
             Name = name;
             HasPrimaryKey = hasPrimaryKey;
             ShowKeylessWarning = showKeylessWarning;
+            ObjectType = objectType;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

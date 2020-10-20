@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
+using RevEng.Core.Procedures.Model;
 using RevEng.Core.Procedures.Scaffolding;
 using System;
 using System.Collections.Generic;
@@ -92,7 +93,13 @@ namespace ReverseEngineer20.ReverseEngineer
                     ModelNamespace = modelNamespace,
                 };
 
-                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, ref errors);
+                var procedureModelOptions = new ProcedureModelFactoryOptions
+                {
+                    FullModel = true,
+                    Procedures = new List<string>(),
+                };
+
+                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, procedureModelOptions, ref errors);
                 
                 procedurePaths = procedureModelScaffolder.Save(
                     procedureModel,

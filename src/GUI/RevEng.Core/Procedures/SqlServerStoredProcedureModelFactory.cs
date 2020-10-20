@@ -19,12 +19,12 @@ namespace RevEng.Core.Procedures
             _logger = logger;
         }
 
-        public ProcedureModel Create(string connectionString)
+        public ProcedureModel Create(string connectionString, ProcedureModelFactoryOptions options)
         {
-            return GetStoredProcedures(connectionString);
+            return GetStoredProcedures(connectionString, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string connectionString)
+        private ProcedureModel GetStoredProcedures(string connectionString, ProcedureModelFactoryOptions options)
         {
             var dtResult = new DataTable();
             var result = new List<Procedure>();
@@ -56,9 +56,12 @@ ORDER BY ROUTINE_NAME";
                             Name = row["ROUTINE_NAME"].ToString()
                         };
 
-                        procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
+                        if (options.FullModel)
+                        {
+                            procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
 
-                        procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name);
+                            procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name);
+                        }
 
                         result.Add(procedure);
                     }

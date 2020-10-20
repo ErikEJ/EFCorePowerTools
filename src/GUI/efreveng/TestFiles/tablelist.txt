@@ -1,1 +1,1 @@
-3 "Data Source=.\SQLEXPRESS;Initial Catalog=FatSchemaTestDatabase;Integrated Security=True"
+3 "Data Source=.\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True"

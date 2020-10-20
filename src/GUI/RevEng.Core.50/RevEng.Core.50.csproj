@@ -20,6 +20,7 @@
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureModel.cs" Link="Procedures\Model\Metadata\ProcedureModel.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureParameter.cs" Link="Procedures\Model\Metadata\ProcedureParameter.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureResultElement.cs" Link="Procedures\Model\Metadata\ProcedureResultElement.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\Model\ProcedureModelFactoryOptions.cs" Link="Procedures\Model\ProcedureModelFactoryOptions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Scaffolding\IProcedureScaffolder.cs" Link="Procedures\Scaffolding\IProcedureScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Procedures\Scaffolding\ProcedureScaffolderOptions.cs" Link="Procedures\Scaffolding\ProcedureScaffolderOptions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />

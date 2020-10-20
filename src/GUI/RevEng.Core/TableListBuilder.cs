@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ReverseEngineer20.ReverseEngineer;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using RevEng.Core.Procedures;
+using RevEng.Core.Procedures.Model;
 
 namespace ReverseEngineer20
 {
@@ -23,6 +25,7 @@ namespace ReverseEngineer20
         private readonly string _connectionString;
         private readonly SchemaInfo[] _schemas;
         private readonly DatabaseType _databaseType;
+        private readonly ServiceProvider serviceProvider;
 
         public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas)
         {
@@ -33,11 +36,11 @@ namespace ReverseEngineer20
             _connectionString = connectionString;
             _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
+            serviceProvider = Build(_databaseType);
        }
 
         public List<Tuple<string, bool>> GetTableDefinitions()
         {
-            var serviceProvider = Build(_databaseType);
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
@@ -65,6 +68,37 @@ namespace ReverseEngineer20
             return result.OrderBy(m => m.Item1).ToList();
         }
 
+        public List<string> GetProcedures(int dbTypeInt)
+        {
+            var result = new List<string>();
+
+            DatabaseType databaseType = (DatabaseType)dbTypeInt;
+
+            if (databaseType != DatabaseType.SQLServer)
+            {
+                return result;    
+            }
+
+            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
+
+            var procedureModelOptions = new ProcedureModelFactoryOptions
+            {
+                FullModel = false,
+                Procedures = new List<string>(),
+            };
+
+            var procedureModel = procedureModelFactory.Create(_connectionString, procedureModelOptions);
+
+            foreach (var procedure in procedureModel.Procedures)
+            {
+                result.Add($"[{procedure.Schema}].[{procedure.Name}]");
+            }
+
+            result.Sort();
+
+            return result;
+        }
+
         private static ServiceProvider Build(DatabaseType databaseType)
         {
             // Add base services for scaffolding
@@ -82,6 +116,7 @@ namespace ReverseEngineer20
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
                     serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerFasterDatabaseModelFactory>();
+                    serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     break;
 
                 case DatabaseType.Npgsql:
