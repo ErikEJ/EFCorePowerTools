@@ -40,6 +40,21 @@
       {
          "HasPrimaryKey": true,
          "Name": "dbo.Forests"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[TestMethodOutputNoParams]",
+         "ObjectType": 1
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[TestMethodOutputNoResult]",
+         "ObjectType": 1
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Ten Most Expensive Products]",
+         "ObjectType": 1
       }
    ],
    "UseDatabaseNames": false,

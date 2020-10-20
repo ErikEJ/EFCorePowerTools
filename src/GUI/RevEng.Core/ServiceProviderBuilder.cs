@@ -76,8 +76,7 @@ namespace ReverseEngineer20.ReverseEngineer
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-                    if (string.IsNullOrEmpty(options.Dacpac)
-                        && options.UseStoredProcedures)
+                    if (string.IsNullOrEmpty(options.Dacpac))
                     {
                         serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }

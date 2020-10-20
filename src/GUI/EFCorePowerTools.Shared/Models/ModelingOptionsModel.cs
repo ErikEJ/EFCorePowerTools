@@ -26,7 +26,6 @@
         private string _projectName;
         private string _dacpacPath;
         private bool _useDbContextSplitting;
-        private bool _useStoreProcedures;
         private bool _mapSpatialTypes;
         private bool _mapNodaTimeTypes;
         private bool _useEf6Pluralizer;
@@ -38,17 +37,6 @@
             {
                 if (value == _useDataAnnotations) return;
                 _useDataAnnotations = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool UseStoredProcedures
-        {
-            get => _useStoreProcedures;
-            set
-            {
-                if (value == _useStoreProcedures) return;
-                _useStoreProcedures = value;
                 OnPropertyChanged();
             }
         }

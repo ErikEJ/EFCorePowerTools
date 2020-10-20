@@ -7,6 +7,7 @@ using RevEng.Core.Procedures.Model.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace RevEng.Core.Procedures
 {
@@ -30,6 +31,15 @@ namespace RevEng.Core.Procedures
             var result = new List<Procedure>();
             var errors = new List<string>();
 
+            if (options.FullModel && !options.Procedures.Any())
+            {
+                return new ProcedureModel
+                {
+                    Procedures = result,
+                    Errors = errors,
+                };
+            }
+
             using (var connection = new SqlConnection(connectionString))
             {
                 string sql = $@"
@@ -46,6 +56,8 @@ ORDER BY ROUTINE_NAME";
 
                 adapter.Fill(dtResult);
 
+                var filter = options.Procedures.ToHashSet();
+
                 foreach (DataRow row in dtResult.Rows)
                 {
                     try
@@ -56,14 +68,17 @@ ORDER BY ROUTINE_NAME";
                             Name = row["ROUTINE_NAME"].ToString()
                         };
 
-                        if (options.FullModel)
+                        if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
                         {
-                            procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
+                            if (options.FullModel)
+                            {
+                                procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
 
-                            procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name);
+                                procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name);
+                            }
+
+                            result.Add(procedure);
                         }
-
-                        result.Add(procedure);
                     }
                     catch (Exception ex)
                     {

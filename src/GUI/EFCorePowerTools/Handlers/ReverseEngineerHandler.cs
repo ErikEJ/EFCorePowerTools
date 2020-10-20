@@ -186,7 +186,6 @@ namespace EFCorePowerTools.Handlers
                     presets.ContextNamespace = options.ContextNamespace;
                     presets.SelectedToBeGenerated = options.SelectedToBeGenerated;
                     presets.DacpacPath = options.Dacpac;
-                    presets.UseStoredProcedures = options.UseStoredProcedures;
                     presets.UseEf6Pluralizer = options.UseLegacyPluralizer;
                     presets.MapSpatialTypes = options.UseSpatial;
                     presets.MapNodaTimeTypes = options.UseNodaTime;
@@ -217,7 +216,6 @@ namespace EFCorePowerTools.Handlers
                     UseLegacyPluralizer = modelingOptionsResult.Payload.UseEf6Pluralizer,
                     UseSpatial = modelingOptionsResult.Payload.MapSpatialTypes,
                     UseNodaTime = modelingOptionsResult.Payload.MapNodaTimeTypes,
-                    UseStoredProcedures = modelingOptionsResult.Payload.UseStoredProcedures,
                     UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting,
                     UseHandleBars = modelingOptionsResult.Payload.UseHandlebars,
                     SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage,

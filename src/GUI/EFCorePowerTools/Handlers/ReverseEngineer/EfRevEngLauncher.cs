@@ -45,7 +45,6 @@ namespace ReverseEngineer20.ReverseEngineer
                 UseSpatial = options.UseSpatial,
                 UseDbContextSplitting = options.UseDbContextSplitting,
                 UseNodaTime = options.UseNodaTime,
-                UseStoredProcedures = options.UseStoredProcedures,
             };
 
             var launcher = new ReverseEngineer20.ReverseEngineer.EfRevEngLauncher(commandOptions, useEFCore5);

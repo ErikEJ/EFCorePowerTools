@@ -51,7 +51,6 @@
             Model.ContextNamespace = presets.ContextNamespace;
             Model.ModelName = presets.ModelName;
             Model.UseDataAnnotations = presets.UseDataAnnotations;
-            Model.UseStoredProcedures = presets.UseStoredProcedures;
             Model.UseDbContextSplitting = presets.UseDbContextSplitting;
             Model.ProjectName = presets.ProjectName;
             Model.DacpacPath = presets.DacpacPath;

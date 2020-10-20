@@ -3,7 +3,6 @@
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  Title="Advanced" 
                  WindowStartupLocation="CenterOwner"
                  SizeToContent="WidthAndHeight"
@@ -47,11 +46,6 @@
             <CheckBox TabIndex="0"
                       Content="Split DbContext into Configuration classes (preview)"
                       IsChecked="{Binding Model.UseDbContextSplitting}"
-                      Style="{StaticResource MarginCheckBlockStyle}"/>
-
-            <CheckBox TabIndex="1"
-                      Content="Generate stored procedure mappings (preview)"
-                      IsChecked="{Binding Model.UseStoredProcedures}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="2"
