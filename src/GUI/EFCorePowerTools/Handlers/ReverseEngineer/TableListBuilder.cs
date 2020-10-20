@@ -43,6 +43,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 if (item.IsProcedure)
                 {
+                    item.HasPrimaryKey = true;
                     continue;
                 }
 

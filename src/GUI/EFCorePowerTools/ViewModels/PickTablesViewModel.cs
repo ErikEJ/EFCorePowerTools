@@ -137,7 +137,10 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
+        /// <summary>
+        /// Currently at least a single table must be selected.
+        /// </summary>
+        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && !m.Model.IsProcedure);
 
         private void Cancel_Executed()
         {

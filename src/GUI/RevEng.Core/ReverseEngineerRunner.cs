@@ -57,6 +57,32 @@ namespace ReverseEngineer20.ReverseEngineer
                 ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
                 : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
+            SavedModelFiles procedurePaths = null;
+            var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
+            if (procedureModelScaffolder != null)
+            {
+                var procedureOptions = new ProcedureScaffolderOptions
+                {
+                    ContextDir = outputContextDir,
+                    ContextName = reverseEngineerOptions.ContextClassName,
+                    ContextNamespace = contextNamespace,
+                    ModelNamespace = modelNamespace,
+                };
+
+                var procedureModelOptions = new ProcedureModelFactoryOptions
+                {
+                    FullModel = true,
+                    Procedures = reverseEngineerOptions.Tables.Where(t => t.ObjectType == RevEng.Shared.ObjectType.Procedure).Select(m => m.Name),
+                };
+
+                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, procedureModelOptions, ref errors);
+                
+                procedurePaths = procedureModelScaffolder.Save(
+                    procedureModel,
+                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
+                    contextNamespace);
+            }
+
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,
@@ -77,37 +103,11 @@ namespace ReverseEngineer20.ReverseEngineer
                 SuppressConnectionStringWarning = false,
                 ConnectionString = reverseEngineerOptions.ConnectionString,
 #if CORE50
-                SuppressOnConfiguring = !reverseEngineerOptions.IncludeConnectionString,      
+                SuppressOnConfiguring = !reverseEngineerOptions.IncludeConnectionString,
 #endif
             };
 
-            SavedModelFiles procedurePaths = null;
-            var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
-            if (procedureModelScaffolder != null)
-            {
-                var procedureOptions = new ProcedureScaffolderOptions
-                {
-                    ContextDir = outputContextDir,
-                    ContextName = reverseEngineerOptions.ContextClassName,
-                    ContextNamespace = contextNamespace,
-                    ModelNamespace = modelNamespace,
-                };
-
-                var procedureModelOptions = new ProcedureModelFactoryOptions
-                {
-                    FullModel = true,
-                    Procedures = new List<string>(),
-                };
-
-                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, procedureModelOptions, ref errors);
-                
-                procedurePaths = procedureModelScaffolder.Save(
-                    procedureModel,
-                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
-                    contextNamespace);
-            }
-
-            var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Select(m => m.Name), schemas);
+            var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Where(t => t.ObjectType == RevEng.Shared.ObjectType.Table).Select(m => m.Name), schemas);
 
             var scaffoldedModel = scaffolder.ScaffoldModel(
                     reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString,
