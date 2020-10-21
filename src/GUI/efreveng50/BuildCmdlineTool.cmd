@@ -41,9 +41,6 @@ del bin\Release\netcoreapp3.1\publish\Microsoft.Win32.SystemEvents.dll
 del bin\Release\netcoreapp3.1\publish\NetTopologySuite.dll 
 del bin\Release\netcoreapp3.1\publish\NetTopologySuite.IO.PostGis.dll 
 del bin\Release\netcoreapp3.1\publish\NetTopologySuite.IO.SqlServerBytes.dll 
-del bin\Release\netcoreapp3.1\publish\NodaTime.dll 
-del bin\Release\netcoreapp3.1\publish\Npgsql.NetTopologySuite.dll 
-del bin\Release\netcoreapp3.1\publish\Npgsql.NodaTime.dll 
 del bin\Release\netcoreapp3.1\publish\RevEng.Shared.dll 
 del bin\Release\netcoreapp3.1\publish\RevEng.Shared.pdb 
 del bin\Release\netcoreapp3.1\publish\System.ComponentModel.Composition.dll
