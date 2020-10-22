@@ -59,7 +59,8 @@ namespace ReverseEngineer20.ReverseEngineer
 
             SavedModelFiles procedurePaths = null;
             var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
-            if (procedureModelScaffolder != null)
+            if (procedureModelScaffolder != null
+                && reverseEngineerOptions.Tables.Where(t => t.ObjectType == RevEng.Shared.ObjectType.Procedure).Count() > 0)
             {
                 var procedureOptions = new ProcedureScaffolderOptions
                 {
@@ -76,11 +77,14 @@ namespace ReverseEngineer20.ReverseEngineer
                 };
 
                 var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, procedureModelOptions, ref errors);
-                
-                procedurePaths = procedureModelScaffolder.Save(
-                    procedureModel,
-                    Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
-                    contextNamespace);
+
+                if (procedureModel != null)
+                {
+                    procedurePaths = procedureModelScaffolder.Save(
+                        procedureModel,
+                        Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
+                        contextNamespace);
+                }
             }
 
             var modelOptions = new ModelReverseEngineerOptions
