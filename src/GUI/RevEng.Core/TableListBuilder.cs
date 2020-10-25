@@ -17,6 +17,7 @@ using ReverseEngineer20.ReverseEngineer;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using RevEng.Core.Procedures;
 using RevEng.Core.Procedures.Model;
+using Microsoft.Data.SqlClient;
 
 namespace ReverseEngineer20
 {
@@ -36,6 +37,16 @@ namespace ReverseEngineer20
             _connectionString = connectionString;
             _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
+
+            if (_databaseType == DatabaseType.SQLServer)
+            {
+                var builder = new SqlConnectionStringBuilder(_connectionString)
+                {
+                    CommandTimeout = 300
+                };
+                _connectionString = builder.ConnectionString;
+            }
+
             serviceProvider = Build(_databaseType);
        }
 
@@ -115,7 +126,6 @@ namespace ReverseEngineer20
                 case DatabaseType.SQLServer:
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerFasterDatabaseModelFactory>();
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     break;
 

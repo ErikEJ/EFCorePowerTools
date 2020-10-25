@@ -14,9 +14,5 @@
   <ItemGroup>
     <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
-  </ItemGroup>
 
 </Project>

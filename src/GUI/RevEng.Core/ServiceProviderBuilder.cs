@@ -1,5 +1,6 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -65,10 +66,6 @@ namespace ReverseEngineer20.ReverseEngineer
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
                     }
-                    else
-                    {
-                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerFasterDatabaseModelFactory>();
-                    }
 
                     if (options.UseSpatial)
                     {
@@ -80,6 +77,12 @@ namespace ReverseEngineer20.ReverseEngineer
                     {
                         serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }
+
+                    var builder = new SqlConnectionStringBuilder(options.ConnectionString)
+                    {
+                        CommandTimeout = 300
+                    };
+                    options.ConnectionString = builder.ConnectionString;
 
                     break;
 
