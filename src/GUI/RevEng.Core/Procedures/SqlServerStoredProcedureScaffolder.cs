@@ -186,7 +186,8 @@ namespace RevEng.Core.Procedures
                 .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}")
                 .ToList();
             
-            var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
+            var outProcs = outparamProcNames.Count() > 0 
+                && paramProcNames.Count() > 0 ? "," : string.Empty;
 
             var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramProcNames)}{outProcs} {string.Join(", ", outparamProcNames)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
 

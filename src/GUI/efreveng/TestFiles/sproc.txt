@@ -43,7 +43,7 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[TestMethodOutputNoParams]",
+         "Name": "[dbo].[OutputFail]",
          "ObjectType": 1
       },
       {
