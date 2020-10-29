@@ -72,15 +72,8 @@ namespace #NAMESPACE#
         internal void SetValue(object value)
         {
             _valueSet = true;
-            
-            if (value == null || value == DBNull.Value)
-            {
-                _value = default(TValue);
-            }
-            else
-            {
-                _value = (TValue)value;
-            }
+
+            _value = null == value || Convert.IsDBNull(value) ? default(TValue) : (TValue)value;
         }
     }
 }

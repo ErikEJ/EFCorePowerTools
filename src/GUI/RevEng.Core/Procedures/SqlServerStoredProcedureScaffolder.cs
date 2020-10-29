@@ -211,11 +211,11 @@ namespace RevEng.Core.Procedures
 
                     if (procedure.ResultElements.Count == 0)
                     {
-                        _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                        _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
                     else
                     {
-                        _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({fullExec});");
+                        _sb.AppendLine($"var _ = await _context.SqlQuery<{identifier}Result>({fullExec});");
                     }
 
                     _sb.AppendLine();
@@ -229,7 +229,7 @@ namespace RevEng.Core.Procedures
 
                     _sb.AppendLine();
 
-                    _sb.AppendLine("return result;");
+                    _sb.AppendLine("return _;");
                 }
 
                 _sb.AppendLine("}");

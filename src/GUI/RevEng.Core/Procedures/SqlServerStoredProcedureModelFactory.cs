@@ -60,30 +60,29 @@ ORDER BY ROUTINE_NAME";
 
                 foreach (DataRow row in dtResult.Rows)
                 {
-                    try
+                    var procedure = new Procedure
                     {
-                        var procedure = new Procedure
-                        {
-                            Schema = row["ROUTINE_SCHEMA"].ToString(),
-                            Name = row["ROUTINE_NAME"].ToString()
-                        };
+                        Schema = row["ROUTINE_SCHEMA"].ToString(),
+                        Name = row["ROUTINE_NAME"].ToString()
+                    };
 
-                        if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
+                    if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
+                    {
+                        if (options.FullModel)
                         {
-                            if (options.FullModel)
+                            procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
+                            try
                             {
-                                procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
-
                                 procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name);
                             }
-
-                            result.Add(procedure);
+                            catch (Exception ex)
+                            {
+                                errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
+                                _logger?.Logger.LogWarning(ex, $"Unable to scaffold {row["ROUTINE_NAME"]}");
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        errors.Add($"Unable to scaffold {row["ROUTINE_NAME"]}" + Environment.NewLine + ex.Message);
-                        _logger?.Logger.LogWarning(ex, $"Unable to scaffold {row["ROUTINE_NAME"]}");
+
+                        result.Add(procedure);
                     }
                 }
             }
