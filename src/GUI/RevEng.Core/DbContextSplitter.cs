@@ -18,7 +18,6 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
 
-
             var contextNamespace = Regex.Match(source, @"(?<=(?:^|\s|;)namespace\s+).*?(?=(?:\s|\{))", RegexOptions.Multiline | RegexOptions.Singleline).Value;
 
             var configurationNamespace = configNamespace ?? contextNamespace;
@@ -64,22 +63,24 @@ namespace ReverseEngineer20.ReverseEngineer
                     .TrimStart('\r', '\n', '\t', ' ')
                     .Replace(new string(' ', 16), new string(' ', 12));
 
-                var configuration = new StringBuilder();
-                configuration.AppendLine(PathHelper.Header);
-                configuration.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
-                configuration.AppendLine();
-                configuration.AppendLine($"namespace {configurationNamespace}");
-                configuration.AppendLine("{");
-                configuration.AppendLine(new string(' ', 4) + $"public class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
-                configuration.AppendLine(new string(' ', 4) + "{");
-                configuration.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
-                configuration.AppendLine(new string(' ', 8) + "{");
-                configuration.AppendLine(new string(' ', 12) + statements);
-                configuration.AppendLine(new string(' ', 8) + "}");
-                configuration.AppendLine(new string(' ', 4) + "}");
-                configuration.AppendLine("}");
+                var _sb = new StringBuilder();
+                _sb.AppendLine(PathHelper.Header);
+                _sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
+                _sb.AppendLine();
+                _sb.AppendLine("#nullable disable");
+                _sb.AppendLine();
+                _sb.AppendLine($"namespace {configurationNamespace}");
+                _sb.AppendLine("{");
+                _sb.AppendLine(new string(' ', 4) + $"public class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
+                _sb.AppendLine(new string(' ', 4) + "{");
+                _sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
+                _sb.AppendLine(new string(' ', 8) + "{");
+                _sb.AppendLine(new string(' ', 12) + statements);
+                _sb.AppendLine(new string(' ', 8) + "}");
+                _sb.AppendLine(new string(' ', 4) + "}");
+                _sb.AppendLine("}");
 
-                var configurationContents = configuration.ToString();
+                var configurationContents = _sb.ToString();
 
                 var configurationFilePath = Path.Combine(configurationsDirectoryPath, $"{entityName}Configuration.cs");
 

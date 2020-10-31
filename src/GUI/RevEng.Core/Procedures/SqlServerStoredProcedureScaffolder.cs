@@ -170,25 +170,18 @@ namespace RevEng.Core.Procedures
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
-            var paramNames = procedure.Parameters
-                .Select(p => $"parameter{p.Name}");
-            var paramProcNames = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"@{p.Name}");
 
             var outParams = procedure.Parameters.Where(p => p.Output).ToList();
+
             var retValueName = outParams.Last().Name;
 
             outParams.RemoveAt(outParams.Count - 1);
-            
-            var outparamProcNames = outParams
-                .Select(p => $"@{p.Name} OUTPUT");
+
             var outParamStrings = outParams
                 .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}")
                 .ToList();
-            
-            var outProcs = outparamProcNames.Count() > 0 ? "," : string.Empty;
 
-            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramProcNames)}{outProcs} {string.Join(", ", outparamProcNames)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
+            string fullExec = GenerateProcedureStatement(procedure, retValueName);
 
             var identifier = GenerateIdentifierName(procedure, model);
 
@@ -210,11 +203,11 @@ namespace RevEng.Core.Procedures
 
                     if (procedure.ResultElements.Count == 0)
                     {
-                        _sb.AppendLine($"var result = await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                        _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
                     else
                     {
-                        _sb.AppendLine($"var result = await _context.SqlQuery<{identifier}Result>({fullExec});");
+                        _sb.AppendLine($"var _ = await _context.SqlQuery<{identifier}Result>({fullExec});");
                     }
 
                     _sb.AppendLine();
@@ -228,11 +221,25 @@ namespace RevEng.Core.Procedures
 
                     _sb.AppendLine();
 
-                    _sb.AppendLine("return result;");
+                    _sb.AppendLine("return _;");
                 }
 
                 _sb.AppendLine("}");
             }
+        }
+
+        private static string GenerateProcedureStatement(Procedure procedure, string retValueName)
+        {
+            var paramNames = procedure.Parameters
+                .Select(p => $"parameter{p.Name}");
+
+            var paramList = procedure.Parameters
+                .Select(p => p.Output ? $"@{p.Name} OUTPUT" : $"@{p.Name}").ToList();
+
+            paramList.RemoveAt(paramList.Count - 1);
+
+            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
+            return fullExec;
         }
 
         private static string GenerateMethodSignature(Procedure procedure, List<ProcedureParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)

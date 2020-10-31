@@ -210,7 +210,7 @@ namespace ReverseEngineer20.ReverseEngineer
         private void PostProcess(string file)
         {
             var text = File.ReadAllText(file, Encoding.UTF8);
-            File.WriteAllText(file, PathHelper.Header + Environment.NewLine + text.TrimEnd(), Encoding.UTF8);
+            File.WriteAllText(file, PathHelper.Header + Environment.NewLine + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase).TrimEnd(), Encoding.UTF8);
         }
 
         private void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
