@@ -55,6 +55,11 @@
          "HasPrimaryKey": true,
          "Name": "[dbo].[Ten Most Expensive Products]",
          "ObjectType": 1
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Spaces]",
+         "ObjectType": 1
       }
    ],
    "UseDatabaseNames": false,

@@ -332,7 +332,8 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine(PathHelper.Header);
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Collections.Generic;");
-
+            _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
+            
             _sb.AppendLine();
             _sb.AppendLine($"namespace {@namespace}");
             _sb.AppendLine("{");
@@ -364,8 +365,25 @@ namespace RevEng.Core.Procedures
         {
             foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
             {
-                _sb.AppendLine($"public {code.Reference(property.ClrType())} {property.Name} {{ get; set; }}");
+                var propertyNames = GeneratePropertyName(property.Name);
+
+                if (!string.IsNullOrEmpty(propertyNames.Item2))
+                {
+                    _sb.AppendLine(propertyNames.Item2);
+                }
+
+                _sb.AppendLine($"public {code.Reference(property.ClrType())} {propertyNames.Item1} {{ get; set; }}");
             }
+        }
+
+        private Tuple<string, string> GeneratePropertyName(string propertyName)
+        {
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            return CreateIdentifier(propertyName);
         }
 
         private string GenerateIdentifierName(Procedure procedure, ProcedureModel model)
@@ -375,12 +393,18 @@ namespace RevEng.Core.Procedures
                 throw new ArgumentNullException(nameof(procedure));
             }
 
-            var name = GenerateUniqueName(procedure, model);
+            return CreateIdentifier(GenerateUniqueName(procedure, model)).Item1;
+        }
 
+        private Tuple<string, string> CreateIdentifier(string name)
+        {
             var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
+
+            string columAttribute = null;
 
             if (!isValid)
             {
+                columAttribute = $"[Column(\"{name}\")]";
                 // File name contains invalid chars, remove them
                 var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
                 name = regex.Replace(name, "");
@@ -392,7 +416,7 @@ namespace RevEng.Core.Procedures
                 }
             }
 
-            return name.Replace(" ", string.Empty);
+            return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
         }
 
         private string GenerateUniqueName(Procedure procedure, ProcedureModel model)
