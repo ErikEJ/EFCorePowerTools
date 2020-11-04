@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace efreveng
 {
@@ -14,6 +15,8 @@ namespace efreveng
         {
             try
             {
+                Console.OutputEncoding = Encoding.UTF8;
+
                 if (args.Length > 0)
                 {
                     if (args[0].EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
