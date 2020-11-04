@@ -71,8 +71,10 @@ namespace EFCorePowerTools.Handlers
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                StandardOutputEncoding = Encoding.UTF8,
             };
+
             if (generationType == GenerationType.Ddl)
             {
                 startInfo.Arguments = "ddl \"" + outputPath + "\"";

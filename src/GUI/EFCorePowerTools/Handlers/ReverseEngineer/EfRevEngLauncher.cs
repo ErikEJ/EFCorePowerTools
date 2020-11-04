@@ -87,10 +87,6 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), GetExeName()),
                 Arguments = arguments,
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
             };
 
             var standardOutput = RunProcess(startInfo);
@@ -109,10 +105,6 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), GetExeName()),
                 Arguments = "\"" + path + "\"",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
             };
 
             var standardOutput = RunProcess(startInfo);
@@ -131,10 +123,6 @@ namespace ReverseEngineer20.ReverseEngineer
             {
                 FileName = "dotnet",
                 Arguments = "--version",
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true
             };
 
             var result = RunProcess(startInfo);
@@ -145,6 +133,12 @@ namespace ReverseEngineer20.ReverseEngineer
 
         private static string RunProcess(ProcessStartInfo startInfo)
         {
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            startInfo.CreateNoWindow = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+
             var standardOutput = new StringBuilder();
             using (var process = Process.Start(startInfo))
             {
