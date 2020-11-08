@@ -1,0 +1,42 @@
+{
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",   "ContextClassName": "NorthwindContext",
+   "CustomReplacers": null,
+   "Dacpac": null,
+   "DatabaseType": 3,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": false,
+   "OutputPath": "Models",
+   "OutputContextPath": null,
+   "ModelNamespace": "Modelos",
+   "ContextNamespace": "Context",
+   "ProjectPath": "C:\\Temp\\Test\\",
+   "ProjectRootNamespace": "Om.Srv.Dal.Sql",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Categories"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Shippers"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.Region"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "dbo.RegionShippers"
+      }
+   ],
+   "UseDatabaseNames": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": true,
+   "UseDbContextSplitting": true,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false
+}
