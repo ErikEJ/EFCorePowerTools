@@ -131,7 +131,7 @@
             <CheckBox x:Name="IncludeViews" 
                       IsChecked="{Binding IncludeViews}" 
                       TabIndex="6" 
-                      Margin="0,5,0,0" >Use EF Core 5 (preview)</CheckBox>
+                      Margin="0,5,0,0" >Use EF Core 5</CheckBox>
         </StackPanel>
 
         <StackPanel Grid.Row="4"
