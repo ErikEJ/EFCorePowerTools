@@ -126,8 +126,7 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 //TODO Enable when released
-                if (useEFCore5 && (dbInfo.DatabaseType == DatabaseType.Mysql
-                    || dbInfo.DatabaseType == DatabaseType.Oracle))
+                if (useEFCore5 && (dbInfo.DatabaseType == DatabaseType.Oracle))
                 {
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 5.0: {dbInfo.DatabaseType}");
                     return;

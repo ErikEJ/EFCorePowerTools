@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
 using System;
 
@@ -92,6 +93,18 @@ namespace ReverseEngineer20.ReverseEngineer
                     if (options.UseSpatial)
                     {
                         var spatial = new NpgsqlNetTopologySuiteDesignTimeServices();
+                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
+                    break;
+
+                case DatabaseType.Mysql:
+                    var mysqlProvider = new MySqlDesignTimeServices();
+                    mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
+
+                    if (options.UseSpatial)
+                    {
+                        var spatial = new MySqlNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
