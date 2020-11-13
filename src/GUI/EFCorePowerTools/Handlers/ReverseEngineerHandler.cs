@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ReverseEngineer20.ReverseEngineer;
+using Microsoft.VisualStudio.Data.Services;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -134,7 +135,7 @@ namespace EFCorePowerTools.Handlers
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? GetDacpacTables(dacpacPath, useEFCore5)
-                                           : GetTables(dbInfo.ConnectionString, dbInfo.DatabaseType, useEFCore5, schemas);
+                                           : GetTables(dbInfo, useEFCore5, schemas);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -382,9 +383,15 @@ namespace EFCorePowerTools.Handlers
             return builder.GetTableDefinitions(useEFCore5);
         }
 
-        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType, bool useEFCore5, SchemaInfo[] schemas)
+        public List<TableInformationModel> GetTables(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
         {
-            var builder = new TableListBuilder(connectionString, databaseType, schemas);
+            if (dbInfo.DataConnection != null)
+            {
+                dbInfo.DataConnection.Open();
+                dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
+            }
+
+            var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
             return builder.GetTableDefinitions(useEFCore5);
         }
     }
