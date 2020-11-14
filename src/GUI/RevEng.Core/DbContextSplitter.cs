@@ -24,6 +24,8 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var configurationNamespace = configNamespace ?? contextNamespace;
 
+            configurationNamespace = configurationNamespace + ".Configurations";
+
             var contextUsingStatements = Regex.Matches(source, @"^using\s+.*?;", RegexOptions.Multiline | RegexOptions.Singleline)
                 .Cast<Match>()
                 .Select(m => m.Value)
@@ -96,6 +98,7 @@ namespace ReverseEngineer20.ReverseEngineer
             var sourceLines = File.ReadAllLines(dbContextFilePath, Encoding.UTF8);
 
             var finalSource = new List<string>();
+            var usings = new List<string>();
             var inEntityBuilder = false;
             var configLinesWritten = false;
             string prevLine = null;
@@ -107,7 +110,7 @@ namespace ReverseEngineer20.ReverseEngineer
                     continue;
                 }
 
-                if (line.Trim().StartsWith("modelBuilder.Entity<"))
+                if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
                 {
                     inEntityBuilder = true;
                     if (!configLinesWritten)
@@ -115,6 +118,12 @@ namespace ReverseEngineer20.ReverseEngineer
                         finalSource.AddRange(configurationLines);
                         configLinesWritten = true;
                     }
+                    continue;
+                }
+
+                if (line.StartsWith("using ", StringComparison.InvariantCulture))
+                {
+                    usings.Add(line);
                     continue;
                 }
 
@@ -133,6 +142,12 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 finalSource.Add(line);
             }
+
+            usings.Add($"using {configurationNamespace};");
+
+            usings.Sort();
+
+            finalSource.InsertRange(1, usings);
 
             File.WriteAllLines(dbContextFilePath, finalSource, Encoding.UTF8);
 
