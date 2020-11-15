@@ -3,6 +3,7 @@ using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
@@ -26,7 +27,18 @@ namespace ReverseEngineer20.ReverseEngineer
                 .AddEntityFrameworkDesignTimeServices()
                 .AddSingleton<ICSharpEntityTypeGenerator, CommentCSharpEntityTypeGenerator>()
                 .AddSingleton<IOperationReporter, OperationReporter>()
-                .AddSingleton<IOperationReportHandler, OperationReportHandler>();
+                .AddSingleton<IOperationReportHandler, OperationReportHandler>()
+                .AddSingleton<IScaffoldingModelFactory>(provider =>
+                  new VisitorRelationScaffoldingModelFactory(
+                     provider.GetService<IOperationReporter>(),
+                     provider.GetService<ICandidateNamingService>(),
+                     provider.GetService<IPluralizer>(),
+                     provider.GetService<ICSharpUtilities>(),
+                     provider.GetService<IScaffoldingTypeMapper>(),
+                     provider.GetService<LoggingDefinitions>(),
+                     options.Tables,
+                     options.DatabaseType
+                ));
 
             if (options.CustomReplacers != null)
             {
