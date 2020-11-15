@@ -92,7 +92,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the object type.
+        /// Gets or sets the columns excluded from reverse engineering.
         /// </summary>
         [DataMember]
         public IEnumerable<string> ExcludedColumns
