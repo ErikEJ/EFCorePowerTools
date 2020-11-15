@@ -20,7 +20,7 @@
         private bool _hasPrimaryKey;
         private bool _showKeylessWarning;
         private ObjectType _objectType;
-        private IEnumerable<string> _excludedColumns = new List<string>();
+        private IEnumerable<string> _excludedColumns;
 
         /// <summary>
         /// Gets or sets the table name.
@@ -94,7 +94,7 @@
         /// <summary>
         /// Gets or sets the columns excluded from reverse engineering.
         /// </summary>
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public IEnumerable<string> ExcludedColumns
         {
             get => _excludedColumns;
@@ -126,7 +126,7 @@
             HasPrimaryKey = hasPrimaryKey;
             ShowKeylessWarning = showKeylessWarning;
             ObjectType = objectType;
-            if (excludedColumns != null) ExcludedColumns = excludedColumns;
+            ExcludedColumns = excludedColumns;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

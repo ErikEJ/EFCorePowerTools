@@ -148,12 +148,13 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                for (var i = 0; i < predefinedTables.Count; i++)
-                {
-                    var preselectedTable = preselectedTables.FirstOrDefault(c => c.Name.Equals(predefinedTables[i].Name, StringComparison.OrdinalIgnoreCase));
-                    if (preselectedTable != null)
-                        predefinedTables[i] = preselectedTable;
-                }
+                //TODO: check if there's a better way to not erase excluded columns.
+                //for (var i = 0; i < predefinedTables.Count; i++)
+                //{
+                //    var preselectedTable = preselectedTables.FirstOrDefault(c => c.Name.Equals(predefinedTables[i].Name, StringComparison.OrdinalIgnoreCase));
+                //    if (preselectedTable != null)
+                //        predefinedTables[i] = preselectedTable;
+                //}
 
                 var ptd = _package.GetView<IPickTablesDialog>()
                                   .AddTables(predefinedTables)
