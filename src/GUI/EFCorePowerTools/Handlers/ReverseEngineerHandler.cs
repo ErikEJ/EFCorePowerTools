@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text;
 using ReverseEngineer20.ReverseEngineer;
 using Microsoft.VisualStudio.Data.Services;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -29,7 +30,7 @@ namespace EFCorePowerTools.Handlers
             reverseEngineerHelper = new ReverseEngineerHelper();
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
+        public async Task ReverseEngineerCodeFirstAsync(Project project)
         {
             try
             {
@@ -134,8 +135,8 @@ namespace EFCorePowerTools.Handlers
                 }
 
                 List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
-                                           ? GetDacpacTables(dacpacPath, useEFCore5)
-                                           : GetTables(dbInfo, useEFCore5, schemas);
+                                           ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
+                                           : await GetTablesAsync(dbInfo, useEFCore5, schemas);
 
                 var preselectedTables = new List<TableInformationModel>();
                 if (options != null)
@@ -377,13 +378,13 @@ namespace EFCorePowerTools.Handlers
             return false;
         }
 
-        public List<TableInformationModel> GetDacpacTables(string dacpacPath, bool useEFCore5)
+        private async Task<List<TableInformationModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
         {
             var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined, null);
-            return builder.GetTableDefinitions(useEFCore5);
+            return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 
-        public List<TableInformationModel> GetTables(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
+        private async Task<List<TableInformationModel>> GetTablesAsync(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
         {
             if (dbInfo.DataConnection != null)
             {
@@ -392,7 +393,7 @@ namespace EFCorePowerTools.Handlers
             }
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
-            return builder.GetTableDefinitions(useEFCore5);
+            return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
     }
 }
