@@ -94,7 +94,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return resultDeserializer.BuildTableResult(standardOutput);
         }
 
-        public ReverseEngineerResult GetOutput()
+        private ReverseEngineerResult GetOutput()
         {
             var path = Path.GetTempFileName() + "json";
             File.WriteAllText(path, options.Write());
