@@ -1,6 +1,7 @@
 ﻿namespace EFCorePowerTools.Shared.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
@@ -19,6 +20,7 @@
         private bool _hasPrimaryKey;
         private bool _showKeylessWarning;
         private ObjectType _objectType;
+        private IEnumerable<string> _excludedColumns;
 
         /// <summary>
         /// Gets or sets the table name.
@@ -90,6 +92,21 @@
         }
 
         /// <summary>
+        /// Gets or sets the columns excluded from reverse engineering.
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public IEnumerable<string> ExcludedColumns
+        {
+            get => _excludedColumns;
+            set
+            {
+                if (value == _excludedColumns) return;
+                _excludedColumns = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TableInformationModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>
@@ -99,7 +116,8 @@
         public TableInformationModel(string name,
                                      bool hasPrimaryKey,
                                      bool showKeylessWarning = false,
-                                     ObjectType objectType = ObjectType.Table)
+                                     ObjectType objectType = ObjectType.Table,
+                                     IEnumerable<string> excludedColumns = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
@@ -108,6 +126,7 @@
             HasPrimaryKey = hasPrimaryKey;
             ShowKeylessWarning = showKeylessWarning;
             ObjectType = objectType;
+            ExcludedColumns = excludedColumns;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

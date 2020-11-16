@@ -149,10 +149,18 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
+                //TODO: check if there's a better way to not erase excluded columns.
+                //for (var i = 0; i < predefinedTables.Count; i++)
+                //{
+                //    var preselectedTable = preselectedTables.FirstOrDefault(c => c.Name.Equals(predefinedTables[i].Name, StringComparison.OrdinalIgnoreCase));
+                //    if (preselectedTable != null)
+                //        predefinedTables[i] = preselectedTable;
+                //}
+
                 var ptd = _package.GetView<IPickTablesDialog>()
                                   .AddTables(predefinedTables)
                                   .PreselectTables(preselectedTables);
-                
+
                 var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
 
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
@@ -237,7 +245,7 @@ namespace EFCorePowerTools.Handlers
 
                     if (rightsAndVersion.Item1 == false)
                     {
-                        EnvDteHelper.ShowMessage("The SQL Server user does not have 'VIEW DEFINITION' rights, default constraints may not be available.");        
+                        EnvDteHelper.ShowMessage("The SQL Server user does not have 'VIEW DEFINITION' rights, default constraints may not be available.");
                     }
 
                     if (rightsAndVersion.Item2.Major < 11)
@@ -293,7 +301,7 @@ namespace EFCorePowerTools.Handlers
                         }
                         project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
                     }
-                    
+
                     _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
 
                     if (modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
