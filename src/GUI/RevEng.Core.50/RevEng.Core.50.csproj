@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Compile Include="..\RevEng.Core\Check.cs" Link="Check.cs" />
+    <Compile Include="..\RevEng.Core\ColumnRemovingScaffoldingModelFactory.cs" Link="ColumnRemovingScaffoldingModelFactory.cs" />
     <Compile Include="..\RevEng.Core\CustomTemplateFileService.cs" Link="CustomTemplateFileService.cs" />
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
@@ -33,7 +34,6 @@
     <Compile Include="..\RevEng.Core\ReverseEngineerRunner.cs" Link="ReverseEngineerRunner.cs" />
     <Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
     <Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
-    <Compile Include="..\RevEng.Core\VisitorRelationScaffoldingModelFactory.cs" Link="VisitorRelationScaffoldingModelFactory.cs" />
   </ItemGroup>
 
   <ItemGroup>

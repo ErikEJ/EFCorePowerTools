@@ -29,7 +29,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>()
                 .AddSingleton<IScaffoldingModelFactory>(provider =>
-                  new VisitorRelationScaffoldingModelFactory(
+                  new ColumnRemovingScaffoldingModelFactory(
                      provider.GetService<IOperationReporter>(),
                      provider.GetService<ICandidateNamingService>(),
                      provider.GetService<IPluralizer>(),
