@@ -13,12 +13,12 @@ using System.Linq;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
-    public class VisitorRelationScaffoldingModelFactory : RelationalScaffoldingModelFactory
+    public class ColumnRemovingScaffoldingModelFactory : RelationalScaffoldingModelFactory
     {
         private readonly List<TableInformationModel> _tables;
         private readonly DatabaseType _databaseType;
 
-        public VisitorRelationScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, List<TableInformationModel> tables, DatabaseType databaseType) :
+        public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, List<TableInformationModel> tables, DatabaseType databaseType) :
             base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions)
         {
             _tables = tables;
@@ -27,27 +27,28 @@ namespace ReverseEngineer20.ReverseEngineer
 
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)
         {
-            string fullTableName;
-            if (String.IsNullOrWhiteSpace(table.Schema))
+            string name;
+            if (_databaseType == DatabaseType.SQLServer)
             {
-                fullTableName = table.Name;
-            }
-            else if (_databaseType == DatabaseType.SQLServer)
-            {
-                fullTableName = $"[{table.Schema}].[{table.Name}]";
+                name = $"[{table.Schema}].[{table.Name}]";
             }
             else
             {
-                fullTableName = $"{table.Schema}.{table.Name}";
+                name = string.IsNullOrEmpty(table.Schema)
+                    ? table.Name
+                    : $"{table.Schema}.{table.Name}";
             }
-            var tableDefinition = _tables.FirstOrDefault(c => c.Name.Equals(fullTableName, StringComparison.OrdinalIgnoreCase));
+
+            var tableDefinition = _tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
             {
                 foreach (var column in tableDefinition?.ExcludedColumns)
                 {
                     var columnToRemove = table.Columns.FirstOrDefault(c => c.Name.Equals(column, StringComparison.OrdinalIgnoreCase));
                     if (columnToRemove != null)
+                    {
                         table.Columns.Remove(columnToRemove);
+                    }
                 }
             }
 

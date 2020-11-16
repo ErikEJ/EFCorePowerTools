@@ -1,5 +1,5 @@
 {
-   "ConnectionString": "Data Source=(local);Initial Catalog=Northwind;Integrated Security=True",   
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",   
    "ContextClassName": "NorthwindContext",
    "CustomReplacers": null,
    "Dacpac": null,
@@ -19,20 +19,20 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Categories",
+         "Name": "[dbo].[Categories]",
          "ExcludedColumns": [ "Picture" ]
       },
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Shippers"
+         "Name": "[dbo].[Shippers]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.Region"
+         "Name": "[dbo].[Region]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "dbo.RegionShippers"
+         "Name": "[dbo].[RegionShippers]"
       }
    ],
    "UseDatabaseNames": true,
