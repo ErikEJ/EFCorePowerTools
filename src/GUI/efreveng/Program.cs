@@ -35,11 +35,11 @@ namespace efreveng
 
                         var value = builder.GetTableDefinitions();
 
-                        var buildResult = new List<TableInformationModel>();
-                        buildResult.AddRange(value.Select(v => new TableInformationModel(v.Item1, v.Item2)).ToList());
+                        var buildResult = new List<TableModel>();
+                        buildResult.AddRange(value.Select(v => new TableModel(v.Item1, v.Item2, RevEng.Shared.ObjectType.Table, v.Item3)).ToList());
 
                         var procedures = builder.GetProcedures(dbTypeInt);
-                        buildResult.AddRange(procedures.Select(p => new TableInformationModel(p, false, false, RevEng.Shared.ObjectType.Procedure)).ToList());
+                        buildResult.AddRange(procedures.Select(p => new TableModel(p, false, RevEng.Shared.ObjectType.Procedure, null)).ToList());
 
                         Console.Out.WriteLine("Result:");
                         Console.Out.WriteLine(buildResult.Write());
@@ -99,8 +99,8 @@ namespace efreveng
 
             var value = builder.GetTableDefinitions();
 
-            var result = new List<TableInformationModel>();
-            result.AddRange(value.Select(v => new TableInformationModel(v.Item1, v.Item2)).ToList());
+            var result = new List<TableModel>();
+            result.AddRange(value.Select(v => new TableModel(v.Item1, v.Item2, RevEng.Shared.ObjectType.Table, v.Item3)).ToList());
 
             Console.Out.WriteLine("Result:");
             Console.Out.WriteLine(result.Write());

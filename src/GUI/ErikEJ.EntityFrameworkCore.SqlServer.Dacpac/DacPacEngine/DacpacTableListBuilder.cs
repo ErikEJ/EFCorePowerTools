@@ -25,7 +25,7 @@ namespace ReverseEngineer20
             _dacpacPath = dacpacPath;
         }
 
-        public List<Tuple<string, bool>> GetTableDefinitions()
+        public List<Tuple<string, bool, List<string>>> GetTableDefinitions()
         {
             var consolidator = new DacpacConsolidator();
 
@@ -34,12 +34,18 @@ namespace ReverseEngineer20
             using (var model = new TSqlTypedModel(dacpacPath))
             {
                 var result = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
-                    .Select(m => new Tuple<string, bool>($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", m.PrimaryKeyConstraints.Any()))
+                    .Select(m => new Tuple<string, bool, List<string>>($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]",
+                    m.PrimaryKeyConstraints.Any(),
+                    m.Columns.Where(i => !i.GetProperty<bool>(Column.IsHidden)
+                        && i.ColumnType != ColumnType.ColumnSet
+                        && i.ColumnType != ColumnType.ComputedColumn)
+                        .Select(c => c.Name.Parts[2])
+                        .ToList()))
                     .OrderBy(m => m.Item1)
                     .ToList();
 
                 var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
-                    .Select(m => new Tuple<string, bool>($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", false))
+                    .Select(m => new Tuple<string, bool, List<string>>($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", false, null))
                     .OrderBy(m => m.Item1)
                     .ToList();
 
