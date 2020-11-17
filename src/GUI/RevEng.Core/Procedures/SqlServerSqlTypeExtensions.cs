@@ -110,7 +110,7 @@ namespace RevEng.Core
 
                 case SqlDbType.TinyInt:
                     return isNullable ? typeof(byte?) : typeof(byte);
-                     
+
                 case SqlDbType.Variant:
                 case SqlDbType.Udt:
                     return typeof(object);
