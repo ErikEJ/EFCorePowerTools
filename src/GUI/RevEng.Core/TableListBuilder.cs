@@ -1,23 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-#if CORE50
-#else
-using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
-#endif
+using RevEng.Core.Procedures;
+using RevEng.Core.Procedures.Model;
+using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ReverseEngineer20.ReverseEngineer;
-using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-using RevEng.Core.Procedures;
-using RevEng.Core.Procedures.Model;
-using Microsoft.Data.SqlClient;
+#if CORE50
+#else
+using Oracle.EntityFrameworkCore.Design.Internal;
+#endif
 
 namespace ReverseEngineer20
 {
@@ -50,14 +49,14 @@ namespace ReverseEngineer20
             serviceProvider = Build(_databaseType);
        }
 
-        public List<Tuple<string, bool>> GetTableDefinitions()
+        public List<Tuple<string, bool, List<string>>> GetTableDefinitions()
         {
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
             var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
 
-            var result = new List<Tuple<string, bool>>();
+            var result = new List<Tuple<string, bool, List<string>>>();
 
             foreach (var table in dbModel.Tables)
             {
@@ -73,7 +72,7 @@ namespace ReverseEngineer20
                         : $"{table.Schema}.{table.Name}";
                 }
 
-                result.Add(new Tuple<string, bool>(name, table.PrimaryKey != null));
+                result.Add(new Tuple<string, bool, List<string>>(name, table.PrimaryKey != null, table.Columns.Select(c => c.Name).ToList()));
             }
 
             return result.OrderBy(m => m.Item1).ToList();
@@ -138,13 +137,13 @@ namespace ReverseEngineer20
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-#if CORE50
-#else
+
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-
+#if CORE50
+#else
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
