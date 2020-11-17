@@ -16,6 +16,7 @@ namespace RevEng.Core
                 { "numeric", "decimal" },
                 { "rowversion", "timestamp" },
                 { "table type", "structured" },
+                { "sql_variant", "variant" },
             });
 
         public static Type ClrType(this ProcedureParameter storedProcedureParameter)
