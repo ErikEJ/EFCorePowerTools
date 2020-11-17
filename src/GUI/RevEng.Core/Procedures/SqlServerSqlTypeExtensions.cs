@@ -17,6 +17,8 @@ namespace RevEng.Core
                 { "rowversion", "timestamp" },
                 { "table type", "structured" },
                 { "sql_variant", "variant" },
+                { "geography", "variant" },
+                { "geometry", "variant" },
             });
 
         public static Type ClrType(this ProcedureParameter storedProcedureParameter)
@@ -108,7 +110,7 @@ namespace RevEng.Core
 
                 case SqlDbType.TinyInt:
                     return isNullable ? typeof(byte?) : typeof(byte);
-
+                     
                 case SqlDbType.Variant:
                 case SqlDbType.Udt:
                     return typeof(object);
@@ -120,7 +122,7 @@ namespace RevEng.Core
                     return isNullable ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
 
                 default:
-                    throw new ArgumentOutOfRangeException("sqlType");
+                    throw new ArgumentOutOfRangeException(nameof(sqlType), $"storetype: {storeType}");
             }
         }
 
