@@ -147,13 +147,6 @@ namespace EFCorePowerTools.Handlers
                         var normalizedTables = reverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
                         preselectedTables.AddRange(normalizedTables);
                     }
-
-                    //for (var i = 0; i < predefinedTables.Count; i++)
-                    //{
-                    //    var preselectedTable = preselectedTables.FirstOrDefault(c => c.Name.Equals(predefinedTables[i].Name, StringComparison.OrdinalIgnoreCase));
-                    //    if (preselectedTable != null)
-                    //        predefinedTables[i] = preselectedTable;
-                    //}
                 }
 
                 var ptd = _package.GetView<IPickTablesDialog>()
