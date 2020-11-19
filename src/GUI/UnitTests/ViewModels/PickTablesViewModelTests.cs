@@ -4,12 +4,14 @@ namespace UnitTests.ViewModels
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
+    using RevEng.Shared;
 
     [TestFixture]
     public class PickTablesViewModelTests
@@ -21,9 +23,10 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
             IFileSystemAccess fsa = null;
             Func<ITableInformationViewModel> t = null;
+            Func<IColumnInformationViewModel> c = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t));
+            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t, c));
         }
 
         [Test]
@@ -33,9 +36,10 @@ namespace UnitTests.ViewModels
             var osa = Mock.Of<IOperatingSystemAccess>();
             IFileSystemAccess fsa = null;
             Func<ITableInformationViewModel> t = null;
+            Func<IColumnInformationViewModel> c = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t));
+            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t, c));
         }
 
         [Test]
@@ -45,9 +49,23 @@ namespace UnitTests.ViewModels
             var osa = Mock.Of<IOperatingSystemAccess>();
             var fsa = Mock.Of<IFileSystemAccess>();
             Func<ITableInformationViewModel> t = null;
+            Func<IColumnInformationViewModel> c = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t));
+            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t, c));
+        }
+
+        [Test]
+        public void Constructors_ArgumentNullException_ColumnInformationViewModelFactory()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+            Func<ITableInformationViewModel> t = null;
+            Func<IColumnInformationViewModel> c = null;
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new PickTablesViewModel(osa, fsa, t, c));
         }
 
         [Test]
@@ -64,8 +82,15 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
             Assert.IsNotNull(vm.LoadedCommand);
@@ -89,8 +114,15 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
             Assert.IsNotNull(vm.Tables);
@@ -111,8 +143,15 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
             Assert.IsNull(vm.TableSelectionThreeState);
@@ -132,8 +171,15 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
             // Act
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
             Assert.AreEqual(string.Empty, vm.SearchText);
@@ -153,7 +199,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.LoadedCommand.CanExecute(null);
@@ -176,7 +229,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
                 vm.Tables.Add(tvm);
@@ -207,7 +267,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.SaveSelectionCommand.CanExecute(null);
@@ -230,7 +297,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -259,11 +333,18 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
-                tvm.Model.HasPrimaryKey = false;
+                tvm.HasPrimaryKey = false;
                 vm.Tables.Add(tvm);
             }
 
@@ -288,7 +369,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -317,7 +405,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -348,7 +443,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -360,7 +462,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             osaMock.Verify(m => m.RequestSaveFileName(It.IsNotNull<string>(), It.Is<string>(s => s.Contains("*.txt") && s.Contains("*.*")), true), Times.Once);
-            fsaMock.Verify(m => m.WriteAllLines(testFilePath, It.Is<IEnumerable<string>>(c => c.Count() == 3)), Times.Once);
+            fsaMock.Verify(m => m.WriteAllLines(testFilePath, It.Is<IEnumerable<string>>(c => c.Count() == 5)), Times.Once);
         }
 
         [Test]
@@ -377,7 +479,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.LoadSelectionCommand.CanExecute(null);
@@ -400,7 +509,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+            
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -429,7 +545,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+ 
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -469,7 +592,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osaMock.Object, fsaMock.Object, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -489,7 +619,7 @@ namespace UnitTests.ViewModels
             Assert.IsFalse(tt[2].IsSelected);
             Assert.IsFalse(tt[3].IsSelected);
             Assert.IsTrue(tt[4].IsSelected);
-            Assert.IsFalse(tt[5].IsSelected);
+            Assert.IsTrue(tt[5].IsSelected);
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -507,7 +637,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.OkCommand.CanExecute(null);
@@ -530,12 +667,19 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
                 tvm.IsSelected = false;
-                tvm.Model.HasPrimaryKey = false;
+                tvm.HasPrimaryKey = false;
                 vm.Tables.Add(tvm);
             }
 
@@ -560,7 +704,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+            
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var tvm in tt)
             {
@@ -590,7 +741,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+            
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             vm.CloseRequested += (sender,
                                   args) =>
             {
@@ -626,7 +784,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var canExecute = vm.CancelCommand.CanExecute(null);
@@ -651,7 +816,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            var vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             vm.CloseRequested += (sender,
                                   args) =>
             {
@@ -687,7 +859,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             vm.AddTables(null);
@@ -710,8 +889,15 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
-            var c = new TableInformationModel[0];
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var c = new TableModel[0];
 
             // Act
             vm.AddTables(c);
@@ -729,32 +915,41 @@ namespace UnitTests.ViewModels
 
             ITableInformationViewModel CreateTableInformationViewModelMockObject()
             {
-                var mock = new Mock<ITableInformationViewModel>();
+                var mock = new Mock<ITableInformationViewModel>(MockBehavior.Default);
+                mock.SetupAllProperties();
+                mock.SetupGet(g => g.Columns).Returns(new ObservableCollection<IColumnInformationViewModel>());
+                return mock.Object;
+            }
+
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
                 mock.SetupAllProperties();
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
-            var c = tt.Select(m => m.Model).ToArray();
+            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
 
             // Act
             vm.AddTables(c);
+            var vmt = vm.Tables.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
 
             // Assert
             Assert.IsNotEmpty(vm.Tables);
             Assert.AreEqual(tt.Length, vm.Tables.Count);
-            Assert.AreSame(tt[0].Model, vm.Tables[0].Model);
+            AreTableEqual(c[0], vmt[0]);
             Assert.IsFalse(vm.Tables[0].IsSelected);
-            Assert.AreSame(tt[1].Model, vm.Tables[1].Model);
+            AreTableEqual(c[1], vmt[1]);
             Assert.IsFalse(vm.Tables[1].IsSelected);
-            Assert.AreSame(tt[2].Model, vm.Tables[2].Model);
+            AreTableEqual(c[2], vmt[2]);
             Assert.IsFalse(vm.Tables[2].IsSelected);
-            Assert.AreSame(tt[3].Model, vm.Tables[3].Model);
+            AreTableEqual(c[3], vmt[3]);
             Assert.IsFalse(vm.Tables[3].IsSelected);
-            Assert.AreSame(tt[4].Model, vm.Tables[4].Model);
+            AreTableEqual(c[4], vmt[4]);
             Assert.IsFalse(vm.Tables[4].IsSelected);
-            Assert.AreSame(tt[5].Model, vm.Tables[5].Model);
+            AreTableEqual(c[5], vmt[5]);
             Assert.IsFalse(vm.Tables[5].IsSelected);
         }
 
@@ -772,7 +967,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             ITableInformationViewModel[] tt = null;
             if (hasTables)
             {
@@ -813,8 +1015,15 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
-            var c = new TableInformationModel[0];
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var c = new TableModel[0];
             ITableInformationViewModel[] tt = null;
             if (hasTables)
             {
@@ -855,10 +1064,17 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var c = new[]
             {
-                new TableInformationModel("unit.test", true)
+                new TableModel("unit.test", true, ObjectType.Table, null)
             };
             ITableInformationViewModel[] tt = null;
             if (hasTables)
@@ -879,8 +1095,8 @@ namespace UnitTests.ViewModels
             {
                 CollectionAssert.AreEqual(tt, vm.Tables);
                 var selectedTableModel = c.Single();
-                Assert.IsTrue(vm.Tables.Single(m => m.Model.Name == selectedTableModel.Name).IsSelected);
-                Assert.IsTrue(vm.Tables.Where(m => m.Model.Name != selectedTableModel.Name).All(m => m.IsSelected == false));
+                Assert.IsTrue(vm.Tables.Single(m => m.Name == selectedTableModel.Name).IsSelected);
+                Assert.IsTrue(vm.Tables.Where(m => m.Name != selectedTableModel.Name).All(m => m.IsSelected == false));
             }
             else
             {
@@ -902,7 +1118,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
 
             // Act
@@ -926,7 +1149,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
 
             // Act
@@ -950,7 +1180,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
 
             // Act
@@ -970,10 +1207,12 @@ namespace UnitTests.ViewModels
 
             // Test relies on PropertyChanged, so we rely on the real view model here
             ITableInformationViewModel CreateTableInformationViewModel() => new TableInformationViewModel();
+            IColumnInformationViewModel CreateColumnInformationViewModel() => new ColumnInformationViewModel();
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel);
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel, CreateColumnInformationViewModel);
             var tt = GetTestViewModels();
-            vm.AddTables(tt.Select(m => m.Model));
+            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))));
 
             // Act
             foreach (var table in vm.Tables)
@@ -994,10 +1233,11 @@ namespace UnitTests.ViewModels
 
             // Test relies on PropertyChanged, so we rely on the real view model here
             ITableInformationViewModel CreateTableInformationViewModel() => new TableInformationViewModel();
+            IColumnInformationViewModel CreateColumnInformationViewModel() => new ColumnInformationViewModel();
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel);
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel, CreateColumnInformationViewModel);
             var tt = GetTestViewModels();
-            vm.AddTables(tt.Select(m => m.Model));
+            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))));
 
             // Act
             foreach (var table in vm.Tables)
@@ -1018,10 +1258,11 @@ namespace UnitTests.ViewModels
 
             // Test relies on PropertyChanged, so we rely on the real view model here
             ITableInformationViewModel CreateTableInformationViewModel() => new TableInformationViewModel();
+            IColumnInformationViewModel CreateColumnInformationViewModel() => new ColumnInformationViewModel();
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel);
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModel, CreateColumnInformationViewModel);
             var tt = GetTestViewModels();
-            vm.AddTables(tt.Select(m => m.Model));
+            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))));
 
             // Act
             for (var i = 0; i < vm.Tables.Count; i++)
@@ -1048,7 +1289,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var table in tt)
             {
@@ -1060,8 +1308,7 @@ namespace UnitTests.ViewModels
             vm.TableSelectionThreeState = true;
 
             // Assert
-            Assert.IsTrue(vm.Tables.Where(m => m.Model.HasPrimaryKey).All(m => m.IsSelected));
-            Assert.IsTrue(vm.Tables.Where(m => !m.Model.HasPrimaryKey).All(m => !m.IsSelected));
+            Assert.IsTrue(vm.Tables.All(m => m.IsSelected));
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -1079,7 +1326,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var table in tt)
             {
@@ -1109,7 +1363,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var table in tt)
             {
@@ -1140,7 +1401,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var table in tt)
             {
@@ -1172,7 +1440,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var table in tt)
             {
@@ -1189,7 +1464,7 @@ namespace UnitTests.ViewModels
             Assert.That(() =>
             {
                 var postFilter = vm.FilteredTables.OfType<ITableInformationViewModel>().ToArray();
-                return postFilter.Length < tt.Length && postFilter.All(m => m.Model.Name.Contains("dbo"));
+                return postFilter.Length < tt.Length && postFilter.All(m => m.Name.Contains("dbo"));
             }, Is.True.After(1500, 200));
         }
 
@@ -1207,7 +1482,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var result = vm.GetResult();
@@ -1231,7 +1513,14 @@ namespace UnitTests.ViewModels
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
             foreach (var table in tt)
             {
@@ -1258,11 +1547,20 @@ namespace UnitTests.ViewModels
             {
                 var mock = new Mock<ITableInformationViewModel>();
                 mock.SetupAllProperties();
+                mock.SetupGet(g => g.Columns).Returns(new ObservableCollection<IColumnInformationViewModel>());
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
+            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
             foreach (var table in tt)
             {
                 table.IsSelected = true;
@@ -1274,11 +1572,13 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(4, result.Length);
-            Assert.AreSame(tt[0].Model, result[0]);
-            Assert.AreSame(tt[2].Model, result[1]);
-            Assert.AreSame(tt[3].Model, result[2]);
-            Assert.AreSame(tt[4].Model, result[3]);
+            Assert.AreEqual(6, result.Length);
+            AreTableEqual(c[0], result[0], false);
+            AreTableEqual(c[1], result[1], false);
+            AreTableEqual(c[2], result[2], false);
+            AreTableEqual(c[3], result[3], false);
+            AreTableEqual(c[4], result[4], false);
+            AreTableEqual(c[5], result[5], false);
         }
 
         [Test]
@@ -1292,11 +1592,20 @@ namespace UnitTests.ViewModels
             {
                 var mock = new Mock<ITableInformationViewModel>();
                 mock.SetupAllProperties();
+                mock.SetupGet(g => g.Columns).Returns(new ObservableCollection<IColumnInformationViewModel>());
                 return mock.Object;
             }
 
-            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject);
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
+            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
             foreach (var table in tt)
             {
                 vm.Tables.Add(table);
@@ -1307,10 +1616,12 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreSame(tt[2].Model, result[0]);
-            Assert.AreSame(tt[3].Model, result[1]);
-            Assert.AreSame(tt[4].Model, result[2]);
+            Assert.AreEqual(5, result.Length);
+            AreTableEqual(c[1], result[0], false);
+            AreTableEqual(c[2], result[1], false);
+            AreTableEqual(c[3], result[2], false);
+            AreTableEqual(c[4], result[3], false);
+            AreTableEqual(c[5], result[4], false);
         }
 
         private static ITableInformationViewModel[] GetTestViewModels()
@@ -1320,35 +1631,149 @@ namespace UnitTests.ViewModels
             r[0] = new TableInformationViewModel
             {
                 IsSelected = false,
-                Model = new TableInformationModel("[dbo].[Atlas]", true)
+                HasPrimaryKey = true,
+                Name = "[dbo].[Atlas]",
             };
+            r[0].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "Id"
+            });
+            r[0].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column1"
+            });
+            r[0].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column2"
+            });
+
             r[1] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("[__].[RefactorLog]", false)
+                HasPrimaryKey = true,
+                Name = "[__].[RefactorLog]",
             };
+            r[1].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "Id"
+            });
+            r[1].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column1"
+            });
+            r[1].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column2"
+            });
+
             r[2] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("[dbo].[__RefactorLog]", true)
+                HasPrimaryKey = true,
+                Name = "[dbo].[__RefactorLog]",
             };
+            r[2].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "Id"
+            });
+            r[2].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column1"
+            });
+            r[2].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column2"
+            });
+
             r[3] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("[dbo].[sysdiagrams]", true)
+                HasPrimaryKey = true,
+                Name = "[dbo].[sysdiagrams]",
             };
+            r[3].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "Id"
+            });
+            r[3].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column1"
+            });
+            r[3].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column2"
+            });
+
             r[4] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("unit.test", true)
+                HasPrimaryKey = true,
+                Name = "unit.test",
             };
+            r[4].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "Id"
+            });
+            r[4].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column1"
+            });
+            r[4].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column2"
+            });
+
             r[5] = new TableInformationViewModel
             {
                 IsSelected = true,
-                Model = new TableInformationModel("unit.foo", false)
+                HasPrimaryKey = true,
+                Name = "unit.foo",
             };
+            r[5].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "Id"
+            });
+            r[5].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column1"
+            });
+            r[5].Columns.Add(new ColumnInformationViewModel
+            {
+                IsSelected = true,
+                Name = "column2"
+            });
 
             return r;
+        }
+
+        private static void AreTableEqual(TableModel a, TableModel b, bool compareColumns = true)
+        {
+            Assert.AreEqual(a.HasPrimaryKey, b.HasPrimaryKey);
+            Assert.AreEqual(a.Name, b.Name);
+            Assert.AreEqual(a.ObjectType, b.ObjectType);
+            if (compareColumns)
+            {
+                Assert.AreEqual(a.Columns.ElementAt(0), b.Columns.ElementAt(0));
+                Assert.AreEqual(a.Columns.ElementAt(1), b.Columns.ElementAt(1));
+                Assert.AreEqual(a.Columns.ElementAt(2), b.Columns.ElementAt(2));
+            }
         }
     }
 }
