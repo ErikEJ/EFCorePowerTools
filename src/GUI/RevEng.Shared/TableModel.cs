@@ -38,7 +38,7 @@
         public IEnumerable<string> Columns { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TableInformationModel"/> class for a specific table.
+        /// Initializes a new instance of the <see cref="TableModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>
         /// <param name="hasPrimaryKey">Whether or not a primary key exists for the table.</param>

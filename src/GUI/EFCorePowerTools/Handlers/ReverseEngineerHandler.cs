@@ -134,11 +134,11 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                List<TableInformationModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
+                List<TableModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
                                            : await GetTablesAsync(dbInfo, useEFCore5, schemas);
 
-                var preselectedTables = new List<TableInformationModel>();
+                var preselectedTables = new List<TableModel>();
                 if (options != null)
                 {
                     dacpacSchema = options.DefaultDacpacSchema;
@@ -148,12 +148,12 @@ namespace EFCorePowerTools.Handlers
                         preselectedTables.AddRange(normalizedTables);
                     }
 
-                    for (var i = 0; i < predefinedTables.Count; i++)
-                    {
-                        var preselectedTable = preselectedTables.FirstOrDefault(c => c.Name.Equals(predefinedTables[i].Name, StringComparison.OrdinalIgnoreCase));
-                        if (preselectedTable != null)
-                            predefinedTables[i] = preselectedTable;
-                    }
+                    //for (var i = 0; i < predefinedTables.Count; i++)
+                    //{
+                    //    var preselectedTable = preselectedTables.FirstOrDefault(c => c.Name.Equals(predefinedTables[i].Name, StringComparison.OrdinalIgnoreCase));
+                    //    if (preselectedTable != null)
+                    //        predefinedTables[i] = preselectedTable;
+                    //}
                 }
 
                 var ptd = _package.GetView<IPickTablesDialog>()
@@ -385,13 +385,13 @@ namespace EFCorePowerTools.Handlers
             return false;
         }
 
-        private async Task<List<TableInformationModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
+        private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
         {
             var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined, null);
             return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 
-        private async Task<List<TableInformationModel>> GetTablesAsync(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
+        private async Task<List<TableModel>> GetTablesAsync(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
         {
             if (dbInfo.DataConnection != null)
             {

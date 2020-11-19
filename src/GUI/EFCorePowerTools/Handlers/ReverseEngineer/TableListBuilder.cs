@@ -24,11 +24,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             _schemas = schemas;
         }
 
-        public List<TableInformationModel> GetTableDefinitions(bool useEFCore5)
+        public List<TableModel> GetTableDefinitions(bool useEFCore5)
         {
             var launcher = new EfRevEngLauncher(null, useEFCore5);
 
-            List<TableInformationModel> tables;
+            List<TableModel> tables;
 
             if (_databaseType == DatabaseType.Undefined)
             {
@@ -37,21 +37,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             else
             {
                 tables = launcher.GetTables(_connectionString, _databaseType, _schemas);
-            }
-
-            foreach (var item in tables)
-            {
-                if (item.IsProcedure)
-                {
-                    item.HasPrimaryKey = true;
-                    continue;
-                }
-
-                if (!item.HasPrimaryKey)
-                {
-                    item.HasPrimaryKey = true;
-                    item.ShowKeylessWarning = true;
-                }
             }
 
             return tables;

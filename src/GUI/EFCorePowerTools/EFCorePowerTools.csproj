@@ -66,6 +66,7 @@
     <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickTablesViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IModelingOptionsViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IColumnInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\ITableInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IViewModel.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="ViewModels\PickConfigViewModel.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
     <Compile Include="ViewModels\PickTablesViewModel.cs" />
+    <Compile Include="ViewModels\ColumnInformationViewModel.cs" />
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

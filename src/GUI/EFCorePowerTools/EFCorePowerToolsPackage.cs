@@ -259,6 +259,7 @@ namespace EFCorePowerTools
                     .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
                     .AddTransient<IPickTablesViewModel, PickTablesViewModel>()
                     .AddSingleton<Func<ITableInformationViewModel>>(() => new TableInformationViewModel())
+                    .AddSingleton<Func<IColumnInformationViewModel>>(() => new ColumnInformationViewModel())
                     .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>()
                     .AddTransient<IMigrationOptionsViewModel, MigrationOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
