@@ -1624,6 +1624,52 @@ namespace UnitTests.ViewModels
             AreTableEqual(c[5], result[4], false);
         }
 
+        [Test]
+        public void GetResults_WithTables_Modified()
+        {
+            // Arrange
+            var osa = Mock.Of<IOperatingSystemAccess>();
+            var fsa = Mock.Of<IFileSystemAccess>();
+
+            ITableInformationViewModel CreateTableInformationViewModelMockObject()
+            {
+                var mock = new Mock<ITableInformationViewModel>();
+                mock.SetupAllProperties();
+                mock.SetupGet(g => g.Columns).Returns(new ObservableCollection<IColumnInformationViewModel>());
+                return mock.Object;
+            }
+
+            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
+            {
+                var mock = new Mock<IColumnInformationViewModel>();
+                mock.SetupAllProperties();
+                return mock.Object;
+            }
+
+            IPickTablesViewModel vm = new PickTablesViewModel(osa, fsa, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var tt = GetTestViewModels();
+            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
+            foreach (var table in tt)
+            {
+                vm.Tables.Add(table);
+            }
+
+            // Act
+            vm.Tables[1].IsSelected = false;
+            vm.Tables[2].Columns.First().IsSelected = false;
+
+            var result = vm.GetResult();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(4, result.Length);
+            AreTableEqual(c[2], result[0], false);
+            AreTableEqual(c[3], result[1], false);
+            Assert.IsFalse(result[1].Columns.Any(tc => tc == result[2].Columns.First()));
+            AreTableEqual(c[4], result[2], false);
+            AreTableEqual(c[5], result[3], false);
+        }
+
         private static ITableInformationViewModel[] GetTestViewModels()
         {
             var r = new ITableInformationViewModel[6];
