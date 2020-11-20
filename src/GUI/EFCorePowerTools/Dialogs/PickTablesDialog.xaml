@@ -113,7 +113,7 @@
                         <HierarchicalDataTemplate.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="1" Orientation="Horizontal">
-                                    <CheckBox Margin="1" IsChecked="{Binding IsSelected}"/>
+                                    <CheckBox Margin="1" IsChecked="{Binding IsSelected}" IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeViewItem}, AncestorLevel=2}, Path=DataContext.IsSelected}"/>
                                     <TextBlock Margin="1" Text="{Binding Name}"/>
                                 </StackPanel>
                             </DataTemplate>
