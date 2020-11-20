@@ -62,6 +62,10 @@
             {
                 if (Equals(value, _isSelected)) return;
                 _isSelected = value;
+                foreach(var column in Columns)
+                {
+                    column.IsSelected = _isSelected;
+                }
                 RaisePropertyChanged();
             }
         }
