@@ -32,6 +32,7 @@
         public ICommand LoadedCommand { get; }
         public ICommand SaveSelectionCommand { get; }
         public ICommand LoadSelectionCommand { get; }
+        public ICommand TableSelectionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -234,11 +235,11 @@
             {
                 var t = tables.SingleOrDefault(m => m.Name == table.Name);
                 table.IsSelected = t != null;
-                if (table.ObjectType == ObjectType.Table)
+                if (table.ObjectType == ObjectType.Table && table.IsSelected)
                 {
                     foreach (var column in table.Columns)
                     {
-                        column.IsSelected = t?.Columns?.Any(m => m != column.Name) ?? true;
+                        column.IsSelected = !t?.Columns?.Any(m => m == column.Name) ?? true;
                     }
                 }
             }
