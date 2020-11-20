@@ -15,10 +15,10 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class ColumnRemovingScaffoldingModelFactory : RelationalScaffoldingModelFactory
     {
-        private readonly List<TableInformationModel> _tables;
+        private readonly List<TableModel> _tables;
         private readonly DatabaseType _databaseType;
 
-        public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, List<TableInformationModel> tables, DatabaseType databaseType) :
+        public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, List<TableModel> tables, DatabaseType databaseType) :
             base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions)
         {
             _tables = tables;
@@ -40,9 +40,9 @@ namespace ReverseEngineer20.ReverseEngineer
             }
 
             var tableDefinition = _tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-            if (tableDefinition?.ExcludedColumns != null)
+            if (tableDefinition?.Columns != null)
             {
-                foreach (var column in tableDefinition?.ExcludedColumns)
+                foreach (var column in tableDefinition?.Columns)
                 {
                     var columnToRemove = table.Columns.FirstOrDefault(c => c.Name.Equals(column, StringComparison.OrdinalIgnoreCase));
                     if (columnToRemove != null)

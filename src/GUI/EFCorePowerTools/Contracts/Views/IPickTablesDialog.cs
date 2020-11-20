@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using Shared.Models;
 
-    public interface IPickTablesDialog : IDialog<TableInformationModel[]>
+    public interface IPickTablesDialog : IDialog<TableModel[]>
     {
-        IPickTablesDialog AddTables(IEnumerable<TableInformationModel> tables);
+        IPickTablesDialog AddTables(IEnumerable<TableModel> tables);
 
-        IPickTablesDialog PreselectTables(IEnumerable<TableInformationModel> tables);
+        IPickTablesDialog PreselectTables(IEnumerable<TableModel> tables);
     }
 }

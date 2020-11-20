@@ -2,6 +2,7 @@
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using NUnit.Framework;
+using RevEng.Shared;
 
 namespace UnitTests
 {
@@ -14,12 +15,12 @@ namespace UnitTests
         public void CanParseTables()
         {
             // Arrange
-            var tables = new List<TableInformationModel>
+            var tables = new List<TableModel>
             {
-                new TableInformationModel("dbo.table", true),
-                new TableInformationModel("dbo.table.crazy", false),
-                new TableInformationModel("[dbo].[table]", true),
-                new TableInformationModel("[dbo].[table.mad]", true),
+                new TableModel("dbo.table", true, ObjectType.Table, null),
+                new TableModel("dbo.table.crazy", false, ObjectType.Table, null),
+                new TableModel("[dbo].[table]", true, ObjectType.Table, null),
+                new TableModel("[dbo].[table.mad]", true, ObjectType.Table, null),
             };
 
             // Act
@@ -37,13 +38,13 @@ namespace UnitTests
         public void CanSkipTables()
         {
             // Arrange
-            var tables = new List<TableInformationModel>
+            var tables = new List<TableModel>
             {
-                new TableInformationModel("dbo.table", true),
-                new TableInformationModel("dbo.table.crazy", false),
-                new TableInformationModel("[dbo].[table]", true),
-                new TableInformationModel("[dbo].[table.mad]", true),
-                new TableInformationModel("table", true),
+                new TableModel("dbo.table", true, ObjectType.Table, null),
+                new TableModel("dbo.table.crazy", false, ObjectType.Table, null),
+                new TableModel("[dbo].[table]", true, ObjectType.Table, null),
+                new TableModel("[dbo].[table.mad]", true, ObjectType.Table, null),
+                new TableModel("table", true, ObjectType.Table, null),
             };
 
             // Act

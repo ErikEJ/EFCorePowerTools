@@ -30,12 +30,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             throw new Exception($"Reverse engineer error: Unable to launch external process: {Environment.NewLine + output}");
         }
 
-        public List<TableInformationModel> BuildTableResult(string output)
+        public List<TableModel> BuildTableResult(string output)
         {
             var resultParts = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.None);
             if (resultParts.Length == 2)
             {
-                if (TryRead(resultParts[1], out List<TableInformationModel> deserialized))
+                if (TryRead(resultParts[1], out List<TableModel> deserialized))
                 {
                     return deserialized;
                 }

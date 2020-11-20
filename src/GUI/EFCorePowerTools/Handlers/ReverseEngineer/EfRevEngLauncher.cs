@@ -58,13 +58,13 @@ namespace ReverseEngineer20.ReverseEngineer
             resultDeserializer = new ResultDeserializer();
         }
 
-        public List<TableInformationModel> GetDacpacTables(string dacpacPath)
+        public List<TableModel> GetDacpacTables(string dacpacPath)
         {
             var arguments = "\"" + dacpacPath + "\"";
             return GetTablesInternal(arguments);
         }
 
-        public List<TableInformationModel> GetTables(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
+        public List<TableModel> GetTables(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
             var arguments = ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
 
@@ -74,7 +74,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return GetTablesInternal(arguments);
         }
 
-        private List<TableInformationModel> GetTablesInternal(string arguments)
+        private List<TableModel> GetTablesInternal(string arguments)
         {
             if (!IsDotnetInstalled())
             {

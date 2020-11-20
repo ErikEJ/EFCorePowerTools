@@ -1,10 +1,21 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
-    using Shared.Models;
+    using RevEng.Shared;
+    using System.Collections.ObjectModel;
 
     public interface ITableInformationViewModel : IViewModel
     {
-        TableInformationModel Model { get; set; }
+        string Name { get; set; }
+
+        bool HasPrimaryKey { get; set; }
+
+        bool ShowKeylessWarning { get;  }
+
+        ObjectType ObjectType { get; set; }
+
+        ObservableCollection<IColumnInformationViewModel> Columns { get; }
+
+        bool IsProcedure { get; }
 
         bool IsSelected { get; set; }
     }

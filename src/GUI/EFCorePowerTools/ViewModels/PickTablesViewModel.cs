@@ -13,6 +13,7 @@
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
+    using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
 
@@ -21,6 +22,7 @@
         private readonly IOperatingSystemAccess _operatingSystemAccess;
         private readonly IFileSystemAccess _fileSystemAccess;
         private readonly Func<ITableInformationViewModel> _tableInformationViewModelFactory;
+        private readonly Func<IColumnInformationViewModel> _columnInformationViewModelFactory;
 
         private bool? _tableSelectionThreeState;
         private string _searchText;
@@ -63,11 +65,13 @@
 
         public PickTablesViewModel(IOperatingSystemAccess operatingSystemAccess,
                                    IFileSystemAccess fileSystemAccess,
-                                   Func<ITableInformationViewModel> tableInformationViewModelFactory)
+                                   Func<ITableInformationViewModel> tableInformationViewModelFactory,
+                                   Func<IColumnInformationViewModel> columnInformationViewModelFactory)
         {
             _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
             _fileSystemAccess = fileSystemAccess ?? throw new ArgumentNullException(nameof(fileSystemAccess));
             _tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
+            _columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             SaveSelectionCommand = new RelayCommand(SaveSelection_Executed, SaveSelection_CanExecute);
@@ -99,10 +103,10 @@
             if (resultFileName == null)
                 return;
 
-            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey).Select(m => m.Model.Name));
+            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.HasPrimaryKey).Select(m => m.Name));
         }
 
-        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.Model.HasPrimaryKey);
+        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.HasPrimaryKey);
 
         private void LoadSelection_Executed()
         {
@@ -114,14 +118,14 @@
                 return;
 
             var lines = _fileSystemAccess.ReadAllLines(resultFileName);
-            var parsedTables = new List<TableInformationModel>();
+            var parsedTables = new List<TableModel>();
             foreach (var line in lines)
-                parsedTables.Add(new TableInformationModel(line, true, false));
+                parsedTables.Add(new TableModel(line, true, ObjectType.Table, null));
 
             foreach (var t in Tables)
             {
-                var parsedTable = parsedTables.SingleOrDefault(m => m.Name == t.Model.Name);
-                t.IsSelected = t.Model.HasPrimaryKey && parsedTable != null;
+                var parsedTable = parsedTables.SingleOrDefault(m => m.Name == t.Name);
+                t.IsSelected = t.HasPrimaryKey && parsedTable != null;
             }
 
             SearchText = string.Empty;
@@ -140,7 +144,7 @@
         /// <summary>
         /// Currently at least a single table must be selected.
         /// </summary>
-        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && !m.Model.IsProcedure);
+        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && !m.IsProcedure);
 
         private void Cancel_Executed()
         {
@@ -157,14 +161,14 @@
                 return;
 
             foreach (var t in Tables)
-                t.IsSelected = t.Model.HasPrimaryKey && selectionMode.Value;
+                t.IsSelected = t.HasPrimaryKey && selectionMode.Value;
 
             SearchText = string.Empty;
         }
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = Tables.Where(m => m.Model.HasPrimaryKey)
+            TableSelectionThreeState = Tables.Where(m => m.HasPrimaryKey)
                                              .All(m => m.IsSelected)
                                            ? true
                                            : Tables.All(m => !m.IsSelected)
@@ -184,25 +188,36 @@
         private bool FilterTable(ITableInformationViewModel tableInformationViewModel)
         {
             return string.IsNullOrWhiteSpace(SearchText)
-                || tableInformationViewModel.Model.Name.ToUpper().Contains(SearchText.ToUpper());
+                || tableInformationViewModel.Name.ToUpper().Contains(SearchText.ToUpper());
         }
 
         private static void PredefineSelection(ITableInformationViewModel t)
         {
-            var unSelect = t.Model.Name.StartsWith("[__")
-                        || t.Model.Name.StartsWith("[dbo].[__")
-                        || t.Model.Name.EndsWith(".[sysdiagrams]");
+            var unSelect = t.Name.StartsWith("[__")
+                        || t.Name.StartsWith("[dbo].[__")
+                        || t.Name.EndsWith(".[sysdiagrams]");
             if (unSelect) t.IsSelected = false;
         }
 
-        void IPickTablesViewModel.AddTables(IEnumerable<TableInformationModel> tables)
+        void IPickTablesViewModel.AddTables(IEnumerable<TableModel> tables)
         {
             if (tables == null) return;
 
             foreach (var table in tables)
             {
                 var tvm = _tableInformationViewModelFactory();
-                tvm.Model = table;
+                tvm.HasPrimaryKey = table.HasPrimaryKey;
+                tvm.Name = table.Name;
+                tvm.ObjectType = table.ObjectType;
+                if (table.ObjectType == ObjectType.Table)
+                {
+                    foreach (var column in table.Columns)
+                    {
+                        var cvm = _columnInformationViewModelFactory();
+                        cvm.Name = column;
+                        tvm.Columns.Add(cvm);
+                    }
+                }
                 PredefineSelection(tvm);
                 Tables.Add(tvm);
                 tvm.PropertyChanged += TableViewModel_PropertyChanged;
@@ -211,22 +226,28 @@
             FilteredTables.Refresh();
         }
 
-        void IPickTablesViewModel.SelectTables(IEnumerable<TableInformationModel> tables)
+        void IPickTablesViewModel.SelectTables(IEnumerable<TableModel> tables)
         {
             if (tables == null) return;
 
-            foreach (var table in tables)
+            foreach (var table in Tables)
             {
-                var t = Tables.SingleOrDefault(m => m.Model.Name == table.Name);
-                if (t != null)
-                    t.IsSelected = true;
+                var t = tables.SingleOrDefault(m => m.Name == table.Name);
+                table.IsSelected = t != null;
+                if (table.ObjectType == ObjectType.Table)
+                {
+                    foreach (var column in table.Columns)
+                    {
+                        column.IsSelected = t?.Columns?.Any(m => m != column.Name) ?? true;
+                    }
+                }
             }
         }
 
-        TableInformationModel[] IPickTablesViewModel.GetResult()
+        TableModel[] IPickTablesViewModel.GetResult()
         {
-            return Tables.Where(m => m.IsSelected && m.Model.HasPrimaryKey)
-                         .Select(m => m.Model)
+            return Tables.Where(m => m.IsSelected)
+                         .Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Where(c => !c.IsSelected).Select(c => c.Name)))
                          .ToArray();
         }
 
