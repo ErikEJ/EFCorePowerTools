@@ -19,8 +19,6 @@
 
     public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {
-        private readonly IOperatingSystemAccess _operatingSystemAccess;
-        private readonly IFileSystemAccess _fileSystemAccess;
         private readonly Func<ITableInformationViewModel> _tableInformationViewModelFactory;
         private readonly Func<IColumnInformationViewModel> _columnInformationViewModelFactory;
 
@@ -30,8 +28,6 @@
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand LoadedCommand { get; }
-        public ICommand SaveSelectionCommand { get; }
-        public ICommand LoadSelectionCommand { get; }
         public ICommand TableSelectionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -64,19 +60,13 @@
             }
         }
 
-        public PickTablesViewModel(IOperatingSystemAccess operatingSystemAccess,
-                                   IFileSystemAccess fileSystemAccess,
-                                   Func<ITableInformationViewModel> tableInformationViewModelFactory,
+        public PickTablesViewModel(Func<ITableInformationViewModel> tableInformationViewModelFactory,
                                    Func<IColumnInformationViewModel> columnInformationViewModelFactory)
         {
-            _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
-            _fileSystemAccess = fileSystemAccess ?? throw new ArgumentNullException(nameof(fileSystemAccess));
             _tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
             _columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
-            SaveSelectionCommand = new RelayCommand(SaveSelection_Executed, SaveSelection_CanExecute);
-            LoadSelectionCommand = new RelayCommand(LoadSelection_Executed, LoadSelection_CanExecute);
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
 
@@ -95,44 +85,6 @@
             foreach (var t in Tables)
                 PredefineSelection(t);
         }
-
-        private void SaveSelection_Executed()
-        {
-            var resultFileName = _operatingSystemAccess.RequestSaveFileName("Save list of tables as",
-                                                                            "Text file (*.txt)|*.txt|All Files(*.*)|*.*",
-                                                                            true);
-            if (resultFileName == null)
-                return;
-
-            _fileSystemAccess.WriteAllLines(resultFileName, Tables.Where(m => m.IsSelected && m.HasPrimaryKey).Select(m => m.Name));
-        }
-
-        private bool SaveSelection_CanExecute() => Tables.Any(m => m.IsSelected && m.HasPrimaryKey);
-
-        private void LoadSelection_Executed()
-        {
-            var resultFileName = _operatingSystemAccess.RequestLoadFileName("Select list of tables to load",
-                                                                            "Text file (*.txt)|*.txt|All Files(*.*)|*.*",
-                                                                            false,
-                                                                            true);
-            if (resultFileName == null)
-                return;
-
-            var lines = _fileSystemAccess.ReadAllLines(resultFileName);
-            var parsedTables = new List<TableModel>();
-            foreach (var line in lines)
-                parsedTables.Add(new TableModel(line, true, ObjectType.Table, null));
-
-            foreach (var t in Tables)
-            {
-                var parsedTable = parsedTables.SingleOrDefault(m => m.Name == t.Name);
-                t.IsSelected = t.HasPrimaryKey && parsedTable != null;
-            }
-
-            SearchText = string.Empty;
-        }
-
-        private bool LoadSelection_CanExecute() => Tables.Any();
 
         private void Ok_Executed()
         {

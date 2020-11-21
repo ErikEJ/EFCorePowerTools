@@ -277,7 +277,6 @@ namespace EFCorePowerTools
             services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(this, _dte2))
                     .AddSingleton<ITelemetryAccess, TelemetryAccess>()
                     .AddSingleton<IOperatingSystemAccess, OperatingSystemAccess>()
-                    .AddSingleton<IFileSystemAccess, FileSystemAccess>()
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
 
             return services.BuildServiceProvider();

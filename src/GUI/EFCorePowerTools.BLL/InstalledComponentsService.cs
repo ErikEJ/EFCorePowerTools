@@ -8,15 +8,12 @@
     public class InstalledComponentsService : IInstalledComponentsService
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
-        private readonly IFileSystemAccess _fileSystemAccess;
         private readonly IDotNetAccess _dotNetAccess;
 
         public InstalledComponentsService(IVisualStudioAccess visualStudioAccess,
-                                          IFileSystemAccess fileSystemAccess,
                                           IDotNetAccess dotNetAccess)
         {
             _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
-            _fileSystemAccess = fileSystemAccess ?? throw new ArgumentNullException(nameof(fileSystemAccess));
             _dotNetAccess = dotNetAccess ?? throw new ArgumentNullException(nameof(dotNetAccess));
         }
 

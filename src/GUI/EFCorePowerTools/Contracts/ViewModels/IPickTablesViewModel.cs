@@ -13,8 +13,6 @@
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         ICommand LoadedCommand { get; }
-        ICommand SaveSelectionCommand { get; }
-        ICommand LoadSelectionCommand { get; }
         ICommand OkCommand { get; }
         ICommand CancelCommand { get; }
 
