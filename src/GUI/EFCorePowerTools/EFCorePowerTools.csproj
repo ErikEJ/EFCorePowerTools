@@ -85,7 +85,6 @@
     <Compile Include="Converter\FilePathToDisplayNameConverter.cs" />
     <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
     <Compile Include="DAL\DotNetAccess.cs" />
-    <Compile Include="DAL\FileSystemAccess.cs" />
     <Compile Include="DAL\OperatingSystemAccess.cs" />
     <Compile Include="DAL\TelemetryAccess.cs" />
     <Compile Include="Dialogs\AdvancedModelingOptionsDialog.xaml.cs">

@@ -58,36 +58,17 @@
 
     <Grid>
         <StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="6,6,6,3" Width="390">
-                <dw:DialogButton ToolTip="Save the seletion of tables."
-                                 Margin="178,0,0,0"
-                                 Content="Save Selection"
-                                 Width="102"
-                                 MinWidth="20"
-                                 Height="10"
-                                 Command="{Binding SaveSelectionCommand}" />
-                <dw:DialogButton ToolTip="Load a selection of tables."
-                                 Margin="3,0,0,0"
-                                 Content="Load Selection"
-                                 Width="101"
-                                 RenderTransformOrigin="0.474,0.566"
-                                 Height="23"
-                                 MinWidth="20"
-                                 HorizontalAlignment="Left"
-                                 Command="{Binding LoadSelectionCommand}" />
-            </StackPanel>
-
             <StackPanel Orientation="Horizontal"
                         Margin="6,0,6,6"
                         Width="390">
                 <CheckBox IsChecked="{Binding TableSelectionThreeState}"
-                          Margin="10,0,0,0"
+                          Margin="30,0,0,0"
                           BorderThickness="2"
                           IsThreeState="False"
                           VerticalAlignment="Center" />
                 <Label Content="Search"
                        Margin="30,0,0,0"
-                       Width="81" RenderTransformOrigin="0.138,0.471" />
+                       Width="85" />
                 <TextBox ToolTip="Search for table"
                          Height="22"
                          TextWrapping="Wrap"

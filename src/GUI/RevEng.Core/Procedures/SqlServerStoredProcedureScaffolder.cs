@@ -207,7 +207,7 @@ namespace RevEng.Core.Procedures
                     }
                     else
                     {
-                        _sb.AppendLine($"var _ = await _context.SqlQuery<{identifier}Result>({fullExec});");
+                        _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
                     }
 
                     _sb.AppendLine();

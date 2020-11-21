@@ -17,11 +17,10 @@ namespace UnitTests.BLL
         {
             // Arrange
             IVisualStudioAccess vsa = null;
-            IFileSystemAccess fsa = null;
             IDotNetAccess dna = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new InstalledComponentsService(vsa, fsa, dna));
+            Assert.Throws<ArgumentNullException>(() => new InstalledComponentsService(vsa, dna));
         }
 
         [Test]
@@ -29,11 +28,10 @@ namespace UnitTests.BLL
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            IFileSystemAccess fsa = null;
             IDotNetAccess dna = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new InstalledComponentsService(vsa, fsa, dna));
+            Assert.Throws<ArgumentNullException>(() => new InstalledComponentsService(vsa, dna));
         }
 
         [Test]
@@ -41,11 +39,10 @@ namespace UnitTests.BLL
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var fsa = Mock.Of<IFileSystemAccess>();
             IDotNetAccess dna = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new InstalledComponentsService(vsa, fsa, dna));
+            Assert.Throws<ArgumentNullException>(() => new InstalledComponentsService(vsa, dna));
         }
 
         [Test]
@@ -53,9 +50,8 @@ namespace UnitTests.BLL
         {
             // Arrange
             var vsa = Mock.Of<IVisualStudioAccess>();
-            var fsa = Mock.Of<IFileSystemAccess>();
             var dna = Mock.Of<IDotNetAccess>();
-            IInstalledComponentsService ics = new InstalledComponentsService(vsa, fsa, dna);
+            IInstalledComponentsService ics = new InstalledComponentsService(vsa, dna);
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => ics.SetMissingComponentData(null));
@@ -68,12 +64,11 @@ namespace UnitTests.BLL
             var vsaMock = new Mock<IVisualStudioAccess>();
             vsaMock.Setup(m => m.IsDdexProviderInstalled(It.IsAny<Guid>())).Returns(true);
             vsaMock.Setup(m => m.IsSqLiteDbProviderInstalled()).Returns(true);
-            var fsaMock = new Mock<IFileSystemAccess>();
             var adoNetProviderVersion = new Version(50, 10);
             var dnaMock = new Mock<IDotNetAccess>();
             dnaMock.Setup(m => m.DoesDbProviderFactoryExist(It.IsNotNull<string>())).Returns(true);
             dnaMock.Setup(m => m.GetAssemblyVersion(It.IsNotNull<string>())).Returns(adoNetProviderVersion);
-            IInstalledComponentsService ics = new InstalledComponentsService(vsaMock.Object, fsaMock.Object, dnaMock.Object);
+            IInstalledComponentsService ics = new InstalledComponentsService(vsaMock.Object, dnaMock.Object);
             var aem = new AboutExtensionModel();
 
             // Act
@@ -93,12 +88,11 @@ namespace UnitTests.BLL
             var vsaMock = new Mock<IVisualStudioAccess>();
             vsaMock.Setup(m => m.IsDdexProviderInstalled(It.IsAny<Guid>())).Returns(true);
             vsaMock.Setup(m => m.IsSqLiteDbProviderInstalled()).Returns(true);
-            var fsaMock = new Mock<IFileSystemAccess>();
             var adoNetProviderVersion = new Version(50, 10);
             var dnaMock = new Mock<IDotNetAccess>();
             dnaMock.Setup(m => m.DoesDbProviderFactoryExist(It.IsNotNull<string>())).Returns(true);
             dnaMock.Setup(m => m.GetAssemblyVersion(It.IsNotNull<string>())).Returns(adoNetProviderVersion);
-            IInstalledComponentsService ics = new InstalledComponentsService(vsaMock.Object, fsaMock.Object, dnaMock.Object);
+            IInstalledComponentsService ics = new InstalledComponentsService(vsaMock.Object, dnaMock.Object);
             var aem = new AboutExtensionModel
             {
                 SqlLiteSimpleDdexProviderInstalled = false,
