@@ -121,8 +121,7 @@
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = Tables.Where(m => m.HasPrimaryKey)
-                                             .All(m => m.IsSelected)
+            TableSelectionThreeState = Tables.All(m => m.IsSelected)
                                            ? true
                                            : Tables.All(m => !m.IsSelected)
                                                ? (bool?)false
@@ -168,6 +167,7 @@
                     {
                         var cvm = _columnInformationViewModelFactory();
                         cvm.Name = column.Name;
+                        cvm.IsPrimaryKey = column.IsPrimaryKey;
                         tvm.Columns.Add(cvm);
                     }
                 }

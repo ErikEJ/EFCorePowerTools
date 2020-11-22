@@ -7,5 +7,7 @@
         string Name { get; set; }
 
         bool IsSelected { get; set; }
+
+        bool IsPrimaryKey { get; set; }
     }
 }

@@ -7,6 +7,8 @@
     {
         private string _name;
 
+        private bool _isPrimaryKey;
+
         private bool _isSelected;
 
         public string Name
@@ -16,6 +18,17 @@
             {
                 if (Equals(value, _name)) return;
                 _name = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool IsPrimaryKey
+        {
+            get => _isPrimaryKey;
+            set
+            {
+                if (Equals(value, _isPrimaryKey)) return;
+                _isPrimaryKey = value;
                 RaisePropertyChanged();
             }
         }
