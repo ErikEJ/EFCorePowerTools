@@ -138,7 +138,7 @@ namespace EFCorePowerTools.Handlers
                                            ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
                                            : await GetTablesAsync(dbInfo, useEFCore5, schemas);
 
-                var preselectedTables = new List<TableModel>();
+                var preselectedTables = new List<SerializationTableModel>();
                 if (options != null)
                 {
                     dacpacSchema = options.DefaultDacpacSchema;

@@ -11,9 +11,9 @@ namespace EFCorePowerTools.Helpers
 {
     public class ReverseEngineerHelper
     {
-        public List<TableModel> NormalizeTables(List<TableModel> tables, bool shouldFix)
+        public List<SerializationTableModel> NormalizeTables(List<SerializationTableModel> tables, bool shouldFix)
         {
-            var result = new List<TableModel>();
+            var result = new List<SerializationTableModel>();
             foreach (var table in tables)
             {
                 if (shouldFix && !table.Name.StartsWith("[", StringComparison.OrdinalIgnoreCase))

@@ -32,8 +32,8 @@
         /// Selects the <paramref name="tables"/> from the <see cref="Tables"/> property, setting the <see cref="ITableInformationViewModel.IsSelected"/> to true, if both collections contain the table.
         /// </summary>
         /// <param name="tables">The tables to select.</param>
-        void SelectTables(IEnumerable<TableModel> tables);
+        void SelectTables(IEnumerable<SerializationTableModel> tables);
 
-        TableModel[] GetResult();
+        SerializationTableModel[] GetResult();
     }
 }

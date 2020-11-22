@@ -3,11 +3,9 @@
 namespace UnitTests.ViewModels
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
@@ -574,7 +572,7 @@ namespace UnitTests.ViewModels
             }
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            var c = new TableModel[0];
+            var c = new SerializationTableModel[0];
             ITableInformationViewModel[] tt = null;
             if (hasTables)
             {
@@ -622,7 +620,7 @@ namespace UnitTests.ViewModels
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var c = new[]
             {
-                new TableModel("unit.test", true, ObjectType.Table, null)
+                new SerializationTableModel("unit.test", ObjectType.Table, null)
             };
             ITableInformationViewModel[] tt = null;
             if (hasTables)
@@ -1069,7 +1067,7 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
-            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
+            var c = tt.Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
             foreach (var table in tt)
             {
                 table.IsSelected = true;
@@ -1111,7 +1109,7 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
-            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
+            var c = tt.Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
             foreach (var table in tt)
             {
                 vm.Tables.Add(table);
@@ -1151,7 +1149,7 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
-            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
+            var c = tt.Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
             foreach (var table in tt)
             {
                 vm.Tables.Add(table);
@@ -1168,7 +1166,7 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(4, result.Length);
             AreTableEqual(c[2], result[0], false);
             AreTableEqual(c[3], result[1], false);
-            Assert.IsFalse(result[1].Columns.Any(tc => tc == result[2].Columns.First()));
+            Assert.IsFalse(result[1].ExcludedColumns.Any(tc => tc == result[2].ExcludedColumns.First()));
             AreTableEqual(c[4], result[2], false);
             AreTableEqual(c[5], result[3], false);
         }
@@ -1322,6 +1320,18 @@ namespace UnitTests.ViewModels
                 Assert.AreEqual(a.Columns.ElementAt(0), b.Columns.ElementAt(0));
                 Assert.AreEqual(a.Columns.ElementAt(1), b.Columns.ElementAt(1));
                 Assert.AreEqual(a.Columns.ElementAt(2), b.Columns.ElementAt(2));
+            }
+        }
+
+        private static void AreTableEqual(SerializationTableModel a, SerializationTableModel b, bool compareColumns = true)
+        {
+            Assert.AreEqual(a.Name, b.Name);
+            Assert.AreEqual(a.ObjectType, b.ObjectType);
+            if (compareColumns)
+            {
+                Assert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
+                Assert.AreEqual(a.ExcludedColumns.ElementAt(1), b.ExcludedColumns.ElementAt(1));
+                Assert.AreEqual(a.ExcludedColumns.ElementAt(2), b.ExcludedColumns.ElementAt(2));
             }
         }
     }

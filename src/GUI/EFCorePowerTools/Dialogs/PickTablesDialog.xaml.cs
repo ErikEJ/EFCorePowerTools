@@ -9,9 +9,9 @@
 
     public partial class PickTablesDialog : IPickTablesDialog
     {
-        private readonly Func<TableModel[]> _getDialogResult;
+        private readonly Func<SerializationTableModel[]> _getDialogResult;
         private readonly Action<IEnumerable<TableModel>> _addTables;
-        private readonly Action<IEnumerable<TableModel>> _selectTables;
+        private readonly Action<IEnumerable<SerializationTableModel>> _selectTables;
 
         public PickTablesDialog(ITelemetryAccess telemetryAccess,
                                 IPickTablesViewModel viewModel)
@@ -31,7 +31,7 @@
             InitializeComponent();
         }
 
-        (bool ClosedByOK, TableModel[] Payload) IDialog<TableModel[]>.ShowAndAwaitUserResponse(bool modal)
+        (bool ClosedByOK, SerializationTableModel[] Payload) IDialog<SerializationTableModel[]>.ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
@@ -53,7 +53,7 @@
             return this;
         }
 
-        IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<TableModel> tables)
+        IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<SerializationTableModel> tables)
         {
             _selectTables(tables);
             return this;

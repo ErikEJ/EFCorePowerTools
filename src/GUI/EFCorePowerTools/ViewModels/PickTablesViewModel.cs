@@ -179,7 +179,7 @@
             FilteredTables.Refresh();
         }
 
-        void IPickTablesViewModel.SelectTables(IEnumerable<TableModel> tables)
+        void IPickTablesViewModel.SelectTables(IEnumerable<SerializationTableModel> tables)
         {
             if (tables == null) return;
 
@@ -191,16 +191,16 @@
                 {
                     foreach (var column in table.Columns)
                     {
-                        column.IsSelected = !t?.Columns?.Any(m => m == column.Name) ?? true;
+                        column.IsSelected = !t?.ExcludedColumns?.Any(m => m == column.Name) ?? true;
                     }
                 }
             }
         }
 
-        TableModel[] IPickTablesViewModel.GetResult()
+        SerializationTableModel[] IPickTablesViewModel.GetResult()
         {
             return Tables.Where(m => m.IsSelected)
-                         .Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Where(c => !c.IsSelected).Select(c => c.Name)))
+                         .Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Where(c => !c.IsSelected).Select(c => c.Name)))
                          .ToArray();
         }
 
