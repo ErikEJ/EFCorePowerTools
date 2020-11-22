@@ -1318,9 +1318,9 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(a.ObjectType, b.ObjectType);
             if (compareColumns)
             {
-                Assert.AreEqual(a.Columns.ElementAt(0), b.Columns.ElementAt(0));
-                Assert.AreEqual(a.Columns.ElementAt(1), b.Columns.ElementAt(1));
-                Assert.AreEqual(a.Columns.ElementAt(2), b.Columns.ElementAt(2));
+                Assert.AreEqual(a.Columns.ElementAt(0).Name, b.Columns.ElementAt(0).Name);
+                Assert.AreEqual(a.Columns.ElementAt(1).Name, b.Columns.ElementAt(1).Name);
+                Assert.AreEqual(a.Columns.ElementAt(2).Name, b.Columns.ElementAt(2).Name);
             }
         }
 
