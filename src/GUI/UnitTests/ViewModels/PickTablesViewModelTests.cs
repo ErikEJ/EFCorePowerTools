@@ -3,6 +3,7 @@
 namespace UnitTests.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
@@ -485,11 +486,11 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var tt = GetTestViewModels();
-            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
+            var c = tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => new ColumnModel(co.Name, true)))).ToArray();
 
             // Act
             vm.AddTables(c);
-            var vmt = vm.Tables.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))).ToArray();
+            var vmt = vm.Tables.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => new ColumnModel(co.Name, true)))).ToArray();
 
             // Assert
             Assert.IsNotEmpty(vm.Tables);
@@ -747,7 +748,7 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModel, CreateColumnInformationViewModel);
             var tt = GetTestViewModels();
-            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))));
+            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => new ColumnModel(co.Name, true)))));
 
             // Act
             foreach (var table in vm.Tables)
@@ -770,7 +771,7 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModel, CreateColumnInformationViewModel);
             var tt = GetTestViewModels();
-            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))));
+            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, new List<ColumnModel>())));
 
             // Act
             foreach (var table in vm.Tables)
@@ -793,7 +794,7 @@ namespace UnitTests.ViewModels
 
             IPickTablesViewModel vm = new PickTablesViewModel(CreateTableInformationViewModel, CreateColumnInformationViewModel);
             var tt = GetTestViewModels();
-            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => co.Name))));
+            vm.AddTables(tt.Select(m => new TableModel(m.Name, m.HasPrimaryKey, m.ObjectType, m.Columns.Select(co => new ColumnModel(co.Name, true)))));
 
             // Act
             for (var i = 0; i < vm.Tables.Count; i++)
@@ -1317,9 +1318,9 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(a.ObjectType, b.ObjectType);
             if (compareColumns)
             {
-                Assert.AreEqual(a.Columns.ElementAt(0), b.Columns.ElementAt(0));
-                Assert.AreEqual(a.Columns.ElementAt(1), b.Columns.ElementAt(1));
-                Assert.AreEqual(a.Columns.ElementAt(2), b.Columns.ElementAt(2));
+                Assert.AreEqual(a.Columns.ElementAt(0).Name, b.Columns.ElementAt(0).Name);
+                Assert.AreEqual(a.Columns.ElementAt(1).Name, b.Columns.ElementAt(1).Name);
+                Assert.AreEqual(a.Columns.ElementAt(2).Name, b.Columns.ElementAt(2).Name);
             }
         }
 

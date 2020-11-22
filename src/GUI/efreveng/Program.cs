@@ -33,10 +33,7 @@ namespace efreveng
                         }
                         var builder = new TableListBuilder(dbTypeInt, args[1], schemas);
 
-                        var value = builder.GetTableDefinitions();
-
-                        var buildResult = new List<TableModel>();
-                        buildResult.AddRange(value.Select(v => new TableModel(v.Item1, v.Item2, RevEng.Shared.ObjectType.Table, v.Item3)).ToList());
+                        var buildResult = builder.GetTableModels();
 
                         var procedures = builder.GetProcedures(dbTypeInt);
                         buildResult.AddRange(procedures.Select(p => new TableModel(p, false, RevEng.Shared.ObjectType.Procedure, null)).ToList());
@@ -97,10 +94,21 @@ namespace efreveng
 
             var builder = new DacpacTableListBuilder(dacpacPath);
 
-            var value = builder.GetTableDefinitions();
+            var values = builder.GetTableDefinitions();
 
             var result = new List<TableModel>();
-            result.AddRange(value.Select(v => new TableModel(v.Item1, v.Item2, RevEng.Shared.ObjectType.Table, v.Item3)).ToList());
+
+            foreach (var value in values)
+            {
+                var columns = new List<ColumnModel>();
+
+                foreach (var colum in value.Item3)
+                {
+                    columns.Add(new ColumnModel(colum, value.Item4.Contains(colum)));
+                }
+
+                result.Add(new TableModel(value.Item1, value.Item2, RevEng.Shared.ObjectType.Table, columns));
+            }
 
             Console.Out.WriteLine("Result:");
             Console.Out.WriteLine(result.Write());
