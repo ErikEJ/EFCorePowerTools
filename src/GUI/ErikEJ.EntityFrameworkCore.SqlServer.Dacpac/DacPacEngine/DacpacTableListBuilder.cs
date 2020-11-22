@@ -38,7 +38,7 @@ namespace ReverseEngineer20
 
                     $"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]",
                     
-                    m.PrimaryKeyConstraints.Any(),
+                    m.PrimaryKeyConstraints?.Any() ?? false,
                     
                     m.Columns.Where(i => !i.GetProperty<bool>(Column.IsHidden)
                         && i.ColumnType != ColumnType.ColumnSet
