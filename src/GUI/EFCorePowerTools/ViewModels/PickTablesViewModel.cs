@@ -167,7 +167,7 @@
                     foreach (var column in table.Columns)
                     {
                         var cvm = _columnInformationViewModelFactory();
-                        cvm.Name = column;
+                        cvm.Name = column.Name;
                         tvm.Columns.Add(cvm);
                     }
                 }

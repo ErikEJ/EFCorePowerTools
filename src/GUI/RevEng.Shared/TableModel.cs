@@ -7,7 +7,7 @@
     using RevEng.Shared;
 
     /// <summary>
-    /// A class holding information about database objects.
+    /// A class holding schema information about database objects.
     /// </summary>
     [DataContract]
     [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
@@ -35,7 +35,7 @@
         /// Gets or sets the columns.
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
-        public IEnumerable<string> Columns { get; set; }
+        public IEnumerable<ColumnModel> Columns { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableModel"/> class for a specific table.
@@ -47,7 +47,7 @@
         public TableModel(string name,
                             bool hasPrimaryKey,
                             ObjectType objectType,
-                            IEnumerable<string> columns)
+                            IEnumerable<ColumnModel> columns)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));

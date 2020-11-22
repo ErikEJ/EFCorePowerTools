@@ -13,6 +13,7 @@ using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EFCorePowerTools.Shared.Models;
 #if CORE50
 #else
 using Oracle.EntityFrameworkCore.Design.Internal;
@@ -47,35 +48,51 @@ namespace ReverseEngineer20
             }
 
             serviceProvider = Build(_databaseType);
-       }
+        }
 
-        public List<Tuple<string, bool, List<string>>> GetTableDefinitions()
+        public List<TableModel> GetTableModels()
+        {
+            var databaseTables = GetTableDefinitions();
+
+            var buildResult = new List<TableModel>();
+
+            foreach (var databaseTable in databaseTables)
+            {
+                string name;
+                if (_databaseType == DatabaseType.SQLServer)
+                {
+                    name = $"[{databaseTable.Schema}].[{databaseTable.Name}]";
+                }
+                else
+                {
+                    name = string.IsNullOrEmpty(databaseTable.Schema)
+                        ? databaseTable.Name
+                        : $"{databaseTable.Schema}.{databaseTable.Name}";
+                }
+
+                var columns = new List<ColumnModel>();
+
+                var primaryKeyColumnNames = databaseTable.PrimaryKey?.Columns.Select(c => c.Name).ToHashSet();
+
+                foreach (var colum in databaseTable.Columns)
+                {
+                    columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false));
+                }
+
+                buildResult.Add(new TableModel(name, databaseTable.PrimaryKey != null, RevEng.Shared.ObjectType.Table, columns));
+            }
+
+            return buildResult;
+        }
+
+        private List<Microsoft.EntityFrameworkCore.Scaffolding.Metadata.DatabaseTable> GetTableDefinitions()
         {
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
             var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
 
-            var result = new List<Tuple<string, bool, List<string>>>();
-
-            foreach (var table in dbModel.Tables)
-            {
-                string name;
-                if (_databaseType == DatabaseType.SQLServer)
-                {
-                    name = $"[{table.Schema}].[{table.Name}]";
-                }
-                else
-                {
-                    name = string.IsNullOrEmpty(table.Schema)
-                        ? table.Name
-                        : $"{table.Schema}.{table.Name}";
-                }
-
-                result.Add(new Tuple<string, bool, List<string>>(name, table.PrimaryKey != null, table.Columns.Select(c => c.Name).ToList()));
-            }
-
-            return result.OrderBy(m => m.Item1).ToList();
+            return dbModel.Tables.ToList();
         }
 
         public List<string> GetProcedures(int dbTypeInt)
