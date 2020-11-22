@@ -32,7 +32,7 @@
         public ObjectType ObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets the columns excluded from reverse engineering.
+        /// Gets or sets the columns.
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public IEnumerable<string> Columns { get; set; }

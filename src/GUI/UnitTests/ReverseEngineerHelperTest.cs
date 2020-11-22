@@ -15,12 +15,12 @@ namespace UnitTests
         public void CanParseTables()
         {
             // Arrange
-            var tables = new List<TableModel>
+            var tables = new List<SerializationTableModel>
             {
-                new TableModel("dbo.table", true, ObjectType.Table, null),
-                new TableModel("dbo.table.crazy", false, ObjectType.Table, null),
-                new TableModel("[dbo].[table]", true, ObjectType.Table, null),
-                new TableModel("[dbo].[table.mad]", true, ObjectType.Table, null),
+                new SerializationTableModel("dbo.table", ObjectType.Table, null),
+                new SerializationTableModel("dbo.table.crazy", ObjectType.Table, null),
+                new SerializationTableModel("[dbo].[table]", ObjectType.Table, null),
+                new SerializationTableModel("[dbo].[table.mad]", ObjectType.Table, null),
             };
 
             // Act
@@ -38,13 +38,13 @@ namespace UnitTests
         public void CanSkipTables()
         {
             // Arrange
-            var tables = new List<TableModel>
+            var tables = new List<SerializationTableModel>
             {
-                new TableModel("dbo.table", true, ObjectType.Table, null),
-                new TableModel("dbo.table.crazy", false, ObjectType.Table, null),
-                new TableModel("[dbo].[table]", true, ObjectType.Table, null),
-                new TableModel("[dbo].[table.mad]", true, ObjectType.Table, null),
-                new TableModel("table", true, ObjectType.Table, null),
+                new SerializationTableModel("dbo.table", ObjectType.Table, null),
+                new SerializationTableModel("dbo.table.crazy", ObjectType.Table, null),
+                new SerializationTableModel("[dbo].[table]", ObjectType.Table, null),
+                new SerializationTableModel("[dbo].[table.mad]", ObjectType.Table, null),
+                new SerializationTableModel("table", ObjectType.Table, null),
             };
 
             // Act

@@ -89,6 +89,10 @@
                         <StackPanel Margin="1" Orientation="Horizontal">
                             <CheckBox Margin="1" IsChecked="{Binding IsSelected}" />
                             <TextBlock Margin="1" Text="{Binding Name}"/>
+                            <Image Style="{StaticResource KeylessImageStyle}"
+                                       Visibility="{Binding ShowKeylessWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <Image Style="{StaticResource IsProcedureImageStyle}"
+                                       Visibility="{Binding IsProcedure, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
 
                         <HierarchicalDataTemplate.ItemTemplate>

@@ -1,5 +1,4 @@
 ﻿using EFCorePowerTools.Shared.Models;
-using RevEng.Shared;
 using ReverseEngineer20;
 using ReverseEngineer20.ReverseEngineer;
 using System;
@@ -24,7 +23,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string ContextNamespace { get; set; }
         public bool UseFluentApiOnly { get; set; }
         public string ContextClassName { get; set; }
-        public List<TableModel> Tables { get; set; }
+        public List<SerializationTableModel> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
         public bool UseInflector { get; set; }
         public bool UseHandleBars { get; set; }
@@ -58,7 +57,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseFluentApiOnly = v1.UseFluentApiOnly,
                 ContextClassName = v1.ContextClassName,
                 Tables = v1.Tables
-                           .Select(m => new TableModel(m, true, ObjectType.Table, null))
+                           .Select(m => new SerializationTableModel(m, RevEng.Shared.ObjectType.Table, null))
                            .ToList(),
                 UseDatabaseNames = v1.UseDatabaseNames,
                 UseInflector = v1.UseInflector,
