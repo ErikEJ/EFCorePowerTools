@@ -49,6 +49,26 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
+        public void PropertyChanged_IsPrimaryKey_SameValue()
+        {
+            // Arrange
+            var propertyChangedInvoked = false;
+            var vm = new ColumnInformationViewModel
+            {
+                Name = "column1",
+                IsSelected = true,
+                IsPrimaryKey = true
+            };
+            vm.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
+
+            // Act
+            vm.IsPrimaryKey = true;
+
+            // Assert
+            Assert.IsFalse(propertyChangedInvoked);
+        }
+
+        [Test]
         public void PropertyChanged_Name_DifferentValue()
         {
             // Arrange
@@ -81,6 +101,26 @@ namespace UnitTests.ViewModels
 
             // Act
             vm.IsSelected = false;
+
+            // Assert
+            Assert.IsTrue(propertyChangedInvoked);
+        }
+
+        [Test]
+        public void PropertyChanged_IsPrimaryKey_DifferentValue()
+        {
+            // Arrange
+            var propertyChangedInvoked = false;
+            var vm = new ColumnInformationViewModel
+            {
+                Name = "column1",
+                IsSelected = true,
+                IsPrimaryKey = true
+            };
+            vm.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
+
+            // Act
+            vm.IsPrimaryKey = false;
 
             // Assert
             Assert.IsTrue(propertyChangedInvoked);

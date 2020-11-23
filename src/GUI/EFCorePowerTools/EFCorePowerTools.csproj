@@ -82,6 +82,7 @@
     <Compile Include="Converter\BoolInvertConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\CollectionCountToEnabledConverter.cs" />
+    <Compile Include="Converter\ColumnEnabledConverter.cs" />
     <Compile Include="Converter\FilePathToDisplayNameConverter.cs" />
     <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
     <Compile Include="DAL\DotNetAccess.cs" />
@@ -593,6 +594,7 @@
     <Resource Include="Resources\DatabaseStoredProcedure_16x.png" />
     <Content Include="Resources\efcreveng2.png" />
     <Resource Include="Resources\ImportPackage_16x.png" />
+    <Resource Include="Resources\PrimaryKey_16x.png" />
     <Content Include="Resources\license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
