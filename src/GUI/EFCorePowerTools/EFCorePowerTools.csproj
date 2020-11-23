@@ -175,6 +175,8 @@
       <Link>Microsoft.VisualStudio.ProjectSystem.VS.dll</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Resources\Column_16x.png" />
+    <Resource Include="Resources\Table_16x.png" />
     <Resource Include="Resources\Add_16x.png" />
     <Resource Include="Resources\Remove_16x.png" />
     <Content Include="efpt\2.2.0\efpt.exe">

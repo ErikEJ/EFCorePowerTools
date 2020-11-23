@@ -9,5 +9,7 @@
         bool IsSelected { get; set; }
 
         bool IsPrimaryKey { get; set; }
+
+        bool IsColumn { get; }
     }
 }

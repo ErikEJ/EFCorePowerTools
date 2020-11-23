@@ -46,6 +46,19 @@
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="5, 0, 0, 0"/>
                     </Style>
+                    <Style x:Key="ColumnImageStyle" TargetType="Image">
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Column_16x.png"/>
+                        <Setter Property="Width" Value="16"/>
+                        <Setter Property="Height" Value="16"/>
+                        <Setter Property="Margin" Value="5, 0, 0, 0"/>
+                    </Style>
+                    <Style x:Key="TableImageStyle" TargetType="Image">
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table_16x.png"/>
+                        <Setter Property="Width" Value="16"/>
+                        <Setter Property="Height" Value="16"/>
+                        <Setter Property="Margin" Value="5, 0, 0, 0"/>
+                    </Style>
+
                     <Style x:Key="IsProcedureImageStyle" TargetType="Image">
                         <Setter Property="ToolTip" Value="Stored procedure (preview feature)"/>
                         <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedure_16x.png"/>
@@ -103,11 +116,13 @@
                                     d:DataContext="{d:DesignInstance Type=viewModels:TableInformationViewModel, IsDesignTimeCreatable=false}">
                             <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}"
                                       IsChecked="{Binding IsSelected}" />
-                            <TextBlock Text="{Binding Name}" />
                             <Image Style="{StaticResource KeylessImageStyle}"
                                    Visibility="{Binding ShowKeylessWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <Image Style="{StaticResource IsProcedureImageStyle}"
                                    Visibility="{Binding IsProcedure, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <Image Style="{StaticResource TableImageStyle}"
+                                   Visibility="{Binding IsTable, Converter={StaticResource BoolToVisibilityConverter}}"/>                            
+                            <TextBlock Text="{Binding Name}" />
                         </StackPanel>
 
                         <HierarchicalDataTemplate.ItemTemplate>
@@ -121,10 +136,12 @@
                                             </MultiBinding>
                                         </CheckBox.IsEnabled>
                                     </CheckBox>
-                                    <TextBlock Text="{Binding Name}" 
-                                               Style="{StaticResource ColumnNameTextBlockStyle}"/>
+                                    <Image Style="{StaticResource ColumnImageStyle}"
+                                           Visibility="{Binding IsColumn, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                     <Image Style="{StaticResource PrimaryKeyImageStyle}"
                                            Visibility="{Binding IsPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                    <TextBlock Text="{Binding Name}" 
+                                               Style="{StaticResource ColumnNameTextBlockStyle}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </HierarchicalDataTemplate.ItemTemplate>

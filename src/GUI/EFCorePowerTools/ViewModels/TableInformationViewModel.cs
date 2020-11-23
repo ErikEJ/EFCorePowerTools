@@ -40,6 +40,11 @@
             get => !HasPrimaryKey && ObjectType == ObjectType.Table;
         }
 
+        public bool IsTable
+        {
+            get => HasPrimaryKey && ObjectType == ObjectType.Table;
+        }
+
         public ObjectType ObjectType
         {
             get => _objectType;
