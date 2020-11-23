@@ -8,7 +8,7 @@
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
-                 Title="Select Objects to Script"
+                 Title="Choose Database Objects"
                  ShowInTaskbar="False"
                  MinHeight="455.056"
                  MinWidth="420"
