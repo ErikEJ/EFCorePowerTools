@@ -76,7 +76,7 @@
                              Command="{Binding AddDatabaseConnectionCommand}"/>
         </Grid>
 
-        <TextBlock Grid.Row="1"
+        <TextBlock Grid.Row="1" Margin="10,0,0,0"
                    Text="Choose SQL Server Database project (.dacpac)"/>
 
         <Grid Grid.Row="2"

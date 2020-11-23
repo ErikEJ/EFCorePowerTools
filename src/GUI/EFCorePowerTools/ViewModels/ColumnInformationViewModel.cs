@@ -33,6 +33,11 @@
             }
         }
 
+        public bool IsColumn
+        {
+            get => !_isPrimaryKey;
+        }
+
         public bool IsSelected
         {
             get => _isSelected;

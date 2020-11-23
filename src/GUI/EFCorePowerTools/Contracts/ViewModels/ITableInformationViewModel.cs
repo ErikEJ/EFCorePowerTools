@@ -18,5 +18,7 @@
         bool IsProcedure { get; }
 
         bool IsSelected { get; set; }
+
+        bool IsTable { get; }
     }
 }
