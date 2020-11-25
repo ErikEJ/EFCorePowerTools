@@ -13,6 +13,8 @@
 
         private bool _isSelected;
 
+        private bool _isVisible;
+
         public string Name
         {
             get => _name;
@@ -37,12 +39,12 @@
 
         public bool ShowKeylessWarning
         {
-            get => !HasPrimaryKey && ObjectType == ObjectType.Table;
+            get => !HasPrimaryKey && ObjectType.HasColumns();
         }
 
         public bool IsTable
         {
-            get => HasPrimaryKey && ObjectType == ObjectType.Table;
+            get => HasPrimaryKey && ObjectType.HasColumns();
         }
 
         public ObjectType ObjectType
@@ -67,10 +69,21 @@
             {
                 if (Equals(value, _isSelected)) return;
                 _isSelected = value;
-                foreach(var column in Columns)
+                RaisePropertyChanged();
+                foreach (var column in Columns)
                 {
                     column.IsSelected = _isSelected;
                 }
+            }
+        }
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (Equals(value, _isVisible)) return;
+                _isVisible = value;
                 RaisePropertyChanged();
             }
         }

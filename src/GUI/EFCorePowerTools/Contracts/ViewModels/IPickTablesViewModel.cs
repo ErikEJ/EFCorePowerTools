@@ -12,12 +12,8 @@
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        ICommand LoadedCommand { get; }
         ICommand OkCommand { get; }
         ICommand CancelCommand { get; }
-
-        ObservableCollection<ITableInformationViewModel> Tables { get; }
-        ICollectionView FilteredTables { get; }
 
         bool? TableSelectionThreeState { get; set; }
         string SearchText { get; set; }

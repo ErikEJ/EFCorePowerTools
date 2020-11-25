@@ -107,7 +107,7 @@ namespace efreveng
                     columns.Add(new ColumnModel(colum, value.Item4.Contains(colum)));
                 }
 
-                result.Add(new TableModel(value.Item1, value.Item2, RevEng.Shared.ObjectType.Table, columns));
+                result.Add(new TableModel(value.Item1, value.Item2, value.Item5 ? RevEng.Shared.ObjectType.Table : RevEng.Shared.ObjectType.View, columns));
             }
 
             Console.Out.WriteLine("Result:");

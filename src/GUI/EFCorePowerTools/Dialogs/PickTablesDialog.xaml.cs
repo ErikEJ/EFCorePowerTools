@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Windows.Media;
     using Contracts.ViewModels;
     using Contracts.Views;
     using Shared.DAL;
@@ -57,6 +58,11 @@
         {
             _selectTables(tables);
             return this;
+        }
+
+        private void TextBox_FilterButtonClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+
         }
     }
 }
