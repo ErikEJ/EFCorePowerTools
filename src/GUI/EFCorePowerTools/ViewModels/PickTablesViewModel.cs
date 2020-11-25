@@ -68,9 +68,6 @@
 
         private void Ok_Executed()
         {
-            //foreach (var t in Tables)
-            //    t.PropertyChanged -= TableViewModel_PropertyChanged;
-
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
@@ -81,10 +78,6 @@
 
         private void Cancel_Executed()
         {
-            //foreach (var t in Tables)
-            //    t.PropertyChanged -= TableViewModel_PropertyChanged;
-
-            //Tables.Clear();
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
 

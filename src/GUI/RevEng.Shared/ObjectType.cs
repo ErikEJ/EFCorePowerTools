@@ -5,6 +5,6 @@
         Table = 0,
         Procedure = 1,
         ScalarFunction = 2,
-        View
+        View = 3
     }
 }

@@ -59,10 +59,5 @@
             _selectTables(tables);
             return this;
         }
-
-        private void TextBox_FilterButtonClicked(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
     }
 }
