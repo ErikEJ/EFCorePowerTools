@@ -18,12 +18,6 @@
                  WindowStartupLocation="CenterOwner"
                  d:DataContext="{d:DesignInstance Type=viewModels:PickTablesViewModel, IsDesignTimeCreatable=False}">
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -42,7 +36,7 @@
                     </Style>
                     <Style x:Key="PrimaryKeyImageStyle" TargetType="Image">
                         <Setter Property="ToolTip" Value="This column is part of the primary key and cannot be unchecked if the table is selected"/>
-                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/PrimaryKey_16x.png"/>
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/KeyDown_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="0, 0, 0, 0"/>
@@ -55,6 +49,13 @@
                     </Style>
                     <Style x:Key="TableImageStyle" TargetType="Image">
                         <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table_16x.png"/>
+                        <Setter Property="Width" Value="16"/>
+                        <Setter Property="Height" Value="16"/>
+                        <Setter Property="Margin" Value="0, 0, 0, 0"/>
+                    </Style>
+                    <Style x:Key="ViewImageStyle" TargetType="Image">
+                        <Setter Property="ToolTip" Value=""/>
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="0, 0, 0, 0"/>
@@ -151,7 +152,7 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                         <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}" 
                                     IsChecked="{Binding IsSelected}"/>
-                        <Image Style="{StaticResource KeylessImageStyle}"
+                        <Image Style="{StaticResource ViewImageStyle}"
                                 Visibility="{Binding IsView, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Image Style="{StaticResource IsProcedureImageStyle}"
                                 Visibility="{Binding IsProcedure, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -172,11 +173,13 @@
                         <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}"
                                     IsChecked="{Binding IsSelected}" />
                         <Image Style="{StaticResource KeylessImageStyle}"
-                                Visibility="{Binding ShowKeylessWarning, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                Visibility="{Binding IsTableWithoutKey, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Image Style="{StaticResource IsProcedureImageStyle}"
                                 Visibility="{Binding IsProcedure, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Image Style="{StaticResource TableImageStyle}"
-                                Visibility="{Binding IsTable, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                Visibility="{Binding IsTableWithKey, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Image Style="{StaticResource ViewImageStyle}"
+                                Visibility="{Binding IsView, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Text="{Binding Name}" 
                                         Style="{StaticResource ResourceKey=TreeTextBlockStyle}" />
                     </StackPanel>
