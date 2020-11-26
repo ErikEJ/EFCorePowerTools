@@ -51,9 +51,9 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Objects.Take(1))
+            foreach (var item in vm.Objects.Take(3))
             {
-                item.IsSelected = true;
+                item.IsSelected = vm.Objects.IndexOf(item) % 2 == 0;
             }
 
             // Assert

@@ -134,14 +134,6 @@
                     }
                 }
             }
-            foreach (var type in Types)
-            {
-                type.IsSelected = type.Objects.All(m => m.IsSelected)
-                    ? true
-                    : _objects.All(m => !m.IsSelected)
-                        ? (bool?)false
-                        : null;
-            }
         }
     }
 }

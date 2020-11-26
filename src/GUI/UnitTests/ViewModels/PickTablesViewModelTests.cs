@@ -107,6 +107,7 @@ namespace UnitTests.ViewModels
                 dialogResult = args.DialogResult;
             };
             vm.AddObjects(GetDatabaseObjects());
+            vm.ObjectTree.Types[0].Objects[0].IsSelected = true;
 
             // Act
             vm.OkCommand.Execute(null);
@@ -196,57 +197,6 @@ namespace UnitTests.ViewModels
             // Act
             // Assert
             Assert.DoesNotThrow(() => vm.SelectObjects(null));
-        }
-
-        [Test]
-        public void Update_TableSelectionThreeState_OnTableSelectionChanged_AllTablesSelected()
-        {
-            // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            vm.AddObjects(GetDatabaseObjects());
-
-            // Act
-            foreach (var table in vm.ObjectTree.Types.SelectMany(c => c.Objects))
-            {
-                table.IsSelected = true;
-            }
-
-            // Assert
-            Assert.IsTrue(vm.TableSelectionThreeState);
-        }
-
-        [Test]
-        public void Update_TableSelectionThreeState_OnTableSelectionChanged_NoTablesSelected()
-        {
-            // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            vm.AddObjects(GetDatabaseObjects());
-
-            // Act
-            foreach (var table in vm.ObjectTree.Types.SelectMany(c => c.Objects))
-            {
-                table.IsSelected = true;
-            }
-
-            // Assert
-            Assert.IsFalse(vm.TableSelectionThreeState);
-        }
-
-        [Test]
-        public void Update_TableSelectionThreeState_OnTableSelectionChanged_MixedTableSelection()
-        {
-            // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            vm.AddObjects(GetDatabaseObjects());
-
-            // Act
-            foreach (var table in vm.ObjectTree.Types.SelectMany(c => c.Objects).Take(1))
-            {
-                table.IsSelected = true;
-            }
-
-            // Assert
-            Assert.IsNull(vm.TableSelectionThreeState);
         }
 
         [Test]

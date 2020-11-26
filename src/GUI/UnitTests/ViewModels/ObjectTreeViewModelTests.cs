@@ -86,7 +86,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotEmpty(vm.Types.SelectMany(t => t.Objects));
-            Assert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Objects));
+            Assert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Objects).Count());
             for (var i = 0; i < objects.Count(); i++)
             {
                 AreObjectsEqual(objects[i], vmobjects[i]);
@@ -133,13 +133,16 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(GetSelectedObjects().Count(), vm.GetSelectedObjects().Count());
             for (var i = 0; i < vm.GetSelectedObjects().Count(); i++)
             {
-                AreObjectsEqual(vm.GetSelectedObjects().ElementAt(i), selectedObjects.ElementAt(i));
-            }
+                var a = vm.GetSelectedObjects().ElementAt(i);
+                var b = selectedObjects.ElementAt(i);
 
-            Assert.IsNull(vm.Types[0].IsSelected);
-            Assert.IsNull(vm.Types[1].IsSelected);
-            Assert.IsNull(vm.Types[2].IsSelected);
-            Assert.IsFalse(vm.Types[3].IsSelected);
+                Assert.AreEqual(a.Name, b.Name);
+                Assert.AreEqual(a.ObjectType, b.ObjectType);
+                for (var j = 0; j < a.ExcludedColumns.Count(); j++)
+                {
+                    Assert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
+                }
+            }
         }
 
         [Test]
@@ -393,18 +396,6 @@ namespace UnitTests.ViewModels
             for (var i = 0; i < a.Columns.Count(); i++)
             {
                 Assert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns.ElementAt(i).Name);
-            }
-        }
-        
-        private static void AreObjectsEqual(SerializationTableModel a, SerializationTableModel b, bool compareColumns = true)
-        {
-            Assert.AreEqual(a.Name, b.Name);
-            Assert.AreEqual(a.ObjectType, b.ObjectType);
-            if (compareColumns)
-            {
-                Assert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
-                Assert.AreEqual(a.ExcludedColumns.ElementAt(1), b.ExcludedColumns.ElementAt(1));
-                Assert.AreEqual(a.ExcludedColumns.ElementAt(2), b.ExcludedColumns.ElementAt(2));
             }
         }
     }
