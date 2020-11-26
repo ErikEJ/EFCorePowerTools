@@ -23,9 +23,19 @@
         private bool? _tableSelectionThreeState;
         private string _searchText;
 
+        public PickTablesViewModel(IObjectTreeViewModel objectTreeViewModel)
+        {
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+
+            ObjectTree = objectTreeViewModel;
+            ObjectTree.ObjectSelectionChanged += (s, e) => UpdateTableSelectionThreeState();
+
+            SearchText = string.Empty;
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        public ICommand TableSelectionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -55,16 +65,6 @@
             }
         }
 
-        public PickTablesViewModel(IObjectTreeViewModel objectTreeViewModel)
-        {
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
-
-            ObjectTree = objectTreeViewModel;
-            ObjectTree.ObjectSelectionChanged += (s, e) => UpdateTableSelectionThreeState();
-
-            SearchText = string.Empty;
-        }
 
         private void Ok_Executed()
         {
@@ -104,24 +104,23 @@
             TableSelectionThreeState = ObjectTree.GetSelectionState(); 
         }
 
-        void IPickTablesViewModel.AddTables(IEnumerable<TableModel> tables)
+        void IPickTablesViewModel.AddObjects(IEnumerable<TableModel> objects)
         {
-            if (tables == null) return;
+            if (objects == null) return;
 
-            ObjectTree.AddObjects(tables);
+            ObjectTree.AddObjects(objects);
         }
 
-        void IPickTablesViewModel.SelectTables(IEnumerable<SerializationTableModel> tables)
+        void IPickTablesViewModel.SelectObjects(IEnumerable<SerializationTableModel> objects)
         {
-            if (tables == null) return;
-            ObjectTree.SelectObject(tables);
+            if (objects == null) return;
+            ObjectTree.SelectObjects(objects);
         }
 
-        SerializationTableModel[] IPickTablesViewModel.GetResult()
+        SerializationTableModel[] IPickTablesViewModel.GetSelectedObjects()
         {
             return ObjectTree
-                .GetSelected()
-                .Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Where(c => !c.IsSelected).Select(c => c.Name)))
+                .GetSelectedObjects()
                 .ToArray();
         }
     }

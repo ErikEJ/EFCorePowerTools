@@ -17,19 +17,20 @@
 
         bool? TableSelectionThreeState { get; set; }
         string SearchText { get; set; }
+        IObjectTreeViewModel ObjectTree { get; }
 
         /// <summary>
-        /// Adds the <paramref name="tables"/> to the <see cref="Tables"/>, wrapping it in a new <see cref="ITableInformationViewModel"/> instance.
+        /// Adds the <paramref name="objects"/> to the <see cref="Tables"/>, wrapping it in a new <see cref="ITableInformationViewModel"/> instance.
         /// </summary>
-        /// <param name="tables">The tables to add.</param>
-        void AddTables(IEnumerable<TableModel> tables);
+        /// <param name="objects">The tables to add.</param>
+        void AddObjects(IEnumerable<TableModel> objects);
 
         /// <summary>
-        /// Selects the <paramref name="tables"/> from the <see cref="Tables"/> property, setting the <see cref="ITableInformationViewModel.IsSelected"/> to true, if both collections contain the table.
+        /// Selects the <paramref name="objects"/> from the <see cref="Tables"/> property, setting the <see cref="ITableInformationViewModel.IsSelected"/> to true, if both collections contain the table.
         /// </summary>
-        /// <param name="tables">The tables to select.</param>
-        void SelectTables(IEnumerable<SerializationTableModel> tables);
+        /// <param name="objects">The tables to select.</param>
+        void SelectObjects(IEnumerable<SerializationTableModel> objects);
 
-        SerializationTableModel[] GetResult();
+        SerializationTableModel[] GetSelectedObjects();
     }
 }

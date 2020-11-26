@@ -15,8 +15,8 @@
         void Search(string searchText);
         void SetSelectionState(bool value);
         bool? GetSelectionState();
-        IEnumerable<ITableInformationViewModel> GetSelected();
+        IEnumerable<SerializationTableModel> GetSelectedObjects();
         void AddObjects(IEnumerable<TableModel> tables);
-        void SelectObject(IEnumerable<SerializationTableModel> tables);
+        void SelectObjects(IEnumerable<SerializationTableModel> tables);
     }
 }

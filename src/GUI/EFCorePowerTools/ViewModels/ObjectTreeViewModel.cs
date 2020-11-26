@@ -58,22 +58,27 @@
                 t.IsSelected = value;
         }
 
-        public IEnumerable<ITableInformationViewModel> GetSelected()
+        public IEnumerable<SerializationTableModel> GetSelectedObjects()
         {
-            return _objects.Where(c => c.IsSelected);
+            return _objects
+                .Where(c => c.IsSelected)
+                .Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Where(c => !c.IsSelected).Select(c => c.Name)))
+;
         }
 
-        public void AddObjects(IEnumerable<TableModel> tables)
+        public void AddObjects(IEnumerable<TableModel> objects)
         {
-            foreach (var table in tables)
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+
+            foreach (var obj in objects)
             {
                 var tvm = _tableInformationViewModelFactory();
-                tvm.HasPrimaryKey = table.HasPrimaryKey;
-                tvm.Name = table.Name;
-                tvm.ObjectType = table.ObjectType;
-                if (table.ObjectType.HasColumns())
+                tvm.HasPrimaryKey = obj.HasPrimaryKey;
+                tvm.Name = obj.Name;
+                tvm.ObjectType = obj.ObjectType;
+                if (obj.ObjectType.HasColumns())
                 {
-                    foreach (var column in table.Columns)
+                    foreach (var column in obj.Columns)
                     {
                         var cvm = _columnInformationViewModelFactory();
                         cvm.Name = column.Name;
@@ -113,11 +118,13 @@
             }
         }
 
-        public void SelectObject(IEnumerable<SerializationTableModel> tables)
+        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
         {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+
             foreach (var obj in _objects)
             {
-                var t = tables.SingleOrDefault(m => m.Name == obj.Name);
+                var t = objects.SingleOrDefault(m => m.Name == obj.Name);
                 obj.IsSelected = t != null;
                 if (obj.ObjectType.HasColumns() && obj.IsSelected)
                 {

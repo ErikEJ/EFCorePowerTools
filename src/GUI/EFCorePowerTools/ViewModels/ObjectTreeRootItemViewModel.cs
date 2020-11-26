@@ -70,7 +70,7 @@
 
         public ObservableCollection<ITableInformationViewModel> Objects { get; } = new ObservableCollection<ITableInformationViewModel>();
 
-        void ObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ITableInformationViewModel.IsSelected))
             {

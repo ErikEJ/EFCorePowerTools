@@ -25,9 +25,9 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = viewModel.GetResult;
-            _addTables = viewModel.AddTables;
-            _selectTables = viewModel.SelectTables;
+            _getDialogResult = viewModel.GetSelectedObjects;
+            _addTables = viewModel.AddObjects;
+            _selectTables = viewModel.SelectObjects;
 
             InitializeComponent();
         }
