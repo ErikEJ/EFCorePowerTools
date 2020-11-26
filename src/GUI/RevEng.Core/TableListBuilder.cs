@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EFCorePowerTools.Shared.Models;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 #if CORE50
 #else
 using Oracle.EntityFrameworkCore.Design.Internal;
@@ -79,7 +80,7 @@ namespace ReverseEngineer20
                     columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false));
                 }
 
-                buildResult.Add(new TableModel(name, databaseTable.PrimaryKey != null, RevEng.Shared.ObjectType.Table, columns));
+                buildResult.Add(new TableModel(name, databaseTable.PrimaryKey != null, databaseTable is DatabaseView ? RevEng.Shared.ObjectType.View : RevEng.Shared.ObjectType.Table, columns));
             }
 
             return buildResult;

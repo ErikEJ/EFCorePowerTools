@@ -19,22 +19,27 @@
 
     public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {
-        private readonly Func<ITableInformationViewModel> _tableInformationViewModelFactory;
-        private readonly Func<IColumnInformationViewModel> _columnInformationViewModelFactory;
 
         private bool? _tableSelectionThreeState;
         private string _searchText;
 
+        public PickTablesViewModel(IObjectTreeViewModel objectTreeViewModel)
+        {
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+
+            ObjectTree = objectTreeViewModel;
+            ObjectTree.ObjectSelectionChanged += (s, e) => UpdateTableSelectionThreeState();
+
+            SearchText = string.Empty;
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        public ICommand LoadedCommand { get; }
-        public ICommand TableSelectionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ObservableCollection<ITableInformationViewModel> Tables { get; }
-
-        public ICollectionView FilteredTables { get; }
+        public IObjectTreeViewModel ObjectTree { get; }
 
         public bool? TableSelectionThreeState
         {
@@ -60,51 +65,19 @@
             }
         }
 
-        public PickTablesViewModel(Func<ITableInformationViewModel> tableInformationViewModelFactory,
-                                   Func<IColumnInformationViewModel> columnInformationViewModelFactory)
-        {
-            _tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
-            _columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
-
-            LoadedCommand = new RelayCommand(Loaded_Executed);
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
-
-            Tables = new ObservableCollection<ITableInformationViewModel>();
-            Tables.CollectionChanged += Tables_CollectionChanged;
-
-            var filteredTablesSource = CollectionViewSource.GetDefaultView(Tables);
-            filteredTablesSource.Filter = t => FilterTable((ITableInformationViewModel)t);
-            FilteredTables = filteredTablesSource;
-
-            SearchText = string.Empty;
-        }
-
-        private void Loaded_Executed()
-        {
-            foreach (var t in Tables)
-                PredefineSelection(t);
-        }
 
         private void Ok_Executed()
         {
-            foreach (var t in Tables)
-                t.PropertyChanged -= TableViewModel_PropertyChanged;
-
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
         /// <summary>
         /// Currently at least a single table must be selected.
         /// </summary>
-        private bool Ok_CanExecute() => Tables.Any(m => m.IsSelected && !m.IsProcedure);
+        private bool Ok_CanExecute() => ObjectTree.Types.SelectMany(c => c.Objects).Any(m => m.IsSelected && !m.IsProcedure);
 
         private void Cancel_Executed()
         {
-            foreach (var t in Tables)
-                t.PropertyChanged -= TableViewModel_PropertyChanged;
-
-            Tables.Clear();
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
 
@@ -113,19 +86,8 @@
             if (selectionMode == null)
                 return;
 
-            foreach (var t in Tables)
-                t.IsSelected = t.HasPrimaryKey && selectionMode.Value;
-
+            ObjectTree.SetSelectionState(selectionMode.Value);
             SearchText = string.Empty;
-        }
-
-        private void UpdateTableSelectionThreeState()
-        {
-            TableSelectionThreeState = Tables.All(m => m.IsSelected)
-                                           ? true
-                                           : Tables.All(m => !m.IsSelected)
-                                               ? (bool?)false
-                                               : null;
         }
 
         private async Task HandleSearchTextChangeAsync(string text)
@@ -134,86 +96,32 @@
             if (text != SearchText)
                 return;
 
-            FilteredTables.Refresh();
+            ObjectTree.Search(SearchText);
         }
 
-        private bool FilterTable(ITableInformationViewModel tableInformationViewModel)
+        private void UpdateTableSelectionThreeState()
         {
-            return string.IsNullOrWhiteSpace(SearchText)
-                || tableInformationViewModel.Name.ToUpper().Contains(SearchText.ToUpper());
+            TableSelectionThreeState = ObjectTree.GetSelectionState(); 
         }
 
-        private static void PredefineSelection(ITableInformationViewModel t)
+        void IPickTablesViewModel.AddObjects(IEnumerable<TableModel> objects)
         {
-            var unSelect = t.Name.StartsWith("[__")
-                        || t.Name.StartsWith("[dbo].[__")
-                        || t.Name.EndsWith(".[sysdiagrams]");
-            if (unSelect) t.IsSelected = false;
+            if (objects == null) return;
+
+            ObjectTree.AddObjects(objects);
         }
 
-        void IPickTablesViewModel.AddTables(IEnumerable<TableModel> tables)
+        void IPickTablesViewModel.SelectObjects(IEnumerable<SerializationTableModel> objects)
         {
-            if (tables == null) return;
-
-            foreach (var table in tables)
-            {
-                var tvm = _tableInformationViewModelFactory();
-                tvm.HasPrimaryKey = table.HasPrimaryKey;
-                tvm.Name = table.Name;
-                tvm.ObjectType = table.ObjectType;
-                if (table.ObjectType == ObjectType.Table)
-                {
-                    foreach (var column in table.Columns)
-                    {
-                        var cvm = _columnInformationViewModelFactory();
-                        cvm.Name = column.Name;
-                        cvm.IsPrimaryKey = column.IsPrimaryKey;
-                        tvm.Columns.Add(cvm);
-                    }
-                }
-                PredefineSelection(tvm);
-                Tables.Add(tvm);
-                tvm.PropertyChanged += TableViewModel_PropertyChanged;
-            }
-
-            FilteredTables.Refresh();
+            if (objects == null) return;
+            ObjectTree.SelectObjects(objects);
         }
 
-        void IPickTablesViewModel.SelectTables(IEnumerable<SerializationTableModel> tables)
+        SerializationTableModel[] IPickTablesViewModel.GetSelectedObjects()
         {
-            if (tables == null) return;
-
-            foreach (var table in Tables)
-            {
-                var t = tables.SingleOrDefault(m => m.Name == table.Name);
-                table.IsSelected = t != null;
-                if (table.ObjectType == ObjectType.Table && table.IsSelected)
-                {
-                    foreach (var column in table.Columns)
-                    {
-                        column.IsSelected = !t?.ExcludedColumns?.Any(m => m == column.Name) ?? true;
-                    }
-                }
-            }
-        }
-
-        SerializationTableModel[] IPickTablesViewModel.GetResult()
-        {
-            return Tables.Where(m => m.IsSelected)
-                         .Select(m => new SerializationTableModel(m.Name, m.ObjectType, m.Columns.Where(c => !c.IsSelected).Select(c => c.Name)))
-                         .ToArray();
-        }
-
-        private void Tables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            UpdateTableSelectionThreeState();
-        }
-
-        private void TableViewModel_PropertyChanged(object sender,
-                                                    PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ITableInformationViewModel.IsSelected))
-                UpdateTableSelectionThreeState();
+            return ObjectTree
+                .GetSelectedObjects()
+                .ToArray();
         }
     }
 }

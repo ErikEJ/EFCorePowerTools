@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Procedures.Model;
 using RevEng.Core.Procedures.Scaffolding;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -111,7 +112,7 @@ namespace ReverseEngineer20.ReverseEngineer
 #endif
             };
 
-            var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Where(t => t.ObjectType == RevEng.Shared.ObjectType.Table).Select(m => m.Name), schemas);
+            var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), schemas);
 
             var scaffoldedModel = scaffolder.ScaffoldModel(
                     reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString,

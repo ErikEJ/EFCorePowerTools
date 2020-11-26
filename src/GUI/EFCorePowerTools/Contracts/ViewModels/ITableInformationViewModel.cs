@@ -20,5 +20,7 @@
         bool IsSelected { get; set; }
 
         bool IsTable { get; }
+
+        bool IsVisible { get; set; }
     }
 }

@@ -263,7 +263,8 @@ namespace EFCorePowerTools
                     .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>()
                     .AddTransient<IMigrationOptionsViewModel, MigrationOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
-                    .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>();
+                    .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>()
+                    .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>();
 
             // Register BLL
             var messenger = new Messenger();
