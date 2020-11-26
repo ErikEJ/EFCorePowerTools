@@ -87,7 +87,7 @@ namespace UnitTests.ViewModels
             // Act
             foreach (var item in vm.Objects.Take(1))
             {
-                item.IsVisible = true;
+                item.IsVisible = false;
             }
 
             // Assert

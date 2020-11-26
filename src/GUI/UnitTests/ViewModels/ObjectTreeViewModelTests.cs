@@ -152,8 +152,7 @@ namespace UnitTests.ViewModels
             var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects);
-
-            var preFilter = vm.Types.SelectMany(c => c.Objects).Where(c => c.IsVisible);
+            var preFilter = vm.Types.SelectMany(c => c.Objects);
 
             // Act
             vm.Search("dbo");
@@ -161,7 +160,7 @@ namespace UnitTests.ViewModels
             // Assert
             Assert.AreEqual(databaseObjects.Length, preFilter.Count());
             var postFilter = vm.Types.SelectMany(c => c.Objects).Where(c => c.IsVisible);
-            Assert.AreEqual(2, postFilter.Count());
+            Assert.AreEqual(3, postFilter.Count());
         }
 
         [Test]
@@ -172,13 +171,10 @@ namespace UnitTests.ViewModels
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects);
 
-            var preFilter = vm.Types.SelectMany(c => c.Objects).Where(c => c.IsVisible);
-
             // Act
             vm.Search("dbo");
 
             // Assert
-            Assert.AreEqual(databaseObjects.Length, preFilter.Count());
             Assert.That(() =>
             {
                 var postFilter = vm.Types.SelectMany(c => c.Objects).Where(c => c.IsVisible);

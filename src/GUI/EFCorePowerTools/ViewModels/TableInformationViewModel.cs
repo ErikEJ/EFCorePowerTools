@@ -13,7 +13,7 @@
 
         private bool _isSelected;
 
-        private bool _isVisible;
+        private bool _isVisible = true;
 
         public string Name
         {
