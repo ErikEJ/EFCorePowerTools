@@ -2,7 +2,6 @@
 {
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
-    using RevEng.Shared;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -10,7 +9,6 @@
     public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemViewModel
     {
         public string _text;
-        public bool _isVisible;
         public bool? _isSelected = false;
 
         public ObjectTreeRootItemViewModel()
@@ -24,13 +22,7 @@
 
         public bool IsVisible
         {
-            get => _isVisible;
-            private set
-            {
-                if (Equals(value, _isVisible)) return;
-                _isVisible = value;
-                RaisePropertyChanged();
-            }
+            get => Objects.Any(m => m.IsVisible);
         }
 
         public bool? IsSelected
@@ -93,7 +85,7 @@
 
             if (e.PropertyName == nameof(ITableInformationViewModel.IsVisible))
             {
-                IsVisible = Objects.Any(m => m.IsVisible);
+                RaisePropertyChanged(nameof(IsVisible));
             }
 
         }
