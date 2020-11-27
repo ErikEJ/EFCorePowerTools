@@ -9,8 +9,6 @@
 
         bool HasPrimaryKey { get; set; }
 
-        bool ShowKeylessWarning { get;  }
-
         ObjectType ObjectType { get; set; }
 
         ObservableCollection<IColumnInformationViewModel> Columns { get; }
@@ -19,7 +17,11 @@
 
         bool IsSelected { get; set; }
 
-        bool IsTable { get; }
+        bool IsTableWithKey { get; }
+
+        bool IsTableWithoutKey { get; }
+
+        bool IsView { get; }
 
         bool IsVisible { get; set; }
     }

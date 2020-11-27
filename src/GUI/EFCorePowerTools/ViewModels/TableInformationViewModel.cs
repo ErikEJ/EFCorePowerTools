@@ -42,9 +42,19 @@
             get => !HasPrimaryKey && ObjectType.HasColumns();
         }
 
-        public bool IsTable
+        public bool IsTableWithKey
         {
-            get => HasPrimaryKey && ObjectType.HasColumns();
+            get => HasPrimaryKey && ObjectType == ObjectType.Table;
+        }
+
+        public bool IsTableWithoutKey
+        {
+            get => !HasPrimaryKey && ObjectType == ObjectType.Table;
+        }
+
+        public bool IsView
+        {
+            get => ObjectType == ObjectType.View;
         }
 
         public ObjectType ObjectType
