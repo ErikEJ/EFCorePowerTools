@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Windows.Controls;
     using System.Windows.Media;
     using Contracts.ViewModels;
     using Contracts.Views;
@@ -58,6 +59,16 @@
         {
             _selectTables(tables);
             return this;
+        }
+
+        private void CheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var checkBox = sender as CheckBox;
+            
+            if (checkBox.IsChecked == false)
+            {
+                statusBar.Visibility = System.Windows.Visibility.Visible;
+            }
         }
     }
 }
