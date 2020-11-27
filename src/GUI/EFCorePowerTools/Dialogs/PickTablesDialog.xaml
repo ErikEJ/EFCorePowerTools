@@ -28,14 +28,14 @@
                         <Setter Property="Margin" Value="0, 0, 0, 0"/>
                     </Style>
                     <Style x:Key="KeylessImageStyle" TargetType="Image">
-                        <Setter Property="ToolTip" Value="This table (or view) has no primary key defined."/>
+                        <Setter Property="ToolTip" Value="This table has no primary key defined."/>
                         <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="0, 0, 0, 0"/>
                     </Style>
                     <Style x:Key="PrimaryKeyImageStyle" TargetType="Image">
-                        <Setter Property="ToolTip" Value="This column is part of the primary key and cannot be unchecked if the table is selected"/>
+                        <Setter Property="ToolTip" Value="This column is part of the primary key and cannot be unchecked if the table is selected."/>
                         <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/KeyDown_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
@@ -62,7 +62,7 @@
                     </Style>
 
                     <Style x:Key="IsProcedureImageStyle" TargetType="Image">
-                        <Setter Property="ToolTip" Value="Stored procedure (preview feature)"/>
+                        <Setter Property="ToolTip" Value="Stored procedure (preview feature)."/>
                         <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedure_16x.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
@@ -91,7 +91,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
         
         <Grid Margin="12,0"
@@ -170,7 +170,7 @@
                         </Style>
                     </HierarchicalDataTemplate.ItemContainerStyle>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}"
+                        <CheckBox Unchecked="CheckBox_Unchecked" Style="{StaticResource TableSelectionCheckBoxStyle}"
                                     IsChecked="{Binding IsSelected}" />
                         <Image Style="{StaticResource KeylessImageStyle}"
                                 Visibility="{Binding IsTableWithoutKey, Converter={StaticResource BoolToVisibilityConverter}}"/>
@@ -210,8 +210,8 @@
         <StackPanel Orientation="Horizontal" 
                     Grid.Row="2"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Margin="12,0">
+                    VerticalAlignment="Top"
+                    Margin="12,10">
             <dw:DialogButton Content="OK"
                              IsDefault="True"
                              HorizontalAlignment="Right"
@@ -224,6 +224,9 @@
                              TabIndex="7"
                              Margin="0,0,0,8"
                              Command="{Binding CancelCommand}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">Unchecking an item may cause the related file to be removed.</StatusBar>
         </StackPanel>
     </Grid>
 </dw:DialogWindow>
