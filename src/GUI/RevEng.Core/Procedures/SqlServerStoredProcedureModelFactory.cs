@@ -103,21 +103,23 @@ ORDER BY ROUTINE_NAME";
 
             var sql = $@"
 SELECT  
-    'Parameter' = name,  
-    'Type'   = type_name(system_type_id),  
-    'Length'   = CAST(max_length AS INT),  
-    'Precision'   = CAST(case when type_name(system_type_id) = 'uniqueidentifier' 
-                then precision  
-                else OdbcPrec(system_type_id, max_length, precision) end AS INT),  
-    'Scale'   = CAST(OdbcScale(system_type_id, scale) AS INT),  
+    'Parameter' = p.name,  
+    'Type'   = type_name(p.system_type_id),  
+    'Length'   = CAST(p.max_length AS INT),  
+    'Precision'   = CAST(case when type_name(p.system_type_id) = 'uniqueidentifier' 
+                then p.precision  
+                else OdbcPrec(p.system_type_id, p.max_length, p.precision) end AS INT),  
+    'Scale'   = CAST(OdbcScale(p.system_type_id, p.scale) AS INT),  
     'Order'  = CAST(parameter_id AS INT),  
     'Collation'   = convert(sysname, 
-                    case when system_type_id in (35, 99, 167, 175, 231, 239)  
+                    case when p.system_type_id in (35, 99, 167, 175, 231, 239)  
                     then ServerProperty('collation') end),
-    is_output AS output,
-	is_nullable AS nullable,
-    'TypeName' = QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) + '.' + QUOTENAME(TYPE_NAME(user_type_id))
-    from sys.parameters where object_id = object_id('{schema}.{name}')
+    p.is_output AS output,
+	p.is_nullable AS nullable,
+    'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id))
+    from sys.parameters p
+	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
+    where object_id = object_id('{schema}.{name}')
     ORDER BY parameter_id;";
 
             var adapter = new SqlDataAdapter
