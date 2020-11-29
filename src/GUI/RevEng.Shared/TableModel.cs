@@ -10,20 +10,26 @@
     /// A class holding schema information about database objects.
     /// </summary>
     [DataContract]
-    [DebuggerDisplay("{" + nameof(Name) + ",nq}")]
+    [DebuggerDisplay("{" + nameof(DisplayName) + ",nq}")]
     public class TableModel
     {
         /// <summary>
-        /// Gets or sets the table name.
+        /// Gets or sets the table name used for EF Core scaffolding
+        /// </summary>
+        [DataMember]
+        public string DisplayName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name
         /// </summary>
         [DataMember]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets whether a primary key exists for the table or not.
+        /// Gets or sets the schema (can be null)
         /// </summary>
         [DataMember]
-        public bool HasPrimaryKey { get; set; }
+        public string Schema { get; set; }
 
         /// <summary>
         /// Gets or sets the object type.
@@ -40,20 +46,24 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TableModel"/> class for a specific table.
         /// </summary>
-        /// <param name="name">The table name.</param>
+        /// <param name="displayName">The object name used by scaffolding.</param>
+        /// <param name="name">The object name.</param>
+        /// <param name="name">The object schema.</param>
         /// <param name="hasPrimaryKey">Whether or not a primary key exists for the table.</param>
         /// <param name="showKeylessWarning">Show warning that the table or view is keyless.</param>
         /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
-        public TableModel(string name,
-                            bool hasPrimaryKey,
+        public TableModel(string displayName,
+                            string name,
+                            string schema,
                             ObjectType objectType,
                             IEnumerable<ColumnModel> columns)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
+            if (string.IsNullOrWhiteSpace(displayName))
+                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(displayName));
 
+            DisplayName = displayName;
             Name = name;
-            HasPrimaryKey = hasPrimaryKey;
+            Schema = schema;
             ObjectType = objectType;
             Columns = columns;
         }

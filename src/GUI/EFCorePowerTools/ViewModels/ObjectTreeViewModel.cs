@@ -73,8 +73,8 @@
             foreach (var obj in objects)
             {
                 var tvm = _tableInformationViewModelFactory();
-                tvm.HasPrimaryKey = obj.HasPrimaryKey;
-                tvm.Name = obj.Name;
+                tvm.HasPrimaryKey = obj.Columns?.Any(c => c.IsPrimaryKey) ?? false;
+                tvm.Name = obj.DisplayName;
                 tvm.ObjectType = obj.ObjectType;
                 if (obj.ObjectType.HasColumns())
                 {

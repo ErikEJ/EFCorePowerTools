@@ -254,20 +254,30 @@ namespace UnitTests.ViewModels
                     new ColumnModel("column1", false),
                     new ColumnModel("column2", false)
                 };
-
             }
+
+            IEnumerable<ColumnModel> CreateColumnsWithoutId()
+            {
+                return new[]
+                {
+                    new ColumnModel("Id", false),
+                    new ColumnModel("column1", false),
+                    new ColumnModel("column2", false)
+                };
+            }
+
             var r = new TableModel[10];
 
-            r[0] = new TableModel("[dbo].[Atlas]", true, ObjectType.Table, CreateColumnsWithId());
-            r[1] = new TableModel("[__].[RefactorLog]", true, ObjectType.Table, CreateColumnsWithId());
-            r[2] = new TableModel("[dbo].[__RefactorLog]", true, ObjectType.Table, CreateColumnsWithId());
-            r[3] = new TableModel("[dbo].[sysdiagrams]", true, ObjectType.Table, CreateColumnsWithId());
-            r[4] = new TableModel("unit.test", true, ObjectType.Table, CreateColumnsWithId());
-            r[5] = new TableModel("unit.foo", true, ObjectType.Table, CreateColumnsWithId());
-            r[6] = new TableModel("views.view1", true, ObjectType.View, CreateColumnsWithId());
-            r[7] = new TableModel("views.view2", true, ObjectType.View, CreateColumnsWithId());
-            r[8] = new TableModel("stored.procedure1", true, ObjectType.Procedure, new ColumnModel[0]);
-            r[9] = new TableModel("stored.procedure2", true, ObjectType.Procedure, new ColumnModel[0]);
+            r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo", ObjectType.Table, CreateColumnsWithId());
+            r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
+            r[2] = new TableModel("[dbo].[__RefactorLog]", "__RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
+            r[3] = new TableModel("[dbo].[sysdiagrams]", "sysdiagrams", "dbo", ObjectType.Table, CreateColumnsWithId());
+            r[4] = new TableModel("[unit].[test]", "test", "unit", ObjectType.Table, CreateColumnsWithId());
+            r[5] = new TableModel("[unit].[foo]", "foo", "unit", ObjectType.Table, CreateColumnsWithId());
+            r[6] = new TableModel("[views].[view1]", "view1", "views", ObjectType.View, CreateColumnsWithoutId());
+            r[7] = new TableModel("[views].[view2]", "view2", "views", ObjectType.View, CreateColumnsWithoutId());
+            r[8] = new TableModel("[stored].[procedure1]", "procedure1", "stored", ObjectType.Procedure, new ColumnModel[0]);
+            r[9] = new TableModel("[stored].[procedure2]", "procedure2", "stored", ObjectType.Procedure, new ColumnModel[0]);
             return r;
         }
 

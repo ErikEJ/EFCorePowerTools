@@ -48,7 +48,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             if (schema.Tables.Any(t => t.Name == originalTable.Name))
             {
-                newTableName = schema.Tables.FirstOrDefault(t => t.Name == originalTable.Name)?.NewName;
+                newTableName = schema.Tables.SingleOrDefault(t => t.Name == originalTable.Name)?.NewName;
             }
             else if (!string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null)
             {

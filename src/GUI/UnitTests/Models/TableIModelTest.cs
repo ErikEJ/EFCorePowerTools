@@ -1,7 +1,6 @@
 ﻿namespace UnitTests.Models
 {
     using System;
-    using System.Collections.Generic;
     using EFCorePowerTools.Shared.Models;
     using NUnit.Framework;
     using RevEng.Shared;
@@ -14,10 +13,9 @@
         {
             // Arrange
             string table = null;
-            var hasPrimaryKey = false;
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => new TableModel(table, hasPrimaryKey, ObjectType.Table, null));
+            Assert.Throws<ArgumentException>(() => new TableModel(table, null, null, ObjectType.Table, null));
         }
 
         [Test]
@@ -25,14 +23,15 @@
         {
             // Arrange
             var table = "dbo.Album";
-            var hasPrimaryKey = true;
 
             // Act
-            var ti = new TableModel(table, hasPrimaryKey, ObjectType.Table, null);
+            var ti = new TableModel(table, "Album", "dbo", ObjectType.Table, null);
 
             // Assert
-            Assert.AreEqual("dbo.Album", ti.Name);
-            Assert.IsTrue(ti.HasPrimaryKey);
+            Assert.AreEqual("dbo.Album", ti.DisplayName);
+            Assert.AreEqual("Album", ti.Name);
+            Assert.AreEqual("dbo", ti.Schema);
+            Assert.AreEqual(ObjectType.Table, ti.ObjectType);
         }
     }
 }

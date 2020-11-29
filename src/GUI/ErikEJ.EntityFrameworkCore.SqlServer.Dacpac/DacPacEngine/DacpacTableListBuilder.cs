@@ -25,7 +25,7 @@ namespace ReverseEngineer20
             _dacpacPath = dacpacPath;
         }
 
-        public List<Tuple<string, bool, List<string>, List<string>, bool>> GetTableDefinitions()
+        public List<Tuple<string, string, string, List<string>, List<string>, bool>> GetTableDefinitions()
         {
             var consolidator = new DacpacConsolidator();
 
@@ -34,12 +34,13 @@ namespace ReverseEngineer20
             using (var model = new TSqlTypedModel(dacpacPath))
             {
                 var result = model.GetObjects<TSqlTable>(DacQueryScopes.UserDefined)
-                    .Select(m => new Tuple<string, bool, List<string>, List<string>, bool>(
+                    .Select(m => new Tuple<string, string, string, List<string>, List<string>, bool>(
+
+                    m.Name.Parts[0],
+                    m.Name.Parts[1],
 
                     $"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]",
-                    
-                    m.PrimaryKeyConstraints?.Any() ?? false,
-                    
+                                        
                     m.Columns.Where(i => !i.GetProperty<bool>(Column.IsHidden)
                         && i.ColumnType != ColumnType.ColumnSet
                         && i.ColumnType != ColumnType.ComputedColumn)
@@ -52,7 +53,13 @@ namespace ReverseEngineer20
                     .ToList();
 
                 var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
-                    .Select(m => new Tuple<string, bool, List<string>, List<string>, bool>($"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", false, null, null, false))
+                    .Select(m => new Tuple<string, string, string, List<string>, List<string>, bool>(
+                        m.Name.Parts[0],
+                        m.Name.Parts[1],
+                        $"[{m.Name.Parts[0]}].[{m.Name.Parts[1]}]", 
+                        null, 
+                        null, 
+                        false))
                     .OrderBy(m => m.Item1)
                     .ToList();
 
