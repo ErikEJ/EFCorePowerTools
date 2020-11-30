@@ -102,12 +102,15 @@ namespace efreveng
             {
                 var columns = new List<ColumnModel>();
 
-                foreach (var colum in value.Item4)
+                if (value.Item4 != null)
                 {
-                    columns.Add(new ColumnModel(colum, value.Item4.Contains(colum)));
+                    foreach (var colum in value.Item4)
+                    {
+                        columns.Add(new ColumnModel(colum, value.Item5.Contains(colum)));
+                    }
                 }
 
-                result.Add(new TableModel(value.Item3, value.Item1, value.Item2, value.Item6 ? RevEng.Shared.ObjectType.Table : RevEng.Shared.ObjectType.View, columns));
+                result.Add(new TableModel(value.Item3, value.Item2, value.Item1, value.Item6 ? RevEng.Shared.ObjectType.Table : RevEng.Shared.ObjectType.View, columns));
             }
         
             Console.Out.WriteLine("Result:");
