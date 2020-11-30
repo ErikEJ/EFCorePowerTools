@@ -201,7 +201,7 @@
     <Compile Include="PathHelperTest.cs" />
     <Compile Include="DgmlTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\TableInformationModelTest.cs" />
+    <Compile Include="Models\TableIModelTest.cs" />
     <Compile Include="ViewModels\AboutViewModelTests.cs" />
     <Compile Include="ViewModels\AdvancedModelingOptionsViewModelTests.cs" />
     <Compile Include="ViewModels\ObjectTreeRootItemViewModelTests.cs" />

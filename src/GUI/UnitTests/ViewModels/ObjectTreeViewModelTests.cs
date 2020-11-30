@@ -231,7 +231,7 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(10, result.Count());
             for (var i = 0; i < result.Length; i++)
             {
-                Assert.AreEqual(databaseObjects[i].Name, result[i].Name);
+                Assert.AreEqual(databaseObjects[i].DisplayName, result[i].Name);
             }
         }
 
@@ -253,9 +253,9 @@ namespace UnitTests.ViewModels
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Length);
-            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Table).Name, result[0].Name);
-            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.View).Name, result[1].Name);
-            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).Name, result[2].Name);
+            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Table).DisplayName, result[0].Name);
+            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.View).DisplayName, result[1].Name);
+            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[2].Name);
         }
 
         [Test]
@@ -340,20 +340,30 @@ namespace UnitTests.ViewModels
                     new ColumnModel("column1", false),
                     new ColumnModel("column2", false)
                 };
-
             }
+
+            IEnumerable<ColumnModel> CreateColumnsWithoutId()
+            {
+                return new[]
+                {
+                    new ColumnModel("Id", false),
+                    new ColumnModel("column1", false),
+                    new ColumnModel("column2", false)
+                };
+            }
+
             var r = new TableModel[10];
 
-            r[0] = new TableModel("[dbo].[Atlas]", true, ObjectType.Table, CreateColumnsWithId());
-            r[1] = new TableModel("[__].[RefactorLog]", true, ObjectType.Table, CreateColumnsWithId());
-            r[2] = new TableModel("[dbo].[__RefactorLog]", true, ObjectType.Table, CreateColumnsWithId());
-            r[3] = new TableModel("[dbo].[sysdiagrams]", true, ObjectType.Table, CreateColumnsWithId());
-            r[4] = new TableModel("unit.test", true, ObjectType.Table, CreateColumnsWithId());
-            r[5] = new TableModel("unit.foo", true, ObjectType.Table, CreateColumnsWithId());
-            r[6] = new TableModel("views.view1", true, ObjectType.View, CreateColumnsWithId());
-            r[7] = new TableModel("views.view2", true, ObjectType.View, CreateColumnsWithId());
-            r[8] = new TableModel("stored.procedure1", true, ObjectType.Procedure, new ColumnModel[0]);
-            r[9] = new TableModel("stored.procedure2", true, ObjectType.Procedure, new ColumnModel[0]);
+            r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo",  ObjectType.Table, CreateColumnsWithId());
+            r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
+            r[2] = new TableModel("[dbo].[__RefactorLog]", "__RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
+            r[3] = new TableModel("[dbo].[sysdiagrams]", "sysdiagrams", "dbo", ObjectType.Table, CreateColumnsWithId());
+            r[4] = new TableModel("[unit].[test]", "test", "unit", ObjectType.Table, CreateColumnsWithId());
+            r[5] = new TableModel("[unit].[foo]", "foo", "unit", ObjectType.Table, CreateColumnsWithId());
+            r[6] = new TableModel("[views].[view1]", "view1", "views", ObjectType.View, CreateColumnsWithoutId());
+            r[7] = new TableModel("[views].[view2]", "view2", "views", ObjectType.View, CreateColumnsWithoutId());
+            r[8] = new TableModel("[stored].[procedure1]", "procedure1", "stored", ObjectType.Procedure, new ColumnModel[0]);
+            r[9] = new TableModel("[stored].[procedure2]", "procedure2", "stored", ObjectType.Procedure, new ColumnModel[0]);
             return r;
         }
 
@@ -362,10 +372,10 @@ namespace UnitTests.ViewModels
             var r = new SerializationTableModel[5];
 
             r[0] = new SerializationTableModel("[dbo].[Atlas]", ObjectType.Table, new[] { "column1" });
-            r[1] = new SerializationTableModel("unit.test", ObjectType.Table, new string[0]);
-            r[2] = new SerializationTableModel("unit.foo", ObjectType.Table, new string[0]);
-            r[3] = new SerializationTableModel("views.view1", ObjectType.View, new string[0]);
-            r[4] = new SerializationTableModel("stored.procedure2", ObjectType.Procedure, new string[0]);
+            r[1] = new SerializationTableModel("[unit].[test]", ObjectType.Table, new string[0]);
+            r[2] = new SerializationTableModel("[unit].[foo]", ObjectType.Table, new string[0]);
+            r[3] = new SerializationTableModel("[views].[view1]", ObjectType.View, new string[0]);
+            r[4] = new SerializationTableModel("[stored].[procedure2]", ObjectType.Procedure, new string[0]);
             return r;
         }
 
@@ -386,8 +396,7 @@ namespace UnitTests.ViewModels
 
         private static void AreObjectsEqual(TableModel a, ITableInformationViewModel b)
         {
-            Assert.AreEqual(a.HasPrimaryKey, b.HasPrimaryKey);
-            Assert.AreEqual(a.Name, b.Name);
+            Assert.AreEqual(a.DisplayName, b.Name);
             Assert.AreEqual(a.ObjectType, b.ObjectType);
             for (var i = 0; i < a.Columns.Count(); i++)
             {

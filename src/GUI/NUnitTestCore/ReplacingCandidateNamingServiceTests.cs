@@ -149,12 +149,6 @@ namespace UnitTests.Services
                   {
                        SchemaName = "stg",
                        UseSchemaName = false,
-                       Tables = new List<TableRenamer>{ new TableRenamer {  Name = "DeliveryAddress", NewName = "stg_DeliveryAddress" } }
-                  },
-                  new Schema
-                  {
-                       SchemaName = "stg",
-                       UseSchemaName = false,
                        Tables = new List<TableRenamer>
                        {
                            new TableRenamer
@@ -169,8 +163,8 @@ namespace UnitTests.Services
                                      NewName = "JobRename",
                                    }
                                }
-                           }
-
+                           },
+                           new TableRenamer {  Name = "DeliveryAddress", NewName = "stg_DeliveryAddress" }
                        }
                   },
               };

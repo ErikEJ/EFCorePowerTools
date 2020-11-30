@@ -36,7 +36,7 @@ namespace efreveng
                         var buildResult = builder.GetTableModels();
 
                         var procedures = builder.GetProcedures(dbTypeInt);
-                        buildResult.AddRange(procedures.Select(p => new TableModel(p, false, RevEng.Shared.ObjectType.Procedure, null)).ToList());
+                        buildResult.AddRange(procedures.Select(p => new TableModel(p, null, null, RevEng.Shared.ObjectType.Procedure, null)).ToList());
 
                         Console.Out.WriteLine("Result:");
                         Console.Out.WriteLine(buildResult.Write());
@@ -102,14 +102,17 @@ namespace efreveng
             {
                 var columns = new List<ColumnModel>();
 
-                foreach (var colum in value.Item3)
+                if (value.Item4 != null)
                 {
-                    columns.Add(new ColumnModel(colum, value.Item4.Contains(colum)));
+                    foreach (var colum in value.Item4)
+                    {
+                        columns.Add(new ColumnModel(colum, value.Item5.Contains(colum)));
+                    }
                 }
 
-                result.Add(new TableModel(value.Item1, value.Item2, value.Item5 ? RevEng.Shared.ObjectType.Table : RevEng.Shared.ObjectType.View, columns));
+                result.Add(new TableModel(value.Item3, value.Item2, value.Item1, value.Item6 ? RevEng.Shared.ObjectType.Table : RevEng.Shared.ObjectType.View, columns));
             }
-
+        
             Console.Out.WriteLine("Result:");
             Console.Out.WriteLine(result.Write());
 

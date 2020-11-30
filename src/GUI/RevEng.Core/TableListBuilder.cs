@@ -80,7 +80,7 @@ namespace ReverseEngineer20
                     columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false));
                 }
 
-                buildResult.Add(new TableModel(name, databaseTable.PrimaryKey != null, databaseTable is DatabaseView ? RevEng.Shared.ObjectType.View : RevEng.Shared.ObjectType.Table, columns));
+                buildResult.Add(new TableModel(name, databaseTable.Name, databaseTable.Schema, databaseTable is DatabaseView ? RevEng.Shared.ObjectType.View : RevEng.Shared.ObjectType.Table, columns));
             }
 
             return buildResult;
