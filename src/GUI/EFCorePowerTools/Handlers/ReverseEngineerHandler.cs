@@ -62,7 +62,7 @@ namespace EFCorePowerTools.Handlers
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
-
+                
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
@@ -153,7 +153,7 @@ namespace EFCorePowerTools.Handlers
                                   .AddTables(predefinedTables)
                                   .PreselectTables(preselectedTables);
 
-                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
+                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
                 if (!pickTablesResult.ClosedByOK) return;
