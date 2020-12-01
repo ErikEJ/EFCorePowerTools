@@ -62,7 +62,7 @@ namespace EFCorePowerTools.Handlers
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
-                
+
                 var databaseList = EnvDteHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
