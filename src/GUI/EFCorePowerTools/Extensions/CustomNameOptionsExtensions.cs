@@ -8,8 +8,19 @@ namespace EFCorePowerTools.Extensions
 {
     public class CustomNameOptionsExtensions
     {
-        public static List<Schema> TryRead(string optionsCustomNamePath)
+        public static List<Schema> TryRead(string optionsCustomNamePath, string optionsPath)
         {
+            if (!optionsPath.EndsWith("efpt.config.json", System.StringComparison.OrdinalIgnoreCase))
+            {
+                var specificName = Path.GetFileName(optionsPath).Replace(".config.", ".renaming.");
+                var specificPath = Path.Combine(Path.GetDirectoryName(optionsPath), specificName);
+
+                if (File.Exists(specificPath))
+                {
+                    optionsCustomNamePath = specificPath;
+                }
+            }
+
             if (!File.Exists(optionsCustomNamePath)) return null;
             if (File.Exists(optionsCustomNamePath + ".ignore")) return null;
 

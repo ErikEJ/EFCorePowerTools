@@ -153,7 +153,7 @@ namespace EFCorePowerTools.Handlers
                                   .AddTables(predefinedTables)
                                   .PreselectTables(preselectedTables);
 
-                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath);
+                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
                 if (!pickTablesResult.ClosedByOK) return;
