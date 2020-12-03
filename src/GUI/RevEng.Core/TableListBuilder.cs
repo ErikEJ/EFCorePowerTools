@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EFCorePowerTools.Shared.Models;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using RevEng.Shared;
 #if CORE50
 #else
 using Oracle.EntityFrameworkCore.Design.Internal;
@@ -80,7 +81,7 @@ namespace ReverseEngineer20
                     columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false));
                 }
 
-                buildResult.Add(new TableModel(name, databaseTable.Name, databaseTable.Schema, databaseTable is DatabaseView ? RevEng.Shared.ObjectType.View : RevEng.Shared.ObjectType.Table, columns));
+                buildResult.Add(new TableModel(name, databaseTable.Name, databaseTable.Schema, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
             }
 
             return buildResult;
@@ -96,9 +97,9 @@ namespace ReverseEngineer20
             return dbModel.Tables.ToList();
         }
 
-        public List<string> GetProcedures(int dbTypeInt)
+        public List<TableModel> GetProcedures(int dbTypeInt)
         {
-            var result = new List<string>();
+            var result = new List<TableModel>();
 
             DatabaseType databaseType = (DatabaseType)dbTypeInt;
 
@@ -119,12 +120,10 @@ namespace ReverseEngineer20
 
             foreach (var procedure in procedureModel.Procedures)
             {
-                result.Add($"[{procedure.Schema}].[{procedure.Name}]");
+                result.Add(new TableModel($"[{procedure.Schema}].[{procedure.Name}]", procedure.Name, procedure.Schema, ObjectType.Procedure, null));
             }
 
-            result.Sort();
-
-            return result;
+            return result.OrderBy(c => c.DisplayName).ToList();
         }
 
         private static ServiceProvider Build(DatabaseType databaseType)
