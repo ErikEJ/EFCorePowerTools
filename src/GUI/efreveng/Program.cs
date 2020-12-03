@@ -35,8 +35,7 @@ namespace efreveng
 
                         var buildResult = builder.GetTableModels();
 
-                        var procedures = builder.GetProcedures(dbTypeInt);
-                        buildResult.AddRange(procedures.Select(p => new TableModel(p, null, null, RevEng.Shared.ObjectType.Procedure, null)).ToList());
+                        buildResult.AddRange(builder.GetProcedures(dbTypeInt));
 
                         Console.Out.WriteLine("Result:");
                         Console.Out.WriteLine(buildResult.Write());
