@@ -22,8 +22,8 @@ namespace EFCorePowerTools.Extensions
                 }
             }
 
-            if (!File.Exists(optionsCustomNamePath)) return null;
-            if (File.Exists(optionsCustomNamePath + ".ignore")) return null;
+            if (!File.Exists(optionsCustomNamePath)) return new Tuple<List<Schema>, string>(null, optionsCustomNamePath);
+            if (File.Exists(optionsCustomNamePath + ".ignore")) return new Tuple<List<Schema>, string>(null, optionsCustomNamePath);
 
             using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8))))
             {
