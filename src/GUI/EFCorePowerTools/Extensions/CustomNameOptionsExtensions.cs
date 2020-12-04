@@ -1,4 +1,5 @@
 ﻿using ReverseEngineer20.ReverseEngineer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -8,7 +9,7 @@ namespace EFCorePowerTools.Extensions
 {
     public class CustomNameOptionsExtensions
     {
-        public static List<Schema> TryRead(string optionsCustomNamePath, string optionsPath)
+        public static Tuple<List<Schema>, string> TryRead(string optionsCustomNamePath, string optionsPath)
         {
             if (!optionsPath.EndsWith("efpt.config.json", System.StringComparison.OrdinalIgnoreCase))
             {
@@ -28,7 +29,7 @@ namespace EFCorePowerTools.Extensions
             {
                 var ser = new DataContractJsonSerializer(typeof(List<Schema>));
                 var customNamingOptions = ser.ReadObject(ms) as List<Schema>;
-                return customNamingOptions;
+                return new Tuple<List<Schema>, string>(customNamingOptions, optionsCustomNamePath);
             }
         }
     }

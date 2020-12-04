@@ -153,7 +153,7 @@ namespace EFCorePowerTools.Handlers
                                   .AddTables(predefinedTables)
                                   .PreselectTables(preselectedTables);
 
-                var customNameOptions = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
+                var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
                 if (!pickTablesResult.ClosedByOK) return;
@@ -225,7 +225,7 @@ namespace EFCorePowerTools.Handlers
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.ToList(),
-                    CustomReplacers = customNameOptions,
+                    CustomReplacers = namingOptionsAndPath.Item1,
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList()
                 };
