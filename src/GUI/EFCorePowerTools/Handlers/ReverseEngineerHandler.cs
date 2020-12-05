@@ -316,7 +316,7 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Reporting result...";
                 var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-                SaveOptions(project, optionsPath, options);
+                SaveOptions(project, optionsPath, options, namingOptionsAndPath);
 
                 if (modelingOptionsResult.Payload.InstallNuGetPackage)
                 {
@@ -352,12 +352,18 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options)
+        private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
         {
             if (!File.Exists(optionsPath + ".ignore"))
             {
                 File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
                 project.ProjectItems.AddFromFile(optionsPath);
+            }
+
+            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore"))
+            {
+                File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
+                project.ProjectItems.AddFromFile(renamingOptions.Item2);
             }
         }
 
