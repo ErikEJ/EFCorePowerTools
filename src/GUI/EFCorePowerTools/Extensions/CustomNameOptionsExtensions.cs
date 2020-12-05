@@ -32,5 +32,21 @@ namespace EFCorePowerTools.Extensions
                 return new Tuple<List<Schema>, string>(customNamingOptions, optionsCustomNamePath);
             }
         }
+
+        public static string Write(List<Schema> namingOptions)
+        {
+            using (var ms = new MemoryStream())
+            {
+                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(ms, Encoding.UTF8, true, true, "   "))
+                {
+                    var serializer = new DataContractJsonSerializer(typeof(List<Schema>));
+                    serializer.WriteObject(writer, namingOptions);
+                    writer.Flush();
+                }
+
+                var json = ms.ToArray();
+                return Encoding.UTF8.GetString(json, 0, json.Length);
+            }
+        }
     }
 }
