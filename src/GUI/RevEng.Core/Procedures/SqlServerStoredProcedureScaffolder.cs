@@ -261,9 +261,7 @@ namespace RevEng.Core.Procedures
 
         private static string GenerateMethodSignature(Procedure procedure, List<ProcedureParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
-            string line;
-
-            line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
+            var line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
