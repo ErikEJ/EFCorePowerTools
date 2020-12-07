@@ -2,6 +2,7 @@
 {
     using EFCorePowerTools.Shared.Models;
     using RevEng.Shared;
+    using ReverseEngineer20.ReverseEngineer;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -12,11 +13,13 @@
 
         ObservableCollection<IObjectTreeRootItemViewModel> Types { get; }
 
+        bool IsInEditMode { get; }
         void Search(string searchText);
         void SetSelectionState(bool value);
         bool? GetSelectionState();
         IEnumerable<SerializationTableModel> GetSelectedObjects();
-        void AddObjects(IEnumerable<TableModel> tables);
+        IEnumerable<Schema> GetRenamedObjects();
+        void AddObjects(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers);
         void SelectObjects(IEnumerable<SerializationTableModel> tables);
     }
 }

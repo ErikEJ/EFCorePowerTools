@@ -4,6 +4,8 @@ namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
+    using GalaSoft.MvvmLight.Messaging;
+    using Moq;
     using System.Linq;
 
     [TestFixture]
@@ -17,9 +19,9 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Objects)
+            foreach (var item in vm.Schemas)
             {
-                item.IsSelected = true;
+                item.SetSelectedCommand.Execute(true);
             }
 
             // Assert
@@ -34,9 +36,9 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Objects)
+            foreach (var item in vm.Schemas)
             {
-                item.IsSelected = false;
+                item.SetSelectedCommand.Execute(false);
             }
 
             // Assert
@@ -51,9 +53,9 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Objects.Take(3))
+            foreach (var item in vm.Schemas)
             {
-                item.IsSelected = vm.Objects.IndexOf(item) % 2 == 0;
+                item.SetSelectedCommand.Execute(vm.Schemas.IndexOf(item) % 2 == 0);
             }
 
             // Assert
@@ -68,7 +70,7 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Objects)
+            foreach (var item in vm.Schemas.SelectMany(c => c.Objects))
             {
                 item.IsVisible = false;
             }
@@ -85,7 +87,7 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Objects.Take(1))
+            foreach (var item in vm.Schemas.First().Objects)
             {
                 item.IsVisible = false;
             }
@@ -126,152 +128,79 @@ namespace UnitTests.ViewModels
             Assert.IsTrue(propertyChangedInvoked);
         }
 
-
         private static void AddObjects(ObjectTreeRootItemViewModel vm)
         {
             foreach (var item in GetDatabaseObjects())
             {
-                vm.Objects.Add(item);
+                vm.Schemas.Add(item);
             }
         }
 
-        private static ITableInformationViewModel[] GetDatabaseObjects()
+        private static ISchemaInformationViewModel[] GetDatabaseObjects()
         {
-            var r = new ITableInformationViewModel[6];
+            TableInformationViewModel CreateTable(string tableSchema, string name, bool selected)
+            {
+                var messenger = new Mock<IMessenger>();
+                messenger.SetupAllProperties();
+                var result = new TableInformationViewModel(messenger.Object);
+                result.Name = name;
+                result.Schema = tableSchema;
+                if  (selected)
+                {
+                    result.SetSelectedCommand.Execute(true);
+                }
+                return result;
+            }
 
-            r[0] = new TableInformationViewModel
+            ColumnInformationViewModel CreateColumn(string name, bool isPrimaryKey, bool selected)
             {
-                IsSelected = false,
-                HasPrimaryKey = true,
-                Name = "[dbo].[Atlas]",
-            };
-            r[0].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "Id"
-            });
-            r[0].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column1"
-            });
-            r[0].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column2"
-            });
+                var messenger = new Mock<IMessenger>();
+                messenger.SetupAllProperties();
+                var result = new ColumnInformationViewModel(messenger.Object);
+                result.Name = name;
+                result.IsPrimaryKey = isPrimaryKey;
+                if (selected)
+                {
+                    result.SetSelectedCommand.Execute(true);
+                }
+                return result;
+            }
 
-            r[1] = new TableInformationViewModel
-            {
-                IsSelected = true,
-                HasPrimaryKey = true,
-                Name = "[__].[RefactorLog]",
-            };
-            r[1].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "Id"
-            });
-            r[1].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column1"
-            });
-            r[1].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column2"
-            });
+            var schema0 = new SchemaInformationViewModel { Name = "dbo" };
 
-            r[2] = new TableInformationViewModel
-            {
-                IsSelected = true,
-                HasPrimaryKey = true,
-                Name = "[dbo].[__RefactorLog]",
-            };
-            r[2].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "Id"
-            });
-            r[2].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column1"
-            });
-            r[2].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column2"
-            });
+            schema0.Objects.Add(CreateTable("dbo", "Atlas", false));
+            schema0.Objects[0].Columns.Add(CreateColumn("id", true, false));
+            schema0.Objects[0].Columns.Add(CreateColumn("column1", false, false));
+            schema0.Objects[0].Columns.Add(CreateColumn("column2", false, false));
 
-            r[3] = new TableInformationViewModel
-            {
-                IsSelected = true,
-                HasPrimaryKey = true,
-                Name = "[dbo].[sysdiagrams]",
-            };
-            r[3].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "Id"
-            });
-            r[3].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column1"
-            });
-            r[3].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column2"
-            });
+            schema0.Objects.Add(CreateTable("dbo", "__RefactorLog", true));
+            schema0.Objects[1].Columns.Add(CreateColumn("id", true, false));
+            schema0.Objects[1].Columns.Add(CreateColumn("column1", false, false));
+            schema0.Objects[1].Columns.Add(CreateColumn("column2", false, false));
 
-            r[4] = new TableInformationViewModel
-            {
-                IsSelected = true,
-                HasPrimaryKey = true,
-                Name = "unit.test",
-            };
-            r[4].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "Id"
-            });
-            r[4].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column1"
-            });
-            r[4].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column2"
-            });
+            schema0.Objects.Add(CreateTable("dbo", "sysdiagrams", false));
+            schema0.Objects[2].Columns.Add(CreateColumn("id", true, false));
+            schema0.Objects[2].Columns.Add(CreateColumn("column1", false, false));
+            schema0.Objects[2].Columns.Add(CreateColumn("column2", false, false));
 
-            r[5] = new TableInformationViewModel
-            {
-                IsSelected = true,
-                HasPrimaryKey = true,
-                Name = "unit.foo",
-            };
-            r[5].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "Id"
-            });
-            r[5].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column1"
-            });
-            r[5].Columns.Add(new ColumnInformationViewModel
-            {
-                IsSelected = true,
-                Name = "column2"
-            });
+            schema0.Objects.Add(CreateTable("dbo", "sysdiagrams", false));
+            schema0.Objects[2].Columns.Add(CreateColumn("id", true, false));
+            schema0.Objects[2].Columns.Add(CreateColumn("column1", false, false));
+            schema0.Objects[2].Columns.Add(CreateColumn("column2", false, false));
 
-            return r;
+            var schema1 = new SchemaInformationViewModel { Name = "unit" };
+
+            schema1.Objects.Add(CreateTable("unit", "test", false));
+            schema1.Objects[0].Columns.Add(CreateColumn("id", true, false));
+            schema1.Objects[0].Columns.Add(CreateColumn("column1", false, false));
+            schema1.Objects[0].Columns.Add(CreateColumn("column2", false, false));
+                  
+            schema1.Objects.Add(CreateTable("unit", "foo", true));
+            schema1.Objects[1].Columns.Add(CreateColumn("id", true, false));
+            schema1.Objects[1].Columns.Add(CreateColumn("column1", false, false));
+            schema1.Objects[1].Columns.Add(CreateColumn("column2", false, false));
+
+            return new[] { schema0, schema1 };
         }
     }
 }

@@ -4,31 +4,41 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
+    using ReverseEngineer20.ReverseEngineer;
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows.Input;
 
-    public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemViewModel
+    public class SchemaInformationViewModel : ViewModelBase, ISchemaInformationViewModel
     {
-        public string _text;
-        public bool? _isSelected = false;
-        public ObjectType _objectType;
-        public ObjectTreeRootItemViewModel()
+        private string _name;
+        private bool? _isSelected = false;
+        private bool _isVisible = true;
+
+        public SchemaInformationViewModel()
         {
             SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
-            Schemas.CollectionChanged += (s, e) =>
+            Objects.CollectionChanged += (s, e) =>
             {
-                foreach (ISchemaInformationViewModel item in e.NewItems)
+                foreach (ITableInformationViewModel item in e.NewItems)
                     item.PropertyChanged += ObjectPropertyChanged;
             };
         }
 
-        public bool IsVisible
+        public string Name
         {
-            get => Schemas.Any(m => m.IsVisible);
+            get => _name;
+            set
+            {
+                if (Equals(value, _name)) return;
+                _name = value;
+                RaisePropertyChanged();
+            }
         }
+
+        public ObservableCollection<ITableInformationViewModel> Objects { get; } = new ObservableCollection<ITableInformationViewModel>();
 
         public bool? IsSelected
         {
@@ -41,56 +51,34 @@
                 if (_isSelected != null)
                 {
                     var selected = _isSelected.Value;
-                    foreach (var item in Schemas)
+                    foreach (var obj in Objects)
                     {
-                        item.SetSelectedCommand.Execute(selected);
+                        obj.SetSelectedCommand.Execute(selected);
                     }
+
                 }
             }
         }
 
-        public string Text
+        public bool IsVisible
         {
-            get => _text;
-            set
-            {
-                if (Equals(value, _text)) return;
-                _text = value;
-                RaisePropertyChanged();
-            }
+            get => Objects.Any(m => m.IsVisible);
         }
 
-        public ObjectType ObjectType
-        {
-            get => _objectType;
-            set
-            {
-                if (Equals(value, _objectType)) return;
-                _objectType = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(ObjectTypeIcon));
-            }
-        }
-
-        public ObjectTypeIcon ObjectTypeIcon
-        {
-            get => (ObjectTypeIcon)Enum.Parse(typeof(ObjectTypeIcon), ObjectType.ToString());
-        }
-
-        public ObservableCollection<ISchemaInformationViewModel> Schemas { get; } = new ObservableCollection<ISchemaInformationViewModel>();
+        public Schema ReplacingSchema { get; set; }
 
         public ICommand SetSelectedCommand { get; }
 
         private void ObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ISchemaInformationViewModel.IsSelected))
+            if (e.PropertyName == nameof(ITableInformationViewModel.IsSelected))
             {
-                if (Schemas.All(m => m.IsSelected.GetValueOrDefault()))
+                if (Objects.All(m => m.IsSelected.Value))
                 {
                     _isSelected = true;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
-                else if (Schemas.All(m => m.IsSelected.HasValue && !m.IsSelected.Value))
+                else if (Objects.All(m => !m.IsSelected.Value))
                 {
                     _isSelected = false;
                     RaisePropertyChanged(nameof(IsSelected));

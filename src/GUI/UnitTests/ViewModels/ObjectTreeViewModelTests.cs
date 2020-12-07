@@ -9,88 +9,107 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
+    using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Shared;
+    using ReverseEngineer20.ReverseEngineer;
 
     [TestFixture]
     public class ObjectTreeViewModelTests
     {
         [Test]
-        public void Constructors_ArgumentNullException_TableInformationViewModelFactory()
+        public void Constructors_ArgumentNullException_ViewModelFactory()
         {
             // Arrange
+            Func<ISchemaInformationViewModel> s = null;
             Func<ITableInformationViewModel> t = null;
             Func<IColumnInformationViewModel> c = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(t, c));
-        }
-
-        [Test]
-        public void Constructors_ArgumentNullException_ColumnInformationViewModelFactory()
-        {
-            // Arrange
-            Func<ITableInformationViewModel> t = null;
-            Func<IColumnInformationViewModel> c = null;
-
-            // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(t, c));
+            Assert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(s, t, c));
         }
 
         [Test]
         public void Constructors_CollectionsInitialized()
         {
             // Act
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
             Assert.IsNotNull(vm.Types);
-            Assert.IsTrue(vm.Types.Count == 4);
         }
 
         [Test]
         public void AddObjects_Null()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => vm.AddObjects(null));
+            Assert.Throws<ArgumentNullException>(() => vm.AddObjects(null, null));
         }
 
         [Test]
         public void AddObjects_EmptyCollection()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var objectsToAdd = new TableModel[0];
 
             // Act
-            vm.AddObjects(objectsToAdd);
+            vm.AddObjects(objectsToAdd, null);
 
             // Assert
-            Assert.IsEmpty(vm.Types.SelectMany(t => t.Objects));
+            Assert.IsEmpty(vm.Types.SelectMany(t => t.Schemas));
         }
 
         [Test]
         public void AddObjects_Collection()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            var objects = GetDatabaseObjects();
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var objects = GetDatabaseObjects().OrderBy(c => c.Schema).OrderBy(c => c.Name).ToArray();
+            var replacers = GetReplacers();
 
             // Act
-            vm.AddObjects(objects);
-            var vmobjects = vm.Types.SelectMany(t => t.Objects).ToArray();
+            vm.AddObjects(objects, replacers);
+            var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).OrderBy(c => c.Schema).OrderBy(c => c.Name).ToArray();
 
             // Assert
-            Assert.IsNotEmpty(vm.Types.SelectMany(t => t.Objects));
-            Assert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Objects).Count());
+            Assert.IsNotEmpty(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects));
+            Assert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).Count());
             for (var i = 0; i < objects.Count(); i++)
             {
                 AreObjectsEqual(objects[i], vmobjects[i]);
-                Assert.IsFalse(vm.Types.SelectMany(t => t.Objects).ElementAt(i).IsSelected);
+                Assert.IsFalse(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).ElementAt(i).IsSelected);
+            }
+        }
+
+        [Test]
+        public void AddObjects_Replacers()
+        {
+            // Arrange
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var objects = GetDatabaseObjects().ToArray();
+            var replacers = GetReplacers();
+
+            // Act
+            vm.AddObjects(objects, replacers);
+            var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).ToArray();
+
+            // Assert
+            foreach(var replacerSchema in replacers)
+            {
+                foreach(var table in replacerSchema.Tables)
+                {
+                    var vmobject = vmobjects.First(o => o.Schema.Equals(replacerSchema.SchemaName, StringComparison.OrdinalIgnoreCase) && o.Name.Equals(table.Name, StringComparison.OrdinalIgnoreCase));
+                    Assert.AreSame(vmobject.NewName, table.NewName);
+                    foreach (var column in table.Columns)
+                    {
+                        Assert.AreSame(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
+                    }
+                }
             }
         }
 
@@ -98,7 +117,7 @@ namespace UnitTests.ViewModels
         public void SelectObjects_Null()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             //Act and assert
             Assert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
@@ -108,7 +127,7 @@ namespace UnitTests.ViewModels
         public void SelectTables_EmptyCollection()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var selectedTables = new SerializationTableModel[0];
 
             // Act
@@ -122,8 +141,8 @@ namespace UnitTests.ViewModels
         public void SelectTables_Collection()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            vm.AddObjects(GetDatabaseObjects());
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            vm.AddObjects(GetDatabaseObjects(), null);
 
             // Act
             var selectedObjects = GetSelectedObjects();
@@ -149,36 +168,36 @@ namespace UnitTests.ViewModels
         public void SearchText_NoDirectFilter()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
-            var preFilter = vm.Types.SelectMany(c => c.Objects);
+            vm.AddObjects(databaseObjects, null);
+            var preFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects);
 
             // Act
-            vm.Search("dbo");
+            vm.Search("ref");
 
             // Assert
             Assert.AreEqual(databaseObjects.Length, preFilter.Count());
-            var postFilter = vm.Types.SelectMany(c => c.Objects).Where(c => c.IsVisible);
-            Assert.AreEqual(3, postFilter.Count());
+            var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
+            Assert.AreEqual(2, postFilter.Count());
         }
 
         [Test]
         public void SearchText_FilterAfterDelay()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            vm.AddObjects(databaseObjects, null);
 
             // Act
-            vm.Search("dbo");
+            vm.Search("ref");
 
             // Assert
             Assert.That(() =>
             {
-                var postFilter = vm.Types.SelectMany(c => c.Objects).Where(c => c.IsVisible);
-                return postFilter.Count() < databaseObjects.Length && postFilter.All(m => m.Name.Contains("dbo"));
+                var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
+                return postFilter.Count() < databaseObjects.Length && postFilter.All(m => m.Name.ToUpper().Contains("REF"));
             }, Is.True.After(1500, 200));
         }
 
@@ -186,7 +205,7 @@ namespace UnitTests.ViewModels
         public void GetSelectedObjects_NoTables()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act
             var result = vm.GetSelectedObjects();
@@ -200,8 +219,8 @@ namespace UnitTests.ViewModels
         public void GetSelectedObjects_WithObjects_NoneSelected()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            vm.AddObjects(GetDatabaseObjects());
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            vm.AddObjects(GetDatabaseObjects(), null);
 
             // Act
             var result = vm.GetSelectedObjects();
@@ -215,16 +234,16 @@ namespace UnitTests.ViewModels
         public void GetSelectedObjects_WithObjects_AllSelected()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            var databaseObjects = GetDatabaseObjects().ToArray();
-            vm.AddObjects(databaseObjects);
-            foreach (var item in vm.Types.SelectMany(c => c.Objects))
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var databaseObjects = GetDatabaseObjects().OrderBy(c => c.Schema).ThenBy(c => c.Name).ToArray();
+            vm.AddObjects(databaseObjects, null);
+            foreach (var item in vm.Types)
             {
-                item.IsSelected = true;
+                item.SetSelectedCommand.Execute(true);
             }
 
             // Act
-            var result = vm.GetSelectedObjects().ToArray();
+            var result = vm.GetSelectedObjects().OrderBy(c => c.Name).ToArray();
 
             // Assert
             Assert.IsNotNull(result);
@@ -239,12 +258,12 @@ namespace UnitTests.ViewModels
         public void GetSelectedObjects_WithObjects_PartialSelection()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
-            foreach (var item in vm.Types.Where(c => c.Objects.Any()))
+            vm.AddObjects(databaseObjects, null);
+            foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                item.Objects.First().IsSelected = true;
+                item.Objects.First().SetSelectedCommand.Execute(true);
             }
 
             // Act
@@ -252,24 +271,30 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Length);
-            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Table).DisplayName, result[0].Name);
-            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.View).DisplayName, result[1].Name);
-            Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[2].Name);
+            Assert.AreEqual(5, result.Length);
+            foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
+            {
+                Assert.IsTrue(result.Any(c => c.Name == item.Objects.First().ModelDisplayName));
+            }
+            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Table).DisplayName, result[0].Name);
+            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.View).DisplayName, result[1].Name);
+            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[2].Name);
+            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[3].Name);
+            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[4].Name);
         }
 
         [Test]
         public void GetSelectionState_NoneSelected()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            vm.AddObjects(databaseObjects, null);
 
             //Act
-            foreach (var item in vm.Types.SelectMany(c => c.Objects))
+            foreach (var item in vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects))
             {
-                item.IsSelected = true;
+                item.SetSelectedCommand.Execute(true);
             }
 
             //Assert
@@ -280,14 +305,14 @@ namespace UnitTests.ViewModels
         public void GetSelectionState_AllSelected()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            vm.AddObjects(databaseObjects, null);
 
             //Act
-            foreach (var item in vm.Types.SelectMany(c => c.Objects))
+            foreach (var item in vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects))
             {
-                item.IsSelected = false;
+                item.SetSelectedCommand.Execute(false);
             }
 
             //Assert
@@ -298,14 +323,14 @@ namespace UnitTests.ViewModels
         public void GetSelectionState_PartialSelection()
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            vm.AddObjects(databaseObjects, null);
 
             //Act
-            foreach (var item in vm.Types.SelectMany(c => c.Objects).Take(1))
+            foreach (var item in vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Take(1))
             {
-                item.IsSelected = true;
+                item.SetSelectedCommand.Execute(true);
             }
 
             //Assert
@@ -316,9 +341,9 @@ namespace UnitTests.ViewModels
         public void SetSelectionState([Values(true, false)] bool selected)
         {
             // Arrange
-            var vm = new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
             var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            vm.AddObjects(databaseObjects, null);
 
             //Act
             vm.SetSelectionState(selected);
@@ -328,6 +353,26 @@ namespace UnitTests.ViewModels
                 Assert.AreEqual(vm.GetSelectedObjects().Count(), databaseObjects.Length);
             else
                 Assert.AreEqual(vm.GetSelectedObjects().Count(), 0);
+        }
+
+        [Test]
+        public void GetRenamedObjects()
+        {
+            // Arrange
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            var databaseObjects = GetDatabaseObjects();
+            vm.AddObjects(databaseObjects, null);
+
+            //Act
+            vm.Types[0].Schemas[0].Objects[0].SetSelectedCommand.Execute(true);
+            vm.Types[0].Schemas[0].Objects[0].NewName = "NewTableName";
+            vm.Types[0].Schemas[0].Objects[0].Columns[0].NewName = "NewColumnName";
+
+            //Assert
+            var renamedObjects = vm.GetRenamedObjects();
+            Assert.IsNotNull(renamedObjects);
+            Assert.AreSame(renamedObjects.First().Tables[0].NewName, "NewTableName");
+            Assert.AreSame(renamedObjects.First().Tables[0].Columns[0].NewName, "NewColumnName");
         }
 
         private static TableModel[] GetDatabaseObjects()
@@ -354,9 +399,9 @@ namespace UnitTests.ViewModels
 
             var r = new TableModel[10];
 
-            r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo",  ObjectType.Table, CreateColumnsWithId());
-            r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
-            r[2] = new TableModel("[dbo].[__RefactorLog]", "__RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
+            r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo", ObjectType.Table, CreateColumnsWithId());
+            r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "__", ObjectType.Table, CreateColumnsWithId());
+            r[2] = new TableModel("[dbo].[__RefactorLog]", "__RefactorLog", "dbo", ObjectType.Table, CreateColumnsWithId());
             r[3] = new TableModel("[dbo].[sysdiagrams]", "sysdiagrams", "dbo", ObjectType.Table, CreateColumnsWithId());
             r[4] = new TableModel("[unit].[test]", "test", "unit", ObjectType.Table, CreateColumnsWithId());
             r[5] = new TableModel("[unit].[foo]", "foo", "unit", ObjectType.Table, CreateColumnsWithId());
@@ -379,24 +424,55 @@ namespace UnitTests.ViewModels
             return r;
         }
 
+        private static Schema[] GetReplacers()
+        {
+            var r = new Schema[1];
+
+            r[0] = new Schema()
+            {
+                ColumnPatternReplaceWith = "ColumnPatternReplaceWith",
+                ColumnRegexPattern = "ColumnRegexPattern",
+                SchemaName = "dbo",
+                TablePatternReplaceWith = "TablePatternReplaceWith",
+                TableRegexPattern = "TableRegexPattern",
+                Tables = new List<TableRenamer>
+                {
+                    new TableRenamer { 
+                        Name = "atlas",
+                        NewName = "newatlas",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "column1", NewName = "newcolumn1" }
+                        }
+                    }
+                }
+            };
+            return r;
+        }
+
+        private static ISchemaInformationViewModel CreateSchemaInformationViewModelMockObject()
+        {
+            return new SchemaInformationViewModel();
+        }
+
         private static ITableInformationViewModel CreateTableInformationViewModelMockObject()
         {
-            var mock = new Mock<ITableInformationViewModel>();
-            mock.SetupAllProperties();
-            mock.SetupGet(g => g.Columns).Returns(new ObservableCollection<IColumnInformationViewModel>());
-            return mock.Object;
+            var messenger = new Mock<IMessenger>();
+            messenger.SetupAllProperties();
+            return new TableInformationViewModel(messenger.Object);
         }
 
         private static IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
         {
-            var mock = new Mock<IColumnInformationViewModel>();
-            mock.SetupAllProperties();
-            return mock.Object;
+            var messenger = new Mock<IMessenger>();
+            messenger.SetupAllProperties();
+            return new ColumnInformationViewModel(messenger.Object);
         }
 
         private static void AreObjectsEqual(TableModel a, ITableInformationViewModel b)
         {
-            Assert.AreEqual(a.DisplayName, b.Name);
+            Assert.AreEqual(a.Name, b.Name);
+            Assert.AreEqual(a.Schema, b.Schema);
             Assert.AreEqual(a.ObjectType, b.ObjectType);
             for (var i = 0; i < a.Columns.Count(); i++)
             {

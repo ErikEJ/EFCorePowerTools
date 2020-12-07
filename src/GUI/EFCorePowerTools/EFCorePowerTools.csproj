@@ -60,6 +60,8 @@
     <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IObjectTreeSelectableViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IObjectTreeEditableViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IMigrationOptionsViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IObjectTreeRootItemViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickSchemasViewModel.cs" />
@@ -69,8 +71,10 @@
     <Compile Include="Contracts\ViewModels\IModelingOptionsViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IColumnInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IObjectTreeViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\ISchemaInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\ITableInformationViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\ObjectTypeIcon.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
     <Compile Include="Contracts\Views\IAdvancedModelingOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IDialog.cs" />
@@ -78,10 +82,12 @@
     <Compile Include="Contracts\Views\IPickSchemasDialog.cs" />
     <Compile Include="Contracts\Views\IPickConfigDialog.cs" />
     <Compile Include="Contracts\Views\IPickServerDatabaseDialog.cs" />
+    <Compile Include="Contracts\Views\PickTablesDialogResult.cs" />
     <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
     <Compile Include="Contracts\Views\IModelingOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IView.cs" />
     <Compile Include="Converter\BoolInvertConverter.cs" />
+    <Compile Include="Converter\ObjectTypeToImageStyleConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\CollectionCountToEnabledConverter.cs" />
     <Compile Include="Converter\ColumnEnabledConverter.cs" />
@@ -117,6 +123,7 @@
     <Compile Include="EFCorePowerToolsPackage.cs" />
     <Compile Include="Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="Extensions\EnvDTEExtensions.cs" />
+    <Compile Include="Extensions\FocusExtensions.cs" />
     <Compile Include="Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
     <Compile Include="Extensions\ProjectItemsExtensions.cs" />
@@ -168,6 +175,7 @@
     <Compile Include="ViewModels\PickTablesViewModel.cs" />
     <Compile Include="ViewModels\ColumnInformationViewModel.cs" />
     <Compile Include="ViewModels\ObjectTreeViewModel.cs" />
+    <Compile Include="ViewModels\SchemaInformationViewModel.cs" />
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +187,7 @@
       <Link>Microsoft.VisualStudio.ProjectSystem.VS.dll</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Resources\Schema_16x.png" />
     <Resource Include="Resources\KeyDown_16x.png" />
     <Resource Include="Resources\View_16x.png" />
     <Resource Include="Resources\Column_16x.png" />

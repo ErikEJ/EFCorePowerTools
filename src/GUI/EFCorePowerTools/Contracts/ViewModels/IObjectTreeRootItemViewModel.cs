@@ -3,12 +3,14 @@
     using RevEng.Shared;
     using System.Collections.ObjectModel;
 
-    public interface IObjectTreeRootItemViewModel : IViewModel
+    public interface IObjectTreeRootItemViewModel : IObjectTreeSelectableViewModel, IViewModel
     {
-        bool? IsSelected { get; set; }
-
         bool IsVisible { get; }
 
-        ObservableCollection<ITableInformationViewModel> Objects { get; }
+        ObservableCollection<ISchemaInformationViewModel> Schemas { get; }
+
+        ObjectTypeIcon ObjectTypeIcon { get; }
+
+        ObjectType ObjectType { get; set; }
     }
 }

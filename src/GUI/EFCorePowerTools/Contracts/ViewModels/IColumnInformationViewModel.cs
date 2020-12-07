@@ -1,15 +1,17 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
+﻿using System.Windows.Input;
+
+namespace EFCorePowerTools.Contracts.ViewModels
 {
-    using RevEng.Shared;
-
-    public interface IColumnInformationViewModel : IViewModel
+    public interface IColumnInformationViewModel : IObjectTreeEditableViewModel, IObjectTreeSelectableViewModel, IViewModel
     {
-        string Name { get; set; }
-
-        bool IsSelected { get; set; }
-
         bool IsPrimaryKey { get; set; }
 
         bool IsColumn { get; }
+
+        bool IsTableSelected { get; set; }
+
+        bool IsEnabled { get; }
+
+        void SetSelected(bool value);
     }
 }
