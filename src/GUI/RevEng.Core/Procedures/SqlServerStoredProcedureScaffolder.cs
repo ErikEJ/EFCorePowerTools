@@ -21,6 +21,8 @@ namespace RevEng.Core.Procedures
 {
     public class SqlServerStoredProcedureScaffolder : IProcedureScaffolder
     {
+        private const string parameterPreffix = "parameter";
+
         private readonly IProcedureModelFactory procedureModelFactory;
         private readonly ICSharpHelper code;
 
@@ -191,15 +193,35 @@ namespace RevEng.Core.Procedures
             {
                 _sb.AppendLine();
 
-                _sb.AppendLine($"{line})");
+                _sb.AppendLine(line);
                 _sb.AppendLine("{");
 
                 using (_sb.Indent())
                 {
-                    foreach (var parameter in procedure.Parameters)
+                    foreach (var parameter in outParams)
                     {
-                        GenerateParameters(parameter);
+                        GenerateParametersVar(parameter);
                     }
+
+                    _sb.AppendLine();
+
+                    _sb.AppendLine("var sqlParameters = new []");
+                    _sb.AppendLine("{");
+                    using (_sb.Indent())
+                    {
+                        foreach (var parameter in procedure.Parameters)
+                        {
+                            if (parameter.Output)
+                            {
+                                _sb.AppendLine($"{parameterPreffix}{parameter.Name},");
+                            }
+                            else
+                            {
+                                GenerateParameters(parameter);
+                            }
+                        }
+                    }
+                    _sb.AppendLine("};");
 
                     if (procedure.ResultElements.Count == 0)
                     {
@@ -214,10 +236,10 @@ namespace RevEng.Core.Procedures
 
                     foreach (var parameter in outParams)
                     {
-                        _sb.AppendLine($"{parameter.Name}.SetValue(parameter{parameter.Name}.Value);");
+                        _sb.AppendLine($"{parameter.Name}.SetValue({parameterPreffix}{parameter.Name}.Value);");
                     }
 
-                    _sb.AppendLine($"{retValueName}?.SetValue(parameter{retValueName}.Value);");
+                    _sb.AppendLine($"{retValueName}?.SetValue({parameterPreffix}{retValueName}.Value);");
 
                     _sb.AppendLine();
 
@@ -231,14 +253,14 @@ namespace RevEng.Core.Procedures
         private static string GenerateProcedureStatement(Procedure procedure, string retValueName)
         {
             var paramNames = procedure.Parameters
-                .Select(p => $"parameter{p.Name}");
+                .Select(p => $"{parameterPreffix}{p.Name}");
 
             var paramList = procedure.Parameters
                 .Select(p => p.Output ? $"@{p.Name} OUTPUT" : $"@{p.Name}").ToList();
 
             paramList.RemoveAt(paramList.Count - 1);
 
-            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", {string.Join(", ", paramNames)}".Replace(" \"", "\"");
+            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", sqlParameters, cancellationToken".Replace(" \"", "\"");
             return fullExec;
         }
 
@@ -271,13 +293,21 @@ namespace RevEng.Core.Procedures
             }
 
             line += $"OutputParameter<int> {retValueName} = null";
+
+            line += ", CancellationToken cancellationToken = default)";
             
             return line;
         }
 
+        private void GenerateParametersVar(ProcedureParameter parameter)
+		{
+            _sb.Append($"var {parameterPreffix}{parameter.Name} = ");
+            GenerateParameters(parameter);
+        }
+
         private void GenerateParameters(ProcedureParameter parameter)
         {
-            _sb.AppendLine($"var parameter{parameter.Name} = new SqlParameter");
+            _sb.AppendLine("new SqlParameter");
             _sb.AppendLine("{");
 
             var sqlDbType = parameter.DbType();
@@ -321,8 +351,7 @@ namespace RevEng.Core.Procedures
                 }
             }
 
-            _sb.AppendLine("};");
-            _sb.AppendLine();
+            _sb.AppendLine("},");
         }
 
         private string WriteResultClass(Procedure storedProcedure, string @namespace, string name)
