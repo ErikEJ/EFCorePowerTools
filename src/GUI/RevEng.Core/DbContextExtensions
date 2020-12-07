@@ -3,18 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace #NAMESPACE#
 {
     public static class DbContextExtensions
     {
-        public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, params object[] parameters) where T : class
+        public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, IEnumerable<object> parameters, CancellationToken cancellationToken = default) where T : class
         {
             using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
             {
-                return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync();
+                return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync(cancellationToken);
             }
         }
 
