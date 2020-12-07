@@ -12,7 +12,7 @@ namespace #NAMESPACE#
 {
     public static class DbContextExtensions
     {
-        public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, IEnumerable<object> parameters, CancellationToken cancellationToken = default) where T : class
+        public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
             using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
             {
