@@ -224,15 +224,8 @@ namespace RevEng.Core.Procedures
                         }
                     }
                     _sb.AppendLine("};");
-
-                    if (procedure.ResultElements.Count == 0)
-                    {
-                        _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
-                    }
-                    else
-                    {
-                        _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
-                    }
+                    
+                    _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
 
                     _sb.AppendLine();
 
@@ -270,14 +263,7 @@ namespace RevEng.Core.Procedures
         {
             string line;
 
-            if (procedure.ResultElements.Count == 0)
-            {
-                line = $"public async Task<int> {identifier}({string.Join(", ", paramStrings)}";
-            }
-            else
-            {
-                line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
-            }
+            line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
