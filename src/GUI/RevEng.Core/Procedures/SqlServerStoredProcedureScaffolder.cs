@@ -127,6 +127,7 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Data;");
+            _sb.AppendLine("using System.Threading;");
             _sb.AppendLine("using System.Threading.Tasks;");
             _sb.AppendLine($"using {procedureScaffolderOptions.ModelNamespace};");
 
@@ -173,11 +174,11 @@ namespace RevEng.Core.Procedures
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
 
-            var outParams = procedure.Parameters.Where(p => p.Output).ToList();
+            var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
 
-            var retValueName = outParams.Last().Name;
+            var outParams = allOutParams.SkipLast(1).ToList();
 
-            outParams.RemoveAt(outParams.Count - 1);
+            var retValueName = allOutParams.Last().Name;
 
             var outParamStrings = outParams
                 .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}")
@@ -198,7 +199,7 @@ namespace RevEng.Core.Procedures
 
                 using (_sb.Indent())
                 {
-                    foreach (var parameter in outParams)
+                    foreach (var parameter in allOutParams)
                     {
                         GenerateParametersVar(parameter);
                     }
@@ -213,12 +214,13 @@ namespace RevEng.Core.Procedures
                         {
                             if (parameter.Output)
                             {
-                                _sb.AppendLine($"{parameterPreffix}{parameter.Name},");
+                                _sb.Append($"{parameterPreffix}{parameter.Name}");
                             }
                             else
                             {
                                 GenerateParameters(parameter);
                             }
+                            _sb.AppendLine(",");
                         }
                     }
                     _sb.AppendLine("};");
@@ -295,14 +297,15 @@ namespace RevEng.Core.Procedures
             line += $"OutputParameter<int> {retValueName} = null";
 
             line += ", CancellationToken cancellationToken = default)";
-            
+
             return line;
         }
 
         private void GenerateParametersVar(ProcedureParameter parameter)
-		{
+        {
             _sb.Append($"var {parameterPreffix}{parameter.Name} = ");
             GenerateParameters(parameter);
+            _sb.AppendLine(";");
         }
 
         private void GenerateParameters(ProcedureParameter parameter)
@@ -351,7 +354,7 @@ namespace RevEng.Core.Procedures
                 }
             }
 
-            _sb.AppendLine("},");
+            _sb.Append("}");
         }
 
         private string WriteResultClass(Procedure storedProcedure, string @namespace, string name)
@@ -362,7 +365,7 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Collections.Generic;");
             _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
-            
+
             _sb.AppendLine();
             _sb.AppendLine($"namespace {@namespace}");
             _sb.AppendLine("{");
