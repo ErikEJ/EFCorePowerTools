@@ -21,7 +21,7 @@ namespace RevEng.Core.Procedures
 {
     public class SqlServerStoredProcedureScaffolder : IProcedureScaffolder
     {
-        private const string parameterPreffix = "parameter";
+        private const string parameterPrefix = "parameter";
 
         private readonly IProcedureModelFactory procedureModelFactory;
         private readonly ICSharpHelper code;
@@ -201,7 +201,7 @@ namespace RevEng.Core.Procedures
                 {
                     foreach (var parameter in allOutParams)
                     {
-                        GenerateParametersVar(parameter);
+                        GenerateParameterVar(parameter);
                     }
 
                     _sb.AppendLine();
@@ -214,11 +214,11 @@ namespace RevEng.Core.Procedures
                         {
                             if (parameter.Output)
                             {
-                                _sb.Append($"{parameterPreffix}{parameter.Name}");
+                                _sb.Append($"{parameterPrefix}{parameter.Name}");
                             }
                             else
                             {
-                                GenerateParameters(parameter);
+                                GenerateParameter(parameter);
                             }
                             _sb.AppendLine(",");
                         }
@@ -238,10 +238,10 @@ namespace RevEng.Core.Procedures
 
                     foreach (var parameter in outParams)
                     {
-                        _sb.AppendLine($"{parameter.Name}.SetValue({parameterPreffix}{parameter.Name}.Value);");
+                        _sb.AppendLine($"{parameter.Name}.SetValue({parameterPrefix}{parameter.Name}.Value);");
                     }
 
-                    _sb.AppendLine($"{retValueName}?.SetValue({parameterPreffix}{retValueName}.Value);");
+                    _sb.AppendLine($"{retValueName}?.SetValue({parameterPrefix}{retValueName}.Value);");
 
                     _sb.AppendLine();
 
@@ -255,7 +255,7 @@ namespace RevEng.Core.Procedures
         private static string GenerateProcedureStatement(Procedure procedure, string retValueName)
         {
             var paramNames = procedure.Parameters
-                .Select(p => $"{parameterPreffix}{p.Name}");
+                .Select(p => $"{parameterPrefix}{p.Name}");
 
             var paramList = procedure.Parameters
                 .Select(p => p.Output ? $"@{p.Name} OUTPUT" : $"@{p.Name}").ToList();
@@ -301,14 +301,14 @@ namespace RevEng.Core.Procedures
             return line;
         }
 
-        private void GenerateParametersVar(ProcedureParameter parameter)
+        private void GenerateParameterVar(ProcedureParameter parameter)
         {
-            _sb.Append($"var {parameterPreffix}{parameter.Name} = ");
-            GenerateParameters(parameter);
+            _sb.Append($"var {parameterPrefix}{parameter.Name} = ");
+            GenerateParameter(parameter);
             _sb.AppendLine(";");
         }
 
-        private void GenerateParameters(ProcedureParameter parameter)
+        private void GenerateParameter(ProcedureParameter parameter)
         {
             _sb.AppendLine("new SqlParameter");
             _sb.AppendLine("{");
