@@ -14,6 +14,8 @@ namespace #NAMESPACE#
     {
         public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
+            parameters ??= new object[] { };
+
             using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
             {
                 return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync(cancellationToken);
