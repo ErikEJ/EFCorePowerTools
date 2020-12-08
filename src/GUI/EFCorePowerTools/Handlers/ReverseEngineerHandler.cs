@@ -95,6 +95,7 @@ namespace EFCorePowerTools.Handlers
                 var filterSchemas = pickDataSourceResult.Payload.FilterSchemas;
                 var schemas = filterSchemas ? pickDataSourceResult.Payload.Schemas : null;
 
+                _package.Dte2.StatusBar.Text = "Getting ready to connect...";
 
                 // Reload the database list, in case the user has added a new database in the dialog
                 databaseList = EnvDteHelper.GetDataConnections(_package);
