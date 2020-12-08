@@ -14,6 +14,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
+    using ReverseEngineer20.ReverseEngineer;
     using Shared.DAL;
     using Shared.Models;
 
@@ -65,7 +66,6 @@
             }
         }
 
-
         private void Ok_Executed()
         {
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
@@ -74,7 +74,7 @@
         /// <summary>
         /// Currently at least a single table must be selected.
         /// </summary>
-        private bool Ok_CanExecute() => ObjectTree.Types.SelectMany(c => c.Objects).Any(m => m.IsSelected && !m.IsProcedure);
+        private bool Ok_CanExecute() => ObjectTree.GetSelectedObjects().Any(c => c.ObjectType.HasColumns());
 
         private void Cancel_Executed()
         {
@@ -104,23 +104,30 @@
             TableSelectionThreeState = ObjectTree.GetSelectionState(); 
         }
 
-        void IPickTablesViewModel.AddObjects(IEnumerable<TableModel> objects)
+        public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
         {
             if (objects == null) return;
 
-            ObjectTree.AddObjects(objects);
+            ObjectTree.AddObjects(objects, customReplacers);
         }
 
-        void IPickTablesViewModel.SelectObjects(IEnumerable<SerializationTableModel> objects)
+        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
         {
             if (objects == null) return;
             ObjectTree.SelectObjects(objects);
         }
 
-        SerializationTableModel[] IPickTablesViewModel.GetSelectedObjects()
+        public SerializationTableModel[] GetSelectedObjects()
         {
             return ObjectTree
                 .GetSelectedObjects()
+                .ToArray();
+        }
+
+        public Schema[] GetRenamedObjects()
+        {
+            return ObjectTree
+                .GetRenamedObjects()
                 .ToArray();
         }
     }

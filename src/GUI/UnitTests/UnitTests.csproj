@@ -210,6 +210,7 @@
     <Compile Include="ViewModels\ObjectTreeViewModelTests.cs" />
     <Compile Include="ViewModels\PickTablesViewModelTests.cs" />
     <Compile Include="ViewModels\ColumnInformationViewModelTests.cs" />
+    <Compile Include="ViewModels\SchemaInformationViewModelTests.cs" />
     <Compile Include="ViewModels\TableInformationViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>

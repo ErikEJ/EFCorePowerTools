@@ -3,26 +3,20 @@
     using RevEng.Shared;
     using System.Collections.ObjectModel;
 
-    public interface ITableInformationViewModel : IViewModel
+    public interface ITableInformationViewModel : IObjectTreeEditableViewModel, IObjectTreeSelectableViewModel, IViewModel
     {
-        string Name { get; set; }
+        string Schema { get; set; }
 
-        bool HasPrimaryKey { get; set; }
+        bool HasPrimaryKey { get; }
 
         ObjectType ObjectType { get; set; }
 
+        ObjectTypeIcon ObjectTypeIcon { get; }
+
         ObservableCollection<IColumnInformationViewModel> Columns { get; }
 
-        bool IsProcedure { get; }
-
-        bool IsSelected { get; set; }
-
-        bool IsTableWithKey { get; }
-
-        bool IsTableWithoutKey { get; }
-
-        bool IsView { get; }
-
         bool IsVisible { get; set; }
+
+        string ModelDisplayName { get; set; }
     }
 }

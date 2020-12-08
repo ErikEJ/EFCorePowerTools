@@ -149,11 +149,11 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                var ptd = _package.GetView<IPickTablesDialog>()
-                                  .AddTables(predefinedTables)
-                                  .PreselectTables(preselectedTables);
-
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
+
+                var ptd = _package.GetView<IPickTablesDialog>()
+                                  .AddTables(predefinedTables, namingOptionsAndPath.Item1)
+                                  .PreselectTables(preselectedTables);
 
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
                 if (!pickTablesResult.ClosedByOK) return;
@@ -224,8 +224,8 @@ namespace EFCorePowerTools.Handlers
                     SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
-                    Tables = pickTablesResult.Payload.ToList(),
-                    CustomReplacers = namingOptionsAndPath.Item1,
+                    Tables = pickTablesResult.Payload.Objects.ToList(),
+                    CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList(),
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList()
                 };
@@ -316,7 +316,7 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Reporting result...";
                 var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-                SaveOptions(project, optionsPath, options, namingOptionsAndPath);
+                SaveOptions(project, optionsPath, options, new Tuple<List<Schema>, string>(pickTablesResult.Payload.CustomReplacers.ToList(), namingOptionsAndPath.Item2));
 
                 if (modelingOptionsResult.Payload.InstallNuGetPackage)
                 {

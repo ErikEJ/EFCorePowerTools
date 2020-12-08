@@ -9,8 +9,10 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
+    using GalaSoft.MvvmLight.CommandWpf;
     using Moq;
     using RevEng.Shared;
+    using ReverseEngineer20.ReverseEngineer;
 
     [TestFixture]
     public class PickTablesViewModelTests
@@ -20,7 +22,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             // Act
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
             Assert.IsNotNull(vm.OkCommand);
@@ -33,7 +35,7 @@ namespace UnitTests.ViewModels
             // Arrange
 
             // Act
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
             Assert.IsNotNull(vm.ObjectTree);
@@ -44,7 +46,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             // Act
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
             Assert.IsNull(vm.TableSelectionThreeState);
@@ -55,7 +57,7 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             // Act
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
             Assert.AreEqual(string.Empty, vm.SearchText);
@@ -65,7 +67,7 @@ namespace UnitTests.ViewModels
         public void OkCommand_CanExecute_NoObjects()
         {
             // Arrange
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Act
             var canExecute = vm.OkCommand.CanExecute(null);
@@ -78,12 +80,7 @@ namespace UnitTests.ViewModels
         public void OkCommand_CanExecute_ObjectsSelected()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            vm.AddObjects(GetDatabaseObjects());
-            foreach(var item in vm.ObjectTree.Types.SelectMany(c => c.Objects))
-            {
-                item.IsSelected = true;
-            }
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock(true).Object);
 
             // Act
             var canExecute = vm.OkCommand.CanExecute(null);
@@ -99,15 +96,12 @@ namespace UnitTests.ViewModels
             var closeRequested = false;
             bool? dialogResult = null;
 
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            vm.CloseRequested += (sender,
-                                  args) =>
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock(true).Object);
+            vm.CloseRequested += (sender, args) =>
             {
                 closeRequested = true;
                 dialogResult = args.DialogResult;
             };
-            vm.AddObjects(GetDatabaseObjects());
-            vm.ObjectTree.Types[0].Objects[0].IsSelected = true;
 
             // Act
             vm.OkCommand.Execute(null);
@@ -122,7 +116,7 @@ namespace UnitTests.ViewModels
         public void CancelCommand_CanExecute()
         {
             // Arrange
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock(true).Object);
 
             // Act
             var canExecute = vm.CancelCommand.CanExecute(null);
@@ -138,9 +132,8 @@ namespace UnitTests.ViewModels
             var closeRequested = false;
             bool? dialogResult = null;
 
-            var vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            vm.CloseRequested += (sender,
-                                  args) =>
+            var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
+            vm.CloseRequested += (sender, args) =>
             {
                 closeRequested = true;
                 dialogResult = args.DialogResult;
@@ -158,30 +151,35 @@ namespace UnitTests.ViewModels
         public void AddObjects_Null()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var otvm = CreateObjectTreeViewModelMock();
+            var vm = new PickTablesViewModel(otvm.Object);
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.AddObjects(null));
+            Assert.DoesNotThrow(() => vm.AddObjects(null, null));
         }
 
         [Test]
-        public void AddTables_NotNull()
+        public void AddObjects_NotNull()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var otvm = CreateObjectTreeViewModelMock();
+            var vm = new PickTablesViewModel(otvm.Object);
             var databaseObjects = new TableModel[0];
+            var replacingSchemas = new Schema[0];
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.AddObjects(databaseObjects));
+            Assert.DoesNotThrow(() => vm.AddObjects(databaseObjects, replacingSchemas));
+            otvm.Verify(c => c.AddObjects(databaseObjects, replacingSchemas), Times.Once);
         }
 
         [Test]
         public void SelectTables_Null()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var otvm = CreateObjectTreeViewModelMock();
+            var vm = new PickTablesViewModel(otvm.Object);
 
             // Act
             // Assert
@@ -192,27 +190,29 @@ namespace UnitTests.ViewModels
         public void SelectTables_NotNull()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var otvm = CreateObjectTreeViewModelMock();
+            var vm = new PickTablesViewModel(otvm.Object);
+            var databaseObjects = new SerializationTableModel[0];
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.SelectObjects(null));
+            Assert.DoesNotThrow(() => vm.SelectObjects(databaseObjects));
+            otvm.Verify(c => c.SelectObjects(databaseObjects), Times.Once);
         }
 
         [Test]
         public void TableSelectionThreeState_AllSelected()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            var otvm = CreateObjectTreeViewModelMock();
+            IPickTablesViewModel vm = new PickTablesViewModel(otvm.Object);
             vm.SearchText = "foo";
 
             // Act
             vm.TableSelectionThreeState = true;
 
             // Assert
-            Assert.AreEqual(vm.GetSelectedObjects().Count(), databaseObjects.Count());
+            otvm.Verify(s => s.SetSelectionState(true), Times.Once);
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -220,16 +220,15 @@ namespace UnitTests.ViewModels
         public void TableSelectionThreeState_NoneSelected()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
-            var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects);
+            var otvm = CreateObjectTreeViewModelMock();
+            var vm = new PickTablesViewModel(otvm.Object);
             vm.SearchText = "foo";
 
             // Act
             vm.TableSelectionThreeState = false;
 
             // Assert
-            Assert.AreEqual(vm.GetSelectedObjects().Count(), 0);
+            otvm.Verify(s => s.SetSelectionState(false), Times.Once);
             Assert.AreEqual(string.Empty, vm.SearchText);
         }
 
@@ -237,68 +236,28 @@ namespace UnitTests.ViewModels
         public void GetSelectedObjects()
         {
             // Arrange
-            IPickTablesViewModel vm = new PickTablesViewModel(CreateObjectTreeViewModel());
+            var otvm = CreateObjectTreeViewModelMock();
+            var vm = new PickTablesViewModel(otvm.Object);
 
             // Act
+            var selectedObjects = vm.GetSelectedObjects();
+
             // Assert
-            Assert.DoesNotThrow(() => vm.GetSelectedObjects());
+            otvm.Verify(s => s.GetSelectedObjects(), Times.Once);
         }
 
-        private static TableModel[] GetDatabaseObjects()
+        private static Mock<IObjectTreeViewModel> CreateObjectTreeViewModelMock(bool withSelectedObjects = false)
         {
-            IEnumerable<ColumnModel> CreateColumnsWithId()
+            var mock = new Mock<IObjectTreeViewModel>();
+            mock.SetupAllProperties();
+            if (withSelectedObjects)
             {
-                return new[]
+                mock.Setup(c => c.GetSelectedObjects()).Returns(() => new List<SerializationTableModel>()
                 {
-                    new ColumnModel("Id", true),
-                    new ColumnModel("column1", false),
-                    new ColumnModel("column2", false)
-                };
+                    new SerializationTableModel("obj1", ObjectType.Table, new string[0])
+                });
             }
-
-            IEnumerable<ColumnModel> CreateColumnsWithoutId()
-            {
-                return new[]
-                {
-                    new ColumnModel("Id", false),
-                    new ColumnModel("column1", false),
-                    new ColumnModel("column2", false)
-                };
-            }
-
-            var r = new TableModel[10];
-
-            r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo", ObjectType.Table, CreateColumnsWithId());
-            r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
-            r[2] = new TableModel("[dbo].[__RefactorLog]", "__RefactorLog", "", ObjectType.Table, CreateColumnsWithId());
-            r[3] = new TableModel("[dbo].[sysdiagrams]", "sysdiagrams", "dbo", ObjectType.Table, CreateColumnsWithId());
-            r[4] = new TableModel("[unit].[test]", "test", "unit", ObjectType.Table, CreateColumnsWithId());
-            r[5] = new TableModel("[unit].[foo]", "foo", "unit", ObjectType.Table, CreateColumnsWithId());
-            r[6] = new TableModel("[views].[view1]", "view1", "views", ObjectType.View, CreateColumnsWithoutId());
-            r[7] = new TableModel("[views].[view2]", "view2", "views", ObjectType.View, CreateColumnsWithoutId());
-            r[8] = new TableModel("[stored].[procedure1]", "procedure1", "stored", ObjectType.Procedure, new ColumnModel[0]);
-            r[9] = new TableModel("[stored].[procedure2]", "procedure2", "stored", ObjectType.Procedure, new ColumnModel[0]);
-            return r;
-        }
-
-        private static IObjectTreeViewModel CreateObjectTreeViewModel()
-        {
-            ITableInformationViewModel CreateTableInformationViewModelMockObject()
-            {
-                var mock = new Mock<ITableInformationViewModel>();
-                mock.SetupAllProperties();
-                mock.SetupGet(g => g.Columns).Returns(new ObservableCollection<IColumnInformationViewModel>());
-                return mock.Object;
-            }
-
-            IColumnInformationViewModel CreateColumnInformationViewModelMockObject()
-            {
-                var mock = new Mock<IColumnInformationViewModel>();
-                mock.SetupAllProperties();
-                return mock.Object;
-            }
-
-            return new ObjectTreeViewModel(CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+            return mock;
         }
     }
 }
