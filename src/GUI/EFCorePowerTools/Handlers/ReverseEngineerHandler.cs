@@ -95,7 +95,6 @@ namespace EFCorePowerTools.Handlers
                 var filterSchemas = pickDataSourceResult.Payload.FilterSchemas;
                 var schemas = filterSchemas ? pickDataSourceResult.Payload.Schemas : null;
 
-                _package.Dte2.StatusBar.Text = "Loading table list...";
 
                 // Reload the database list, in case the user has added a new database in the dialog
                 databaseList = EnvDteHelper.GetDataConnections(_package);
@@ -133,8 +132,10 @@ namespace EFCorePowerTools.Handlers
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 5.0: {dbInfo.DatabaseType}");
                     return;
                 }
+                
+                _package.Dte2.StatusBar.Text = "Loading database object list...";
 
-                List<TableModel> predefinedTables = !string.IsNullOrEmpty(dacpacPath)
+                var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
                                            : await GetTablesAsync(dbInfo, useEFCore5, schemas);
 
