@@ -71,13 +71,16 @@
             {
                 var replacingSchema = schema.ReplacingSchema ?? new Schema();
                 replacingSchema.SchemaName = schema.Name;
-                replacingSchema.Tables.Clear();
+                replacingSchema.Tables?.Clear();
                 foreach (var obj in schema.Objects)
                 {
                     var objectIsRenamed = !obj.Name.Equals(obj.NewName);
                     var renamedColumns = obj.Columns.Where(c => !c.Name.Equals(c.NewName) && c.IsSelected.Value);
                     if (objectIsRenamed || renamedColumns.Any())
                     {
+                        if (replacingSchema.Tables == null)
+                            replacingSchema.Tables = new List<TableRenamer>();
+
                         replacingSchema.Tables.Add(new TableRenamer
                         {
                             Name = obj.Name,
@@ -91,7 +94,8 @@
                     replacingSchema.ColumnRegexPattern != default ||
                     replacingSchema.TablePatternReplaceWith != default ||
                     replacingSchema.TableRegexPattern != default ||
-                    replacingSchema.Tables.Any())
+                    (replacingSchema.Tables?.Any() ?? false) ||
+                    replacingSchema.UseSchemaName)
                 {
                     result.Add(replacingSchema);
                 }
