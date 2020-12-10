@@ -134,7 +134,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
                 
-                _package.Dte2.StatusBar.Text = "Loading database object list...";
+                _package.Dte2.StatusBar.Text = "Loading database objects...";
 
                 var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
@@ -153,12 +153,16 @@ namespace EFCorePowerTools.Handlers
 
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
+                _package.Dte2.StatusBar.Clear();
+
                 var ptd = _package.GetView<IPickTablesDialog>()
                                   .AddTables(predefinedTables, namingOptionsAndPath.Item1)
                                   .PreselectTables(preselectedTables);
 
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
                 if (!pickTablesResult.ClosedByOK) return;
+
+                _package.Dte2.StatusBar.Text = "Loading options...";
 
                 var classBasis = EnvDteHelper.GetDatabaseName(dbInfo.ConnectionString, dbInfo.DatabaseType);
                 var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
@@ -197,7 +201,7 @@ namespace EFCorePowerTools.Handlers
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
                                           .ApplyPresets(presets);
 
-                _package.Dte2.StatusBar.Text = "Getting options...";
+                _package.Dte2.StatusBar.Clear();
 
                 var modelingOptionsResult = modelDialog.ShowAndAwaitUserResponse(true);
                 if (!modelingOptionsResult.ClosedByOK) return;
