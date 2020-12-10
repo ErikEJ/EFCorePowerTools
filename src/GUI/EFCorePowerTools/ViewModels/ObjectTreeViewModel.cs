@@ -125,7 +125,7 @@
                 (ObjectType.ScalarFunction, "Functions")
             };
 
-            _allSchemas = customReplacers;
+            _allSchemas = customReplacers ?? new List<Schema>();
 
             foreach (var objectType in objectTypes)
             {
