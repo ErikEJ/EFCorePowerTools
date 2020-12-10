@@ -160,7 +160,7 @@ namespace UnitTests.ViewModels
 
                 Assert.AreEqual(a.Name, b.Name);
                 Assert.AreEqual(a.ObjectType, b.ObjectType);
-                for (var j = 0; j < a.ExcludedColumns.Count(); j++)
+                for (var j = 0; j < a.ExcludedColumns?.Count(); j++)
                 {
                     Assert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
                 }

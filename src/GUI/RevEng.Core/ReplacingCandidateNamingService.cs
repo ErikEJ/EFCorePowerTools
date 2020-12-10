@@ -44,9 +44,9 @@ namespace ReverseEngineer20.ReverseEngineer
                 return candidateStringBuilder.ToString();
             }
 
-            string newTableName = string.Empty;
+            var newTableName = string.Empty;
 
-            if (schema.Tables.Any(t => t.Name == originalTable.Name))
+            if (schema.Tables != null && schema.Tables.Any(t => t.Name == originalTable.Name))
             {
                 newTableName = schema.Tables.SingleOrDefault(t => t.Name == originalTable.Name)?.NewName;
             }
