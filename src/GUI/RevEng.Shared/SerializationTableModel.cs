@@ -26,7 +26,7 @@ namespace EFCorePowerTools.Shared.Models
         /// <summary>
         /// Gets or sets the columns excluded from reverse engineering.
         /// </summary>
-        [DataMember(EmitDefaultValue = false)]
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public IEnumerable<string> ExcludedColumns { get; set; }
 
         /// <summary>
@@ -36,13 +36,13 @@ namespace EFCorePowerTools.Shared.Models
         /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
         public SerializationTableModel(string name,
                             ObjectType objectType,
-                            IEnumerable<string> excludedColumns)
+                            IList<string> excludedColumns)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
 
             Name = name;
-            ExcludedColumns = excludedColumns;
+            ExcludedColumns = excludedColumns.Count > 0 ? excludedColumns : null;
             ObjectType = objectType;
         }
     }

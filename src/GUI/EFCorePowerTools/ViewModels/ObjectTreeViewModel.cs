@@ -61,7 +61,7 @@
         {
             return _objects
                 .Where(c => c.IsSelected.Value)
-                .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name)));
+                .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name).ToList()));
         }
 
         public IEnumerable<Schema> GetRenamedObjects()

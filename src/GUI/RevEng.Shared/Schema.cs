@@ -17,6 +17,7 @@ namespace ReverseEngineer20.ReverseEngineer
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public string SchemaName { get; set; }
 
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public List<TableRenamer> Tables { get; set; }
 
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
