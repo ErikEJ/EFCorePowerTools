@@ -16,6 +16,7 @@
         public event EventHandler ObjectSelectionChanged;
 
         private IEnumerable<ITableInformationViewModel> _objects => Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects);
+        private IEnumerable<Schema> _allSchemas = new List<Schema>();
         private readonly Func<ISchemaInformationViewModel> _schemaInformationViewModelFactory;
         private readonly Func<ITableInformationViewModel> _tableInformationViewModelFactory;
         private readonly Func<IColumnInformationViewModel> _columnInformationViewModelFactory;
@@ -71,7 +72,7 @@
                 var replacingSchema = schema.ReplacingSchema ?? new Schema();
                 replacingSchema.SchemaName = schema.Name;
                 replacingSchema.Tables?.Clear();
-                foreach(var obj in schema.Objects)
+                foreach (var obj in schema.Objects)
                 {
                     var objectIsRenamed = !obj.Name.Equals(obj.NewName);
                     var renamedColumns = obj.Columns.Where(c => !c.Name.Equals(c.NewName) && c.IsSelected.Value);
@@ -99,18 +100,37 @@
                     result.Add(replacingSchema);
                 }
             }
+
+            if (!_allSchemas.Any())
+            {
+                return result;
+            }
+
+            foreach (var schema in _allSchemas)
+            {
+                var existingSchema = result.FirstOrDefault(s => s.SchemaName == schema.SchemaName);
+                if (existingSchema == null)
+                {
+                    result.Add(schema);
+                }
+            }
+
             return result;
         }
 
         public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
+
             var objectTypes = new List<(ObjectType ObjectType, string Text)> {
                 (ObjectType.Table, "Tables"),
                 (ObjectType.View, "Views"),
                 (ObjectType.Procedure, "Stored procedures"),
                 (ObjectType.ScalarFunction, "Functions")
             };
+
+            _allSchemas = customReplacers ?? new List<Schema>();
+
             foreach (var objectType in objectTypes)
             {
                 var objectsBySchema = objects.Where(c => c.ObjectType == objectType.ObjectType).GroupBy(c => c.Schema);

@@ -97,9 +97,12 @@ namespace UnitTests.ViewModels
             // Act
             vm.AddObjects(objects, replacers);
             var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).ToArray();
+            var renamers = vm.GetRenamedObjects();
 
             // Assert
-            foreach(var replacerSchema in replacers)
+            Assert.AreEqual(replacers.Length, renamers.Count());
+
+            foreach (var replacerSchema in replacers)
             {
                 foreach(var table in replacerSchema.Tables)
                 {
@@ -426,7 +429,7 @@ namespace UnitTests.ViewModels
 
         private static Schema[] GetReplacers()
         {
-            var r = new Schema[1];
+            var r = new Schema[2];
 
             r[0] = new Schema()
             {
@@ -447,6 +450,13 @@ namespace UnitTests.ViewModels
                     }
                 }
             };
+
+            r[1] = new Schema()
+            {
+                SchemaName = "other",
+                UseSchemaName = true,
+            };
+
             return r;
         }
 
