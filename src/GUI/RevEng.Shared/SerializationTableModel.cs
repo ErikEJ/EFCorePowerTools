@@ -42,7 +42,7 @@ namespace EFCorePowerTools.Shared.Models
                 throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
 
             Name = name;
-            ExcludedColumns = excludedColumns.Count > 0 ? excludedColumns : null;
+            ExcludedColumns = excludedColumns?.Count > 0 ? excludedColumns : null;
             ObjectType = objectType;
         }
     }
