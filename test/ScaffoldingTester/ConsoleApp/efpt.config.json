@@ -1,0 +1,102 @@
+﻿{
+   "ContextClassName": "ChinookContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "ConsoleApp",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Album]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Artist]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Customer]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Employee]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Genre]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Invoice]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[InvoiceLine]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[MediaType]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Playlist]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[PlaylistTrack]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": false,
+         "Name": "[dbo].[Titles]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Track]",
+         "ObjectType": 0
+      },
+      {
+         "Columns": [ ],
+         "HasPrimaryKey": false,
+         "Name": "[dbo].[GetTitles]",
+         "ObjectType": 1
+      }
+   ],
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseNodaTime": false,
+   "UseSpatial": false
+}
