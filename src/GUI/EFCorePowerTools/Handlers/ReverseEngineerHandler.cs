@@ -375,7 +375,7 @@ namespace EFCorePowerTools.Handlers
 
         private bool DropTemplates(string projectPath, bool useEFCore5)
         {
-            var zipName = useEFCore5 ? "CodeTemplates5.zip" : "CodeTemplates.zip";
+            var zipName = useEFCore5 ? "CodeTemplates501.zip" : "CodeTemplates.zip";
 
             var toDir = Path.Combine(projectPath, "CodeTemplates");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
