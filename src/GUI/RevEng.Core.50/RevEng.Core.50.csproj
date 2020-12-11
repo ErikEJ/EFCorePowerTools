@@ -42,7 +42,7 @@
   
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
-    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="5.0.0" />
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="5.0.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.2.0-eap" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1" />
