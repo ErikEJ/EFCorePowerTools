@@ -366,7 +366,7 @@ namespace EFCorePowerTools.Handlers
                 project.ProjectItems.AddFromFile(optionsPath);
             }
 
-            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore"))
+            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count() > 0)
             {
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 project.ProjectItems.AddFromFile(renamingOptions.Item2);

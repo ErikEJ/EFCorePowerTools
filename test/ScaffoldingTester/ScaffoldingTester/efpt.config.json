@@ -13,222 +13,178 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Alphabetical list of products]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Categories]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Category Sales for 1997]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Current Product List]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Customer and Suppliers by City]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Customers]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Department]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Employees]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[EmployeeTerritories]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Invoices]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Order Details Extended]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Order Details]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Order Subtotals]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Orders Qry]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Orders]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Product Sales for 1997]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Products Above Average Price]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Products by Category]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Products]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Quarterly Orders]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Region]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[RegionShippers]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Sales by Category]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Sales Totals by Amount]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Shippers]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Summary of Sales by Quarter]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[Summary of Sales by Year]",
-         "ObjectType": 0
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Suppliers]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Territories]",
          "ObjectType": 0
       },
       {
-         "HasPrimaryKey": true,
+         "Name": "[dbo].[Alphabetical list of products]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Category Sales for 1997]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Current Product List]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Customer and Suppliers by City]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Invoices]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Order Details Extended]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Order Subtotals]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Orders Qry]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Product Sales for 1997]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Products Above Average Price]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Products by Category]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Quarterly Orders]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Sales by Category]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Sales Totals by Amount]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Summary of Sales by Quarter]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Summary of Sales by Year]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[dbo].[CustOrderHist]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[CustOrdersDetail]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[CustOrdersOrders]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Employee Sales by Country]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[OutputFail]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[ReturnValue]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Sales by Year]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[SalesByCategory]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Spaces]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[TempObjects]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Ten Most Expensive Products]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[Test]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[TestMethodOutputNoParams]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[TestMethodOutputNoResult]",
          "ObjectType": 1
       },
       {
-         "HasPrimaryKey": true,
          "Name": "[dupe].[CustOrderHist]",
          "ObjectType": 1
       }

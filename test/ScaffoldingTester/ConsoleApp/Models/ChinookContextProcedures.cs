@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using ConsoleApp.Models;
 
@@ -17,16 +18,8 @@ namespace ConsoleApp.Models
             _context = context;
         }
 
-        public async Task<GetTitlesResult[]> GetTitles(string Title, OutputParameter<int> returnValue = null)
+        public async Task<GetTitlesResult[]> GetTitles(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
-            var parameterTitle = new SqlParameter
-            {
-                ParameterName = "Title",
-                Size = 200,
-                Value = Title ?? Convert.DBNull,
-                SqlDbType = System.Data.SqlDbType.NVarChar,
-            };
-
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -34,7 +27,18 @@ namespace ConsoleApp.Models
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
-            var _ = await _context.SqlQuery<GetTitlesResult>("EXEC @returnValue = [dbo].[GetTitles] @Title", parameterTitle, parameterreturnValue);
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "Title",
+                    Size = 200,
+                    Value = Title ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<GetTitlesResult>("EXEC @returnValue = [dbo].[GetTitles] @Title", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

@@ -4,17 +4,29 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Data.Common;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleApp.Models
 {
     public static class DbContextExtensions
     {
-        public static async Task<T[]> SqlQuery<T>(this DbContext db, string sql, params object[] parameters) where T : class
+        public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
-            using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
+            parameters ??= new object[] { };
+
+            if (typeof(T).GetProperties().Any())
             {
-                return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync();
+                using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
+                {
+                    return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync(cancellationToken);
+                }
+            }
+            else
+            {
+                await db.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken);
+                return default;
             }
         }
 
