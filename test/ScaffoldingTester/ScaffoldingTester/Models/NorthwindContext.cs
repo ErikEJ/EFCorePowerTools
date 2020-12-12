@@ -93,6 +93,8 @@ namespace ScaffoldingTester.Models
                     .IsRequired()
                     .HasMaxLength(15);
 
+                entity.Property(e => e.Description).HasColumnType("ntext");
+
                 entity.Property(e => e.Image)
                     .HasColumnName("Picture")
                     .HasColumnType("image");

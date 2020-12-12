@@ -7,7 +7,5 @@ namespace ScaffoldingTester.Models
 {
     public partial class TestResult
     {
-        public object geo { get; set; }
-        public object geom { get; set; }
     }
 }
