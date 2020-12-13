@@ -312,6 +312,7 @@ namespace ScaffoldingTester.Models
             var parameterresult = new SqlParameter
             {
                 ParameterName = "result",
+                Size = -1,
                 Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
@@ -530,7 +531,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public async Task<TestMethodOutputNoResultResult[]> TestMethodOutputNoResult(int? testParameter1, OutputParameter<string> testParameter2, OutputParameter<string> testParameter3, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public async Task<TestMethodOutputNoResultResult[]> TestMethodOutputNoResult(int? testParameter1, string testParameter4, OutputParameter<string> testParameter2, OutputParameter<string> testParameter3, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parametertestParameter2 = new SqlParameter
             {
@@ -563,9 +564,16 @@ namespace ScaffoldingTester.Models
                 },
                 parametertestParameter2,
                 parametertestParameter3,
+                new SqlParameter
+                {
+                    ParameterName = "testParameter4",
+                    Size = -1,
+                    Value = testParameter4 ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<TestMethodOutputNoResultResult>("EXEC @returnValue = [dbo].[TestMethodOutputNoResult] @testParameter1, @testParameter2 OUTPUT, @testParameter3 OUTPUT", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<TestMethodOutputNoResultResult>("EXEC @returnValue = [dbo].[TestMethodOutputNoResult] @testParameter1, @testParameter2 OUTPUT, @testParameter3 OUTPUT, @testParameter4", sqlParameters, cancellationToken);
 
             testParameter2.SetValue(parametertestParameter2.Value);
             testParameter3.SetValue(parametertestParameter3.Value);
