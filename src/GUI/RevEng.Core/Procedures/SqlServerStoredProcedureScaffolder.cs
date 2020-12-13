@@ -315,7 +315,7 @@ namespace RevEng.Core.Procedures
                     }
                 }
 
-                if (parameter.Length > 0 && _lengthRequiredTypes.Contains(sqlDbType))
+                if (_lengthRequiredTypes.Contains(sqlDbType))
                 {
                     _sb.AppendLine($"Size = {parameter.Length},");
                 }
