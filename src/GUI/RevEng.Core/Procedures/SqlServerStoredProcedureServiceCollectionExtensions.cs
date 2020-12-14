@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Design.Internal;
+﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RevEng.Core.Procedures.Model;
+using RevEng.Core.Abstractions.Model;
 using RevEng.Core.Procedures.Scaffolding;
 
 namespace RevEng.Core.Procedures
@@ -19,6 +20,21 @@ namespace RevEng.Core.Procedures
 
             return services
                 .AddSingleton<IProcedureModelFactory, SqlServerStoredProcedureModelFactory>()
+                .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
+                .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
+        }
+
+        public static IServiceCollection AddSqlServerDacpacStoredProcedureDesignTimeServices(
+            this IServiceCollection services,
+            IOperationReporter reporter = null)
+        {
+            if (reporter == null)
+            {
+                reporter = new OperationReporter(handler: null);
+            }
+
+            return services
+                .AddSingleton<IProcedureModelFactory, SqlServerDacpacStoredProcedureModelFactory>()
                 .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }

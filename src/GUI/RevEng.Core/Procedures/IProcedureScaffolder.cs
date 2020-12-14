@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Scaffolding;
-using RevEng.Core.Procedures.Model;
+using RevEng.Core.Abstractions;
 using System.Collections.Generic;
 
 namespace RevEng.Core.Procedures.Scaffolding

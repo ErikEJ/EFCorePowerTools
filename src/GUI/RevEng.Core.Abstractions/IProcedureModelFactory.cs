@@ -1,6 +1,6 @@
-﻿using RevEng.Core.Procedures.Model.Metadata;
+﻿using RevEng.Core.Abstractions.Metadata;
 
-namespace RevEng.Core.Procedures.Model
+namespace RevEng.Core.Abstractions.Model
 {
     public interface IProcedureModelFactory
     {

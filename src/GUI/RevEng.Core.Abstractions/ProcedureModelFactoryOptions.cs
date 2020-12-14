@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RevEng.Core.Procedures.Model
+namespace RevEng.Core.Abstractions
 {
     public class ProcedureModelFactoryOptions
     {

@@ -16,14 +16,8 @@
     <Compile Include="..\RevEng.Core\CustomTemplateFileService.cs" Link="CustomTemplateFileService.cs" />
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Model\IProcedureModelFactory.cs" Link="Procedures\Model\IProcedureModelFactory.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\Procedure.cs" Link="Procedures\Model\Metadata\Procedure.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureModel.cs" Link="Procedures\Model\Metadata\ProcedureModel.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureParameter.cs" Link="Procedures\Model\Metadata\ProcedureParameter.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Model\Metadata\ProcedureResultElement.cs" Link="Procedures\Model\Metadata\ProcedureResultElement.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Model\ProcedureModelFactoryOptions.cs" Link="Procedures\Model\ProcedureModelFactoryOptions.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Scaffolding\IProcedureScaffolder.cs" Link="Procedures\Scaffolding\IProcedureScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\Scaffolding\ProcedureScaffolderOptions.cs" Link="Procedures\Scaffolding\ProcedureScaffolderOptions.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\ProcedureScaffolderOptions.cs" Link="Procedures\ProcedureScaffolderOptions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureModelFactory.cs" Link="Procedures\SqlServerStoredProcedureModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureScaffolder.cs" Link="Procedures\SqlServerStoredProcedureScaffolder.cs" />
@@ -59,6 +53,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.preview\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
   </ItemGroup>  
 

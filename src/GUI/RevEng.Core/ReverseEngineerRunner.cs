@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-using RevEng.Core.Procedures.Model;
+using RevEng.Core.Abstractions;
 using RevEng.Core.Procedures.Scaffolding;
 using RevEng.Shared;
 using System;
