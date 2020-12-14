@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RevEng.Core.Procedures.Model.Metadata
+namespace RevEng.Core.Abstractions.Metadata
 {
     public class Procedure
     {

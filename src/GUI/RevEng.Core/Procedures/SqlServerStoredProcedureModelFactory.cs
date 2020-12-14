@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
-using RevEng.Core.Procedures.Model;
-using RevEng.Core.Procedures.Model.Metadata;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Abstractions.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 
 namespace RevEng.Core.Procedures
@@ -20,13 +22,24 @@ namespace RevEng.Core.Procedures
             _logger = logger;
         }
 
-        public ProcedureModel Create(string connectionString, ProcedureModelFactoryOptions options)
+        public ProcedureModel Create(string dacpacPath, ProcedureModelFactoryOptions options)
         {
-            return GetStoredProcedures(connectionString, options);
+            if (string.IsNullOrEmpty(dacpacPath))
+            {
+                throw new ArgumentException(@"invalid path", nameof(dacpacPath));
+            }
+            if (!File.Exists(dacpacPath))
+            {
+                throw new ArgumentException($"Dacpac file not found: {dacpacPath}");
+            }
+            return GetStoredProcedures(dacpacPath, options);
         }
 
         private ProcedureModel GetStoredProcedures(string connectionString, ProcedureModelFactoryOptions options)
         {
+
+
+
             var dtResult = new DataTable();
             var result = new List<Procedure>();
             var errors = new List<string>();

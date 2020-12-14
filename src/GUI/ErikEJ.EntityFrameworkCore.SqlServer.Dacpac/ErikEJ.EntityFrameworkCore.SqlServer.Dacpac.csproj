@@ -24,6 +24,7 @@
     <ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
+    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

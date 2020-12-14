@@ -1,4 +1,4 @@
-using RevEng.Core.Procedures.Model.Metadata;
+using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

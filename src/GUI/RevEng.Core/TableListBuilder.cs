@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
-using RevEng.Core.Procedures.Model;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
@@ -16,6 +15,8 @@ using System.Linq;
 using EFCorePowerTools.Shared.Models;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
+using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Abstractions;
 #if CORE50
 #else
 using Oracle.EntityFrameworkCore.Design.Internal;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RevEng.Core.Procedures.Scaffolding
+﻿namespace RevEng.Core.Procedures.Scaffolding
 {
     public class ProcedureScaffolderOptions
     {
