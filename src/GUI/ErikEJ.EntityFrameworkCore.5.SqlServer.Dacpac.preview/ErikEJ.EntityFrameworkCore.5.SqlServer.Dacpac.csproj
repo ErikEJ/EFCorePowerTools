@@ -30,9 +30,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\AliasResolutionVisitor.cs" Link="SqlSharpener\AliasResolutionVisitor.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\DataType.cs" Link="SqlSharpener\DataType.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\DataTypeHelper.cs" Link="SqlSharpener\DataTypeHelper.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\MetaBuilder.cs" Link="SqlSharpener\MetaBuilder.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Column.cs" Link="SqlSharpener\Model\Column.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Parameter.cs" Link="SqlSharpener\Model\Parameter.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Procedure.cs" Link="SqlSharpener\Model\Procedure.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Select.cs" Link="SqlSharpener\Model\Select.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\SelectColumn.cs" Link="SqlSharpener\Model\SelectColumn.cs" />

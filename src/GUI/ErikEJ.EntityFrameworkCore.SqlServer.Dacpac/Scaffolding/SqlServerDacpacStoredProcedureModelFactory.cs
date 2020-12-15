@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using dac = Microsoft.SqlServer.Dac.Model;
+using Microsoft.Extensions.Logging;
+using Microsoft.SqlServer.Dac.Extensions.Prototype;
+using Microsoft.SqlServer.Dac.Model;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 using ReverseEngineer20.DacpacConsolidate;
-using System.Collections.Generic;
-using System.Linq;
-using SqlSharpener;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
@@ -38,53 +39,55 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private ProcedureModel GetStoredProcedures(string dacpacPath, ProcedureModelFactoryOptions options)
         {
+            var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
+            var errors = new List<string>();
+
+            if (options.FullModel && !options.Procedures.Any())
+            {
+                return new ProcedureModel
+                {
+                    Procedures = result,
+                    Errors = errors,
+                };
+            }
+
             var consolidator = new DacpacConsolidator();
             dacpacPath = consolidator.Consolidate(dacpacPath);
 
-            var model = new dac.TSqlModel(dacpacPath);
-            var result = new List<Procedure>();
-            var errors = new List<string>();
-            var metaBuilder = new MetaBuilder();
+            var model = new TSqlTypedModel(dacpacPath);
 
-            try
+            var procedures = model.GetObjects<TSqlProcedure>(DacQueryScopes.UserDefined)
+               .ToList();
+
+            var filter = new HashSet<string>(options.Procedures);
+
+            foreach (var proc in procedures)
             {
-                metaBuilder.LoadModel(model);
-
-                var metaProcedures = metaBuilder.Procedures;
-
-                foreach (var metaProcedure in metaProcedures)
+                var procedure = new RevEng.Core.Abstractions.Metadata.Procedure
                 {
-                    var parameters = new List<ProcedureParameter>();
-                    var resultParameters = new List<ProcedureResultElement>();
+                    Schema = proc.Name.Parts[0],
+                    Name = proc.Name.Parts[1],
+                };
 
-                    int ordinal = 0;
-                    foreach (var column in metaProcedure.Selects.First().Columns)
+                if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
+                {
+                    if (options.FullModel)
                     {
-                        resultParameters.Add(new ProcedureResultElement
+                        procedure.Parameters = GetStoredProcedureParameters(proc);
+
+                        try
                         {
-                            Name = column.Name,
-                            Nullable = column.IsNullable,
-                            StoreType = column.DataTypes[TypeFormat.SqlServerDbType],
-                            Ordinal = ordinal++,
-                        });
+                            procedure.ResultElements = GetStoredProcedureResultElements(proc);
+                        }
+                        catch (Exception ex)
+                        {
+                            errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
+                            _logger?.Logger.LogWarning(ex, $"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
+                        }
                     }
-                    var procedure = new Procedure
-                    {
-                        Name = metaProcedure.Name,
-                        Schema = metaProcedure.Schema,
-                        Parameters = new List<ProcedureParameter>
-                        {
-
-                        },
-                        ResultElements = resultParameters,
-                    };
 
                     result.Add(procedure);
                 }
-            }
-            catch (Exception ex)
-            {
-                errors.Add(ex.ToString());
             }
 
             return new ProcedureModel
@@ -92,6 +95,64 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 Procedures = result,
                 Errors = errors,
             };
+        }
+
+        private List<ProcedureParameter> GetStoredProcedureParameters(TSqlProcedure proc)
+        {
+            var result = new List<ProcedureParameter>();
+
+            foreach (var parameter in proc.Parameters)
+            {
+                var newParameter = new ProcedureParameter()
+                {
+                     Length = parameter.Length,
+                     Name = parameter.Name.Parts[2].Trim('@'),
+                     Output = parameter.IsOutput,
+                     Precision = parameter.Precision,
+                     Scale = parameter.Scale,
+                     StoreType = parameter.DataType.First().Name.Parts[0],
+                     Nullable = true,
+                     //TypeName = parameter.ObjectType.Name,
+                };
+
+                result.Add(newParameter);
+            }
+
+            // Add parameter to hold the standard return value
+            result.Add(new ProcedureParameter()
+            {
+                Name = "returnValue",
+                StoreType = "int",
+                Output = true,
+                Nullable = false,
+            });
+
+            return result;
+        }
+
+        private List<ProcedureResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
+        {
+            var result = new List<ProcedureResultElement>();
+            var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
+
+            if (metaProc.Selects == null || metaProc.Selects.Count() == 0)
+            {
+                return result;
+            }
+
+            int ordinal = 0;
+            foreach (var column in metaProc.Selects.FirstOrDefault()?.Columns)
+            {
+                result.Add(new ProcedureResultElement
+                { 
+                    Name = column.Name,
+                    Nullable = column.IsNullable,
+                    StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
+                    Ordinal = ordinal++,
+                });
+            }
+
+            return result;
         }
     }
 }

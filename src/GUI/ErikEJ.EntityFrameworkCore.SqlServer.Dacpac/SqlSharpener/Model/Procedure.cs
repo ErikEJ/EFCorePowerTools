@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.SqlServer.TransactSql.ScriptDom;
 using Microsoft.SqlServer.Dac;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
+using System.IO;
 
 namespace SqlSharpener.Model
 {
@@ -22,12 +23,12 @@ namespace SqlSharpener.Model
         {
             this.Name = tSqlObject.Name.Parts.Last();
             this.Schema = tSqlObject.Name.Parts.First();
-            this.Parameters = tSqlObject.GetReferenced(dac.Procedure.Parameters).Select(x => new Parameter(x));
-            
-            TSqlFragment fragment;
-            TSqlModelUtils.TryGetFragmentForAnalysis(tSqlObject, out fragment);
-            var selectVisitor = new SelectVisitor();
-            fragment.Accept(selectVisitor);
+
+            var parser = new TSql150Parser(false);
+            IList<ParseError> errors;
+            var frag = parser.Parse(new StringReader(tSqlObject.GetScript()), out errors);
+            var selectVisitor = new SqlSharpener.SelectVisitor();
+            frag.Accept(selectVisitor);
 
             var depends = tSqlObject.GetReferenced(dac.Procedure.BodyDependencies)
                 .Where(x => x.ObjectType.Name == "Column")
@@ -42,7 +43,7 @@ namespace SqlSharpener.Model
                         key => string.Join(".", key.Name.Parts),
                         val => new DataType
                         {
-                            Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(dac.Column.DataType).First()?.Name.Parts.Last()),
+                            Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(dac.Column.DataType).FirstOrDefault()?.Name.Parts.Last()),
                             Nullable = dac.Column.Nullable.GetValue<bool>(val)
                         },
                         StringComparer.InvariantCultureIgnoreCase);
@@ -63,14 +64,6 @@ namespace SqlSharpener.Model
         public string Name { get; private set; }
 
         public string Schema { get; private set; }
-
-        /// <summary>
-        /// Gets the parameters.
-        /// </summary>
-        /// <value>
-        /// The parameters.
-        /// </value>
-        public IEnumerable<Parameter> Parameters { get; private set; }
 
         /// <summary>
         /// Gets the selects.

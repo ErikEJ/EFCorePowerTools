@@ -10,7 +10,10 @@ using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+#if CORE50
+#else
 using Oracle.EntityFrameworkCore.Design.Internal;
+#endif
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
 using System;
@@ -49,9 +52,11 @@ namespace ReverseEngineer20.ReverseEngineer
             if (options.UseHandleBars)
             {
                 //TODO Consider being selective based on SelectedToBeGenerated
-                var selected = ReverseEngineerOptions.DbContextAndEntities;
-                var language = (LanguageOptions)options.SelectedHandlebarsLanguage;
-                serviceCollection.AddHandlebarsScaffolding(selected, language);
+                serviceCollection.AddHandlebarsScaffolding(hbOptions =>
+                {
+                    hbOptions.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;
+                    hbOptions.LanguageOptions = (LanguageOptions)options.SelectedHandlebarsLanguage;
+                });
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
             }
 
@@ -61,10 +66,13 @@ namespace ReverseEngineer20.ReverseEngineer
                 {
                     serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
                 }
+#if CORE50
+#else
                 else
                 {
                     serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
                 }
+#endif
             }
 
             // Add database provider services
@@ -74,15 +82,7 @@ namespace ReverseEngineer20.ReverseEngineer
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
-                    if (!string.IsNullOrEmpty(options.Dacpac))
-                    {
-                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
-                        serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices();
-                    }
-                    else
-                    {
-                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
-                    }
+                    serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
 
                     if (options.UseSpatial)
                     {
@@ -95,6 +95,21 @@ namespace ReverseEngineer20.ReverseEngineer
                         CommandTimeout = 300
                     };
                     options.ConnectionString = builder.ConnectionString;
+
+                    break;
+
+                case DatabaseType.SQLServerDacpac:
+                    var dacProvider = new SqlServerDesignTimeServices();
+                    dacProvider.ConfigureDesignTimeServices(serviceCollection);
+
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
+                    serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices();
+
+                    if (options.UseSpatial)
+                    {
+                        var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
+                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
 
                     break;
 
@@ -127,12 +142,13 @@ namespace ReverseEngineer20.ReverseEngineer
                     }
 
                     break;
-
+#if CORE50
+#else
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-
+#endif
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
