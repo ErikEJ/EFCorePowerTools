@@ -71,17 +71,17 @@ namespace ReverseEngineer20.ReverseEngineer
                     if (!string.IsNullOrEmpty(options.Dacpac))
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
+                        serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices();
+                    }
+                    else
+                    {
+                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }
 
                     if (options.UseSpatial)
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
-                    }
-
-                    if (string.IsNullOrEmpty(options.Dacpac))
-                    {
-                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }
 
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString)

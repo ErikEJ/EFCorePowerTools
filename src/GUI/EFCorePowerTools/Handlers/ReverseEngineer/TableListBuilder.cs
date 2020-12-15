@@ -28,18 +28,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var launcher = new EfRevEngLauncher(null, useEFCore5);
 
-            List<TableModel> tables;
-
-            if (_databaseType == DatabaseType.Undefined)
-            {
-                tables = launcher.GetDacpacTables(_connectionString);
-            }
-            else
-            {
-                tables = launcher.GetTables(_connectionString, _databaseType, _schemas);
-            }
-
-            return tables;
+            return launcher.GetTables(_connectionString, _databaseType, _schemas);
         }
     }
 }

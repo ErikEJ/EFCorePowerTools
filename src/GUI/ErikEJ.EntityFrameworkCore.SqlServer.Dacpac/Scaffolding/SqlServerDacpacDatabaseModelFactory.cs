@@ -113,7 +113,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             foreach (var view in views)
             {
-                var dbView = new DatabaseTable
+                var dbView = new DatabaseView
                 {
                     Name = view.Name.Parts[1],
                     Schema = view.Name.Parts[0],

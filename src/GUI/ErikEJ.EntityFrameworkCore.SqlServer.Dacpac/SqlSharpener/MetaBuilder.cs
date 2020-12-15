@@ -16,23 +16,6 @@ namespace SqlSharpener
         private bool _modelLoaded = false;
 
         /// <summary>
-        /// Gets or sets the prefix to strip off the procedure name when generating the method name.
-        /// </summary>
-        /// <value>
-        /// The procedure prefix.
-        /// </value>
-        public string ProcedurePrefix { get { return procedurePrefix; } set { procedurePrefix = value; } }
-        private string procedurePrefix = "";
-
-        /// <summary>
-        /// List of directories where *.sql exist that should be added to the model.
-        /// </summary>
-        /// <value>
-        /// The SQL paths.
-        /// </value>
-        public List<string> SqlPaths { get; set; }
-
-        /// <summary>
         /// Objects representing the meta data parsed from stored procedures in the model.
         /// </summary>
         /// <value>
@@ -54,7 +37,7 @@ namespace SqlSharpener
         public void LoadModel(dac.TSqlModel model)
         {
             _procedures = model.GetObjects(dac.DacQueryScopes.UserDefined, dac.Procedure.TypeClass)
-                .Select(sqlProc => new Procedure(sqlProc, this.ProcedurePrefix)).ToList();
+                .Select(sqlProc => new Procedure(sqlProc)).ToList();
             _modelLoaded = true;
         }
     }

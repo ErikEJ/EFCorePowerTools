@@ -1,8 +1,6 @@
-﻿using EFCorePowerTools.Shared.Models;
-using ReverseEngineer20;
+﻿using ReverseEngineer20;
 using ReverseEngineer20.ReverseEngineer;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,11 +17,6 @@ namespace efreveng
 
                 if (args.Length > 0)
                 {
-                    if (args[0].EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
-                    { 
-                        return BuildDacpacList(args[0]);
-                    }
-
                     if ((args.Count() == 2 || args.Count() == 3) && int.TryParse(args[0], out int dbTypeInt))
                     {
                         SchemaInfo[] schemas = null;
@@ -80,42 +73,6 @@ namespace efreveng
                 Console.Out.WriteLine(ex);
                 return 1;
             }
-        }
-
-        private static int BuildDacpacList(string dacpacPath)
-        {
-            if (!File.Exists(dacpacPath))
-            {
-                Console.Out.WriteLine("Error:");
-                Console.Out.WriteLine($"Could not open .dacpac file: {dacpacPath}");
-                return 1;
-            }
-
-            var builder = new DacpacTableListBuilder(dacpacPath);
-
-            var values = builder.GetTableDefinitions();
-
-            var result = new List<TableModel>();
-
-            foreach (var value in values)
-            {
-                var columns = new List<ColumnModel>();
-
-                if (value.Item4 != null)
-                {
-                    foreach (var colum in value.Item4)
-                    {
-                        columns.Add(new ColumnModel(colum, value.Item5.Contains(colum)));
-                    }
-                }
-
-                result.Add(new TableModel(value.Item3, value.Item2, value.Item1, value.Item6 ? RevEng.Shared.ObjectType.Table : RevEng.Shared.ObjectType.View, columns));
-            }
-        
-            Console.Out.WriteLine("Result:");
-            Console.Out.WriteLine(result.Write());
-
-            return 0;
         }
     }
 }

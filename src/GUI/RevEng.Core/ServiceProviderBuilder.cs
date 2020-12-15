@@ -41,6 +41,11 @@ namespace ReverseEngineer20.ReverseEngineer
                      options.DatabaseType
                 ));
 
+            if (options.CustomReplacers != null)
+            {
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
+            }
+
             if (options.UseHandleBars)
             {
                 //TODO Consider being selective based on SelectedToBeGenerated
@@ -48,11 +53,6 @@ namespace ReverseEngineer20.ReverseEngineer
                 var language = (LanguageOptions)options.SelectedHandlebarsLanguage;
                 serviceCollection.AddHandlebarsScaffolding(selected, language);
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
-            }
-
-            if (options.CustomReplacers != null)
-            {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
             }
 
             if (options.UseInflector || options.UseLegacyPluralizer)
@@ -77,17 +77,17 @@ namespace ReverseEngineer20.ReverseEngineer
                     if (!string.IsNullOrEmpty(options.Dacpac))
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
+                        serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices();
+                    }
+                    else
+                    {
+                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }
 
                     if (options.UseSpatial)
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
-                    }
-
-                    if (string.IsNullOrEmpty(options.Dacpac))
-                    {
-                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     }
 
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString)

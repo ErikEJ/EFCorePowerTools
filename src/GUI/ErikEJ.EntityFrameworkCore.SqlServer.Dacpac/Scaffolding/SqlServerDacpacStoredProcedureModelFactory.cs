@@ -8,6 +8,8 @@ using ReverseEngineer20.DacpacConsolidate;
 using System.Collections.Generic;
 using System.Linq;
 using SqlSharpener;
+using System;
+using System.IO;
 
 namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
@@ -20,9 +22,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             _logger = logger;
         }
 
-        public ProcedureModel Create(string connectionString, ProcedureModelFactoryOptions options)
+        public ProcedureModel Create(string dacpacPath, ProcedureModelFactoryOptions options)
         {
-            return GetStoredProcedures(connectionString, options);
+            if (string.IsNullOrEmpty(dacpacPath))
+            {
+                throw new ArgumentException(@"invalid path", nameof(dacpacPath));
+            }
+            if (!File.Exists(dacpacPath))
+            {
+                throw new ArgumentException($"Dacpac file not found: {dacpacPath}");
+            }
+
+            return GetStoredProcedures(dacpacPath, options);
         }
 
         private ProcedureModel GetStoredProcedures(string dacpacPath, ProcedureModelFactoryOptions options)
@@ -32,48 +43,54 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             var model = new dac.TSqlModel(dacpacPath);
             var result = new List<Procedure>();
-
+            var errors = new List<string>();
             var metaBuilder = new MetaBuilder();
 
-            metaBuilder.LoadModel(model);
-
-            var metaProcedures = metaBuilder.Procedures;
-
-            foreach (var metaProcedure in metaProcedures)
+            try
             {
-                var parameters = new List<ProcedureParameter>();
-                var resultParameters = new List<ProcedureResultElement>();
+                metaBuilder.LoadModel(model);
 
-                int ordinal = 0;
-                foreach (var column in metaProcedure.Selects.First().Columns)
+                var metaProcedures = metaBuilder.Procedures;
+
+                foreach (var metaProcedure in metaProcedures)
                 {
-                    resultParameters.Add(new ProcedureResultElement
+                    var parameters = new List<ProcedureParameter>();
+                    var resultParameters = new List<ProcedureResultElement>();
+
+                    int ordinal = 0;
+                    foreach (var column in metaProcedure.Selects.First().Columns)
                     {
-                        Name = column.Name,
-                        Nullable = column.IsNullable,
-                        StoreType = column.DataTypes[TypeFormat.SqlServerDbType],
-                        Ordinal = ordinal++,
-                    }); 
+                        resultParameters.Add(new ProcedureResultElement
+                        {
+                            Name = column.Name,
+                            Nullable = column.IsNullable,
+                            StoreType = column.DataTypes[TypeFormat.SqlServerDbType],
+                            Ordinal = ordinal++,
+                        });
+                    }
+                    var procedure = new Procedure
+                    {
+                        Name = metaProcedure.Name,
+                        Schema = metaProcedure.Schema,
+                        Parameters = new List<ProcedureParameter>
+                        {
+
+                        },
+                        ResultElements = resultParameters,
+                    };
+
+                    result.Add(procedure);
                 }
-                var procedure = new Procedure
-                {
-                    Name = metaProcedure.Name,
-                    Schema = metaProcedure.Schema,
-                    Parameters = new List<ProcedureParameter>
-                    {
-                        
-                    },
-                    ResultElements = resultParameters,
-                };
-
-                result.Add(procedure);
             }
-
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+            }
 
             return new ProcedureModel
             {
                 Procedures = result,
-                Errors = new List<string>(),
+                Errors = errors,
             };
         }
     }

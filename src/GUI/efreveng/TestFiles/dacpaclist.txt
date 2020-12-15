@@ -1,1 +1,1 @@
-C:\Code\EFCorePowerTools\src\GUI\NUnitTestCore\NorthwindViews.dacpac
+8 "C:\Code\EFCorePowerTools\src\GUI\NUnitTestCore\NorthwindViews.dacpac"

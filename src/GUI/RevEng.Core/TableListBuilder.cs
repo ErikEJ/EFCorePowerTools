@@ -1,13 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
-using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
-using RevEng.Core.Procedures;
 using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
@@ -50,7 +43,7 @@ namespace ReverseEngineer20
                 _connectionString = builder.ConnectionString;
             }
 
-            serviceProvider = Build(_databaseType);
+            serviceProvider = TableListServiceProviderBuilder.Build(_databaseType);
         }
 
         public List<TableModel> GetTableModels()
@@ -62,7 +55,7 @@ namespace ReverseEngineer20
             foreach (var databaseTable in databaseTables)
             {
                 string name;
-                if (_databaseType == DatabaseType.SQLServer)
+                if (_databaseType == DatabaseType.SQLServer || _databaseType == DatabaseType.SQLServerDacpac)
                 {
                     name = $"[{databaseTable.Schema}].[{databaseTable.Name}]";
                 }
@@ -88,7 +81,7 @@ namespace ReverseEngineer20
             return buildResult;
         }
 
-        private List<Microsoft.EntityFrameworkCore.Scaffolding.Metadata.DatabaseTable> GetTableDefinitions()
+        private List<DatabaseTable> GetTableDefinitions()
         {
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
@@ -127,51 +120,5 @@ namespace ReverseEngineer20
             return result.OrderBy(c => c.DisplayName).ToList();
         }
 
-        private static ServiceProvider Build(DatabaseType databaseType)
-        {
-            // Add base services for scaffolding
-            var serviceCollection = new ServiceCollection();
-
-            serviceCollection
-                .AddEntityFrameworkDesignTimeServices()
-                .AddSingleton<IOperationReporter, OperationReporter>()
-                .AddSingleton<IOperationReportHandler, OperationReportHandler>();
-
-            // Add database provider services
-            switch (databaseType)
-            {
-                case DatabaseType.SQLServer:
-                    var provider = new SqlServerDesignTimeServices();
-                    provider.ConfigureDesignTimeServices(serviceCollection);
-                    serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
-                    break;
-
-                case DatabaseType.Npgsql:
-                    var npgsqlProvider = new NpgsqlDesignTimeServices();
-                    npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-
-                case DatabaseType.SQLite:
-                    var sqliteProvider = new SqliteDesignTimeServices();
-                    sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-
-                case DatabaseType.Mysql:
-                    var mysqlProvider = new MySqlDesignTimeServices();
-                    mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-#if CORE50
-#else
-                case DatabaseType.Oracle:
-                    var oracleProvider = new OracleDesignTimeServices();
-                    oracleProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-#endif
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return serviceCollection.BuildServiceProvider();
-        }
     }
 }

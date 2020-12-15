@@ -18,11 +18,10 @@ namespace SqlSharpener.Model
         /// Initializes a new instance of the <see cref="Procedure"/> class.
         /// </summary>
         /// <param name="prefix">The prefix used on stored procedure names.</param>
-        public Procedure(dac.TSqlObject tSqlObject, string prefix)
+        public Procedure(dac.TSqlObject tSqlObject)
         {
-            this.Prefix = prefix ?? "";
             this.Name = tSqlObject.Name.Parts.Last();
-            this.Schema = tSqlObject.Name.Parts[1];
+            this.Schema = tSqlObject.Name.Parts.First();
             this.Parameters = tSqlObject.GetReferenced(dac.Procedure.Parameters).Select(x => new Parameter(x));
             
             TSqlFragment fragment;
@@ -30,23 +29,29 @@ namespace SqlSharpener.Model
             var selectVisitor = new SelectVisitor();
             fragment.Accept(selectVisitor);
 
-            var bodyColumnTypes = tSqlObject.GetReferenced(dac.Procedure.BodyDependencies)
+            var depends = tSqlObject.GetReferenced(dac.Procedure.BodyDependencies)
                 .Where(x => x.ObjectType.Name == "Column")
-                .GroupBy(bd => string.Join(".", bd.Name.Parts))
-                .Select(grp => grp.First())
-                .ToDictionary(
-                    key => string.Join(".", key.Name.Parts),
-                    val => new DataType
-                    {
-                        Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(dac.Column.DataType).First().Name.Parts.Last()),
-                        Nullable = dac.Column.Nullable.GetValue<bool>(val)
-                    },
-                    StringComparer.InvariantCultureIgnoreCase);
+                .ToList();
 
-            var unions = selectVisitor.Nodes.OfType<BinaryQueryExpression>().Select(bq => GetQueryFromUnion(bq)).Where(x => x != null);
-            var selects = selectVisitor.Nodes.OfType<QuerySpecification>().Concat(unions);
-                        
-            this.Selects = selects.Select(s => new Select(s, bodyColumnTypes)).ToList();
+            if (depends.Count() > 0)
+            {
+                var bodyColumnTypes = depends
+                    .GroupBy(bd => string.Join(".", bd.Name.Parts))
+                    .Select(grp => grp.First())
+                    .ToDictionary(
+                        key => string.Join(".", key.Name.Parts),
+                        val => new DataType
+                        {
+                            Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(dac.Column.DataType).First()?.Name.Parts.Last()),
+                            Nullable = dac.Column.Nullable.GetValue<bool>(val)
+                        },
+                        StringComparer.InvariantCultureIgnoreCase);
+
+                var unions = selectVisitor.Nodes.OfType<BinaryQueryExpression>().Select(bq => GetQueryFromUnion(bq)).Where(x => x != null);
+                var selects = selectVisitor.Nodes.OfType<QuerySpecification>().Concat(unions);
+
+                this.Selects = selects.Select(s => new Select(s, bodyColumnTypes)).ToList();
+            }
         }
 
         /// <summary>
@@ -58,22 +63,6 @@ namespace SqlSharpener.Model
         public string Name { get; private set; }
 
         public string Schema { get; private set; }
-
-        /// <summary>
-        /// Gets the raw name of the stored procedure.
-        /// </summary>
-        /// <value>
-        /// The stored procedure name verbatim.
-        /// </value>
-        public string RawName { get; private set; }
-
-        /// <summary>
-        /// Gets the prefix.
-        /// </summary>
-        /// <value>
-        /// The prefix.
-        /// </value>
-        public string Prefix { get; private set; }
 
         /// <summary>
         /// Gets the parameters.
