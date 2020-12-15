@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets or sets whether a primary key exists for the table or not.
         /// </summary>
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public bool IsPrimaryKey { get; set; }
 
         /// <summary>

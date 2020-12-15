@@ -97,7 +97,7 @@ namespace ReverseEngineer20
 
             DatabaseType databaseType = (DatabaseType)dbTypeInt;
 
-            if (databaseType != DatabaseType.SQLServer)
+            if (databaseType != DatabaseType.SQLServer && databaseType != DatabaseType.SQLServerDacpac)
             {
                 return result;    
             }

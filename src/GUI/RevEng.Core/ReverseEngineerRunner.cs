@@ -77,7 +77,7 @@ namespace ReverseEngineer20.ReverseEngineer
                     Procedures = reverseEngineerOptions.Tables.Where(t => t.ObjectType == RevEng.Shared.ObjectType.Procedure).Select(m => m.Name),
                 };
 
-                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.ConnectionString, procedureOptions, procedureModelOptions, ref errors);
+                var procedureModel = procedureModelScaffolder.ScaffoldModel(reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString, procedureOptions, procedureModelOptions, ref errors);
 
                 if (procedureModel != null)
                 {

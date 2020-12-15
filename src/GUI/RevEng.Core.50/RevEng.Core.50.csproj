@@ -26,6 +26,7 @@
     <Compile Include="..\RevEng.Core\ReverseEngineerOptionsExtensions.cs" Link="ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="..\RevEng.Core\ReverseEngineerResultExtensions.cs" Link="ReverseEngineerResultExtensions.cs" />
     <Compile Include="..\RevEng.Core\ReverseEngineerRunner.cs" Link="ReverseEngineerRunner.cs" />
+    <Compile Include="..\RevEng.Core\ServiceProviderBuilder.cs" Link="ServiceProviderBuilder.cs" />
     <Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
     <Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
     <Compile Include="..\RevEng.Core\TableListServiceProviderBuilder.cs" Link="TableListServiceProviderBuilder.cs" />
