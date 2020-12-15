@@ -23,20 +23,6 @@ namespace UnitTests
         }
 
         [Test]
-        public void CanGetTableNames()
-        {
-            // Arrange
-            var builder = new DacpacTableListBuilder(dacpac);
-
-            // Act
-            var result = builder.GetTableDefinitions();
-
-            // Assert
-            Assert.AreEqual("[dbo].[Album]", result[0].Item1);
-            Assert.AreEqual(11, result.Count);
-        }
-
-        [Test]
         public void CanEnumerateTables()
         {
             // Arrange

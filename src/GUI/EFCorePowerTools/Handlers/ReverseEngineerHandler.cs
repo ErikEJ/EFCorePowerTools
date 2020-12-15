@@ -111,7 +111,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
-                    dbInfo.DatabaseType = DatabaseType.SQLServer;
+                    dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
                     dbInfo.ConnectionString = "Data Source=.;Initial Catalog=" + Path.GetFileNameWithoutExtension(dacpacPath);
                     dacpacPath = _package.Dte2.DTE.BuildSqlProj(dacpacPath);
                     if (string.IsNullOrEmpty(dacpacPath))
@@ -392,7 +392,7 @@ namespace EFCorePowerTools.Handlers
 
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
         {
-            var builder = new TableListBuilder(dacpacPath, DatabaseType.Undefined, null);
+            var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
             return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 

@@ -24,7 +24,6 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacPacEngine\DacpacTableListBuilder.cs" Link="DacpacEngine\DacpacTableListBuilder.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Design\SqlServerDacpacDesignTimeServices.cs" Link="Design\SqlServerDacpacDesignTimeServices.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
@@ -63,7 +62,6 @@
 
   <ItemGroup>
     <Folder Include="DacpacConsolidate\" />
-    <Folder Include="DacpacEngine\" />
     <Folder Include="Design\" />
     <Folder Include="Scaffolding\" />
   </ItemGroup>

@@ -11,5 +11,6 @@ namespace ReverseEngineer20
         Npgsql = 5,
         Mysql = 6,
         Oracle = 7,
+        SQLServerDacpac = 8,
     }
 }
