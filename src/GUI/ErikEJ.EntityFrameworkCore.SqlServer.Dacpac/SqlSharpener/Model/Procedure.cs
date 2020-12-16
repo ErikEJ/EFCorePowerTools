@@ -1,10 +1,9 @@
-﻿using dac = Microsoft.SqlServer.Dac.Model;
+﻿using Microsoft.SqlServer.TransactSql.ScriptDom;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.SqlServer.Dac;
-using Microsoft.SqlServer.TransactSql.ScriptDom;
 using System.IO;
+using System.Linq;
+using dac = Microsoft.SqlServer.Dac.Model;
 
 namespace SqlSharpener.Model
 {
@@ -24,6 +23,7 @@ namespace SqlSharpener.Model
             this.Name = tSqlObject.Name.Parts.Last();
             this.Schema = tSqlObject.Name.Parts.First();
 
+            //TODO Update when needed
             var parser = new TSql150Parser(false);
             IList<ParseError> errors;
             var frag = parser.Parse(new StringReader(tSqlObject.GetScript()), out errors);
@@ -55,12 +55,6 @@ namespace SqlSharpener.Model
             }
         }
 
-        /// <summary>
-        /// Gets the name used for methods.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name { get; private set; }
 
         public string Schema { get; private set; }
