@@ -56,8 +56,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             dbModel["Scaffolding:ConnectionString"] = $"Data Source=(local);Initial Catalog={dbModel.DatabaseName};Integrated Security=true";
 
-            //Sequences not created - not needed for scaffolding
-
             var consolidator = new DacpacConsolidator();
             dacpacPath = consolidator.Consolidate(dacpacPath);
 

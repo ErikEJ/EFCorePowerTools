@@ -51,7 +51,6 @@ namespace ReverseEngineer20.ReverseEngineer
 
             if (options.UseHandleBars)
             {
-                //TODO Consider being selective based on SelectedToBeGenerated
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
                 {
                     hbOptions.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;

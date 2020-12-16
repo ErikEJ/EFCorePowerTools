@@ -23,7 +23,6 @@ namespace SqlSharpener.Model
             this.Name = tSqlObject.Name.Parts.Last();
             this.Schema = tSqlObject.Name.Parts.First();
 
-            //TODO Update when needed
             var parser = new TSql150Parser(false);
             IList<ParseError> errors;
             var frag = parser.Parse(new StringReader(tSqlObject.GetScript()), out errors);

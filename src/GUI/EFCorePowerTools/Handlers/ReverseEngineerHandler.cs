@@ -112,7 +112,7 @@ namespace EFCorePowerTools.Handlers
                 if (!string.IsNullOrEmpty(dacpacPath))
                 {
                     dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                    dbInfo.ConnectionString = "Data Source=.;Initial Catalog=" + Path.GetFileNameWithoutExtension(dacpacPath);
+                    dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(dacpacPath)};Integrated Security=true;";
                     dacpacPath = _package.Dte2.DTE.BuildSqlProj(dacpacPath);
                     if (string.IsNullOrEmpty(dacpacPath))
                     {
@@ -121,13 +121,15 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                if (dbInfo.DatabaseType == DatabaseType.SQLCE35 || dbInfo.DatabaseType == DatabaseType.SQLCE40)
+                if (dbInfo.DatabaseType == DatabaseType.SQLCE35 
+                    || dbInfo.DatabaseType == DatabaseType.SQLCE40
+                    || dbInfo.DatabaseType == DatabaseType.Undefined)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider: {dbInfo.ServerVersion}");
                     return;
                 }
 
-                //TODO Enable when released
+                //TODO Enable when Oracle EF Core 5 provider is released
                 if (useEFCore5 && (dbInfo.DatabaseType == DatabaseType.Oracle))
                 {
                     EnvDteHelper.ShowError($"Unsupported provider with EF Core 5.0: {dbInfo.DatabaseType}");
@@ -211,7 +213,7 @@ namespace EFCorePowerTools.Handlers
                     UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations,
                     ConnectionString = dbInfo.ConnectionString,
                     ContextClassName = modelingOptionsResult.Payload.ModelName,
-                    DatabaseType = (ReverseEngineer20.DatabaseType)dbInfo.DatabaseType,
+                    DatabaseType = dbInfo.DatabaseType,
                     ProjectPath = projectPath,
                     OutputPath = modelingOptionsResult.Payload.OutputPath,
                     OutputContextPath = modelingOptionsResult.Payload.OutputContextPath,
