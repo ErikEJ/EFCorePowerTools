@@ -134,7 +134,7 @@ namespace EFCorePowerTools
                 Telemetry.Initialize(Dte2,
                     System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                     VisualStudioVersion.ToString(),
-                    "d4881a82-2247-42c9-9272-f7bc8aa29315");
+                    "00dac4de-337c-4fed-a835-70db30078b2a");
             }
             Telemetry.TrackEvent("Platform: Visual Studio " + VisualStudioVersion.ToString(1));
         }
