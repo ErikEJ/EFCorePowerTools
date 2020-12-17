@@ -66,7 +66,6 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             if (Enabled)
             {
                 var telex = new Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry(ex);
-                telex.HandledAt = Microsoft.ApplicationInsights.DataContracts.ExceptionHandledAt.UserCode;
                 _telemetry.TrackException(telex);
             }
 #endif

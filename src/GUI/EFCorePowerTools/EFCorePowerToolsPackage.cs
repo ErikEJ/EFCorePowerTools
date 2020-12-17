@@ -126,7 +126,20 @@ namespace EFCorePowerTools
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
+
+            //Boot Telemetry
+            Telemetry.Enabled = true;
+            if (Telemetry.Enabled)
+            {
+                Telemetry.Initialize(Dte2,
+                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                    VisualStudioVersion.ToString(),
+                    "d4881a82-2247-42c9-9272-f7bc8aa29315");
+            }
+            Telemetry.TrackEvent("Platform: Visual Studio " + VisualStudioVersion.ToString(1));
         }
+
+        private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture), 0);
 
         private System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
         {
@@ -286,7 +299,7 @@ namespace EFCorePowerTools
 
         private void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)
         {
-            MessageBox.Show(msg.Content);
+            EnvDteHelper.ShowMessage(msg.Content);
         }
 
         internal void LogError(List<string> statusMessages, Exception exception)

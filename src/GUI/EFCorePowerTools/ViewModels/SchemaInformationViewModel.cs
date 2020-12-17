@@ -3,9 +3,7 @@
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Shared;
     using ReverseEngineer20.ReverseEngineer;
-    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
@@ -15,7 +13,6 @@
     {
         private string _name;
         private bool? _isSelected = false;
-        private bool _isVisible = true;
 
         public SchemaInformationViewModel()
         {
