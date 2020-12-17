@@ -28,7 +28,7 @@ namespace ReverseEngineer20.ReverseEngineer
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)
         {
             string name;
-            if (_databaseType == DatabaseType.SQLServer)
+            if (_databaseType == DatabaseType.SQLServer || _databaseType == DatabaseType.SQLServerDacpac)
             {
                 name = $"[{table.Schema}].[{table.Name}]";
             }
