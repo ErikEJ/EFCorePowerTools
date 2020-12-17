@@ -19,7 +19,6 @@
         private readonly IExtensionVersionService _extensionVersionService;
         private readonly IInstalledComponentsService _installedComponentsService;
         private readonly IOperatingSystemAccess _operatingSystemAccess;
-        private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly IMessenger _messenger;
 
         private string _version;
@@ -66,7 +65,6 @@
             _extensionVersionService = extensionVersionService ?? throw new ArgumentNullException(nameof(extensionVersionService));
             _installedComponentsService = installedComponentsService ?? throw new ArgumentNullException(nameof(installedComponentsService));
             _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
-            _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
             _messenger = messenger ?? throw new ArgumentNullException(nameof(messenger));
 
             _aboutExtensionModel.PropertyChanged += AboutExtensionModelOnPropertyChanged;
