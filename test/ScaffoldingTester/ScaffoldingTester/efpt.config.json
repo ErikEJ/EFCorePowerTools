@@ -13,6 +13,10 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
+         "Name": "[dbo].[BoolNullableTest]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Categories]",
          "ObjectType": 0
       },

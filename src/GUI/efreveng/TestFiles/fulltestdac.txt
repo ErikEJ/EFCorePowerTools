@@ -1,5 +1,5 @@
 ﻿{
-   "ConnectionString": null,
+   "ConnectionString": "Data Source=(local);Initial Catalog=Northwind;Integrated Security=True",
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
    "Dacpac": "C:\\Code\\EFCorePowerTools\\src\\GUI\\NUnitTestCore\\NorthwindProcedures.dacpac",

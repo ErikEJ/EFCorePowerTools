@@ -17,6 +17,7 @@ namespace ScaffoldingTester.Models
         }
 
         public virtual DbSet<AlphabeticalListOfProduct> AlphabeticalListOfProducts { get; set; }
+        public virtual DbSet<BoolNullableTest> BoolNullableTests { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategorySalesFor1997> CategorySalesFor1997s { get; set; }
         public virtual DbSet<CurrentProductList> CurrentProductLists { get; set; }
@@ -80,6 +81,19 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
 
                 entity.Property(e => e.UnitPrice).HasColumnType("money");
+            });
+
+            modelBuilder.Entity<BoolNullableTest>(entity =>
+            {
+                entity.ToTable("BoolNullableTest");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.TestBool)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Category>(entity =>

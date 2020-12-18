@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Procedures.Scaffolding;
@@ -23,11 +25,10 @@ namespace ReverseEngineer20.ReverseEngineer
                 new OperationReportHandler(
                     m => errors.Add(m),
                     m => warnings.Add(m)));
-
             var serviceProvider = ServiceProviderBuilder.Build(reverseEngineerOptions);
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
-
             var schemas = new List<string>();
+
             if (reverseEngineerOptions.DefaultDacpacSchema != null)
             {
                 schemas.Add(reverseEngineerOptions.DefaultDacpacSchema);
@@ -114,11 +115,12 @@ namespace ReverseEngineer20.ReverseEngineer
 
             var dbOptions = new DatabaseModelFactoryOptions(reverseEngineerOptions.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), schemas);
 
-            var scaffoldedModel = scaffolder.ScaffoldModel(
+            var scaffoldedModel = ScaffoldModel(
                     reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString,
                     dbOptions,
                     modelOptions,
-                    codeOptions);
+                    codeOptions,
+                    serviceProvider);
 
             var filePaths = scaffolder.Save(
                 scaffoldedModel,
@@ -160,6 +162,33 @@ namespace ReverseEngineer20.ReverseEngineer
             };
 
             return result;
+        }
+
+        private ScaffoldedModel ScaffoldModel(
+            string connectionString,
+            DatabaseModelFactoryOptions databaseOptions,
+            ModelReverseEngineerOptions modelOptions,
+            ModelCodeGenerationOptions codeOptions,
+            ServiceProvider serviceProvider)
+        {
+            var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
+            var _factory = serviceProvider.GetService<IScaffoldingModelFactory>();
+            var _selector = serviceProvider.GetService<IModelCodeGeneratorSelector>();
+
+            var databaseModel = _databaseModelFactory.Create(connectionString, databaseOptions);
+#if CORE50
+            var model = _factory.Create(databaseModel, modelOptions);
+#else
+            var model = _factory.Create(databaseModel, modelOptions.UseDatabaseNames);
+#endif
+            if (model == null)
+            {
+                throw new InvalidOperationException($"No model from provider {_factory.GetType().ShortDisplayName()}");
+            }
+
+            var codeGenerator = _selector.Select(codeOptions.Language);
+
+            return codeGenerator.GenerateModel(model, codeOptions);
         }
 
         private List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace)
