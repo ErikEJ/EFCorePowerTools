@@ -29,6 +29,7 @@
         private bool _mapSpatialTypes;
         private bool _mapNodaTimeTypes;
         private bool _useEf6Pluralizer;
+        private bool _useBoolPropertiesWithoutDefaultSql;
 
         public bool UseDataAnnotations
         {
@@ -246,6 +247,17 @@
             {
                 if (value == _useEf6Pluralizer) return;
                 _useEf6Pluralizer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseBoolPropertiesWithoutDefaultSql
+        {
+            get => _useBoolPropertiesWithoutDefaultSql;
+            set
+            {
+                if (value == _useBoolPropertiesWithoutDefaultSql) return;
+                _useBoolPropertiesWithoutDefaultSql = value;
                 OnPropertyChanged();
             }
         }

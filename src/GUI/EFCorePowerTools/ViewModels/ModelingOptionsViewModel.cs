@@ -133,6 +133,7 @@ namespace EFCorePowerTools.ViewModels
             Model.MapSpatialTypes = advancedModelingOptionsResult.Payload.MapSpatialTypes;
             Model.MapNodaTimeTypes = advancedModelingOptionsResult.Payload.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = advancedModelingOptionsResult.Payload.UseEf6Pluralizer;
+            Model.UseBoolPropertiesWithoutDefaultSql = advancedModelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
         }
 
         void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
@@ -157,6 +158,7 @@ namespace EFCorePowerTools.ViewModels
             Model.MapSpatialTypes = presets.MapSpatialTypes;
             Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
+            Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
 
             Title = $"Generate EF Core Model in Project {Model.ProjectName}";
         }
