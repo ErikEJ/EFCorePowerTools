@@ -90,10 +90,6 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
                     .ValueGeneratedNever();
-
-                entity.Property(e => e.TestBool)
-                    .IsRequired()
-                    .HasDefaultValueSql("((1))");
             });
 
             modelBuilder.Entity<Category>(entity =>

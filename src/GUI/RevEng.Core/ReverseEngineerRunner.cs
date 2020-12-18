@@ -120,6 +120,7 @@ namespace ReverseEngineer20.ReverseEngineer
                     dbOptions,
                     modelOptions,
                     codeOptions,
+                    reverseEngineerOptions.UseBoolPropertiesWithoutDefaultSql,
                     serviceProvider);
 
             var filePaths = scaffolder.Save(
@@ -169,6 +170,7 @@ namespace ReverseEngineer20.ReverseEngineer
             DatabaseModelFactoryOptions databaseOptions,
             ModelReverseEngineerOptions modelOptions,
             ModelCodeGenerationOptions codeOptions,
+            bool removeNullableBoolDefaults,
             ServiceProvider serviceProvider)
         {
             var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
@@ -176,6 +178,18 @@ namespace ReverseEngineer20.ReverseEngineer
             var _selector = serviceProvider.GetService<IModelCodeGeneratorSelector>();
 
             var databaseModel = _databaseModelFactory.Create(connectionString, databaseOptions);
+
+            if (removeNullableBoolDefaults)
+            {
+                foreach (var column in databaseModel.Tables
+                    .SelectMany(table => table.Columns
+                        .Where(column => column.StoreType == "bit"
+                            && !column.IsNullable
+                            && !string.IsNullOrEmpty(column.DefaultValueSql))))
+                {
+                    column.DefaultValueSql = null;
+                }
+            }
 #if CORE50
             var model = _factory.Create(databaseModel, modelOptions);
 #else

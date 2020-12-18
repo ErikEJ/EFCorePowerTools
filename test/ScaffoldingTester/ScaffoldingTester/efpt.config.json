@@ -193,6 +193,7 @@
          "ObjectType": 1
       }
    ],
+   "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
