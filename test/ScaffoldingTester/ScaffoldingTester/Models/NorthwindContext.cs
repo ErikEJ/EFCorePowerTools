@@ -84,6 +84,8 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Category>(entity =>
             {
+                entity.HasComment("Table contains information for File Reference entites.");
+
                 entity.HasIndex(e => e.CategoryName)
                     .HasName("CategoryName");
 

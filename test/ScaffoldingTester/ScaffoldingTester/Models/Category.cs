@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace ScaffoldingTester.Models
 {
+    /// <summary>
+    /// Table contains information for File Reference entites.
+    /// </summary>
     public partial class Category
     {
         public Category()
