@@ -62,6 +62,11 @@
                       Content="Use EF6 pluralizer"
                       IsChecked="{Binding Model.UseEf6Pluralizer}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
+
+            <CheckBox TabIndex="5"
+                      Content="Remove default constraint from bool columns"
+                      IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}" 
+                      Style="{StaticResource MarginCheckBlockStyle}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="20"

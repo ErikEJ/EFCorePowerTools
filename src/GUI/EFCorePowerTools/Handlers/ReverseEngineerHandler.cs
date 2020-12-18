@@ -198,6 +198,7 @@ namespace EFCorePowerTools.Handlers
                     presets.UseEf6Pluralizer = options.UseLegacyPluralizer;
                     presets.MapSpatialTypes = options.UseSpatial;
                     presets.MapNodaTimeTypes = options.UseNodaTime;
+                    presets.UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -230,12 +231,13 @@ namespace EFCorePowerTools.Handlers
                     SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage,
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
                     SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated,
+                    UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.Objects.ToList(),
                     CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList(),
                     FilterSchemas = filterSchemas,
-                    Schemas = schemas?.ToList()
+                    Schemas = schemas?.ToList(),
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer
