@@ -133,6 +133,10 @@
          "ObjectType": 3
       },
       {
+         "Name": "[dbo].[CategoryUpdate]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[CustOrderHist]",
          "ObjectType": 1
       },

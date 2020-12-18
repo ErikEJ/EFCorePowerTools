@@ -18,6 +18,39 @@ namespace ScaffoldingTester.Models
             _context = context;
         }
 
+        public async Task<int> CategoryUpdate(string name, int? id, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "name",
+                    Size = 200,
+                    Value = name ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "id",
+                    Value = id ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[CategoryUpdate] @name, @id", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public async Task<CustOrderHistDboResult[]> CustOrderHistDbo(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
@@ -157,7 +190,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public async Task<OutputFailResult[]> OutputFail(OutputParameter<string> RESPONSESTATUS, OutputParameter<string> RESPONSEMESSSAGE, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public async Task<int> OutputFail(OutputParameter<string> RESPONSESTATUS, OutputParameter<string> RESPONSEMESSSAGE, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterRESPONSESTATUS = new SqlParameter
             {
@@ -186,7 +219,7 @@ namespace ScaffoldingTester.Models
                 parameterRESPONSEMESSSAGE,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<OutputFailResult>("EXEC @returnValue = [dbo].[OutputFail] @RESPONSESTATUS OUTPUT, @RESPONSEMESSSAGE OUTPUT", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[OutputFail] @RESPONSESTATUS OUTPUT, @RESPONSEMESSSAGE OUTPUT", sqlParameters, cancellationToken);
 
             RESPONSESTATUS.SetValue(parameterRESPONSESTATUS.Value);
             RESPONSEMESSSAGE.SetValue(parameterRESPONSEMESSSAGE.Value);
@@ -195,7 +228,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public async Task<ReturnValueResult[]> ReturnValue(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public async Task<int> ReturnValue(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -208,7 +241,7 @@ namespace ScaffoldingTester.Models
             {
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<ReturnValueResult>("EXEC @returnValue = [dbo].[ReturnValue]", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[ReturnValue]", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -511,7 +544,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public async Task<TestMethodOutputNoParamsResult[]> TestMethodOutputNoParams(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public async Task<int> TestMethodOutputNoParams(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -524,14 +557,14 @@ namespace ScaffoldingTester.Models
             {
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<TestMethodOutputNoParamsResult>("EXEC @returnValue = [dbo].[TestMethodOutputNoParams]", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[TestMethodOutputNoParams]", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public async Task<TestMethodOutputNoResultResult[]> TestMethodOutputNoResult(int? testParameter1, string testParameter4, OutputParameter<string> testParameter2, OutputParameter<string> testParameter3, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public async Task<int> TestMethodOutputNoResult(int? testParameter1, string testParameter4, OutputParameter<string> testParameter2, OutputParameter<string> testParameter3, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parametertestParameter2 = new SqlParameter
             {
@@ -573,7 +606,7 @@ namespace ScaffoldingTester.Models
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<TestMethodOutputNoResultResult>("EXEC @returnValue = [dbo].[TestMethodOutputNoResult] @testParameter1, @testParameter2 OUTPUT, @testParameter3 OUTPUT, @testParameter4", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[TestMethodOutputNoResult] @testParameter1, @testParameter2 OUTPUT, @testParameter3 OUTPUT, @testParameter4", sqlParameters, cancellationToken);
 
             testParameter2.SetValue(parametertestParameter2.Value);
             testParameter3.SetValue(parametertestParameter3.Value);

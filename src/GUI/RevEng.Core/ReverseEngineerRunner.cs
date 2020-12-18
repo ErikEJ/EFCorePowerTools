@@ -181,7 +181,7 @@ namespace ReverseEngineer20.ReverseEngineer
 
             if (removeNullableBoolDefaults)
             {
-                foreach (var column in databaseModel.Tables
+                foreach (var column in databaseModel.Tables 
                     .SelectMany(table => table.Columns
                         .Where(column => column.StoreType == "bit"
                             && !column.IsNullable

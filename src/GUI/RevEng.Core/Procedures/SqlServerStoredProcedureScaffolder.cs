@@ -225,8 +225,15 @@ namespace RevEng.Core.Procedures
                         }
                     }
                     _sb.AppendLine("};");
-                    
-                    _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
+
+                    if (procedure.HasValidResultSet && procedure.ResultElements.Count == 0)
+                    {
+                        _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                    }
+                    else
+                    {
+                        _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
+                    }
 
                     _sb.AppendLine();
 
@@ -262,7 +269,14 @@ namespace RevEng.Core.Procedures
 
         private static string GenerateMethodSignature(Procedure procedure, List<ProcedureParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
-            var line = $"public async Task<{identifier}Result[]> {identifier}({string.Join(", ", paramStrings)}";
+            var returnType = $"Task<{identifier}Result[]>";
+
+            if (procedure.HasValidResultSet && procedure.ResultElements.Count == 0)
+            {
+                returnType = $"Task<int>";
+            }
+
+            var line = $"public async {returnType} {identifier}({string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
