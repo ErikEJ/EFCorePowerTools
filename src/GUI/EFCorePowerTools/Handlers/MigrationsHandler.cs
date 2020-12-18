@@ -38,44 +38,34 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework")
-                    && !project.IsNetCore())
+                if (!project.IsNetCore30OrHigher())
                 {
-                    EnvDteHelper.ShowError("Currently only .NET Framework and .NET Core 2.0 projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    EnvDteHelper.ShowError("Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
                     return;
                 }
 
                 var outputFolder = Path.GetDirectoryName(outputPath);
 
-                if (!project.IsNetCore() && !File.Exists(Path.Combine(outputFolder, "Microsoft.EntityFrameworkCore.dll")))
+                var result = await project.ContainsEfCoreDesignReferenceAsync();
+
+                if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError("EF Core is not installed in the current project");
+                    EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
                     return;
                 }
 
-                if (project.IsNetCore())
+                if (!result.Item1)
                 {
-                    var result = await project.ContainsEfCoreDesignReferenceAsync();
-
-                    if (string.IsNullOrEmpty(result.Item2))
+                    if (!Version.TryParse(result.Item2, out Version version))
                     {
-                        EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
+                        EnvDteHelper.ShowError($"Cannot support version {version}, notice that previews are not supported.");
                         return;
                     }
-
-                    if (!result.Item1)
-                    {
-                        if (!Version.TryParse(result.Item2, out Version version))
-                        {
-                            EnvDteHelper.ShowError($"Cannot support version {version}, notice that previews are not supported.");
-                            return;
-                        }
-                        var nugetHelper = new NuGetHelper();
-                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                        EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
-                        return;
-                    }
-                }                
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
+                    EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
+                    return;
+                }
 
                 var migrationsDialog = _package.GetView<IMigrationOptionsDialog>();
                 migrationsDialog.UseProjectForMigration(project)

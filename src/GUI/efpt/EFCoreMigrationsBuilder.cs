@@ -239,13 +239,7 @@ namespace ReverseEngineer20
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
-#if CORE21
-            return new DesignTimeServicesBuilder(assembly, reporter, Array.Empty<string>());
-#else
-#if CORE22 || CORE50
             return new DesignTimeServicesBuilder(assembly, assembly, reporter, Array.Empty<string>());
-#endif
-#endif
         }
 
         private Assembly Load(string assemblyPath)

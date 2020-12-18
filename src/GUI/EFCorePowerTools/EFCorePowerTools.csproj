@@ -194,18 +194,6 @@
     <Resource Include="Resources\Table_16x.png" />
     <Resource Include="Resources\Add_16x.png" />
     <Resource Include="Resources\Remove_16x.png" />
-    <Content Include="efpt\2.2.0\efpt.exe">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.2.0\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.2.6\efpt.exe">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.2.6\Microsoft.EntityFrameworkCore.Design.dll">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\7.png" />
     <Resource Include="Resources\TableWarning_16x.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
@@ -214,10 +202,6 @@
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
     <Content Include="CodeTemplates.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efpt22.exe.zip">
-      <Link>efpt22.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\lib\efpt30.exe.zip">
@@ -243,12 +227,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="efpt.renaming.json" />
-    <Content Include="efpt\2.2.0\efpt.exe.config">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="efpt\2.2.6\efpt.exe.config">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <None Include="Key.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
