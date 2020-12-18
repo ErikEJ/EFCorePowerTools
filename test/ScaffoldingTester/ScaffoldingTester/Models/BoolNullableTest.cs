@@ -7,6 +7,6 @@ namespace ScaffoldingTester.Models
     public partial class BoolNullableTest
     {
         public int Id { get; set; }
-        public bool? TestBool { get; set; }
+        public bool TestBool { get; set; }
     }
 }
