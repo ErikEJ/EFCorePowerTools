@@ -64,7 +64,8 @@ ORDER BY ROUTINE_NAME";
                     var procedure = new Procedure
                     {
                         Schema = row["ROUTINE_SCHEMA"].ToString(),
-                        Name = row["ROUTINE_NAME"].ToString()
+                        Name = row["ROUTINE_NAME"].ToString(),
+                        HasValidResultSet = true,
                     };
 
                     if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
@@ -78,6 +79,7 @@ ORDER BY ROUTINE_NAME";
                             }
                             catch (Exception ex)
                             {
+                                procedure.HasValidResultSet = false;
                                 errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
                                 _logger?.Logger.LogWarning(ex, $"Unable to scaffold {row["ROUTINE_NAME"]}");
                             }

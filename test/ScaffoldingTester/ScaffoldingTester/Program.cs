@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using ScaffoldingTester.Models;
+﻿using ScaffoldingTester.Models;
 using System;
 
 namespace ScaffoldingTester
@@ -30,11 +28,7 @@ namespace ScaffoldingTester
             var output1 = new OutputParameter<string>();
             var output2 = new OutputParameter<string>();
             var output3 = new OutputParameter<int>();
-            var result = await procs.TestMethodOutputNoResult(0, output1, output2, output3);
-            if (result != null)
-            {
-                Console.Error.WriteLine($"AssertEqual failed. Expected: null.");
-            }
+            var result = await procs.TestMethodOutputNoResult(0, null, output1, output2, output3);
             
             var result2 = await procs.CustOrderHistDupe("ALFKI");
             if (result2.Length != 11)
@@ -49,6 +43,17 @@ namespace ScaffoldingTester
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 42. Actual: {return1.Value}.");
             }
 
+            var rowsResult = await procs.CategoryUpdate("Beverages", 1);
+            if (rowsResult != 1)
+            {
+                Console.Error.WriteLine($"AssertEqual failed. Expected: 1. Actual: {rowsResult}.");
+            }
+
+            var rowsResult2 = await procs.CategoryUpdate("Beverages", int.MinValue);
+            if (rowsResult2 != 0)
+            {
+                Console.Error.WriteLine($"AssertEqual failed. Expected: 0. Actual: {rowsResult2}.");
+            }
         }
     }
 }
