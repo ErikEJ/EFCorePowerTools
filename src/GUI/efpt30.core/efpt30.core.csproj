@@ -6,6 +6,7 @@
     <AssemblyName>efpt</AssemblyName>
     <RootNamespace>ReverseEngineer20</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

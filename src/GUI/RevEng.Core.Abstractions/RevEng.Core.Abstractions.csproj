@@ -6,7 +6,6 @@
     <RootNamespace>RevEng.Core.Interfaces</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
 </Project>
