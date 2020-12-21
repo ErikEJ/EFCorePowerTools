@@ -250,10 +250,10 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(10, result.Count());
-            for (var i = 0; i < result.Length; i++)
+            Assert.AreEqual(11, result.Count());
+            for (var i = 0; i < result.Length - 1; i++)
             {
-                Assert.AreEqual(databaseObjects[i].DisplayName, result[i].Name);
+                Assert.AreEqual(databaseObjects[i + 1].DisplayName, result[i].Name);
             }
         }
 
@@ -274,7 +274,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Length);
+            Assert.AreEqual(6, result.Length);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
                 Assert.IsTrue(result.Any(c => c.Name == item.Objects.First().ModelDisplayName));
@@ -371,11 +371,20 @@ namespace UnitTests.ViewModels
             vm.Types[0].Schemas[0].Objects[0].NewName = "NewTableName";
             vm.Types[0].Schemas[0].Objects[0].Columns[0].NewName = "NewColumnName";
 
+            vm.Types[0].Schemas[3].Objects[0].SetSelectedCommand.Execute(true);
+            vm.Types[0].Schemas[3].Objects[0].NewName = "DepartmentDetail";
+
+            vm.Types[0].Schemas[3].Objects[0].Columns[0].SetSelectedCommand.Execute(true);
+            vm.Types[0].Schemas[3].Objects[0].Columns[0].NewName = "DepartmentName";
+
             //Assert
             var renamedObjects = vm.GetRenamedObjects();
             Assert.IsNotNull(renamedObjects);
             Assert.AreSame(renamedObjects.First().Tables[0].NewName, "NewTableName");
             Assert.AreSame(renamedObjects.First().Tables[0].Columns[0].NewName, "NewColumnName");
+
+            Assert.AreSame(renamedObjects.Last().Tables[0].NewName, "DepartmentDetail");
+            Assert.AreSame(renamedObjects.Last().Tables[0].Columns[0].NewName, "DepartmentName");
         }
 
         private static TableModel[] GetDatabaseObjects()
@@ -400,7 +409,7 @@ namespace UnitTests.ViewModels
                 };
             }
 
-            var r = new TableModel[10];
+            var r = new TableModel[11];
 
             r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo", ObjectType.Table, CreateColumnsWithId());
             r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "__", ObjectType.Table, CreateColumnsWithId());
@@ -412,6 +421,7 @@ namespace UnitTests.ViewModels
             r[7] = new TableModel("[views].[view2]", "view2", "views", ObjectType.View, CreateColumnsWithoutId());
             r[8] = new TableModel("[stored].[procedure1]", "procedure1", "stored", ObjectType.Procedure, new ColumnModel[0]);
             r[9] = new TableModel("[stored].[procedure2]", "procedure2", "stored", ObjectType.Procedure, new ColumnModel[0]);
+            r[10] = new TableModel("departmentdetail", "departmentdetail", null, ObjectType.Table, new List<ColumnModel> { new ColumnModel("departmentname", false), new ColumnModel("Id", true) }.ToArray());
             return r;
         }
 
@@ -429,7 +439,7 @@ namespace UnitTests.ViewModels
 
         private static Schema[] GetReplacers()
         {
-            var r = new Schema[2];
+            var r = new Schema[3];
 
             r[0] = new Schema()
             {
@@ -440,7 +450,8 @@ namespace UnitTests.ViewModels
                 TableRegexPattern = "TableRegexPattern",
                 Tables = new List<TableRenamer>
                 {
-                    new TableRenamer { 
+                    new TableRenamer 
+                    { 
                         Name = "atlas",
                         NewName = "newatlas",
                         Columns = new List<ColumnNamer>
@@ -455,6 +466,24 @@ namespace UnitTests.ViewModels
             {
                 SchemaName = "other",
                 UseSchemaName = true,
+            };
+
+            r[2] = new Schema()
+            {
+                SchemaName = null,
+                UseSchemaName = false,
+                Tables = new List<TableRenamer>
+                {
+                    new TableRenamer 
+                    {
+                        Name = "departmentdetail",
+                        NewName = "DepartmentDetail",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "departmentname", NewName = "DepartmentName" }
+                        }
+                    }
+                },
             };
 
             return r;
