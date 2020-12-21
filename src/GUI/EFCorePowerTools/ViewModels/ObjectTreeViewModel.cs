@@ -143,7 +143,7 @@
 
                 foreach (var schema in objectsBySchema)
                 {
-                    var schemaReplacer = customReplacers?.FirstOrDefault(c => c.SchemaName.Equals(schema.Key, StringComparison.OrdinalIgnoreCase));
+                    var schemaReplacer = customReplacers?.FirstOrDefault(c => c.SchemaName == schema.Key);
                     var objectReplacers = schemaReplacer?.Tables;
 
                     var svm = _schemaInformationViewModelFactory();
@@ -153,7 +153,7 @@
 
                     foreach (var obj in schema)
                     {
-                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
+                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name == obj.Name);
                         var tvm = _tableInformationViewModelFactory();
                         tvm.Name = obj.Name;
                         tvm.ModelDisplayName = obj.DisplayName;
