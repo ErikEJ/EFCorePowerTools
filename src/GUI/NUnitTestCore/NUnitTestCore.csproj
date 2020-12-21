@@ -12,6 +12,7 @@
     <None Remove="Issue208.dacpac" />
     <None Remove="Issue210.dacpac" />
     <None Remove="TestDb.dacpac" />
+    <None Remove="AdventureWorks2019.edmx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     <Content Include="TestDb.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AdventureWorks2019.edmx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +43,7 @@
   <ItemGroup>
     <ProjectReference Include="..\efreveng\efreveng.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\ErikJ.EntityFrameworkCore.Edmx\ErikJ.EntityFrameworkCore.Edmx.csproj" />
   </ItemGroup>
 
 </Project>
