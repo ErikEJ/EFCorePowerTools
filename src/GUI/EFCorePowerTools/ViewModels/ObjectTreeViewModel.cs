@@ -153,7 +153,7 @@
 
                     foreach (var obj in schema)
                     {
-                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name == obj.Name);
+                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
                         var tvm = _tableInformationViewModelFactory();
                         tvm.Name = obj.Name;
                         tvm.ModelDisplayName = obj.DisplayName;
