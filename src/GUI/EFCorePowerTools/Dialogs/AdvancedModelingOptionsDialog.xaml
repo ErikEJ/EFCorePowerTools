@@ -64,7 +64,7 @@
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="5"
-                      Content="Remove default constraint from bool columns"
+                      Content="Remove SQL default from bool columns (preview)"
                       IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
         </StackPanel>
