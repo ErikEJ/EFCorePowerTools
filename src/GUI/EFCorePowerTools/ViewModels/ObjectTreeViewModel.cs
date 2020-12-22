@@ -76,8 +76,18 @@
                 {
                     var objectIsRenamed = !obj.Name.Equals(obj.NewName);
                     var renamedColumns = obj.Columns.Where(c => !c.Name.Equals(c.NewName) && c.IsSelected.Value);
-                    if (objectIsRenamed || renamedColumns.Any())
+
+                    var originalReplacers = _allSchemas.Where(s => s.SchemaName == schema.Name)
+                        .SelectMany(a => a.Tables.Where(t => t.Columns != null))
+                        .ToList();
+                    var ignoredReplacers = originalReplacers.SelectMany(o => o.Columns.Where(c => c.Name.Equals(c.NewName))).ToList();
+ 
+                    if (objectIsRenamed || renamedColumns.Any() || ignoredReplacers.Any())
                     {
+                        var columnRenamers = renamedColumns
+                            .Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName })
+                            .Concat(ignoredReplacers);
+
                         if (replacingSchema.Tables == null)
                             replacingSchema.Tables = new List<TableRenamer>();
 
@@ -85,8 +95,8 @@
                         {
                             Name = obj.Name,
                             NewName = obj.NewName,
-                            Columns = renamedColumns.Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName }).ToList()
-                        });
+                            Columns = columnRenamers.ToList(),
+                        }); 
                     }
                 }
 
@@ -129,7 +139,14 @@
                 (ObjectType.ScalarFunction, "Functions")
             };
 
-            _allSchemas = customReplacers ?? new List<Schema>();
+            if (customReplacers != null)
+            {
+                _allSchemas = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Schema>>(Newtonsoft.Json.JsonConvert.SerializeObject(customReplacers));
+            }
+            else
+            {
+                _allSchemas = new List<Schema>();
+            }
 
             foreach (var objectType in objectTypes)
             {
