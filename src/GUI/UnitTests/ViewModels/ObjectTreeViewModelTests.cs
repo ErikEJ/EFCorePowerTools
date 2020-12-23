@@ -4,7 +4,6 @@ namespace UnitTests.ViewModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Shared.Models;
@@ -115,6 +114,54 @@ namespace UnitTests.ViewModels
                     }
                 }
             }
+        }
+
+        [Test]
+        public void AddObjects_Replacers_Issue679()
+        {
+            // Arrange
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+
+            var objects = new TableModel[2];
+            objects[0] = new TableModel("departmentdetail", "departmentdetail", null, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false) }.ToArray());
+            objects[1] = new TableModel("employeedetail", "employeedetail", null, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false) }.ToArray());
+
+            var replacers = new Schema[1];
+            replacers[0] = new Schema()
+            {
+                SchemaName = null,
+                UseSchemaName = false,
+                Tables = new List<TableRenamer>
+                {
+                    new TableRenamer
+                    {
+                        Name = "departmentdetail",
+                        NewName = "DepartmentDetail",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "DEPTCode", NewName = "DEPTCode" },
+                        }
+                    },
+                    new TableRenamer
+                    {
+                        Name = "employeedetail",
+                        NewName = "EmployeeDetail",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "EMPCode", NewName = "EMPCode" },
+                        }
+                    }
+                },
+            };
+
+            // Act
+            vm.AddObjects(objects, replacers);
+            vm.SetSelectionState(true);
+            var renamers = vm.GetRenamedObjects();
+
+            // Assert
+            Assert.AreEqual(1, renamers.First().Tables[0].Columns.Count);
+            Assert.AreEqual(1, renamers.First().Tables[1].Columns.Count);
         }
 
         [Test]
