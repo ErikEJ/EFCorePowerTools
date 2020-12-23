@@ -78,7 +78,7 @@
                     var renamedColumns = obj.Columns.Where(c => !c.Name.Equals(c.NewName) && c.IsSelected.Value);
 
                     var originalReplacers = _allSchemas.Where(s => s.SchemaName == schema.Name)
-                        .SelectMany(a => a.Tables.Where(t => t.Columns != null))
+                        .SelectMany(a => a.Tables.Where(t => t.Columns != null && t.Name == obj.Name))
                         .ToList();
                     var ignoredReplacers = originalReplacers.SelectMany(o => o.Columns.Where(c => c.Name.Equals(c.NewName))).ToList();
  
