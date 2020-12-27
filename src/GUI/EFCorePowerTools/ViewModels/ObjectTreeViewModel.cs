@@ -121,6 +121,11 @@
                 var existingSchema = result.FirstOrDefault(s => s.SchemaName == schema.SchemaName);
                 if (existingSchema == null)
                 {
+                    if (schema.Tables?.Count == 0)
+                    {
+                        schema.Tables = null;
+                    }
+
                     result.Add(schema);
                 }
             }

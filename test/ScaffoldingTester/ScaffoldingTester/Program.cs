@@ -13,13 +13,13 @@ namespace ScaffoldingTester
 
             var sret = new OutputParameter<string>();
             var returned = new OutputParameter<string>();
-            await procs.OutputFail(sret, returned);
+            await procs.OutputFailAsync(sret, returned);
             if (sret.Value != "yes")
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: \"yes\". Actual: {sret.Value}.");
             }
 
-            var spacesResult = await procs.Spaces();
+            var spacesResult = await procs.SpacesAsync();
             if (spacesResult.Length != 1)
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 1. Actual: {spacesResult.Length}.");
@@ -28,28 +28,28 @@ namespace ScaffoldingTester
             var output1 = new OutputParameter<string>();
             var output2 = new OutputParameter<string>();
             var output3 = new OutputParameter<int>();
-            var result = await procs.TestMethodOutputNoResult(0, null, output1, output2, output3);
+            var result = await procs.TestMethodOutputNoResultAsync(0, null, output1, output2, output3);
             
-            var result2 = await procs.CustOrderHistDupe("ALFKI");
+            var result2 = await procs.CustOrderHistDupeAsync("ALFKI");
             if (result2.Length != 11)
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 11. Actual: {result2.Length}.");
             }
 
             var return1 = new OutputParameter<int>();
-            var test = await procs.ReturnValue(return1);
+            var test = await procs.ReturnValueAsync(return1);
             if (return1.Value != 42)
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 42. Actual: {return1.Value}.");
             }
 
-            var rowsResult = await procs.CategoryUpdate("Beverages", 1);
+            var rowsResult = await procs.CategoryUpdateAsync("Beverages", 1);
             if (rowsResult != 1)
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 1. Actual: {rowsResult}.");
             }
 
-            var rowsResult2 = await procs.CategoryUpdate("Beverages", int.MinValue);
+            var rowsResult2 = await procs.CategoryUpdateAsync("Beverages", int.MinValue);
             if (rowsResult2 != 0)
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 0. Actual: {rowsResult2}.");
