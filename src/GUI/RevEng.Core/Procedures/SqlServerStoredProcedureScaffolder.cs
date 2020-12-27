@@ -276,7 +276,7 @@ namespace RevEng.Core.Procedures
                 returnType = $"Task<int>";
             }
 
-            var line = $"public async {returnType} {identifier}({string.Join(", ", paramStrings)}";
+            var line = $"public async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
