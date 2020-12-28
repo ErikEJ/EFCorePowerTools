@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+    public partial class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
         public void Configure(EntityTypeBuilder<Employee> entity)
         {
@@ -51,6 +51,10 @@ namespace ConsoleApp.Models.Configurations
                 .WithMany(p => p.InverseReportsToNavigation)
                 .HasForeignKey(d => d.ReportsTo)
                 .HasConstraintName("FK_EmployeeReportsTo");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Employee> entity);
     }
 }

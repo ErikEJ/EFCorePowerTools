@@ -9,13 +9,17 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class MediaTypeConfiguration : IEntityTypeConfiguration<MediaType>
+    public partial class MediaTypeConfiguration : IEntityTypeConfiguration<MediaType>
     {
         public void Configure(EntityTypeBuilder<MediaType> entity)
         {
             entity.ToTable("MediaType");
 
             entity.Property(e => e.Name).HasMaxLength(120);
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<MediaType> entity);
     }
 }

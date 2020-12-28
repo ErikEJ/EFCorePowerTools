@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
+    public partial class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
     {
         public void Configure(EntityTypeBuilder<Invoice> entity)
         {
@@ -36,6 +36,10 @@ namespace ConsoleApp.Models.Configurations
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_InvoiceCustomerId");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Invoice> entity);
     }
 }

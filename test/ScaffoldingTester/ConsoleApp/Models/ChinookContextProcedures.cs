@@ -18,7 +18,7 @@ namespace ConsoleApp.Models
             _context = context;
         }
 
-        public async Task<GetTitlesResult[]> GetTitles(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public async Task<GetTitlesResult[]> GetTitlesAsync(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {

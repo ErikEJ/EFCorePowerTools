@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class InvoiceLineConfiguration : IEntityTypeConfiguration<InvoiceLine>
+    public partial class InvoiceLineConfiguration : IEntityTypeConfiguration<InvoiceLine>
     {
         public void Configure(EntityTypeBuilder<InvoiceLine> entity)
         {
@@ -32,6 +32,10 @@ namespace ConsoleApp.Models.Configurations
                 .HasForeignKey(d => d.TrackId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_InvoiceLineTrackId");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<InvoiceLine> entity);
     }
 }

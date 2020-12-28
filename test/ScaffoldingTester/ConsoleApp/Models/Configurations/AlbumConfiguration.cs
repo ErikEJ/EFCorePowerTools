@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class AlbumConfiguration : IEntityTypeConfiguration<Album>
+    public partial class AlbumConfiguration : IEntityTypeConfiguration<Album>
     {
         public void Configure(EntityTypeBuilder<Album> entity)
         {
@@ -29,6 +29,10 @@ namespace ConsoleApp.Models.Configurations
                 .HasForeignKey(d => d.ArtistId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AlbumArtistId");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Album> entity);
     }
 }
