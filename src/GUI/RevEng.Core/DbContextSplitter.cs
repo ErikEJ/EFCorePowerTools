@@ -15,7 +15,7 @@ namespace ReverseEngineer20.ReverseEngineer
             var dbContextFilePath = Path.GetFullPath(dbContextPath);
 
             var configurationsDirectoryPath = Path.Combine(Path.GetDirectoryName(dbContextFilePath), "Configurations");
-            
+
             Directory.CreateDirectory(configurationsDirectoryPath);
 
             var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
@@ -75,12 +75,16 @@ namespace ReverseEngineer20.ReverseEngineer
                 _sb.AppendLine();
                 _sb.AppendLine($"namespace {configurationNamespace}");
                 _sb.AppendLine("{");
-                _sb.AppendLine(new string(' ', 4) + $"public class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
+                _sb.AppendLine(new string(' ', 4) + $"public partial class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
                 _sb.AppendLine(new string(' ', 4) + "{");
                 _sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
                 _sb.AppendLine(new string(' ', 8) + "{");
                 _sb.AppendLine(new string(' ', 12) + statements);
+                _sb.AppendLine();
+                _sb.AppendLine(new string(' ', 12) + "OnConfigurePartial(entity);");
                 _sb.AppendLine(new string(' ', 8) + "}");
+                _sb.AppendLine();
+                _sb.AppendLine(new string(' ', 8) + $"partial void OnConfigurePartial(EntityTypeBuilder<{entityName}> entity);");
                 _sb.AppendLine(new string(' ', 4) + "}");
                 _sb.AppendLine("}");
 
@@ -92,11 +96,18 @@ namespace ReverseEngineer20.ReverseEngineer
 
                 result.Add(configurationFilePath);
 
-                configurationLines.Add( $"{new string(' ', 12)}modelBuilder.ApplyConfiguration(new {entityName}Configuration());");
+                configurationLines.Add($"{new string(' ', 12)}modelBuilder.ApplyConfiguration(new {entityName}Configuration());");
             }
 
-            var sourceLines = File.ReadAllLines(dbContextFilePath, Encoding.UTF8);
+            var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
 
+            File.WriteAllLines(dbContextFilePath, finalSource, Encoding.UTF8);
+
+            return result;
+        }
+
+        private static List<string> BuildDbContext(string configurationNamespace, List<string> configurationLines, string[] sourceLines)
+        {
             var finalSource = new List<string>();
             var usings = new List<string>();
             var inEntityBuilder = false;
@@ -148,10 +159,7 @@ namespace ReverseEngineer20.ReverseEngineer
             usings.Sort();
 
             finalSource.InsertRange(1, usings);
-
-            File.WriteAllLines(dbContextFilePath, finalSource, Encoding.UTF8);
-
-            return result;
+            return finalSource;
         }
     }
 }

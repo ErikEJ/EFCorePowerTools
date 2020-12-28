@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class TitleConfiguration : IEntityTypeConfiguration<Title>
+    public partial class TitleConfiguration : IEntityTypeConfiguration<Title>
     {
         public void Configure(EntityTypeBuilder<Title> entity)
         {
@@ -20,6 +20,10 @@ namespace ConsoleApp.Models.Configurations
             entity.Property(e => e.AlbumTitle)
                 .IsRequired()
                 .HasMaxLength(160);
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Title> entity);
     }
 }

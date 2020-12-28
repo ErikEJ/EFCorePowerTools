@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
+    public partial class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         public void Configure(EntityTypeBuilder<Customer> entity)
         {
@@ -49,6 +49,10 @@ namespace ConsoleApp.Models.Configurations
                 .WithMany(p => p.Customers)
                 .HasForeignKey(d => d.SupportRepId)
                 .HasConstraintName("FK_CustomerSupportRepId");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Customer> entity);
     }
 }

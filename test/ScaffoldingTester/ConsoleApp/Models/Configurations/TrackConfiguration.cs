@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class TrackConfiguration : IEntityTypeConfiguration<Track>
+    public partial class TrackConfiguration : IEntityTypeConfiguration<Track>
     {
         public void Configure(EntityTypeBuilder<Track> entity)
         {
@@ -44,6 +44,10 @@ namespace ConsoleApp.Models.Configurations
                 .HasForeignKey(d => d.MediaTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TrackMediaTypeId");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Track> entity);
     }
 }

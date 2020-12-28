@@ -9,13 +9,17 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class GenreConfiguration : IEntityTypeConfiguration<Genre>
+    public partial class GenreConfiguration : IEntityTypeConfiguration<Genre>
     {
         public void Configure(EntityTypeBuilder<Genre> entity)
         {
             entity.ToTable("Genre");
 
             entity.Property(e => e.Name).HasMaxLength(120);
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Genre> entity);
     }
 }
