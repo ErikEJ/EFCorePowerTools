@@ -1,35 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <None Remove="template.dgml" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
+        <PackageVersion>3.1.2</PackageVersion>
+        <Authors>ErikEJ</Authors>
+        <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageReleaseNotes>Bug fixes to generated DGML</PackageReleaseNotes>
+        <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+        <PackageTags>DbContext;EntityFramework;DGML;graph;EFCore;EntityFrameworkCore</PackageTags>
+        <RootNamespace>DgmlBuilder</RootNamespace>
+        <MinClientVersion>4.0</MinClientVersion>
+        <Dependencies>
+            <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.1.0" />
+        </Dependencies>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="template.dgml" />
-  </ItemGroup>
+    <ItemGroup>
+	    <None Remove="template.dgml" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-  </ItemGroup>
+    <ItemGroup>
+	    <EmbeddedResource Include="template.dgml" />
+    </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
-    <PackageVersion>3.1.1</PackageVersion>
-    <Authors>ErikEJ</Authors>
-    <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>Bug fixes to generated DGML</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
-    <PackageTags>DbContext;EntityFramework;DGML;graph;EFCore;EntityFrameworkCore</PackageTags>
-    <RootNamespace>DgmlBuilder</RootNamespace>
-    <MinClientVersion>4.0</MinClientVersion>
-    <Dependencies>
-      <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.1.0" />
-    </Dependencies>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+    <ItemGroup>
+	    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
+    </ItemGroup>
 
 </Project>

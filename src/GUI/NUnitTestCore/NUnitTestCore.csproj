@@ -8,9 +8,20 @@
 
   <ItemGroup>
     <None Remove="AdventureWorks2014.dacpac" />
+    <None Remove="Aw2014Person.txt" />
     <None Remove="Chinook.dacpac" />
+    <None Remove="ChinookContext.txt" />
+    <None Remove="Identity.txt" />
     <None Remove="Issue208.dacpac" />
     <None Remove="Issue210.dacpac" />
+    <None Remove="Issue604.txt" />
+    <None Remove="Issue687.txt" />
+    <None Remove="longview50.txt" />
+    <None Remove="NoFk.txt" />
+    <None Remove="Northwind.txt" />
+    <None Remove="Pfizer.txt" />
+    <None Remove="Samurai.txt" />
+    <None Remove="SingleNav.txt" />
     <None Remove="TestDb.dacpac" />
   </ItemGroup>
 
@@ -18,7 +29,19 @@
     <Content Include="AdventureWorks2014.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Aw2014Person.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Chinook.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ChinookContext.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Issue687.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Identity.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Issue208.dacpac">
@@ -27,9 +50,34 @@
     <Content Include="Issue210.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Issue604.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="longview50.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoFk.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Northwind.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pfizer.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Samurai.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SingleNav.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestDb.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml" Link="template.dgml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +88,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\efreveng\efreveng.csproj" />
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
   </ItemGroup>
 

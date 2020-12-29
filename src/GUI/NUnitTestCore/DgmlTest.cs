@@ -186,6 +186,19 @@ namespace UnitTests
         }
 
         [Test]
+        public void BuildIssue687()
+        {
+            // Act
+            var builder = new DgmlBuilder.DgmlBuilder();
+            var result = builder.Build(ReadAllText("Issue687.txt"), "test", _template);
+
+            // Assert
+            Assert.AreNotEqual(result, null);
+
+            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
+        }
+
+        [Test]
         public void BuildIdentity()
         {
             // Act
@@ -213,7 +226,7 @@ namespace UnitTests
 
         private static string GetTemplate()
         {
-            var resourceName = "UnitTests.template.dgml";
+            var resourceName = "NUnitTestCore.template.dgml";
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {
