@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\efpt\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
-    <Compile Include="..\efpt\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
-    <Compile Include="..\efpt\Program.cs" Link="Program.cs" />
+    <Compile Include="..\efpt30.core\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
+    <Compile Include="..\efpt30.core\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
+    <Compile Include="..\efpt30.core\Program.cs" Link="Program.cs" />
   </ItemGroup>
 
   <ItemGroup>

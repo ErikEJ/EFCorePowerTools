@@ -34,3 +34,7 @@ del System.Runtime.Caching.dll
 del System.Security.Cryptography.ProtectedData.dll 
 del System.Security.Permissions.dll 
 del System.Windows.Extensions.dll
+del RevEng.Core.Abstractions.dll
+del RevEng.Core.Abstractions.pdb
+del System.IO.Packaging.dll
+del System.Resources.Extensions.dll
