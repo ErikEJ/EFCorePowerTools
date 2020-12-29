@@ -249,6 +249,10 @@
       <Project>{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}</Project>
       <Name>EFCorePowerTools.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj">
+      <Project>{079b9426-9230-468e-8d02-2a0de07c7237}</Project>
+      <Name>ErikEJ.EntityFrameworkCore.DgmlBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
       <Name>RevEng.Shared</Name>
