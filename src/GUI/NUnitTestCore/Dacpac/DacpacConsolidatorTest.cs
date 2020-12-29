@@ -35,7 +35,7 @@ namespace UnitTests
 
         private string TestPath(string file)
         {
-            return System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, file);
+            return System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, "Dacpac", file);
         }
     }
 }

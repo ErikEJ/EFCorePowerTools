@@ -36,20 +36,10 @@
   <ItemGroup>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\lib\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\ExtensionVersionServiceTests.cs" />
@@ -83,7 +73,6 @@
     <Content Include="TableResult1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EFCorePowerTools.BLL\EFCorePowerTools.BLL.csproj">
@@ -97,10 +86,6 @@
     <ProjectReference Include="..\EFCorePowerTools\EFCorePowerTools.csproj">
       <Project>{c670be03-6397-4ac0-9914-ad1bb679778f}</Project>
       <Name>EFCorePowerTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj">
-      <Project>{B7227A5D-DDFF-4E18-B3FE-AC992A293D6A}</Project>
-      <Name>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</Name>
     </ProjectReference>
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>

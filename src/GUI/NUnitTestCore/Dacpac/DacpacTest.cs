@@ -176,7 +176,7 @@ namespace UnitTests
 
         private string TestPath(string file)
         {
-            return Path.Combine(TestContext.CurrentContext.TestDirectory, file);
+            return Path.Combine(TestContext.CurrentContext.TestDirectory, "Dacpac", file);
         }
     }
 }

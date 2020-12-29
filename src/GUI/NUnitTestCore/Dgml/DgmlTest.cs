@@ -239,12 +239,12 @@ namespace UnitTests
 
         private string[] ReadAllLines(string file)
         {
-            return File.ReadAllLines(Path.Combine(TestContext.CurrentContext.TestDirectory, file));
+            return File.ReadAllLines(Path.Combine(TestContext.CurrentContext.TestDirectory, "Dgml", file));
         }
 
         private string ReadAllText(string file)
         {
-            return File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, file));
+            return File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "Dgml", file));
         }
     }
 }

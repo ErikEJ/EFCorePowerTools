@@ -26,52 +26,52 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="AdventureWorks2014.dacpac">
+    <Content Include="Dacpac\AdventureWorks2014.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Aw2014Person.txt">
+    <Content Include="Dgml\Aw2014Person.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Chinook.dacpac">
+    <Content Include="Dacpac\Chinook.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ChinookContext.txt">
+    <Content Include="Dgml\ChinookContext.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Issue687.txt">
+    <Content Include="Dgml\Issue687.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Identity.txt">
+    <Content Include="Dgml\Identity.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Issue208.dacpac">
+    <Content Include="Dacpac\Issue208.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Issue210.dacpac">
+    <Content Include="Dacpac\Issue210.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Issue604.txt">
+    <Content Include="Dgml\Issue604.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="longview50.txt">
+    <Content Include="Dgml\longview50.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="NoFk.txt">
+    <Content Include="Dgml\NoFk.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Northwind.txt">
+    <Content Include="Dgml\Northwind.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Pfizer.txt">
+    <Content Include="Dgml\Pfizer.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Samurai.txt">
+    <Content Include="Dgml\Samurai.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SingleNav.txt">
+    <Content Include="Dgml\SingleNav.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestDb.dacpac">
+    <Content Include="Dacpac\TestDb.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -87,9 +87,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\efreveng\efreveng.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
 
 </Project>
