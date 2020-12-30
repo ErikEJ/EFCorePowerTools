@@ -20,7 +20,7 @@
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PropertyGroup>
       <DefineConstants>TRACE;CORE50</DefineConstants>
     </PropertyGroup>
 
