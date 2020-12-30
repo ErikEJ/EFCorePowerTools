@@ -15,17 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="RemoveDupes.cmd" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="RemoveDupes.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

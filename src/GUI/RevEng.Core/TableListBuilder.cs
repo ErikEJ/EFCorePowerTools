@@ -54,18 +54,6 @@ namespace ReverseEngineer20
 
             foreach (var databaseTable in databaseTables)
             {
-                string name;
-                if (_databaseType == DatabaseType.SQLServer || _databaseType == DatabaseType.SQLServerDacpac)
-                {
-                    name = $"[{databaseTable.Schema}].[{databaseTable.Name}]";
-                }
-                else
-                {
-                    name = string.IsNullOrEmpty(databaseTable.Schema)
-                        ? databaseTable.Name
-                        : $"{databaseTable.Schema}.{databaseTable.Name}";
-                }
-
                 var columns = new List<ColumnModel>();
 
                 var primaryKeyColumnNames = databaseTable.PrimaryKey?.Columns.Select(c => c.Name).ToHashSet();
@@ -75,7 +63,7 @@ namespace ReverseEngineer20
                     columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false));
                 }
 
-                buildResult.Add(new TableModel(name, databaseTable.Name, databaseTable.Schema, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
+                buildResult.Add(new TableModel(databaseTable.Name, databaseTable.Schema, _databaseType, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
             }
 
             return buildResult;
@@ -91,13 +79,11 @@ namespace ReverseEngineer20
             return dbModel.Tables.ToList();
         }
 
-        public List<TableModel> GetProcedures(int dbTypeInt)
+        public List<TableModel> GetProcedures()
         {
             var result = new List<TableModel>();
 
-            DatabaseType databaseType = (DatabaseType)dbTypeInt;
-
-            if (databaseType != DatabaseType.SQLServer && databaseType != DatabaseType.SQLServerDacpac)
+            if (_databaseType != DatabaseType.SQLServer && _databaseType != DatabaseType.SQLServerDacpac)
             {
                 return result;    
             }
@@ -114,7 +100,7 @@ namespace ReverseEngineer20
 
             foreach (var procedure in procedureModel.Procedures)
             {
-                result.Add(new TableModel($"[{procedure.Schema}].[{procedure.Name}]", procedure.Name, procedure.Schema, ObjectType.Procedure, null));
+                result.Add(new TableModel(procedure.Name, procedure.Schema, _databaseType, ObjectType.Procedure, null));
             }
 
             return result.OrderBy(c => c.DisplayName).ToList();

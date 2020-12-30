@@ -28,7 +28,7 @@ namespace efreveng
 
                         var buildResult = builder.GetTableModels();
 
-                        buildResult.AddRange(builder.GetProcedures(dbTypeInt));
+                        buildResult.AddRange(builder.GetProcedures());
 
                         Console.Out.WriteLine("Result:");
                         Console.Out.WriteLine(buildResult.Write());
