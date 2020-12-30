@@ -27,7 +27,11 @@ namespace Microsoft.EntityFrameworkCore
         private static string CreateDebugView(DbContext context)
         {
             var model = context.Model;
+#if CORE50
+            return model.AsModel().DebugView.LongView;
+#else
             return model.AsModel().DebugView.View;
+#endif
         }
 
         private static string GetTemplate()
