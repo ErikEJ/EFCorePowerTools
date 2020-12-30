@@ -2,7 +2,7 @@
 {
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using Annotations;
+    using JetBrains.Annotations;
     using ReverseEngineer20;
 
     /// <summary>

@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.Shared.Models
 {
+    using JetBrains.Annotations;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
-    using Annotations;
 
     /// <summary>
     /// A model holding the data of EF Core modeling options.

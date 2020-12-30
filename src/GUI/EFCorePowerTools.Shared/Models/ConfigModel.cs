@@ -1,9 +1,9 @@
 ﻿namespace EFCorePowerTools.Shared.Models
 {
+    using JetBrains.Annotations;
     using System.ComponentModel;
     using System.IO;
     using System.Runtime.CompilerServices;
-    using Annotations;
 
     public class ConfigModel : INotifyPropertyChanged
     {

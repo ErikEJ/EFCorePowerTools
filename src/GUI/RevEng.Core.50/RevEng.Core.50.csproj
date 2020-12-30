@@ -17,7 +17,6 @@
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
     <Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\ProcedureScaffolderOptions.cs" Link="Procedures\ProcedureScaffolderOptions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureModelFactory.cs" Link="Procedures\SqlServerStoredProcedureModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureScaffolder.cs" Link="Procedures\SqlServerStoredProcedureScaffolder.cs" />
@@ -39,7 +38,6 @@
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="5.0.1" />
-    <PackageReference Include="JetBrains.Annotations" Version="2020.2.0-eap" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />

@@ -1,4 +1,4 @@
-﻿using EFCorePowerTools.Shared.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;

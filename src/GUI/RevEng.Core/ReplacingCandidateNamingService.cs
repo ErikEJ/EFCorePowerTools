@@ -120,7 +120,6 @@ namespace ReverseEngineer20.ReverseEngineer
             var baseName = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
             var originalSchema = foreignKey.PrincipalEntityType.GetSchema();
 
-            //var originalTable = foreignKey.DeclaringEntityType.Scaffolding().TableName;
             var schema = GetSchema(originalSchema);
 
             if (schema == null)

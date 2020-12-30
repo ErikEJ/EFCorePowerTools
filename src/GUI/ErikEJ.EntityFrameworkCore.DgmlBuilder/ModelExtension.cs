@@ -27,11 +27,13 @@ namespace Microsoft.EntityFrameworkCore
         private static string CreateDebugView(DbContext context)
         {
             var model = context.Model;
+#pragma warning disable EF1001 // Internal EF Core API usage.
 #if CORE50
             return model.AsModel().DebugView.LongView;
 #else
             return model.AsModel().DebugView.View;
 #endif
+#pragma warning restore EF1001 // Internal EF Core API usage.
         }
 
         private static string GetTemplate()

@@ -1,4 +1,4 @@
-﻿namespace RevEng.Core.Procedures.Scaffolding
+﻿namespace RevEng.Core.Abstractions
 {
     public class ProcedureScaffolderOptions
     {
