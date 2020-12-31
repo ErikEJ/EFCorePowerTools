@@ -44,9 +44,9 @@ namespace RevEng.Core.Procedures
             using (var connection = new SqlConnection(connectionString))
             {
                 string sql = $@"
-SELECT * FROM INFORMATION_SCHEMA.ROUTINES
+SELECT ROUTINE_SCHEMA, ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
 WHERE ROUTINE_TYPE = 'PROCEDURE'
-ORDER BY ROUTINE_NAME";
+ORDER BY ROUTINE_NAME;";
 
                 connection.Open();
 
