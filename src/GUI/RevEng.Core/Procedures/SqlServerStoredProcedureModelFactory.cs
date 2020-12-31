@@ -28,8 +28,8 @@ namespace RevEng.Core.Procedures
 
         private ProcedureModel GetStoredProcedures(string connectionString, ProcedureModelFactoryOptions options)
         {
-            var dtResult = new DataTable();
             var result = new List<Procedure>();
+            var found = new List<Tuple<string, string>>();
             var errors = new List<string>();
 
             if (options.FullModel && !options.Procedures.Any())
@@ -41,35 +41,38 @@ namespace RevEng.Core.Procedures
                 };
             }
 
+            var filter = options.Procedures.ToHashSet();
+
             using (var connection = new SqlConnection(connectionString))
             {
-                string sql = $@"
+                var sql = $@"
 SELECT ROUTINE_SCHEMA, ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
 WHERE ROUTINE_TYPE = 'PROCEDURE'
 ORDER BY ROUTINE_NAME;";
 
-                connection.Open();
-
-                var adapter = new SqlDataAdapter
+                using (var command = new SqlCommand(sql, connection))
                 {
-                    SelectCommand = new SqlCommand(sql, connection)
-                };
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            found.Add(new Tuple<string, string>(reader.GetString(0), reader.GetString(1)));
+                        }
+                    }
+                }
 
-                adapter.Fill(dtResult);
-
-                var filter = options.Procedures.ToHashSet();
-
-                foreach (DataRow row in dtResult.Rows)
+                foreach (var foundProcedure in found)
                 {
-                    var procedure = new Procedure
+                    if (filter.Count == 0 || filter.Contains($"[{foundProcedure.Item1}].[{foundProcedure.Item2}]"))
                     {
-                        Schema = row["ROUTINE_SCHEMA"].ToString(),
-                        Name = row["ROUTINE_NAME"].ToString(),
-                        HasValidResultSet = true,
-                    };
+                        var procedure = new Procedure
+                        {
+                            Schema = foundProcedure.Item1,
+                            Name = foundProcedure.Item2,
+                            HasValidResultSet = true,
+                        };
 
-                    if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
-                    {
                         if (options.FullModel)
                         {
                             procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
@@ -81,7 +84,7 @@ ORDER BY ROUTINE_NAME;";
                             {
                                 procedure.HasValidResultSet = false;
                                 errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
-                                _logger?.Logger.LogWarning(ex, $"Unable to scaffold {row["ROUTINE_NAME"]}");
+                                _logger?.Logger.LogWarning(ex, $"Unable to scaffold {procedure.Schema}.{procedure.Name}");
                             }
                         }
 
