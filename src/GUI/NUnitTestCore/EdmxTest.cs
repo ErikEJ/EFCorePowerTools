@@ -30,7 +30,7 @@ namespace NUnitTestCore
             var dbModel = factory.Create(TestPath("AdventureWorks2019.edmx"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual(15, dbModel.Tables.Count());
         }
 
         private string TestPath(string file)

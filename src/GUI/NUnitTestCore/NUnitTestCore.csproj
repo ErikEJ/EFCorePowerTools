@@ -31,7 +31,9 @@
     <Content Include="TestDb.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="AdventureWorks2019.edmx" />
+    <Content Include="AdventureWorks2019.edmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

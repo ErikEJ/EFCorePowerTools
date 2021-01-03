@@ -64,13 +64,11 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 DefaultSchema = schemas.Count() > 0 ? schemas.First() : "dbo"
             };
 
-            // Assume EDMX version is 3.0
+            // FIXME Assume EDMX version is 3.0 for now
             var edmxv3 = LinqToEdmx.EdmxV3.Load(edmxPath);
 
             if (string.Compare(edmxv3.Version, @"3.0", StringComparison.InvariantCultureIgnoreCase) == 0)
             {
-
-
                 var items = edmxv3.GetItems<LinqToEdmx.Model.ConceptualV3.EntityType>();
 
                 foreach (var item in items)
@@ -80,6 +78,10 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                         Name = item.Name,
                         Schema = GetSchemaNameV3(edmxv3, item.Name),
                     };
+
+                    GetPrimaryKey(item, dbTable);
+
+                    dbModel.Tables.Add(dbTable);
                 }
             }
 
@@ -90,5 +92,37 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
         {
             throw new NotImplementedException();
         }
+
+        private void GetPrimaryKey(LinqToEdmx.Model.ConceptualV3.EntityType table, DatabaseTable dbTable)
+        {
+            if (table.Key.PropertyRefs.Count() == 0) return;
+
+            var pk = table.Key;
+            var primaryKey = new DatabasePrimaryKey
+            {
+                // We do not have information about the primary key name in the model.
+                // So we're making it up
+                Name = string.Concat("PK_", dbTable.Name),
+                Table = dbTable
+            };
+
+            // We do not know if the primary key is clustered because we're not limited to SQL Server Here. 
+            //if (!pk.Clustered)
+            //{
+            //    primaryKey["SqlServer:Clustered"] = false;
+            //}
+
+            foreach (var pkCol in table.Properties)
+            {
+                var dbCol = dbTable.Columns
+                    .Single(c => c.Name == pkCol.Name);
+
+                primaryKey.Columns.Add(dbCol);
+            }
+
+            dbTable.PrimaryKey = primaryKey;
+
+        }
+
     }
 }
