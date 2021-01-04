@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
@@ -70,7 +71,9 @@ namespace ReverseEngineer20.ReverseEngineer
             var arguments = ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
 
             if (schemas != null)
+            {
                 arguments += $" \"{string.Join(",", schemas.Select(s => s.Name.Replace("\"", "\\\"")))}\"";
+            }
 
             return GetTablesInternal(arguments);
         }
@@ -123,13 +126,25 @@ namespace ReverseEngineer20.ReverseEngineer
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "--version",
+                Arguments = "--info",
             };
 
             var result = RunProcess(startInfo);
 
-            return result.StartsWith("3.", StringComparison.OrdinalIgnoreCase)
-                || result.StartsWith("5.", StringComparison.OrdinalIgnoreCase);
+            var flag = false;
+            var regex = new Regex("(?<=.NET SDKs installed:[\\s\\S]+)\\w.+(?= \\[[\\s\\S]+.NET runtimes installed:)");
+            var matches = regex.Matches(result);
+            foreach (Capture item in matches)
+            {
+                flag = item.Value.StartsWith("3.", StringComparison.OrdinalIgnoreCase)
+                    || item.Value.StartsWith("5.", StringComparison.OrdinalIgnoreCase);
+                if (flag)
+                {
+                    break;
+                }
+            }
+
+            return flag;
         }
 
         private static string RunProcess(ProcessStartInfo startInfo)
@@ -147,7 +162,10 @@ namespace ReverseEngineer20.ReverseEngineer
                 {
                     standardOutput.Append(process.StandardOutput.ReadToEnd());
                 }
-                if (process != null) standardOutput.Append(process.StandardOutput.ReadToEnd());
+                if (process != null)
+                {
+                    standardOutput.Append(process.StandardOutput.ReadToEnd());
+                }
             }
 
             return standardOutput.ToString();
