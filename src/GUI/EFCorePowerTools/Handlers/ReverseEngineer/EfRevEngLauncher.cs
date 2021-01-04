@@ -8,7 +8,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ReverseEngineer20.ReverseEngineer
 {
@@ -126,18 +125,17 @@ namespace ReverseEngineer20.ReverseEngineer
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "--info",
+                Arguments = "--list-sdks",
             };
 
             var result = RunProcess(startInfo);
 
             var flag = false;
-            var regex = new Regex("(?<=.NET SDKs installed:[\\s\\S]+)\\w.+(?= \\[[\\s\\S]+.NET runtimes installed:)");
-            var matches = regex.Matches(result);
-            foreach (Capture item in matches)
+            var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var item in sdks)
             {
-                flag = item.Value.StartsWith("3.", StringComparison.OrdinalIgnoreCase)
-                    || item.Value.StartsWith("5.", StringComparison.OrdinalIgnoreCase);
+                flag = item.StartsWith("3.", StringComparison.OrdinalIgnoreCase)
+                    || item.StartsWith("5.", StringComparison.OrdinalIgnoreCase);
                 if (flag)
                 {
                     break;
