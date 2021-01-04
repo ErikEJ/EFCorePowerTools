@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using LinqToEdmx;
+using LinqToEdmx.Model.ConceptualV3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -79,6 +80,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                         Schema = GetSchemaNameV3(edmxv3, item.Name),
                     };
 
+                    GetColumns(item, dbTable/*, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList()*/, edmxv3);
                     GetPrimaryKey(item, dbTable);
 
                     dbModel.Tables.Add(dbTable);
@@ -91,6 +93,80 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
         public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
         {
             throw new NotImplementedException();
+        }
+
+        private void GetColumns(LinqToEdmx.Model.ConceptualV3.EntityType item, DatabaseTable dbTable/*, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints,*/, LinqToEdmx.EdmxV3 model)
+        {
+            var tableColumns = item.Properties;
+                //.Where(i => !i.GetProperty<bool>(Column.IsHidden)
+                //&& i.ColumnType != ColumnType.ColumnSet
+                //// Computed columns not supported for now
+                //// Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
+                //&& i.ColumnType != ColumnType.ComputedColumn
+                //);
+
+            foreach (var col in tableColumns)
+            {
+                //var def = defaultConstraints.Where(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString()).FirstOrDefault();
+                string storeType = GetStoreType(item, col, model);
+                string systemTypeName = col.Type.ToString();
+
+                //if (col.DataType.First().Name.Parts.Count > 1)
+                //{
+                //    if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
+                //    {
+                //        storeType = value.storeType;
+                //        systemTypeName = value.typeName;
+                //    }
+                //}
+                //else
+                //{
+                    var dataTypeName = col.Type.ToString();
+                    int maxLength = int.Parse(col.MaxLength.ToString());
+                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
+                    systemTypeName = dataTypeName;
+                //}
+
+                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression.ToLowerInvariant()) : null;
+
+                var dbColumn = new DatabaseColumn
+                {
+                    Table = dbTable,
+                    Name = col.Name.Parts[2],
+                    IsNullable = col.Nullable,
+                    StoreType = storeType,
+                    DefaultValueSql = defaultValue,
+                    ComputedColumnSql = col.Expression,
+                    ValueGenerated = col.IsIdentity
+                        ? ValueGenerated.OnAdd
+                        : storeType == "rowversion"
+                            ? ValueGenerated.OnAddOrUpdate
+                            : default(ValueGenerated?)
+                };
+                if (storeType == "rowversion")
+                {
+                    dbColumn["ConcurrencyToken"] = true;
+                }
+
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 5)
+                    .Where(p => p.Name.Parts[0] == "SqlColumn")
+                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
+                    .Where(p => p.Name.Parts[4] == "MS_Description")
+                    .FirstOrDefault();
+
+                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
+
+                dbTable.Columns.Add(dbColumn);
+            }
+        }
+
+        private string GetStoreType(LinqToEdmx.Model.ConceptualV3.EntityType item, LinqToEdmx.Model.ConceptualV3.EntityProperty col, EdmxV3 model)
+        {
+            var entityTypeMappings = model.GetItems<EntityContainer>();
+            var storage = entityTypeMappings.Where(m => m.)
         }
 
         private void GetPrimaryKey(LinqToEdmx.Model.ConceptualV3.EntityType table, DatabaseTable dbTable)
