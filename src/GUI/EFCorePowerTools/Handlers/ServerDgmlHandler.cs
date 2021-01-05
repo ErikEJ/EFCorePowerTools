@@ -1,18 +1,18 @@
 ﻿using ErikEJ.SqlCeToolbox.Helpers;
+using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Handlers
 {
     internal class ServerDgmlHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
-
-        public ServerDgmlHandler(EFCorePowerToolsPackage package)
+        public ServerDgmlHandler()
         {
-            _package = package;
         }
 
         public void GenerateServerDgmlFiles()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             EnvDteHelper.ShowError("This feature is no longer supported, install SQLite Toolbox to get it back.");
             return;
         }

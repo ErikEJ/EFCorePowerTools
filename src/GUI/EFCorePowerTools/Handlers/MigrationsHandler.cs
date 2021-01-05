@@ -8,6 +8,7 @@ using System.IO;
 namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
+    using Microsoft.VisualStudio.Shell;
 
     internal class MigrationsHandler
     {
@@ -20,6 +21,8 @@ namespace EFCorePowerTools.Handlers
 
         public async System.Threading.Tasks.Task ManageMigrationsAsync(string outputPath, Project project)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             try
             {
                 if (string.IsNullOrEmpty(outputPath))

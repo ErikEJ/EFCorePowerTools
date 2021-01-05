@@ -5,6 +5,7 @@ using ErikEJ.SqlCeToolbox.Helpers;
 namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
+    using Microsoft.VisualStudio.Shell;
 
     internal class AboutHandler
     {
@@ -17,6 +18,8 @@ namespace EFCorePowerTools.Handlers
 
         public void ShowDialog()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 var dialog = _package.GetView<IAboutDialog>();

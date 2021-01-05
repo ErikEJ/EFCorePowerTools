@@ -16,6 +16,7 @@ using System.Text;
 using ReverseEngineer20.ReverseEngineer;
 using Microsoft.VisualStudio.Data.Services;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -30,8 +31,10 @@ namespace EFCorePowerTools.Handlers
             reverseEngineerHelper = new ReverseEngineerHelper();
         }
 
-        public async Task ReverseEngineerCodeFirstAsync(Project project)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             try
             {
                 var dteH = new EnvDteHelper();
@@ -364,6 +367,8 @@ namespace EFCorePowerTools.Handlers
 
         private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!File.Exists(optionsPath + ".ignore"))
             {
                 File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
@@ -397,7 +402,7 @@ namespace EFCorePowerTools.Handlers
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
         {
             var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
-            return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 
         private async Task<List<TableModel>> GetTablesAsync(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
@@ -409,7 +414,7 @@ namespace EFCorePowerTools.Handlers
             }
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
-            return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
     }
 }

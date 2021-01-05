@@ -62,7 +62,7 @@
                 if (Equals(value, _searchText)) return;
                 _searchText = value;
                 RaisePropertyChanged();
-                HandleSearchTextChangeAsync(value);
+                var _ = HandleSearchTextChangeAsync(value);
             }
         }
 

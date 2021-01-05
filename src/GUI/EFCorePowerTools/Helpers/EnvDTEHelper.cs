@@ -271,6 +271,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         internal static string[] GetProjectFilesInSolution(EFCorePowerToolsPackage package)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSolution sol = package.GetService<IVsSolution>();
             uint numProjects;
             ErrorHandler.ThrowOnFailure(sol.GetProjectFilesInSolution((uint)__VSGETPROJFILESFLAGS.GPFF_SKIPUNLOADEDPROJECTS, 0, null, out numProjects));
@@ -288,6 +290,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
         // <param name="errorText">Text to display.</param>
         public static void ShowError(string errorText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ShowMessageBox(
                 errorText, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
                 OLEMSGICON.OLEMSGICON_CRITICAL);
@@ -295,6 +299,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         public static DialogResult ShowMessage(string messageText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return ShowMessageBox(messageText, null, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_INFO);
         }
 
@@ -308,6 +314,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
         // <returns>result corresponding to the button clicked by the user.</returns>
         private static void ShowMessageBox(string messageText, OLEMSGBUTTON messageButtons, OLEMSGDEFBUTTON defaultButton, OLEMSGICON messageIcon)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ShowMessageBox(messageText, null, messageButtons, defaultButton, messageIcon);
         }
 
@@ -324,6 +332,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
             string messageText, string f1Keyword, OLEMSGBUTTON messageButtons,
             OLEMSGDEFBUTTON defaultButton, OLEMSGICON messageIcon)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var result = 0;
             var uiShell = (IVsUIShell)Package.GetGlobalService(typeof(SVsUIShell));
 
