@@ -81,7 +81,7 @@ namespace ReverseEngineer20.ReverseEngineer
         {
             if (!IsDotnetInstalled())
             {
-                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3. Do you have it installed?");
+                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version 3.1. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
             }
 
             var launchPath = DropNetCoreFiles();
@@ -125,7 +125,7 @@ namespace ReverseEngineer20.ReverseEngineer
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = "--list-sdks",
+                Arguments = "--list-runtimes",
             };
 
             var result = RunProcess(startInfo);
@@ -134,7 +134,7 @@ namespace ReverseEngineer20.ReverseEngineer
             var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in sdks)
             {
-                isInstalled = item.StartsWith("3.1", StringComparison.OrdinalIgnoreCase);
+                isInstalled = item.StartsWith("Microsoft.NETCore.App 3.1.", StringComparison.OrdinalIgnoreCase);
                 if (isInstalled)
                 {
                     break;
