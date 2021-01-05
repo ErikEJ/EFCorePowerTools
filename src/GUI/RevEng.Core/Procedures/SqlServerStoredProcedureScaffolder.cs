@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Abstractions.Model;
 using RevEng.Core.Procedures.Scaffolding;
 using ReverseEngineer20;
 using System;
@@ -24,7 +23,6 @@ namespace RevEng.Core.Procedures
     {
         private const string parameterPrefix = "parameter";
 
-        private readonly IProcedureModelFactory procedureModelFactory;
         private readonly ICSharpHelper code;
 
         private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
@@ -47,17 +45,16 @@ namespace RevEng.Core.Procedures
 
         private IndentedStringBuilder _sb;
 
-        public SqlServerStoredProcedureScaffolder(IProcedureModelFactory procedureModelFactory, [NotNull] ICSharpHelper code)
+        public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
         {
-            this.procedureModelFactory = procedureModelFactory;
             this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModelFactoryOptions procedureModelFactoryOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(ProcedureModel model, ProcedureScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
         {
-            var result = new ScaffoldedModel();
+            if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var model = procedureModelFactory.Create(connectionString, procedureModelFactoryOptions);
+            var result = new ScaffoldedModel();
 
             errors = model.Errors;
 
