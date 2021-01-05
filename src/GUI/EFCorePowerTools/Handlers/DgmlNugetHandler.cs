@@ -1,5 +1,6 @@
 ﻿using EnvDTE;
 using ErikEJ.SqlCeToolbox.Helpers;
+using Microsoft.VisualStudio.Shell;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -17,6 +18,8 @@ namespace EFCorePowerTools.Handlers
 
         public async System.Threading.Tasks.Task InstallDgmlNugetAsync(Project project)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             _package.Dte2.StatusBar.Text = "Installing DbContext Dgml extension package";
             var nuGetHelper = new NuGetHelper();
             await nuGetHelper.InstallPackageAsync("ErikEJ.EntityFrameworkCore.DgmlBuilder", project);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -12,6 +12,8 @@ namespace EFCorePowerTools.Extensions
     {
         public static string[] GetDacpacFilesInActiveSolution(this DTE dte, string[] projectPaths)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var result = new HashSet<string>();
 
             if (!dte.Solution.IsOpen)
@@ -29,7 +31,9 @@ namespace EFCorePowerTools.Extensions
                 {
                     var project = dte.Solution.Projects
                         .OfType<Project>()
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
                         .FirstOrDefault(p => p.FullName == projectPath);
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
                     if (project != null)
                     {
                         AddLinkedFiles(result, project);
@@ -73,7 +77,9 @@ namespace EFCorePowerTools.Extensions
         /// <param name="project"></param>
         private static void AddLinkedFiles(HashSet<string> result, Project project)
         {
-	        LinkedFilesSearch(project.ProjectItems, result);
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            LinkedFilesSearch(project.ProjectItems, result);
         }
 
         /// <summary>
@@ -83,7 +89,9 @@ namespace EFCorePowerTools.Extensions
         /// <param name="files"></param>
         private static void LinkedFilesSearch(ProjectItems projectItems, HashSet<string> files)
         {
-	        foreach (ProjectItem item in projectItems)
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            foreach (ProjectItem item in projectItems)
 	        {
 		        if (item.ProjectItems?.Count > 0)
 		        {
@@ -114,6 +122,8 @@ namespace EFCorePowerTools.Extensions
 
         public static string BuildSqlProj(this DTE dte, string sqlprojPath)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (sqlprojPath.EndsWith(".dacpac")) return sqlprojPath;
 
             var project = GetProject(dte, sqlprojPath);
@@ -145,6 +155,8 @@ namespace EFCorePowerTools.Extensions
 
         private static Project GetProject(DTE dte, string projectItemPath)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var projects = Projects(dte);
             foreach (var project in projects)
             {
@@ -170,6 +182,8 @@ namespace EFCorePowerTools.Extensions
 
         private static IList<Project> Projects(DTE dte)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Projects projects = dte.Solution.Projects;
             List<Project> list = new List<Project>();
             var item = projects.GetEnumerator();
@@ -196,6 +210,8 @@ namespace EFCorePowerTools.Extensions
 
         private static IEnumerable<Project> GetSolutionFolderProjects(Project solutionFolder)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             List<Project> list = new List<Project>();
             for (var i = 1; i <= solutionFolder.ProjectItems.Count; i++)
             {

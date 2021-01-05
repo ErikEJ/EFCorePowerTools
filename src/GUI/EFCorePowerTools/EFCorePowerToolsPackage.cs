@@ -14,6 +14,7 @@ using EnvDTE;
 using EnvDTE80;
 using ErikEJ.SqlCeToolbox.Helpers;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -52,7 +53,7 @@ namespace EFCorePowerTools
             _modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             _aboutHandler = new AboutHandler(this);
             _dgmlNugetHandler = new DgmlNugetHandler(this);
-            _serverDgmlHandler = new ServerDgmlHandler(this);
+            _serverDgmlHandler = new ServerDgmlHandler();
             _migrationsHandler = new MigrationsHandler(this);
             _extensionServices = CreateServiceProvider();
         }
@@ -64,7 +65,9 @@ namespace EFCorePowerTools
             await base.InitializeAsync(cancellationToken, progress);
 
             _dte2 = await GetServiceAsync(typeof(DTE)) as DTE2;
-
+            
+            Assumes.Present(_dte2);
+            
             if (_dte2 == null)
             {
                 return;
@@ -141,36 +144,40 @@ namespace EFCorePowerTools
 
         private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture), 0);
 
-        private System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
+        private async System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             var menuCommand = sender as MenuCommand;
 
             if (menuCommand == null)
             {
-                return System.Threading.Tasks.Task.CompletedTask;
+                return;
             }
 
             if (_dte2.SelectedItems.Count != 1)
             {
-                return System.Threading.Tasks.Task.CompletedTask;
+                return;
             }
 
             var project = _dte2.SelectedItems.Item(1).Project;
 
             if (project == null)
             {
-                return System.Threading.Tasks.Task.CompletedTask;
+                return;
             }
 
             menuCommand.Visible =
                 project.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" ||
                 project.Kind == "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"; // csproj
             
-            return System.Threading.Tasks.Task.CompletedTask;
+            return;
         }
 
         private async System.Threading.Tasks.Task OnProjectContextMenuInvokeHandlerAsync(object sender, EventArgs e)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             var menuCommand = sender as MenuCommand;
             if (menuCommand == null || _dte2.SelectedItems.Count != 1)
             {
@@ -189,7 +196,7 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
             {
-                path = LocateProjectAssemblyPath(project);
+                path = await LocateProjectAssemblyPathAsync(project);
                 if (path == null) return;
             }
 
@@ -227,8 +234,10 @@ namespace EFCorePowerTools
             }
         }
 
-        private string LocateProjectAssemblyPath(Project project)
+        private async System.Threading.Tasks.Task<string> LocateProjectAssemblyPathAsync(Project project)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             if (!project.TryBuild())
             {
                 _dte2.StatusBar.Text = "Build failed. Unable to discover a DbContext class.";
@@ -289,7 +298,7 @@ namespace EFCorePowerTools
                     .AddSingleton<IMessenger>(messenger);
 
             // Register DAL
-            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(this, _dte2))
+            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(this))
                     .AddSingleton<ITelemetryAccess, TelemetryAccess>()
                     .AddSingleton<IOperatingSystemAccess, OperatingSystemAccess>()
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
@@ -299,33 +308,40 @@ namespace EFCorePowerTools
 
         private void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             EnvDteHelper.ShowMessage(msg.Content);
         }
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
-            _dte2.StatusBar.Text = "An error occurred. See the Output window for details.";
+            ThreadHelper.JoinableTaskFactory.Run(async delegate {
+                // Switch to main thread
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            try
-            {
-                var buildOutputWindow = _dte2.ToolWindows.OutputWindow.OutputWindowPanes.Item("Build");
-                buildOutputWindow.OutputString(Environment.NewLine);
+                _dte2.StatusBar.Text = "An error occurred. See the Output window for details.";
 
-                foreach (var error in statusMessages)
+                try
                 {
-                    buildOutputWindow.OutputString(error + Environment.NewLine);
-                }
-                if (exception != null)
-                {
-                    buildOutputWindow.OutputString(exception + Environment.NewLine);
-                }
+                    var buildOutputWindow = _dte2.ToolWindows.OutputWindow.OutputWindowPanes.Item("Build");
+                    buildOutputWindow.OutputString(Environment.NewLine);
 
-                buildOutputWindow.Activate();
-            }
-            catch
-            {
-                EnvDteHelper.ShowError(exception.ToString());
-            }
+                    foreach (var error in statusMessages)
+                    {
+                        buildOutputWindow.OutputString(error + Environment.NewLine);
+                    }
+                    if (exception != null)
+                    {
+                        buildOutputWindow.OutputString(exception + Environment.NewLine);
+                    }
+
+                    buildOutputWindow.Activate();
+                }
+                catch
+                {
+                    EnvDteHelper.ShowError(exception.ToString());
+                }
+            });
         }
 
         internal T GetService<T>()

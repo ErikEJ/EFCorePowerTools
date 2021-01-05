@@ -14,6 +14,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Handlers;
+    using Microsoft.VisualStudio.Shell;
     using Shared.DAL;
     using Constants = Microsoft.VisualStudio.Shell.Interop.Constants;
 
@@ -259,7 +260,7 @@
             UpdateStatusList(result);
         }
 
-        private async Task GetMigrationStatusAsync()
+        private async System.Threading.Tasks.Task GetMigrationStatusAsync()
         {
             try
             {
@@ -289,6 +290,8 @@
 
         private async Task<bool> AddMigrationAsync()
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             if (string.IsNullOrEmpty(MigrationName))
             {
                 _visualStudioAccess.ShowError("Migration Name required");
@@ -356,7 +359,7 @@
             return true;
         }
 
-        private async Task Loaded_ExecutedAsync()
+        private async System.Threading.Tasks.Task Loaded_ExecutedAsync()
         {
             HideInformation();
 
@@ -366,7 +369,7 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
 
-        private async Task Apply_ExecutedAsync()
+        private async System.Threading.Tasks.Task Apply_ExecutedAsync()
         {
             try
             {
@@ -417,6 +420,8 @@
 
         void IMigrationOptionsViewModel.UseProjectForMigration(Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Title = baseTitle + " " + project.Name;
             _project = project;
             _processLauncher = new ProcessLauncher(project);

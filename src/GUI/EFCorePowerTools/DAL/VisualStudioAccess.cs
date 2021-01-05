@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.DAL
 {
     using System;
-    using EnvDTE80;
     using ErikEJ.SqlCeToolbox.Helpers;
+    using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
     using ReverseEngineer20;
     using Shared.DAL;
@@ -11,13 +11,10 @@
     public class VisualStudioAccess : IVisualStudioAccess
     {
         private readonly EFCorePowerToolsPackage _package;
-        private readonly DTE2 _dte2;
 
-        public VisualStudioAccess(EFCorePowerToolsPackage package,
-                                  DTE2 dte2)
+        public VisualStudioAccess(EFCorePowerToolsPackage package)
         {
             _package = package;
-            _dte2 = dte2;
         }
 
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
@@ -51,6 +48,8 @@
 
         void IVisualStudioAccess.ShowMessage(string message)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             EnvDteHelper.ShowMessage(message);
         }
 
@@ -70,29 +69,45 @@
 
         void IVisualStudioAccess.StartStatusBarAnimation(ref object icon)
         {
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
             var statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
             statusBar.Animation(1, ref icon);
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
 
         void IVisualStudioAccess.StopStatusBarAnimation(ref object icon)
         {
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
             var statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
             statusBar.Animation(0, ref icon);
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
 
         void IVisualStudioAccess.SetStatusBarText(string text)
         {
-            _package.Dte2.StatusBar.Text = text;
+            ThreadHelper.JoinableTaskFactory.Run(async delegate {
+                // Switch to main thread
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                _package.Dte2.StatusBar.Text = text;
+            });
+            
         }
 
         void IVisualStudioAccess.ShowError(string error)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             EnvDteHelper.ShowError(error);
         }
 
         void IVisualStudioAccess.OpenFile(string fileName)
         {
-            _package.Dte2.ItemOperations.OpenFile(fileName);
+            ThreadHelper.JoinableTaskFactory.Run(async delegate {
+                // Switch to main thread
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                _package.Dte2.ItemOperations.OpenFile(fileName);
+            });
+            
         }
     }
 }
