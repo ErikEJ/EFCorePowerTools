@@ -18,7 +18,7 @@ namespace ReverseEngineer20.ReverseEngineer
 {
     public class ReverseEngineerRunner
     {
-        public ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions reverseEngineerOptions)
+        public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions reverseEngineerOptions)
         {
             var errors = new List<string>();
             var warnings = new List<string>();
@@ -63,7 +63,7 @@ namespace ReverseEngineer20.ReverseEngineer
             SavedModelFiles procedurePaths = null;
             var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
             if (procedureModelScaffolder != null
-                && reverseEngineerOptions.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Count() > 0)
+                && reverseEngineerOptions.Tables.Any(t => t.ObjectType == ObjectType.Procedure))
             {
                 var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
 
@@ -170,7 +170,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return result;
         }
 
-        private ScaffoldedModel ScaffoldModel(
+        private static ScaffoldedModel ScaffoldModel(
             string connectionString,
             DatabaseModelFactoryOptions databaseOptions,
             ModelReverseEngineerOptions modelOptions,
@@ -210,7 +210,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return codeGenerator.GenerateModel(model, codeOptions);
         }
 
-        private List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace)
+        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace)
         {
             if (!useDbContextSplitting)
             {
@@ -220,7 +220,7 @@ namespace ReverseEngineer20.ReverseEngineer
             return DbContextSplitter.Split(contextFile, contextNamespace);
         }
 
-        private void RemoveOnConfiguring(string contextFile, bool includeConnectionString)
+        private static void RemoveOnConfiguring(string contextFile, bool includeConnectionString)
         {
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
@@ -256,13 +256,13 @@ namespace ReverseEngineer20.ReverseEngineer
             File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
         }
 
-        private void PostProcess(string file)
+        private static void PostProcess(string file)
         {
             var text = File.ReadAllText(file, Encoding.UTF8);
             File.WriteAllText(file, PathHelper.Header + Environment.NewLine + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase).TrimEnd(), Encoding.UTF8);
         }
 
-        private void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
+        private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
         {
             var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
 

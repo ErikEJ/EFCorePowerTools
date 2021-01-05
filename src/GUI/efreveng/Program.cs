@@ -52,9 +52,7 @@ namespace efreveng
                         return 1;
                     }
 
-                    var runner = new ReverseEngineerRunner();
-
-                    var result = runner.GenerateFiles(options);
+                    var result = ReverseEngineerRunner.GenerateFiles(options);
 
                     Console.Out.WriteLine("Result:");
                     Console.Out.WriteLine(result.Write());

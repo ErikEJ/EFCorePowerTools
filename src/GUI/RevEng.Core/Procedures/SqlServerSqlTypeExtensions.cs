@@ -122,7 +122,7 @@ namespace RevEng.Core
                     return isNullable ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(sqlType), $"storetype: {storeType}");
+                    throw new ArgumentOutOfRangeException(nameof(storeType), $"storetype: {storeType}");
             }
         }
 
