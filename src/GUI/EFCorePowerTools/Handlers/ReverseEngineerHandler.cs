@@ -4,7 +4,6 @@ using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
 using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
@@ -66,7 +65,7 @@ namespace EFCorePowerTools.Handlers
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
 
-                var databaseList = EnvDteHelper.GetDataConnections(_package);
+                var databaseList =VsDataHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
@@ -101,7 +100,7 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Getting ready to connect...";
 
                 // Reload the database list, in case the user has added a new database in the dialog
-                databaseList = EnvDteHelper.GetDataConnections(_package);
+                databaseList = VsDataHelper.GetDataConnections(_package);
 
                 DatabaseInfo dbInfo = null;
                 if (pickDataSourceResult.Payload.Connection != null)
@@ -169,7 +168,7 @@ namespace EFCorePowerTools.Handlers
 
                 _package.Dte2.StatusBar.Text = "Loading options...";
 
-                var classBasis = EnvDteHelper.GetDatabaseName(dbInfo.ConnectionString, dbInfo.DatabaseType);
+                var classBasis = VsDataHelper.GetDatabaseName(dbInfo.ConnectionString, dbInfo.DatabaseType);
                 var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
                 var packageResult = project.ContainsEfCoreReference(dbInfo.DatabaseType);
 

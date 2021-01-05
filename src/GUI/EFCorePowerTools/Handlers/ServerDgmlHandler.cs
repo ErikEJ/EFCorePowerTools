@@ -1,14 +1,10 @@
-﻿using ErikEJ.SqlCeToolbox.Helpers;
+﻿using EFCorePowerTools.Helpers;
 using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Handlers
 {
     internal class ServerDgmlHandler
     {
-        public ServerDgmlHandler()
-        {
-        }
-
         public void GenerateServerDgmlFiles()
         {
             ThreadHelper.ThrowIfNotOnUIThread();

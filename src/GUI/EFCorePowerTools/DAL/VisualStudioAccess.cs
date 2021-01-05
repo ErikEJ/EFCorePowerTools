@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.DAL
 {
     using System;
-    using ErikEJ.SqlCeToolbox.Helpers;
+    using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
     using ReverseEngineer20;
@@ -19,7 +19,7 @@
 
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
         {
-            var info = EnvDteHelper.PromptForInfo(_package);
+            var info = VsDataHelper.PromptForInfo(_package);
             if (info.DatabaseType == DatabaseType.Undefined)
                 return null;
 
@@ -33,7 +33,7 @@
 
         DatabaseDefinitionModel IVisualStudioAccess.PromptForNewDatabaseDefinition()
         {
-            var fileName = EnvDteHelper.PromptForDacpac();
+            var fileName = VsDataHelper.PromptForDacpac();
 
             if (string.IsNullOrEmpty(fileName))
             {
@@ -57,7 +57,7 @@
         {
             try
             {
-                return EnvDteHelper.DdexProviderIsInstalled(id);
+                return VsDataHelper.DdexProviderIsInstalled(id);
             }
             catch
             {
@@ -65,7 +65,7 @@
             }
         }
 
-        bool IVisualStudioAccess.IsSqLiteDbProviderInstalled() => EnvDteHelper.IsSqLiteDbProviderInstalled();
+        bool IVisualStudioAccess.IsSqLiteDbProviderInstalled() => VsDataHelper.IsSqLiteDbProviderInstalled();
 
         void IVisualStudioAccess.StartStatusBarAnimation(ref object icon)
         {

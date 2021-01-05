@@ -4,7 +4,7 @@ using EnvDTE80;
 using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
 
-namespace ErikEJ.SqlCeToolbox.Helpers
+namespace EFCorePowerTools.Helpers
 {
     /// <summary>
     /// Reports anonymous usage through ApplicationInsights

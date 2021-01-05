@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ErikEJ.SqlCeToolbox.Helpers;
 
 namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
+    using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Shell;
 
     internal class AboutHandler

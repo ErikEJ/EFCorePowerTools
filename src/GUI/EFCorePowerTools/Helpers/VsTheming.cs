@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Windows.Media;
 
-namespace ErikEJ.SqlCeToolbox.Helpers
+namespace EFCorePowerTools.Helpers
 {
     public static class VsThemes
     {

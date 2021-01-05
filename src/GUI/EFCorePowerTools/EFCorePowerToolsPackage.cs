@@ -5,6 +5,7 @@ using EFCorePowerTools.DAL;
 using EFCorePowerTools.Dialogs;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
+using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Shared.BLL;
 using EFCorePowerTools.Shared.DAL;
@@ -12,7 +13,6 @@ using EFCorePowerTools.Shared.Models;
 using EFCorePowerTools.ViewModels;
 using EnvDTE;
 using EnvDTE80;
-using ErikEJ.SqlCeToolbox.Helpers;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +21,6 @@ using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -33,7 +32,6 @@ namespace EFCorePowerTools
     [InstalledProductRegistration("#110", "#112", "2.5", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(GuidList.guidDbContextPackagePkgString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // ReSharper disable once InconsistentNaming
     public sealed class EFCorePowerToolsPackage : AsyncPackage

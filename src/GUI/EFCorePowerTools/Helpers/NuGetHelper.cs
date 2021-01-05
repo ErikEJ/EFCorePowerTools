@@ -5,7 +5,7 @@ using EnvDTE;
 using Microsoft.VisualStudio.ComponentModelHost;
 using NuGet.VisualStudio;
 
-namespace ErikEJ.SqlCeToolbox.Helpers
+namespace EFCorePowerTools.Helpers
 {
     public class NuGetHelper
     {

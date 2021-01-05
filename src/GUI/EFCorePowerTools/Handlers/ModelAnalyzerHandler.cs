@@ -1,6 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Helpers;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using System;

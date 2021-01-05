@@ -1,5 +1,5 @@
-﻿using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
+﻿using EFCorePowerTools.Helpers;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using System.IO;
 using System.Reflection;

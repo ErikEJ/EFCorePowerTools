@@ -1,6 +1,5 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +7,7 @@ using System.IO;
 namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
+    using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Shell;
 
     internal class MigrationsHandler

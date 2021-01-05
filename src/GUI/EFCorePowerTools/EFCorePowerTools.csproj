@@ -142,6 +142,7 @@
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
     <Compile Include="Handlers\ServerDgmlHandler.cs" />
     <Compile Include="Handlers\ReverseEngineerHandler.cs" />
+    <Compile Include="Helpers\VsDataHelper.cs" />
     <Compile Include="Helpers\EnvDTEHelper.cs" />
     <Compile Include="Helpers\Model.cs" />
     <Compile Include="Helpers\NuGetHelper.cs" />
