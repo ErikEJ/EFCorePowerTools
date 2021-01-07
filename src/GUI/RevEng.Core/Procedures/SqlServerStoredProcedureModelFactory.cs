@@ -121,7 +121,6 @@ SELECT
                     case when p.system_type_id in (35, 99, 167, 175, 231, 239)  
                     then ServerProperty('collation') end),
     p.is_output AS output,
-	p.is_nullable AS nullable,
     'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id))
     from sys.parameters p
 	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
@@ -145,7 +144,7 @@ SELECT
                     Precision = par["Precision"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()),
                     Scale = par["Scale"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()),
                     Output = (bool)par["output"],
-                    Nullable = (bool)par["nullable"],
+                    Nullable = true,
                     TypeName = par["TypeName"].ToString(),
                 };
 
