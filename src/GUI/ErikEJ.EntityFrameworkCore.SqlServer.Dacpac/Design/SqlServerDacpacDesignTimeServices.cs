@@ -16,13 +16,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Design
     public class SqlServerDacpacDesignTimeServices : IDesignTimeServices
     {
         public virtual void ConfigureDesignTimeServices(IServiceCollection services)
-#pragma warning disable EF1001 // Internal EF Core API usage.
             => services
                 .AddSingleton<LoggingDefinitions, SqlServerLoggingDefinitions>()
                 .AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>()
                 .AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()
                 .AddSingleton<IProviderConfigurationCodeGenerator, SqlServerCodeGenerator>()
                 .AddSingleton<IAnnotationCodeGenerator, SqlServerAnnotationCodeGenerator>();
-#pragma warning restore EF1001 // Internal EF Core API usage.
     }
 }

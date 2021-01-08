@@ -8,19 +8,9 @@
     <NoWarn>$(NoWarn);EF1001</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <DefineConstants>TRACE;DEBUG;CORE22</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\efpt\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
-    <Compile Include="..\efpt\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
-    <Compile Include="..\efpt\Program.cs" Link="Program.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0" />
