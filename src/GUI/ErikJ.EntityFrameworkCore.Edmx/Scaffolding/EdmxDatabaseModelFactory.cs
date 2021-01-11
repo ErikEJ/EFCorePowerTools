@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using LinqToEdmx;
+using LinqToEdmx.MapV3;
 using LinqToEdmx.Model.ConceptualV3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -121,43 +122,43 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 //}
                 //else
                 //{
-                    var dataTypeName = col.Type.ToString();
-                    int maxLength = int.Parse(col.MaxLength.ToString());
-                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
-                    systemTypeName = dataTypeName;
+                    //var dataTypeName = col.Type.ToString();
+                    //int maxLength = int.Parse(col.MaxLength.ToString());
+                    //storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
+                    //systemTypeName = dataTypeName;
                 //}
 
-                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression.ToLowerInvariant()) : null;
+                //string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression.ToLowerInvariant()) : null;
 
                 var dbColumn = new DatabaseColumn
                 {
                     Table = dbTable,
-                    Name = col.Name.Parts[2],
+                    Name = col.Name,
                     IsNullable = col.Nullable,
                     StoreType = storeType,
-                    DefaultValueSql = defaultValue,
-                    ComputedColumnSql = col.Expression,
-                    ValueGenerated = col.IsIdentity
-                        ? ValueGenerated.OnAdd
-                        : storeType == "rowversion"
-                            ? ValueGenerated.OnAddOrUpdate
-                            : default(ValueGenerated?)
+                    //DefaultValueSql = defaultValue,
+                    //ComputedColumnSql = col.Expression,
+                    //ValueGenerated = col.IsIdentity
+                    //    ? ValueGenerated.OnAdd
+                    //    : storeType == "rowversion"
+                    //        ? ValueGenerated.OnAddOrUpdate
+                    //        : default(ValueGenerated?)
                 };
                 if (storeType == "rowversion")
                 {
                     dbColumn["ConcurrencyToken"] = true;
                 }
 
-                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
-                    .Where(p => p.Name.Parts.Count == 5)
-                    .Where(p => p.Name.Parts[0] == "SqlColumn")
-                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
-                    .Where(p => p.Name.Parts[2] == dbTable.Name)
-                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
-                    .Where(p => p.Name.Parts[4] == "MS_Description")
-                    .FirstOrDefault();
+                //var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                //    .Where(p => p.Name.Parts.Count == 5)
+                //    .Where(p => p.Name.Parts[0] == "SqlColumn")
+                //    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                //    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                //    .Where(p => p.Name.Parts[3] == dbColumn.Name)
+                //    .Where(p => p.Name.Parts[4] == "MS_Description")
+                //    .FirstOrDefault();
 
-                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
+                //dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
 
                 dbTable.Columns.Add(dbColumn);
             }
@@ -165,9 +166,51 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 
         private string GetStoreType(LinqToEdmx.Model.ConceptualV3.EntityType item, LinqToEdmx.Model.ConceptualV3.EntityProperty col, EdmxV3 model)
         {
-            var entityTypeMappings = model.GetItems<EntityContainer>();
-            var storage = entityTypeMappings.Where(m => m.)
-        }
+            var entityContainer = model.GetItems<EntityContainer>();
+            foreach(var container in entityContainer)
+            {
+                if (container.EntitySets.Any(es => es.EntityType.EndsWith(string.Concat("Self.",item.Name), StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    var entitySet = container.EntitySets.Single(es => es.EntityType.EndsWith(string.Concat("Self.", item.Name), StringComparison.InvariantCultureIgnoreCase));
+                    var storeEntitySetName = entitySet.EntityType.Replace("Self.", string.Empty);
+                    // Look through the column mappings to find the conceptual entity
+                    var entityTypeMappings = model.GetItems<EntityTypeMapping>();
+                    foreach (var mapping in entityTypeMappings)
+                    {
+                        var fragment = mapping.MappingFragments[0];
+                        var nameToCompare = string.Empty;
+                        if (string.Compare(fragment.StoreEntitySet, storeEntitySetName, StringComparison.InvariantCultureIgnoreCase) == 0)
+                        {
+                            nameToCompare = item.Name;
+                        }
+
+                        if (string.Compare(fragment.StoreEntitySet, entitySet.Name, StringComparison.InvariantCultureIgnoreCase) == 0)
+                        {
+                            nameToCompare = entitySet.Name;
+                        }
+
+                        if (!string.IsNullOrEmpty(nameToCompare))
+                        {
+                            var storage = fragment.ScalarProperties.First(sp => string.Compare(sp.Name, col.Name, StringComparison.InvariantCultureIgnoreCase) == 0);
+
+                            // And match the corresponding store entity to get the database type
+                            var entityTypeStores = model.GetItems<LinqToEdmx.Model.StorageV3.EntityTypeStore>();
+                            var storeEntity = entityTypeStores.First(ets => string.Compare(ets.Name, nameToCompare, StringComparison.InvariantCultureIgnoreCase) == 0);
+                            var storeType = storeEntity.Properties.First(ets => string.Compare(ets.Name, storage.ColumnName, StringComparison.InvariantCultureIgnoreCase) == 0);
+
+                            return storeType.Type.ToString();
+
+                        }
+                    }
+                }
+            }
+
+
+            //var mapping = entityTypeMappings.First(etm => string.Compare(etm.MappingFragments[0].StoreEntitySet, item.Name, StringComparison.InvariantCultureIgnoreCase) == 0);
+            //var fragment = mapping.MappingFragments.First();
+            //var storage = fragment.ScalarProperties.First(sp => string.Compare(sp.Name, col.Name, StringComparison.InvariantCultureIgnoreCase) == 0);
+            throw new InvalidOperationException("Failed to get Store type, this probably indicates a bug.");
+         }
 
         private void GetPrimaryKey(LinqToEdmx.Model.ConceptualV3.EntityType table, DatabaseTable dbTable)
         {
@@ -188,7 +231,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             //    primaryKey["SqlServer:Clustered"] = false;
             //}
 
-            foreach (var pkCol in table.Properties)
+            foreach (var pkCol in table.Key.PropertyRefs)
             {
                 var dbCol = dbTable.Columns
                     .Single(c => c.Name == pkCol.Name);
