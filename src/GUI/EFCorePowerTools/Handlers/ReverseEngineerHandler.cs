@@ -89,6 +89,11 @@ namespace EFCorePowerTools.Handlers
                     }));
                 }
 
+                if (options.FilterSchemas & options.Schemas.Any())
+                {
+                    psd.PublishSchemas(options.Schemas);
+                }
+
                 var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
                 if (!pickDataSourceResult.ClosedByOK)
                     return;

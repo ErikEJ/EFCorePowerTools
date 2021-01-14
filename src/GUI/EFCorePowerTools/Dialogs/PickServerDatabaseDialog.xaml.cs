@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Windows;
     using Contracts.ViewModels;
     using Contracts.Views;
@@ -40,6 +41,7 @@
             };
             _addSchemas = models =>
             {
+                viewModel.FilterSchemas = models.Any();
                 foreach (var model in models)
                     viewModel.Schemas.Add(model);
             };
