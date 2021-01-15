@@ -39,7 +39,7 @@ namespace ReverseEngineer20
                     }
                     else
                     {
-                        result = builder.GenerateDebugView(args[0]);
+                        result = builder.GenerateDebugView(args[0], args[1]);
                     }
                     foreach (var tuple in result)
                     {

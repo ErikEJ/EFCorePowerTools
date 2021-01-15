@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using NuGet.ProjectModel;
 using System;
 using System.Collections.Generic;
@@ -56,13 +57,15 @@ namespace EFCorePowerTools.Handlers
 
         private async Task<string> GetOutputInternalAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             var launchPath = await DropNetCoreFilesAsync(outputPath);
 
-            if (_project.IsNetCore30OrHigher() && outputPath.EndsWith(".exe"))
-            {
-                outputPath = outputPath.Remove(outputPath.Length - 4, 4);
-                outputPath += ".dll";
-            }
+            var startupOutputPath = _project.DTE.GetStartupProjectOutputPath() ?? outputPath;
+
+            outputPath = FixExtension(outputPath);
+
+            startupOutputPath = FixExtension(startupOutputPath);
 
             var startInfo = new ProcessStartInfo
             {
@@ -75,9 +78,10 @@ namespace EFCorePowerTools.Handlers
                 StandardOutputEncoding = Encoding.UTF8,
             };
 
+            startInfo.Arguments = " \"" + outputPath + "\"" + " \"" + startupOutputPath + "\"";
             if (generationType == GenerationType.Ddl)
             {
-                startInfo.Arguments = "ddl \"" + outputPath + "\"";
+                startInfo.Arguments = "ddl \"" + outputPath + "\"" + " \"" + startupOutputPath + "\"";
             }
             if (generationType == GenerationType.MigrationStatus)
             {
@@ -96,13 +100,10 @@ namespace EFCorePowerTools.Handlers
                 startInfo.Arguments = "scriptmigration \"" + outputPath + "\" " + contextName;
             }
 
-            //TODO Consider improving by getting Startup project!
-            // See EF Core .psm1 file
-
-            var fileRoot =  Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
+            var fileRoot = Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
             var efptPath = Path.Combine(launchPath, "efpt.dll");
 
-            var depsFile =  fileRoot + ".deps.json";
+            var depsFile = fileRoot + ".deps.json";
             var runtimeConfig = fileRoot + ".runtimeconfig.json";
 
             var projectAssetsFile = await _project.GetCspPropertyAsync("ProjectAssetsFile");
@@ -110,7 +111,7 @@ namespace EFCorePowerTools.Handlers
 
             var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
 
-            if (projectAssetsFile != null && File.Exists(projectAssetsFile) )
+            if (projectAssetsFile != null && File.Exists(projectAssetsFile))
             {
                 var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile, NuGet.Common.NullLogger.Instance);
 
@@ -137,18 +138,7 @@ namespace EFCorePowerTools.Handlers
 
             startInfo.WorkingDirectory = Path.GetDirectoryName(outputPath);
             startInfo.FileName = "dotnet";
-            if (generationType == GenerationType.Ddl
-                || generationType == GenerationType.MigrationApply
-                || generationType == GenerationType.MigrationAdd
-                || generationType == GenerationType.MigrationStatus
-                || generationType == GenerationType.MigrationScript)
-            {
-                startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
-            }
-            else
-            {
-                startInfo.Arguments = dotNetParams + " \"" + outputPath + "\"";
-            }
+            startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
 
             Debug.WriteLine(startInfo.Arguments);
 
@@ -162,6 +152,17 @@ namespace EFCorePowerTools.Handlers
                 if (process != null) standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
             }
             return standardOutput.ToString();
+        }
+
+        private static string FixExtension(string startupOutputPath)
+        {
+            if (startupOutputPath.EndsWith(".exe"))
+            {
+                startupOutputPath = startupOutputPath.Remove(startupOutputPath.Length - 4, 4);
+                startupOutputPath += ".dll";
+            }
+
+            return startupOutputPath;
         }
 
         private async Task<string> DropNetCoreFilesAsync(string outputPath)

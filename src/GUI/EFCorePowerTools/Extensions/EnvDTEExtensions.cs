@@ -55,6 +55,24 @@ namespace EFCorePowerTools.Extensions
                 .ToArray();
         }
 
+        public static string GetStartupProjectOutputPath(this DTE dte)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            object[] startupProject = (object[])dte.Solution.SolutionBuild.StartupProjects;
+
+            if (startupProject?.Length != 1)
+            {
+                return null;
+            }
+
+            var project = dte.Solution.Item((string)startupProject[0]);
+
+            var path = project.GetOutPutAssemblyPath();
+
+            return path;
+        }
+
         private static void AddFiles(HashSet<string> result, string path)
         {
             var files = DirSearch(path, "*.sqlproj");
