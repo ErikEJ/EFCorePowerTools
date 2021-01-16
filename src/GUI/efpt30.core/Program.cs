@@ -17,29 +17,29 @@ namespace ReverseEngineer20
 
                     List<Tuple<string, string>> result;
 
-                    if (args.Contains("ddl") && args.Count() >= 2)
+                    if (args.Contains("ddl") && args.Count() >= 3)
                     {
-                        result = builder.GenerateDatabaseCreateScript(args[1]);
+                        result = builder.GenerateDatabaseCreateScript(args[1], args[2]);
                     }
-                    else if (args.Contains("migrationstatus") && args.Count() >= 2)
+                    else if (args.Contains("migrationstatus") && args.Count() >= 3)
                     {
-                        result = migrationsBuilder.GenerateMigrationStatusList(args[1]);
+                        result = migrationsBuilder.GenerateMigrationStatusList(args[1], args[2]);
                     }
-                    else if (args.Contains("migrate") && args.Count() >= 2)
+                    else if (args.Contains("migrate") && args.Count() >= 4)
                     {
-                        result = migrationsBuilder.Migrate(args[1], args[2]);
+                        result = migrationsBuilder.Migrate(args[1], args[2], args[3]);
                     }
-                    else if (args.Contains("scriptmigration") && args.Count() >= 2)
+                    else if (args.Contains("scriptmigration") && args.Count() >= 4)
                     {
-                        result = migrationsBuilder.ScriptMigration(args[1], args[2]);
+                        result = migrationsBuilder.ScriptMigration(args[1], args[2],args[3]);
                     }
-                    else if (args.Contains("addmigration") && args.Count() >= 5)
+                    else if (args.Contains("addmigration") && args.Count() >= 7)
                     {
-                        result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5]);
+                        result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5], args[6]);
                     }
                     else
                     {
-                        result = builder.GenerateDebugView(args[0]);
+                        result = builder.GenerateDebugView(args[0], args[1]);
                     }
                     foreach (var tuple in result)
                     {

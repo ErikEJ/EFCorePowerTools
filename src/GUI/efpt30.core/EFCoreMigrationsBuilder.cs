@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 #endif
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Design;
-using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,30 +22,30 @@ namespace ReverseEngineer20
 {
     public class EfCoreMigrationsBuilder
     {
-        public List<Tuple<string, string>> GenerateMigrationStatusList(string outputPath)
+        public List<Tuple<string, string>> GenerateMigrationStatusList(string outputPath, string startupOutputPath)
         {
-            return GetMigrationStatus(outputPath);
+            return GetMigrationStatus(outputPath, startupOutputPath ?? outputPath);
         }
 
-        public List<Tuple<string, string>> Migrate(string outputPath, string contextName)
+        public List<Tuple<string, string>> Migrate(string outputPath, string startupOutputPath, string contextName)
         {
-            return BuildMigrationResult(outputPath, null, contextName, false, false, null, null);
+            return BuildMigrationResult(outputPath, startupOutputPath ?? outputPath, null, contextName, false, false, null, null);
         }
 
-        public List<Tuple<string, string>> AddMigration(string outputPath, string projectPath, string contextName, string migrationIdentifier, string nameSpace)
+        public List<Tuple<string, string>> AddMigration(string outputPath, string startupOutputPath, string projectPath, string contextName, string migrationIdentifier, string nameSpace)
         {
-            return BuildMigrationResult(outputPath, projectPath, contextName, true, false, migrationIdentifier, nameSpace);
+            return BuildMigrationResult(outputPath, startupOutputPath ?? outputPath, projectPath, contextName, true, false, migrationIdentifier, nameSpace);
         }
 
-        public List<Tuple<string, string>> ScriptMigration(string outputPath, string contextName)
+        public List<Tuple<string, string>> ScriptMigration(string outputPath, string startupOutputPath, string contextName)
         {
-            return BuildMigrationResult(outputPath, null, contextName, false, true, null, null);
+            return BuildMigrationResult(outputPath, startupOutputPath ?? outputPath, null, contextName, false, true, null, null);
         }
 
-        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string projectPath, string contextName, bool addMigration, bool scriptMigration, string migrationIdentifier, string nameSpace)
+        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string startupOutputPath, string projectPath, string contextName, bool addMigration, bool scriptMigration, string migrationIdentifier, string nameSpace)
         {
             var result = new List<Tuple<string, string>>();
-            var operations = GetOperations(outputPath);
+            var operations = GetOperations(outputPath, startupOutputPath);
             var types = GetDbContextTypes(operations);
 
             foreach (var type in types)
@@ -56,12 +55,12 @@ namespace ReverseEngineer20
                     var dbContext = operations.CreateContext(type.Name);
                     if (scriptMigration)
                     {
-                        result.Add(new Tuple<string, string>(type.Name,  ScriptMigration(dbContext, outputPath)));
+                        result.Add(new Tuple<string, string>(type.Name,  ScriptMigration(dbContext, outputPath, startupOutputPath)));
                     }
                     else
                     {
                         result.Add(addMigration
-                            ? new Tuple<string, string>(type.Name + "Add", AddMigration(dbContext, outputPath, projectPath, migrationIdentifier, nameSpace))
+                            ? new Tuple<string, string>(type.Name + "Add", AddMigration(dbContext, outputPath, startupOutputPath, projectPath, migrationIdentifier, nameSpace))
                             : new Tuple<string, string>(type.Name + "Apply", ApplyMigrations(dbContext)));
                     }
                     break;
@@ -71,10 +70,10 @@ namespace ReverseEngineer20
             return result;
         }
 
-        private List<Tuple<string, string>> GetMigrationStatus(string outputPath)
+        private List<Tuple<string, string>> GetMigrationStatus(string outputPath, string startupOutputPath)
         {
             var result = new List<Tuple<string, string>>();
-            var operations = GetOperations(outputPath);
+            var operations = GetOperations(outputPath, startupOutputPath);
             var types = GetDbContextTypes(operations);
 
             foreach (var type in types)
@@ -146,9 +145,9 @@ namespace ReverseEngineer20
             return "InSync";
         }
 
-        private string ScriptMigration(DbContext context, string outputPath)
+        private string ScriptMigration(DbContext context, string outputPath, string startupOutputPath)
         {
-            var servicesBuilder = GetDesignTimeServicesBuilder(outputPath);
+            var servicesBuilder = GetDesignTimeServicesBuilder(outputPath, startupOutputPath);
 
             var services = servicesBuilder.Build(context);
 
@@ -169,9 +168,9 @@ namespace ReverseEngineer20
             return "Done";
         }
 
-        private string AddMigration(DbContext context, string outputPath, string projectPath, string name, string nameSpace)
+        private string AddMigration(DbContext context, string outputPath, string startupOutputPath, string projectPath, string name, string nameSpace)
         {
-            var result = AddMigration(name, outputPath, projectPath, nameSpace, context);
+            var result = AddMigration(name, outputPath, startupOutputPath, projectPath, nameSpace, context);
             string status = result.MetadataFile + Environment.NewLine;
             status += result.MigrationFile + Environment.NewLine;
             status += result.SnapshotFile + Environment.NewLine;
@@ -181,11 +180,12 @@ namespace ReverseEngineer20
         private MigrationFiles AddMigration(
             string name,
             string outputPath,
+            string startupOutputPath,
             string projectPath,
             string nameSpace,
             DbContext context)
         {
-            var servicesBuilder = GetDesignTimeServicesBuilder(outputPath);
+            var servicesBuilder = GetDesignTimeServicesBuilder(outputPath, startupOutputPath);
 
             var services = servicesBuilder.Build(context);
 
@@ -214,7 +214,7 @@ namespace ReverseEngineer20
             return types;
         }
 
-        private DbContextOperations GetOperations(string outputPath)
+        private DbContextOperations GetOperations(string outputPath, string startupOutputPath)
         {
             var assembly = Load(outputPath);
             if (assembly == null)
@@ -222,13 +222,20 @@ namespace ReverseEngineer20
                 throw new ArgumentException("Unable to load project assembly");
             }
 
+            Assembly startupAssembly = null;
+
+            if (startupOutputPath != outputPath)
+            {
+                startupAssembly = Load(startupOutputPath);
+            }
+
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
-            return new DbContextOperations(reporter, assembly, assembly, Array.Empty<string>());
+            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
         }
 
-        private DesignTimeServicesBuilder GetDesignTimeServicesBuilder(string outputPath)
+        private DesignTimeServicesBuilder GetDesignTimeServicesBuilder(string outputPath, string startupOutputPath)
         {
             var assembly = Load(outputPath);
             if (assembly == null)
@@ -236,10 +243,17 @@ namespace ReverseEngineer20
                 throw new ArgumentException("Unable to load project assembly");
             }
 
+            Assembly startupAssembly = null;
+
+            if (startupOutputPath != outputPath)
+            {
+                startupAssembly = Load(startupOutputPath);
+            }
+
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
-            return new DesignTimeServicesBuilder(assembly, assembly, reporter, Array.Empty<string>());
+            return new DesignTimeServicesBuilder(assembly, startupAssembly ?? assembly, reporter, Array.Empty<string>());
         }
 
         private Assembly Load(string assemblyPath)

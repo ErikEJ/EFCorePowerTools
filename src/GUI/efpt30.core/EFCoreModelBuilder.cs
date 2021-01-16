@@ -18,20 +18,20 @@ namespace ReverseEngineer20
 {
     public class EfCoreModelBuilder
     {
-        public List<Tuple<string, string>> GenerateDebugView(string outputPath)
+        public List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath)
         {
-            return BuildResult(outputPath, false);
+            return BuildResult(outputPath, startupOutputPath ?? outputPath, false);
         }
 
-        public List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath)
+        public List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath, string startupOutputPath)
         {
-            return BuildResult(outputPath, true);
+            return BuildResult(outputPath, startupOutputPath ?? outputPath, true);
         }
 
-        private List<Tuple<string, string>> BuildResult(string outputPath, bool generateDdl)
+        private List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath,  bool generateDdl)
         {
             var result = new List<Tuple<string, string>>();
-            var operations = GetOperations(outputPath);
+            var operations = GetOperations(outputPath, startupOutputPath);
             var types = GetDbContextTypes(operations);
 
             foreach (var type in types)
@@ -87,7 +87,7 @@ namespace ReverseEngineer20
             return types;
         }
 
-        private DbContextOperations GetOperations(string outputPath)
+        private DbContextOperations GetOperations(string outputPath, string startupOutputPath)
         {
             var assembly = Load(outputPath);
             if (assembly == null)
@@ -95,9 +95,16 @@ namespace ReverseEngineer20
                 throw new ArgumentException("Unable to load project assembly");
             }
 
+            Assembly startupAssembly = null;
+
+            if (startupOutputPath != outputPath)
+            {
+                startupAssembly = Load(startupOutputPath);
+            }
+
             var reporter = new OperationReporter(new OperationReportHandler());
 
-            return new DbContextOperations(reporter, assembly, assembly, Array.Empty<string>());
+            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
         }
 
         private Assembly Load(string assemblyPath)
