@@ -18,12 +18,12 @@ namespace ReverseEngineer20
 {
     public class EfCoreModelBuilder
     {
-        public List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath = null)
+        public List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath)
         {
             return BuildResult(outputPath, startupOutputPath ?? outputPath, false);
         }
 
-        public List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath, string startupOutputPath = null)
+        public List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath, string startupOutputPath)
         {
             return BuildResult(outputPath, startupOutputPath ?? outputPath, true);
         }

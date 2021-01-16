@@ -78,26 +78,28 @@ namespace EFCorePowerTools.Handlers
                 StandardOutputEncoding = Encoding.UTF8,
             };
 
-            startInfo.Arguments = " \"" + outputPath + "\"" + " \"" + startupOutputPath + "\"";
+            var outputs = " \"" + outputPath + "\" \"" + startupOutputPath + "\" ";
+
+            startInfo.Arguments = outputs;
             if (generationType == GenerationType.Ddl)
             {
-                startInfo.Arguments = "ddl \"" + outputPath + "\"" + " \"" + startupOutputPath + "\"";
+                startInfo.Arguments = "ddl" + outputs;
             }
             if (generationType == GenerationType.MigrationStatus)
             {
-                startInfo.Arguments = "migrationstatus \"" + outputPath + "\"";
+                startInfo.Arguments = "migrationstatus" + outputs;
             }
             if (generationType == GenerationType.MigrationApply)
             {
-                startInfo.Arguments = "migrate \"" + outputPath + "\" " + contextName;
+                startInfo.Arguments = "migrate" + outputs + contextName;
             }
             if (generationType == GenerationType.MigrationAdd)
             {
-                startInfo.Arguments = "addmigration \"" + outputPath + "\" " + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
+                startInfo.Arguments = "addmigration" + outputs + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
             }
             if (generationType == GenerationType.MigrationScript)
             {
-                startInfo.Arguments = "scriptmigration \"" + outputPath + "\" " + contextName;
+                startInfo.Arguments = "scriptmigration" + outputs + contextName;
             }
 
             var fileRoot = Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
