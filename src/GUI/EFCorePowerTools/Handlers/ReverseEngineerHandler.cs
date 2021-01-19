@@ -89,7 +89,7 @@ namespace EFCorePowerTools.Handlers
                     }));
                 }
 
-                if (options.FilterSchemas & options.Schemas.Any())
+                if (options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
                 {
                     psd.PublishSchemas(options.Schemas);
                 }
@@ -245,6 +245,7 @@ namespace EFCorePowerTools.Handlers
                     CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList(),
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList(),
+                    UseNullableReferences = options?.UseNullableReferences ?? false,
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer

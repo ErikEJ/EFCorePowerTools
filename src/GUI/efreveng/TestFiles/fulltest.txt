@@ -197,6 +197,7 @@
       }
    ],
    "UseBoolPropertiesWithoutDefaultSql": true,
+   "UseNullableReferences": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,

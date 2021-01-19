@@ -46,6 +46,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 UseDbContextSplitting = options.UseDbContextSplitting,
                 UseNodaTime = options.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
+                UseNullableReferences = options.UseNullableReferences,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, useEFCore5);

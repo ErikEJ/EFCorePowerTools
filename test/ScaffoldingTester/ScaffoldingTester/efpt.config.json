@@ -205,5 +205,6 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseNodaTime": false,
+   "UseNullableReferences": false,
    "UseSpatial": false
 }
