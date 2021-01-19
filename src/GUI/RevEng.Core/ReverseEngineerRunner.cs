@@ -81,6 +81,7 @@ namespace ReverseEngineer20.ReverseEngineer
                     ContextName = reverseEngineerOptions.ContextClassName,
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
+                    NullableReferences = reverseEngineerOptions.UseNullableReferences,
                 };
 
                 var procedureScaffoldedModel = procedureModelScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);

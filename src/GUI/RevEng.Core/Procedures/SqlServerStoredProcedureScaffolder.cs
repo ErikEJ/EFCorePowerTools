@@ -62,7 +62,7 @@ namespace RevEng.Core.Procedures
             {
                 var name = GenerateIdentifierName(procedure, model) + "Result";
 
-                var classContent = WriteResultClass(procedure, procedureScaffolderOptions.ModelNamespace, name);
+                var classContent = WriteResultClass(procedure, procedureScaffolderOptions, name);
 
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
@@ -353,22 +353,30 @@ namespace RevEng.Core.Procedures
             _sb.Append("}");
         }
 
-        private string WriteResultClass(Procedure storedProcedure, string @namespace, string name)
+        private string WriteResultClass(Procedure storedProcedure, ProcedureScaffolderOptions options, string name)
         {
+            var @namespace = options.ModelNamespace;
+
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Collections.Generic;");
             _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
-
             _sb.AppendLine();
+
+            if (options.NullableReferences)
+            {
+                _sb.AppendLine("#nullable enable");
+                _sb.AppendLine();
+            }
+            
             _sb.AppendLine($"namespace {@namespace}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                GenerateClass(storedProcedure, name);
+                GenerateClass(storedProcedure, name, options.NullableReferences);
             }
 
             _sb.AppendLine("}");
@@ -376,20 +384,20 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateClass(Procedure storedProcedure, string name)
+        private void GenerateClass(Procedure storedProcedure, string name, bool nullableReferences)
         {
             _sb.AppendLine($"public partial class {name}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                GenerateProperties(storedProcedure);
+                GenerateProperties(storedProcedure, nullableReferences);
             }
 
             _sb.AppendLine("}");
         }
 
-        private void GenerateProperties(Procedure storedProcedure)
+        private void GenerateProperties(Procedure storedProcedure, bool nullableReferences)
         {
             foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
             {
@@ -400,7 +408,23 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine(propertyNames.Item2);
                 }
 
-                _sb.AppendLine($"public {code.Reference(property.ClrType())} {propertyNames.Item1} {{ get; set; }}");
+                var propertyType = property.ClrType();
+                string nullableAnnotation = string.Empty;
+                string defaultAnnotation = string.Empty;
+
+                if (nullableReferences && !propertyType.IsValueType)
+                {
+                    if (property.Nullable)
+                    {
+                        nullableAnnotation = "?";
+                    }
+                    else
+                    {
+                        defaultAnnotation = $" = default!;";
+                    }
+                }
+
+                _sb.AppendLine($"public {code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
             }
         }
 

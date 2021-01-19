@@ -41,6 +41,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseNodaTime { get; set; }
         public bool FilterSchemas { get; set; }
         public bool UseBoolPropertiesWithoutDefaultSql { get; set; }
+        public bool UseNullableReferences { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
 
         public static ReverseEngineerOptions FromV1(ReverseEngineerOptionsV1 v1)
