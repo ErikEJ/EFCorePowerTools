@@ -26,6 +26,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
     {
         private readonly IAnnotationCodeGenerator _annotationCodeGenerator;
         private readonly ICSharpHelper _code;
+        private readonly bool _nullableReferences;
 
         private IndentedStringBuilder _sb = null!;
         private bool _useDataAnnotations;
@@ -38,12 +39,14 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         /// </summary>
         public CommentCSharpEntityTypeGenerator(
             [NotNull] IAnnotationCodeGenerator annotationCodeGenerator,
-            [NotNull] ICSharpHelper cSharpHelper)
+            [NotNull] ICSharpHelper cSharpHelper,
+            bool nullableReferences)
         {
             Check.NotNull(cSharpHelper, nameof(cSharpHelper));
 
             _annotationCodeGenerator = annotationCodeGenerator;
             _code = cSharpHelper;
+            _nullableReferences = nullableReferences;
         }
 
         /// <summary>
@@ -79,8 +82,16 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 _sb.AppendLine($"using {ns};");
             }
 
-            _sb.AppendLine();
-            _sb.AppendLine("#nullable disable");
+            if (_nullableReferences)
+            {
+                _sb.AppendLine();
+                _sb.AppendLine("#nullable enable");
+            }
+            else
+            {
+                _sb.AppendLine();
+                _sb.AppendLine("#nullable disable");
+            }
 
             _sb.AppendLine();
             _sb.AppendLine($"namespace {@namespace}");
@@ -274,7 +285,22 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                     GeneratePropertyDataAnnotations(property);
                 }
 
-                _sb.AppendLine($"public {_code.Reference(property.ClrType)} {property.Name} {{ get; set; }}");
+                string nullableAnnotation = string.Empty;
+                string defaultAnnotation = string.Empty;
+
+                if (_nullableReferences && !property.ClrType.IsValueType)
+                {
+                    if (property.IsColumnNullable())
+                    {
+                        nullableAnnotation = "?";
+                    }
+                    else
+                    {
+                        defaultAnnotation = $" = default!;";
+                    }
+                }
+
+                _sb.AppendLine($"public {_code.Reference(property.ClrType)}{nullableAnnotation} {property.Name} {{ get; set; }}{defaultAnnotation}");
             }
         }
 
@@ -398,7 +424,23 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
                     var referencedTypeName = navigation.TargetEntityType.Name;
                     var navigationType = navigation.IsCollection ? $"ICollection<{referencedTypeName}>" : referencedTypeName;
-                    _sb.AppendLine($"public virtual {navigationType} {navigation.Name} {{ get; set; }}");
+
+                    string nullableAnnotation = string.Empty;
+                    string defaultAnnotation = string.Empty;
+
+                    if (_nullableReferences && !navigation.IsCollection)
+                    {
+                        if (navigation.ForeignKey?.IsRequired == true)
+                        {
+                            nullableAnnotation = "?";
+                        }
+                        else
+                        {
+                            defaultAnnotation = $" = default!;";
+                        }
+                    }
+
+                    _sb.AppendLine($"public virtual {navigationType}{nullableAnnotation} {navigation.Name} {{ get; set; }}{defaultAnnotation}");
                 }
             }
         }
