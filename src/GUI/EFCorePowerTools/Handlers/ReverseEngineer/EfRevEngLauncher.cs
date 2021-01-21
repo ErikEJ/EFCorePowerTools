@@ -47,6 +47,7 @@ namespace ReverseEngineer20.ReverseEngineer
                 UseNodaTime = options.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNullableReferences = options.UseNullableReferences,
+                UseNoConstructor = options.UseNoConstructor,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, useEFCore5);

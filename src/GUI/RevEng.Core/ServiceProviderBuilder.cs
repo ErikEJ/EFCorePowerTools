@@ -34,12 +34,14 @@ namespace ReverseEngineer20.ReverseEngineer
                  new CommentCSharpEntityTypeGenerator(                    
                     provider.GetService<IAnnotationCodeGenerator>(),
                     provider.GetService<ICSharpHelper>(),
-                    options.UseNullableReferences))
+                    options.UseNullableReferences,
+                    options.UseNoConstructor))
 #else
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
                  new CommentCSharpEntityTypeGenerator(
                     provider.GetService<ICSharpHelper>(),
-                    options.UseNullableReferences))
+                    options.UseNullableReferences,
+                    options.UseNoConstructor))
 #endif
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>()

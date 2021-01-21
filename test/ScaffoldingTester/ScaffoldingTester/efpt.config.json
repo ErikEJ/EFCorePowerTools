@@ -204,6 +204,7 @@
    "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
    "UseSpatial": false

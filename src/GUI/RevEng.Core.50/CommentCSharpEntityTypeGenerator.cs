@@ -27,6 +27,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         private readonly IAnnotationCodeGenerator _annotationCodeGenerator;
         private readonly ICSharpHelper _code;
         private readonly bool _nullableReferences;
+        private readonly bool _noConstructor;
 
         private IndentedStringBuilder _sb = null!;
         private bool _useDataAnnotations;
@@ -40,13 +41,15 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         public CommentCSharpEntityTypeGenerator(
             [NotNull] IAnnotationCodeGenerator annotationCodeGenerator,
             [NotNull] ICSharpHelper cSharpHelper,
-            bool nullableReferences)
+            bool nullableReferences,
+            bool noConstructor)
         {
             Check.NotNull(cSharpHelper, nameof(cSharpHelper));
 
             _annotationCodeGenerator = annotationCodeGenerator;
             _code = cSharpHelper;
             _nullableReferences = nullableReferences;
+            _noConstructor = noConstructor;
         }
 
         /// <summary>
@@ -130,7 +133,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
             using (_sb.Indent())
             {
-                GenerateConstructor(entityType);
+                if (!_noConstructor)
+                {
+                    GenerateConstructor(entityType);
+                }
+
                 GenerateProperties(entityType);
                 GenerateNavigationProperties(entityType);
             }

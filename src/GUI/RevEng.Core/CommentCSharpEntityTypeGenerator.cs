@@ -16,14 +16,19 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
     {
         private readonly ICSharpHelper _code;
         private readonly bool _nullableReferences;
+        private readonly bool _noConstructor;
 
         private IndentedStringBuilder _sb;
         private bool _useDataAnnotations;
 
-        public CommentCSharpEntityTypeGenerator([NotNull] ICSharpHelper cSharpHelper, bool nullableReferences)
+        public CommentCSharpEntityTypeGenerator(
+            [NotNull] ICSharpHelper cSharpHelper, 
+            bool nullableReferences,
+            bool noConstructor)
         {
             _code = cSharpHelper;
             _nullableReferences = nullableReferences;
+            _noConstructor = noConstructor;
         }
 
         public string WriteCode(IEntityType entityType, string @namespace, bool useDataAnnotations)
@@ -85,7 +90,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
             using (_sb.Indent())
             {
-                GenerateConstructor(entityType);
+                if (!_noConstructor)
+                {
+                    GenerateConstructor(entityType);
+                }
+
                 GenerateProperties(entityType);
                 GenerateNavigationProperties(entityType);
             }
