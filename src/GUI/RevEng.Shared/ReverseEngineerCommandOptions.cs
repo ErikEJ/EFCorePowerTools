@@ -33,6 +33,7 @@ namespace ReverseEngineer20
         public bool UseNodaTime { get; set; }
         public bool UseBoolPropertiesWithoutDefaultSql { get; set; }
         public bool UseNullableReferences { get; set; }
+        public bool UseNoConstructor { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
     }

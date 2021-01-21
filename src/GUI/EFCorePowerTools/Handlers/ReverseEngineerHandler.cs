@@ -246,6 +246,7 @@ namespace EFCorePowerTools.Handlers
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList(),
                     UseNullableReferences = options?.UseNullableReferences ?? false,
+                    UseNoConstructor = options?.UseNoConstructor ?? false,
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer
