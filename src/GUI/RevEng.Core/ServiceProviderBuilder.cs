@@ -29,19 +29,30 @@ namespace ReverseEngineer20.ReverseEngineer
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
-                .AddSingleton<ICSharpEntityTypeGenerator, CommentCSharpEntityTypeGenerator>()
+#if CORE50
+                .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
+                 new CommentCSharpEntityTypeGenerator(                    
+                    provider.GetService<IAnnotationCodeGenerator>(),
+                    provider.GetService<ICSharpHelper>(),
+                    options.UseNullableReferences))
+#else
+                .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
+                 new CommentCSharpEntityTypeGenerator(
+                    provider.GetService<ICSharpHelper>(),
+                    options.UseNullableReferences))
+#endif
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>()
                 .AddSingleton<IScaffoldingModelFactory>(provider =>
-                  new ColumnRemovingScaffoldingModelFactory(
-                     provider.GetService<IOperationReporter>(),
-                     provider.GetService<ICandidateNamingService>(),
-                     provider.GetService<IPluralizer>(),
-                     provider.GetService<ICSharpUtilities>(),
-                     provider.GetService<IScaffoldingTypeMapper>(),
-                     provider.GetService<LoggingDefinitions>(),
-                     options.Tables,
-                     options.DatabaseType
+                new ColumnRemovingScaffoldingModelFactory(
+                    provider.GetService<IOperationReporter>(),
+                    provider.GetService<ICandidateNamingService>(),
+                    provider.GetService<IPluralizer>(),
+                    provider.GetService<ICSharpUtilities>(),
+                    provider.GetService<IScaffoldingTypeMapper>(),
+                    provider.GetService<LoggingDefinitions>(),
+                    options.Tables,
+                    options.DatabaseType
                 ));
 
             if (options.CustomReplacers != null)

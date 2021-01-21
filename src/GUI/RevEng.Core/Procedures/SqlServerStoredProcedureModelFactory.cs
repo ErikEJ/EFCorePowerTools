@@ -83,7 +83,7 @@ ORDER BY ROUTINE_NAME;";
                             catch (Exception ex)
                             {
                                 procedure.HasValidResultSet = false;
-                                errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
+                                errors.Add($"Unable to get result set shape for procedure '{procedure.Schema}.{procedure.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
                                 _logger?.Logger.LogWarning(ex, $"Unable to scaffold {procedure.Schema}.{procedure.Name}");
                             }
                         }
