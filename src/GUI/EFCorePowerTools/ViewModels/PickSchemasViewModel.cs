@@ -10,7 +10,7 @@ namespace EFCorePowerTools.ViewModels
     using System.Collections.ObjectModel;
     using System.Windows.Input;
     using System.Linq;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
 
     public class PickSchemasViewModel : ViewModelBase, IPickSchemasViewModel
     {

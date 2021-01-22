@@ -4,7 +4,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
 
     public interface IPickSchemasViewModel : IViewModel
     {

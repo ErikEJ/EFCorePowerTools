@@ -13,7 +13,7 @@
     using System.IO;
     using System.Linq;
     using System.Windows.Input;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
 
     public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {

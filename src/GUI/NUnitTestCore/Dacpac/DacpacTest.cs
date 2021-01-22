@@ -1,7 +1,6 @@
 ﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using NUnit.Framework;
-using ReverseEngineer20;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

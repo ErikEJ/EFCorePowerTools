@@ -1,10 +1,8 @@
 ﻿namespace UnitTests.Models
 {
     using System;
-    using EFCorePowerTools.Shared.Models;
     using NUnit.Framework;
     using RevEng.Shared;
-    using ReverseEngineer20;
 
     [TestFixture]
     public class TableModelTest
@@ -23,7 +21,7 @@
         public void Constructor_CorrectCreation()
         {
             // Act
-            var ti = new TableModel("Album", "dbo", ReverseEngineer20.DatabaseType.Npgsql, ObjectType.Table, null);
+            var ti = new TableModel("Album", "dbo", DatabaseType.Npgsql, ObjectType.Table, null);
 
             // Assert
             Assert.AreEqual("dbo.Album", ti.DisplayName);

@@ -3,7 +3,7 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using JetBrains.Annotations;
-    using ReverseEngineer20;
+    using RevEng.Shared;
 
     /// <summary>
     /// A model holding data about a database connection.

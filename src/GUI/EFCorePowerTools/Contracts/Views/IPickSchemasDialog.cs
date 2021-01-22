@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
     using System.Collections.Generic;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
 
     public interface IPickSchemasDialog : IDialog<SchemaInfo[]>
     {

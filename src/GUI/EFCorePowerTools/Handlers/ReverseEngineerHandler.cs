@@ -4,7 +4,6 @@ using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
-using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +11,10 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ReverseEngineer20.ReverseEngineer;
 using Microsoft.VisualStudio.Data.Services;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
+using RevEng.Shared;
 
 namespace EFCorePowerTools.Handlers
 {

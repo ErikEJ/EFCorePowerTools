@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
-using ReverseEngineer20.ReverseEngineer;
+using RevEng.Core;
+using RevEng.Shared;
 using System.Collections.Generic;
 using System.Reflection;
 

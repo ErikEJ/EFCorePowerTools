@@ -1,5 +1,4 @@
-﻿using EFCorePowerTools.Shared.Models;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -7,11 +6,12 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class ColumnRemovingScaffoldingModelFactory : RelationalScaffoldingModelFactory
     {

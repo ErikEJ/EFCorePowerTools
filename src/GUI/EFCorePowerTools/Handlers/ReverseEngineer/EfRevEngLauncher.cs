@@ -1,5 +1,5 @@
 ﻿using EFCorePowerTools.Handlers.ReverseEngineer;
-using EFCorePowerTools.Shared.Models;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
     public class EfRevEngLauncher
     {

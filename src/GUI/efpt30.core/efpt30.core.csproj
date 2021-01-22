@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>efpt</AssemblyName>
-    <RootNamespace>ReverseEngineer20</RootNamespace>
+    <RootNamespace>Modelling</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
   </PropertyGroup>
 

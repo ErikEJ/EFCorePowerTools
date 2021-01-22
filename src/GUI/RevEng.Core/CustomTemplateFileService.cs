@@ -1,7 +1,7 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using System.IO;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class CustomTemplateFileService : FileSystemTemplateFileService
     {

@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using RevEng.Shared;
+using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public static class ReverseEngineerOptionsExtensions
     {

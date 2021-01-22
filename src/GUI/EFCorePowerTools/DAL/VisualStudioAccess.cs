@@ -4,7 +4,7 @@
     using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
-    using ReverseEngineer20;
+    using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
 

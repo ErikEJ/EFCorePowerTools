@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System;
-using ReverseEngineer20;
 using Microsoft.VisualStudio.Data.Services;
+using RevEng.Shared;
 
 [DefaultProperty("Caption")]
 // ReSharper disable once CheckNamespace

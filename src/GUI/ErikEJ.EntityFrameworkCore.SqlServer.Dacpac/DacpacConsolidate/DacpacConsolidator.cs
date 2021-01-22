@@ -1,10 +1,9 @@
-﻿using GOEddie.Dacpac.References;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace ReverseEngineer20.DacpacConsolidate
+namespace GOEddie.Dacpac.References
 {
     public class DacpacConsolidator
     {

@@ -1,7 +1,7 @@
 ﻿using Bricelam.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class LegacyPluralizer : IPluralizer
     {

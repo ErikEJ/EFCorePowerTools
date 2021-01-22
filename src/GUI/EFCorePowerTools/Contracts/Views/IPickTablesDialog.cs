@@ -1,8 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
     using System.Collections.Generic;
-    using ReverseEngineer20.ReverseEngineer;
-    using Shared.Models;
+    using RevEng.Shared;
 
     public interface IPickTablesDialog : IDialog<PickTablesDialogResult>
     {

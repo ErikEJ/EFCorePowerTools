@@ -8,7 +8,7 @@
     using Contracts.Views;
     using Shared.DAL;
     using Shared.Models;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
 
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {

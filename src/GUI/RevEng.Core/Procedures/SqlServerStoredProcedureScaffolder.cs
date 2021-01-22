@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Procedures.Scaffolding;
-using ReverseEngineer20;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data;

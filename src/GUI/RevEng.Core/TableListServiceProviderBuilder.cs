@@ -12,9 +12,10 @@ using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
+using RevEng.Shared;
 using System;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public static class TableListServiceProviderBuilder
     {

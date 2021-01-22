@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace ReverseEngineer20
+namespace Modelling
 {
     public class Program
     {

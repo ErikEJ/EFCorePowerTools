@@ -2,7 +2,7 @@
 {
     using Contracts.ViewModels;
     using Contracts.Views;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
     using Shared.DAL;
     using System;
     using System.Collections.Generic;

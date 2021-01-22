@@ -1,7 +1,7 @@
 ﻿using Humanizer;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class HumanizerPluralizer : IPluralizer
     {

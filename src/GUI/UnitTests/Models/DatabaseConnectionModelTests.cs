@@ -1,6 +1,6 @@
 ﻿using EFCorePowerTools.Shared.Models;
 using NUnit.Framework;
-using ReverseEngineer20;
+using RevEng.Shared;
 
 namespace UnitTests.Models
 {

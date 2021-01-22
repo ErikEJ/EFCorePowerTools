@@ -1,10 +1,8 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-    using EFCorePowerTools.Shared.Models;
     using GalaSoft.MvvmLight;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

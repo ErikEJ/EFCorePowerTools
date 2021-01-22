@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Shared.Models;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
 
     public interface IPickServerDatabaseDialog : IDialog<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas)>
     {

@@ -1,5 +1,4 @@
-﻿using EFCorePowerTools.Shared.Models;
-using ReverseEngineer20;
+﻿using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
