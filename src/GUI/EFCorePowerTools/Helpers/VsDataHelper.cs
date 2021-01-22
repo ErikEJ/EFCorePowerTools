@@ -71,11 +71,9 @@ namespace EFCorePowerTools.Helpers
                             databaseList.Add(sConnectionString, info);
                         }
                     }
-                    catch (KeyNotFoundException)
+                    catch (Exception ex)
                     {
-                    }
-                    catch (NullReferenceException)
-                    {
+                        package.LogError(new List<string> { ex.Message }, ex);
                     }
                 }
             }
