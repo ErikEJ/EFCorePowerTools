@@ -7,7 +7,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 
-namespace ReverseEngineer20.DacpacConsolidate
+namespace GOEddie.Dacpac.References
 {
     public class DacpacMerger
     {

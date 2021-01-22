@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GOEddie.Dacpac.References;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
@@ -6,7 +7,6 @@ using Microsoft.SqlServer.Dac.Model;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
-using ReverseEngineer20.DacpacConsolidate;
 using System;
 using System.Collections.Generic;
 using System.IO;

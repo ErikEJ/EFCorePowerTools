@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ReverseEngineer20
+namespace Modelling
 {
     public class EfCoreModelBuilder
     {

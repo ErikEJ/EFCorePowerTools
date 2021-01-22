@@ -6,12 +6,10 @@ namespace UnitTests.ViewModels
     using System.Collections.Generic;
     using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
 
     [TestFixture]
     public class ObjectTreeViewModelTests
@@ -123,8 +121,8 @@ namespace UnitTests.ViewModels
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             var objects = new TableModel[2];
-            objects[0] = new TableModel("departmentdetail", null, ReverseEngineer20.DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false) }.ToArray());
-            objects[1] = new TableModel("employeedetail", null, ReverseEngineer20.DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false) }.ToArray());
+            objects[0] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false) }.ToArray());
+            objects[1] = new TableModel("employeedetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false) }.ToArray());
 
             var replacers = new Schema[1];
             replacers[0] = new Schema()
@@ -463,17 +461,17 @@ namespace UnitTests.ViewModels
 
             var r = new TableModel[11];
 
-            r[0] = new TableModel("Atlas", "dbo", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
-            r[1] = new TableModel("RefactorLog", "__", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
-            r[2] = new TableModel("__RefactorLog", "dbo", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
-            r[3] = new TableModel("sysdiagrams", "dbo", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
-            r[4] = new TableModel("test", "unit", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
-            r[5] = new TableModel("foo", "unit", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
-            r[6] = new TableModel("view1", "views", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
-            r[7] = new TableModel("view2", "views", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
-            r[8] = new TableModel("procedure1", "stored", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
-            r[9] = new TableModel("procedure2", "stored", ReverseEngineer20.DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
-            r[10] = new TableModel("departmentdetail", null, ReverseEngineer20.DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("departmentname", false), new ColumnModel("DEPTCode", false), new ColumnModel("Id", true) }.ToArray());
+            r[0] = new TableModel("Atlas", "dbo", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[1] = new TableModel("RefactorLog", "__", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[2] = new TableModel("__RefactorLog", "dbo", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[3] = new TableModel("sysdiagrams", "dbo", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[4] = new TableModel("test", "unit", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[5] = new TableModel("foo", "unit", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[6] = new TableModel("view1", "views", DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
+            r[7] = new TableModel("view2", "views", DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
+            r[8] = new TableModel("procedure1", "stored", DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
+            r[9] = new TableModel("procedure2", "stored", DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
+            r[10] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("departmentname", false), new ColumnModel("DEPTCode", false), new ColumnModel("Id", true) }.ToArray());
             return r;
         }
 

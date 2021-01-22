@@ -1,4 +1,4 @@
-﻿namespace ReverseEngineer20.ReverseEngineer
+﻿namespace RevEng.Shared
 {
     public class SchemaInfo
     {

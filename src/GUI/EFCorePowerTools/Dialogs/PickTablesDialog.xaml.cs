@@ -2,15 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Media;
     using Contracts.ViewModels;
     using Contracts.Views;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
     using Shared.DAL;
-    using Shared.Models;
 
     public partial class PickTablesDialog : IPickTablesDialog
     {

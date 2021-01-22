@@ -1,11 +1,10 @@
-﻿namespace EFCorePowerTools.Shared.Models
+﻿namespace RevEng.Shared
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Runtime.Serialization;
     using RevEng.Shared;
-    using ReverseEngineer20;
 
     /// <summary>
     /// A class holding schema information about database objects.

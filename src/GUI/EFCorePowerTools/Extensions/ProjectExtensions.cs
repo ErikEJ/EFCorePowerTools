@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using NuGet.ProjectModel;
-using ReverseEngineer20;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -225,7 +225,7 @@ namespace EFCorePowerTools.Extensions
             var outputPath = activeConfig.Properties.Item("OutputPath").Value.ToString();
             var fullName = project.FullName;
 
-            var absoluteOutputPath = ReverseEngineer20.PathHelper.GetAbsPath(outputPath, fullName);
+            var absoluteOutputPath = RevEng.Shared.PathHelper.GetAbsPath(outputPath, fullName);
 
             return absoluteOutputPath;
         }

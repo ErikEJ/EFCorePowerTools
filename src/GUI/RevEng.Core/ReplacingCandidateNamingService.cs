@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class ReplacingCandidateNamingService : CandidateNamingService
     {

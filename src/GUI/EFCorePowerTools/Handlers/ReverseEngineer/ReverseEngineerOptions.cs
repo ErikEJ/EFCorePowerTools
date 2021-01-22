@@ -1,6 +1,4 @@
-﻿using EFCorePowerTools.Shared.Models;
-using ReverseEngineer20;
-using ReverseEngineer20.ReverseEngineer;
+﻿using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,11 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EFCorePowerTools.Shared.Models;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
 using RevEng.Core.Abstractions.Model;
@@ -15,7 +13,7 @@ using RevEng.Core.Abstractions;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
 
-namespace ReverseEngineer20
+namespace RevEng.Core
 {
     public class TableListBuilder
     {
@@ -30,7 +28,7 @@ namespace ReverseEngineer20
             {
                 throw new ArgumentNullException(@"invalid connection string", nameof(connectionString));
             }
-            _connectionString = connectionString;
+            _connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
             _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
 
@@ -38,7 +36,8 @@ namespace ReverseEngineer20
             {
                 var builder = new SqlConnectionStringBuilder(_connectionString)
                 {
-                    CommandTimeout = 300
+                    CommandTimeout = 300,
+                    TrustServerCertificate = true,
                 };
                 _connectionString = builder.ConnectionString;
             }

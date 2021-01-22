@@ -2,17 +2,11 @@
 
 namespace UnitTests.ViewModels
 {
-    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
-    using GalaSoft.MvvmLight.CommandWpf;
     using Moq;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
 
     [TestFixture]
     public class PickTablesViewModelTests

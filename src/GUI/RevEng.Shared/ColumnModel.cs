@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.Models
+﻿namespace RevEng.Shared
 {
     using System;
     using System.Diagnostics;

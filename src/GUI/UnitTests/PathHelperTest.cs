@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using RevEng.Shared;
 
 namespace UnitTests
 {
@@ -10,7 +11,7 @@ namespace UnitTests
         public void ParsePathType1()
         {
             // Act
-            var result = ReverseEngineer20.PathHelper.GetAbsPath("..\\..\\folder", "C:\\temp\\data\\");
+            var result = PathHelper.GetAbsPath("..\\..\\folder", "C:\\temp\\data\\");
 
             // Assert
             Assert.AreEqual(@"C:\folder", result);
@@ -20,7 +21,7 @@ namespace UnitTests
         public void ParsePathType2()
         {
             // Act
-            var result = ReverseEngineer20.PathHelper.GetAbsPath("D:\\folder", "C:\\temp\\data\\");
+            var result = PathHelper.GetAbsPath("D:\\folder", "C:\\temp\\data\\");
 
             // Assert
             Assert.AreEqual(@"D:\folder", result);
@@ -30,7 +31,7 @@ namespace UnitTests
         public void ParsePathType3()
         {
             // Act
-            var result = ReverseEngineer20.PathHelper.GetAbsPath("\\server\\folder", "C:\\temp\\data\\");
+            var result = PathHelper.GetAbsPath("\\server\\folder", "C:\\temp\\data\\");
 
             // Assert
             Assert.AreEqual(@"\server\folder", result);
@@ -40,7 +41,7 @@ namespace UnitTests
         public void ParsePathType4()
         {
             // Act
-            var result = ReverseEngineer20.PathHelper.GetAbsPath("folder", "C:\\temp\\data\\");
+            var result = PathHelper.GetAbsPath("folder", "C:\\temp\\data\\");
 
             // Assert
             Assert.AreEqual(@"C:\temp\data\folder", result);

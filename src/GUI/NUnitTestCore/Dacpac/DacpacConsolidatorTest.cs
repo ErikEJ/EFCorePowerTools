@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using ReverseEngineer20.DacpacConsolidate;
+﻿using GOEddie.Dacpac.References;
+using NUnit.Framework;
 
 namespace UnitTests
 {

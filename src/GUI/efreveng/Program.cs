@@ -1,5 +1,5 @@
-﻿using ReverseEngineer20;
-using ReverseEngineer20.ReverseEngineer;
+﻿using RevEng.Core;
+using RevEng.Shared;
 using System;
 using System.IO;
 using System.Linq;

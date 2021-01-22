@@ -1,10 +1,7 @@
-﻿using ReverseEngineer20.ReverseEngineer;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ReverseEngineer20
+namespace RevEng.Shared
 {
-    using EFCorePowerTools.Shared.Models;
-
     public class ReverseEngineerCommandOptions
     {
         public DatabaseType DatabaseType { get; set; }

@@ -1,9 +1,8 @@
-﻿using EFCorePowerTools;
-using ErikEJ.SqlCeScripting;
+﻿using ErikEJ.SqlCeScripting;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
-using ReverseEngineer20;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;

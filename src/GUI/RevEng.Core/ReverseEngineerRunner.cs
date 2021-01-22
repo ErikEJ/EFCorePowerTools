@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -14,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class ReverseEngineerRunner
     {
@@ -102,6 +103,16 @@ namespace ReverseEngineer20.ReverseEngineer
                 NoPluralize = !reverseEngineerOptions.UseInflector,
 #endif
             };
+
+            if (reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer)
+            {
+                var builder = new SqlConnectionStringBuilder(reverseEngineerOptions.ConnectionString)
+                {
+                    CommandTimeout = 300,
+                    TrustServerCertificate = true,
+                };
+                reverseEngineerOptions.ConnectionString = builder.ConnectionString;
+            }
 
             var codeOptions = new ModelCodeGenerationOptions
             {

@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     using EventArgs;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
     using Shared.Models;
     using System;
     using System.Collections.Generic;

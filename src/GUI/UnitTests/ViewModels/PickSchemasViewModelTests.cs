@@ -1,9 +1,8 @@
-﻿using ReverseEngineer20.ReverseEngineer;
-
-namespace UnitTests.ViewModels
+﻿namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.ViewModels;
     using NUnit.Framework;
+    using RevEng.Shared;
 
     [TestFixture]
     public class PickSchemasViewModelTests

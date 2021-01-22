@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ReverseEngineer20
+namespace RevEng.Shared
 {
     public static class PathHelper
     {

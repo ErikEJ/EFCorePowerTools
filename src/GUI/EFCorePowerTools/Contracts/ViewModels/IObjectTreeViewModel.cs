@@ -2,7 +2,6 @@
 {
     using EFCorePowerTools.Shared.Models;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
