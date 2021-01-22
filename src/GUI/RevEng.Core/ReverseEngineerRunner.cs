@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -30,6 +29,8 @@ namespace RevEng.Core
             var serviceProvider = ServiceProviderBuilder.Build(reverseEngineerOptions);
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
             var schemas = new List<string>();
+
+            reverseEngineerOptions.ConnectionString = SqlServerHelper.SetConnectionString(reverseEngineerOptions.DatabaseType, reverseEngineerOptions.ConnectionString); 
 
             if (reverseEngineerOptions.DefaultDacpacSchema != null)
             {
@@ -103,16 +104,6 @@ namespace RevEng.Core
                 NoPluralize = !reverseEngineerOptions.UseInflector,
 #endif
             };
-
-            if (reverseEngineerOptions.DatabaseType == DatabaseType.SQLServer)
-            {
-                var builder = new SqlConnectionStringBuilder(reverseEngineerOptions.ConnectionString)
-                {
-                    CommandTimeout = 300,
-                    TrustServerCertificate = true,
-                };
-                reverseEngineerOptions.ConnectionString = builder.ConnectionString;
-            }
 
             var codeOptions = new ModelCodeGenerationOptions
             {

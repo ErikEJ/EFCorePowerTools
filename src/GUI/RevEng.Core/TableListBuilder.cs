@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Scaffolding;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace RevEng.Core
         private readonly string _connectionString;
         private readonly SchemaInfo[] _schemas;
         private readonly DatabaseType _databaseType;
-        private readonly ServiceProvider serviceProvider;
+        private readonly ServiceProvider _serviceProvider;
 
         public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas)
         {
@@ -32,17 +31,7 @@ namespace RevEng.Core
             _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
 
-            if (_databaseType == DatabaseType.SQLServer)
-            {
-                var builder = new SqlConnectionStringBuilder(_connectionString)
-                {
-                    CommandTimeout = 300,
-                    TrustServerCertificate = true,
-                };
-                _connectionString = builder.ConnectionString;
-            }
-
-            serviceProvider = TableListServiceProviderBuilder.Build(_databaseType);
+            _serviceProvider = TableListServiceProviderBuilder.Build(_databaseType);
         }
 
         public List<TableModel> GetTableModels()
@@ -70,7 +59,7 @@ namespace RevEng.Core
 
         private List<DatabaseTable> GetTableDefinitions()
         {
-            var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
+            var dbModelFactory = _serviceProvider.GetService<IDatabaseModelFactory>();
 
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
             var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
@@ -87,7 +76,7 @@ namespace RevEng.Core
                 return result;    
             }
 
-            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
+            var procedureModelFactory = _serviceProvider.GetService<IProcedureModelFactory>();
 
             var procedureModelOptions = new ProcedureModelFactoryOptions
             {
@@ -104,6 +93,5 @@ namespace RevEng.Core
 
             return result.OrderBy(c => c.DisplayName).ToList();
         }
-
     }
 }
