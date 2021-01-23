@@ -20,6 +20,7 @@ namespace #NAMESPACE#
             {
                 using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
                 {
+                    db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
                     return await db2.Set<T>().FromSqlRaw(sql, parameters).ToArrayAsync(cancellationToken);
                 }
             }
