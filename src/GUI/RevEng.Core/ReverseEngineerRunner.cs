@@ -129,6 +129,7 @@ namespace RevEng.Core
                     modelOptions,
                     codeOptions,
                     reverseEngineerOptions.UseBoolPropertiesWithoutDefaultSql,
+                    reverseEngineerOptions.UseNoNavigations,
                     serviceProvider);
 
             var filePaths = scaffolder.Save(
@@ -179,6 +180,7 @@ namespace RevEng.Core
             ModelReverseEngineerOptions modelOptions,
             ModelCodeGenerationOptions codeOptions,
             bool removeNullableBoolDefaults,
+            bool excludeNavigations,
             ServiceProvider serviceProvider)
         {
             var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
@@ -198,6 +200,15 @@ namespace RevEng.Core
                     column.DefaultValueSql = null;
                 }
             }
+
+            if (excludeNavigations)
+            {
+                foreach (var table in databaseModel.Tables)
+                {
+                    table.ForeignKeys.Clear();
+                }
+            }
+
 #if CORE50
             var model = _factory.Create(databaseModel, modelOptions);
 #else

@@ -206,5 +206,6 @@
    "UseLegacyPluralizer": false,
    "UseNodaTime": false,
    "UseNoConstructor": true,
+   "UseNoNavigations": true,
    "UseSpatial": false
 }
