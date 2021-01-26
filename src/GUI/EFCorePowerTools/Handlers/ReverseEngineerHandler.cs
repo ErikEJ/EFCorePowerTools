@@ -143,10 +143,12 @@ namespace EFCorePowerTools.Handlers
                 }
                 
                 _package.Dte2.StatusBar.Text = "Loading database objects...";
-
+                object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
+                _package.Dte2.StatusBar.Animate(true, icon);
                 var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
                                            : await GetTablesAsync(dbInfo, useEFCore5, schemas);
+                _package.Dte2.StatusBar.Animate(false, icon);
 
                 var preselectedTables = new List<SerializationTableModel>();
                 if (options != null)
@@ -282,10 +284,10 @@ namespace EFCorePowerTools.Handlers
 
                 var startTime = DateTime.Now;
 
+                _package.Dte2.StatusBar.Animate(true, icon);
                 _package.Dte2.StatusBar.Text = "Generating code...";
-
                 var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, useEFCore5);
-
+                _package.Dte2.StatusBar.Animate(false, icon);
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
