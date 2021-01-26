@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 {
     // This is the storage side of the scaffolding logic
-    // Because the EDMX format was not designed to allow the database creation, the SSDL part of the schema won't contain default values, extended properties, primary keys, unique constraints and index informations.
+    // Because the EDMX format was not designed with the database creation in mind, the SSDL part of the schema won't contains default values, extended properties, primary keys, unique constraints and index informations.
     public class EdmxDatabaseModelFactory : IDatabaseModelFactory
     {
         // SQL Server db types
@@ -27,6 +27,8 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         // FIXME Add PostgreSQL db types
+
+        // FIXME Add MySql db types
 
         private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
@@ -89,6 +91,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             };
 
             // Detect the EDMX file version
+            // FIXME Provide an alternative to not load the whole document in memory /!\
             XDocument edmxFile = XDocument.Load(edmxPath);
 
             var edmxVersion = ((XElement)edmxFile.FirstNode).FirstAttribute.Value;
@@ -119,6 +122,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                     GetForeignKeysV3(edmxv3, item, dbModel);
                     // Unique constraints are not available in the model
                     // GetUniqueConstraints(item, dbModel);
+
                     // Indexes are not available in the model
                     // GetIndexes(item, dbModel);
                 }
@@ -188,7 +192,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             }
         }
 
-        // FIXME Add provider string to deal with provider specific data type string
+        // FIXME Add provider string to deal with provider specific data type string to be returned. Only SQL Server for now.
         private string GetStoreTypeV3(LinqToEdmx.Model.StorageV3.EntityProperty col)
         {
             // SQL Server
@@ -226,6 +230,8 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             return col.Type.ToString();
 
             // FIXME PostgreSQL
+
+            // FIXME MySQL
         }
 
         private void GetPrimaryKeyV3(LinqToEdmx.Model.StorageV3.EntityTypeStore table, DatabaseTable dbTable)
@@ -265,6 +271,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 .Single(t => t.Name == table.Name
                 && t.Schema == GetSchemaNameV3(model, table.Name));
 
+            // The foreign key informations are stored in the Association Object
             var associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.ReferentialConstraint.Principal.Role == table.Name);
 
             if (associations.Count() == 0)
@@ -272,10 +279,14 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 
             foreach (var association in associations)
             {
+                // The entity name could be derived if present multiple times (a table has a foreign key to himself => See ProductCategory which has a parent ProductCategory)
+                // Te association set allows us to disambiguate the table name.
                 var associationSet = model.GetItems<LinqToEdmx.Model.StorageV3.EntityContainer>().First().AssociationSets.Where(@as => @as.Name == association.Name).SingleOrDefault();
 
                 var entityName = association.ReferentialConstraint.Dependent.Role;
 
+
+                // Look for the table to which the columns are constrained
                 var foreignTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
                 if ( foreignTable == null)
                 {
@@ -299,7 +310,8 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                     // OnDelete = ConvertToReferentialAction(fk.DeleteAction)
                 };
 
-                foreach (var fkCol in association.ReferentialConstraint.Principal.PropertyRefs)
+                // Finish to populate the foreign key definition with principal and dependent columns
+                foreach (var fkCol in association.ReferentialConstraint.Dependent.PropertyRefs)
                 {
                     var dbCol = dbTable.Columns
                         .Single(c => c.Name == fkCol.Name);
@@ -307,7 +319,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                     foreignKey.Columns.Add(dbCol);
                 }
 
-                foreach (var fkCol in association.ReferentialConstraint.Dependent.PropertyRefs)
+                foreach (var fkCol in association.ReferentialConstraint.Principal.PropertyRefs)
                 {
                     var dbCol = foreignTable.Columns
                         .SingleOrDefault(c => c.Name == fkCol.Name);
