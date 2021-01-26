@@ -21,6 +21,9 @@ namespace RevEng.Shared
         public List<TableRenamer> Tables { get; set; }
 
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        public List<NavigationRenamer> Navigations { get; set; }
+
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public string TableRegexPattern { get; set; }
 
         [DataMember(EmitDefaultValue = false, IsRequired = false)]

@@ -459,7 +459,7 @@ namespace ScaffoldingTester.Models
                     .HasForeignKey(d => d.EmployeeId)
                     .HasConstraintName("FK_Orders_Employees");
 
-                entity.HasOne(d => d.ShipViaNavigation)
+                entity.HasOne(d => d.ShipBy)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.ShipVia)
                     .HasConstraintName("FK_Orders_Shippers");

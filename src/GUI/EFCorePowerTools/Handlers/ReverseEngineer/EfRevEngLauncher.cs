@@ -102,7 +102,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private ReverseEngineerResult GetOutput()
         {
-            var path = Path.GetTempFileName() + "json";
+            var path = Path.GetTempFileName() + ".json";
             File.WriteAllText(path, options.Write());
 
             var launchPath = Path.Combine(Path.GetTempPath(), "efreveng");
@@ -114,6 +114,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             };
 
             var standardOutput = RunProcess(startInfo);
+
+            try
+            {
+                File.Delete(path);
+            }
+            catch { }
 
             return resultDeserializer.BuildResult(standardOutput);
         }

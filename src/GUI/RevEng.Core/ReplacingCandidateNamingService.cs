@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
@@ -15,10 +13,15 @@ namespace RevEng.Core
     public class ReplacingCandidateNamingService : CandidateNamingService
     {
         private readonly List<Schema> _customNameOptions;
+        private readonly Dictionary<string, string> _navigationReplacers;
 
         public ReplacingCandidateNamingService(List<Schema> customNameOptions)
         {
             _customNameOptions = customNameOptions;
+            _navigationReplacers = customNameOptions
+                .Where(o => o.Navigations != null)
+                .SelectMany(o => o.Navigations)
+                .ToDictionary(n => n.Name, n => n.NewName);
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -116,33 +119,28 @@ namespace RevEng.Core
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
+        public override string GetPrincipalEndCandidateNavigationPropertyName(IForeignKey foreignKey, string dependentEndNavigationPropertyName)
+        {
+            var baseName = base.GetPrincipalEndCandidateNavigationPropertyName(foreignKey, dependentEndNavigationPropertyName);
+
+            if (_navigationReplacers.TryGetValue(baseName, out string name))
+            {
+                return name;
+            }
+
+            return baseName;
+        }
+
         public override string GetDependentEndCandidateNavigationPropertyName(IForeignKey foreignKey)
         {
             var baseName = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            var originalSchema = foreignKey.PrincipalEntityType.GetSchema();
 
-            var schema = GetSchema(originalSchema);
+            if (_navigationReplacers.TryGetValue(baseName, out string name))
+            {
+                return name;
+            }
 
-            if (schema == null)
-            {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            }
-            else if (foreignKey.IsSelfReferencing())
-            {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            }
-            else if (schema.SchemaName == originalSchema)
-            {
-                if (schema.UseSchemaName)
-                {
-                    return ToPascalCase(schema.SchemaName) + baseName;
-                }
-                return baseName;
-            }
-            else
-            {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            }
+            return baseName;
         }
 
         private Schema GetSchema(string originalSchema)
