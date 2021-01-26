@@ -205,6 +205,9 @@ namespace EFCorePowerTools.Handlers
                     presets.MapSpatialTypes = options.UseSpatial;
                     presets.MapNodaTimeTypes = options.UseNodaTime;
                     presets.UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql;
+                    presets.UseNoConstructor = options.UseNoConstructor;
+                    presets.UseNoNavigations = options.UseNoNavigations;
+                    presets.UseNullableReferences = options.UseNullableReferences;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -238,15 +241,15 @@ namespace EFCorePowerTools.Handlers
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
                     SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated,
                     UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql,
+                    UseNullableReferences = modelingOptionsResult.Payload.UseNullableReferences,
+                    UseNoConstructor = modelingOptionsResult.Payload.UseNoConstructor,
+                    UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.Objects.ToList(),
                     CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList(),
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList(),
-                    UseNullableReferences = options?.UseNullableReferences ?? false,
-                    UseNoConstructor = options?.UseNoConstructor ?? false,
-                    UseNoNavigations = options?.UseNoNavigations ?? false,
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer
