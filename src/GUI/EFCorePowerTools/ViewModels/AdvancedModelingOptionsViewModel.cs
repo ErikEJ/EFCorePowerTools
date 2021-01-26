@@ -58,6 +58,9 @@
             Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
+            Model.UseNoConstructor = presets.UseNoConstructor;
+            Model.UseNoNavigations = presets.UseNoNavigations;
+            Model.UseNullableReferences = presets.UseNullableReferences;
         }
     }
 }
