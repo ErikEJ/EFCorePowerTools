@@ -205,7 +205,7 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseNodaTime": false,
-   "UseNoConstructor": true,
-   "UseNoNavigations": true,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
    "UseSpatial": false
 }

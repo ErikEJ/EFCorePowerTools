@@ -1,5 +1,11 @@
 ﻿[
    {
+      "Navigations": [
+         {
+            "Name": "ShipVia",
+            "NewName": "ShipBy"
+         }
+      ],
       "SchemaName": "dbo",
       "Tables": [
          {
