@@ -29,6 +29,7 @@
 
         public ICommand LoadedCommand { get; }
         public ICommand AddDatabaseConnectionCommand { get; }
+        public ICommand RemoveDatabaseConnectionCommand { get; }
         public ICommand AddDatabaseDefinitionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -97,6 +98,7 @@
             LoadedCommand = new RelayCommand(Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
             AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
+            RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
             FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
@@ -143,6 +145,27 @@
             SelectedDatabaseConnection = newDatabaseConnection;
         }
 
+        private void RemoveDatabaseConnection_Executed()
+        {
+            if (SelectedDatabaseConnection == null)
+            {
+                return;
+            }
+
+            try
+            {
+                _visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                DatabaseConnections.Remove(SelectedDatabaseConnection);
+            }
+            catch (Exception e)
+            {
+                _visualStudioAccess.ShowMessage("Unable to remove connection: " + e.Message);
+                return;
+            }
+
+            SelectedDatabaseConnection = null;
+        }
+
         private void AddDatabaseDefinition_Executed()
         {
             DatabaseDefinitionModel newDatabaseDefinition;
@@ -169,6 +192,8 @@
         }
 
         private bool Ok_CanExecute() => SelectedDatabaseConnection != null || SelectedDatabaseDefinition != null;
+
+        private bool RemoveDatabaseConnection_CanExecute() => SelectedDatabaseConnection != null;
 
         private void Cancel_Executed()
         {

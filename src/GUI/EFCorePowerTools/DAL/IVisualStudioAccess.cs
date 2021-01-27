@@ -1,6 +1,7 @@
 ﻿namespace EFCorePowerTools.Shared.DAL
 {
     using System;
+    using Microsoft.VisualStudio.Data.Services;
     using Models;
 
     public interface IVisualStudioAccess
@@ -8,6 +9,8 @@
         DatabaseConnectionModel PromptForNewDatabaseConnection();
 
         DatabaseDefinitionModel PromptForNewDatabaseDefinition();
+
+        void RemoveDatabaseConnection(IVsDataConnection dataConnection);
 
         void ShowMessage(string message);
 
