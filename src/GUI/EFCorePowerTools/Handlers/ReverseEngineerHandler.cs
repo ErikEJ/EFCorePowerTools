@@ -64,7 +64,7 @@ namespace EFCorePowerTools.Handlers
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
 
-                var databaseList =VsDataHelper.GetDataConnections(_package);
+                var databaseList = VsDataHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
@@ -76,7 +76,8 @@ namespace EFCorePowerTools.Handlers
                     {
                         ConnectionName = m.Value.Caption,
                         ConnectionString = m.Value.ConnectionString,
-                        DatabaseType = m.Value.DatabaseType
+                        DatabaseType = m.Value.DatabaseType,
+                        DataConnection = m.Value.DataConnection,                        
                     }));
                 }
 

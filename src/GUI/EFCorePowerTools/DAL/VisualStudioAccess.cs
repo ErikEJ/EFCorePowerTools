@@ -2,6 +2,7 @@
 {
     using System;
     using EFCorePowerTools.Helpers;
+    using Microsoft.VisualStudio.Data.Services;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
     using RevEng.Shared;
@@ -27,7 +28,8 @@
             {
                 ConnectionName = info.Caption,
                 ConnectionString = info.ConnectionString,
-                DatabaseType = info.DatabaseType
+                DatabaseType = info.DatabaseType,
+                DataConnection = info.DataConnection,
             };
         }
 
@@ -44,6 +46,11 @@
             {
                 FilePath = fileName,
             };
+        }
+
+        void IVisualStudioAccess.RemoveDatabaseConnection(IVsDataConnection dataConnection)
+        {
+            VsDataHelper.RemoveDataConnection(_package, dataConnection);
         }
 
         void IVisualStudioAccess.ShowMessage(string message)

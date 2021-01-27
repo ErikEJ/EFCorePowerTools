@@ -136,6 +136,19 @@ namespace EFCorePowerTools.Helpers
             return savedName;
         }
 
+        internal static void RemoveDataConnection(EFCorePowerToolsPackage package, IVsDataConnection dataConnection)
+        {
+            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
+
+            foreach (var connection in dataExplorerConnectionManager.Connections.Values)
+            {
+                if (connection.Connection == dataConnection)
+                {
+                    dataExplorerConnectionManager.RemoveConnection(connection);
+                }
+            }
+        }
+
         private static DatabaseInfo GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
         {
             var dbType = DatabaseType.SQLCE35;

@@ -3,6 +3,7 @@
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using JetBrains.Annotations;
+    using Microsoft.VisualStudio.Data.Services;
     using RevEng.Shared;
 
     /// <summary>
@@ -13,6 +14,7 @@
         private string _connectionName;
         private string _connectionString;
         private DatabaseType _databaseType;
+        private IVsDataConnection _dataConnection;
 
         public string ConnectionName
         {
@@ -43,6 +45,17 @@
             {
                 if (value == _databaseType) return;
                 _databaseType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IVsDataConnection DataConnection
+        {
+            get => _dataConnection;
+            set
+            {
+                if (value == _dataConnection) return;
+                _dataConnection = value;
                 OnPropertyChanged();
             }
         }
