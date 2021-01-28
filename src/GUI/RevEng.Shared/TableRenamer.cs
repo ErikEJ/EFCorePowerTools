@@ -14,5 +14,8 @@ namespace RevEng.Shared
 
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public List<ColumnNamer> Columns { get; set; }
+
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        public List<NavigationRenamer> Navigations { get; set; }
     }
 }

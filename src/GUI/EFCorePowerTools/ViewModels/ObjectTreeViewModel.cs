@@ -78,9 +78,16 @@
                     var originalReplacers = _allSchemas.Where(s => s.SchemaName == schema.Name)
                         .SelectMany(a => a.Tables.Where(t => t.Columns != null && t.Name == obj.Name))
                         .ToList();
-                    var ignoredReplacers = originalReplacers.SelectMany(o => o.Columns.Where(c => c.Name.Equals(c.NewName))).ToList();
- 
-                    if (objectIsRenamed || renamedColumns.Any() || ignoredReplacers.Any())
+                    
+                    var ignoredReplacers = originalReplacers
+                        .SelectMany(o => o.Columns.Where(c => c.Name.Equals(c.NewName)))
+                        .ToList();
+
+                    var originalNavigationReplacers = originalReplacers
+                        .Where(o => o.Navigations != null)
+                        .SelectMany(o => o.Navigations).ToList();
+
+                    if (objectIsRenamed || renamedColumns.Any() || ignoredReplacers.Any() || originalNavigationReplacers.Any())
                     {
                         var columnRenamers = renamedColumns
                             .Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName })
@@ -94,7 +101,8 @@
                             Name = obj.Name,
                             NewName = obj.NewName,
                             Columns = columnRenamers.ToList(),
-                        }); 
+                            Navigations = originalNavigationReplacers,
+                        });
                     }
                 }
 

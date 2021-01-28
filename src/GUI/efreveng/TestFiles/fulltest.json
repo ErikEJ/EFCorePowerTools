@@ -4,12 +4,6 @@
   "ContextNamespace": null,
   "CustomReplacers": [
     {
-      "Navigations": [
-        {
-          "Name": "ShipVia",
-          "NewName": "ShipBy"
-        }
-      ],
       "SchemaName": "dbo",
       "Tables": [
         {
@@ -21,6 +15,17 @@
           ],
           "Name": "Categories",
           "NewName": "Categories"
+        },
+        {
+          "Columns": [ ],
+          "Navigations": [
+            {
+              "Name": "ShipVia",
+              "NewName": "ShipBy"
+            }
+          ],
+          "Name": "Orders",
+          "NewName": "Orders"
         }
       ],
       "UseSchemaName": false
