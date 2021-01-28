@@ -120,9 +120,10 @@ namespace UnitTests.ViewModels
             // Arrange
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
-            var objects = new TableModel[2];
+            var objects = new TableModel[3];
             objects[0] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false) }.ToArray());
             objects[1] = new TableModel("employeedetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false) }.ToArray());
+            objects[2] = new TableModel("same", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("same", false) }.ToArray());
 
             var replacers = new Schema[1];
             replacers[0] = new Schema()
@@ -138,7 +139,7 @@ namespace UnitTests.ViewModels
                         Columns = new List<ColumnNamer>
                         {
                             new ColumnNamer { Name = "DEPTCode", NewName = "DEPTCode" },
-                        }
+                        },
                     },
                     new TableRenamer
                     {
@@ -147,19 +148,39 @@ namespace UnitTests.ViewModels
                         Columns = new List<ColumnNamer>
                         {
                             new ColumnNamer { Name = "EMPCode", NewName = "EMPCode" },
-                        }
-                    }
+
+                        },
+                        Navigations = new List<NavigationRenamer>
+                        {
+                            new NavigationRenamer { Name = "First", NewName = "Second" },
+                        },
+                    },
+                    new TableRenamer
+                    {
+                        Name = "same",
+                        NewName = "same",
+                        Columns = new List<ColumnNamer>(),
+                        Navigations = new List<NavigationRenamer>
+                        {
+                            new NavigationRenamer { Name = "SameFirst", NewName = "SameSecond" },
+                        },
+                    },
                 },
             };
 
             // Act
             vm.AddObjects(objects, replacers);
             vm.SetSelectionState(true);
-            var renamers = vm.GetRenamedObjects();
+            var renamers = vm.GetRenamedObjects().ToList();
 
             // Assert
-            Assert.AreEqual(1, renamers.First().Tables[0].Columns.Count);
-            Assert.AreEqual(1, renamers.First().Tables[1].Columns.Count);
+            Assert.AreEqual(3, renamers[0].Tables.Count);
+            Assert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
+            Assert.AreEqual(0, renamers[0].Tables[0].Navigations.Count);
+            Assert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
+            Assert.AreEqual(1, renamers[0].Tables[1].Navigations.Count);
+            Assert.AreEqual(0, renamers[0].Tables[2].Columns.Count);
+            Assert.AreEqual(1, renamers[0].Tables[1].Navigations.Count);
         }
 
         [Test]

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
@@ -13,15 +14,15 @@ namespace RevEng.Core
     public class ReplacingCandidateNamingService : CandidateNamingService
     {
         private readonly List<Schema> _customNameOptions;
-        private readonly Dictionary<string, string> _navigationReplacers;
+        private readonly List<TableRenamer> _navigationReplacers;
 
         public ReplacingCandidateNamingService(List<Schema> customNameOptions)
         {
             _customNameOptions = customNameOptions;
             _navigationReplacers = customNameOptions
-                .Where(o => o.Navigations != null)
-                .SelectMany(o => o.Navigations)
-                .ToDictionary(n => n.Name, n => n.NewName);
+                .Where(o => o.Tables != null)
+                .SelectMany(t => t.Tables)
+                .ToList();
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -122,10 +123,32 @@ namespace RevEng.Core
         public override string GetPrincipalEndCandidateNavigationPropertyName(IForeignKey foreignKey, string dependentEndNavigationPropertyName)
         {
             var baseName = base.GetPrincipalEndCandidateNavigationPropertyName(foreignKey, dependentEndNavigationPropertyName);
+            var tableName = foreignKey.PrincipalEntityType.GetTableName();
+            var schemaName = foreignKey.PrincipalEntityType.GetSchema();
 
-            if (_navigationReplacers.TryGetValue(baseName, out string name))
+            var schema = _customNameOptions
+                .Where(o => o.SchemaName == schemaName
+                    && o.Tables != null && o.Tables.Any())
+                .SingleOrDefault();
+
+            if (schema != null)
             {
-                return name;
+                var table = schema.Tables
+                    .Where(t => t.Name == tableName
+                        && t.Navigations != null)
+                    .SingleOrDefault();
+
+                if (table != null)
+                {
+                    var navigationRenamer = table.Navigations
+                        .Where(n => n.Name == baseName)
+                        .SingleOrDefault();
+
+                    if (navigationRenamer != null && navigationRenamer.NewName != null)
+                    {
+                        return navigationRenamer.NewName;
+                    }
+                }
             }
 
             return baseName;
@@ -135,9 +158,32 @@ namespace RevEng.Core
         {
             var baseName = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
 
-            if (_navigationReplacers.TryGetValue(baseName, out string name))
+            var tableName = foreignKey.DeclaringEntityType.GetTableName();
+            var schemaName = foreignKey.DeclaringEntityType.GetSchema();
+
+            var schema = _customNameOptions
+                .Where(o => o.SchemaName == schemaName
+                    && o.Tables != null && o.Tables.Any())
+                .SingleOrDefault();
+
+            if (schema != null)
             {
-                return name;
+                var table = schema.Tables
+                    .Where(t => t.Name == tableName
+                        && t.Navigations != null)
+                    .SingleOrDefault();
+
+                if (table != null)
+                {
+                    var navigationRenamer = table.Navigations
+                        .Where(n => n.Name == baseName)
+                        .SingleOrDefault();
+
+                    if (navigationRenamer != null && navigationRenamer.NewName != null)
+                    {
+                        return navigationRenamer.NewName;
+                    }
+                }
             }
 
             return baseName;
