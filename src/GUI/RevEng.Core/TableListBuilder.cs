@@ -31,7 +31,12 @@ namespace RevEng.Core
             _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
 
-            _serviceProvider = TableListServiceProviderBuilder.Build(_databaseType);
+            var options = new ReverseEngineerCommandOptions
+            {
+                DatabaseType = _databaseType,
+            };
+
+            _serviceProvider = ServiceProviderBuilder.Build(options);
         }
 
         public List<TableModel> GetTableModels()

@@ -1,6 +1,5 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -102,12 +101,6 @@ namespace RevEng.Core
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-
-                    var builder = new SqlConnectionStringBuilder(options.ConnectionString)
-                    {
-                        CommandTimeout = 300
-                    };
-                    options.ConnectionString = builder.ConnectionString;
 
                     break;
 
