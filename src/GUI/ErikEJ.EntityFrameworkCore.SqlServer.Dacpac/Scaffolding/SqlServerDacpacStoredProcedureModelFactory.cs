@@ -97,13 +97,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             };
         }
 
-        private List<ProcedureParameter> GetStoredProcedureParameters(TSqlProcedure proc)
+        private List<ModuleParameter> GetStoredProcedureParameters(TSqlProcedure proc)
         {
-            var result = new List<ProcedureParameter>();
+            var result = new List<ModuleParameter>();
 
             foreach (var parameter in proc.Parameters)
             {
-                var newParameter = new ProcedureParameter()
+                var newParameter = new ModuleParameter()
                 {
                      Length = parameter.Length,
                      Name = parameter.Name.Parts[2].Trim('@'),
@@ -119,7 +119,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             // Add parameter to hold the standard return value
-            result.Add(new ProcedureParameter()
+            result.Add(new ModuleParameter()
             {
                 Name = "returnValue",
                 StoreType = "int",

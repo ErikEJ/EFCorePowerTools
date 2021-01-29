@@ -2,13 +2,13 @@
 
 namespace RevEng.Core.Abstractions.Metadata
 {
-    public class Procedure
+    public class Function
     {
         public string Name { get; set; }
         public string Schema { get; set; }
-        public bool HasValidResultSet { get; set; }
+        public string DataType { get; set; }
+        public bool IsScalar { get; set; }
 
         public List<ModuleParameter> Parameters = new List<ModuleParameter>();
-        public List<ProcedureResultElement> ResultElements = new List<ProcedureResultElement>();
     }
 }

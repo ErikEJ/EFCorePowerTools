@@ -10,7 +10,6 @@ Reverse Engineer - Generates POCO classes, derived DbContext and Code First mapp
 Migrations Tool - Manage EF Core Migrations in the project: View status, Add Migration, Update Database
 Add DbContext Model Diagram - Adds a DGML graph from your DbContext Model.
 View DbContext Model SQL DDL - View a SQL DDL script from your DbContext Model.
-View Database Schema as Graph - Generates a DGML graph of your database schema, viewable in Visual Studio.
 About - Displays version and other diagnostic information about your Visual Studio instance. 
         </Description>
         <MoreInfo>https://github.com/ErikEJ/EFCorePowerTools/wiki/</MoreInfo>

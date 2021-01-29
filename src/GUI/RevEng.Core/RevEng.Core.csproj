@@ -36,6 +36,10 @@
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Functions\" />
   </ItemGroup>  
 
 </Project>

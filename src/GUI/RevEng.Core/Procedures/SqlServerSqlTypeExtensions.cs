@@ -21,12 +21,12 @@ namespace RevEng.Core
                 { "geometry", "variant" },
             });
 
-        public static Type ClrType(this ProcedureParameter storedProcedureParameter)
+        public static Type ClrType(this ModuleParameter storedProcedureParameter)
         {
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
         }
 
-        public static SqlDbType DbType(this ProcedureParameter storedProcedureParameter)
+        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
         {
             return GetSqlDbType(storedProcedureParameter.StoreType);
         }

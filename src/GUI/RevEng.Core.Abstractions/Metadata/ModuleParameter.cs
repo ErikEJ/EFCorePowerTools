@@ -1,6 +1,6 @@
 ﻿namespace RevEng.Core.Abstractions.Metadata
 {
-    public class ProcedureParameter
+    public class ModuleParameter
     {
         public string Name { get; set; }
         public string StoreType { get; set; }

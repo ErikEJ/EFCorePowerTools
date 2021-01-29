@@ -264,7 +264,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Procedure procedure, List<ProcedureParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             var returnType = $"Task<{identifier}Result[]>";
 
@@ -297,14 +297,14 @@ namespace RevEng.Core.Procedures
             return line;
         }
 
-        private void GenerateParameterVar(ProcedureParameter parameter)
+        private void GenerateParameterVar(ModuleParameter parameter)
         {
             _sb.Append($"var {parameterPrefix}{parameter.Name} = ");
             GenerateParameter(parameter);
             _sb.AppendLine(";");
         }
 
-        private void GenerateParameter(ProcedureParameter parameter)
+        private void GenerateParameter(ModuleParameter parameter)
         {
             _sb.AppendLine("new SqlParameter");
             _sb.AppendLine("{");

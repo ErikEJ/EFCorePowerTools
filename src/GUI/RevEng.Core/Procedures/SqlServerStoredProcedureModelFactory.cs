@@ -100,10 +100,10 @@ ORDER BY ROUTINE_NAME;";
             };
         }
 
-        private List<ProcedureParameter> GetStoredProcedureParameters(SqlConnection connection, string schema, string name)
+        private List<ModuleParameter> GetStoredProcedureParameters(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
-            var result = new List<ProcedureParameter>();
+            var result = new List<ModuleParameter>();
 
             // Validate this - based on https://stackoverflow.com/questions/20115881/how-to-get-stored-procedure-parameters-details/41330791
 
@@ -136,7 +136,7 @@ SELECT
 
             foreach (DataRow par in dtResult.Rows)
             {
-                var parameter = new ProcedureParameter()
+                var parameter = new ModuleParameter()
                 {
                     Name = par["Parameter"].ToString().Replace("@", ""),
                     StoreType = par["Type"].ToString(),
@@ -152,7 +152,7 @@ SELECT
             }
 
             // Add parameter to hold the standard return value
-            result.Add(new ProcedureParameter()
+            result.Add(new ModuleParameter()
             {
                 Name = "returnValue",
                 StoreType = "int",
