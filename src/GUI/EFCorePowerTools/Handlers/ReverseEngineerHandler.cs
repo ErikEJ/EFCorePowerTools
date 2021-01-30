@@ -89,7 +89,7 @@ namespace EFCorePowerTools.Handlers
                     }));
                 }
 
-                if (options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
+                if (options != null && options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
                 {
                     psd.PublishSchemas(options.Schemas);
                 }
