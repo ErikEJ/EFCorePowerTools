@@ -23,7 +23,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             _logger = logger;
         }
 
-        public ProcedureModel Create(string dacpacPath, ProcedureModelFactoryOptions options)
+        public ProcedureModel Create(string dacpacPath, ModuleModelFactoryOptions options)
         {
             if (string.IsNullOrEmpty(dacpacPath))
             {
@@ -37,12 +37,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return GetStoredProcedures(dacpacPath, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string dacpacPath, ProcedureModelFactoryOptions options)
+        private ProcedureModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
         {
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
 
-            if (options.FullModel && !options.Procedures.Any())
+            if (options.FullModel && !options.Modules.Any())
             {
                 return new ProcedureModel
                 {
@@ -59,7 +59,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var procedures = model.GetObjects<TSqlProcedure>(DacQueryScopes.UserDefined)
                .ToList();
 
-            var filter = new HashSet<string>(options.Procedures);
+            var filter = new HashSet<string>(options.Modules);
 
             foreach (var proc in procedures)
             {

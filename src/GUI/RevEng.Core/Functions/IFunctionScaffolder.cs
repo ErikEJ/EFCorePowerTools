@@ -3,11 +3,11 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using System.Collections.Generic;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Functions
 {
-    public interface IProcedureScaffolder
+    public interface IFunctionScaffolder
     {
-        ScaffoldedModel ScaffoldModel(ProcedureModel model, ModuleScaffolderOptions procedureOptions, ref List<string> errors);
+        ScaffoldedModel ScaffoldModel(FunctionModel model, ModuleScaffolderOptions procedureOptions, ref List<string> errors);
         SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace);
     }
 }

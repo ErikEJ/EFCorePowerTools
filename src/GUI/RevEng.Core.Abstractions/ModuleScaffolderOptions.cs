@@ -1,6 +1,6 @@
 ﻿namespace RevEng.Core.Abstractions
 {
-    public class ProcedureScaffolderOptions
+    public class ModuleScaffolderOptions
     {
         public virtual string ContextName { get; set; }
         public virtual string ContextDir { get; set; }

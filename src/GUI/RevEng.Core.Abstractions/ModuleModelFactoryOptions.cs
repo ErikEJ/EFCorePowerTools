@@ -2,9 +2,9 @@
 
 namespace RevEng.Core.Abstractions
 {
-    public class ProcedureModelFactoryOptions
+    public class ModuleModelFactoryOptions
     {
-        public IEnumerable<string> Procedures { get; set; }
+        public IEnumerable<string> Modules { get; set; }
         public bool FullModel { get; set; }
     }
 }

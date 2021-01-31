@@ -4,6 +4,6 @@ namespace RevEng.Core.Abstractions.Model
 {
     public interface IFunctionModelFactory
     {
-        FunctionModel Create(string connectionString, FunctionModelFactoryOptions options);
+        FunctionModel Create(string connectionString, ModuleModelFactoryOptions options);
     }
 }

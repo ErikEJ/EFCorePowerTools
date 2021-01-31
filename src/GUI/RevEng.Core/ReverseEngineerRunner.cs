@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Procedures.Scaffolding;
+using RevEng.Core.Procedures;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -69,15 +69,15 @@ namespace RevEng.Core
             {
                 var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
 
-                var procedureModelFactoryOptions = new ProcedureModelFactoryOptions
+                var procedureModelFactoryOptions = new ModuleModelFactoryOptions
                 {
                     FullModel = true,
-                    Procedures = reverseEngineerOptions.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
+                    Modules = reverseEngineerOptions.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
                 };
 
                 var procedureModel = procedureModelFactory.Create(reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString, procedureModelFactoryOptions);
 
-                var procedureOptions = new ProcedureScaffolderOptions
+                var procedureOptions = new ModuleScaffolderOptions
                 {
                     ContextDir = outputContextDir,
                     ContextName = reverseEngineerOptions.ContextClassName,

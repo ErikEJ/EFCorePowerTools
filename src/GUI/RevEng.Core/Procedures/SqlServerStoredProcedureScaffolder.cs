@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Procedures.Scaffolding;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -50,7 +49,7 @@ namespace RevEng.Core.Procedures
             this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(ProcedureModel model, ProcedureScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(ProcedureModel model, ModuleScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
@@ -115,7 +114,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        private string WriteProcedureDbContext(ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
+        private string WriteProcedureDbContext(ModuleScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -353,7 +352,7 @@ namespace RevEng.Core.Procedures
             _sb.Append("}");
         }
 
-        private string WriteResultClass(Procedure storedProcedure, ProcedureScaffolderOptions options, string name)
+        private string WriteResultClass(Procedure storedProcedure, ModuleScaffolderOptions options, string name)
         {
             var @namespace = options.ModelNamespace;
 

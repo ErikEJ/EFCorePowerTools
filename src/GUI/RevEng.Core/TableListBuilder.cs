@@ -83,10 +83,10 @@ namespace RevEng.Core
 
             var procedureModelFactory = _serviceProvider.GetService<IProcedureModelFactory>();
 
-            var procedureModelOptions = new ProcedureModelFactoryOptions
+            var procedureModelOptions = new ModuleModelFactoryOptions
             {
                 FullModel = false,
-                Procedures = new List<string>(),
+                Modules = new List<string>(),
             };
 
             var procedureModel = procedureModelFactory.Create(_connectionString, procedureModelOptions);
@@ -110,10 +110,10 @@ namespace RevEng.Core
 
             var functionModelFactory = _serviceProvider.GetService<IFunctionModelFactory>();
 
-            var functionModelOptions = new FunctionModelFactoryOptions
+            var functionModelOptions = new ModuleModelFactoryOptions
             {
                 FullModel = false,
-                Functions = new List<string>(),
+                Modules = new List<string>(),
             };
 
             var functionModel = functionModelFactory.Create(_connectionString, functionModelOptions);
