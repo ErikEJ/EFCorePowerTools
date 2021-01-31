@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Functions;
 using RevEng.Core.Procedures;
 using RevEng.Shared;
 using System;
@@ -97,6 +98,41 @@ namespace RevEng.Core
                 }
             }
 
+            SavedModelFiles functionPaths = null;
+            var functionModelScaffolder = serviceProvider.GetService<IFunctionScaffolder>();
+            if (functionModelScaffolder != null
+                && reverseEngineerOptions.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction))
+            {
+                var functionModelFactory = serviceProvider.GetService<IFunctionModelFactory>();
+
+                var modelFactoryOptions = new ModuleModelFactoryOptions
+                {
+                    FullModel = true,
+                    Modules = reverseEngineerOptions.Tables.Where(t => t.ObjectType == ObjectType.ScalarFunction).Select(m => m.Name),
+                };
+
+                var functionModel = functionModelFactory.Create(reverseEngineerOptions.Dacpac ?? reverseEngineerOptions.ConnectionString, modelFactoryOptions);
+
+                var functionOptions = new ModuleScaffolderOptions
+                {
+                    ContextDir = outputContextDir,
+                    ContextName = reverseEngineerOptions.ContextClassName,
+                    ContextNamespace = contextNamespace,
+                    ModelNamespace = modelNamespace,
+                    NullableReferences = reverseEngineerOptions.UseNullableReferences,
+                };
+
+                var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, ref errors);
+
+                if (functionScaffoldedModel != null)
+                {
+                    functionPaths = functionModelScaffolder.Save(
+                        functionScaffoldedModel,
+                        Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputPath ?? string.Empty)),
+                        contextNamespace);
+                }
+            }
+
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = reverseEngineerOptions.UseDatabaseNames,
@@ -158,6 +194,10 @@ namespace RevEng.Core
                 {
                     cleanUpPaths.AdditionalFiles.Add(additionalFile);
                 }
+            }
+            if (functionPaths != null)
+            {
+                cleanUpPaths.AdditionalFiles.Add(functionPaths.ContextFile);
             }
 
             CleanUp(cleanUpPaths, entityTypeConfigurationPaths);

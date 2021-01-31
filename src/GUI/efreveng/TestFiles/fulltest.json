@@ -240,6 +240,14 @@
     {
       "Name": "[dupe].[CustOrderHist]",
       "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[GetCustInfoNoParams]",
+      "ObjectType": 2
+    },
+    {
+      "Name": "[dbo].[GetCustInfo]",
+      "ObjectType": 2
     }
   ],
   "UseBoolPropertiesWithoutDefaultSql": true,
