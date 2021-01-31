@@ -12,7 +12,6 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -20,27 +19,7 @@ namespace RevEng.Core.Functions
 {
     public class SqlServerFunctionScaffolder : IFunctionScaffolder
     {
-        private const string parameterPrefix = "parameter";
-
         private readonly ICSharpHelper code;
-
-        private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
-        {
-            SqlDbType.DateTimeOffset,
-            SqlDbType.DateTime2,
-            SqlDbType.Time,
-            SqlDbType.Decimal,
-        };
-
-        private static readonly ISet<SqlDbType> _lengthRequiredTypes = new HashSet<SqlDbType>
-        {
-            SqlDbType.Binary,
-            SqlDbType.VarBinary,
-            SqlDbType.Char,
-            SqlDbType.VarChar,
-            SqlDbType.NChar,
-            SqlDbType.NVarChar,
-        };
 
         private IndentedStringBuilder _sb;
 
@@ -89,7 +68,6 @@ namespace RevEng.Core.Functions
 
             _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using System;");
-            _sb.AppendLine("using System.Data;");
 
             _sb.AppendLine();
             _sb.AppendLine($"namespace {procedureScaffolderOptions.ContextNamespace}");
@@ -97,15 +75,17 @@ namespace RevEng.Core.Functions
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public partial static class {procedureScaffolderOptions.ContextName}Functions");
+                _sb.AppendLine($"public static class {procedureScaffolderOptions.ContextName}Functions");
 
                 _sb.AppendLine("{");
 
-                foreach (var function in model.Functions)
+                using (_sb.Indent())
                 {
-                    GenerateFunctionStub(function, model);
+                    foreach (var function in model.Functions)
+                    {
+                        GenerateFunctionStub(function, model);
+                    }
                 }
-
                 _sb.AppendLine("}");
             }
 
@@ -116,46 +96,32 @@ namespace RevEng.Core.Functions
 
         private void GenerateFunctionStub(Function function, FunctionModel model)
         {
-            var paramStrings = function.Parameters.Where(p => !p.Output)
+            var paramStrings = function.Parameters
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
 
             var identifier = GenerateIdentifierName(function, model);
 
-            //var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier);
+            _sb.AppendLine();
+
+            _sb.AppendLine($"[DbFunction(\"{function.Name}\", \"{function.Schema}\")]");
+
+            var returnType = paramStrings.First();
+            var parameters = string.Empty;
+
+            if (function.Parameters.Count > 1)
+            {
+                parameters = string.Join(", ", paramStrings.Skip(1));
+            }
+
+            _sb.AppendLine($"public static {returnType}{identifier}({parameters})");
+
+            _sb.AppendLine("{");
+            using (_sb.Indent())
+            {
+                _sb.AppendLine("throw new NotImplementedException();");
+            }
+            _sb.AppendLine("}");
         }
-
-        //private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
-        //{
-        //    var returnType = $"Task<{identifier}Result[]>";
-
-        //    if (procedure.HasValidResultSet && procedure.ResultElements.Count == 0)
-        //    {
-        //        returnType = $"Task<int>";
-        //    }
-
-        //    var line = $"public async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
-
-        //    if (outParams.Count() > 0)
-        //    {
-        //        if (paramStrings.Count() > 0)
-        //        {
-        //            line += ", ";
-        //        }
-
-        //        line += $"{string.Join(", ", outParamStrings)}";
-        //    }
-
-        //    if (paramStrings.Count() > 0 || outParams.Count > 0)
-        //    {
-        //        line += ", ";
-        //    }
-
-        //    line += $"OutputParameter<int> {retValueName} = null";
-
-        //    line += ", CancellationToken cancellationToken = default)";
-
-        //    return line;
-        //}
 
         private string GenerateIdentifierName(Function function, FunctionModel model)
         {
@@ -164,18 +130,15 @@ namespace RevEng.Core.Functions
                 throw new ArgumentNullException(nameof(function));
             }
 
-            return CreateIdentifier(GenerateUniqueName(function, model)).Item1;
+            return CreateIdentifier(GenerateUniqueName(function, model));
         }
 
-        private Tuple<string, string> CreateIdentifier(string name)
+        private string CreateIdentifier(string name)
         {
             var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
 
-            string columAttribute = null;
-
             if (!isValid)
             {
-                columAttribute = $"[Column(\"{name}\")]";
                 // File name contains invalid chars, remove them
                 var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
                 name = regex.Replace(name, "");
@@ -187,7 +150,7 @@ namespace RevEng.Core.Functions
                 }
             }
 
-            return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
+            return name.Replace(" ", string.Empty);
         }
 
         private string GenerateUniqueName(Function function, FunctionModel model)

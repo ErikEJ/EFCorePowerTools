@@ -15,7 +15,9 @@
     <Compile Include="..\RevEng.Core\ColumnRemovingScaffoldingModelFactory.cs" Link="ColumnRemovingScaffoldingModelFactory.cs" />
     <Compile Include="..\RevEng.Core\CustomTemplateFileService.cs" Link="CustomTemplateFileService.cs" />
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
+    <Compile Include="..\RevEng.Core\Functions\IFunctionScaffolder.cs" Link="Functions\IFunctionScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Functions\SqlServerFunctionModelFactory.cs" Link="Functions\SqlServerFunctionModelFactory.cs" />
+    <Compile Include="..\RevEng.Core\Functions\SqlServerFunctionScaffolder.cs" Link="Functions\SqlServerFunctionScaffolder.cs" />
     <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
     <Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
