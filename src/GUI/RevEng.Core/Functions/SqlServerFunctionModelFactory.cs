@@ -1,6 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -13,18 +11,18 @@ namespace RevEng.Core.Procedures
 {
     public class SqlServerFunctionModelFactory : IFunctionModelFactory
     {
-        public FunctionModel Create(string connectionString, FunctionModelFactoryOptions options)
+        public FunctionModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
             return GetFunctions(connectionString, options);
         }
 
-        private FunctionModel GetFunctions(string connectionString, FunctionModelFactoryOptions options)
+        private FunctionModel GetFunctions(string connectionString, ModuleModelFactoryOptions options)
         {
             var result = new List<Function>();
             var found = new List<Tuple<string, string, int>>();
             var errors = new List<string>();
 
-            if (options.FullModel && !options.Functions.Any())
+            if (options.FullModel && !options.Modules.Any())
             {
                 return new FunctionModel
                 {
@@ -33,7 +31,7 @@ namespace RevEng.Core.Procedures
                 };
             }
 
-            var filter = options.Functions.ToHashSet();
+            var filter = options.Modules.ToHashSet();
 
             using (var connection = new SqlConnection(connectionString))
             {

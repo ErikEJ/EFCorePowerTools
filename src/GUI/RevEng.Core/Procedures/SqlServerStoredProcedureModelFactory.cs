@@ -21,18 +21,18 @@ namespace RevEng.Core.Procedures
             _logger = logger;
         }
 
-        public ProcedureModel Create(string connectionString, ProcedureModelFactoryOptions options)
+        public ProcedureModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
             return GetStoredProcedures(connectionString, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string connectionString, ProcedureModelFactoryOptions options)
+        private ProcedureModel GetStoredProcedures(string connectionString, ModuleModelFactoryOptions options)
         {
             var result = new List<Procedure>();
             var found = new List<Tuple<string, string>>();
             var errors = new List<string>();
 
-            if (options.FullModel && !options.Procedures.Any())
+            if (options.FullModel && !options.Modules.Any())
             {
                 return new ProcedureModel
                 {
@@ -41,7 +41,7 @@ namespace RevEng.Core.Procedures
                 };
             }
 
-            var filter = options.Procedures.ToHashSet();
+            var filter = options.Modules.ToHashSet();
 
             using (var connection = new SqlConnection(connectionString))
             {

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Procedures.Scaffolding;
 
 namespace RevEng.Core.Procedures
 {
