@@ -24,6 +24,21 @@ namespace RevEng.Core.Procedures
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }
 
+        public static IServiceCollection AddSqlServerFunctionDesignTimeServices(
+            this IServiceCollection services,
+            IOperationReporter reporter = null)
+        {
+            if (reporter == null)
+            {
+                reporter = new OperationReporter(handler: null);
+            }
+
+            return services
+                .AddSingleton<IFunctionModelFactory, SqlServerFunctionModelFactory>()
+                //.AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
+                .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
+        }
+
         public static IServiceCollection AddSqlServerDacpacStoredProcedureDesignTimeServices(
             this IServiceCollection services,
             IOperationReporter reporter = null)

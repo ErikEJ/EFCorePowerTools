@@ -98,5 +98,32 @@ namespace RevEng.Core
 
             return result.OrderBy(c => c.DisplayName).ToList();
         }
+
+        public List<TableModel> GetFunctions()
+        {
+            var result = new List<TableModel>();
+
+            if (_databaseType != DatabaseType.SQLServer && _databaseType != DatabaseType.SQLServerDacpac)
+            {
+                return result;
+            }
+
+            var functionModelFactory = _serviceProvider.GetService<IFunctionModelFactory>();
+
+            var functionModelOptions = new FunctionModelFactoryOptions
+            {
+                FullModel = false,
+                Functions = new List<string>(),
+            };
+
+            var functionModel = functionModelFactory.Create(_connectionString, functionModelOptions);
+
+            foreach (var function in functionModel.Functions)
+            {
+                result.Add(new TableModel(function.Name, function.Schema, _databaseType, ObjectType.ScalarFunction, null));
+            }
+
+            return result.OrderBy(c => c.DisplayName).ToList();
+        }
     }
 }

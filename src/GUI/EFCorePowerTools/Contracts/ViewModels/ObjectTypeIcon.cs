@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EFCorePowerTools.Contracts.ViewModels
+﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     public enum ObjectTypeIcon
     {
@@ -12,6 +6,6 @@ namespace EFCorePowerTools.Contracts.ViewModels
         TableWithoutKey,
         View,
         Procedure,
-        Function,
+        ScalarFunction,
     }
 }

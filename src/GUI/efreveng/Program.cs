@@ -30,6 +30,8 @@ namespace efreveng
 
                         buildResult.AddRange(builder.GetProcedures());
 
+                        buildResult.AddRange(builder.GetFunctions());
+
                         Console.Out.WriteLine("Result:");
                         Console.Out.WriteLine(buildResult.Write());
 
