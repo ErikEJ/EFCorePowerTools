@@ -95,6 +95,7 @@ namespace RevEng.Core
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
+                    serviceCollection.AddSqlServerFunctionDesignTimeServices();
 
                     if (options.UseSpatial)
                     {

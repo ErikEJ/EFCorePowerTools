@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace RevEng.Core.Procedures
 {
-    class SqlServerStoredProcedureModelFactory : IProcedureModelFactory
+    public class SqlServerStoredProcedureModelFactory : IProcedureModelFactory
     {
         private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
@@ -136,9 +136,15 @@ SELECT
 
             foreach (DataRow par in dtResult.Rows)
             {
+                var parameterName = par["Parameter"].ToString();
+                if (parameterName.StartsWith("@", StringComparison.Ordinal))
+                {
+                    parameterName = parameterName.Substring(1);
+                }
+
                 var parameter = new ModuleParameter()
                 {
-                    Name = par["Parameter"].ToString().Replace("@", ""),
+                    Name = parameterName,
                     StoreType = par["Type"].ToString(),
                     Length = par["Length"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Length"].ToString()),
                     Precision = par["Precision"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()),
