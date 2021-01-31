@@ -41,7 +41,7 @@ namespace RevEng.Core.Functions
             result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + "Functions.cs")),
+                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + ".Functions.cs")),
             };
 
             return result;
@@ -75,7 +75,7 @@ namespace RevEng.Core.Functions
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public static class {procedureScaffolderOptions.ContextName}Functions");
+                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}");
 
                 _sb.AppendLine("{");
 
@@ -118,7 +118,7 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("{");
             using (_sb.Indent())
             {
-                _sb.AppendLine("throw new NotImplementedException();");
+                _sb.AppendLine("throw new NotSupportedException(\"This method can only be called from Entity Framework Core queries\");");
             }
             _sb.AppendLine("}");
         }

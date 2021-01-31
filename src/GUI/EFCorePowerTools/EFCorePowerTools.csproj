@@ -182,6 +182,7 @@
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\ScalarFunction_16x.png" />
     <Resource Include="Resources\Schema_16x.png" />
     <Resource Include="Resources\KeyDown_16x.png" />
     <Resource Include="Resources\View_16x.png" />

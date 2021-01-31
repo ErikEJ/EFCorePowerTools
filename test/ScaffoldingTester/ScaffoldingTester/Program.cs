@@ -1,5 +1,6 @@
 ﻿using ScaffoldingTester.Models;
 using System;
+using System.Linq;
 
 namespace ScaffoldingTester
 {
@@ -54,6 +55,10 @@ namespace ScaffoldingTester
             {
                 Console.Error.WriteLine($"AssertEqual failed. Expected: 0. Actual: {rowsResult2}.");
             }
+
+            var udfTest = db.Categories
+                .Where(c => c.CategoryName == NorthwindContext.GetCustInfo("x", null))
+                .ToList();
         }
     }
 }
