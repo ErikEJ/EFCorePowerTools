@@ -9,5 +9,6 @@
         void PublishConnections(IEnumerable<DatabaseConnectionModel> connections);
         void PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions);
         void PublishSchemas(IEnumerable<SchemaInfo> schemas);
+        void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode);
     }
 }

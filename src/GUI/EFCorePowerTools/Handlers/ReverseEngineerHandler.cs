@@ -94,6 +94,11 @@ namespace EFCorePowerTools.Handlers
                     psd.PublishSchemas(options.Schemas);
                 }
 
+                if (options != null)
+                {
+                    psd.PublishCodeGenerationMode(options.CodeGenerationMode);
+                }
+
                 var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
                 if (!pickDataSourceResult.ClosedByOK)
                     return;
@@ -253,6 +258,7 @@ namespace EFCorePowerTools.Handlers
                     CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList(),
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList(),
+                    CodeGenerationMode = pickDataSourceResult.Payload.IncludeViews ? CodeGenerationMode.EFCore5 : CodeGenerationMode.EFCore3,
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer
