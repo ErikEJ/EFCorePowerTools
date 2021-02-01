@@ -16,6 +16,7 @@
         private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
         private readonly Action<IEnumerable<DatabaseDefinitionModel>> _addDefinitions;
         private readonly Action<IEnumerable<SchemaInfo>> _addSchemas;
+        private readonly Action<bool> _useEFCore5;
 
         public PickServerDatabaseDialog(ITelemetryAccess telemetryAccess,
                                         IPickServerDatabaseViewModel viewModel)
@@ -44,6 +45,10 @@
                 viewModel.FilterSchemas = models.Any();
                 foreach (var model in models)
                     viewModel.Schemas.Add(model);
+            };
+            _useEFCore5 = efCore5 =>
+            {
+                viewModel.IncludeViews = efCore5;
             };
 
             InitializeComponent();
@@ -83,6 +88,11 @@
         public void PublishSchemas(IEnumerable<SchemaInfo> schemas)
         {
             _addSchemas(schemas);
+        }
+
+        public void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode)
+        {
+            _useEFCore5(codeGenerationMode == CodeGenerationMode.EFCore5);
         }
     }
 }
