@@ -1,4 +1,5 @@
 ﻿{
+   "CodeGenerationMode": 1,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,

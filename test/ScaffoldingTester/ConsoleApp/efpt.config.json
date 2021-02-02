@@ -1,4 +1,5 @@
 ﻿{
+   "CodeGenerationMode": 0,
    "ContextClassName": "ChinookContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
