@@ -268,12 +268,22 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 
         private void GetForeignKeysV3(EdmxV3 model, LinqToEdmx.Model.StorageV3.EntityTypeStore storeTable, DatabaseModel dbModel)
         {
+            ;
+
             var table = dbModel.Tables
                 .Single(t => t.Name == storeTable.Name
                 && t.Schema == GetSchemaNameV3(model, storeTable.Name));
 
             // The foreign key informations are stored in the Association Object
             var associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.ReferentialConstraint.Dependent.Role == storeTable.Name);
+
+            if (!associations.Any())
+            {
+                // Give a chance to a reflexive constraint
+                // TODO make sure that this is the right way to deal with this case.
+                var endType = string.Concat(@"Self.", storeTable.Name);
+                associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.Ends.All(e => e.Type == endType));
+            }
 
             // No association ? No FK then.
             if (!associations.Any())
