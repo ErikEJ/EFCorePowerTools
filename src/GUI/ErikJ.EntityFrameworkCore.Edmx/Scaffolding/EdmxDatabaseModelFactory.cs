@@ -11,6 +11,7 @@ using LinqToEdmx.MapV3;
 using LinqToEdmx.Model.ConceptualV3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
@@ -265,16 +266,17 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 
         }
 
-        private void GetForeignKeysV3(EdmxV3 model, LinqToEdmx.Model.StorageV3.EntityTypeStore table, DatabaseModel dbModel)
+        private void GetForeignKeysV3(EdmxV3 model, LinqToEdmx.Model.StorageV3.EntityTypeStore storeTable, DatabaseModel dbModel)
         {
-            var dbTable = dbModel.Tables
-                .Single(t => t.Name == table.Name
-                && t.Schema == GetSchemaNameV3(model, table.Name));
+            var table = dbModel.Tables
+                .Single(t => t.Name == storeTable.Name
+                && t.Schema == GetSchemaNameV3(model, storeTable.Name));
 
             // The foreign key informations are stored in the Association Object
-            var associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.ReferentialConstraint.Principal.Role == table.Name);
+            var associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.ReferentialConstraint.Dependent.Role == storeTable.Name);
 
-            if (associations.Count() == 0)
+            // No association ? No FK then.
+            if (!associations.Any())
                 return;
 
             foreach (var association in associations)
@@ -283,17 +285,18 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 // Te association set allows us to disambiguate the table name.
                 var associationSet = model.GetItems<LinqToEdmx.Model.StorageV3.EntityContainer>().First().AssociationSets.Where(@as => @as.Name == association.Name).SingleOrDefault();
 
-                var entityName = association.ReferentialConstraint.Dependent.Role;
+                var entityName = association.ReferentialConstraint.Principal.Role;
 
 
                 // Look for the table to which the columns are constrained
-                var foreignTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
-                if ( foreignTable == null)
+                // Remember that we could be constrained to ourself :)
+                var principalTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
+                if ( principalTable == null)
                 {
                     entityName = associationSet.Ends.Single(e => e.Role == entityName).EntitySet;
-                    foreignTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
+                    principalTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
                 }
-                if (foreignTable == null)
+                if (principalTable == null)
                 {
                     throw new InvalidOperationException(@$"Unable to get foreign keys for entity with name [{entityName}]. This usually indicates a bug");
                 }
@@ -302,38 +305,66 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 {
                     // The name of the foreign key
                     Name = association.Name,
-                    // The table that contains the foreign key constraint
-                    Table = dbTable,
-                    // The table to which the columns are constrained
-                    PrincipalTable = foreignTable,
-                    // Not available in the model
-                    // OnDelete = ConvertToReferentialAction(fk.DeleteAction)
+                    // The table that contains the foreign key constraint (Dependent in the Edmx)
+                    Table = table,
+                    // The table to which the columns are constrained (Principal in the Edmx)
+                    PrincipalTable = principalTable,
+                    
                 };
 
-                // Finish to populate the foreign key definition with principal and dependent columns
-                foreach (var fkCol in association.ReferentialConstraint.Dependent.PropertyRefs)
-                {
-                    var dbCol = dbTable.Columns
-                        .Single(c => c.Name == fkCol.Name);
+                var end = associationSet.Ends[0];
 
-                    foreignKey.Columns.Add(dbCol);
-                }
+                // OnDelete = ConvertToReferentialAction(fk.DeleteAction);
+
+                // Finish to populate the foreign key definition with principal and dependent columns
+                var rc = association.ReferentialConstraint;
 
                 foreach (var fkCol in association.ReferentialConstraint.Principal.PropertyRefs)
                 {
-                    var dbCol = foreignTable.Columns
-                        .SingleOrDefault(c => c.Name == fkCol.Name);
+                    var dbCol = principalTable.Columns
+                        .Single(c => c.Name == fkCol.Name);
 
                     if (dbCol != null)
                     {
                         foreignKey.PrincipalColumns.Add(dbCol);
                     }
                 }
+                foreach (var fkCol in association.ReferentialConstraint.Dependent.PropertyRefs)
+                {
+                    // Best case scenario, the columns name are the same in both entities
+                    var dbCol = table.Columns
+                        .Single /*OrDefault*/(c => c.Name == fkCol.Name);
+                    if (dbCol != null)
+                    {
+                        foreignKey.Columns.Add(dbCol);
+                    }
+                }
 
                 if (foreignKey.PrincipalColumns.Count > 0)
                 {
-                    dbTable.ForeignKeys.Add(foreignKey);
+                    table.ForeignKeys.Add(foreignKey);
                 }
+            }
+        }
+
+        private static ReferentialAction? ConvertToReferentialAction(OnAction onDeleteAction)
+        {
+            switch (onDeleteAction.Action)
+            {
+                case "NoAction":
+                    return ReferentialAction.NoAction;
+
+                case "Cascade":
+                    return ReferentialAction.Cascade;
+
+                case "SetNull":
+                    return ReferentialAction.SetNull;
+
+                case "SetDefault":
+                    return ReferentialAction.SetDefault;
+
+                default:
+                    return null;
             }
         }
     }
