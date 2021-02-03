@@ -32,11 +32,13 @@ namespace NUnitTestCore
             // Assert
             Assert.AreEqual(15, dbModel.Tables.Count());
 
+            // These tables have no FK
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "BuildVersion").ForeignKeys.Count());
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "ErrorLog").ForeignKeys.Count());
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "Address").ForeignKeys.Count());
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "ProductModel").ForeignKeys.Count());
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "ProductDescription").ForeignKeys.Count());
+
             // Views have no foreign key obviously
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "vProductModelCatalogDescription").ForeignKeys.Count());
             Assert.AreEqual(0, dbModel.Tables.Single(t => t.Name == "vGetAllCategories").ForeignKeys.Count());
