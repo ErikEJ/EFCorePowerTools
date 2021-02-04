@@ -9,6 +9,8 @@
     using Shared.DAL;
     using Shared.Models;
     using RevEng.Shared;
+    using System.Diagnostics;
+    using System.Windows.Documents;
 
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
@@ -56,6 +58,15 @@
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ReleaseNotesLink.Inlines.Add(new Run(typeof(EFCorePowerToolsPackage).Assembly.GetName().Version.ToString(3)));
+            }
+            catch
+            {
+                // Ignore
+            }
+            
             DatabaseConnectionCombobox.Focus();
         }
 
@@ -93,6 +104,16 @@
         public void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode)
         {
             _useEFCore5(codeGenerationMode == CodeGenerationMode.EFCore5);
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            var hyperlink = sender as Hyperlink;
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri),
+            };
+            process.Start();
         }
     }
 }
