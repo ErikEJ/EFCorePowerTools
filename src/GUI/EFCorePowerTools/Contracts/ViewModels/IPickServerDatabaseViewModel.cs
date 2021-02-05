@@ -25,6 +25,7 @@
         DatabaseConnectionModel SelectedDatabaseConnection { get; set; }
         DatabaseDefinitionModel SelectedDatabaseDefinition { get; set; }
 
+        string UiHint { get; set; }
         bool IncludeViews { get; set; }
         bool FilterSchemas { get; set; }
     }

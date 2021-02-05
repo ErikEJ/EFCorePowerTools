@@ -206,6 +206,7 @@
          "ObjectType": 2
       }
    ],
+   "UiHint": "DESKTOP-9UILCL8\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

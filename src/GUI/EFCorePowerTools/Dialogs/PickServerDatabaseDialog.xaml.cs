@@ -14,11 +14,12 @@
 
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas)> _getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)> _getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
         private readonly Action<IEnumerable<DatabaseDefinitionModel>> _addDefinitions;
         private readonly Action<IEnumerable<SchemaInfo>> _addSchemas;
         private readonly Action<bool> _useEFCore5;
+        private readonly Action<string> _uiHint;
 
         public PickServerDatabaseDialog(ITelemetryAccess telemetryAccess,
                                         IPickServerDatabaseViewModel viewModel)
@@ -31,7 +32,7 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition, viewModel.IncludeViews, viewModel.FilterSchemas, viewModel.Schemas.ToArray());
+            _getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition, viewModel.IncludeViews, viewModel.FilterSchemas, viewModel.Schemas.ToArray(), viewModel.UiHint);
             _addConnections = models =>
             {
                 foreach (var model in models)
@@ -53,6 +54,11 @@
                 viewModel.IncludeViews = efCore5;
             };
 
+            _uiHint = uiHint =>
+            {
+                viewModel.UiHint = uiHint;
+            };
+
             InitializeComponent();
         }
 
@@ -70,7 +76,7 @@
             DatabaseConnectionCombobox.Focus();
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) Payload) ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
@@ -104,6 +110,11 @@
         public void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode)
         {
             _useEFCore5(codeGenerationMode == CodeGenerationMode.EFCore5);
+        }
+
+        public void PublishUiHint(string uiHint)
+        {
+            _uiHint(uiHint);
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
