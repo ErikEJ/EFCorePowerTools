@@ -90,6 +90,29 @@
             }
         }
 
+        public string UiHint
+        {
+            get
+            {
+                if (SelectedDatabaseConnection != null)
+                {
+                    return SelectedDatabaseConnection.ConnectionName;
+                }
+                return null;  
+            } 
+            set
+            {
+                var databaseConnectionCandidate = DatabaseConnections
+                    .Where(c => c.ConnectionName == value)
+                    .FirstOrDefault();
+
+                if (databaseConnectionCandidate != null)
+                {
+                    SelectedDatabaseConnection = databaseConnectionCandidate;
+                }
+            }
+        }
+
         public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess, Func<IPickSchemasDialog> pickSchemasDialogFactory)
         {
             _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
@@ -112,7 +135,7 @@
         private void Loaded_Executed()
         {
             // Database first
-            if (DatabaseConnections.Any())
+            if (DatabaseConnections.Any() && SelectedDatabaseConnection == null)
             {
                 SelectedDatabaseConnection = DatabaseConnections.First();
                 return;

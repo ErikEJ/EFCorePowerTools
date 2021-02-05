@@ -89,14 +89,19 @@ namespace EFCorePowerTools.Handlers
                     }));
                 }
 
-                if (options != null && options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
-                {
-                    psd.PublishSchemas(options.Schemas);
-                }
-
                 if (options != null)
                 {
+                    if (options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
+                    {
+                        psd.PublishSchemas(options.Schemas);
+                    }
+
                     psd.PublishCodeGenerationMode(options.CodeGenerationMode);
+
+                    if (!string.IsNullOrEmpty(options.UiHint))
+                    {
+                        psd.PublishUiHint(options.UiHint);
+                    }
                 }
 
                 var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
@@ -259,6 +264,7 @@ namespace EFCorePowerTools.Handlers
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList(),
                     CodeGenerationMode = pickDataSourceResult.Payload.IncludeViews ? CodeGenerationMode.EFCore5 : CodeGenerationMode.EFCore3,
+                    UiHint = pickDataSourceResult.Payload.UiHint,
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer
