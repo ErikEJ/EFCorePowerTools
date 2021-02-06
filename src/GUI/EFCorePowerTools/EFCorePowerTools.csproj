@@ -59,6 +59,8 @@
     <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\ICompareResultViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\ICompareOptionsViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IObjectTreeSelectableViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IObjectTreeEditableViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IMigrationOptionsViewModel.cs" />
@@ -76,16 +78,20 @@
     <Compile Include="Contracts\ViewModels\ObjectTypeIcon.cs" />
     <Compile Include="Contracts\Views\IAboutDialog.cs" />
     <Compile Include="Contracts\Views\IAdvancedModelingOptionsDialog.cs" />
+    <Compile Include="Contracts\Views\ICompareResultDialog.cs" />
     <Compile Include="Contracts\Views\IDialog.cs" />
     <Compile Include="Contracts\Views\IMigrationOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IPickSchemasDialog.cs" />
     <Compile Include="Contracts\Views\IPickConfigDialog.cs" />
+    <Compile Include="Contracts\Views\ICompareOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IPickServerDatabaseDialog.cs" />
     <Compile Include="Contracts\Views\PickTablesDialogResult.cs" />
     <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
     <Compile Include="Contracts\Views\IModelingOptionsDialog.cs" />
     <Compile Include="Contracts\Views\IView.cs" />
     <Compile Include="Converter\BoolInvertConverter.cs" />
+    <Compile Include="Converter\LevelToWidthConverter.cs" />
+    <Compile Include="Converter\EnumToLabelConverter.cs" />
     <Compile Include="Converter\ObjectTypeToImageStyleConverter.cs" />
     <Compile Include="Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="Converter\CollectionCountToEnabledConverter.cs" />
@@ -102,6 +108,9 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\CompareResultDialog.xaml.cs">
+      <DependentUpon>CompareResultDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\EfCoreMigrationsDialog.xaml.cs">
       <DependentUpon>EfCoreMigrationsDialog.xaml</DependentUpon>
     </Compile>
@@ -117,6 +126,9 @@
     <Compile Include="Dialogs\PickServerDatabaseDialog.xaml.cs">
       <DependentUpon>PickServerDatabaseDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\CompareOptionsDialog.xaml.cs">
+      <DependentUpon>CompareOptionsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\PickTablesDialog.xaml.cs">
       <DependentUpon>PickTablesDialog.xaml</DependentUpon>
     </Compile>
@@ -131,11 +143,16 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Handlers\AboutHandler.cs" />
+    <Compile Include="Handlers\Compare\CompareAttributes.cs" />
+    <Compile Include="Handlers\Compare\CompareLogModel.cs" />
+    <Compile Include="Handlers\Compare\CompareState.cs" />
+    <Compile Include="Handlers\Compare\CompareType.cs" />
     <Compile Include="Handlers\DgmlNugetHandler.cs" />
     <Compile Include="Handlers\GenerationType.cs" />
     <Compile Include="Handlers\MigrationsHandler.cs" />
     <Compile Include="Handlers\ModelAnalyzerHandler.cs" />
     <Compile Include="Handlers\ProcessLauncher.cs" />
+    <Compile Include="Handlers\Compare\CompareHandler.cs" />
     <Compile Include="Handlers\ReverseEngineer\ResultDeserializer.cs" />
     <Compile Include="Handlers\ReverseEngineer\TableListBuilder.cs" />
     <Compile Include="Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
@@ -167,6 +184,7 @@
     </Compile>
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="DAL\VisualStudioAccess.cs" />
+    <Compile Include="ViewModels\CompareResultViewModel.cs" />
     <Compile Include="ViewModels\DatabaseConnectionModel.cs" />
     <Compile Include="ViewModels\MigrationOptionsViewModel.cs" />
     <Compile Include="ViewModels\AdvancedModelingOptionsViewModel.cs" />
@@ -174,6 +192,7 @@
     <Compile Include="ViewModels\ObjectTreeRootItemViewModel.cs" />
     <Compile Include="ViewModels\PickSchemasViewModel.cs" />
     <Compile Include="ViewModels\PickConfigViewModel.cs" />
+    <Compile Include="ViewModels\CompareOptionsViewModel.cs" />
     <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
     <Compile Include="ViewModels\PickTablesViewModel.cs" />
     <Compile Include="ViewModels\ColumnInformationViewModel.cs" />
@@ -182,6 +201,8 @@
     <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\SchemaCompare_16x.png" />
+    <Resource Include="Resources\ScrollbarArrowsDownRight_16x.png" />
     <Resource Include="Resources\Schema_16x.png" />
     <Resource Include="Resources\KeyDown_16x.png" />
     <Resource Include="Resources\View_16x.png" />
@@ -322,6 +343,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Dialogs\CompareResultDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\EfCoreMigrationsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -339,6 +364,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\PickServerDatabaseDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\CompareOptionsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -365,6 +394,7 @@
     <Resource Include="Resources\Cancel_16x.png" />
     <Content Include="Resources\efcreveng2.png" />
     <Resource Include="Resources\ImportPackage_16x.png" />
+    <Resource Include="Resources\GlyphRight_16x.png" />
     <Content Include="Resources\license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
