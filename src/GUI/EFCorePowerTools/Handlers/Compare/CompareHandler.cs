@@ -103,18 +103,6 @@ namespace EFCorePowerTools.Handlers.Compare
 
         private Task<IEnumerable<string>> GetDbContextTypesAsync()
         {
-            //var svc = _package.GetService<DynamicTypeService>();
-            //var solutionService = _package.GetService<IVsSolution>();
-            //var result = solutionService.GetProjectOfUniqueName(project.UniqueName, out var projectHierarchy);
-            //try
-            //{
-            //    var types = svc.GetTypeDiscoveryService(projectHierarchy);
-            //    var tyoes = types.GetType("");
-            //    var res = tyoes.Cast<object>().ToList();
-            //}
-            //catch (Exception ex)
-            //{
-            //}
             return System.Threading.Tasks.Task.FromResult(new[] { "ContextA", "ContextB", "ContextC" }.AsEnumerable());
         }
 
