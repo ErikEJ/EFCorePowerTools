@@ -512,7 +512,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 return;
             }
 
-            comment = comment.Replace("\n", " ").Replace("\r", " ");
+            comment = comment.Replace("\n", " ").Replace("\r", string.Empty);
 
             var commentAttribute = new AttributeWriter(nameof(CommentAttribute));
 
