@@ -158,6 +158,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             GenerateKeylessAttribute(entityType);
             GenerateTableAttribute(entityType);
             GenerateIndexAttributes(entityType);
+            GenerateCommentAttribute(entityType.GetComment());
 
             var annotations = _annotationCodeGenerator
                 .FilterIgnoredAnnotations(entityType.GetAnnotations())
@@ -325,6 +326,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
             GenerateRequiredAttribute(property);
             GenerateColumnAttribute(property);
             GenerateMaxLengthAttribute(property);
+            GenerateCommentAttribute(property.GetComment());
 
             var annotations = _annotationCodeGenerator
                 .FilterIgnoredAnnotations(property.GetAnnotations())
@@ -502,6 +504,23 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 }
             }
         }
+
+        private void GenerateCommentAttribute(string comment)
+        {
+            if (string.IsNullOrEmpty(comment))
+            {
+                return;
+            }
+
+            comment = comment.Replace("\n", string.Empty).Replace("\r", string.Empty);
+
+            var commentAttribute = new AttributeWriter(nameof(CommentAttribute));
+
+            commentAttribute.AddParameter(_code.Literal(System.Security.SecurityElement.Escape(comment)));
+
+            _sb.AppendLine(commentAttribute.ToString());
+        }
+
 
         private void WriteComment(string comment)
         {
