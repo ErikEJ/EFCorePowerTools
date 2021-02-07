@@ -5,6 +5,7 @@ using EFCorePowerTools.DAL;
 using EFCorePowerTools.Dialogs;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
+using EFCorePowerTools.Handlers.Compare;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Shared.BLL;
@@ -42,6 +43,7 @@ namespace EFCorePowerTools
         private readonly DgmlNugetHandler _dgmlNugetHandler;
         private readonly ServerDgmlHandler _serverDgmlHandler;
         private readonly MigrationsHandler _migrationsHandler;
+        private readonly CompareHandler _compareHandler;
         private readonly IServiceProvider _extensionServices;
         private DTE2 _dte2;
 
@@ -53,6 +55,7 @@ namespace EFCorePowerTools
             _dgmlNugetHandler = new DgmlNugetHandler(this);
             _serverDgmlHandler = new ServerDgmlHandler();
             _migrationsHandler = new MigrationsHandler(this);
+            _compareHandler = new CompareHandler(this);
             _extensionServices = CreateServiceProvider();
         }
 
@@ -63,9 +66,9 @@ namespace EFCorePowerTools
             await base.InitializeAsync(cancellationToken, progress);
 
             _dte2 = await GetServiceAsync(typeof(DTE)) as DTE2;
-            
+
             Assumes.Present(_dte2);
-            
+
             if (_dte2 == null)
             {
                 return;
@@ -124,6 +127,12 @@ namespace EFCorePowerTools
                 var menuItem11 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId11);
                 oleMenuCommandService.AddCommand(menuItem11);
+
+                var menuCommandId12 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    (int)PkgCmdIDList.cmdidDbCompare);
+                var menuItem12 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId12);
+                oleMenuCommandService.AddCommand(menuItem12);
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
@@ -168,7 +177,7 @@ namespace EFCorePowerTools
             menuCommand.Visible =
                 project.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" ||
                 project.Kind == "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"; // csproj
-            
+
             return;
         }
 
@@ -230,6 +239,10 @@ namespace EFCorePowerTools
             {
                 _aboutHandler.ShowDialog();
             }
+            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
+            {
+                await _compareHandler.HandleComparisonAsync(project);
+            }
         }
 
         private async System.Threading.Tasks.Task<string> LocateProjectAssemblyPathAsync(Project project)
@@ -271,7 +284,9 @@ namespace EFCorePowerTools
                     .AddTransient<IPickSchemasDialog, PickSchemasDialog>()
                     .AddTransient<IAdvancedModelingOptionsDialog, AdvancedModelingOptionsDialog>()
                     .AddSingleton<Func<IPickSchemasDialog>>(sp => sp.GetService<IPickSchemasDialog>)
-                    .AddSingleton<Func<IAdvancedModelingOptionsDialog>>(sp => sp.GetService<IAdvancedModelingOptionsDialog>);
+                    .AddSingleton<Func<IAdvancedModelingOptionsDialog>>(sp => sp.GetService<IAdvancedModelingOptionsDialog>)
+                    .AddTransient<ICompareOptionsDialog, CompareOptionsDialog>()
+                    .AddTransient<ICompareResultDialog, CompareResultDialog>();
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
@@ -285,7 +300,9 @@ namespace EFCorePowerTools
                     .AddTransient<IMigrationOptionsViewModel, MigrationOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
                     .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>()
-                    .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>();
+                    .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>()
+                    .AddTransient<ICompareOptionsViewModel, CompareOptionsViewModel>()
+                    .AddTransient<ICompareResultViewModel, CompareResultViewModel>();
 
             // Register BLL
             var messenger = new Messenger();

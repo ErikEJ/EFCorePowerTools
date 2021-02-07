@@ -138,7 +138,17 @@
           <ButtonText>View Database Schema as Graph</ButtonText>
         </Strings>
       </Button>
-      
+
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidDbCompare" priority="0x0900" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
+        <Icon guid="guidImage9" id="bmpPic9" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidDbCompare</CommandName>
+          <ButtonText>Compare DbContext(s) to database</ButtonText>
+        </Strings>
+      </Button>
+
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -151,6 +161,7 @@
       <Bitmap guid="guidImage2" href="Resources\Diagram_16x.png" usedList="bmpPic2" />
       <Bitmap guid="guidImage1" href="Resources\1.png" usedList="bmpPic1" />
       <Bitmap guid="guidImage0" href="Resources\h.png" usedList="bmpPic0" />
+      <Bitmap guid="guidImage9" href="Resources\SchemaCompare_16x.png" usedList="bmpPic9" />
     </Bitmaps>
 
   </Commands>
@@ -193,6 +204,7 @@
       <IDSymbol name="cmdidReverseEngineerDgml" value="0x0005" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
+      <IDSymbol name="cmdidDbCompare" value="0x0008" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImage7" value="{146f17c2-c8e3-4abc-9fe2-49cc07c6d456}">
@@ -226,7 +238,10 @@
     <GuidSymbol name="guidImage0" value="{146f17c2-c8e3-4cfd-9fe2-ffcc07c6d450}">
       <IDSymbol name="bmpPic0" value="1" />
     </GuidSymbol>
-    
+
+    <GuidSymbol name="guidImage9" value="{146f17c2-c8e3-4cfd-9fe2-49cc07c6d4fb}">
+        <IDSymbol name="bmpPic9" value="1" />
+    </GuidSymbol>
   </Symbols>
 
 </CommandTable>
