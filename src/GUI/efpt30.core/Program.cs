@@ -14,13 +14,21 @@ namespace Modelling
                 {
                     var builder = new EfCoreModelBuilder();
                     var migrationsBuilder = new EfCoreMigrationsBuilder();
-
+#if CORE50
+                    var compareBuilder = new EfCoreCompareBuilder();
+#endif
                     List<Tuple<string, string>> result;
 
                     if (args.Contains("ddl") && args.Count() >= 3)
                     {
                         result = builder.GenerateDatabaseCreateScript(args[1], args[2]);
                     }
+#if CORE50
+                    else if (args.Contains("contextlist") && args.Count() >= 3)
+                    {
+                        result = compareBuilder.GenerateDbContextList(args[1], args[2]);
+                    }
+#endif
                     else if (args.Contains("migrationstatus") && args.Count() >= 3)
                     {
                         result = migrationsBuilder.GenerateMigrationStatusList(args[1], args[2]);

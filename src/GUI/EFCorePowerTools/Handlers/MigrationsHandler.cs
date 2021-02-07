@@ -47,8 +47,6 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var outputFolder = Path.GetDirectoryName(outputPath);
-
                 var result = await project.ContainsEfCoreDesignReferenceAsync();
 
                 if (string.IsNullOrEmpty(result.Item2))

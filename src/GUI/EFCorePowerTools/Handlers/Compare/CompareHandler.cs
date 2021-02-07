@@ -1,4 +1,5 @@
 ﻿using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
@@ -37,12 +38,52 @@ namespace EFCorePowerTools.Handlers.Compare
                     return;
                 }
 
+                if (project == null)
+                {
+                    throw new ArgumentNullException(nameof(project));
+                }
+
+                if (project.Properties.Item("TargetFrameworkMoniker") == null)
+                {
+                    EnvDteHelper.ShowError("The selected project type has no TargetFrameworkMoniker");
+                    return;
+                }
+
+                if (!project.IsNetCore30OrHigher())
+                {
+                    EnvDteHelper.ShowError("Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    return;
+                }
+
+                var result = await project.ContainsEfCoreDesignReferenceAsync();
+
+                if (!result.Item1)
+                {
+                    if (!Version.TryParse(result.Item2, out Version version))
+                    {
+                        EnvDteHelper.ShowError($"Cannot support version {result.Item2}, notice that previews have limited supported. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
+                        return;
+                    }
+
+                    if (version.Major != 5)
+                    {
+                        EnvDteHelper.ShowError($"Only EF Core 5 is supported.");
+                        return;
+                    }
+
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
+                    EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
+                    return;
+                }
+
                 _package.Dte2.StatusBar.Text = "Loading data";
                 object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
                 _package.Dte2.StatusBar.Animate(true, icon);
+
                 //TODO Limit to SQL Server provider connections
                 var databaseList = VsDataHelper.GetDataConnections(_package);
-                var contextTypes = await GetDbContextTypesAsync();
+                var contextTypes = await GetDbContextTypesAsync(outputPath, project);
 
                 var optionsDialog = _package.GetView<ICompareOptionsDialog>();
 
@@ -55,29 +96,21 @@ namespace EFCorePowerTools.Handlers.Compare
                         DatabaseType = m.Value.DatabaseType,
                         DataConnection = m.Value.DataConnection,
                     }));
-                    optionsDialog.AddContextTypes(contextTypes);
                 }
+
+                optionsDialog.AddContextTypes(contextTypes);
+
                 _package.Dte2.StatusBar.Animate(false, icon);
                 _package.Dte2.StatusBar.Clear();
-
                 var pickDataSourceResult = optionsDialog.ShowAndAwaitUserResponse(true);
                 if (!pickDataSourceResult.ClosedByOK)
                     return;
 
-                if (pickDataSourceResult.Payload.Connection != null)
-                {
-                    pickDataSourceResult.Payload.Connection.DataConnection.Open();
-                    pickDataSourceResult.Payload.Connection.ConnectionString = DataProtection.DecryptString(pickDataSourceResult.Payload.Connection.DataConnection.EncryptedConnectionString);
-                }
-                else
-                {
-                    EnvDteHelper.ShowError("Cannot compare as no database connection was selected.");
-                    return;
-                }
+                pickDataSourceResult.Payload.Connection.DataConnection.Open();
+                pickDataSourceResult.Payload.Connection.ConnectionString = DataProtection.DecryptString(pickDataSourceResult.Payload.Connection.DataConnection.EncryptedConnectionString);
 
                 _package.Dte2.StatusBar.Text = "Comparing database with context(s)...";
                 _package.Dte2.StatusBar.Animate(true, icon);
-
                 var timer = new Stopwatch();
                 timer.Start();
                 var comparisonResult = await GetComparisonResultAsync(pickDataSourceResult.Payload.Connection, 
@@ -85,6 +118,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 timer.Stop();
                 _package.Dte2.StatusBar.Animate(false, icon);
                 _package.Dte2.StatusBar.Text = $"Compare completed in {timer.Elapsed:h\\:mm\\:ss}";
+                
                 if (comparisonResult.Any())
                 {
                     var resultDialog = _package.GetView<ICompareResultDialog>();
@@ -113,21 +147,31 @@ namespace EFCorePowerTools.Handlers.Compare
             }
         }
 
-        private Task<IEnumerable<string>> GetDbContextTypesAsync()
+        private async Task<IEnumerable<string>> GetDbContextTypesAsync(string outputPath, Project project)
         {
-            //var svc = _package.GetService<DynamicTypeService>();
-            //var solutionService = _package.GetService<IVsSolution>();
-            //var result = solutionService.GetProjectOfUniqueName(project.UniqueName, out var projectHierarchy);
-            //try
-            //{
-            //    var types = svc.GetTypeDiscoveryService(projectHierarchy);
-            //    var tyoes = types.GetType("");
-            //    var res = tyoes.Cast<object>().ToList();
-            //}
-            //catch (Exception ex)
-            //{
-            //}
-            return System.Threading.Tasks.Task.FromResult(new[] { "ContextA", "ContextB", "ContextC" }.AsEnumerable());
+            var processLauncher = new ProcessLauncher(project);
+
+            var processResult = await processLauncher.GetOutputAsync(outputPath, GenerationType.DbContextList, null);
+
+            if (string.IsNullOrEmpty(processResult))
+            {
+                throw new ArgumentException("Unable to collect DbContext information", nameof(processResult));
+            }
+
+            if (processResult.StartsWith("Error:"))
+            {
+                throw new ArgumentException(processResult, nameof(processResult));
+            }
+
+            var modelResults = processLauncher.BuildModelResult(processResult);
+            var result = new List<string>();
+
+            foreach (var modelResult in modelResults)
+            {
+                result.Add(modelResult.Item1);
+            }
+
+            return result;
         }
 
         private Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(DatabaseConnectionModel connection, 
