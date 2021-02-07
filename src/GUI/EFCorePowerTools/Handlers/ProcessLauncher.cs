@@ -59,7 +59,7 @@ namespace EFCorePowerTools.Handlers
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var launchPath = await DropNetCoreFilesAsync(outputPath);
+            var launchPath = await DropNetCoreFilesAsync();
 
             var startupOutputPath = _project.DTE.GetStartupProjectOutputPath() ?? outputPath;
 
@@ -84,6 +84,10 @@ namespace EFCorePowerTools.Handlers
             if (generationType == GenerationType.Ddl)
             {
                 startInfo.Arguments = "ddl" + outputs;
+            }
+            if (generationType == GenerationType.DbContextList)
+            {
+                startInfo.Arguments = "contextlist" + outputs;
             }
             if (generationType == GenerationType.MigrationStatus)
             {
@@ -167,7 +171,7 @@ namespace EFCorePowerTools.Handlers
             return startupOutputPath;
         }
 
-        private async Task<string> DropNetCoreFilesAsync(string outputPath)
+        private async Task<string> DropNetCoreFilesAsync()
         {
             var toDir = Path.Combine(Path.GetTempPath(), "efpt");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
