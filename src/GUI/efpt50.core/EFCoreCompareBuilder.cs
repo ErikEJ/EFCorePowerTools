@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using EfSchemaCompare;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,44 @@ namespace Modelling
         public List<Tuple<string, string>> GenerateDbContextList(string outputPath, string startupOutputPath)
         {
             return BuildResult(outputPath, startupOutputPath ?? outputPath, true);
+        }
+
+        public List<Tuple<string, string>> GenerateSchemaCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContext)
+        {
+            
+            return GetCompareResult(outputPath, startupOutputPath ?? outputPath, connectionString, dbContext);
+        }
+
+        private List<Tuple<string, string>> GetCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContext)
+        {
+            var result = new List<Tuple<string, string>>();
+
+            var operations = GetOperations(outputPath, startupOutputPath);
+            var types = GetDbContextTypes(operations);
+
+            foreach (var type in types)
+            {
+                try
+                {
+                    if (type.Name == dbContext)
+                    {
+                        var context = operations.CreateContext(type.Name);
+                        var comparer = new CompareEfSql();
+
+                        var hasErrors = comparer.CompareEfWithDb(connectionString, context);
+
+                        var logsJson = Newtonsoft.Json.JsonConvert.SerializeObject(comparer.Logs);
+
+                        result.Add(new Tuple<string, string>(type.Name, logsJson));
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.Error.WriteLine(ex);
+                }
+            }
+
+            return result;
         }
 
         private List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath,  bool listDbContexts)

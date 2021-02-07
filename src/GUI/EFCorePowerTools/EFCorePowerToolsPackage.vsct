@@ -145,7 +145,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
-          <ButtonText>Compare DbContext(s) to database</ButtonText>
+          <ButtonText>Compare DbContext(s) to database (preview)</ButtonText>
         </Strings>
       </Button>
 

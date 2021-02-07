@@ -8,4 +8,5 @@
     MigrationAdd = 5,
     MigrationScript = 6,
     DbContextList =7,
+    DbContextCompare = 8,
 }
