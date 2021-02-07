@@ -1,14 +1,11 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.EventArgs;
-    using Contracts.Views;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Handlers.Compare;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Newtonsoft.Json;
-    using Shared.DAL;
-    using Shared.Models;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

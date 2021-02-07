@@ -2,7 +2,6 @@
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using Contracts.Views;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
@@ -10,16 +9,12 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Windows.Input;
-    using RevEng.Shared;
 
     public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
-        private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;
-
         private DatabaseConnectionModel _selectedDatabaseConnection;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
@@ -50,10 +45,9 @@
             set => Set(ref _selectedDatabaseConnection, value);
         }
 
-        public CompareOptionsViewModel(IVisualStudioAccess visualStudioAccess, Func<IPickSchemasDialog> pickSchemasDialogFactory)
+        public CompareOptionsViewModel(IVisualStudioAccess visualStudioAccess)
         {
             _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
-            _pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
 
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
             RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
