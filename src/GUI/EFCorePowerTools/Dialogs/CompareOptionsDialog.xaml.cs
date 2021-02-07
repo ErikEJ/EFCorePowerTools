@@ -2,12 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Windows.Controls;
-    using System.Windows.Input;
     using Contracts.ViewModels;
     using Contracts.Views;
     using EFCorePowerTools.Shared.Models;
-    using RevEng.Shared;
     using Shared.DAL;
 
     public partial class CompareOptionsDialog : ICompareOptionsDialog
@@ -35,7 +32,7 @@
             InitializeComponent();
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, IEnumerable<Type> ContextTypes) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) Payload) ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
@@ -48,7 +45,7 @@
                 closedByOkay = ShowDialog() == true;
             }
 
-            return (closedByOkay, (null, null));
+            return (closedByOkay, _getDialogResult());
         }
 
         public void AddConnections(IEnumerable<DatabaseConnectionModel> connections)

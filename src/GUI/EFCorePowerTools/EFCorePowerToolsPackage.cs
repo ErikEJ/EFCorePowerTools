@@ -201,7 +201,8 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
-                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
                 path = await LocateProjectAssemblyPathAsync(project);
                 if (path == null) return;
@@ -241,7 +242,7 @@ namespace EFCorePowerTools
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                await _compareHandler.HandleComparisonAsync(project);
+                await _compareHandler.HandleComparisonAsync(path, project);
             }
         }
 
