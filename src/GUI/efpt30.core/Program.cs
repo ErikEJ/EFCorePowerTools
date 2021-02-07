@@ -28,6 +28,10 @@ namespace Modelling
                     {
                         result = compareBuilder.GenerateDbContextList(args[1], args[2]);
                     }
+                    else if (args.Contains("schemacompare") && args.Count() >= 5)
+                    {
+                        result = compareBuilder.GenerateSchemaCompareResult(args[1], args[2], args[3], args[4]);
+                    }
 #endif
                     else if (args.Contains("migrationstatus") && args.Count() >= 3)
                     {
