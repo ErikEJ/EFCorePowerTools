@@ -268,8 +268,6 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 
         private void GetForeignKeysV3(EdmxV3 model, LinqToEdmx.Model.StorageV3.EntityTypeStore storeTable, DatabaseModel dbModel)
         {
-            ;
-
             var table = dbModel.Tables
                 .Single(t => t.Name == storeTable.Name
                 && t.Schema == GetSchemaNameV3(model, storeTable.Name));

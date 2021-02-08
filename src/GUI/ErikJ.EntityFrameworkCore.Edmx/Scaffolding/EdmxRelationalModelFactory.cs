@@ -54,15 +54,24 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             if (string.Compare(edmxVersion, @"3.0", StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 var edmxv3 = LinqToEdmx.EdmxV3.Load(edmxPath);
-                var items = edmxv3.GetItems<LinqToEdmx.Model.ConceptualV3.EntityType>();
 
-                foreach (var item in items)
+                // The conceptual entity name can be anything.
+                // Most of the time it is the pluralized srore table name though.
+                var entitySets = edmxv3.GetItems<LinqToEdmx.Model.ConceptualV3.EntityContainer>().First().EntitySets;
+
+                foreach (var entity in entitySets)
                 {
+                    //var mappings = edmxv3.GetItems<LinqToEdmx.MapV3.EntitySetMapping>().First(esm => esm.Name == entity.Name).Name;
+                    // We should go through the mapping to find the the store name of a conceptual entity
+                    var storeName = edmxv3.GetItems<LinqToEdmx.MapV3.EntitySetMapping>().First(esm => esm.Name == entity.Name).EntityTypeMappings.First().MappingFragments.First().StoreEntitySet;
+                    var item = edmxv3.GetItems<LinqToEdmx.Model.ConceptualV3.EntityType>().First(e => e.Name == entity.EntityType.Replace("Self.", string.Empty));
+
                     var dbTable = new DatabaseTable
                     {
-                        Name = item.Name,
-                        Schema = GetSchemaNameV3(edmxv3, item.Name),
+                        Name = entity.Name,
+                        Schema = GetSchemaNameV3(edmxv3, storeName),
                     };
+
 
                     GetColumnsV3(item, dbTable/*, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList()*/, edmxv3);
                     GetPrimaryKeyV3(item, dbTable);
@@ -70,9 +79,13 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                     dbModel.Tables.Add(dbTable);
                 }
 
-                foreach (var item in items)
+                foreach (var entity in entitySets)
                 {
-                    GetForeignKeysV3(edmxv3, item, dbModel);
+                    // We should go through the mapping to find the the store name of a conceptual entity
+                    var storeName = edmxv3.GetItems<LinqToEdmx.MapV3.EntitySetMapping>().First(esm => esm.Name == entity.Name).EntityTypeMappings.First().MappingFragments.First().StoreEntitySet;
+
+                    GetForeignKeysV3(edmxv3, entity.Name, storeName, dbModel);
+
                     // Unique constraints are not available in the model
                     // GetUniqueConstraints(item, dbModel);
 
@@ -221,11 +234,11 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             // FIXME MySQL
         }
 
-        private void GetPrimaryKeyV3(LinqToEdmx.Model.ConceptualV3.EntityType table, DatabaseTable dbTable)
+        private void GetPrimaryKeyV3(LinqToEdmx.Model.ConceptualV3.EntityType conceptualTable, DatabaseTable dbTable)
         {
-            if (table.Key.PropertyRefs.Count() == 0) return;
+            if (conceptualTable.Key.PropertyRefs.Count() == 0) return;
 
-            var pk = table.Key;
+            var pk = conceptualTable.Key;
             var primaryKey = new DatabasePrimaryKey
             {
                 // We do not have information about the primary key name in the model.
@@ -240,7 +253,7 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
             //    primaryKey["SqlServer:Clustered"] = false;
             //}
 
-            foreach (var pkCol in table.Key.PropertyRefs)
+            foreach (var pkCol in conceptualTable.Key.PropertyRefs)
             {
                 var dbCol = dbTable.Columns
                     .Single(c => c.Name == pkCol.Name);
@@ -252,16 +265,25 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
 
         }
 
-        private void GetForeignKeysV3(EdmxV3 model, LinqToEdmx.Model.ConceptualV3.EntityType table, DatabaseModel dbModel)
+        private void GetForeignKeysV3(EdmxV3 model, string conceptualTableName, string storeTableName, DatabaseModel dbModel)
         {
-            var dbTable = dbModel.Tables
-                .Single(t => t.Name == table.Name
-                && t.Schema == GetSchemaNameV3(model, table.Name));
+            var table = dbModel.Tables
+                .Single(t => t.Name == conceptualTableName
+                && t.Schema == GetSchemaNameV3(model, storeTableName));
 
             // The foreign key informations are stored in the Association Object
-            var associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.ReferentialConstraint.Principal.Role == table.Name);
+            var associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.ReferentialConstraint.Dependent.Role == conceptualTableName);
 
-            if (associations.Count() == 0)
+            if (!associations.Any())
+            {
+                // Give a chance to a reflexive constraint
+                // TODO make sure that this is the right way to deal with this case.
+                var endType = string.Concat(@"Self.", conceptualTableName);
+                associations = model.GetItems<LinqToEdmx.Model.StorageV3.Association>().Where(a => a.Ends.All(e => e.Type == endType));
+            }
+
+            // No association ? No FK then.
+            if (!associations.Any())
                 return;
 
             foreach (var association in associations)
@@ -270,17 +292,18 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 // Te association set allows us to disambiguate the table name.
                 var associationSet = model.GetItems<LinqToEdmx.Model.StorageV3.EntityContainer>().First().AssociationSets.Where(@as => @as.Name == association.Name).SingleOrDefault();
 
-                var entityName = association.ReferentialConstraint.Dependent.Role;
+                var entityName = association.ReferentialConstraint.Principal.Role;
 
 
                 // Look for the table to which the columns are constrained
-                var foreignTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
-                if (foreignTable == null)
+                // Remember that we could be constrained to ourself :)
+                var principalTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
+                if (principalTable == null)
                 {
                     entityName = associationSet.Ends.Single(e => e.Role == entityName).EntitySet;
-                    foreignTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
+                    principalTable = dbModel.Tables.SingleOrDefault(t => t.Name == entityName && t.Schema == GetSchemaNameV3(model, entityName));
                 }
-                if (foreignTable == null)
+                if (principalTable == null)
                 {
                     throw new InvalidOperationException(@$"Unable to get foreign keys for entity with name [{entityName}]. This usually indicates a bug");
                 }
@@ -289,37 +312,44 @@ namespace ErikJ.EntityFrameworkCore.Edmx.Scaffolding
                 {
                     // The name of the foreign key
                     Name = association.Name,
-                    // The table that contains the foreign key constraint
-                    Table = dbTable,
-                    // The table to which the columns are constrained
-                    PrincipalTable = foreignTable,
-                    // Not available in the model
-                    // OnDelete = ConvertToReferentialAction(fk.DeleteAction)
+                    // The table that contains the foreign key constraint (Dependent in the Edmx)
+                    Table = table,
+                    // The table to which the columns are constrained (Principal in the Edmx)
+                    PrincipalTable = principalTable,
+
                 };
 
-                // Finish to populate the foreign key definition with principal and dependent columns
-                foreach (var fkCol in association.ReferentialConstraint.Dependent.PropertyRefs)
-                {
-                    var dbCol = dbTable.Columns
-                        .Single(c => c.Name == fkCol.Name);
+                var end = associationSet.Ends[0];
 
-                    foreignKey.Columns.Add(dbCol);
-                }
+                // OnDelete = ConvertToReferentialAction(fk.DeleteAction);
+
+                // Finish to populate the foreign key definition with principal and dependent columns
+                var rc = association.ReferentialConstraint;
 
                 foreach (var fkCol in association.ReferentialConstraint.Principal.PropertyRefs)
                 {
-                    var dbCol = foreignTable.Columns
-                        .SingleOrDefault(c => c.Name == fkCol.Name);
+                    var dbCol = principalTable.Columns
+                        .Single(c => c.Name == fkCol.Name);
 
                     if (dbCol != null)
                     {
                         foreignKey.PrincipalColumns.Add(dbCol);
                     }
                 }
+                foreach (var fkCol in association.ReferentialConstraint.Dependent.PropertyRefs)
+                {
+                    // Best case scenario, the columns name are the same in both entities
+                    var dbCol = table.Columns
+                        .Single /*OrDefault*/(c => c.Name == fkCol.Name);
+                    if (dbCol != null)
+                    {
+                        foreignKey.Columns.Add(dbCol);
+                    }
+                }
 
                 if (foreignKey.PrincipalColumns.Count > 0)
                 {
-                    dbTable.ForeignKeys.Add(foreignKey);
+                    table.ForeignKeys.Add(foreignKey);
                 }
             }
         }
