@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EfCore.SchemaCompare" Version="5.1.1" />
+    <PackageReference Include="EfCore.SchemaCompare" Version="5.1.2" />
   </ItemGroup>
 
 </Project>
