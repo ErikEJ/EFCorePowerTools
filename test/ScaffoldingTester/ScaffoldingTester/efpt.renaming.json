@@ -10,7 +10,19 @@
                }
             ],
             "Name": "Categories",
+            "Navigations": [ ],
             "NewName": "Categories"
+         },
+         {
+            "Columns": [ ],
+            "Name": "Orders",
+            "Navigations": [
+               {
+                  "Name": "ShipVia",
+                  "NewName": "ShipBy"
+               }
+            ],
+            "NewName": "Orders"
          }
       ],
       "UseSchemaName": false

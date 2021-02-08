@@ -10,7 +10,7 @@
                  mc:Ignorable="d"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
-                 d:DesignHeight="220"
+                 d:DesignHeight="300"
                  d:DesignWidth="337"
                  d:DataContext="{d:DesignInstance Type=viewModels:AdvancedModelingOptionsViewModel, IsDesignTimeCreatable=False}">
 
@@ -64,9 +64,24 @@
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="5"
-                      Content="Remove default constraint from bool columns"
+                      Content="Remove SQL default from bool columns (preview)"
                       IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
+            
+            <CheckBox TabIndex="6"
+                      Content="Use nullable reference types (experimental)"
+                      IsChecked="{Binding Model.UseNullableReferences}" 
+                      Style="{StaticResource MarginCheckBlockStyle}"/>
+
+            <CheckBox TabIndex="7"
+                      Content="Remove constructor from entity classes (experimental)"
+                      IsChecked="{Binding Model.UseNoConstructor}" 
+                      Style="{StaticResource MarginCheckBlockStyle}"/>
+            
+            <CheckBox TabIndex="8"
+                      Content="Remove navigations from entity classes (experimental)"
+                      IsChecked="{Binding Model.UseNoNavigations}" 
+                      Style="{StaticResource MarginCheckBlockStyle}"/>            
         </StackPanel>
 
         <StackPanel Grid.Row="20"

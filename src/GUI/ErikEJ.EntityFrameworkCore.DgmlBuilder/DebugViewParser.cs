@@ -324,6 +324,8 @@ namespace DgmlBuilder
                     //Multi key FKs!
                     trim = trim.Replace("', '", ",");
 
+                    trim = trim.Replace(" (Dictionary<string, object>)", string.Empty);
+
                     var parts = trim.Split(' ').ToList();
 
                     for (int x = 0; x < parts.Count; x++)

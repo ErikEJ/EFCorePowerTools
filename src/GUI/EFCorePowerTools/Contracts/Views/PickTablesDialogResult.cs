@@ -1,7 +1,6 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using ReverseEngineer20.ReverseEngineer;
-    using Shared.Models;
+    using RevEng.Shared;
 
     public class PickTablesDialogResult
     {

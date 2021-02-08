@@ -1,4 +1,4 @@
-﻿using ReverseEngineer20.ReverseEngineer;
+﻿using RevEng.Shared;
 using System.Collections.ObjectModel;
 
 namespace EFCorePowerTools.Contracts.ViewModels

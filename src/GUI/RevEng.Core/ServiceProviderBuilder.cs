@@ -1,6 +1,5 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -16,9 +15,10 @@ using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
+using RevEng.Shared;
 using System;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public static class ServiceProviderBuilder
     {
@@ -29,19 +29,32 @@ namespace ReverseEngineer20.ReverseEngineer
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
-                .AddSingleton<ICSharpEntityTypeGenerator, CommentCSharpEntityTypeGenerator>()
+#if CORE50
+                .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
+                 new CommentCSharpEntityTypeGenerator(                    
+                    provider.GetService<IAnnotationCodeGenerator>(),
+                    provider.GetService<ICSharpHelper>(),
+                    options.UseNullableReferences,
+                    options.UseNoConstructor))
+#else
+                .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
+                 new CommentCSharpEntityTypeGenerator(
+                    provider.GetService<ICSharpHelper>(),
+                    options.UseNullableReferences,
+                    options.UseNoConstructor))
+#endif
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>()
                 .AddSingleton<IScaffoldingModelFactory>(provider =>
-                  new ColumnRemovingScaffoldingModelFactory(
-                     provider.GetService<IOperationReporter>(),
-                     provider.GetService<ICandidateNamingService>(),
-                     provider.GetService<IPluralizer>(),
-                     provider.GetService<ICSharpUtilities>(),
-                     provider.GetService<IScaffoldingTypeMapper>(),
-                     provider.GetService<LoggingDefinitions>(),
-                     options.Tables,
-                     options.DatabaseType
+                new ColumnRemovingScaffoldingModelFactory(
+                    provider.GetService<IOperationReporter>(),
+                    provider.GetService<ICandidateNamingService>(),
+                    provider.GetService<IPluralizer>(),
+                    provider.GetService<ICSharpUtilities>(),
+                    provider.GetService<IScaffoldingTypeMapper>(),
+                    provider.GetService<LoggingDefinitions>(),
+                    options.Tables,
+                    options.DatabaseType
                 ));
 
             if (options.CustomReplacers != null)
@@ -82,18 +95,13 @@ namespace ReverseEngineer20.ReverseEngineer
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
+                    serviceCollection.AddSqlServerFunctionDesignTimeServices();
 
                     if (options.UseSpatial)
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-
-                    var builder = new SqlConnectionStringBuilder(options.ConnectionString)
-                    {
-                        CommandTimeout = 300
-                    };
-                    options.ConnectionString = builder.ConnectionString;
 
                     break;
 

@@ -37,27 +37,14 @@
 
         void IAdvancedModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
         {
-            Model.InstallNuGetPackage = presets.InstallNuGetPackage;
-            Model.SelectedToBeGenerated = presets.SelectedToBeGenerated;
-            Model.SelectedHandlebarsLanguage = presets.SelectedHandlebarsLanguage;
-            Model.IncludeConnectionString = presets.IncludeConnectionString;
-            Model.UseHandlebars = presets.UseHandlebars;
-            Model.UsePluralizer = presets.UsePluralizer;
-            Model.UseDatabaseNames = presets.UseDatabaseNames;
-            Model.Namespace = presets.Namespace;
-            Model.OutputPath = presets.OutputPath;
-            Model.OutputContextPath = presets.OutputContextPath;
-            Model.ModelNamespace = presets.ModelNamespace;
-            Model.ContextNamespace = presets.ContextNamespace;
-            Model.ModelName = presets.ModelName;
-            Model.UseDataAnnotations = presets.UseDataAnnotations;
             Model.UseDbContextSplitting = presets.UseDbContextSplitting;
-            Model.ProjectName = presets.ProjectName;
-            Model.DacpacPath = presets.DacpacPath;
             Model.MapSpatialTypes = presets.MapSpatialTypes;
             Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
+            Model.UseNoConstructor = presets.UseNoConstructor;
+            Model.UseNoNavigations = presets.UseNoNavigations;
+            Model.UseNullableReferences = presets.UseNullableReferences;
         }
     }
 }

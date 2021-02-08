@@ -4,29 +4,15 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
-    <Configurations>Release;Debug</Configurations>
+    <Version>2.5.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <DefineConstants>TRACE;CORE50</DefineConstants>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;CORE50</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="RemoveDupes.cmd" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="RemoveDupes.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

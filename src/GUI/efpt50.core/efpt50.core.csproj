@@ -4,12 +4,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>efpt</AssemblyName>
-    <RootNamespace>ReverseEngineer20</RootNamespace>
+    <RootNamespace>Modelling</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
     <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
@@ -18,13 +18,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\efpt\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
-    <Compile Include="..\efpt\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
-    <Compile Include="..\efpt\Program.cs" Link="Program.cs" />
+    <Compile Include="..\efpt30.core\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
+    <Compile Include="..\efpt30.core\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
+    <Compile Include="..\efpt30.core\Program.cs" Link="Program.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0" />
+    <PackageReference Include="EfCore.SchemaCompare" Version="5.1.2" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;

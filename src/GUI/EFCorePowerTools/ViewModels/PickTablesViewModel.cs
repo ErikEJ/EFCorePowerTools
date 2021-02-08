@@ -2,21 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows.Data;
     using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
-    using Shared.DAL;
-    using Shared.Models;
 
     public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {
@@ -62,7 +55,7 @@
                 if (Equals(value, _searchText)) return;
                 _searchText = value;
                 RaisePropertyChanged();
-                HandleSearchTextChangeAsync(value);
+                var _ = HandleSearchTextChangeAsync(value);
             }
         }
 

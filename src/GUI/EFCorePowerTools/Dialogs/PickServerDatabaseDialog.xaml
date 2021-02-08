@@ -34,6 +34,7 @@
                         <Setter Property="Margin" Value="0, 12, 0, 12"/>
                     </Style>
                     <Style x:Key="SourceSelectionButtonStyle" TargetType="dw:DialogButton">
+                        <Setter Property="MinWidth" Value="70"/>
                         <Setter Property="Margin" Value="10, 0, 0, 0"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
@@ -60,6 +61,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <ComboBox Grid.Column="0"
@@ -69,10 +71,19 @@
                       ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
                       SelectedItem="{Binding SelectedDatabaseConnection, Mode=TwoWay}"
                       DisplayMemberPath="ConnectionName"/>
-            <dw:DialogButton Grid.Column="1"
+
+            <Button Grid.Column="1"
+                    Margin="8,12,0,12"
+                    ToolTip="Remove selected connection"
+                    Command="{Binding RemoveDatabaseConnectionCommand}">
+                    <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
+            </Button>
+
+            <dw:DialogButton Grid.Column="2"
                              TabIndex="2"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="Add..."
+                             ToolTip="Add Database Connection"
                              Command="{Binding AddDatabaseConnectionCommand}"/>
         </Grid>
 
@@ -102,6 +113,7 @@
                              TabIndex="2"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="Add..."
+                             ToolTip="Add external .dacpac"
                              Command="{Binding AddDatabaseDefinitionCommand}"/>
         </Grid>
         
@@ -119,7 +131,8 @@
                     Margin="0,5">
             <dw:DialogButton IsTabStop="False"
                              Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="Schemas..."
+                             ToolTip="Add Schemas to filter"
+                             Content="Add..."
                              Command="{Binding FilterSchemasCommand}"/>
         </StackPanel>
 
@@ -140,6 +153,14 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Margin="0,5,0,0">
+            <TextBlock
+                ToolTip="Release Notes"
+                Margin="12,5,12,0">
+                <Hyperlink                    
+                    x:Name="ReleaseNotesLink"
+                    Click="Hyperlink_Click" 
+                    NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes"/>
+            </TextBlock>
             <dw:DialogButton TabIndex="7"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="OK"

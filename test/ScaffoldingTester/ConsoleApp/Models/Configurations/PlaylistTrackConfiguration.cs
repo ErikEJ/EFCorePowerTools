@@ -9,7 +9,7 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class PlaylistTrackConfiguration : IEntityTypeConfiguration<PlaylistTrack>
+    public partial class PlaylistTrackConfiguration : IEntityTypeConfiguration<PlaylistTrack>
     {
         public void Configure(EntityTypeBuilder<PlaylistTrack> entity)
         {
@@ -31,6 +31,10 @@ namespace ConsoleApp.Models.Configurations
                 .HasForeignKey(d => d.TrackId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PlaylistTrackTrackId");
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<PlaylistTrack> entity);
     }
 }

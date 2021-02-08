@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     using EventArgs;
-    using ReverseEngineer20.ReverseEngineer;
+    using RevEng.Shared;
     using Shared.Models;
     using System;
     using System.Collections.Generic;
@@ -25,6 +25,7 @@
         DatabaseConnectionModel SelectedDatabaseConnection { get; set; }
         DatabaseDefinitionModel SelectedDatabaseDefinition { get; set; }
 
+        string UiHint { get; set; }
         bool IncludeViews { get; set; }
         bool FilterSchemas { get; set; }
     }

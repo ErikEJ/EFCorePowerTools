@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.Data.Services.SupportEntities;
 using Microsoft.VisualStudio.Shell;
 
-namespace ErikEJ.SqlCeToolbox.Helpers
+namespace EFCorePowerTools.Helpers
 {
     public class SqliteProviderRegistration : RegistrationAttribute
     {

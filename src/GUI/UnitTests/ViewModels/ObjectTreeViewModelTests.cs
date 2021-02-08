@@ -4,15 +4,12 @@ namespace UnitTests.ViewModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
 
     [TestFixture]
     public class ObjectTreeViewModelTests
@@ -97,6 +94,7 @@ namespace UnitTests.ViewModels
             // Act
             vm.AddObjects(objects, replacers);
             var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).ToArray();
+            vm.SetSelectionState(true);
             var renamers = vm.GetRenamedObjects();
 
             // Assert
@@ -106,14 +104,83 @@ namespace UnitTests.ViewModels
             {
                 foreach(var table in replacerSchema.Tables)
                 {
-                    var vmobject = vmobjects.First(o => o.Schema.Equals(replacerSchema.SchemaName, StringComparison.OrdinalIgnoreCase) && o.Name.Equals(table.Name, StringComparison.OrdinalIgnoreCase));
-                    Assert.AreSame(vmobject.NewName, table.NewName);
+                    var vmobject = vmobjects.First(o => o.Schema == replacerSchema.SchemaName && o.Name.Equals(table.Name, StringComparison.OrdinalIgnoreCase));
+                    Assert.AreEqual(vmobject.NewName, table.NewName);
                     foreach (var column in table.Columns)
                     {
-                        Assert.AreSame(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
+                        Assert.AreEqual(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
                     }
                 }
             }
+        }
+
+        [Test]
+        public void AddObjects_Replacers_Issue679()
+        {
+            // Arrange
+            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
+
+            var objects = new TableModel[3];
+            objects[0] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false) }.ToArray());
+            objects[1] = new TableModel("employeedetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false) }.ToArray());
+            objects[2] = new TableModel("same", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("same", false) }.ToArray());
+
+            var replacers = new Schema[1];
+            replacers[0] = new Schema()
+            {
+                SchemaName = null,
+                UseSchemaName = false,
+                Tables = new List<TableRenamer>
+                {
+                    new TableRenamer
+                    {
+                        Name = "departmentdetail",
+                        NewName = "DepartmentDetail",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "DEPTCode", NewName = "DEPTCode" },
+                        },
+                    },
+                    new TableRenamer
+                    {
+                        Name = "employeedetail",
+                        NewName = "EmployeeDetail",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "EMPCode", NewName = "EMPCode" },
+
+                        },
+                        Navigations = new List<NavigationRenamer>
+                        {
+                            new NavigationRenamer { Name = "First", NewName = "Second" },
+                        },
+                    },
+                    new TableRenamer
+                    {
+                        Name = "same",
+                        NewName = "same",
+                        Columns = new List<ColumnNamer>(),
+                        Navigations = new List<NavigationRenamer>
+                        {
+                            new NavigationRenamer { Name = "SameFirst", NewName = "SameSecond" },
+                        },
+                    },
+                },
+            };
+
+            // Act
+            vm.AddObjects(objects, replacers);
+            vm.SetSelectionState(true);
+            var renamers = vm.GetRenamedObjects().ToList();
+
+            // Assert
+            Assert.AreEqual(3, renamers[0].Tables.Count);
+            Assert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
+            Assert.AreEqual(0, renamers[0].Tables[0].Navigations.Count);
+            Assert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
+            Assert.AreEqual(1, renamers[0].Tables[1].Navigations.Count);
+            Assert.AreEqual(0, renamers[0].Tables[2].Columns.Count);
+            Assert.AreEqual(1, renamers[0].Tables[1].Navigations.Count);
         }
 
         [Test]
@@ -250,11 +317,15 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(10, result.Count());
-            for (var i = 0; i < result.Length; i++)
+            Assert.AreEqual(11, result.Count());
+            for (var i = 0; i < result.Length - 1; i++)
             {
-                Assert.AreEqual(databaseObjects[i].DisplayName, result[i].Name);
+                Assert.AreEqual(databaseObjects[i + 1].DisplayName, result[i].Name);
             }
+
+            // Act
+            var renamed = vm.GetRenamedObjects();
+            Assert.AreEqual(0, renamed.Count());
         }
 
         [Test]
@@ -274,7 +345,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Length);
+            Assert.AreEqual(6, result.Length);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
                 Assert.IsTrue(result.Any(c => c.Name == item.Objects.First().ModelDisplayName));
@@ -371,11 +442,20 @@ namespace UnitTests.ViewModels
             vm.Types[0].Schemas[0].Objects[0].NewName = "NewTableName";
             vm.Types[0].Schemas[0].Objects[0].Columns[0].NewName = "NewColumnName";
 
+            vm.Types[0].Schemas[3].Objects[0].SetSelectedCommand.Execute(true);
+            vm.Types[0].Schemas[3].Objects[0].NewName = "DepartmentDetail";
+
+            vm.Types[0].Schemas[3].Objects[0].Columns[0].SetSelectedCommand.Execute(true);
+            vm.Types[0].Schemas[3].Objects[0].Columns[0].NewName = "DepartmentName";
+
             //Assert
             var renamedObjects = vm.GetRenamedObjects();
             Assert.IsNotNull(renamedObjects);
             Assert.AreSame(renamedObjects.First().Tables[0].NewName, "NewTableName");
             Assert.AreSame(renamedObjects.First().Tables[0].Columns[0].NewName, "NewColumnName");
+
+            Assert.AreSame(renamedObjects.Last().Tables[0].NewName, "DepartmentDetail");
+            Assert.AreSame(renamedObjects.Last().Tables[0].Columns[0].NewName, "DepartmentName");
         }
 
         private static TableModel[] GetDatabaseObjects()
@@ -400,18 +480,19 @@ namespace UnitTests.ViewModels
                 };
             }
 
-            var r = new TableModel[10];
+            var r = new TableModel[11];
 
-            r[0] = new TableModel("[dbo].[Atlas]", "Atlas", "dbo", ObjectType.Table, CreateColumnsWithId());
-            r[1] = new TableModel("[__].[RefactorLog]", "RefactorLog", "__", ObjectType.Table, CreateColumnsWithId());
-            r[2] = new TableModel("[dbo].[__RefactorLog]", "__RefactorLog", "dbo", ObjectType.Table, CreateColumnsWithId());
-            r[3] = new TableModel("[dbo].[sysdiagrams]", "sysdiagrams", "dbo", ObjectType.Table, CreateColumnsWithId());
-            r[4] = new TableModel("[unit].[test]", "test", "unit", ObjectType.Table, CreateColumnsWithId());
-            r[5] = new TableModel("[unit].[foo]", "foo", "unit", ObjectType.Table, CreateColumnsWithId());
-            r[6] = new TableModel("[views].[view1]", "view1", "views", ObjectType.View, CreateColumnsWithoutId());
-            r[7] = new TableModel("[views].[view2]", "view2", "views", ObjectType.View, CreateColumnsWithoutId());
-            r[8] = new TableModel("[stored].[procedure1]", "procedure1", "stored", ObjectType.Procedure, new ColumnModel[0]);
-            r[9] = new TableModel("[stored].[procedure2]", "procedure2", "stored", ObjectType.Procedure, new ColumnModel[0]);
+            r[0] = new TableModel("Atlas", "dbo", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[1] = new TableModel("RefactorLog", "__", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[2] = new TableModel("__RefactorLog", "dbo", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[3] = new TableModel("sysdiagrams", "dbo", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[4] = new TableModel("test", "unit", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[5] = new TableModel("foo", "unit", DatabaseType.SQLServer, ObjectType.Table, CreateColumnsWithId());
+            r[6] = new TableModel("view1", "views", DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
+            r[7] = new TableModel("view2", "views", DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
+            r[8] = new TableModel("procedure1", "stored", DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
+            r[9] = new TableModel("procedure2", "stored", DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
+            r[10] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("departmentname", false), new ColumnModel("DEPTCode", false), new ColumnModel("Id", true) }.ToArray());
             return r;
         }
 
@@ -429,7 +510,7 @@ namespace UnitTests.ViewModels
 
         private static Schema[] GetReplacers()
         {
-            var r = new Schema[2];
+            var r = new Schema[3];
 
             r[0] = new Schema()
             {
@@ -440,13 +521,14 @@ namespace UnitTests.ViewModels
                 TableRegexPattern = "TableRegexPattern",
                 Tables = new List<TableRenamer>
                 {
-                    new TableRenamer { 
+                    new TableRenamer 
+                    { 
                         Name = "atlas",
                         NewName = "newatlas",
                         Columns = new List<ColumnNamer>
                         {
                             new ColumnNamer { Name = "column1", NewName = "newcolumn1" }
-                        }
+                        },
                     }
                 }
             };
@@ -455,6 +537,25 @@ namespace UnitTests.ViewModels
             {
                 SchemaName = "other",
                 UseSchemaName = true,
+            };
+
+            r[2] = new Schema()
+            {
+                SchemaName = null,
+                UseSchemaName = false,
+                Tables = new List<TableRenamer>
+                {
+                    new TableRenamer 
+                    {
+                        Name = "departmentdetail",
+                        NewName = "DepartmentDetail",
+                        Columns = new List<ColumnNamer>
+                        {
+                            new ColumnNamer { Name = "departmentname", NewName = "DepartmentName" },
+                            new ColumnNamer { Name = "DEPTCode", NewName = "DEPTCode" },
+                        }
+                    }
+                },
             };
 
             return r;

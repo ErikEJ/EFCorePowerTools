@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using ReverseEngineer20.ReverseEngineer;
 
 namespace UnitTests.ViewModels
 {

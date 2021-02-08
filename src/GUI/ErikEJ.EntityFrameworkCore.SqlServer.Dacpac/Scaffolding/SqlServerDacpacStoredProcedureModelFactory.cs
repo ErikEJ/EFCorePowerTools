@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GOEddie.Dacpac.References;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
@@ -6,7 +7,6 @@ using Microsoft.SqlServer.Dac.Model;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
-using ReverseEngineer20.DacpacConsolidate;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +23,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             _logger = logger;
         }
 
-        public ProcedureModel Create(string dacpacPath, ProcedureModelFactoryOptions options)
+        public ProcedureModel Create(string dacpacPath, ModuleModelFactoryOptions options)
         {
             if (string.IsNullOrEmpty(dacpacPath))
             {
@@ -37,12 +37,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return GetStoredProcedures(dacpacPath, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string dacpacPath, ProcedureModelFactoryOptions options)
+        private ProcedureModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
         {
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
 
-            if (options.FullModel && !options.Procedures.Any())
+            if (options.FullModel && !options.Modules.Any())
             {
                 return new ProcedureModel
                 {
@@ -59,7 +59,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var procedures = model.GetObjects<TSqlProcedure>(DacQueryScopes.UserDefined)
                .ToList();
 
-            var filter = new HashSet<string>(options.Procedures);
+            var filter = new HashSet<string>(options.Modules);
 
             foreach (var proc in procedures)
             {
@@ -97,13 +97,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             };
         }
 
-        private List<ProcedureParameter> GetStoredProcedureParameters(TSqlProcedure proc)
+        private List<ModuleParameter> GetStoredProcedureParameters(TSqlProcedure proc)
         {
-            var result = new List<ProcedureParameter>();
+            var result = new List<ModuleParameter>();
 
             foreach (var parameter in proc.Parameters)
             {
-                var newParameter = new ProcedureParameter()
+                var newParameter = new ModuleParameter()
                 {
                      Length = parameter.Length,
                      Name = parameter.Name.Parts[2].Trim('@'),
@@ -119,7 +119,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             // Add parameter to hold the standard return value
-            result.Add(new ProcedureParameter()
+            result.Add(new ModuleParameter()
             {
                 Name = "returnValue",
                 StoreType = "int",

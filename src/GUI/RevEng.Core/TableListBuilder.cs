@@ -1,11 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Scaffolding;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
-using ReverseEngineer20.ReverseEngineer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EFCorePowerTools.Shared.Models;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
 using RevEng.Core.Abstractions.Model;
@@ -15,14 +12,14 @@ using RevEng.Core.Abstractions;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
 
-namespace ReverseEngineer20
+namespace RevEng.Core
 {
     public class TableListBuilder
     {
         private readonly string _connectionString;
         private readonly SchemaInfo[] _schemas;
         private readonly DatabaseType _databaseType;
-        private readonly ServiceProvider serviceProvider;
+        private readonly ServiceProvider _serviceProvider;
 
         public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas)
         {
@@ -30,20 +27,16 @@ namespace ReverseEngineer20
             {
                 throw new ArgumentNullException(@"invalid connection string", nameof(connectionString));
             }
-            _connectionString = connectionString;
+            _connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
             _schemas = schemas;
             _databaseType = (DatabaseType)databaseType;
 
-            if (_databaseType == DatabaseType.SQLServer)
+            var options = new ReverseEngineerCommandOptions
             {
-                var builder = new SqlConnectionStringBuilder(_connectionString)
-                {
-                    CommandTimeout = 300
-                };
-                _connectionString = builder.ConnectionString;
-            }
+                DatabaseType = _databaseType,
+            };
 
-            serviceProvider = TableListServiceProviderBuilder.Build(_databaseType);
+            _serviceProvider = ServiceProviderBuilder.Build(options);
         }
 
         public List<TableModel> GetTableModels()
@@ -54,18 +47,6 @@ namespace ReverseEngineer20
 
             foreach (var databaseTable in databaseTables)
             {
-                string name;
-                if (_databaseType == DatabaseType.SQLServer || _databaseType == DatabaseType.SQLServerDacpac)
-                {
-                    name = $"[{databaseTable.Schema}].[{databaseTable.Name}]";
-                }
-                else
-                {
-                    name = string.IsNullOrEmpty(databaseTable.Schema)
-                        ? databaseTable.Name
-                        : $"{databaseTable.Schema}.{databaseTable.Name}";
-                }
-
                 var columns = new List<ColumnModel>();
 
                 var primaryKeyColumnNames = databaseTable.PrimaryKey?.Columns.Select(c => c.Name).ToHashSet();
@@ -75,7 +56,7 @@ namespace ReverseEngineer20
                     columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false));
                 }
 
-                buildResult.Add(new TableModel(name, databaseTable.Name, databaseTable.Schema, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
+                buildResult.Add(new TableModel(databaseTable.Name, databaseTable.Schema, _databaseType, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
             }
 
             return buildResult;
@@ -83,7 +64,7 @@ namespace ReverseEngineer20
 
         private List<DatabaseTable> GetTableDefinitions()
         {
-            var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
+            var dbModelFactory = _serviceProvider.GetService<IDatabaseModelFactory>();
 
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
             var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
@@ -91,34 +72,58 @@ namespace ReverseEngineer20
             return dbModel.Tables.ToList();
         }
 
-        public List<TableModel> GetProcedures(int dbTypeInt)
+        public List<TableModel> GetProcedures()
         {
             var result = new List<TableModel>();
 
-            DatabaseType databaseType = (DatabaseType)dbTypeInt;
-
-            if (databaseType != DatabaseType.SQLServer && databaseType != DatabaseType.SQLServerDacpac)
+            if (_databaseType != DatabaseType.SQLServer && _databaseType != DatabaseType.SQLServerDacpac)
             {
                 return result;    
             }
 
-            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
+            var procedureModelFactory = _serviceProvider.GetService<IProcedureModelFactory>();
 
-            var procedureModelOptions = new ProcedureModelFactoryOptions
+            var procedureModelOptions = new ModuleModelFactoryOptions
             {
                 FullModel = false,
-                Procedures = new List<string>(),
+                Modules = new List<string>(),
             };
 
             var procedureModel = procedureModelFactory.Create(_connectionString, procedureModelOptions);
 
             foreach (var procedure in procedureModel.Procedures)
             {
-                result.Add(new TableModel($"[{procedure.Schema}].[{procedure.Name}]", procedure.Name, procedure.Schema, ObjectType.Procedure, null));
+                result.Add(new TableModel(procedure.Name, procedure.Schema, _databaseType, ObjectType.Procedure, null));
             }
 
             return result.OrderBy(c => c.DisplayName).ToList();
         }
 
+        public List<TableModel> GetFunctions()
+        {
+            var result = new List<TableModel>();
+
+            if (_databaseType != DatabaseType.SQLServer && _databaseType != DatabaseType.SQLServerDacpac)
+            {
+                return result;
+            }
+
+            var functionModelFactory = _serviceProvider.GetService<IFunctionModelFactory>();
+
+            var functionModelOptions = new ModuleModelFactoryOptions
+            {
+                FullModel = false,
+                Modules = new List<string>(),
+            };
+
+            var functionModel = functionModelFactory.Create(_connectionString, functionModelOptions);
+
+            foreach (var function in functionModel.Functions)
+            {
+                result.Add(new TableModel(function.Name, function.Schema, _databaseType, ObjectType.ScalarFunction, null));
+            }
+
+            return result.OrderBy(c => c.DisplayName).ToList();
+        }
     }
 }

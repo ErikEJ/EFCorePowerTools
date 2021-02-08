@@ -1,0 +1,148 @@
+﻿DbContext:
+SilverPagesContext
+DebugView:
+Model: 
+  EntityType: Profession
+    Properties: 
+      Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+      Code (string) Required MaxLength(2)
+        Annotations: 
+          MaxLength: 2
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+      ConventionStatus (ConventionStatus) Required
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+      IsConventionableProfession (bool) Required
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+    Navigations: 
+      Qualifications (List<Qualification>) Collection ToDependent Qualification Inverse: Profession
+      Specializations (List<Specialization>) Collection ToDependent Specialization Inverse: Profession
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:DefaultMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMappingBase]
+      Relational:TableMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: Professions
+      ServiceOnlyConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+  EntityType: Qualification
+    Properties: 
+      Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+      Code (string) Required MaxLength(3)
+        Annotations: 
+          MaxLength: 3
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+      ProfessionId (int) Required FK Index
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+    Navigations: 
+      Profession (Profession) ToPrincipal Profession Inverse: Qualifications
+    Skip navigations: 
+      Specializations (List<Specialization>) CollectionSpecialization Inverse: Qualifications
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Foreign keys: 
+      Qualification {'ProfessionId'} -> Profession {'Id'} ToDependent: Qualifications ToPrincipal: Profession
+        Annotations: 
+          Relational:ForeignKeyMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ForeignKeyConstraint]
+    Indexes: 
+      ProfessionId 
+        Annotations: 
+          Relational:TableIndexMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableIndex]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:DefaultMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMappingBase]
+      Relational:TableMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: Qualifications
+      ServiceOnlyConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+  EntityType: Specialization
+    Properties: 
+      Id (int) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+          SqlServer:ValueGenerationStrategy: IdentityColumn
+      Code (string) Required MaxLength(3)
+        Annotations: 
+          MaxLength: 3
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+      ProfessionId (int) Required FK Index
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+    Navigations: 
+      Profession (Profession) ToPrincipal Profession Inverse: Specializations
+    Skip navigations: 
+      Qualifications (List<Qualification>) CollectionQualification Inverse: Specializations
+    Keys: 
+      Id PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Foreign keys: 
+      Specialization {'ProfessionId'} -> Profession {'Id'} ToDependent: Specializations ToPrincipal: Profession Cascade
+        Annotations: 
+          Relational:ForeignKeyMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ForeignKeyConstraint]
+    Indexes: 
+      ProfessionId 
+        Annotations: 
+          Relational:TableIndexMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableIndex]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:DefaultMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMappingBase]
+      Relational:TableMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      Relational:TableName: Specializations
+      ServiceOnlyConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+  EntityType: QualificationSpecialization (Dictionary<string, object>) CLR Type: Dictionary<string, object>
+    Properties: 
+      QualificationsId (no field, int) Indexer Required PK FK AfterSave:Throw
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+      SpecializationsId (no field, int) Indexer Required PK FK Index AfterSave:Throw
+        Annotations: 
+          Relational:DefaultColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMappingBase]
+          Relational:TableColumnMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ColumnMapping]
+    Keys: 
+      QualificationsId, SpecializationsId PK
+        Annotations: 
+          Relational:UniqueConstraintMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.UniqueConstraint]
+    Foreign keys: 
+      QualificationSpecialization (Dictionary<string, object>) {'QualificationsId'} -> Qualification {'Id'} Cascade
+        Annotations: 
+          Relational:ForeignKeyMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ForeignKeyConstraint]
+      QualificationSpecialization (Dictionary<string, object>) {'SpecializationsId'} -> Specialization {'Id'} Cascade
+        Annotations: 
+          Relational:ForeignKeyMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.ForeignKeyConstraint]
+    Indexes: 
+      SpecializationsId 
+        Annotations: 
+          Relational:TableIndexMappings: System.Collections.Generic.SortedSet`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableIndex]
+    Annotations: 
+      ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+      Relational:DefaultMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMappingBase]
+      Relational:TableMappings: System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.Internal.TableMapping]
+      ServiceOnlyConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Annotations: 
+  ProductVersion: 5.0.1
+  Relational:MaxIdentifierLength: 128
+  Relational:RelationalModel: Microsoft.EntityFrameworkCore.Metadata.Internal.RelationalModel
+  SqlServer:ValueGenerationStrategy: IdentityColumn

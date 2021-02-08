@@ -1,23 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Core
 {
     public class ReplacingCandidateNamingService : CandidateNamingService
     {
         private readonly List<Schema> _customNameOptions;
+        private readonly List<TableRenamer> _navigationReplacers;
 
         public ReplacingCandidateNamingService(List<Schema> customNameOptions)
         {
             _customNameOptions = customNameOptions;
+            _navigationReplacers = customNameOptions
+                .Where(o => o.Tables != null)
+                .SelectMany(t => t.Tables)
+                .ToList();
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -115,34 +120,73 @@ namespace ReverseEngineer20.ReverseEngineer
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
+        public override string GetPrincipalEndCandidateNavigationPropertyName(IForeignKey foreignKey, string dependentEndNavigationPropertyName)
+        {
+            var baseName = base.GetPrincipalEndCandidateNavigationPropertyName(foreignKey, dependentEndNavigationPropertyName);
+            var tableName = foreignKey.PrincipalEntityType.GetTableName();
+            var schemaName = foreignKey.PrincipalEntityType.GetSchema();
+
+            var schema = _customNameOptions
+                .Where(o => o.SchemaName == schemaName
+                    && o.Tables != null && o.Tables.Any())
+                .SingleOrDefault();
+
+            if (schema != null)
+            {
+                var table = schema.Tables
+                    .Where(t => t.Name == tableName
+                        && t.Navigations != null)
+                    .SingleOrDefault();
+
+                if (table != null)
+                {
+                    var navigationRenamer = table.Navigations
+                        .Where(n => n.Name == baseName)
+                        .SingleOrDefault();
+
+                    if (navigationRenamer != null && navigationRenamer.NewName != null)
+                    {
+                        return navigationRenamer.NewName;
+                    }
+                }
+            }
+
+            return baseName;
+        }
+
         public override string GetDependentEndCandidateNavigationPropertyName(IForeignKey foreignKey)
         {
             var baseName = base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            var originalSchema = foreignKey.PrincipalEntityType.GetSchema();
 
-            //var originalTable = foreignKey.DeclaringEntityType.Scaffolding().TableName;
-            var schema = GetSchema(originalSchema);
+            var tableName = foreignKey.DeclaringEntityType.GetTableName();
+            var schemaName = foreignKey.DeclaringEntityType.GetSchema();
 
-            if (schema == null)
+            var schema = _customNameOptions
+                .Where(o => o.SchemaName == schemaName
+                    && o.Tables != null && o.Tables.Any())
+                .SingleOrDefault();
+
+            if (schema != null)
             {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            }
-            else if (foreignKey.IsSelfReferencing())
-            {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            }
-            else if (schema.SchemaName == originalSchema)
-            {
-                if (schema.UseSchemaName)
+                var table = schema.Tables
+                    .Where(t => t.Name == tableName
+                        && t.Navigations != null)
+                    .SingleOrDefault();
+
+                if (table != null)
                 {
-                    return ToPascalCase(schema.SchemaName) + baseName;
+                    var navigationRenamer = table.Navigations
+                        .Where(n => n.Name == baseName)
+                        .SingleOrDefault();
+
+                    if (navigationRenamer != null && navigationRenamer.NewName != null)
+                    {
+                        return navigationRenamer.NewName;
+                    }
                 }
-                return baseName;
             }
-            else
-            {
-                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
-            }
+
+            return baseName;
         }
 
         private Schema GetSchema(string originalSchema)

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Shared
 {
     [DataContract]
     public class ColumnNamer

@@ -1,10 +1,9 @@
-﻿using EFCorePowerTools.Shared.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Shared
 {
     public static class TableModelExtensions
     {

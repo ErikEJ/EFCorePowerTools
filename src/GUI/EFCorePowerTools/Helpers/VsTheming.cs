@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using System;
 using System.Windows.Media;
 
-namespace ErikEJ.SqlCeToolbox.Helpers
+namespace EFCorePowerTools.Helpers
 {
     public static class VsThemes
     {
         public static SolidColorBrush GetCommandBackground()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int color = (int)__VSSYSCOLOREX.VSCOLOR_COMMANDBAR_GRADIENT_BEGIN;
             return SolidColorBrushFromWin32Color(GetWin32Color(color));
         }
@@ -21,6 +24,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         public static SolidColorBrush GetWindowText()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var colorval = (int)__VSSYSCOLOREX3.VSCOLOR_WINDOWTEXT;
             var brush = SolidColorBrushFromWin32Color(GetWin32Color(colorval));
             //For dark theme Inactive item
@@ -33,6 +38,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         public static System.Drawing.Color GetWindowTextColor()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var colorval = (int)__VSSYSCOLOREX3.VSCOLOR_WINDOWTEXT;
             var color = SolidColorBrushFromWin32Color(GetWin32Color(colorval)).Color;
             //For dark theme Inactive item
@@ -51,18 +58,24 @@ namespace ErikEJ.SqlCeToolbox.Helpers
 
         public static SolidColorBrush GetToolbarSeparatorBackground()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int color = (int)__VSSYSCOLOREX3.VSCOLOR_COMMANDBAR_TOOLBAR_SEPARATOR;
             return SolidColorBrushFromWin32Color(GetWin32Color(color));
         }
 
         public static SolidColorBrush GetToolWindowBackground()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int color = (int)__VSSYSCOLOREX3.VSCOLOR_WINDOW;
             return SolidColorBrushFromWin32Color(GetWin32Color(color));
         }
 
         private static uint GetWin32Color(int color)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint win32Color;
             var shell = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsUIShell)) as IVsUIShell2;
             // ReSharper disable once PossibleNullReferenceException

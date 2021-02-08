@@ -1,10 +1,7 @@
-﻿using ReverseEngineer20.ReverseEngineer;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ReverseEngineer20
+namespace RevEng.Shared
 {
-    using EFCorePowerTools.Shared.Models;
-
     public class ReverseEngineerCommandOptions
     {
         public DatabaseType DatabaseType { get; set; }
@@ -32,6 +29,9 @@ namespace ReverseEngineer20
         public bool UseDbContextSplitting { get; set; }
         public bool UseNodaTime { get; set; }
         public bool UseBoolPropertiesWithoutDefaultSql { get; set; }
+        public bool UseNullableReferences { get; set; }
+        public bool UseNoConstructor { get; set; }
+        public bool UseNoNavigations { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
     }

@@ -1,10 +1,11 @@
 ﻿using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Helpers;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -21,6 +22,8 @@ namespace EFCorePowerTools.Handlers
 
         public async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             try
             {
                 if (string.IsNullOrEmpty(outputPath))
@@ -43,7 +46,7 @@ namespace EFCorePowerTools.Handlers
                 var result = await project.ContainsEfCoreDesignReferenceAsync();
                 if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
+                    EnvDteHelper.ShowError("EF Core 3.1 or later not found in project");
                     return;
                 }
 
@@ -110,6 +113,8 @@ namespace EFCorePowerTools.Handlers
 
         private void GenerateDgml(List<Tuple<string, string>> modelResult, Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
             ProjectItem item = null;
 

@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.Models
+﻿namespace RevEng.Shared
 {
     using System;
     using System.Collections.Generic;
@@ -14,10 +14,25 @@
     public class TableModel
     {
         /// <summary>
-        /// Gets or sets the table name used for EF Core scaffolding
+        /// Gets the database object display name
         /// </summary>
-        [DataMember]
-        public string DisplayName { get; set; }
+        [IgnoreDataMember]
+        public string DisplayName 
+        {
+            get
+            {
+                if (DatabaseType == DatabaseType.SQLServer || DatabaseType == DatabaseType.SQLServerDacpac)
+                {
+                    return $"[{Schema}].[{Name}]";
+                }
+                else
+                {
+                    return string.IsNullOrEmpty(Schema)
+                        ? Name
+                        : $"{Schema}.{Name}";
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the name
@@ -44,6 +59,12 @@
         public IEnumerable<ColumnModel> Columns { get; set; }
 
         /// <summary>
+        /// Gets the database type.
+        /// </summary>
+        [DataMember]
+        public DatabaseType DatabaseType { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TableModel"/> class for a specific table.
         /// </summary>
         /// <param name="displayName">The object name used by scaffolding.</param>
@@ -52,16 +73,16 @@
         /// <param name="hasPrimaryKey">Whether or not a primary key exists for the table.</param>
         /// <param name="showKeylessWarning">Show warning that the table or view is keyless.</param>
         /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
-        public TableModel(string displayName,
-                            string name,
+        public TableModel(string name,
                             string schema,
+                            DatabaseType databaseType,
                             ObjectType objectType,
                             IEnumerable<ColumnModel> columns)
         {
-            if (string.IsNullOrWhiteSpace(displayName))
-                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(displayName));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
 
-            DisplayName = displayName;
+            DatabaseType = databaseType;
             Name = name;
             Schema = schema;
             ObjectType = objectType;

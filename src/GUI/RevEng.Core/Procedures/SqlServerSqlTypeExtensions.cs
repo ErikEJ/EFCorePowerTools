@@ -21,12 +21,12 @@ namespace RevEng.Core
                 { "geometry", "variant" },
             });
 
-        public static Type ClrType(this ProcedureParameter storedProcedureParameter)
+        public static Type ClrType(this ModuleParameter storedProcedureParameter)
         {
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
         }
 
-        public static SqlDbType DbType(this ProcedureParameter storedProcedureParameter)
+        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
         {
             return GetSqlDbType(storedProcedureParameter.StoreType);
         }
@@ -122,7 +122,7 @@ namespace RevEng.Core
                     return isNullable ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(sqlType), $"storetype: {storeType}");
+                    throw new ArgumentOutOfRangeException(nameof(storeType), $"storetype: {storeType}");
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.DAL
 {
-    using ErikEJ.SqlCeToolbox.Helpers;
+    using EFCorePowerTools.Helpers;
     using Shared.DAL;
 
     public class TelemetryAccess : ITelemetryAccess

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Procedures.Scaffolding;
+using RevEng.Core.Functions;
 
 namespace RevEng.Core.Procedures
 {
@@ -21,6 +21,21 @@ namespace RevEng.Core.Procedures
             return services
                 .AddSingleton<IProcedureModelFactory, SqlServerStoredProcedureModelFactory>()
                 .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
+                .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
+        }
+
+        public static IServiceCollection AddSqlServerFunctionDesignTimeServices(
+            this IServiceCollection services,
+            IOperationReporter reporter = null)
+        {
+            if (reporter == null)
+            {
+                reporter = new OperationReporter(handler: null);
+            }
+
+            return services
+                .AddSingleton<IFunctionModelFactory, SqlServerFunctionModelFactory>()
+                .AddSingleton<IFunctionScaffolder, SqlServerFunctionScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }
 

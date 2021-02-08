@@ -1,6 +1,4 @@
-﻿using EFCorePowerTools.Shared.Models;
-using ReverseEngineer20;
-using ReverseEngineer20.ReverseEngineer;
+﻿using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +39,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseNodaTime { get; set; }
         public bool FilterSchemas { get; set; }
         public bool UseBoolPropertiesWithoutDefaultSql { get; set; }
+        public bool UseNullableReferences { get; set; }
+        public bool UseNoConstructor { get; set; }
+        public bool UseNoNavigations { get; set; }
+        public CodeGenerationMode CodeGenerationMode { get; set; }
+        public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
 
         public static ReverseEngineerOptions FromV1(ReverseEngineerOptionsV1 v1)

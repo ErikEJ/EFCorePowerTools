@@ -9,13 +9,17 @@ using System;
 
 namespace ConsoleApp.Models.Configurations
 {
-    public class PlaylistConfiguration : IEntityTypeConfiguration<Playlist>
+    public partial class PlaylistConfiguration : IEntityTypeConfiguration<Playlist>
     {
         public void Configure(EntityTypeBuilder<Playlist> entity)
         {
             entity.ToTable("Playlist");
 
             entity.Property(e => e.Name).HasMaxLength(120);
+
+            OnConfigurePartial(entity);
         }
+
+        partial void OnConfigurePartial(EntityTypeBuilder<Playlist> entity);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using NuGet.ProjectModel;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,11 @@ namespace EFCorePowerTools.Handlers
             return GetOutputInternalAsync(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
         }
 
+        public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName, string connectionString)
+        {
+            return GetOutputInternalAsync(outputPath, null, generationType, contextName, connectionString, null);
+        }
+
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
             return GetOutputInternalAsync(outputPath, null, generationType, contextName, null, null);
@@ -56,13 +62,15 @@ namespace EFCorePowerTools.Handlers
 
         private async Task<string> GetOutputInternalAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
-            var launchPath = await DropNetCoreFilesAsync(outputPath);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (_project.IsNetCore30OrHigher() && outputPath.EndsWith(".exe"))
-            {
-                outputPath = outputPath.Remove(outputPath.Length - 4, 4);
-                outputPath += ".dll";
-            }
+            var launchPath = await DropNetCoreFilesAsync();
+
+            var startupOutputPath = _project.DTE.GetStartupProjectOutputPath() ?? outputPath;
+
+            outputPath = FixExtension(outputPath);
+
+            startupOutputPath = FixExtension(startupOutputPath);
 
             var startInfo = new ProcessStartInfo
             {
@@ -75,34 +83,45 @@ namespace EFCorePowerTools.Handlers
                 StandardOutputEncoding = Encoding.UTF8,
             };
 
-            if (generationType == GenerationType.Ddl)
+            var outputs = " \"" + outputPath + "\" \"" + startupOutputPath + "\" ";
+
+            startInfo.Arguments = outputs;
+
+            switch (generationType)
             {
-                startInfo.Arguments = "ddl \"" + outputPath + "\"";
-            }
-            if (generationType == GenerationType.MigrationStatus)
-            {
-                startInfo.Arguments = "migrationstatus \"" + outputPath + "\"";
-            }
-            if (generationType == GenerationType.MigrationApply)
-            {
-                startInfo.Arguments = "migrate \"" + outputPath + "\" " + contextName;
-            }
-            if (generationType == GenerationType.MigrationAdd)
-            {
-                startInfo.Arguments = "addmigration \"" + outputPath + "\" " + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
-            }
-            if (generationType == GenerationType.MigrationScript)
-            {
-                startInfo.Arguments = "scriptmigration \"" + outputPath + "\" " + contextName;
+                case GenerationType.Dgml:
+                    break;
+                case GenerationType.Ddl:
+                    startInfo.Arguments = "ddl" + outputs;
+                    break;
+                case GenerationType.DebugView:
+                    break;
+                case GenerationType.MigrationStatus:
+                    startInfo.Arguments = "migrationstatus" + outputs;
+                    break;
+                case GenerationType.MigrationApply:
+                    startInfo.Arguments = "migrate" + outputs + contextName;
+                    break;
+                case GenerationType.MigrationAdd:
+                    startInfo.Arguments = "addmigration" + outputs + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
+                    break;
+                case GenerationType.MigrationScript:
+                    startInfo.Arguments = "scriptmigration" + outputs + contextName;
+                    break;
+                case GenerationType.DbContextList:
+                    startInfo.Arguments = "contextlist" + outputs;
+                    break;
+                case GenerationType.DbContextCompare:
+                    startInfo.Arguments = "schemacompare" + outputs + "\"" + migrationIdentifier + "\" " + contextName;
+                    break;
+                default:
+                    break;
             }
 
-            //TODO Consider improving by getting Startup project!
-            // See EF Core .psm1 file
-
-            var fileRoot =  Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
+            var fileRoot = Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
             var efptPath = Path.Combine(launchPath, "efpt.dll");
 
-            var depsFile =  fileRoot + ".deps.json";
+            var depsFile = fileRoot + ".deps.json";
             var runtimeConfig = fileRoot + ".runtimeconfig.json";
 
             var projectAssetsFile = await _project.GetCspPropertyAsync("ProjectAssetsFile");
@@ -110,7 +129,7 @@ namespace EFCorePowerTools.Handlers
 
             var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
 
-            if (projectAssetsFile != null && File.Exists(projectAssetsFile) )
+            if (projectAssetsFile != null && File.Exists(projectAssetsFile))
             {
                 var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile, NuGet.Common.NullLogger.Instance);
 
@@ -137,18 +156,7 @@ namespace EFCorePowerTools.Handlers
 
             startInfo.WorkingDirectory = Path.GetDirectoryName(outputPath);
             startInfo.FileName = "dotnet";
-            if (generationType == GenerationType.Ddl
-                || generationType == GenerationType.MigrationApply
-                || generationType == GenerationType.MigrationAdd
-                || generationType == GenerationType.MigrationStatus
-                || generationType == GenerationType.MigrationScript)
-            {
-                startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
-            }
-            else
-            {
-                startInfo.Arguments = dotNetParams + " \"" + outputPath + "\"";
-            }
+            startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
 
             Debug.WriteLine(startInfo.Arguments);
 
@@ -164,7 +172,18 @@ namespace EFCorePowerTools.Handlers
             return standardOutput.ToString();
         }
 
-        private async Task<string> DropNetCoreFilesAsync(string outputPath)
+        private static string FixExtension(string startupOutputPath)
+        {
+            if (startupOutputPath.EndsWith(".exe"))
+            {
+                startupOutputPath = startupOutputPath.Remove(startupOutputPath.Length - 4, 4);
+                startupOutputPath += ".dll";
+            }
+
+            return startupOutputPath;
+        }
+
+        private async Task<string> DropNetCoreFilesAsync()
         {
             var toDir = Path.Combine(Path.GetTempPath(), "efpt");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

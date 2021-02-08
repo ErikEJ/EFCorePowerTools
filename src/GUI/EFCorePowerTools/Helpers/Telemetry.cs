@@ -2,8 +2,9 @@
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.ApplicationInsights;
+using Microsoft.VisualStudio.Shell;
 
-namespace ErikEJ.SqlCeToolbox.Helpers
+namespace EFCorePowerTools.Helpers
 {
     /// <summary>
     /// Reports anonymous usage through ApplicationInsights
@@ -18,6 +19,8 @@ namespace ErikEJ.SqlCeToolbox.Helpers
         /// </summary>
         public static void Initialize(DTE2 dte, string version, string vsVersion, string telemetryKey)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_telemetry != null)
                 return;
 

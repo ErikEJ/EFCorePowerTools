@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace ReverseEngineer20.ReverseEngineer
+namespace RevEng.Shared
 {
     [DataContract]
     public class TableRenamer
@@ -14,5 +14,8 @@ namespace ReverseEngineer20.ReverseEngineer
 
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public List<ColumnNamer> Columns { get; set; }
+
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        public List<NavigationRenamer> Navigations { get; set; }
     }
 }

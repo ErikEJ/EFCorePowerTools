@@ -1,5 +1,5 @@
-﻿using ReverseEngineer20;
-using ReverseEngineer20.ReverseEngineer;
+﻿using RevEng.Core;
+using RevEng.Shared;
 using System;
 using System.IO;
 using System.Linq;
@@ -28,7 +28,9 @@ namespace efreveng
 
                         var buildResult = builder.GetTableModels();
 
-                        buildResult.AddRange(builder.GetProcedures(dbTypeInt));
+                        buildResult.AddRange(builder.GetProcedures());
+
+                        buildResult.AddRange(builder.GetFunctions());
 
                         Console.Out.WriteLine("Result:");
                         Console.Out.WriteLine(buildResult.Write());
@@ -52,9 +54,7 @@ namespace efreveng
                         return 1;
                     }
 
-                    var runner = new ReverseEngineerRunner();
-
-                    var result = runner.GenerateFiles(options);
+                    var result = ReverseEngineerRunner.GenerateFiles(options);
 
                     Console.Out.WriteLine("Result:");
                     Console.Out.WriteLine(result.Write());

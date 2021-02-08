@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Humanizer;
-using ReverseEngineer20.ReverseEngineer;
+using RevEng.Core;
 
 namespace UnitTests
 {

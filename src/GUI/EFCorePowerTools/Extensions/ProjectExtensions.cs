@@ -1,24 +1,26 @@
-﻿using EnvDTE;
+﻿using EFCorePowerTools.Helpers;
+using EnvDTE;
+using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.Properties;
+using Microsoft.VisualStudio.Shell;
+using NuGet.ProjectModel;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
 {
-    using ErikEJ.SqlCeToolbox.Helpers;
-    using Microsoft.VisualStudio.ProjectSystem;
-    using Microsoft.VisualStudio.ProjectSystem.Properties;
-    using NuGet.ProjectModel;
-    using ReverseEngineer20;
-    using System.Linq;
-
     internal static class ProjectExtensions
     {
         public const int SOk = 0;
 
         public static bool TryBuild(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var dte = project.DTE;
             var configuration = dte.Solution.SolutionBuild.ActiveConfiguration.Name;
 
@@ -29,6 +31,8 @@ namespace EFCorePowerTools.Extensions
 
         public static string GetOutPutAssemblyPath(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var assemblyName = project.Properties.Item("AssemblyName").Value.ToString();
 
             var assemblyNameExe = assemblyName + ".exe";
@@ -51,6 +55,8 @@ namespace EFCorePowerTools.Extensions
 
         public static List<string> GetConfigFiles(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var result = new List<string>();
 
             var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
@@ -76,6 +82,8 @@ namespace EFCorePowerTools.Extensions
 
         public static string GetRenamingPath(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
 
             if (string.IsNullOrEmpty(projectPath))
@@ -103,6 +111,8 @@ namespace EFCorePowerTools.Extensions
 
         public static Tuple<bool, string> ContainsEfCoreReference(this Project project, DatabaseType dbType)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
             if (dbType == DatabaseType.SQLCE40)
             {
@@ -171,31 +181,43 @@ namespace EFCorePowerTools.Extensions
 
         public static bool IsNetCore(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v");
         }
 
         public static bool IsNetCore30OrHigher(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return IsNetCore30(project) || IsNetCore31(project) || IsNet50(project);
         }
 
         private static bool IsNetCore30(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v3.0");
         }
 
         private static bool IsNetCore31(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v3.1");
         }
 
         private static bool IsNet50(this Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v5.0");
         }
 
         private static string GetOutputPath(Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var configManager = project.ConfigurationManager;
             if (configManager == null) return null;
 
@@ -203,13 +225,15 @@ namespace EFCorePowerTools.Extensions
             var outputPath = activeConfig.Properties.Item("OutputPath").Value.ToString();
             var fullName = project.FullName;
 
-            var absoluteOutputPath = ReverseEngineer20.PathHelper.GetAbsPath(outputPath, fullName);
+            var absoluteOutputPath = RevEng.Shared.PathHelper.GetAbsPath(outputPath, fullName);
 
             return absoluteOutputPath;
         }
 
         public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var list = new List<string>();
 
             foreach (var item in result)

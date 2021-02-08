@@ -1,13 +1,11 @@
-﻿using EFCorePowerTools.Shared.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Procedures.Scaffolding;
-using ReverseEngineer20;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,7 +22,6 @@ namespace RevEng.Core.Procedures
     {
         private const string parameterPrefix = "parameter";
 
-        private readonly IProcedureModelFactory procedureModelFactory;
         private readonly ICSharpHelper code;
 
         private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
@@ -47,17 +44,16 @@ namespace RevEng.Core.Procedures
 
         private IndentedStringBuilder _sb;
 
-        public SqlServerStoredProcedureScaffolder(IProcedureModelFactory procedureModelFactory, [NotNull] ICSharpHelper code)
+        public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
         {
-            this.procedureModelFactory = procedureModelFactory;
             this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(string connectionString, ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModelFactoryOptions procedureModelFactoryOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(ProcedureModel model, ModuleScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
         {
-            var result = new ScaffoldedModel();
+            if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var model = procedureModelFactory.Create(connectionString, procedureModelFactoryOptions);
+            var result = new ScaffoldedModel();
 
             errors = model.Errors;
 
@@ -65,7 +61,7 @@ namespace RevEng.Core.Procedures
             {
                 var name = GenerateIdentifierName(procedure, model) + "Result";
 
-                var classContent = WriteResultClass(procedure, procedureScaffolderOptions.ModelNamespace, name);
+                var classContent = WriteResultClass(procedure, procedureScaffolderOptions, name);
 
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
@@ -118,7 +114,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        private string WriteProcedureDbContext(ProcedureScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
+        private string WriteProcedureDbContext(ModuleScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -267,7 +263,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Procedure procedure, List<ProcedureParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             var returnType = $"Task<{identifier}Result[]>";
 
@@ -276,7 +272,7 @@ namespace RevEng.Core.Procedures
                 returnType = $"Task<int>";
             }
 
-            var line = $"public async {returnType} {identifier}({string.Join(", ", paramStrings)}";
+            var line = $"public async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
@@ -300,14 +296,14 @@ namespace RevEng.Core.Procedures
             return line;
         }
 
-        private void GenerateParameterVar(ProcedureParameter parameter)
+        private void GenerateParameterVar(ModuleParameter parameter)
         {
             _sb.Append($"var {parameterPrefix}{parameter.Name} = ");
             GenerateParameter(parameter);
             _sb.AppendLine(";");
         }
 
-        private void GenerateParameter(ProcedureParameter parameter)
+        private void GenerateParameter(ModuleParameter parameter)
         {
             _sb.AppendLine("new SqlParameter");
             _sb.AppendLine("{");
@@ -356,22 +352,30 @@ namespace RevEng.Core.Procedures
             _sb.Append("}");
         }
 
-        private string WriteResultClass(Procedure storedProcedure, string @namespace, string name)
+        private string WriteResultClass(Procedure storedProcedure, ModuleScaffolderOptions options, string name)
         {
+            var @namespace = options.ModelNamespace;
+
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Collections.Generic;");
             _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
-
             _sb.AppendLine();
+
+            if (options.NullableReferences)
+            {
+                _sb.AppendLine("#nullable enable");
+                _sb.AppendLine();
+            }
+            
             _sb.AppendLine($"namespace {@namespace}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                GenerateClass(storedProcedure, name);
+                GenerateClass(storedProcedure, name, options.NullableReferences);
             }
 
             _sb.AppendLine("}");
@@ -379,20 +383,20 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateClass(Procedure storedProcedure, string name)
+        private void GenerateClass(Procedure storedProcedure, string name, bool nullableReferences)
         {
             _sb.AppendLine($"public partial class {name}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                GenerateProperties(storedProcedure);
+                GenerateProperties(storedProcedure, nullableReferences);
             }
 
             _sb.AppendLine("}");
         }
 
-        private void GenerateProperties(Procedure storedProcedure)
+        private void GenerateProperties(Procedure storedProcedure, bool nullableReferences)
         {
             foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
             {
@@ -403,7 +407,23 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine(propertyNames.Item2);
                 }
 
-                _sb.AppendLine($"public {code.Reference(property.ClrType())} {propertyNames.Item1} {{ get; set; }}");
+                var propertyType = property.ClrType();
+                string nullableAnnotation = string.Empty;
+                string defaultAnnotation = string.Empty;
+
+                if (nullableReferences && !propertyType.IsValueType)
+                {
+                    if (property.Nullable)
+                    {
+                        nullableAnnotation = "?";
+                    }
+                    else
+                    {
+                        defaultAnnotation = $" = default!;";
+                    }
+                }
+
+                _sb.AppendLine($"public {code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
             }
         }
 

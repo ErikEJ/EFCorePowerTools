@@ -1,9 +1,8 @@
-﻿using RevEng.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace EFCorePowerTools.Shared.Models
+namespace RevEng.Shared
 {
     /// <summary>
     /// A class holding information about database objects.

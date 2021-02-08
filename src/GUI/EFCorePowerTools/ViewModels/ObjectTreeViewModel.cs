@@ -1,10 +1,8 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-    using EFCorePowerTools.Shared.Models;
     using GalaSoft.MvvmLight;
     using RevEng.Shared;
-    using ReverseEngineer20.ReverseEngineer;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -76,8 +74,25 @@
                 {
                     var objectIsRenamed = !obj.Name.Equals(obj.NewName);
                     var renamedColumns = obj.Columns.Where(c => !c.Name.Equals(c.NewName) && c.IsSelected.Value);
-                    if (objectIsRenamed || renamedColumns.Any())
+
+                    var originalReplacers = _allSchemas.Where(s => s.SchemaName == schema.Name)
+                        .SelectMany(a => a.Tables.Where(t => t.Columns != null && t.Name == obj.Name))
+                        .ToList();
+                    
+                    var ignoredReplacers = originalReplacers
+                        .SelectMany(o => o.Columns.Where(c => c.Name.Equals(c.NewName)))
+                        .ToList();
+
+                    var originalNavigationReplacers = originalReplacers
+                        .Where(o => o.Navigations != null)
+                        .SelectMany(o => o.Navigations).ToList();
+
+                    if (objectIsRenamed || renamedColumns.Any() || ignoredReplacers.Any() || originalNavigationReplacers.Any())
                     {
+                        var columnRenamers = renamedColumns
+                            .Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName })
+                            .Concat(ignoredReplacers);
+
                         if (replacingSchema.Tables == null)
                             replacingSchema.Tables = new List<TableRenamer>();
 
@@ -85,7 +100,8 @@
                         {
                             Name = obj.Name,
                             NewName = obj.NewName,
-                            Columns = renamedColumns.Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName }).ToList()
+                            Columns = columnRenamers.ToList(),
+                            Navigations = originalNavigationReplacers,
                         });
                     }
                 }
@@ -111,6 +127,11 @@
                 var existingSchema = result.FirstOrDefault(s => s.SchemaName == schema.SchemaName);
                 if (existingSchema == null)
                 {
+                    if (schema.Tables?.Count == 0)
+                    {
+                        schema.Tables = null;
+                    }
+
                     result.Add(schema);
                 }
             }
@@ -129,7 +150,14 @@
                 (ObjectType.ScalarFunction, "Functions")
             };
 
-            _allSchemas = customReplacers ?? new List<Schema>();
+            if (customReplacers != null)
+            {
+                _allSchemas = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Schema>>(Newtonsoft.Json.JsonConvert.SerializeObject(customReplacers));
+            }
+            else
+            {
+                _allSchemas = new List<Schema>();
+            }
 
             foreach (var objectType in objectTypes)
             {
@@ -143,7 +171,7 @@
 
                 foreach (var schema in objectsBySchema)
                 {
-                    var schemaReplacer = customReplacers?.FirstOrDefault(c => c.SchemaName.Equals(schema.Key, StringComparison.OrdinalIgnoreCase));
+                    var schemaReplacer = customReplacers?.FirstOrDefault(c => c.SchemaName == schema.Key);
                     var objectReplacers = schemaReplacer?.Tables;
 
                     var svm = _schemaInformationViewModelFactory();

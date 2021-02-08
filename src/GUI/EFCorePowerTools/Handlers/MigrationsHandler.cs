@@ -1,6 +1,5 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +7,8 @@ using System.IO;
 namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
+    using EFCorePowerTools.Helpers;
+    using Microsoft.VisualStudio.Shell;
 
     internal class MigrationsHandler
     {
@@ -20,6 +21,8 @@ namespace EFCorePowerTools.Handlers
 
         public async System.Threading.Tasks.Task ManageMigrationsAsync(string outputPath, Project project)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             try
             {
                 if (string.IsNullOrEmpty(outputPath))
@@ -44,13 +47,11 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var outputFolder = Path.GetDirectoryName(outputPath);
-
                 var result = await project.ContainsEfCoreDesignReferenceAsync();
 
                 if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError("EF Core 2.1 or later not found in project");
+                    EnvDteHelper.ShowError("EF Core 3.1 or later not found in project");
                     return;
                 }
 

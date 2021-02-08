@@ -4,8 +4,6 @@ using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
-using ErikEJ.SqlCeToolbox.Helpers;
-using ReverseEngineer20;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,9 +11,10 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ReverseEngineer20.ReverseEngineer;
 using Microsoft.VisualStudio.Data.Services;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
+using RevEng.Shared;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -30,8 +29,10 @@ namespace EFCorePowerTools.Handlers
             reverseEngineerHelper = new ReverseEngineerHelper();
         }
 
-        public async Task ReverseEngineerCodeFirstAsync(Project project)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             try
             {
                 var dteH = new EnvDteHelper();
@@ -63,7 +64,7 @@ namespace EFCorePowerTools.Handlers
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
 
-                var databaseList = EnvDteHelper.GetDataConnections(_package);
+                var databaseList = VsDataHelper.GetDataConnections(_package);
                 var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
 
@@ -75,7 +76,8 @@ namespace EFCorePowerTools.Handlers
                     {
                         ConnectionName = m.Value.Caption,
                         ConnectionString = m.Value.ConnectionString,
-                        DatabaseType = m.Value.DatabaseType
+                        DatabaseType = m.Value.DatabaseType,
+                        DataConnection = m.Value.DataConnection,                        
                     }));
                 }
 
@@ -85,6 +87,21 @@ namespace EFCorePowerTools.Handlers
                     {
                         FilePath = m
                     }));
+                }
+
+                if (options != null)
+                {
+                    if (options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
+                    {
+                        psd.PublishSchemas(options.Schemas);
+                    }
+
+                    psd.PublishCodeGenerationMode(options.CodeGenerationMode);
+
+                    if (!string.IsNullOrEmpty(options.UiHint))
+                    {
+                        psd.PublishUiHint(options.UiHint);
+                    }
                 }
 
                 var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
@@ -98,7 +115,7 @@ namespace EFCorePowerTools.Handlers
                 _package.Dte2.StatusBar.Text = "Getting ready to connect...";
 
                 // Reload the database list, in case the user has added a new database in the dialog
-                databaseList = EnvDteHelper.GetDataConnections(_package);
+                databaseList = VsDataHelper.GetDataConnections(_package);
 
                 DatabaseInfo dbInfo = null;
                 if (pickDataSourceResult.Payload.Connection != null)
@@ -137,10 +154,12 @@ namespace EFCorePowerTools.Handlers
                 }
                 
                 _package.Dte2.StatusBar.Text = "Loading database objects...";
-
+                object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
+                _package.Dte2.StatusBar.Animate(true, icon);
                 var predefinedTables = !string.IsNullOrEmpty(dacpacPath)
                                            ? await GetDacpacTablesAsync(dacpacPath, useEFCore5)
                                            : await GetTablesAsync(dbInfo, useEFCore5, schemas);
+                _package.Dte2.StatusBar.Animate(false, icon);
 
                 var preselectedTables = new List<SerializationTableModel>();
                 if (options != null)
@@ -166,7 +185,7 @@ namespace EFCorePowerTools.Handlers
 
                 _package.Dte2.StatusBar.Text = "Loading options...";
 
-                var classBasis = EnvDteHelper.GetDatabaseName(dbInfo.ConnectionString, dbInfo.DatabaseType);
+                var classBasis = VsDataHelper.GetDatabaseName(dbInfo.ConnectionString, dbInfo.DatabaseType);
                 var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
                 var packageResult = project.ContainsEfCoreReference(dbInfo.DatabaseType);
 
@@ -199,6 +218,9 @@ namespace EFCorePowerTools.Handlers
                     presets.MapSpatialTypes = options.UseSpatial;
                     presets.MapNodaTimeTypes = options.UseNodaTime;
                     presets.UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql;
+                    presets.UseNoConstructor = options.UseNoConstructor;
+                    presets.UseNoNavigations = options.UseNoNavigations;
+                    presets.UseNullableReferences = options.UseNullableReferences;
                 }
 
                 var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -232,12 +254,17 @@ namespace EFCorePowerTools.Handlers
                     IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString,
                     SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated,
                     UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql,
+                    UseNullableReferences = modelingOptionsResult.Payload.UseNullableReferences,
+                    UseNoConstructor = modelingOptionsResult.Payload.UseNoConstructor,
+                    UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations,
                     Dacpac = dacpacPath,
                     DefaultDacpacSchema = dacpacSchema,
                     Tables = pickTablesResult.Payload.Objects.ToList(),
                     CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList(),
                     FilterSchemas = filterSchemas,
                     Schemas = schemas?.ToList(),
+                    CodeGenerationMode = pickDataSourceResult.Payload.IncludeViews ? CodeGenerationMode.EFCore5 : CodeGenerationMode.EFCore3,
+                    UiHint = pickDataSourceResult.Payload.UiHint,
                 };
 
                 if (options.DatabaseType == DatabaseType.SQLServer
@@ -270,10 +297,10 @@ namespace EFCorePowerTools.Handlers
 
                 var startTime = DateTime.Now;
 
+                _package.Dte2.StatusBar.Animate(true, icon);
                 _package.Dte2.StatusBar.Text = "Generating code...";
-
                 var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, useEFCore5);
-
+                _package.Dte2.StatusBar.Animate(false, icon);
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
@@ -364,6 +391,8 @@ namespace EFCorePowerTools.Handlers
 
         private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!File.Exists(optionsPath + ".ignore"))
             {
                 File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
@@ -397,7 +426,7 @@ namespace EFCorePowerTools.Handlers
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
         {
             var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
-            return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 
         private async Task<List<TableModel>> GetTablesAsync(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
@@ -409,7 +438,7 @@ namespace EFCorePowerTools.Handlers
             }
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
-            return await Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
     }
 }
