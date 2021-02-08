@@ -48,6 +48,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.5.Edmx", "ErikEJ.EntityFrameworkCore.5.Edmx\ErikEJ.EntityFrameworkCore.5.Edmx.csproj", "{1CDE7157-E394-495D-B61E-2424C5FBE6DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikJ.EntityFrameworkCore.Edmx", "ErikJ.EntityFrameworkCore.Edmx\ErikJ.EntityFrameworkCore.Edmx.csproj", "{1954049E-DA77-4903-AF07-29D735DA8540}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.5.DgmlBuilder", "ErikEJ.EntityFrameworkCore.5.DgmlBuilder\ErikEJ.EntityFrameworkCore.5.DgmlBuilder.csproj", "{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}"
 EndProject
 Global
