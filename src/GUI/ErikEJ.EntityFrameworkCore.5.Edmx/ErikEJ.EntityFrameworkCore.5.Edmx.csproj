@@ -21,5 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="linq2edmx" Version="0.0.1-pre" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.1" />
   </ItemGroup>
 </Project>

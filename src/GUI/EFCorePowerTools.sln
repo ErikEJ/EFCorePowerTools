@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29123.89
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{562B5F7B-6229-4019-BFA9-CD7FD4773081}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.DgmlBuilder", "ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj", "{079B9426-9230-468E-8D02-2A0DE07C7237}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.DgmlBuilder", "ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj", "{079B9426-9230-468E-8D02-2A0DE07C7237}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCorePowerTools", "EFCorePowerTools\EFCorePowerTools.csproj", "{C670BE03-6397-4AC0-9914-AD1BB679778F}"
 EndProject
@@ -49,7 +49,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikJ.EntityFrameworkCore.Edmx", "ErikJ.EntityFrameworkCore.Edmx\ErikJ.EntityFrameworkCore.Edmx.csproj", "{1954049E-DA77-4903-AF07-29D735DA8540}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.5.DgmlBuilder", "ErikEJ.EntityFrameworkCore.5.DgmlBuilder\ErikEJ.EntityFrameworkCore.5.DgmlBuilder.csproj", "{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.5.DgmlBuilder", "ErikEJ.EntityFrameworkCore.5.DgmlBuilder\ErikEJ.EntityFrameworkCore.5.DgmlBuilder.csproj", "{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
