@@ -4,7 +4,6 @@ namespace EFCorePowerTools
     internal static class PkgCmdIDList
     {
         public const uint cmdidReverseEngineerCodeFirst = 0x001;
-        public const uint cmdidReverseEngineerDgml = 0x005;
         public const uint cmdidAbout = 0x006;
         public const uint cmdidMigrationStatus = 0x007;
         public const uint cmdidDgmlBuild = 0x0100;

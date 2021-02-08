@@ -95,7 +95,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add DbContext Model Diagram</ButtonText>
+          <ButtonText>Add DbContext Diagram</ButtonText>
         </Strings>
       </Button>
       
@@ -105,7 +105,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
-          <ButtonText>View DbContext Model DDL SQL</ButtonText>
+          <ButtonText>View DbContext DDL SQL</ButtonText>
         </Strings>
       </Button>
 
@@ -115,7 +115,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
-          <ButtonText>View DbContext Model as DebugView</ButtonText>
+          <ButtonText>View DbContext as DebugView</ButtonText>
         </Strings>
       </Button>
 
@@ -125,27 +125,17 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add AsDgml() extension method</ButtonText>
+          <ButtonText>Add AsDgml() extension</ButtonText>
         </Strings>
       </Button>
       
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerDgml" priority="0x0800" type="Button">
-        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
-        <Icon guid="guidImage1" id="bmpPic1" />
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <CommandName>cmdidReverseEngineerDgml</CommandName>
-          <ButtonText>View Database Schema as Graph</ButtonText>
-        </Strings>
-      </Button>
-
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDbCompare" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
         <Icon guid="guidImage9" id="bmpPic9" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
-          <ButtonText>Compare DbContext(s) to database (preview)</ButtonText>
+          <ButtonText>Compare DbContext to database</ButtonText>
         </Strings>
       </Button>
 
@@ -201,7 +191,6 @@
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
       <IDSymbol name="cmdidEdmProjectMenu" value="0x0003" />
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
-      <IDSymbol name="cmdidReverseEngineerDgml" value="0x0005" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
       <IDSymbol name="cmdidDbCompare" value="0x0008" />

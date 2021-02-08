@@ -41,7 +41,6 @@ namespace EFCorePowerTools
         private readonly ModelAnalyzerHandler _modelAnalyzerHandler;
         private readonly AboutHandler _aboutHandler;
         private readonly DgmlNugetHandler _dgmlNugetHandler;
-        private readonly ServerDgmlHandler _serverDgmlHandler;
         private readonly MigrationsHandler _migrationsHandler;
         private readonly CompareHandler _compareHandler;
         private readonly IServiceProvider _extensionServices;
@@ -53,7 +52,6 @@ namespace EFCorePowerTools
             _modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             _aboutHandler = new AboutHandler(this);
             _dgmlNugetHandler = new DgmlNugetHandler(this);
-            _serverDgmlHandler = new ServerDgmlHandler();
             _migrationsHandler = new MigrationsHandler(this);
             _compareHandler = new CompareHandler(this);
             _extensionServices = CreateServiceProvider();
@@ -85,12 +83,6 @@ namespace EFCorePowerTools
                 var menuItem3 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId3);
                 oleMenuCommandService.AddCommand(menuItem3);
-
-                var menuCommandId4 = new CommandID(GuidList.guidDbContextPackageCmdSet,
-                    (int)PkgCmdIDList.cmdidReverseEngineerDgml);
-                var menuItem4 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId4);
-                oleMenuCommandService.AddCommand(menuItem4);
 
                 var menuCommandId5 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
@@ -211,10 +203,6 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
                 await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
-            }
-            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDgml)
-            {
-                _serverDgmlHandler.GenerateServerDgmlFiles();
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
             {
