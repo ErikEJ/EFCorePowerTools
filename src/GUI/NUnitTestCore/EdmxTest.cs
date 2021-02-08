@@ -222,11 +222,6 @@ namespace NUnitTestCore
             // Assert
             Assert.AreEqual(15, dbModel.Tables.Count());
 
-            //foreach(var table in dbModel.Tables)
-            //{
-            //    TestContext.Out.WriteLine($@"Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == ""{table.Name}""));");
-            //}
-
             // Check pluralization or specific names
 
             Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "ErrorLogs"));
