@@ -1,0 +1,855 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+<Node Id="IModel" Label="NorthwindContext" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot" PropertyAccessMode="PropertyAccessMode.Default" ProductVersion="3.1.10" Annotations="Relational:DbFunctionScaffoldingTester.Models.NorthwindContextGetCustInfo(System.String,System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]): Microsoft.EntityFrameworkCore.Metadata.Internal.DbFunction
+Relational:DbFunctionScaffoldingTester.Models.NorthwindContextGetCustInfoNoParams(): Microsoft.EntityFrameworkCore.Metadata.Internal.DbFunction
+Relational:MaxIdentifierLength: 128
+SqlServer:ValueGenerationStrategy: IdentityColumn" Category="Model" Group="Expanded" />
+<Node Id = "AlphabeticalListOfProduct" Label="AlphabeticalListOfProduct" Name="AlphabeticalListOfProduct" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Alphabetical list of products
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "BoolNullableTest" Label="BoolNullableTest" Name="BoolNullableTest" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: BoolNullableTest" Category="EntityType" Group="Expanded" />
+<Node Id = "AlphabeticalListOfProduct.CategoryId" Label="CategoryId" Name="CategoryId" Category="Property Optional" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: CategoryID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.CategoryName" Label="CategoryName" Name="CategoryName" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.Discontinued" Label="Discontinued" Name="Discontinued" Category="Property Required" Type="bool" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerBoolTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.ProductId" Label="ProductId" Name="ProductId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ProductID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.QuantityPerUnit" Label="QuantityPerUnit" Name="QuantityPerUnit" Category="Property Optional" Type="string" MaxLength="20" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.ReorderLevel" Label="ReorderLevel" Name="ReorderLevel" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.SupplierId" Label="SupplierId" Name="SupplierId" Category="Property Optional" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: SupplierID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.UnitPrice" Label="UnitPrice" Name="UnitPrice" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.UnitsInStock" Label="UnitsInStock" Name="UnitsInStock" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "AlphabeticalListOfProduct.UnitsOnOrder" Label="UnitsOnOrder" Name="UnitsOnOrder" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Category" Label="Category" Name="Category" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:Comment: Table contains information for File Reference entites.
+Relational:TableName: Categories" Category="EntityType" Group="Expanded" />
+<Node Id = "BoolNullableTest.Id" Label="Id" Name="Id" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "BoolNullableTest.TestBool" Label="TestBool" Name="TestBool" Category="Property Required" Type="bool" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerBoolTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CategorySalesFor1997" Label="CategorySalesFor1997" Name="CategorySalesFor1997" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Category Sales for 1997
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "Category.CategoryId" Label="CategoryId" Name="CategoryId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: CategoryID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Category.Products" Label="Products (*)" Name="Products" Category="Navigation Collection" Type="ICollection&lt;Product&gt;"  Field="" Dependent="Product" Principal="" Inverse="Category" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Category.CategoryName" Label="CategoryName" Name="CategoryName" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Category.Description" Label="Description" Name="Description" Category="Property Optional" Type="string" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: ntext
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Category.Image" Label="Image" Name="Image" Category="Property Optional" Type="byte[]" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: Picture
+Relational:ColumnType: image
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerByteArrayTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CurrentProductList" Label="CurrentProductList" Name="CurrentProductList" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Current Product List
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "CategorySalesFor1997.CategoryName" Label="CategoryName" Name="CategoryName" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CategorySalesFor1997.CategorySales" Label="CategorySales" Name="CategorySales" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer" Label="Customer" Name="Customer" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Customers" Category="EntityType" Group="Expanded" />
+<Node Id = "CurrentProductList.ProductId" Label="ProductId" Name="ProductId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ProductID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "CurrentProductList.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CustomerAndSuppliersByCity" Label="CustomerAndSuppliersByCity" Name="CustomerAndSuppliersByCity" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Customer and Suppliers by City
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "Customer.CustomerId" Label="CustomerId" Name="CustomerId" Category="Property Primary" Type="string" MaxLength="5" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 5
+Relational:ColumnName: CustomerID
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.Orders" Label="Orders (*)" Name="Orders" Category="Navigation Collection" Type="ICollection&lt;Order&gt;"  Field="" Dependent="Order" Principal="" Inverse="Customer" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Customer.Address" Label="Address" Name="Address" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.ContactName" Label="ContactName" Name="ContactName" Category="Property Optional" Type="string" MaxLength="30" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.ContactTitle" Label="ContactTitle" Name="ContactTitle" Category="Property Optional" Type="string" MaxLength="30" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.Country" Label="Country" Name="Country" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.Fax" Label="Fax" Name="Fax" Category="Property Optional" Type="string" MaxLength="24" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 24
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.Phone" Label="Phone" Name="Phone" Category="Property Optional" Type="string" MaxLength="24" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 24
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.PostalCode" Label="PostalCode" Name="PostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Customer.Region" Label="Region" Name="Region" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Department" Label="Department" Name="Department" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Department" Category="EntityType" Group="Expanded" />
+<Node Id = "CustomerAndSuppliersByCity.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CustomerAndSuppliersByCity.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CustomerAndSuppliersByCity.ContactName" Label="ContactName" Name="ContactName" Category="Property Optional" Type="string" MaxLength="30" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "CustomerAndSuppliersByCity.Relationship" Label="Relationship" Name="Relationship" Category="Property Required" Type="string" MaxLength="9" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 9
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping
+Unicode: False" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="False" ValueGenerated="None" />
+<Node Id = "Employee" Label="Employee" Name="Employee" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Employees" Category="EntityType" Group="Expanded" />
+<Node Id = "Department.DepartmentId" Label="DepartmentId" Name="DepartmentId" Category="Property Primary" Type="Guid" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:DefaultValueSql: (newid())
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Department.ActiveFrom" Label="ActiveFrom" Name="ActiveFrom" Category="Property Required" Type="DateTime" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+Relational:DefaultValueSql: (getdate())
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Department.ActiveTo" Label="ActiveTo" Name="ActiveTo" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Department.ClusterKey" Label="ClusterKey" Name="ClusterKey" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Department.DepartmentCode" Label="DepartmentCode" Name="DepartmentCode" Category="Property Required" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Department.ExtendedName" Label="ExtendedName" Name="ExtendedName" Category="Property Required" Type="string" MaxLength="62" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 62
+Relational:ComputedColumnSql: (([DepartmentCode]+&apos;: &apos;)+[Name])
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAddOrUpdate" />
+<Node Id = "Department.ModifiedBy" Label="ModifiedBy" Name="ModifiedBy" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Department.Name" Label="Name" Name="Name" Category="Property Required" Type="string" MaxLength="50" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 50
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Department.SupervisorId" Label="SupervisorId" Name="SupervisorId" Category="Property Optional" Type="Nullable&lt;Guid&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.Storage.GuidTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Department.Timestamp" Label="Timestamp" Name="Timestamp" Category="Property Required" Type="byte[]" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerByteArrayTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="True" IsUnicode="True" ValueGenerated="ValueGenerated.OnAddOrUpdate" />
+<Node Id = "EmployeeTerritory" Label="EmployeeTerritory" Name="EmployeeTerritory" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: EmployeeTerritories" Category="EntityType" Group="Expanded" />
+<Node Id = "Employee.EmployeeId" Label="EmployeeId" Name="EmployeeId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: EmployeeID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Employee.EmployeeTerritories" Label="EmployeeTerritories (*)" Name="EmployeeTerritories" Category="Navigation Collection" Type="ICollection&lt;EmployeeTerritory&gt;"  Field="" Dependent="EmployeeTerritory" Principal="" Inverse="Employee" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Employee.InverseReportsToNavigation" Label="InverseReportsToNavigation (*)" Name="InverseReportsToNavigation" Category="Navigation Collection" Type="ICollection&lt;Employee&gt;"  Field="" Dependent="Employee" Principal="" Inverse="ReportsToNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Employee.Orders" Label="Orders (*)" Name="Orders" Category="Navigation Collection" Type="ICollection&lt;Order&gt;"  Field="" Dependent="Order" Principal="" Inverse="Employee" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Employee.ReportsToNavigation" Label="ReportsToNavigation (1)" Name="ReportsToNavigation" Category="Navigation Property" Type="Employee"  Field="" Dependent="" Principal="Employee" Inverse="InverseReportsToNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Employee.Address" Label="Address" Name="Address" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.BirthDate" Label="BirthDate" Name="BirthDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.Country" Label="Country" Name="Country" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.Extension" Label="Extension" Name="Extension" Category="Property Optional" Type="string" MaxLength="4" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 4
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.FirstName" Label="FirstName" Name="FirstName" Category="Property Required" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.HireDate" Label="HireDate" Name="HireDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.HomePhone" Label="HomePhone" Name="HomePhone" Category="Property Optional" Type="string" MaxLength="24" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 24
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.LastName" Label="LastName" Name="LastName" Category="Property Required" Type="string" MaxLength="20" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.Notes" Label="Notes" Name="Notes" Category="Property Optional" Type="string" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: ntext
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.Photo" Label="Photo" Name="Photo" Category="Property Optional" Type="byte[]" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: image
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerByteArrayTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.PhotoPath" Label="PhotoPath" Name="PhotoPath" Category="Property Optional" Type="string" MaxLength="255" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.PostalCode" Label="PostalCode" Name="PostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.Region" Label="Region" Name="Region" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.ReportsTo" Label="ReportsTo" Name="ReportsTo" Category="Property Foreign" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.Title" Label="Title" Name="Title" Category="Property Optional" Type="string" MaxLength="30" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Employee.TitleOfCourtesy" Label="TitleOfCourtesy" Name="TitleOfCourtesy" Category="Property Optional" Type="string" MaxLength="25" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 25
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice" Label="Invoice" Name="Invoice" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Invoices
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "EmployeeTerritory.EmployeeId" Label="EmployeeId" Name="EmployeeId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: EmployeeID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "EmployeeTerritory.Employee" Label="Employee (1)" Name="Employee" Category="Navigation Property" Type="Employee"  Field="" Dependent="" Principal="Employee" Inverse="EmployeeTerritories" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "EmployeeTerritory.Territory" Label="Territory (1)" Name="Territory" Category="Navigation Property" Type="Territory"  Field="" Dependent="" Principal="Territory" Inverse="EmployeeTerritories" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "EmployeeTerritory.TerritoryId" Label="TerritoryId" Name="TerritoryId" Category="Property Primary" Type="string" MaxLength="20" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+Relational:ColumnName: TerritoryID
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order" Label="Order" Name="Order" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Orders" Category="EntityType" Group="Expanded" />
+<Node Id = "Invoice.Address" Label="Address" Name="Address" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.Country" Label="Country" Name="Country" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.CustomerId" Label="CustomerId" Name="CustomerId" Category="Property Optional" Type="string" MaxLength="5" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 5
+Relational:ColumnName: CustomerID
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.CustomerName" Label="CustomerName" Name="CustomerName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.Discount" Label="Discount" Name="Discount" Category="Property Required" Type="float" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerFloatTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ExtendedPrice" Label="ExtendedPrice" Name="ExtendedPrice" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.Freight" Label="Freight" Name="Freight" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.OrderDate" Label="OrderDate" Name="OrderDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.PostalCode" Label="PostalCode" Name="PostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ProductId" Label="ProductId" Name="ProductId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ProductID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.Quantity" Label="Quantity" Name="Quantity" Category="Property Required" Type="short" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.Region" Label="Region" Name="Region" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.RequiredDate" Label="RequiredDate" Name="RequiredDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.Salesperson" Label="Salesperson" Name="Salesperson" Category="Property Required" Type="string" MaxLength="31" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 31
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipAddress" Label="ShipAddress" Name="ShipAddress" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipCity" Label="ShipCity" Name="ShipCity" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipCountry" Label="ShipCountry" Name="ShipCountry" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipName" Label="ShipName" Name="ShipName" Category="Property Optional" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipPostalCode" Label="ShipPostalCode" Name="ShipPostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipRegion" Label="ShipRegion" Name="ShipRegion" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShippedDate" Label="ShippedDate" Name="ShippedDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.ShipperName" Label="ShipperName" Name="ShipperName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Invoice.UnitPrice" Label="UnitPrice" Name="UnitPrice" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetail" Label="OrderDetail" Name="OrderDetail" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Order Details" Category="EntityType" Group="Expanded" />
+<Node Id = "Order.OrderId" Label="OrderId" Name="OrderId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Order.Customer" Label="Customer (1)" Name="Customer" Category="Navigation Property" Type="Customer"  Field="" Dependent="" Principal="Customer" Inverse="Orders" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Order.Employee" Label="Employee (1)" Name="Employee" Category="Navigation Property" Type="Employee"  Field="" Dependent="" Principal="Employee" Inverse="Orders" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Order.OrderDetails" Label="OrderDetails (*)" Name="OrderDetails" Category="Navigation Collection" Type="ICollection&lt;OrderDetail&gt;"  Field="" Dependent="OrderDetail" Principal="" Inverse="Order" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Order.ShipBy" Label="ShipBy (1)" Name="ShipBy" Category="Navigation Property" Type="Shipper"  Field="" Dependent="" Principal="Shipper" Inverse="Orders" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Order.CustomerId" Label="CustomerId" Name="CustomerId" Category="Property Foreign" Type="string" MaxLength="5" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 5
+Relational:ColumnName: CustomerID
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.EmployeeId" Label="EmployeeId" Name="EmployeeId" Category="Property Foreign" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: EmployeeID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.Freight" Label="Freight" Name="Freight" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+Relational:DefaultValueSql: ((0))
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Order.OrderDate" Label="OrderDate" Name="OrderDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.RequiredDate" Label="RequiredDate" Name="RequiredDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipAddress" Label="ShipAddress" Name="ShipAddress" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipCity" Label="ShipCity" Name="ShipCity" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipCountry" Label="ShipCountry" Name="ShipCountry" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipName" Label="ShipName" Name="ShipName" Category="Property Optional" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipPostalCode" Label="ShipPostalCode" Name="ShipPostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipRegion" Label="ShipRegion" Name="ShipRegion" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShipVia" Label="ShipVia" Name="ShipVia" Category="Property Foreign" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Order.ShippedDate" Label="ShippedDate" Name="ShippedDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended" Label="OrderDetailsExtended" Name="OrderDetailsExtended" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Order Details Extended
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "OrderDetail.OrderId" Label="OrderId" Name="OrderId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetail.Order" Label="Order (1)" Name="Order" Category="Navigation Property" Type="Order"  Field="" Dependent="" Principal="Order" Inverse="OrderDetails" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OrderDetail.Product" Label="Product (1)" Name="Product" Category="Navigation Property" Type="Product"  Field="" Dependent="" Principal="Product" Inverse="OrderDetails" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OrderDetail.ProductId" Label="ProductId" Name="ProductId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ProductID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetail.Discount" Label="Discount" Name="Discount" Category="Property Required" Type="float" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerFloatTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetail.Quantity" Label="Quantity" Name="Quantity" Category="Property Required" Type="short" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:DefaultValueSql: ((1))
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "OrderDetail.UnitPrice" Label="UnitPrice" Name="UnitPrice" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderSubtotal" Label="OrderSubtotal" Name="OrderSubtotal" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Order Subtotals
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "OrderDetailsExtended.Discount" Label="Discount" Name="Discount" Category="Property Required" Type="float" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerFloatTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended.ExtendedPrice" Label="ExtendedPrice" Name="ExtendedPrice" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended.ProductId" Label="ProductId" Name="ProductId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ProductID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended.Quantity" Label="Quantity" Name="Quantity" Category="Property Required" Type="short" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderDetailsExtended.UnitPrice" Label="UnitPrice" Name="UnitPrice" Category="Property Required" Type="decimal" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry" Label="OrdersQry" Name="OrdersQry" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Orders Qry
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "OrderSubtotal.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrderSubtotal.Subtotal" Label="Subtotal" Name="Subtotal" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Product" Label="Product" Name="Product" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Products" Category="EntityType" Group="Expanded" />
+<Node Id = "OrdersQry.Address" Label="Address" Name="Address" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.Country" Label="Country" Name="Country" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.CustomerId" Label="CustomerId" Name="CustomerId" Category="Property Optional" Type="string" MaxLength="5" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 5
+Relational:ColumnName: CustomerID
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.EmployeeId" Label="EmployeeId" Name="EmployeeId" Category="Property Optional" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: EmployeeID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.Freight" Label="Freight" Name="Freight" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.OrderDate" Label="OrderDate" Name="OrderDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.PostalCode" Label="PostalCode" Name="PostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.Region" Label="Region" Name="Region" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.RequiredDate" Label="RequiredDate" Name="RequiredDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipAddress" Label="ShipAddress" Name="ShipAddress" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipCity" Label="ShipCity" Name="ShipCity" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipCountry" Label="ShipCountry" Name="ShipCountry" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipName" Label="ShipName" Name="ShipName" Category="Property Optional" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipPostalCode" Label="ShipPostalCode" Name="ShipPostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipRegion" Label="ShipRegion" Name="ShipRegion" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShipVia" Label="ShipVia" Name="ShipVia" Category="Property Optional" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OrdersQry.ShippedDate" Label="ShippedDate" Name="ShippedDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductSalesFor1997" Label="ProductSalesFor1997" Name="ProductSalesFor1997" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Product Sales for 1997
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "Product.ProductId" Label="ProductId" Name="ProductId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ProductID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Product.Category" Label="Category (1)" Name="Category" Category="Navigation Property" Type="Category"  Field="" Dependent="" Principal="Category" Inverse="Products" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Product.OrderDetails" Label="OrderDetails (*)" Name="OrderDetails" Category="Navigation Collection" Type="ICollection&lt;OrderDetail&gt;"  Field="" Dependent="OrderDetail" Principal="" Inverse="Product" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Product.Supplier" Label="Supplier (1)" Name="Supplier" Category="Navigation Property" Type="Supplier"  Field="" Dependent="" Principal="Supplier" Inverse="Products" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Product.CategoryId" Label="CategoryId" Name="CategoryId" Category="Property Foreign" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: CategoryID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Product.Discontinued" Label="Discontinued" Name="Discontinued" Category="Property Required" Type="bool" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerBoolTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Product.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Product.QuantityPerUnit" Label="QuantityPerUnit" Name="QuantityPerUnit" Category="Property Optional" Type="string" MaxLength="20" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Product.ReorderLevel" Label="ReorderLevel" Name="ReorderLevel" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:DefaultValueSql: ((0))
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Product.SupplierId" Label="SupplierId" Name="SupplierId" Category="Property Foreign" Type="Nullable&lt;int&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: SupplierID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Product.UnitPrice" Label="UnitPrice" Name="UnitPrice" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+Relational:DefaultValueSql: ((0))
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Product.UnitsInStock" Label="UnitsInStock" Name="UnitsInStock" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:DefaultValueSql: ((0))
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Product.UnitsOnOrder" Label="UnitsOnOrder" Name="UnitsOnOrder" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:DefaultValueSql: ((0))
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "ProductsAboveAveragePrice" Label="ProductsAboveAveragePrice" Name="ProductsAboveAveragePrice" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Products Above Average Price
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "ProductSalesFor1997.CategoryName" Label="CategoryName" Name="CategoryName" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductSalesFor1997.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductSalesFor1997.ProductSales" Label="ProductSales" Name="ProductSales" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductsByCategory" Label="ProductsByCategory" Name="ProductsByCategory" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Products by Category
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "ProductsAboveAveragePrice.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductsAboveAveragePrice.UnitPrice" Label="UnitPrice" Name="UnitPrice" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "QuarterlyOrder" Label="QuarterlyOrder" Name="QuarterlyOrder" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Quarterly Orders
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "ProductsByCategory.CategoryName" Label="CategoryName" Name="CategoryName" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductsByCategory.Discontinued" Label="Discontinued" Name="Discontinued" Category="Property Required" Type="bool" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerBoolTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductsByCategory.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductsByCategory.QuantityPerUnit" Label="QuantityPerUnit" Name="QuantityPerUnit" Category="Property Optional" Type="string" MaxLength="20" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "ProductsByCategory.UnitsInStock" Label="UnitsInStock" Name="UnitsInStock" Category="Property Optional" Type="Nullable&lt;short&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerShortTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Region" Label="Region" Name="Region" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Region" Category="EntityType" Group="Expanded" />
+<Node Id = "QuarterlyOrder.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "QuarterlyOrder.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Optional" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "QuarterlyOrder.Country" Label="Country" Name="Country" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "QuarterlyOrder.CustomerId" Label="CustomerId" Name="CustomerId" Category="Property Optional" Type="string" MaxLength="5" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 5
+Relational:ColumnName: CustomerID
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "RegionShipper" Label="RegionShipper" Name="RegionShipper" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: RegionShippers" Category="EntityType" Group="Expanded" />
+<Node Id = "Region.RegionId" Label="RegionId" Name="RegionId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: RegionID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Region.RegionShippers" Label="RegionShippers (*)" Name="RegionShippers" Category="Navigation Collection" Type="ICollection&lt;RegionShipper&gt;"  Field="" Dependent="RegionShipper" Principal="" Inverse="Region" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Region.Territories" Label="Territories (*)" Name="Territories" Category="Navigation Collection" Type="ICollection&lt;Territory&gt;"  Field="" Dependent="Territory" Principal="" Inverse="Region" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Region.RegionDescription" Label="RegionDescription" Name="RegionDescription" Category="Property Required" Type="string" MaxLength="50" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 50
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesByCategory" Label="SalesByCategory" Name="SalesByCategory" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Sales by Category
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "RegionShipper.RegionId" Label="RegionId" Name="RegionId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "RegionShipper.Region" Label="Region (1)" Name="Region" Category="Navigation Property" Type="Region"  Field="" Dependent="" Principal="Region" Inverse="RegionShippers" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "RegionShipper.Shipper" Label="Shipper (1)" Name="Shipper" Category="Navigation Property" Type="Shipper"  Field="" Dependent="" Principal="Shipper" Inverse="RegionShippers" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "RegionShipper.ShipperId" Label="ShipperId" Name="ShipperId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesTotalsByAmount" Label="SalesTotalsByAmount" Name="SalesTotalsByAmount" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Sales Totals by Amount
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "SalesByCategory.CategoryId" Label="CategoryId" Name="CategoryId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: CategoryID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesByCategory.CategoryName" Label="CategoryName" Name="CategoryName" Category="Property Required" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesByCategory.ProductName" Label="ProductName" Name="ProductName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesByCategory.ProductSales" Label="ProductSales" Name="ProductSales" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Shipper" Label="Shipper" Name="Shipper" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Shippers" Category="EntityType" Group="Expanded" />
+<Node Id = "SalesTotalsByAmount.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesTotalsByAmount.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesTotalsByAmount.SaleAmount" Label="SaleAmount" Name="SaleAmount" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SalesTotalsByAmount.ShippedDate" Label="ShippedDate" Name="ShippedDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SummaryOfSalesByQuarter" Label="SummaryOfSalesByQuarter" Name="SummaryOfSalesByQuarter" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Summary of Sales by Quarter
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "Shipper.ShipperId" Label="ShipperId" Name="ShipperId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: ShipperID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Shipper.Orders" Label="Orders (*)" Name="Orders" Category="Navigation Collection" Type="ICollection&lt;Order&gt;"  Field="" Dependent="Order" Principal="" Inverse="ShipBy" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Shipper.RegionShippers" Label="RegionShippers (*)" Name="RegionShippers" Category="Navigation Collection" Type="ICollection&lt;RegionShipper&gt;"  Field="" Dependent="RegionShipper" Principal="" Inverse="Shipper" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Shipper.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Shipper.Phone" Label="Phone" Name="Phone" Category="Property Optional" Type="string" MaxLength="24" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 24
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SummaryOfSalesByYear" Label="SummaryOfSalesByYear" Name="SummaryOfSalesByYear" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Summary of Sales by Year
+Relational:ViewDefinition:" Category="EntityType" Group="Expanded" />
+<Node Id = "SummaryOfSalesByQuarter.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SummaryOfSalesByQuarter.ShippedDate" Label="ShippedDate" Name="ShippedDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SummaryOfSalesByQuarter.Subtotal" Label="Subtotal" Name="Subtotal" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier" Label="Supplier" Name="Supplier" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Suppliers" Category="EntityType" Group="Expanded" />
+<Node Id = "SummaryOfSalesByYear.OrderId" Label="OrderId" Name="OrderId" Category="Property Required" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: OrderID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SummaryOfSalesByYear.ShippedDate" Label="ShippedDate" Name="ShippedDate" Category="Property Optional" Type="Nullable&lt;DateTime&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: datetime
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDateTimeTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "SummaryOfSalesByYear.Subtotal" Label="Subtotal" Name="Subtotal" Category="Property Optional" Type="Nullable&lt;decimal&gt;" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: money
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerDecimalTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Territory" Label="Territory" Name="Territory" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="ConstructorBinding: Microsoft.EntityFrameworkCore.Metadata.ConstructorBinding
+Relational:TableName: Territories" Category="EntityType" Group="Expanded" />
+<Node Id = "Supplier.SupplierId" Label="SupplierId" Name="SupplierId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: SupplierID
+SqlServer:ValueGenerationStrategy: IdentityColumn
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Supplier.Products" Label="Products (*)" Name="Products" Category="Navigation Collection" Type="ICollection&lt;Product&gt;"  Field="" Dependent="Product" Principal="" Inverse="Supplier" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Supplier.Address" Label="Address" Name="Address" Category="Property Optional" Type="string" MaxLength="60" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 60
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.City" Label="City" Name="City" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.CompanyName" Label="CompanyName" Name="CompanyName" Category="Property Required" Type="string" MaxLength="40" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 40
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.ContactName" Label="ContactName" Name="ContactName" Category="Property Optional" Type="string" MaxLength="30" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.ContactTitle" Label="ContactTitle" Name="ContactTitle" Category="Property Optional" Type="string" MaxLength="30" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 30
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.Country" Label="Country" Name="Country" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.Fax" Label="Fax" Name="Fax" Category="Property Optional" Type="string" MaxLength="24" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 24
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.HomePage" Label="HomePage" Name="HomePage" Category="Property Optional" Type="string" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnType: ntext
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.Phone" Label="Phone" Name="Phone" Category="Property Optional" Type="string" MaxLength="24" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 24
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.PostalCode" Label="PostalCode" Name="PostalCode" Category="Property Optional" Type="string" MaxLength="10" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 10
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Supplier.Region" Label="Region" Name="Region" Category="Property Optional" Type="string" MaxLength="15" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 15
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Territory" Label="Territory" Name="Territory" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="" Category="EntityType" Group="Expanded" />
+<Node Id = "Territory.TerritoryId" Label="TerritoryId" Name="TerritoryId" Category="Property Primary" Type="string" MaxLength="20" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 20
+Relational:ColumnName: TerritoryID
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Territory.EmployeeTerritories" Label="EmployeeTerritories (*)" Name="EmployeeTerritories" Category="Navigation Collection" Type="ICollection&lt;EmployeeTerritory&gt;"  Field="" Dependent="EmployeeTerritory" Principal="" Inverse="Territory" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Territory.Region" Label="Region (1)" Name="Region" Category="Navigation Property" Type="Region"  Field="" Dependent="" Principal="Region" Inverse="Territories" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Territory.RegionId" Label="RegionId" Name="RegionId" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: RegionID
+TypeMapping: Microsoft.EntityFrameworkCore.Storage.IntTypeMapping" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Territory.TerritoryDescription" Label="TerritoryDescription" Name="TerritoryDescription" Category="Property Required" Type="string" MaxLength="50" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 50
+Relational:IsFixedLength: True
+TypeMapping: Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerStringTypeMapping" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+  </Nodes>
+  <Links>
+<Link Source = "IModel" Target="AlphabeticalListOfProduct" Category="Contains" />
+<Link Source = "IModel" Target="BoolNullableTest" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.CategoryId" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.CategoryName" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.Discontinued" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.ProductId" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.ProductName" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.QuantityPerUnit" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.ReorderLevel" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.SupplierId" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.UnitPrice" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.UnitsInStock" Category="Contains" />
+<Link Source = "AlphabeticalListOfProduct" Target="AlphabeticalListOfProduct.UnitsOnOrder" Category="Contains" />
+<Link Source = "IModel" Target="Category" Category="Contains" />
+<Link Source = "BoolNullableTest" Target="BoolNullableTest.Id" Category="Contains" />
+<Link Source = "BoolNullableTest" Target="BoolNullableTest.TestBool" Category="Contains" />
+<Link Source = "IModel" Target="CategorySalesFor1997" Category="Contains" />
+<Link Source = "Category" Target="Category.Products" Category="Contains" />
+<Link Source = "Category" Target="Category.CategoryId" Category="Contains" />
+<Link Source = "Category" Target="Category.CategoryName" Category="Contains" />
+<Link Source = "Category" Target="Category.Description" Category="Contains" />
+<Link Source = "Category" Target="Category.Image" Category="Contains" />
+<Link Source = "IModel" Target="CurrentProductList" Category="Contains" />
+<Link Source = "CategorySalesFor1997" Target="CategorySalesFor1997.CategoryName" Category="Contains" />
+<Link Source = "CategorySalesFor1997" Target="CategorySalesFor1997.CategorySales" Category="Contains" />
+<Link Source = "IModel" Target="Customer" Category="Contains" />
+<Link Source = "CurrentProductList" Target="CurrentProductList.ProductId" Category="Contains" />
+<Link Source = "CurrentProductList" Target="CurrentProductList.ProductName" Category="Contains" />
+<Link Source = "IModel" Target="CustomerAndSuppliersByCity" Category="Contains" />
+<Link Source = "Customer" Target="Customer.Orders" Category="Contains" />
+<Link Source = "Customer" Target="Customer.CustomerId" Category="Contains" />
+<Link Source = "Customer" Target="Customer.Address" Category="Contains" />
+<Link Source = "Customer" Target="Customer.City" Category="Contains" />
+<Link Source = "Customer" Target="Customer.CompanyName" Category="Contains" />
+<Link Source = "Customer" Target="Customer.ContactName" Category="Contains" />
+<Link Source = "Customer" Target="Customer.ContactTitle" Category="Contains" />
+<Link Source = "Customer" Target="Customer.Country" Category="Contains" />
+<Link Source = "Customer" Target="Customer.Fax" Category="Contains" />
+<Link Source = "Customer" Target="Customer.Phone" Category="Contains" />
+<Link Source = "Customer" Target="Customer.PostalCode" Category="Contains" />
+<Link Source = "Customer" Target="Customer.Region" Category="Contains" />
+<Link Source = "IModel" Target="Department" Category="Contains" />
+<Link Source = "CustomerAndSuppliersByCity" Target="CustomerAndSuppliersByCity.City" Category="Contains" />
+<Link Source = "CustomerAndSuppliersByCity" Target="CustomerAndSuppliersByCity.CompanyName" Category="Contains" />
+<Link Source = "CustomerAndSuppliersByCity" Target="CustomerAndSuppliersByCity.ContactName" Category="Contains" />
+<Link Source = "CustomerAndSuppliersByCity" Target="CustomerAndSuppliersByCity.Relationship" Category="Contains" />
+<Link Source = "IModel" Target="Employee" Category="Contains" />
+<Link Source = "Department" Target="Department.DepartmentId" Category="Contains" />
+<Link Source = "Department" Target="Department.ActiveFrom" Category="Contains" />
+<Link Source = "Department" Target="Department.ActiveTo" Category="Contains" />
+<Link Source = "Department" Target="Department.ClusterKey" Category="Contains" />
+<Link Source = "Department" Target="Department.DepartmentCode" Category="Contains" />
+<Link Source = "Department" Target="Department.ExtendedName" Category="Contains" />
+<Link Source = "Department" Target="Department.ModifiedBy" Category="Contains" />
+<Link Source = "Department" Target="Department.Name" Category="Contains" />
+<Link Source = "Department" Target="Department.SupervisorId" Category="Contains" />
+<Link Source = "Department" Target="Department.Timestamp" Category="Contains" />
+<Link Source = "IModel" Target="EmployeeTerritory" Category="Contains" />
+<Link Source = "Employee" Target="Employee.EmployeeTerritories" Category="Contains" />
+<Link Source = "Employee" Target="Employee.InverseReportsToNavigation" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Orders" Category="Contains" />
+<Link Source = "Employee" Target="Employee.ReportsToNavigation" Category="Contains" />
+<Link Source = "Employee" Target="Employee.EmployeeId" Category="Contains" />
+<Link Source="Employee" Target="Employee" From="Employee.ReportsTo" To="Employee.EmployeeId" Name="Employee -> Employee" Annotations="Relational:Name: FK_Employees_Employees" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Employee" Target="Employee.Address" Category="Contains" />
+<Link Source = "Employee" Target="Employee.BirthDate" Category="Contains" />
+<Link Source = "Employee" Target="Employee.City" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Country" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Extension" Category="Contains" />
+<Link Source = "Employee" Target="Employee.FirstName" Category="Contains" />
+<Link Source = "Employee" Target="Employee.HireDate" Category="Contains" />
+<Link Source = "Employee" Target="Employee.HomePhone" Category="Contains" />
+<Link Source = "Employee" Target="Employee.LastName" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Notes" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Photo" Category="Contains" />
+<Link Source = "Employee" Target="Employee.PhotoPath" Category="Contains" />
+<Link Source = "Employee" Target="Employee.PostalCode" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Region" Category="Contains" />
+<Link Source = "Employee" Target="Employee.ReportsTo" Category="Contains" />
+<Link Source = "Employee" Target="Employee.Title" Category="Contains" />
+<Link Source = "Employee" Target="Employee.TitleOfCourtesy" Category="Contains" />
+<Link Source = "IModel" Target="Invoice" Category="Contains" />
+<Link Source = "EmployeeTerritory" Target="EmployeeTerritory.Employee" Category="Contains" />
+<Link Source = "EmployeeTerritory" Target="EmployeeTerritory.Territory" Category="Contains" />
+<Link Source = "EmployeeTerritory" Target="EmployeeTerritory.EmployeeId" Category="Contains" />
+<Link Source="EmployeeTerritory" Target="Employee" From="EmployeeTerritory.EmployeeId" To="Employee.EmployeeId" Name="EmployeeTerritory -> Employee" Annotations="Relational:Name: FK_EmployeeTerritories_Employees" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="EmployeeTerritory" Target="Territory" From="EmployeeTerritory.TerritoryId" To="Territory.TerritoryId" Name="EmployeeTerritory -> Territory" Annotations="Relational:Name: FK_EmployeeTerritories_Territories" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "EmployeeTerritory" Target="EmployeeTerritory.TerritoryId" Category="Contains" />
+<Link Source = "IModel" Target="Order" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Address" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.City" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Country" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.CustomerId" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.CustomerName" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Discount" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ExtendedPrice" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Freight" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.OrderDate" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.OrderId" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.PostalCode" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ProductId" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ProductName" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Quantity" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Region" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.RequiredDate" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.Salesperson" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipAddress" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipCity" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipCountry" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipName" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipPostalCode" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipRegion" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShippedDate" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.ShipperName" Category="Contains" />
+<Link Source = "Invoice" Target="Invoice.UnitPrice" Category="Contains" />
+<Link Source = "IModel" Target="OrderDetail" Category="Contains" />
+<Link Source = "Order" Target="Order.Customer" Category="Contains" />
+<Link Source = "Order" Target="Order.Employee" Category="Contains" />
+<Link Source = "Order" Target="Order.OrderDetails" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipBy" Category="Contains" />
+<Link Source = "Order" Target="Order.OrderId" Category="Contains" />
+<Link Source="Order" Target="Customer" From="Order.CustomerId" To="Customer.CustomerId" Name="Order -> Customer" Annotations="Relational:Name: FK_Orders_Customers" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Order" Target="Employee" From="Order.EmployeeId" To="Employee.EmployeeId" Name="Order -> Employee" Annotations="Relational:Name: FK_Orders_Employees" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Order" Target="Shipper" From="Order.ShipVia" To="Shipper.ShipperId" Name="Order -> Shipper" Annotations="Relational:Name: FK_Orders_Shippers" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Order" Target="Order.CustomerId" Category="Contains" />
+<Link Source = "Order" Target="Order.EmployeeId" Category="Contains" />
+<Link Source = "Order" Target="Order.Freight" Category="Contains" />
+<Link Source = "Order" Target="Order.OrderDate" Category="Contains" />
+<Link Source = "Order" Target="Order.RequiredDate" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipAddress" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipCity" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipCountry" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipName" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipPostalCode" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipRegion" Category="Contains" />
+<Link Source = "Order" Target="Order.ShipVia" Category="Contains" />
+<Link Source = "Order" Target="Order.ShippedDate" Category="Contains" />
+<Link Source = "IModel" Target="OrderDetailsExtended" Category="Contains" />
+<Link Source = "OrderDetail" Target="OrderDetail.Order" Category="Contains" />
+<Link Source = "OrderDetail" Target="OrderDetail.Product" Category="Contains" />
+<Link Source = "OrderDetail" Target="OrderDetail.OrderId" Category="Contains" />
+<Link Source="OrderDetail" Target="Order" From="OrderDetail.OrderId" To="Order.OrderId" Name="OrderDetail -> Order" Annotations="Relational:Name: FK_Order_Details_Orders" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="OrderDetail" Target="Product" From="OrderDetail.ProductId" To="Product.ProductId" Name="OrderDetail -> Product" Annotations="Relational:Name: FK_Order_Details_Products" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "OrderDetail" Target="OrderDetail.ProductId" Category="Contains" />
+<Link Source = "OrderDetail" Target="OrderDetail.Discount" Category="Contains" />
+<Link Source = "OrderDetail" Target="OrderDetail.Quantity" Category="Contains" />
+<Link Source = "OrderDetail" Target="OrderDetail.UnitPrice" Category="Contains" />
+<Link Source = "IModel" Target="OrderSubtotal" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.Discount" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.ExtendedPrice" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.OrderId" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.ProductId" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.ProductName" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.Quantity" Category="Contains" />
+<Link Source = "OrderDetailsExtended" Target="OrderDetailsExtended.UnitPrice" Category="Contains" />
+<Link Source = "IModel" Target="OrdersQry" Category="Contains" />
+<Link Source = "OrderSubtotal" Target="OrderSubtotal.OrderId" Category="Contains" />
+<Link Source = "OrderSubtotal" Target="OrderSubtotal.Subtotal" Category="Contains" />
+<Link Source = "IModel" Target="Product" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.Address" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.City" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.CompanyName" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.Country" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.CustomerId" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.EmployeeId" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.Freight" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.OrderDate" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.OrderId" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.PostalCode" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.Region" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.RequiredDate" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipAddress" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipCity" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipCountry" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipName" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipPostalCode" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipRegion" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShipVia" Category="Contains" />
+<Link Source = "OrdersQry" Target="OrdersQry.ShippedDate" Category="Contains" />
+<Link Source = "IModel" Target="ProductSalesFor1997" Category="Contains" />
+<Link Source = "Product" Target="Product.Category" Category="Contains" />
+<Link Source = "Product" Target="Product.OrderDetails" Category="Contains" />
+<Link Source = "Product" Target="Product.Supplier" Category="Contains" />
+<Link Source = "Product" Target="Product.ProductId" Category="Contains" />
+<Link Source="Product" Target="Category" From="Product.CategoryId" To="Category.CategoryId" Name="Product -> Category" Annotations="Relational:Name: FK_Products_Categories" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Product" Target="Supplier" From="Product.SupplierId" To="Supplier.SupplierId" Name="Product -> Supplier" Annotations="Relational:Name: FK_Products_Suppliers" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Product" Target="Product.CategoryId" Category="Contains" />
+<Link Source = "Product" Target="Product.Discontinued" Category="Contains" />
+<Link Source = "Product" Target="Product.ProductName" Category="Contains" />
+<Link Source = "Product" Target="Product.QuantityPerUnit" Category="Contains" />
+<Link Source = "Product" Target="Product.ReorderLevel" Category="Contains" />
+<Link Source = "Product" Target="Product.SupplierId" Category="Contains" />
+<Link Source = "Product" Target="Product.UnitPrice" Category="Contains" />
+<Link Source = "Product" Target="Product.UnitsInStock" Category="Contains" />
+<Link Source = "Product" Target="Product.UnitsOnOrder" Category="Contains" />
+<Link Source = "IModel" Target="ProductsAboveAveragePrice" Category="Contains" />
+<Link Source = "ProductSalesFor1997" Target="ProductSalesFor1997.CategoryName" Category="Contains" />
+<Link Source = "ProductSalesFor1997" Target="ProductSalesFor1997.ProductName" Category="Contains" />
+<Link Source = "ProductSalesFor1997" Target="ProductSalesFor1997.ProductSales" Category="Contains" />
+<Link Source = "IModel" Target="ProductsByCategory" Category="Contains" />
+<Link Source = "ProductsAboveAveragePrice" Target="ProductsAboveAveragePrice.ProductName" Category="Contains" />
+<Link Source = "ProductsAboveAveragePrice" Target="ProductsAboveAveragePrice.UnitPrice" Category="Contains" />
+<Link Source = "IModel" Target="QuarterlyOrder" Category="Contains" />
+<Link Source = "ProductsByCategory" Target="ProductsByCategory.CategoryName" Category="Contains" />
+<Link Source = "ProductsByCategory" Target="ProductsByCategory.Discontinued" Category="Contains" />
+<Link Source = "ProductsByCategory" Target="ProductsByCategory.ProductName" Category="Contains" />
+<Link Source = "ProductsByCategory" Target="ProductsByCategory.QuantityPerUnit" Category="Contains" />
+<Link Source = "ProductsByCategory" Target="ProductsByCategory.UnitsInStock" Category="Contains" />
+<Link Source = "IModel" Target="Region" Category="Contains" />
+<Link Source = "QuarterlyOrder" Target="QuarterlyOrder.City" Category="Contains" />
+<Link Source = "QuarterlyOrder" Target="QuarterlyOrder.CompanyName" Category="Contains" />
+<Link Source = "QuarterlyOrder" Target="QuarterlyOrder.Country" Category="Contains" />
+<Link Source = "QuarterlyOrder" Target="QuarterlyOrder.CustomerId" Category="Contains" />
+<Link Source = "IModel" Target="RegionShipper" Category="Contains" />
+<Link Source = "Region" Target="Region.RegionShippers" Category="Contains" />
+<Link Source = "Region" Target="Region.Territories" Category="Contains" />
+<Link Source = "Region" Target="Region.RegionId" Category="Contains" />
+<Link Source = "Region" Target="Region.RegionDescription" Category="Contains" />
+<Link Source = "IModel" Target="SalesByCategory" Category="Contains" />
+<Link Source = "RegionShipper" Target="RegionShipper.Region" Category="Contains" />
+<Link Source = "RegionShipper" Target="RegionShipper.Shipper" Category="Contains" />
+<Link Source = "RegionShipper" Target="RegionShipper.RegionId" Category="Contains" />
+<Link Source="RegionShipper" Target="Region" From="RegionShipper.RegionId" To="Region.RegionId" Name="RegionShipper -> Region" Annotations="Relational:Name: FK_Shipper_Region" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="RegionShipper" Target="Shipper" From="RegionShipper.ShipperId" To="Shipper.ShipperId" Name="RegionShipper -> Shipper" Annotations="Relational:Name: FK_Region_Shipper" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "RegionShipper" Target="RegionShipper.ShipperId" Category="Contains" />
+<Link Source = "IModel" Target="SalesTotalsByAmount" Category="Contains" />
+<Link Source = "SalesByCategory" Target="SalesByCategory.CategoryId" Category="Contains" />
+<Link Source = "SalesByCategory" Target="SalesByCategory.CategoryName" Category="Contains" />
+<Link Source = "SalesByCategory" Target="SalesByCategory.ProductName" Category="Contains" />
+<Link Source = "SalesByCategory" Target="SalesByCategory.ProductSales" Category="Contains" />
+<Link Source = "IModel" Target="Shipper" Category="Contains" />
+<Link Source = "SalesTotalsByAmount" Target="SalesTotalsByAmount.CompanyName" Category="Contains" />
+<Link Source = "SalesTotalsByAmount" Target="SalesTotalsByAmount.OrderId" Category="Contains" />
+<Link Source = "SalesTotalsByAmount" Target="SalesTotalsByAmount.SaleAmount" Category="Contains" />
+<Link Source = "SalesTotalsByAmount" Target="SalesTotalsByAmount.ShippedDate" Category="Contains" />
+<Link Source = "IModel" Target="SummaryOfSalesByQuarter" Category="Contains" />
+<Link Source = "Shipper" Target="Shipper.Orders" Category="Contains" />
+<Link Source = "Shipper" Target="Shipper.RegionShippers" Category="Contains" />
+<Link Source = "Shipper" Target="Shipper.ShipperId" Category="Contains" />
+<Link Source = "Shipper" Target="Shipper.CompanyName" Category="Contains" />
+<Link Source = "Shipper" Target="Shipper.Phone" Category="Contains" />
+<Link Source = "IModel" Target="SummaryOfSalesByYear" Category="Contains" />
+<Link Source = "SummaryOfSalesByQuarter" Target="SummaryOfSalesByQuarter.OrderId" Category="Contains" />
+<Link Source = "SummaryOfSalesByQuarter" Target="SummaryOfSalesByQuarter.ShippedDate" Category="Contains" />
+<Link Source = "SummaryOfSalesByQuarter" Target="SummaryOfSalesByQuarter.Subtotal" Category="Contains" />
+<Link Source = "IModel" Target="Supplier" Category="Contains" />
+<Link Source = "SummaryOfSalesByYear" Target="SummaryOfSalesByYear.OrderId" Category="Contains" />
+<Link Source = "SummaryOfSalesByYear" Target="SummaryOfSalesByYear.ShippedDate" Category="Contains" />
+<Link Source = "SummaryOfSalesByYear" Target="SummaryOfSalesByYear.Subtotal" Category="Contains" />
+<Link Source = "IModel" Target="Territory" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.Products" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.SupplierId" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.Address" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.City" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.CompanyName" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.ContactName" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.ContactTitle" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.Country" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.Fax" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.HomePage" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.Phone" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.PostalCode" Category="Contains" />
+<Link Source = "Supplier" Target="Supplier.Region" Category="Contains" />
+<Link Source = "IModel" Target="Territory" Category="Contains" />
+<Link Source = "Territory" Target="Territory.EmployeeTerritories" Category="Contains" />
+<Link Source = "Territory" Target="Territory.Region" Category="Contains" />
+<Link Source = "Territory" Target="Territory.TerritoryId" Category="Contains" />
+<Link Source="Territory" Target="Region" From="Territory.RegionId" To="Region.RegionId" Name="Territory -> Region" Annotations="Relational:Name: FK_Territories_Region" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Territory" Target="Territory.RegionId" Category="Contains" />
+<Link Source = "Territory" Target="Territory.TerritoryDescription" Category="Contains" />
+  </Links>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="EntityType" ValueLabel="True">
+      <Condition Expression="HasCategory('EntityType')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Primary" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Primary')" />
+      <Setter Property="Background" Value="#FF008000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Optional" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Optional')" />
+      <Setter Property="Background" Value="#FF808040" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Foreign" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Foreign')" />
+      <Setter Property="Background" Value="#FF8080FF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Required" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Required')" />
+      <Setter Property="Background" Value="#FFC0A000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Navigation Property" ValueLabel="True">
+      <Condition Expression="HasCategory('Navigation Property')" />
+      <Setter Property="Background" Value="#FF990000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Navigation Collection" ValueLabel="True">
+      <Condition Expression="HasCategory('Navigation Collection')" />
+      <Setter Property="Background" Value="#FFFF3232" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Model" ValueLabel="True">
+      <Condition Expression="HasCategory('Model')" />
+      <Setter Property="Background" Value="#FFFFFFFF" />
+    </Style>
+  </Styles>
+  <Properties>
+    <Property Id="Name" Group="Model Properties" DataType="System.String" />
+    <Property Id="Field"  Description="Backing field" Group="Model Properties" DataType="System.String" />
+    <Property Id="Type"  Description="CLR data type" Group="Model Properties" DataType="System.String" />
+    <Property Id="To" Description="Source property" Group="Model Properties" DataType="System.String" />
+    <Property Id="From" Description="Target property" Group="Model Properties" DataType="System.String" />
+    <Property Id="Dependent" Description="Dependent entity" Group="Model Properties" DataType="System.String" />
+    <Property Id="Inverse" Description="Inverse entity" Group="Model Properties" DataType="System.String" />
+    <Property Id="Principal" Description="Principal entity" Group="Model Properties" DataType="System.String" />    
+    <Property Id="Annotations" Description="Annotations" Group="Model Properties" DataType="System.String" />
+    <Property Id="BaseClass"  Description="Base class" Group="Model Properties" DataType="System.String" />
+    <Property Id="ChangeTrackingStrategy" Description="Change tracking strategy" Group="Model Properties" DataType="System.String" />
+    <Property Id="IsUnique" Group="Model Properties" DataType="System.Boolean" />
+    <Property Id="IsAbstract" Group="Model Properties" DataType="System.Boolean" />
+    <Property Id="ProductVersion" Label="Product Version" Description="EF Core product version" Group="Model Properties" DataType="System.String" />
+    <Property Id="IsIndexed" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsRequired" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsPrimaryKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsForeignKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsShadow" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsAlternateKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsConcurrencyToken" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsIndexed" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsUnicode" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="ValueGenerated" Group="Property Flags" DataType="System.String" />
+    <Property Id="BeforeSaveBehavior" Group="Property Flags" DataType="System.String" />
+    <Property Id="AfterSaveBehavior" Group="Property Flags" DataType="System.String" />
+    <Property Id="PropertyAccessMode" Group="Property Flags" DataType="System.String" />
+  </Properties>
+</DirectedGraph>
