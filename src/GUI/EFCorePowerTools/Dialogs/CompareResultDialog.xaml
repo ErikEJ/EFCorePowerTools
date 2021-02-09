@@ -9,6 +9,8 @@
                  Title="Comparison result"
                  ShowInTaskbar="False"
                  ResizeMode="CanResize"
+                 MinHeight="300"
+                 MinWidth="400"
                  WindowStartupLocation="CenterOwner"
                  HasMaximizeButton="True"
                  d:DataContext="{d:DesignInstance Type=viewModels:CompareResultViewModel, IsDesignTimeCreatable=False}">
@@ -65,7 +67,7 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Name">
+                <DataGridTemplateColumn MinWidth="70" Header="Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -114,11 +116,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Type" Binding="{Binding Type, Converter={StaticResource EnumToLabelConverter}}"/>
-                <DataGridTextColumn Header="State" Binding="{Binding State, Converter={StaticResource EnumToLabelConverter}}"/>
-                <DataGridTextColumn Header="Attribute" Binding="{Binding Attribute, Converter={StaticResource EnumToLabelConverter}}"/>
-                <DataGridTextColumn Header="Expected" Binding="{Binding Expected}" />
-                <DataGridTextColumn Header="Found" Binding="{Binding Found}"/>
+                <DataGridTextColumn MinWidth="70" Header="Type" Binding="{Binding Type, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="State" Binding="{Binding State, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="Attribute" Binding="{Binding Attribute, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="Expected" Binding="{Binding Expected}" />
+                <DataGridTextColumn MinWidth="70" Header="Found" Binding="{Binding Found}"/>
             </DataGrid.Columns>
         </DataGrid>
         <dw:DialogButton Content="Close"

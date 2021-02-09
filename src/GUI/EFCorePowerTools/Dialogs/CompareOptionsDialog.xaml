@@ -8,6 +8,8 @@
                  mc:Ignorable="d"
                  Title="Choose database and contexts"
                  ShowInTaskbar="False"
+                 MinWidth="220"
+                 MinHeight="150"
                  MaxWidth="420"
                  MaxHeight="250"
                  ResizeMode="CanResize"
