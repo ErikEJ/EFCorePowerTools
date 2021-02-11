@@ -114,9 +114,6 @@ namespace EFCorePowerTools.Handlers
 
                 _package.Dte2.StatusBar.Text = "Getting ready to connect...";
 
-                // Reload the database list, in case the user has added a new database in the dialog
-                databaseList = VsDataHelper.GetDataConnections(_package);
-
                 DatabaseInfo dbInfo = null;
                 if (pickDataSourceResult.Payload.Connection != null)
                 {

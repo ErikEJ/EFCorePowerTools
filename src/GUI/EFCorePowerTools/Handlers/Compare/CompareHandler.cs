@@ -72,10 +72,10 @@ namespace EFCorePowerTools.Handlers.Compare
                     }
 
                     //TODO Install EFSchemaCompare instead!
-                    var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
-                    return;
+                    //var nugetHelper = new NuGetHelper();
+                    //nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
+                    //EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
+                    //return;
                 }
 
                 _package.Dte2.StatusBar.Text = "Loading data";
