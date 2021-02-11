@@ -120,7 +120,13 @@ namespace EFCorePowerTools.Handlers
                 DatabaseInfo dbInfo = null;
                 if (pickDataSourceResult.Payload.Connection != null)
                 {
-                    dbInfo = databaseList.Single(m => m.Value.ConnectionString == pickDataSourceResult.Payload.Connection?.ConnectionString).Value;
+                    dbInfo = new DatabaseInfo
+                    {
+                        ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString,
+                        Caption = pickDataSourceResult.Payload.Connection.ConnectionName,
+                        DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType,
+                        DataConnection = pickDataSourceResult.Payload.Connection.DataConnection,
+                    };
                 }
                 var dacpacPath = pickDataSourceResult.Payload.Definition?.FilePath;
 
