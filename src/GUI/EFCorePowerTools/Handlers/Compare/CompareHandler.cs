@@ -26,8 +26,6 @@ namespace EFCorePowerTools.Handlers.Compare
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            EnvDteHelper.ShowError("This feature is currently in early preview, please consult release notes for advice.");
-
             try
             {
                 if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
