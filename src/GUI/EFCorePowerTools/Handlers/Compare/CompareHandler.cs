@@ -30,8 +30,6 @@ namespace EFCorePowerTools.Handlers.Compare
 
             try
             {
-                var dteH = new EnvDteHelper();
-
                 if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
                 {
                     EnvDteHelper.ShowError("Cannot compare context to database while debugging");
@@ -71,11 +69,10 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    //TODO Install EFSchemaCompare instead!
-                    //var nugetHelper = new NuGetHelper();
-                    //nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    //EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
-                    //return;
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(5, 1, 3));
+                    EnvDteHelper.ShowError($"Installing EfCore.SchemaCompare version 5.1.3, please retry the command");
+                    return;
                 }
 
                 _package.Dte2.StatusBar.Text = "Loading data";
@@ -117,7 +114,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     outputPath,
                     project,
                     pickDataSourceResult.Payload.Connection, 
-                    pickDataSourceResult.Payload.ContextTypes.First());
+                    pickDataSourceResult.Payload.ContextTypes.ToArray());
                 timer.Stop();
                 _package.Dte2.StatusBar.Animate(false, icon);
                 _package.Dte2.StatusBar.Text = $"Compare completed in {timer.Elapsed:h\\:mm\\:ss}";
@@ -180,11 +177,11 @@ namespace EFCorePowerTools.Handlers.Compare
         private async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(string outputPath, 
             Project project, 
             DatabaseConnectionModel connection, 
-            string contextName)
+            string[] contextNames)
         {
             var processLauncher = new ProcessLauncher(project);
 
-            var processResult = await processLauncher.GetOutputAsync(outputPath, GenerationType.DbContextCompare, contextName, connection.ConnectionString);
+            var processResult = await processLauncher.GetOutputAsync(outputPath, GenerationType.DbContextCompare, string.Join(",", contextNames), connection.ConnectionString);
 
             if (string.IsNullOrEmpty(processResult))
             {

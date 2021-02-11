@@ -1,4 +1,5 @@
 ﻿using EfSchemaCompare;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using System;
@@ -16,15 +17,19 @@ namespace Modelling
             return BuildResult(outputPath, startupOutputPath ?? outputPath, true);
         }
 
-        public List<Tuple<string, string>> GenerateSchemaCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContext)
+        public List<Tuple<string, string>> GenerateSchemaCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContexts)
         {
             
-            return GetCompareResult(outputPath, startupOutputPath ?? outputPath, connectionString, dbContext);
+            return GetCompareResult(outputPath, startupOutputPath ?? outputPath, connectionString, dbContexts);
         }
 
-        private List<Tuple<string, string>> GetCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContext)
+        private List<Tuple<string, string>> GetCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContexts)
         {
             var result = new List<Tuple<string, string>>();
+
+            var dbContextNameList = dbContexts.Split(',').ToHashSet();
+
+            var dbContextList = new List<DbContext>();
 
             var operations = GetOperations(outputPath, startupOutputPath);
             var types = GetDbContextTypes(operations);
@@ -33,16 +38,10 @@ namespace Modelling
             {
                 try
                 {
-                    if (type.Name == dbContext)
+                    if (dbContextNameList.Contains(type.Name))
                     {
                         var context = operations.CreateContext(type.Name);
-                        var comparer = new CompareEfSql();
-
-                        var hasErrors = comparer.CompareEfWithDb(connectionString, context);
-
-                        var logsJson = Newtonsoft.Json.JsonConvert.SerializeObject(comparer.Logs);
-
-                        result.Add(new Tuple<string, string>(type.Name, logsJson));
+                        dbContextList.Add(context);
                     }
                 }
                 catch (InvalidOperationException ex)
@@ -50,6 +49,14 @@ namespace Modelling
                     Console.Error.WriteLine(ex);
                 }
             }
+
+            var comparer = new CompareEfSql();
+
+            comparer.CompareEfWithDb(connectionString, dbContextList.ToArray());
+
+            var logsJson = Newtonsoft.Json.JsonConvert.SerializeObject(comparer.Logs);
+
+            result.Add(new Tuple<string, string>(dbContextNameList.First(), logsJson));
 
             return result;
         }

@@ -31,9 +31,9 @@ namespace EFCorePowerTools.Handlers
             return GetOutputInternalAsync(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
         }
 
-        public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName, string connectionString)
+        public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextNames, string connectionString)
         {
-            return GetOutputInternalAsync(outputPath, null, generationType, contextName, connectionString, null);
+            return GetOutputInternalAsync(outputPath, null, generationType, contextNames, connectionString, null);
         }
 
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
