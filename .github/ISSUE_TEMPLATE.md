@@ -8,4 +8,4 @@ EF Core Power Tools version: (found in About dialog - blue questionmark icon on 
 
 Database engine: (SQlite, SQL Compact, SQL Server, Postgres)
 
-Visual Studio version: (e.g. Visual Studio 2017 15.7)
+Visual Studio version: (e.g. Visual Studio 2019 16.8)
