@@ -7,10 +7,6 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
 using RevEng.Core.Abstractions.Model;
 using RevEng.Core.Abstractions;
-#if CORE50
-#else
-using Oracle.EntityFrameworkCore.Design.Internal;
-#endif
 
 namespace RevEng.Core
 {
