@@ -134,28 +134,13 @@ namespace RevEng.Core.Procedures
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}Procedures");
+                _sb.AppendLine($"public static partial class {procedureScaffolderOptions.ContextName}Procedures");
 
                 _sb.AppendLine("{");
 
-                using (_sb.Indent())
-                {
-                    _sb.AppendLine($"private readonly {procedureScaffolderOptions.ContextName} _context;");
-                    _sb.AppendLine();
-                    _sb.AppendLine($"public {procedureScaffolderOptions.ContextName}Procedures({procedureScaffolderOptions.ContextName} context)");
-                    _sb.AppendLine("{");
-
-                    using (_sb.Indent())
-                    {
-                        _sb.AppendLine($"_context = context;");
-                    }
-
-                    _sb.AppendLine("}");
-                }
-
                 foreach (var procedure in model.Procedures)
                 {
-                    GenerateProcedure(procedure, model);
+                    GenerateProcedure(procedureScaffolderOptions, procedure, model);
                 }
 
                 _sb.AppendLine("}");
@@ -166,7 +151,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Procedure procedure, ProcedureModel model)
+        private void GenerateProcedure(ModuleScaffolderOptions procedureScaffolderOptions, Procedure procedure, ProcedureModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
@@ -185,7 +170,7 @@ namespace RevEng.Core.Procedures
 
             var identifier = GenerateIdentifierName(procedure, model);
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier);
+            var line = GenerateMethodSignature(procedureScaffolderOptions, procedure, outParams, paramStrings, retValueName, outParamStrings, identifier);
 
             using (_sb.Indent())
             {
@@ -224,11 +209,11 @@ namespace RevEng.Core.Procedures
 
                     if (procedure.HasValidResultSet && procedure.ResultElements.Count == 0)
                     {
-                        _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                        _sb.AppendLine($"var _ = await context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
                     else
                     {
-                        _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
+                        _sb.AppendLine($"var _ = await context.SqlQueryAsync<{identifier}Result>({fullExec});");
                     }
 
                     _sb.AppendLine();
@@ -263,7 +248,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        private static string GenerateMethodSignature(ModuleScaffolderOptions procedureScaffolderOptions, Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             var returnType = $"Task<{identifier}Result[]>";
 
@@ -272,7 +257,7 @@ namespace RevEng.Core.Procedures
                 returnType = $"Task<int>";
             }
 
-            var line = $"public async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
+            var line = $"public static async {returnType} {identifier}Async(this {procedureScaffolderOptions.ContextName} context, {string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
@@ -369,7 +354,7 @@ namespace RevEng.Core.Procedures
                 _sb.AppendLine("#nullable enable");
                 _sb.AppendLine();
             }
-            
+
             _sb.AppendLine($"namespace {@namespace}");
             _sb.AppendLine("{");
 
