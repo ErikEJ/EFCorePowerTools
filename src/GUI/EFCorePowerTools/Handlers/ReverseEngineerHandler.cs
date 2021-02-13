@@ -55,6 +55,7 @@ namespace EFCorePowerTools.Handlers
                     pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
                     {
                         ConfigPath = m,
+                        ProjectPath =projectPath 
                     }));
 
                     var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);

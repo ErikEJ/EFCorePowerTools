@@ -66,17 +66,20 @@ namespace EFCorePowerTools.Extensions
                 return result;
             }
 
-            var file = Directory.GetFiles(projectPath, "efpt.config.json");
-            result.AddRange(file);
+            //var file = Directory.GetFiles(projectPath, "efpt.config.json");
+            //result.AddRange(file);
 
-            var files = Directory.GetFiles(projectPath, "efpt.*.config.json");
+            //var files = Directory.GetFiles(projectPath, "efpt.*.config.json");
+            //result.AddRange(files);
+
+            var files = Directory.GetFiles(projectPath, "efpt.*config.json", SearchOption.AllDirectories);
             result.AddRange(files);
 
             if (result.Count() == 0)
             {
                 result.Add(Path.Combine(projectPath, "efpt.config.json"));
             }
-            
+
             return result.OrderBy(s => s).ToList();
         }
 

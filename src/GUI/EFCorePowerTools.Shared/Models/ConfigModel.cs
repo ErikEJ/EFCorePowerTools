@@ -8,6 +8,7 @@
     public class ConfigModel : INotifyPropertyChanged
     {
         private string _configPath;
+        private string _projectPath;
 
         /// <summary>
         /// Gets or sets the file path to the eftp.*.config.json file.
@@ -23,13 +24,32 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets the project path to the eftp.*.config.json file.
+        /// </summary>
+        public string ProjectPath
+        {
+            get => _projectPath;
+            set
+            {
+                if (value == _projectPath) return;
+                _projectPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public string DisplayName
         {
             get
             {
                 if (!string.IsNullOrEmpty(_configPath))
                 {
-                    return Path.GetFileName(_configPath);
+                    //I dont test all use of this class, that is why I test if projectpath is used
+                    if (string.IsNullOrEmpty(_projectPath))
+                        return Path.GetFileName(_configPath);
+                    else
+                        return _configPath.Replace(_projectPath, string.Empty).Replace(@"\\", @"\") ;
                 }
 
                 return null;
