@@ -25,7 +25,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the project path to the eftp.*.config.json file.
+        /// Gets or sets the project path.
         /// </summary>
         public string ProjectPath
         {
@@ -45,11 +45,10 @@
             {
                 if (!string.IsNullOrEmpty(_configPath))
                 {
-                    //I dont test all use of this class, that is why I test if projectpath is used
                     if (string.IsNullOrEmpty(_projectPath))
                         return Path.GetFileName(_configPath);
                     else
-                        return _configPath.Replace(_projectPath, string.Empty).Replace(@"\\", @"\") ;
+                        return _configPath.Replace(_projectPath, string.Empty).Replace(@"\\", @"\");
                 }
 
                 return null;
