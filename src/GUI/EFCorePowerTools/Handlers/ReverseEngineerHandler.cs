@@ -55,6 +55,7 @@ namespace EFCorePowerTools.Handlers
                     pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
                     {
                         ConfigPath = m,
+                        ProjectPath = projectPath
                     }));
 
                     var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
@@ -77,7 +78,7 @@ namespace EFCorePowerTools.Handlers
                         ConnectionName = m.Value.Caption,
                         ConnectionString = m.Value.ConnectionString,
                         DatabaseType = m.Value.DatabaseType,
-                        DataConnection = m.Value.DataConnection,                        
+                        DataConnection = m.Value.DataConnection,
                     }));
                 }
 
@@ -141,14 +142,14 @@ namespace EFCorePowerTools.Handlers
                     }
                 }
 
-                if (dbInfo.DatabaseType == DatabaseType.SQLCE35 
+                if (dbInfo.DatabaseType == DatabaseType.SQLCE35
                     || dbInfo.DatabaseType == DatabaseType.SQLCE40
                     || dbInfo.DatabaseType == DatabaseType.Undefined)
                 {
                     EnvDteHelper.ShowError($"Unsupported provider: {dbInfo.ServerVersion}");
                     return;
                 }
-               
+
                 _package.Dte2.StatusBar.Text = "Loading database objects...";
                 object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
                 _package.Dte2.StatusBar.Animate(true, icon);
