@@ -123,7 +123,6 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
             _sb.AppendLine("using System;");
-            _sb.AppendLine("using System.Data;");
             _sb.AppendLine("using System.Threading;");
             _sb.AppendLine("using System.Threading.Tasks;");
             _sb.AppendLine($"using {procedureScaffolderOptions.ModelNamespace};");
@@ -134,8 +133,23 @@ namespace RevEng.Core.Procedures
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}Procedures");
+                _sb.AppendLine($"public static class {procedureScaffolderOptions.ContextName}ProceduresExtensions");
+                _sb.AppendLine("{");
+                
+                using (_sb.Indent())
+                {
+                    _sb.AppendLine($"public static {procedureScaffolderOptions.ContextName}Procedures GetProcedures(this {procedureScaffolderOptions.ContextName} context)");
+                    _sb.AppendLine("{");
+                    using (_sb.Indent())
+                    {
+                        _sb.AppendLine($"return new {procedureScaffolderOptions.ContextName}Procedures(context);");
+                    }
+                    _sb.AppendLine("}");
+                }
+                _sb.AppendLine("}");
+                _sb.AppendLine();
 
+                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
 
                 using (_sb.Indent())
