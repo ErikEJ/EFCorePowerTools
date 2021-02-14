@@ -6,6 +6,7 @@ using EFCorePowerTools.Dialogs;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
 using EFCorePowerTools.Handlers.Compare;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Shared.BLL;
@@ -24,7 +25,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows;
 
 namespace EFCorePowerTools
 {

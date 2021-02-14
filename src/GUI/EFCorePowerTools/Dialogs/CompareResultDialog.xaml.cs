@@ -11,8 +11,6 @@
     {
         private readonly Action<IEnumerable<CompareLogModel>> _addComparisonResult;
 
-        public event EventHandler CloseRequested;
-
         public CompareResultDialog(ITelemetryAccess telemetryAccess,
                                     ICompareResultViewModel viewModel)
         {

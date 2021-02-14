@@ -158,7 +158,7 @@
     <Compile Include="Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
-    <Compile Include="Handlers\ReverseEngineerHandler.cs" />
+    <Compile Include="Handlers\ReverseEngineer\ReverseEngineerHandler.cs" />
     <Compile Include="Helpers\InstalledComponentsService.cs" />
     <Compile Include="Helpers\VsDataHelper.cs" />
     <Compile Include="Helpers\EnvDTEHelper.cs" />

@@ -13,8 +13,6 @@
         private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
         private readonly Action<IEnumerable<string>> _contextTypes;
 
-        public event EventHandler CloseRequested;
-
         public CompareOptionsDialog(ITelemetryAccess telemetryAccess,
                                     ICompareOptionsViewModel viewModel)
         {

@@ -1,9 +1,11 @@
 ﻿using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
+using Microsoft.VisualStudio.Data.Services;
+using Microsoft.VisualStudio.Shell;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,12 +13,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Microsoft.VisualStudio.Data.Services;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using RevEng.Shared;
 
-namespace EFCorePowerTools.Handlers
+namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
     internal class ReverseEngineerHandler
     {
