@@ -150,13 +150,6 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                //TODO Enable when Oracle EF Core 5 provider is released
-                if (useEFCore5 && (dbInfo.DatabaseType == DatabaseType.Oracle))
-                {
-                    EnvDteHelper.ShowError($"Unsupported provider with EF Core 5.0: {dbInfo.DatabaseType}");
-                    return;
-                }
-
                 _package.Dte2.StatusBar.Text = "Loading database objects...";
                 object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
                 _package.Dte2.StatusBar.Animate(true, icon);
