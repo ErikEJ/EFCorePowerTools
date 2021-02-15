@@ -279,13 +279,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                 }
 
-                var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
-                bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.");
-
                 if (modelingOptionsResult.Payload.UseHandlebars)
                 {
                     var dropped = (DropTemplates(projectPath, useEFCore5));
-                    if (dropped && !project.IsNetCore() && !isNetStandard)
+                    if (dropped)
                     {
                         project.ProjectItems.AddFromDirectory(Path.Combine(projectPath, "CodeTemplates"));
                     }
@@ -301,11 +298,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
                     {
-                        if (!project.IsNetCore() && !isNetStandard)
-                        {
-                            project.ProjectItems.AddFromFile(filePath);
-                        }
+                        project.ProjectItems.AddFromFile(filePath);
                     }
+
                     if (modelingOptionsResult.Payload.SelectedToBeGenerated == 2)
                     {
                         if (File.Exists(revEngResult.ContextFilePath)) File.Delete(revEngResult.ContextFilePath);
@@ -318,14 +313,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (modelingOptionsResult.Payload.SelectedToBeGenerated == 0 || modelingOptionsResult.Payload.SelectedToBeGenerated == 1)
                 {
-                    if (!project.IsNetCore() && !isNetStandard)
+                    foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
                     {
-                        foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
-                        {
-                            project.ProjectItems.AddFromFile(filePath);
-                        }
-                        project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
+                        project.ProjectItems.AddFromFile(filePath);
                     }
+                    project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
 
                     _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
 
