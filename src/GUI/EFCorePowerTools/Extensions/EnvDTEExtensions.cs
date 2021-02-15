@@ -67,11 +67,18 @@ namespace EFCorePowerTools.Extensions
                 return null;
             }
 
-            var project = dte.Solution.Item((string)startupProject[0]);
+            try
+            {
+                var project = dte.Solution.Item((string)startupProject[0]);
 
-            var path = project.GetOutPutAssemblyPath();
+                var path = project.GetOutPutAssemblyPath();
 
-            return path;
+                return path;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static void AddFiles(HashSet<string> result, string path)
