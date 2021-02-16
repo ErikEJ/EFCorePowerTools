@@ -139,9 +139,11 @@
                 <Border BorderThickness="1" BorderBrush="LightGray" Background="{StaticResource DialogWindowBackgroundColor}">
                     <StackPanel>
                         <RadioButton Margin="8"
-                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.Text}}">Use text search</RadioButton>
+                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.Text}}"
+                                     Content="Use text search"></RadioButton>
                         <RadioButton Margin="8,0,8,8"
-                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.RegularExpression}}">Use regular espression</RadioButton>
+                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.RegularExpression}}"
+                                     Content="Use regular expression"></RadioButton>
                     </StackPanel>
                 </Border>
             </Popup>
@@ -333,7 +335,9 @@
                              Command="{Binding CancelCommand}" />
         </StackPanel>
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
-            <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">Unchecking an item may cause the related file to be removed.</StatusBar>
+            <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">
+                <TextBlock Text="Unchecking an item may cause the related file to be removed." />
+            </StatusBar>
         </StackPanel>
     </Grid>
 </dw:DialogWindow>
