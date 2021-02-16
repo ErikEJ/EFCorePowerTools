@@ -8,5 +8,9 @@ namespace EFCorePowerTools
         public const string guidDbContextPackageCmdSetString = "c769a05d-8d51-4919-bfe6-5f35a0eaf2ba";
 
         public static readonly Guid guidDbContextPackageCmdSet = new Guid(guidDbContextPackageCmdSetString);
+
+        public const string guidReverseEngineerMenuString = "74bcf1bb-979c-408d-adcf-718c16e8f09e";
+        public static readonly Guid guidReverseEngineerMenu = new Guid(guidReverseEngineerMenuString);
+
     }
 }
