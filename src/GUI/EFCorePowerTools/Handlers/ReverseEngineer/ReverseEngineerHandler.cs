@@ -85,7 +85,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.ProjectPath = project.Properties.Item("FullPath")?.Value.ToString();
 
-
                 if (string.IsNullOrWhiteSpace(options.ProjectRootNamespace))
                     options.ProjectRootNamespace = project.Properties.Item("DefaultNamespace").Value.ToString();
 
@@ -102,7 +101,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     else
                     {
                         containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
-                        options.InstallNuGetPackage = !containsEfCoreReference.Item1;
+                        options.InstallNuGetPackage = false;
                     }
 
                 }
@@ -139,7 +138,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 GenerateEfRevEng(project, options, containsEfCoreReference);
 
-                await InstallEfCorePackageAsync(project, options, containsEfCoreReference.Item2);
+                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit))
+                {
+                    _package.Dte2.StatusBar.Text = "Installing EF Core provider package";
+                    var nuGetHelper = new NuGetHelper();
+                    await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
+                }
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
             }
@@ -285,7 +289,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var preselectedTables = new List<SerializationTableModel>();
 
-            if (options.Tables.Count > 0)
+            if (options.Tables?.Count > 0)
             {
                 var normalizedTables = reverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
                 preselectedTables.AddRange(normalizedTables);
@@ -377,20 +381,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
 
             return true;
-        }
-
-
-        private async System.Threading.Tasks.Task InstallEfCorePackageAsync(Project project, ReverseEngineerOptions options, string packageId)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            if (options.InstallNuGetPackage)
-            {
-                _package.Dte2.StatusBar.Text = "Installing EF Core provider package";
-                var nuGetHelper = new NuGetHelper();
-                await nuGetHelper.InstallPackageAsync(packageId, project);
-            }
-            return;
         }
 
         private void VerifySQLServerRightsAndVersion(ReverseEngineerOptions options)
