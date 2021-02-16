@@ -50,7 +50,7 @@
             {
                 if (searchMode == SearchMode.Text)
                 {
-                    obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || obj.DisplayName.ToUpper().Contains(searchText.ToUpper());
+                    obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || obj.DisplayName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
                 }
                 else
                 {

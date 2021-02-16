@@ -109,21 +109,6 @@
                      Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="2" 
                      x:Name="Search">
-                <!--<TextBox.Triggers>
-                    <EventTrigger RoutedEvent="TextBox.MouseEnter">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MainButton" 
-                                                                    Storyboard.TargetProperty="BorderBrush">
-                                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{Binding BorderBrush, ElementName=Search}" />
-                                    </ObjectAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                </TextBox.Triggers>-->
-
             </TextBox>
 
             <Button Name="MainButton" Grid.Column="3" Height="22" BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush, ElementName=Search}">
