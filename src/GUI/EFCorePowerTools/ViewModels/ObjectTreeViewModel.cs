@@ -44,7 +44,7 @@
 
         public void Search(string searchText, SearchMode searchMode)
         {
-            var regex = new Regex(searchText);
+            var regex = new Regex(searchText, RegexOptions.None, new TimeSpan(0,0,3));
 
             foreach (var obj in _objects)
             {
@@ -54,7 +54,14 @@
                 }
                 else
                 {
-                    obj.IsVisible = regex.IsMatch(obj.DisplayName);
+                    try
+                    {
+                        obj.IsVisible = regex.IsMatch(obj.DisplayName);
+                    }
+                    catch (RegexMatchTimeoutException)
+                    {
+                        obj.IsVisible = true;
+                    }
                 }
             }
         }
