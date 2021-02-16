@@ -16,6 +16,7 @@
 
         private bool? _tableSelectionThreeState;
         private string _searchText;
+        private SearchMode _searchMode = SearchMode.Text;
 
         public PickTablesViewModel(IObjectTreeViewModel objectTreeViewModel)
         {
@@ -55,7 +56,19 @@
                 if (Equals(value, _searchText)) return;
                 _searchText = value;
                 RaisePropertyChanged();
-                var _ = HandleSearchTextChangeAsync(value);
+                var _ = HandleSearchTextChangeAsync(_searchText, _searchMode);
+            }
+        }
+
+        public SearchMode SearchMode
+        {
+            get => _searchMode;
+            set
+            {
+                if (Equals(value, _searchMode)) return;
+                _searchMode = value;
+                RaisePropertyChanged();
+                var _ = HandleSearchTextChangeAsync(_searchText, _searchMode);
             }
         }
 
@@ -83,13 +96,13 @@
             SearchText = string.Empty;
         }
 
-        private async Task HandleSearchTextChangeAsync(string text)
+        private async Task HandleSearchTextChangeAsync(string text, SearchMode searchMode)
         {
             await Task.Delay(500); // Add a delay (like a debounce) so that not every character change triggers a search
             if (text != SearchText)
                 return;
 
-            ObjectTree.Search(SearchText);
+            ObjectTree.Search(SearchText, SearchMode);
         }
 
         private void UpdateTableSelectionThreeState()

@@ -15,6 +15,7 @@
 
         bool? TableSelectionThreeState { get; set; }
         string SearchText { get; set; }
+        SearchMode SearchMode { get; set; }
         IObjectTreeViewModel ObjectTree { get; }
 
         /// <summary>

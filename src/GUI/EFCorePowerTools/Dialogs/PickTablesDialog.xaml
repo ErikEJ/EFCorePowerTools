@@ -4,9 +4,9 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
                  xmlns:ext="clr-namespace:EFCorePowerTools.Extensions"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 xmlns:contractvm="clr-namespace:EFCorePowerTools.Contracts.ViewModels"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  Title="Choose Database Objects"
@@ -85,13 +85,13 @@
         <Grid Margin="12,0"
                   Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50" ></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="80"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <CheckBox IsChecked="{Binding TableSelectionThreeState}"
-                          Margin="0,0,0,0"
-                          BorderThickness="2"
+                          Margin="22,0,0,0"
                           IsThreeState="False"
                           VerticalAlignment="Center" 
                           Grid.Column="0"/>
@@ -107,7 +107,59 @@
                      HorizontalAlignment="Stretch"
                      VerticalContentAlignment="Center"
                      Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                     Grid.Column="2" />
+                     Grid.Column="2" 
+                     x:Name="Search">
+                <!--<TextBox.Triggers>
+                    <EventTrigger RoutedEvent="TextBox.MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MainButton" 
+                                                                    Storyboard.TargetProperty="BorderBrush">
+                                        <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{Binding BorderBrush, ElementName=Search}" />
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </TextBox.Triggers>-->
+
+            </TextBox>
+
+            <Button Name="MainButton" Grid.Column="3" Height="22" BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush, ElementName=Search}">
+                <Button.Content>
+                    <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/GlyphDown_16x.png" Width="16"/>
+                </Button.Content>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ContextPopup" 
+                                                                    Storyboard.TargetProperty="IsOpen">
+                                        <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True" />
+                                    </BooleanAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Popup x:Name="ContextPopup" 
+                   PlacementTarget="{Binding ElementName=MainButton}" 
+                   Placement="Left" 
+                   VerticalOffset="{Binding ActualHeight, ElementName=MainButton}" 
+                   HorizontalOffset="{Binding ActualWidth, ElementName=MainButton}" 
+                   StaysOpen="False">
+                <Border BorderThickness="1" BorderBrush="LightGray" Background="{StaticResource DialogWindowBackgroundColor}">
+                    <StackPanel>
+                        <RadioButton Margin="8"
+                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.Text}}">Use text search</RadioButton>
+                        <RadioButton Margin="8,0,8,8"
+                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.RegularExpression}}">Use regular espression</RadioButton>
+                    </StackPanel>
+                </Border>
+            </Popup>
         </Grid>
 
         <TreeView Margin="12,0"
@@ -128,7 +180,7 @@
                     </Style.Triggers>
                 </Style>
             </TreeView.ItemContainerStyle>
-            
+
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:ObjectTreeRootItemViewModel}" ItemsSource="{Binding Path=Schemas}">
                     <HierarchicalDataTemplate.ItemContainerStyle>
