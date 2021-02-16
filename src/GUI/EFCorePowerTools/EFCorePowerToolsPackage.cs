@@ -167,7 +167,9 @@ namespace EFCorePowerTools
             }
 
             var itemName = _dte2.SelectedItems.Item(1).Name;
-            menuCommand.Visible = itemName.StartsWith("efpt.") && itemName.EndsWith("config.json");
+            menuCommand.Visible = itemName != null &&
+                                  itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
+                                  itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase);
 
             return;
         }
@@ -213,7 +215,9 @@ namespace EFCorePowerTools
             }
 
             var itemName = _dte2.SelectedItems.Item(1).Name;
-            if (!itemName.StartsWith("efpt.") || !itemName.EndsWith("config.json"))
+            if (itemName == null ||
+                !itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) ||
+                !itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }

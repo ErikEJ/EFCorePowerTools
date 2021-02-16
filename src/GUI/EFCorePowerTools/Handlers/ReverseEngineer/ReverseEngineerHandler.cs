@@ -89,7 +89,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 if (string.IsNullOrWhiteSpace(options.ProjectRootNamespace))
                     options.ProjectRootNamespace = project.Properties.Item("DefaultNamespace").Value.ToString();
 
-                if (!onlyGenerate)
+                bool forceEdit = false;
+
+                if (onlyGenerate)
+                {
+                    forceEdit = !ChooseDataBaseConnectionByUiHint(options);
+
+                    if (forceEdit)
+                    {
+                        _package.Dte2.StatusBar.Text = "Database don't found, force edit config";
+                    }
+                    else
+                    {
+                        containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
+                        options.InstallNuGetPackage = !containsEfCoreReference.Item1;
+                    }
+
+                }
+
+                if (!onlyGenerate || forceEdit)
                 {
                     if (!ChooseDataBaseConnection(options))
                         return;
@@ -109,23 +127,19 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     _package.Dte2.StatusBar.Text = "Loading options...";
 
                     containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
+                    options.InstallNuGetPackage = !containsEfCoreReference.Item1;
 
-                    if (!GetModelOptions(options, project.Name, containsEfCoreReference))
+                    if (!GetModelOptions(options, project.Name))
                         return;
 
                     SaveOptions(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
-                }
-                else
-                {
-                    ChooseDataBaseConnectionByUiHint(options);
-                    containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
                 }
 
                 VerifySQLServerRightsAndVersion(options);
 
                 GenerateEfRevEng(project, options, containsEfCoreReference);
 
-                await InstallEfCorePackageAsync(project, options, containsEfCoreReference);
+                await InstallEfCorePackageAsync(project, options, containsEfCoreReference.Item2);
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
             }
@@ -143,7 +157,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
 
-        private void ChooseDataBaseConnectionByUiHint(ReverseEngineerOptions options)
+        private bool ChooseDataBaseConnectionByUiHint(ReverseEngineerOptions options)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -155,8 +169,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     options.ConnectionString = dataBaseInfo.ConnectionString;
                     options.DatabaseType = dataBaseInfo.DatabaseType;
+                    return true;
                 }
             }
+            return false;
         }
 
         private bool ChooseDataBaseConnection(ReverseEngineerOptions options)
@@ -289,7 +305,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
 
-        private bool GetModelOptions(ReverseEngineerOptions options, string projectName, Tuple<bool, string> ContainsEfCoreReference)
+        private bool GetModelOptions(ReverseEngineerOptions options, string projectName)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -301,7 +317,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var presets = new ModelingOptionsModel
             {
-                InstallNuGetPackage = !ContainsEfCoreReference.Item1,
+                InstallNuGetPackage = options.InstallNuGetPackage,
                 ModelName = options.ContextClassName,
                 ProjectName = projectName,
                 Namespace = options.ProjectRootNamespace,
@@ -337,6 +353,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (!modelingOptionsResult.ClosedByOK)
                 return false;
 
+            options.InstallNuGetPackage = modelingOptionsResult.Payload.InstallNuGetPackage;
             options.UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations;
             options.ContextClassName = modelingOptionsResult.Payload.ModelName;
             options.OutputPath = modelingOptionsResult.Payload.OutputPath;
@@ -363,15 +380,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
 
-        private async System.Threading.Tasks.Task InstallEfCorePackageAsync(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference)
+        private async System.Threading.Tasks.Task InstallEfCorePackageAsync(Project project, ReverseEngineerOptions options, string packageId)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (containsEfCoreReference.Item1)
+            if (options.InstallNuGetPackage)
             {
                 _package.Dte2.StatusBar.Text = "Installing EF Core provider package";
                 var nuGetHelper = new NuGetHelper();
-                await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
+                await nuGetHelper.InstallPackageAsync(packageId, project);
             }
             return;
         }
@@ -454,7 +471,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var duration = DateTime.Now - startTime;
 
             var missingProviderPackage = containsEfCoreReference.Item1 ? null : containsEfCoreReference.Item2;
-            if (containsEfCoreReference.Item1 || options.SelectedToBeGenerated == 2)
+            if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
             {
                 missingProviderPackage = null;
             }

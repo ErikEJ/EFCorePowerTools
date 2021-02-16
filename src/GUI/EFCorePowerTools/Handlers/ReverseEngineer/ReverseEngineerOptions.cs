@@ -46,6 +46,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
 
+        [IgnoreDataMember]
+        public bool InstallNuGetPackage { get; set; }
+
         public static ReverseEngineerOptions FromV1(ReverseEngineerOptionsV1 v1)
         {
             if (v1 == null)
