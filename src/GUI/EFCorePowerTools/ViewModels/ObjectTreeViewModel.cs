@@ -50,13 +50,13 @@
             {
                 if (searchMode == SearchMode.Text)
                 {
-                    obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || obj.DisplayName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
+                    obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || obj.DisplayName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
                 }
                 else
                 {
                     try
                     {
-                        obj.IsVisible = regex.IsMatch(obj.DisplayName);
+                        obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || regex.IsMatch(obj.DisplayName);
                     }
                     catch (RegexMatchTimeoutException)
                     {
