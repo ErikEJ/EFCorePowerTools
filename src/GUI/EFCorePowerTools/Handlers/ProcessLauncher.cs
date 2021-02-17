@@ -31,6 +31,11 @@ namespace EFCorePowerTools.Handlers
             return GetOutputInternalAsync(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
         }
 
+        public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextNames, string connectionString)
+        {
+            return GetOutputInternalAsync(outputPath, null, generationType, contextNames, connectionString, null);
+        }
+
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
             return GetOutputInternalAsync(outputPath, null, generationType, contextName, null, null);
@@ -59,7 +64,7 @@ namespace EFCorePowerTools.Handlers
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var launchPath = await DropNetCoreFilesAsync(outputPath);
+            var launchPath = await DropNetCoreFilesAsync();
 
             var startupOutputPath = _project.DTE.GetStartupProjectOutputPath() ?? outputPath;
 
@@ -81,25 +86,36 @@ namespace EFCorePowerTools.Handlers
             var outputs = " \"" + outputPath + "\" \"" + startupOutputPath + "\" ";
 
             startInfo.Arguments = outputs;
-            if (generationType == GenerationType.Ddl)
+
+            switch (generationType)
             {
-                startInfo.Arguments = "ddl" + outputs;
-            }
-            if (generationType == GenerationType.MigrationStatus)
-            {
-                startInfo.Arguments = "migrationstatus" + outputs;
-            }
-            if (generationType == GenerationType.MigrationApply)
-            {
-                startInfo.Arguments = "migrate" + outputs + contextName;
-            }
-            if (generationType == GenerationType.MigrationAdd)
-            {
-                startInfo.Arguments = "addmigration" + outputs + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
-            }
-            if (generationType == GenerationType.MigrationScript)
-            {
-                startInfo.Arguments = "scriptmigration" + outputs + contextName;
+                case GenerationType.Dgml:
+                    break;
+                case GenerationType.Ddl:
+                    startInfo.Arguments = "ddl" + outputs;
+                    break;
+                case GenerationType.DebugView:
+                    break;
+                case GenerationType.MigrationStatus:
+                    startInfo.Arguments = "migrationstatus" + outputs;
+                    break;
+                case GenerationType.MigrationApply:
+                    startInfo.Arguments = "migrate" + outputs + contextName;
+                    break;
+                case GenerationType.MigrationAdd:
+                    startInfo.Arguments = "addmigration" + outputs + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
+                    break;
+                case GenerationType.MigrationScript:
+                    startInfo.Arguments = "scriptmigration" + outputs + contextName;
+                    break;
+                case GenerationType.DbContextList:
+                    startInfo.Arguments = "contextlist" + outputs;
+                    break;
+                case GenerationType.DbContextCompare:
+                    startInfo.Arguments = "schemacompare" + outputs + "\"" + migrationIdentifier + "\" " + contextName;
+                    break;
+                default:
+                    break;
             }
 
             var fileRoot = Path.Combine(Path.GetDirectoryName(outputPath), Path.GetFileNameWithoutExtension(outputPath));
@@ -167,7 +183,7 @@ namespace EFCorePowerTools.Handlers
             return startupOutputPath;
         }
 
-        private async Task<string> DropNetCoreFilesAsync(string outputPath)
+        private async Task<string> DropNetCoreFilesAsync()
         {
             var toDir = Path.Combine(Path.GetTempPath(), "efpt");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

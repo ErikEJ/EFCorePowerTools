@@ -35,6 +35,10 @@
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
+      <Group guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" priority="0x0100">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" />
+      </Group>
+
     </Groups>
 
     <Menus>
@@ -46,7 +50,7 @@
           <ButtonText>EF Core Power Tools</ButtonText>
         </Strings>
       </Menu>
-      
+
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMenuGroup" />
         <Strings>
@@ -55,6 +59,14 @@
         </Strings>
       </Menu>
 
+      <Menu guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" priority="0x0100" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+        <Strings>
+          <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
+          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
+        </Strings>
+      </Menu>
+      
     </Menus>
 
     <Buttons>
@@ -95,7 +107,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add DbContext Model Diagram</ButtonText>
+          <ButtonText>Add DbContext Diagram</ButtonText>
         </Strings>
       </Button>
       
@@ -105,7 +117,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
-          <ButtonText>View DbContext Model DDL SQL</ButtonText>
+          <ButtonText>View DbContext DDL SQL</ButtonText>
         </Strings>
       </Button>
 
@@ -115,7 +127,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
-          <ButtonText>View DbContext Model as DebugView</ButtonText>
+          <ButtonText>View DbContext as DebugView</ButtonText>
         </Strings>
       </Button>
 
@@ -125,20 +137,40 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add AsDgml() extension method</ButtonText>
+          <ButtonText>Add AsDgml() extension</ButtonText>
         </Strings>
       </Button>
       
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerDgml" priority="0x0800" type="Button">
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidDbCompare" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
-        <Icon guid="guidImage1" id="bmpPic1" />
+        <Icon guid="guidImage9" id="bmpPic9" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <CommandName>cmdidReverseEngineerDgml</CommandName>
-          <ButtonText>View Database Schema as Graph</ButtonText>
+          <CommandName>cmdidDbCompare</CommandName>
+          <ButtonText>Compare DbContext to database</ButtonText>
         </Strings>
       </Button>
-      
+
+      <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <CommandName>EF Core Power Tools - Edit</CommandName>
+          <ButtonText>EF Core Power Tools - Edit</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerRefresh" priority="0x0100" type="Button">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <CommandName>EF Core Power Tools - Refresh</CommandName>
+          <ButtonText>EF Core Power Tools - Refresh</ButtonText>
+        </Strings>
+      </Button>
+
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -151,6 +183,7 @@
       <Bitmap guid="guidImage2" href="Resources\Diagram_16x.png" usedList="bmpPic2" />
       <Bitmap guid="guidImage1" href="Resources\1.png" usedList="bmpPic1" />
       <Bitmap guid="guidImage0" href="Resources\h.png" usedList="bmpPic0" />
+      <Bitmap guid="guidImage9" href="Resources\SchemaCompare_16x.png" usedList="bmpPic9" />
     </Bitmaps>
 
   </Commands>
@@ -161,6 +194,10 @@
       <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE" />
     </CommandPlacement>
 
+    <CommandPlacement guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" priority="0x100">
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+    </CommandPlacement>
+    
   </CommandPlacements>
 
   <Symbols>
@@ -190,9 +227,17 @@
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
       <IDSymbol name="cmdidEdmProjectMenu" value="0x0003" />
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
-      <IDSymbol name="cmdidReverseEngineerDgml" value="0x0005" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
+      <IDSymbol name="cmdidDbCompare" value="0x0008" />
+    </GuidSymbol>
+
+    <!-- This is the guid used to group the menu ReverseEngineer commands together -->
+    <GuidSymbol name="guidReverseEngineerMenu" value="{74bcf1bb-979c-408d-adcf-718c16e8f09e}">
+      <IDSymbol name="idReverseEngineerMenu" value="0x1000" />
+      <IDSymbol name="idReverseEngineerMenuGroup" value="0x1100" />
+      <IDSymbol name="cmdidReverseEngineerEdit" value="0x1101" />
+      <IDSymbol name="cmdidReverseEngineerRefresh" value="0x1102" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImage7" value="{146f17c2-c8e3-4abc-9fe2-49cc07c6d456}">
@@ -226,7 +271,10 @@
     <GuidSymbol name="guidImage0" value="{146f17c2-c8e3-4cfd-9fe2-ffcc07c6d450}">
       <IDSymbol name="bmpPic0" value="1" />
     </GuidSymbol>
-    
+
+    <GuidSymbol name="guidImage9" value="{146f17c2-c8e3-4cfd-9fe2-49cc07c6d4fb}">
+        <IDSymbol name="bmpPic9" value="1" />
+    </GuidSymbol>
   </Symbols>
 
 </CommandTable>

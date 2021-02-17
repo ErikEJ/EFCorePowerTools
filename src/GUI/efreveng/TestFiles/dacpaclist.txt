@@ -1,1 +1,1 @@
-8 "C:\Code\EFCorePowerTools\src\GUI\NUnitTestCore\NorthwindProcedures.dacpac"
+8 "C:\Code\EFCorePowerTools\src\GUI\NUnitTestCore\Dacpac\NorthwindProcedures.dacpac"

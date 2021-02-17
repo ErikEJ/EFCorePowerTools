@@ -244,7 +244,7 @@ namespace UnitTests.ViewModels
             var preFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects);
 
             // Act
-            vm.Search("ref");
+            vm.Search("ref", SearchMode.Text);
 
             // Assert
             Assert.AreEqual(databaseObjects.Length, preFilter.Count());
@@ -261,7 +261,7 @@ namespace UnitTests.ViewModels
             vm.AddObjects(databaseObjects, null);
 
             // Act
-            vm.Search("ref");
+            vm.Search("ref", SearchMode.Text);
 
             // Assert
             Assert.That(() =>

@@ -5,6 +5,8 @@ using EFCorePowerTools.DAL;
 using EFCorePowerTools.Dialogs;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
+using EFCorePowerTools.Handlers.Compare;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Shared.BLL;
@@ -23,7 +25,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Windows;
 
 namespace EFCorePowerTools
 {
@@ -40,8 +41,8 @@ namespace EFCorePowerTools
         private readonly ModelAnalyzerHandler _modelAnalyzerHandler;
         private readonly AboutHandler _aboutHandler;
         private readonly DgmlNugetHandler _dgmlNugetHandler;
-        private readonly ServerDgmlHandler _serverDgmlHandler;
         private readonly MigrationsHandler _migrationsHandler;
+        private readonly CompareHandler _compareHandler;
         private readonly IServiceProvider _extensionServices;
         private DTE2 _dte2;
 
@@ -51,8 +52,8 @@ namespace EFCorePowerTools
             _modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             _aboutHandler = new AboutHandler(this);
             _dgmlNugetHandler = new DgmlNugetHandler(this);
-            _serverDgmlHandler = new ServerDgmlHandler();
             _migrationsHandler = new MigrationsHandler(this);
+            _compareHandler = new CompareHandler(this);
             _extensionServices = CreateServiceProvider();
         }
 
@@ -63,9 +64,9 @@ namespace EFCorePowerTools
             await base.InitializeAsync(cancellationToken, progress);
 
             _dte2 = await GetServiceAsync(typeof(DTE)) as DTE2;
-            
+
             Assumes.Present(_dte2);
-            
+
             if (_dte2 == null)
             {
                 return;
@@ -82,12 +83,6 @@ namespace EFCorePowerTools
                 var menuItem3 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId3);
                 oleMenuCommandService.AddCommand(menuItem3);
-
-                var menuCommandId4 = new CommandID(GuidList.guidDbContextPackageCmdSet,
-                    (int)PkgCmdIDList.cmdidReverseEngineerDgml);
-                var menuItem4 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId4);
-                oleMenuCommandService.AddCommand(menuItem4);
 
                 var menuCommandId5 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
@@ -124,6 +119,25 @@ namespace EFCorePowerTools
                 var menuItem11 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId11);
                 oleMenuCommandService.AddCommand(menuItem11);
+
+                var menuCommandId12 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    (int)PkgCmdIDList.cmdidDbCompare);
+                var menuItem12 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId12);
+                oleMenuCommandService.AddCommand(menuItem12);
+
+                var menuCommandId1101 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    (int)PkgCmdIDList.cmdidReverseEngineerEdit);
+                var menuItem251 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1101);
+                oleMenuCommandService.AddCommand(menuItem251);
+
+                var menuCommandId1102 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
+                var menuItem252 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1102);
+                oleMenuCommandService.AddCommand(menuItem252);
+
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
@@ -141,6 +155,24 @@ namespace EFCorePowerTools
         }
 
         private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture), 0);
+
+        private async System.Threading.Tasks.Task OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(object sender, EventArgs e)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var menuCommand = sender as MenuCommand;
+            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var itemName = _dte2.SelectedItems.Item(1).Name;
+            menuCommand.Visible = itemName != null &&
+                                  itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
+                                  itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase);
+
+            return;
+        }
 
         private async System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
         {
@@ -168,8 +200,44 @@ namespace EFCorePowerTools
             menuCommand.Visible =
                 project.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" ||
                 project.Kind == "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"; // csproj
-            
+
             return;
+        }
+
+        private async System.Threading.Tasks.Task OnReverseEngineerConfigFileMenuInvokeHandlerAsync(object sender, EventArgs e)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var menuCommand = sender as MenuCommand;
+            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var itemName = _dte2.SelectedItems.Item(1).Name;
+            if (itemName == null ||
+                !itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) ||
+                !itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            string filename = (string)_dte2.SelectedItems.Item(1).ProjectItem.Properties.Item("FullPath").Value;
+
+            var project = _dte2.SelectedItems.Item(1).ProjectItem.ContainingProject;
+            if (project == null)
+            {
+                return;
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
+            {
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+            }
+            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
+            {
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+            }
         }
 
         private async System.Threading.Tasks.Task OnProjectContextMenuInvokeHandlerAsync(object sender, EventArgs e)
@@ -192,7 +260,8 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
-                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
                 path = await LocateProjectAssemblyPathAsync(project);
                 if (path == null) return;
@@ -201,10 +270,6 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
                 await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
-            }
-            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDgml)
-            {
-                _serverDgmlHandler.GenerateServerDgmlFiles();
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
             {
@@ -229,6 +294,10 @@ namespace EFCorePowerTools
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
             {
                 _aboutHandler.ShowDialog();
+            }
+            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
+            {
+                await _compareHandler.HandleComparisonAsync(path, project);
             }
         }
 
@@ -271,7 +340,9 @@ namespace EFCorePowerTools
                     .AddTransient<IPickSchemasDialog, PickSchemasDialog>()
                     .AddTransient<IAdvancedModelingOptionsDialog, AdvancedModelingOptionsDialog>()
                     .AddSingleton<Func<IPickSchemasDialog>>(sp => sp.GetService<IPickSchemasDialog>)
-                    .AddSingleton<Func<IAdvancedModelingOptionsDialog>>(sp => sp.GetService<IAdvancedModelingOptionsDialog>);
+                    .AddSingleton<Func<IAdvancedModelingOptionsDialog>>(sp => sp.GetService<IAdvancedModelingOptionsDialog>)
+                    .AddTransient<ICompareOptionsDialog, CompareOptionsDialog>()
+                    .AddTransient<ICompareResultDialog, CompareResultDialog>();
 
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
@@ -285,7 +356,9 @@ namespace EFCorePowerTools
                     .AddTransient<IMigrationOptionsViewModel, MigrationOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
                     .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>()
-                    .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>();
+                    .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>()
+                    .AddTransient<ICompareOptionsViewModel, CompareOptionsViewModel>()
+                    .AddTransient<ICompareResultViewModel, CompareResultViewModel>();
 
             // Register BLL
             var messenger = new Messenger();
@@ -313,7 +386,8 @@ namespace EFCorePowerTools
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async delegate {
+            ThreadHelper.JoinableTaskFactory.Run(async delegate
+            {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

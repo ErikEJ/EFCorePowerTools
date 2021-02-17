@@ -9,6 +9,9 @@
     <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter"/>
     <converter:CollectionCountToEnabledConverter x:Key="CollectionCountToEnabledConverter"/>
     <converter:ColumnEnabledConverter x:Key="ColumnEnabledConverter"/>
+    <converter:EnumToLabelConverter x:Key="EnumToLabelConverter"/>
+    <converter:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+    <converter:LevelToWidthConverter x:Key="LevelToWidthConverter"/>
     <converter:ObjectTypeIconToImageStyleConverter x:Key="ObjectTypeIconToImageStyleConverter" >
         <converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
             <ResourceDictionary>

@@ -2,13 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using System;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using ScaffoldingTester.Models;
 
 namespace ScaffoldingTester.Models
 {
+    public static class NorthwindContextProceduresExtensions
+    {
+        public static NorthwindContextProcedures GetProcedures(this NorthwindContext context)
+        {
+            return new NorthwindContextProcedures(context);
+        }
+    }
+
     public partial class NorthwindContextProcedures
     {
         private readonly NorthwindContext _context;

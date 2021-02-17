@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0" />
+    <PackageReference Include="EfCore.SchemaCompare" Version="5.1.2" />
   </ItemGroup>
 
 </Project>
