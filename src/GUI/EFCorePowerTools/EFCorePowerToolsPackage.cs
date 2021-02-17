@@ -125,6 +125,19 @@ namespace EFCorePowerTools
                 var menuItem12 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId12);
                 oleMenuCommandService.AddCommand(menuItem12);
+
+                var menuCommandId1101 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    (int)PkgCmdIDList.cmdidReverseEngineerEdit);
+                var menuItem251 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1101);
+                oleMenuCommandService.AddCommand(menuItem251);
+
+                var menuCommandId1102 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
+                var menuItem252 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1102);
+                oleMenuCommandService.AddCommand(menuItem252);
+
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
@@ -142,6 +155,24 @@ namespace EFCorePowerTools
         }
 
         private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture), 0);
+
+        private async System.Threading.Tasks.Task OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(object sender, EventArgs e)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var menuCommand = sender as MenuCommand;
+            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var itemName = _dte2.SelectedItems.Item(1).Name;
+            menuCommand.Visible = itemName != null &&
+                                  itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
+                                  itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase);
+
+            return;
+        }
 
         private async System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
         {
@@ -171,6 +202,42 @@ namespace EFCorePowerTools
                 project.Kind == "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"; // csproj
 
             return;
+        }
+
+        private async System.Threading.Tasks.Task OnReverseEngineerConfigFileMenuInvokeHandlerAsync(object sender, EventArgs e)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var menuCommand = sender as MenuCommand;
+            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var itemName = _dte2.SelectedItems.Item(1).Name;
+            if (itemName == null ||
+                !itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) ||
+                !itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            string filename = (string)_dte2.SelectedItems.Item(1).ProjectItem.Properties.Item("FullPath").Value;
+
+            var project = _dte2.SelectedItems.Item(1).ProjectItem.ContainingProject;
+            if (project == null)
+            {
+                return;
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
+            {
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+            }
+            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
+            {
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+            }
         }
 
         private async System.Threading.Tasks.Task OnProjectContextMenuInvokeHandlerAsync(object sender, EventArgs e)
@@ -319,7 +386,8 @@ namespace EFCorePowerTools
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async delegate {
+            ThreadHelper.JoinableTaskFactory.Run(async delegate
+            {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
