@@ -13,7 +13,7 @@
         ObservableCollection<IObjectTreeRootItemViewModel> Types { get; }
 
         bool IsInEditMode { get; }
-        void Search(string searchText);
+        void Search(string searchText, SearchMode searchMode);
         void SetSelectionState(bool value);
         bool? GetSelectionState();
         IEnumerable<SerializationTableModel> GetSelectedObjects();

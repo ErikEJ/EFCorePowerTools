@@ -8,6 +8,7 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     public class ObjectTreeViewModel : ViewModelBase, IObjectTreeViewModel
     {
@@ -41,11 +42,27 @@
 
         public bool IsInEditMode { get => _objects.Any(o => o.IsEditing) || _objects.SelectMany(c => c.Columns).Any(o => o.IsEditing); }
 
-        public void Search(string searchText)
+        public void Search(string searchText, SearchMode searchMode)
         {
+            var regex = new Regex(searchText, RegexOptions.None, new TimeSpan(0,0,3));
+
             foreach (var obj in _objects)
             {
-                obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || obj.DisplayName.ToUpper().Contains(searchText.ToUpper());
+                if (searchMode == SearchMode.Text)
+                {
+                    obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || obj.DisplayName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+                }
+                else
+                {
+                    try
+                    {
+                        obj.IsVisible = string.IsNullOrWhiteSpace(searchText) || regex.IsMatch(obj.DisplayName);
+                    }
+                    catch (RegexMatchTimeoutException)
+                    {
+                        obj.IsVisible = true;
+                    }
+                }
             }
         }
 
