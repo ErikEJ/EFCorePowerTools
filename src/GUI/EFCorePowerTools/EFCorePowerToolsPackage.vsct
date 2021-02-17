@@ -156,8 +156,8 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <CommandName>EF Core Power Tools - Edit config</CommandName>
-          <ButtonText>EF Core Power Tools - Edit config</ButtonText>
+          <CommandName>EF Core Power Tools - Edit</CommandName>
+          <ButtonText>EF Core Power Tools - Edit</ButtonText>
         </Strings>
       </Button>
 
