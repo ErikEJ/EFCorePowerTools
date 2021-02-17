@@ -50,13 +50,13 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
+                if (!Version.TryParse(result.Item2, out Version version))
+                {
+                    EnvDteHelper.ShowError($"You are using EF Core version {result.Item2}, notice that previews have limited support. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
+                }
+
                 if (!result.Item1)
                 {
-                    if (!Version.TryParse(result.Item2, out Version version))
-                    {
-                        EnvDteHelper.ShowError($"Cannot support version {result.Item2}, notice that previews have limited supported. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
-                        return;
-                    }
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
                     EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
