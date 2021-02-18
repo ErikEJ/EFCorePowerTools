@@ -132,9 +132,7 @@
             </Button>
             <Popup x:Name="ContextPopup" 
                    PlacementTarget="{Binding ElementName=MainButton}" 
-                   Placement="Left" 
-                   VerticalOffset="{Binding ActualHeight, ElementName=MainButton}" 
-                   HorizontalOffset="{Binding ActualWidth, ElementName=MainButton}" 
+                   Placement="Bottom" 
                    StaysOpen="False">
                 <Border BorderThickness="1" BorderBrush="LightGray" Background="{StaticResource DialogWindowBackgroundColor}">
                     <StackPanel>
