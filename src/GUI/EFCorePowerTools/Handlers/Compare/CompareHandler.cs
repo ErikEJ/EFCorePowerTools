@@ -156,7 +156,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new ArgumentException("Unable to collect DbContext information", nameof(processResult));
             }
 
-            if (processResult.StartsWith("Error:"))
+            if (processResult.Contains("Error:"))
             {
                 throw new ArgumentException(processResult, nameof(processResult));
             }
@@ -186,7 +186,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new ArgumentException("Unable to collect SchemaCompare information", nameof(processResult));
             }
 
-            if (processResult.StartsWith("Error:"))
+            if (processResult.Contains("Error:"))
             {
                 throw new ArgumentException(processResult, nameof(processResult));
             }

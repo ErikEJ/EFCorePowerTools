@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Modelling
@@ -46,7 +46,7 @@ namespace Modelling
                     }
                     else if (args.Contains("scriptmigration") && args.Count() >= 4)
                     {
-                        result = migrationsBuilder.ScriptMigration(args[1], args[2],args[3]);
+                        result = migrationsBuilder.ScriptMigration(args[1], args[2], args[3]);
                     }
                     else if (args.Contains("addmigration") && args.Count() >= 7)
                     {

@@ -229,13 +229,11 @@
         {
             var result = new SortedDictionary<string, string>();
 
-            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var context in contexts)
-            {
-                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty);
-            }
+            _processLauncher.BuildModelResult(modelInfo)
+                            .ForEach(a =>
+                            {
+                                result.Add(a.Item1, a.Item2);
+                            });
 
             return result;
         }
@@ -250,7 +248,7 @@
                 return;
             }
 
-            if (processResult.StartsWith("Error:"))
+            if (processResult.Contains("Error:"))
             {
                 _visualStudioAccess.ShowError(processResult);
                 return;
@@ -303,7 +301,7 @@
 
             var result = BuildModelResult(processResult);
 
-            if (processResult.StartsWith("Error:"))
+            if (processResult.Contains("Error:"))
             {
                 _visualStudioAccess.ShowError(processResult);
                 return false;
@@ -332,7 +330,7 @@
         {
             _visualStudioAccess.SetStatusBarText($"Updating Database from migrations in DbContext {SelectedStatusKey}");
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationApply, SelectedStatusKey);
-            if (!processResult.StartsWith("Error:")) return true;
+            if (!processResult.Contains("Error:")) return true;
 
             _visualStudioAccess.ShowError(processResult);
             return false;
@@ -343,7 +341,7 @@
         {
             _visualStudioAccess.SetStatusBarText($"Scripting migrations in DbContext {SelectedStatusKey}");
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationScript, SelectedStatusKey);
-            if (processResult.StartsWith("Error:"))
+            if (processResult.Contains("Error:"))
             {
                 _visualStudioAccess.ShowError(processResult);
                 return false;

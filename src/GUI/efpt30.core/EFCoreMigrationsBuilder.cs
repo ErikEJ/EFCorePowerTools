@@ -55,7 +55,7 @@ namespace Modelling
                     var dbContext = operations.CreateContext(type.Name);
                     if (scriptMigration)
                     {
-                        result.Add(new Tuple<string, string>(type.Name,  ScriptMigration(dbContext, outputPath, startupOutputPath)));
+                        result.Add(new Tuple<string, string>(type.Name, ScriptMigration(dbContext, outputPath, startupOutputPath)));
                     }
                     else
                     {
@@ -78,16 +78,8 @@ namespace Modelling
 
             foreach (var type in types)
             {
-                try
-                {
-                    var dbContext = operations.CreateContext(type.Name);
-                    result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.Error.WriteLine(ex);
-                    continue;
-                }
+                var dbContext = operations.CreateContext(type.Name);
+                result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
             }
             return result;
         }

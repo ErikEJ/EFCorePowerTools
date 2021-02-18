@@ -72,7 +72,7 @@ namespace EFCorePowerTools.Handlers
                     throw new ArgumentException("Unable to collect model information", nameof(processResult));
                 }
 
-                if (processResult.StartsWith("Error:"))
+                if (processResult.Contains("Error:"))
                 {
                     throw new ArgumentException(processResult, nameof(processResult));
                 }
