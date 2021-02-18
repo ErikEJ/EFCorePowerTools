@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Modelling
 {
@@ -10,6 +11,8 @@ namespace Modelling
         {
             try
             {
+                Console.OutputEncoding = Encoding.UTF8;
+
                 if (args.Length > 0)
                 {
                     var builder = new EfCoreModelBuilder();

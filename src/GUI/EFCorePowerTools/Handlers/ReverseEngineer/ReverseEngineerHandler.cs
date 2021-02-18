@@ -96,7 +96,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     if (forceEdit)
                     {
-                        _package.Dte2.StatusBar.Text = "Database don't found, force edit config";
+                        _package.Dte2.StatusBar.Text = "Database connection not found, cannot refresh.";
                     }
                     else
                     {
