@@ -55,21 +55,29 @@ namespace RevEng.Core
                     : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
                 : outputDir;
 
-            var modelRootNameSpace = !string.IsNullOrEmpty(reverseEngineerOptions.ProjectRootNamespace)
-                ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ModelNamespace
-                : reverseEngineerOptions.ModelNamespace;
+            var modelNamespace = string.Empty;
+            var contextNamespace = string.Empty;
 
-            var modelNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
-                ? modelRootNameSpace
-                : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, modelRootNameSpace);
+            if (string.IsNullOrEmpty(reverseEngineerOptions.ProjectRootNamespace))
+            {
+                modelNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
+                    ? reverseEngineerOptions.ModelNamespace
+                    : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
-            var contextRootNameSpace = !string.IsNullOrEmpty(reverseEngineerOptions.ProjectRootNamespace)
-                ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
-                : reverseEngineerOptions.ContextNamespace;
+                contextNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ContextNamespace)
+                    ? reverseEngineerOptions.ContextNamespace
+                    : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+            }
+            else
+            {
+                modelNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
+                    ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ModelNamespace
+                    : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
 
-            var contextNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ContextNamespace)
-                ? contextRootNameSpace
-                : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, contextRootNameSpace);
+                contextNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ContextNamespace)
+                    ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
+                    : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+            }
 
             SavedModelFiles procedurePaths = null;
             var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();

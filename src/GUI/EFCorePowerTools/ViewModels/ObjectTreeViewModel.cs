@@ -97,7 +97,7 @@
                         .ToList();
                     
                     var ignoredReplacers = originalReplacers
-                        .SelectMany(o => o.Columns.Where(c => c.Name.Equals(c.NewName)))
+                        .SelectMany(o => o.Columns.Where(c => c.Name != null && c.Name.Equals(c.NewName)))
                         .ToList();
 
                     var originalNavigationReplacers = originalReplacers
@@ -198,7 +198,7 @@
 
                     foreach (var obj in schema)
                     {
-                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
+                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
                         var tvm = _tableInformationViewModelFactory();
                         tvm.Name = obj.Name;
                         tvm.ModelDisplayName = obj.DisplayName;
@@ -213,7 +213,7 @@
                             {
                                 var cvm = _columnInformationViewModelFactory();
                                 cvm.Name = column.Name;
-                                cvm.NewName = columnReplacers?.FirstOrDefault(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
+                                cvm.NewName = columnReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
                                 cvm.IsPrimaryKey = column.IsPrimaryKey;
                                 tvm.Columns.Add(cvm);
                             }
