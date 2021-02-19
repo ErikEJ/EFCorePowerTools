@@ -13,6 +13,7 @@ namespace efreveng
         {
             try
             {
+                Console.Clear();
                 Console.OutputEncoding = Encoding.UTF8;
 
                 if (args.Length > 0)
