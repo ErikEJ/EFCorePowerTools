@@ -46,13 +46,17 @@ namespace EFCorePowerTools.Handlers
         {
             var result = new List<Tuple<string, string>>();
 
-            var regex = new Regex("DbContext:\r\n(?<DbContext>[\\w]*)\r\nDebugView");
-            var matches = regex.Matches(modelInfo);
-            foreach (Match item in matches)
-            {
-                var group = item.Groups["DbContext"];
+            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-                result.Add(new Tuple<string, string>(group.Value, group.Value));
+            foreach (var context in contexts)
+            {
+                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase)) continue;
+                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase)) continue;
+                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase)) continue;
+                if (!context.Contains("DebugView:")) continue;
+
+                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
+                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
             }
 
             return result;
