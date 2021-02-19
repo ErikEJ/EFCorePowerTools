@@ -9,6 +9,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers
@@ -45,16 +46,13 @@ namespace EFCorePowerTools.Handlers
         {
             var result = new List<Tuple<string, string>>();
 
-            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var context in contexts)
+            var regex = new Regex("DbContext:\r\n(?<DbContext>[\\w]*)\r\nDebugView");
+            var matches = regex.Matches(modelInfo);
+            foreach (Match item in matches)
             {
-                if (context.StartsWith("info:")) continue;
-                if (context.StartsWith("dbug:")) continue;
-                if (context.StartsWith("warn:")) continue;
+                var group = item.Groups["DbContext"];
 
-                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
+                result.Add(new Tuple<string, string>(group.Value, group.Value));
             }
 
             return result;
