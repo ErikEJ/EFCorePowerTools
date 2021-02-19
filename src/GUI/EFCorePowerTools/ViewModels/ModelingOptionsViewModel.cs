@@ -82,7 +82,9 @@ namespace EFCorePowerTools.ViewModels
 
         private void Ok_Executed()
         {
-            if (string.IsNullOrWhiteSpace(Model.Namespace))
+            var individualNamespacesSet = !string.IsNullOrEmpty(Model.ContextNamespace) && !string.IsNullOrEmpty(Model.ModelNamespace);
+
+            if (string.IsNullOrWhiteSpace(Model.Namespace) && !individualNamespacesSet)
             {
                 _visualStudioAccess.ShowMessage("Namespace is required");
                 return;

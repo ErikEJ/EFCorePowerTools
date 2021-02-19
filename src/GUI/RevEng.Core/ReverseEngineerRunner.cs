@@ -55,13 +55,21 @@ namespace RevEng.Core
                     : Path.GetFullPath(Path.Combine(reverseEngineerOptions.ProjectPath, reverseEngineerOptions.OutputContextPath))
                 : outputDir;
 
-            var modelNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
+            var modelRootNameSpace = !string.IsNullOrEmpty(reverseEngineerOptions.ProjectRootNamespace)
                 ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ModelNamespace
-                : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+                : reverseEngineerOptions.ModelNamespace;
+
+            var modelNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ModelNamespace)
+                ? modelRootNameSpace
+                : PathHelper.GetNamespaceFromOutputPath(outputDir, reverseEngineerOptions.ProjectPath, modelRootNameSpace);
+
+            var contextRootNameSpace = !string.IsNullOrEmpty(reverseEngineerOptions.ProjectRootNamespace)
+                ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
+                : reverseEngineerOptions.ContextNamespace;
 
             var contextNamespace = !string.IsNullOrEmpty(reverseEngineerOptions.ContextNamespace)
-                ? reverseEngineerOptions.ProjectRootNamespace + "." + reverseEngineerOptions.ContextNamespace
-                : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, reverseEngineerOptions.ProjectRootNamespace);
+                ? contextRootNameSpace
+                : PathHelper.GetNamespaceFromOutputPath(outputContextDir, reverseEngineerOptions.ProjectPath, contextRootNameSpace);
 
             SavedModelFiles procedurePaths = null;
             var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
