@@ -84,9 +84,10 @@ namespace RevEng.Core
                 case SqlDbType.DateTime:
                 case SqlDbType.SmallDateTime:
                 case SqlDbType.Date:
-                case SqlDbType.Time:
                 case SqlDbType.DateTime2:
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
+                case SqlDbType.Time:
+                    return isNullable ? typeof(TimeSpan?) : typeof(TimeSpan);
 
                 case SqlDbType.Decimal:
                 case SqlDbType.Money:
