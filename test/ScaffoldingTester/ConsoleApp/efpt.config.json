@@ -66,6 +66,7 @@
          "ObjectType": 1
       }
    ],
+   "UiHint": "DESKTOP-9UILCL8\\SQLEXPRESS.Chinook",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": true,

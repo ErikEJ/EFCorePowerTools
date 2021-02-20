@@ -2,13 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using System;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using ConsoleApp.Models;
 
 namespace ConsoleApp.Models
 {
+    public static class ChinookContextProceduresExtensions
+    {
+        public static ChinookContextProcedures GetProcedures(this ChinookContext context)
+        {
+            return new ChinookContextProcedures(context);
+        }
+    }
+
     public partial class ChinookContextProcedures
     {
         private readonly ChinookContext _context;
