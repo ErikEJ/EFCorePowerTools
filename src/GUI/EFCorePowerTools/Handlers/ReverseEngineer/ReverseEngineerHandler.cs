@@ -220,7 +220,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }));
             }
 
-
             if (options.FilterSchemas && options.Schemas != null && options.Schemas.Any())
             {
                 psd.PublishSchemas(options.Schemas);
@@ -269,6 +268,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
                 dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
                 options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
+                options.ConnectionString = dbInfo.ConnectionString;
+                options.DatabaseType = dbInfo.DatabaseType;
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     EnvDteHelper.ShowMessage("Unable to build selected Database Project");
@@ -490,8 +491,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 _package.LogError(revEngResult.EntityWarnings, null);
             }
-
-
         }
 
         private void SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)

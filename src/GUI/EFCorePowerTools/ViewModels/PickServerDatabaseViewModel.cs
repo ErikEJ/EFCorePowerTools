@@ -98,6 +98,11 @@
                 {
                     return SelectedDatabaseConnection.ConnectionName;
                 }
+                if (SelectedDatabaseDefinition != null)
+                {
+                    return SelectedDatabaseDefinition.FilePath;
+                }
+
                 return null;  
             } 
             set
