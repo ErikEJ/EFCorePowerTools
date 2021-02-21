@@ -27,10 +27,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
         private static readonly ISet<string> SQLServerMaxLengthRequiredTypes
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
-        // FIXME Add PostgreSQL db types
-
-        // FIXME Add MySql db types
-
         private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
         public EdmxDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
@@ -97,8 +93,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
 
             var edmxVersion = ((XElement)edmxFile.FirstNode).FirstAttribute.Value;
 
-            // FIXME Assume EDMX version is 3.0 for now
-
             if (string.Compare(edmxVersion, @"3.0", StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 var edmxv3 = LinqToEdmx.EdmxV3.Load(edmxPath);
@@ -112,7 +106,7 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                         Schema = GetSchemaNameV3(edmxv3, item.Name),
                     };
 
-                    GetColumnsV3(item, dbTable/*, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList()*/, edmxv3);
+                    GetColumnsV3(item, dbTable, edmxv3);
                     GetPrimaryKeyV3(item, dbTable);
 
                     dbModel.Tables.Add(dbTable);
@@ -121,11 +115,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                 foreach (var item in items)
                 {
                     GetForeignKeysV3(edmxv3, item, dbModel);
-                    // Unique constraints are not available in the model
-                    // GetUniqueConstraints(item, dbModel);
-
-                    // Indexes are not available in the model
-                    // GetIndexes(item, dbModel);
                 }
             }
 
@@ -140,19 +129,11 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
         private void GetColumnsV3(LinqToEdmx.Model.StorageV3.EntityTypeStore item, DatabaseTable dbTable/*, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints,*/, LinqToEdmx.EdmxV3 model)
         {
             var tableColumns = item.Properties;
-                //.Where(i => !i.GetProperty<bool>(Column.IsHidden)
-                //&& i.ColumnType != ColumnType.ColumnSet
-                //// Computed columns not supported for now
-                //// Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                //&& i.ColumnType != ColumnType.ComputedColumn
-                //);
 
             foreach (var col in tableColumns)
             {
-                // Default constraints are not available in the model.
-                // var def = defaultConstraints.Where(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString()).FirstOrDefault();
                 string storeType = GetStoreTypeV3(col);
-                string defaultValue = null; //def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression.ToLowerInvariant()) : null;
+                string defaultValue = null;
 
                 var dbColumn = new DatabaseColumn
                 {
@@ -161,33 +142,11 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                     IsNullable = col.Nullable,
                     StoreType = storeType,
                     DefaultValueSql = defaultValue,
-
-                    // ComputedColumnSQL is not available in the model
-                    // ComputedColumnSql =,
-
-                    // ValueGenerated is not available in the model
-                    // ValueGenerated = col.StoreGeneratedPattern == "Identity"
-                    //    ? ValueGenerated.OnAdd
-                    //    : storeType == "rowversion"
-                    //        ? ValueGenerated.OnAddOrUpdate
-                    //        : default(ValueGenerated?)
                 };
                 if (storeType == "rowversion")
                 {
                     dbColumn["ConcurrencyToken"] = true;
                 }
-
-                //var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
-                //    .Where(p => p.Name.Parts.Count == 5)
-                //    .Where(p => p.Name.Parts[0] == "SqlColumn")
-                //    .Where(p => p.Name.Parts[1] == dbTable.Schema)
-                //    .Where(p => p.Name.Parts[2] == dbTable.Name)
-                //    .Where(p => p.Name.Parts[3] == dbColumn.Name)
-                //    .Where(p => p.Name.Parts[4] == "MS_Description")
-                //    .FirstOrDefault();
-
-                // Description is not available in the model.
-                //dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
 
                 dbTable.Columns.Add(dbColumn);
             }
@@ -229,10 +188,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
 
             // Integral type
             return col.Type.ToString();
-
-            // FIXME PostgreSQL
-
-            // FIXME MySQL
         }
 
         private void GetPrimaryKeyV3(LinqToEdmx.Model.StorageV3.EntityTypeStore table, DatabaseTable dbTable)
@@ -247,12 +202,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                 Name = string.Concat("PK_", dbTable.Name),
                 Table = dbTable
             };
-
-            // We do not know if the primary key is clustered because we're not limited to SQL Server Here. 
-            //if (!pk.Clustered)
-            //{
-            //    primaryKey["SqlServer:Clustered"] = false;
-            //}
 
             foreach (var pkCol in table.Key.PropertyRefs)
             {
@@ -321,8 +270,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                 };
 
                 var end = associationSet.Ends[0];
-
-                // OnDelete = ConvertToReferentialAction(fk.DeleteAction);
 
                 // Finish to populate the foreign key definition with principal and dependent columns
                 var rc = association.ReferentialConstraint;
