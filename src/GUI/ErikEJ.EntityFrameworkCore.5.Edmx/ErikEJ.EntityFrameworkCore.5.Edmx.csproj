@@ -15,9 +15,6 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.Edmx\Scaffolding\EdmxDatabaseModelFactory.cs">
       <Link>Scaffolding\EdmxDatabaseModelFactory.cs</Link>
     </Compile>
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.Edmx\Scaffolding\EdmxRelationalModelFactory.cs">
-      <Link>Scaffolding\EdmxRelationalModelFactory.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="linq2edmx" Version="0.0.1-pre" />
