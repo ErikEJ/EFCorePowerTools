@@ -158,11 +158,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
             // SQL Server
             string dataTypeName = col.Type.ToString();
 
-            if (dataTypeName == "timestamp" || dataTypeName == "uniqueidentifier")
-            {
-                return "rowversion";
-            }
-
             if (dataTypeName == "decimal"
                 || dataTypeName == "numeric")
             {
