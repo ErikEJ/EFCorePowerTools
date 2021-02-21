@@ -12,10 +12,10 @@
     <Folder Include="Scaffolding\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ErikJ.EntityFrameworkCore.Edmx\Scaffolding\EdmxDatabaseModelFactory.cs">
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.Edmx\Scaffolding\EdmxDatabaseModelFactory.cs">
       <Link>Scaffolding\EdmxDatabaseModelFactory.cs</Link>
     </Compile>
-    <Compile Include="..\ErikJ.EntityFrameworkCore.Edmx\Scaffolding\EdmxRelationalModelFactory.cs">
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.Edmx\Scaffolding\EdmxRelationalModelFactory.cs">
       <Link>Scaffolding\EdmxRelationalModelFactory.cs</Link>
     </Compile>
   </ItemGroup>

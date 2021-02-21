@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ErikJ.EntityFrameworkCore.Edmx.Scaffolding;
+using ErikEJ.EntityFrameworkCore.Edmx.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using NUnit.Framework;
 
