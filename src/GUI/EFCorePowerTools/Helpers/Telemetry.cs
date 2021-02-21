@@ -47,7 +47,7 @@ namespace EFCorePowerTools.Helpers
 #if !DEBUG
             if (Enabled)
             {
-                _telemetry.TrackEvent(key);
+                //_telemetry.TrackEvent(key);
             }
 #endif
         }
@@ -57,7 +57,7 @@ namespace EFCorePowerTools.Helpers
 #if !DEBUG
             if (Enabled)
             {
-                _telemetry.TrackPageView(key);
+                //_telemetry.TrackPageView(key);
             }
 #endif
         }

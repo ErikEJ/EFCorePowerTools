@@ -143,7 +143,7 @@ namespace EFCorePowerTools
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
 
             //Boot Telemetry
-            Telemetry.Enabled = false;
+            Telemetry.Enabled = true;
             if (Telemetry.Enabled)
             {
                 Telemetry.Initialize(Dte2,
@@ -167,11 +167,16 @@ namespace EFCorePowerTools
             }
 
             var itemName = _dte2.SelectedItems.Item(1).Name;
-            menuCommand.Visible = itemName != null &&
-                                  itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
-                                  itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase);
+            menuCommand.Visible = IsConfigFile(itemName);
 
             return;
+        }
+
+        private static bool IsConfigFile(string itemName)
+        {
+            return itemName != null &&
+                itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
+                itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
         private async System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
@@ -215,9 +220,7 @@ namespace EFCorePowerTools
             }
 
             var itemName = _dte2.SelectedItems.Item(1).Name;
-            if (itemName == null ||
-                !itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) ||
-                !itemName.EndsWith("config.json", StringComparison.OrdinalIgnoreCase))
+            if (!IsConfigFile(itemName))
             {
                 return;
             }
@@ -390,6 +393,8 @@ namespace EFCorePowerTools
             {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                Telemetry.TrackException(exception);
 
                 _dte2.StatusBar.Text = "An error occurred. See the Output window for details.";
 

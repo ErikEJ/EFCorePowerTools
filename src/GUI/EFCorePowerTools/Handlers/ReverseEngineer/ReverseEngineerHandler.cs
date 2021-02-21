@@ -34,32 +34,46 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
+            try
             {
-                EnvDteHelper.ShowError("Cannot generate code while debugging");
-                return;
-            }
-            var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
-            var optionsPaths = project.GetConfigFiles();
-            var optionsPath = optionsPaths.First();
-
-            if (optionsPaths.Count > 1)
-            {
-                var pcd = _package.GetView<IPickConfigDialog>();
-                pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
+                if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
                 {
-                    ConfigPath = m,
-                    ProjectPath = projectPath
-                }));
-
-                var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
-                if (!pickConfigResult.ClosedByOK)
+                    EnvDteHelper.ShowError("Cannot generate code while debugging");
                     return;
+                }
+                var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+                var optionsPaths = project.GetConfigFiles();
+                var optionsPath = optionsPaths.First();
 
-                optionsPath = pickConfigResult.Payload.ConfigPath;
+                if (optionsPaths.Count > 1)
+                {
+                    var pcd = _package.GetView<IPickConfigDialog>();
+                    pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
+                    {
+                        ConfigPath = m,
+                        ProjectPath = projectPath
+                    }));
+
+                    var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
+                    if (!pickConfigResult.ClosedByOK)
+                        return;
+
+                    optionsPath = pickConfigResult.Payload.ConfigPath;
+                }
+
+                await ReverseEngineerCodeFirstAsync(project, optionsPath, false);
             }
-            await ReverseEngineerCodeFirstAsync(project, optionsPath, false);
-
+            catch (AggregateException ae)
+            {
+                foreach (var innerException in ae.Flatten().InnerExceptions)
+                {
+                    _package.LogError(new List<string>(), innerException);
+                }
+            }
+            catch (Exception exception)
+            {
+                _package.LogError(new List<string>(), exception);
+            }
         }
 
         public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate)
