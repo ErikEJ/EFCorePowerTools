@@ -209,38 +209,6 @@ namespace NUnitTestCore
                 }
             }
         }
-        [Test]
-        public void Issue551Relational()
-        {
-            // Arrange
-            var factory = new EdmxRelationalModelFactory();
-            var options = new DatabaseModelFactoryOptions(null, new List<string>());
-
-            // Act
-            var dbModel = factory.Create(TestPath("AdventureWorks2019.edmx"), options);
-
-            // Assert
-            Assert.AreEqual(15, dbModel.Tables.Count());
-
-            // Check pluralization or specific names
-
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "ErrorLogs"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "Addresses"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "Customers"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "CustomerAddresses"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "Products"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "ProductCategories"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "ProductDescriptions"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "ProductModels"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "ProductModelProductDescriptions"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "SalesOrderDetails"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "SalesOrderHeaders"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "BuildVersions"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "vGetAllCategories"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "vProductAndDescriptions"));
-            Assert.NotNull(dbModel.Tables.SingleOrDefault(t => t.Name == "vProductModelCatalogDescriptions"));
-
-        }
 
         private string TestPath(string file)
         {
