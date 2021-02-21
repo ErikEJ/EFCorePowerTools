@@ -6,7 +6,6 @@
     <AssemblyName>efpt</AssemblyName>
     <RootNamespace>Modelling</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
-    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
