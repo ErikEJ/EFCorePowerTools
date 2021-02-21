@@ -114,10 +114,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                     else
                     {
-                        containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
+                        containsEfCoreReference = new Tuple<bool, string>(true, null);
+                        options.CustomReplacers = namingOptionsAndPath.Item1;
                         options.InstallNuGetPackage = false;
                     }
-
                 }
 
                 if (!onlyGenerate || forceEdit)
@@ -173,7 +173,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 _package.LogError(new List<string>(), exception);
             }
         }
-
 
         private bool ChooseDataBaseConnectionByUiHint(ReverseEngineerOptions options)
         {
@@ -244,7 +243,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UiHint = pickDataSourceResult.Payload.UiHint;
             options.Dacpac = pickDataSourceResult.Payload.Definition?.FilePath;
 
-
             if (pickDataSourceResult.Payload.Connection != null)
             {
                 options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
@@ -289,8 +287,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return dbInfo;
         }
 
-
-
         private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseInfo dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -321,7 +317,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList();
             return (pickTablesResult.ClosedByOK);
         }
-
 
         private bool GetModelOptions(ReverseEngineerOptions options, string projectName)
         {
@@ -515,8 +510,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 project.ProjectItems.AddFromFile(renamingOptions.Item2);
             }
         }
-
-
 
         private bool DropTemplates(string projectPath, bool useEFCore5)
         {
