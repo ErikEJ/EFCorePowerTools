@@ -152,7 +152,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 GenerateEfRevEng(project, options, containsEfCoreReference);
 
-                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit))
+                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && project.IsNetCore30OrHigher())
                 {
                     _package.Dte2.StatusBar.Text = "Installing EF Core provider package";
                     var nuGetHelper = new NuGetHelper();

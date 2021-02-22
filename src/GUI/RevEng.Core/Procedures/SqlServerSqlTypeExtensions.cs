@@ -19,6 +19,7 @@ namespace RevEng.Core
                 { "sql_variant", "variant" },
                 { "geography", "variant" },
                 { "geometry", "variant" },
+                { "hierarchyid", "variant" },
             });
 
         public static Type ClrType(this ModuleParameter storedProcedureParameter)
