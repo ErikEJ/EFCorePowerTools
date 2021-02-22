@@ -142,8 +142,8 @@ namespace EFCorePowerTools
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
 
-            //Boot Telemetry
-            Telemetry.Enabled = true;
+            //Only enable during previews, never in release!
+            Telemetry.Enabled = false;
             if (Telemetry.Enabled)
             {
                 Telemetry.Initialize(Dte2,
