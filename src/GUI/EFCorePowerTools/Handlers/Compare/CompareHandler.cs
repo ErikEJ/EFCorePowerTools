@@ -51,7 +51,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     return;
                 }
 
-                var result = await project.ContainsEfCoreDesignReferenceAsync();
+                var result = await project.ContainsEfSchemaCompareReferenceAsync();
 
                 if (!result.Item1)
                 {
