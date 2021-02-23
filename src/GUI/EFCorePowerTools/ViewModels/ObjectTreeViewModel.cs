@@ -250,7 +250,7 @@
 
             foreach (var obj in _objects)
             {
-                var t = objects.SingleOrDefault(m => m.Name == obj.ModelDisplayName);
+                var t = objects.FirstOrDefault(m => m.Name == obj.ModelDisplayName);
                 obj.SetSelectedCommand.Execute(t != null);
                 if (obj.ObjectType.HasColumns() && obj.IsSelected.Value)
                 {
