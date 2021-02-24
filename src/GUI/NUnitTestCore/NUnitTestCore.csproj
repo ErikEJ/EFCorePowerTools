@@ -23,6 +23,7 @@
     <None Remove="Samurai.txt" />
     <None Remove="SingleNav.txt" />
     <None Remove="TestDb.dacpac" />
+    <None Remove="AdventureWorks2019.edmx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +41,9 @@
     </Content>
     <Content Include="Dgml\Issue687.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AdventureWorks2019.edmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Dgml\Identity.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -75,20 +79,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml" Link="template.dgml" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.Edmx\ErikEJ.EntityFrameworkCore.Edmx.csproj" />
     <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
 

@@ -14,7 +14,7 @@
         <RootNamespace>DgmlBuilder</RootNamespace>
         <MinClientVersion>4.0</MinClientVersion>
         <Dependencies>
-            <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="5.0.0" />
+          <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="5.0.0" />
         </Dependencies>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <SignAssembly>true</SignAssembly>

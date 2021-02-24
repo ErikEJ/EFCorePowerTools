@@ -52,13 +52,14 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="5.21.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="5.0.0-alpha.2" />
-    <PackageReference Include="System.CodeDom" Version="4.7.0" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.preview\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.5.Edmx\ErikEJ.EntityFrameworkCore.5.Edmx.csproj" />
   </ItemGroup>
 
 </Project>

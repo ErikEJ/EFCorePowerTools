@@ -1,5 +1,6 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using ErikEJ.EntityFrameworkCore.Edmx.Scaffolding;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -87,6 +88,13 @@ namespace RevEng.Core
             // Add database provider services
             switch (options.DatabaseType)
             {
+                case DatabaseType.Undefined:
+                    var edmxProvider = new SqlServerDesignTimeServices();
+                    edmxProvider.ConfigureDesignTimeServices(serviceCollection);
+
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, EdmxDatabaseModelFactory>();
+
+                    break;
                 case DatabaseType.SQLServer:
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
