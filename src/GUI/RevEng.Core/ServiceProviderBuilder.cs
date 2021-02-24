@@ -88,7 +88,7 @@ namespace RevEng.Core
             // Add database provider services
             switch (options.DatabaseType)
             {
-                case DatabaseType.Undefined:
+                case DatabaseType.Edmx:
                     var edmxProvider = new SqlServerDesignTimeServices();
                     edmxProvider.ConfigureDesignTimeServices(serviceCollection);
 

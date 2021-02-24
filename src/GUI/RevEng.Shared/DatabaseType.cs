@@ -12,5 +12,6 @@ namespace RevEng.Shared
         Mysql = 6,
         Oracle = 7,
         SQLServerDacpac = 8,
+        Edmx = 9,
     }
 }
