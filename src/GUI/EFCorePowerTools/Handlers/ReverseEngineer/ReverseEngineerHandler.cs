@@ -265,11 +265,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!string.IsNullOrEmpty(options.Dacpac))
             {
+                
                 dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
+                if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase)) 
+                {
+                    dbInfo.DatabaseType = DatabaseType.Edmx;
+                }
                 dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
-                options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
+                
+                options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     EnvDteHelper.ShowMessage("Unable to build selected Database Project");
@@ -529,7 +535,23 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
         {
-            var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
+            TableListBuilder builder;
+
+            if (dacpacPath.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase))
+            {
+                builder = new TableListBuilder(dacpacPath, DatabaseType.Edmx, null);
+            }
+            else
+            {
+                builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
+            }
+            
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+        }
+
+        private async Task<List<TableModel>> GetEdmxTablesAsync(string dacpacPath, bool useEFCore5)
+        {
+            var builder = new TableListBuilder(dacpacPath, DatabaseType.Edmx, null);
             return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 

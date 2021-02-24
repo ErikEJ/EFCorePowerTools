@@ -117,12 +117,14 @@ namespace EFCorePowerTools.Helpers
 
         internal static string PromptForDacpac()
         {
-            var ofd = new OpenFileDialog();
-            ofd.Filter = "SQL Server Database Project|*.dacpac";
-            ofd.CheckFileExists = true;
-            ofd.Multiselect = false;
-            ofd.ValidateNames = true;
-            ofd.Title = "Select .dacpac File";
+            var ofd = new OpenFileDialog
+            {
+                Filter = "SQL Server Database Project|*.dacpac|EDMX file|*.edmx",
+                CheckFileExists = true,
+                Multiselect = false,
+                ValidateNames = true,
+                Title = "Select .dacpac/.edmx File"
+            };
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return ofd.FileName;
         }

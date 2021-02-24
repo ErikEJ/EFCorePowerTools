@@ -143,7 +143,9 @@ namespace EFCorePowerTools.Extensions
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (sqlprojPath.EndsWith(".dacpac")) return sqlprojPath;
+            if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
+
+            if (sqlprojPath.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
 
             var project = GetProject(dte, sqlprojPath);
             if (project == null) return null;

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29123.89
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{562B5F7B-6229-4019-BFA9-CD7FD4773081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.DgmlBuilder", "ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj", "{079B9426-9230-468E-8D02-2A0DE07C7237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.DgmlBuilder", "ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj", "{079B9426-9230-468E-8D02-2A0DE07C7237}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCorePowerTools", "EFCorePowerTools\EFCorePowerTools.csproj", "{C670BE03-6397-4AC0-9914-AD1BB679778F}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efpt30.core", "efpt30.core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Shared", "RevEng.Shared\RevEng.Shared.csproj", "{D4594A0C-B02F-469D-9521-F0BDD5A30FC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "efreveng", "efreveng\efreveng.csproj", "{EBD761ED-96D2-44F6-9099-9D376CE7181F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efreveng", "efreveng\efreveng.csproj", "{EBD761ED-96D2-44F6-9099-9D376CE7181F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DacFxStrongTypedCore", "DacFxStrongTypedCore\DacFxStrongTypedCore.csproj", "{A9D41FE5-9FB7-4640-ADFF-217BA39F1CE3}"
 EndProject
@@ -41,15 +41,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efreveng50", "efreveng50\ef
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Core.50", "RevEng.Core.50\RevEng.Core.50.csproj", "{587362CD-AE24-4A4C-B434-34ECE66DB397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac", "ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.preview\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.csproj", "{810CD647-833B-4E37-B0B2-93E4551EEEC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac", "ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.preview\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.csproj", "{810CD647-833B-4E37-B0B2-93E4551EEEC6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Core.Abstractions", "RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj", "{DB88DADE-90F2-4250-8092-6C35F3582AE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.5.Edmx", "ErikEJ.EntityFrameworkCore.5.Edmx\ErikEJ.EntityFrameworkCore.5.Edmx.csproj", "{1CDE7157-E394-495D-B61E-2424C5FBE6DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.5.Edmx", "ErikEJ.EntityFrameworkCore.5.Edmx\ErikEJ.EntityFrameworkCore.5.Edmx.csproj", "{1CDE7157-E394-495D-B61E-2424C5FBE6DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.Edmx", "ErikEJ.EntityFrameworkCore.Edmx\ErikEJ.EntityFrameworkCore.Edmx.csproj", "{1954049E-DA77-4903-AF07-29D735DA8540}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.Edmx", "ErikEJ.EntityFrameworkCore.Edmx\ErikEJ.EntityFrameworkCore.Edmx.csproj", "{1954049E-DA77-4903-AF07-29D735DA8540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.5.DgmlBuilder", "ErikEJ.EntityFrameworkCore.5.DgmlBuilder\ErikEJ.EntityFrameworkCore.5.DgmlBuilder.csproj", "{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.5.DgmlBuilder", "ErikEJ.EntityFrameworkCore.5.DgmlBuilder\ErikEJ.EntityFrameworkCore.5.DgmlBuilder.csproj", "{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,7 +83,6 @@ Global
 		{42939E33-FC72-459C-9403-B62AB074635E}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{42939E33-FC72-459C-9403-B62AB074635E}.Debug|Any CPU.Build.0 = Debug|x86
 		{42939E33-FC72-459C-9403-B62AB074635E}.Debug|x86.ActiveCfg = Debug|x86
-		{42939E33-FC72-459C-9403-B62AB074635E}.Debug|x86.Build.0 = Debug|x86
 		{42939E33-FC72-459C-9403-B62AB074635E}.Release|Any CPU.ActiveCfg = Release|x86
 		{42939E33-FC72-459C-9403-B62AB074635E}.Release|x86.ActiveCfg = Release|x86
 		{42939E33-FC72-459C-9403-B62AB074635E}.Release|x86.Build.0 = Release|x86
@@ -124,7 +123,6 @@ Global
 		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|x86.ActiveCfg = Release|Any CPU
-		{EBD761ED-96D2-44F6-9099-9D376CE7181F}.Release|x86.Build.0 = Release|Any CPU
 		{A9D41FE5-9FB7-4640-ADFF-217BA39F1CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9D41FE5-9FB7-4640-ADFF-217BA39F1CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9D41FE5-9FB7-4640-ADFF-217BA39F1CE3}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -170,7 +168,6 @@ Global
 		{845EE2FF-6BF3-44A2-BA96-9617360A815F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{845EE2FF-6BF3-44A2-BA96-9617360A815F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{845EE2FF-6BF3-44A2-BA96-9617360A815F}.Release|x86.ActiveCfg = Release|Any CPU
-		{845EE2FF-6BF3-44A2-BA96-9617360A815F}.Release|x86.Build.0 = Release|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -178,15 +175,12 @@ Global
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|Any CPU.Build.0 = Release|Any CPU
 		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|x86.ActiveCfg = Release|Any CPU
-		{587362CD-AE24-4A4C-B434-34ECE66DB397}.Release|x86.Build.0 = Release|Any CPU
 		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Debug|x86.Build.0 = Debug|Any CPU
 		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Release|x86.ActiveCfg = Release|Any CPU
-		{810CD647-833B-4E37-B0B2-93E4551EEEC6}.Release|x86.Build.0 = Release|Any CPU
 		{DB88DADE-90F2-4250-8092-6C35F3582AE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB88DADE-90F2-4250-8092-6C35F3582AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB88DADE-90F2-4250-8092-6C35F3582AE0}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -198,7 +192,6 @@ Global
 		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Debug|x86.Build.0 = Debug|Any CPU
 		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1CDE7157-E394-495D-B61E-2424C5FBE6DC}.Release|x86.ActiveCfg = Release|Any CPU
@@ -214,11 +207,9 @@ Global
 		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Debug|x86.Build.0 = Debug|Any CPU
 		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Release|x86.ActiveCfg = Release|Any CPU
-		{9212E4DF-87A4-40B3-A1E7-858C0A0F4DC3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
