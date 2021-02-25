@@ -30,7 +30,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             reverseEngineerHelper = new ReverseEngineerHelper();
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, List<string> ConfigFilesPath, bool onlyGenerate)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -42,13 +42,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
                 var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
-                var optionsPaths = project.GetConfigFiles();
-                var optionsPath = optionsPaths.First();
 
-                if (optionsPaths.Count > 1)
+                if (ConfigFilesPath.Count == 0)
+                    ConfigFilesPath = project.GetConfigFiles();
+
+                var configFilePath = ConfigFilesPath.First();
+
+
+                if (ConfigFilesPath.Count > 1)
                 {
                     var pcd = _package.GetView<IPickConfigDialog>();
-                    pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
+                    pcd.PublishConfigurations(ConfigFilesPath.Select(m => new ConfigModel
                     {
                         ConfigPath = m,
                         ProjectPath = projectPath
@@ -58,10 +62,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (!pickConfigResult.ClosedByOK)
                         return;
 
-                    optionsPath = pickConfigResult.Payload.ConfigPath;
+                    configFilePath = pickConfigResult.Payload.ConfigPath;
                 }
 
-                await ReverseEngineerCodeFirstAsync(project, optionsPath, false);
+                await ReverseEngineerCodeFirstAsync(project, configFilePath, onlyGenerate);
             }
             catch (AggregateException ae)
             {
@@ -76,7 +80,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate)
+
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string configFilePath, bool onlyGenerate)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -91,11 +96,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 var renamingPath = project.GetRenamingPath();
-                var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
+                var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, configFilePath);
 
                 Tuple<bool, string> containsEfCoreReference = null;
 
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath) ?? new ReverseEngineerOptions();
+                var options = ReverseEngineerOptionsExtensions.TryRead(configFilePath) ?? new ReverseEngineerOptions();
 
                 options.ProjectPath = project.Properties.Item("FullPath")?.Value.ToString();
 
@@ -145,7 +150,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (!GetModelOptions(options, project.Name))
                         return;
 
-                    SaveOptions(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+                    SaveOptions(project, configFilePath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
                 VerifySQLServerRightsAndVersion(options);
@@ -265,16 +270,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!string.IsNullOrEmpty(options.Dacpac))
             {
-                
+
                 dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase)) 
+                if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase))
                 {
                     dbInfo.DatabaseType = DatabaseType.Edmx;
                 }
                 dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
-                
+
                 options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
@@ -545,7 +550,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
             }
-            
+
             return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 

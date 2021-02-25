@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -128,15 +129,28 @@ namespace EFCorePowerTools
 
                 var menuCommandId1101 = new CommandID(GuidList.guidReverseEngineerMenu,
                     (int)PkgCmdIDList.cmdidReverseEngineerEdit);
-                var menuItem251 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
+                var menuItem1101 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1101);
-                oleMenuCommandService.AddCommand(menuItem251);
+                oleMenuCommandService.AddCommand(menuItem1101);
 
                 var menuCommandId1102 = new CommandID(GuidList.guidReverseEngineerMenu,
                     (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
-                var menuItem252 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
+                var menuItem1102 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
                     async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1102);
-                oleMenuCommandService.AddCommand(menuItem252);
+                oleMenuCommandService.AddCommand(menuItem1102);
+
+
+                var menuCommandId2101 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    (int)PkgCmdIDList.cmdidReverseEngineerFolderEdit);
+                var menuItem2101 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFolderMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnReverseEngineerConfigFolderMenuBeforeQueryStatusAsync(s, e), menuCommandId2101);
+                oleMenuCommandService.AddCommand(menuItem2101);
+
+                var menuCommandId2102 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    (int)PkgCmdIDList.cmdidReverseEngineerFolderRefresh);
+                var menuItem2102 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFolderMenuInvokeHandlerAsync(s, e), null,
+                    async (s, e) => await OnReverseEngineerConfigFolderMenuBeforeQueryStatusAsync(s, e), menuCommandId2102);
+                oleMenuCommandService.AddCommand(menuItem2102);
 
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
@@ -170,6 +184,31 @@ namespace EFCorePowerTools
             menuCommand.Visible = IsConfigFile(itemName);
 
             return;
+        }
+
+        private async System.Threading.Tasks.Task OnReverseEngineerConfigFolderMenuBeforeQueryStatusAsync(object sender, EventArgs e)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var menuCommand = sender as MenuCommand;
+            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var path = _dte2.SelectedItems.Item(1).ProjectItem.FileNames[0];
+            menuCommand.Visible = (GetConfigFiles(path)?.Any() == true);
+
+            return;
+        }
+
+        private static IEnumerable<string> GetConfigFiles(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !System.IO.Directory.Exists(path)) return null;
+
+            var configfiles = System.IO.Directory.GetFiles(path, "efpt.*config.json", System.IO.SearchOption.AllDirectories).Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\"));
+
+            return configfiles;
         }
 
         private static bool IsConfigFile(string itemName)
@@ -243,6 +282,41 @@ namespace EFCorePowerTools
             }
         }
 
+        private async System.Threading.Tasks.Task OnReverseEngineerConfigFolderMenuInvokeHandlerAsync(object sender, EventArgs e)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var menuCommand = sender as MenuCommand;
+            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var path = _dte2.SelectedItems.Item(1).ProjectItem.FileNames[0];
+            var configFiles = GetConfigFiles(path)?.ToList();
+
+            if (configFiles == null || configFiles.Count == 0)
+            {
+                return;
+            }
+
+            var project = _dte2.SelectedItems.Item(1).ProjectItem.ContainingProject;
+            if (project == null)
+            {
+                return;
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerFolderEdit)
+            {
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, configFiles, false);
+            }
+            else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerFolderRefresh)
+            {
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, configFiles, true);
+            }
+        }
+
+
         private async System.Threading.Tasks.Task OnProjectContextMenuInvokeHandlerAsync(object sender, EventArgs e)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -272,7 +346,7 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
-                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
+                await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, new List<string>(), false);
             }
             else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
             {

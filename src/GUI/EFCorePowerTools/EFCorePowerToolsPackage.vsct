@@ -39,6 +39,10 @@
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" />
       </Group>
 
+      <Group guid="guidReverseEngineerMenu" id="idReverseEngineerMenuFolderGroup" priority="0x0100">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuFolder" />
+      </Group>
+
     </Groups>
 
     <Menus>
@@ -66,7 +70,15 @@
           <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
         </Strings>
       </Menu>
-      
+
+      <Menu guid="guidReverseEngineerMenu" id="idReverseEngineerMenuFolder" priority="0x0100" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+        <Strings>
+          <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
+          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
+        </Strings>
+    </Menu>
+        
     </Menus>
 
     <Buttons>
@@ -171,6 +183,28 @@
         </Strings>
       </Button>
 
+      <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerFolderEdit" priority="0x0100" type="Button">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuFolderGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <CommandName>EF Core Power Tools - Edit</CommandName>
+          <ButtonText>EF Core Power Tools - Edit</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerFolderRefresh" priority="0x0100" type="Button">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuFolderGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <CommandName>EF Core Power Tools - Refresh</CommandName>
+          <ButtonText>EF Core Power Tools - Refresh</ButtonText>
+        </Strings>
+      </Button>        
+        
+        
+
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -197,7 +231,10 @@
     <CommandPlacement guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" priority="0x100">
       <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
     </CommandPlacement>
-    
+
+    <CommandPlacement guid="guidReverseEngineerMenu" id="idReverseEngineerMenuFolderGroup" priority="0x100">
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+    </CommandPlacement>    
   </CommandPlacements>
 
   <Symbols>
@@ -238,6 +275,11 @@
       <IDSymbol name="idReverseEngineerMenuGroup" value="0x1100" />
       <IDSymbol name="cmdidReverseEngineerEdit" value="0x1101" />
       <IDSymbol name="cmdidReverseEngineerRefresh" value="0x1102" />
+      
+      <IDSymbol name="idReverseEngineerMenuFolder" value="0x2000" />
+      <IDSymbol name="idReverseEngineerMenuFolderGroup" value="0x2100" />
+      <IDSymbol name="cmdidReverseEngineerFolderEdit" value="0x2101" />
+      <IDSymbol name="cmdidReverseEngineerFolderRefresh" value="0x2102" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImage7" value="{146f17c2-c8e3-4abc-9fe2-49cc07c6d456}">
