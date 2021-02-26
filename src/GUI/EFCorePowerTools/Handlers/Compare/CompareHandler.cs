@@ -101,6 +101,12 @@ namespace EFCorePowerTools.Handlers.Compare
                 if (!pickDataSourceResult.ClosedByOK)
                     return;
 
+                if (!pickDataSourceResult.Payload.ContextTypes.Any())
+                {
+                    EnvDteHelper.ShowError($"No contexts selected.");
+                    return;
+                }
+
                 pickDataSourceResult.Payload.Connection.DataConnection.Open();
                 pickDataSourceResult.Payload.Connection.ConnectionString = DataProtection.DecryptString(pickDataSourceResult.Payload.Connection.DataConnection.EncryptedConnectionString);
 
