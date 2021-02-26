@@ -68,7 +68,7 @@ namespace EFCorePowerTools.Extensions
 
             var files = Directory.GetFiles(projectPath, "efpt.*config.json", SearchOption.AllDirectories);
             result.AddRange(files
-                .Where(f => !f.Contains("\\bin\\")));
+                .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\")));
                 
             if (result.Count() == 0)
             {
