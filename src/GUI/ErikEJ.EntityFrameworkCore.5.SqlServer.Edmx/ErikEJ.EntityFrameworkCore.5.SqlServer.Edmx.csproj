@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
 		<!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Edmx.md</DocumentationFile>-->
 		<PackageReleaseNotes>Initial preview</PackageReleaseNotes>
-		<PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
+		<PackageTags>DbContext;EntityFramework;SqlServer;EDMX;EFCore;EntityFrameworkCore</PackageTags>
 		<RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer.Edmx</RootNamespace>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<SignAssembly>true</SignAssembly>
