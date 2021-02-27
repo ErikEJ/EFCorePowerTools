@@ -90,7 +90,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.Edmx\ErikEJ.EntityFrameworkCore.Edmx.csproj" />
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Edmx\ErikEJ.EntityFrameworkCore.SqlServer.Edmx.csproj" />
     <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
 

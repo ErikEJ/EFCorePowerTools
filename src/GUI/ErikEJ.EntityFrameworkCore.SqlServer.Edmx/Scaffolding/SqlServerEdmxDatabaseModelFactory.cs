@@ -1,25 +1,20 @@
-﻿using System;
+﻿using LinqToEdmx;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
-using LinqToEdmx;
-using LinqToEdmx.MapV3;
-using LinqToEdmx.Model.ConceptualV3;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
-namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
+namespace ErikEJ.EntityFrameworkCore.SqlServer.Edmx.Scaffolding
 {
     // This is the storage side of the scaffolding logic
     // Because the EDMX format was not designed with the database creation in mind, the SSDL part of the schema won't contains default values, extended properties, primary keys, unique constraints and index informations.
-    public class EdmxDatabaseModelFactory : IDatabaseModelFactory
+    public class SqlServerEdmxDatabaseModelFactory : IDatabaseModelFactory
     {
         // SQL Server db types
         private static readonly ISet<string> SQLServerDateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
@@ -29,7 +24,7 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
 
         private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
-        public EdmxDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        public SqlServerEdmxDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
         {
             _logger = logger;
         }
@@ -46,7 +41,7 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                     {
                         if (string.IsNullOrEmpty(entitySet.Schema1) && string.IsNullOrEmpty(entitySet.Schema))
                         {
-                            throw new InvalidOperationException(@$"[{entityName}] schema could not be null. This usually indicates a bug");
+                            throw new InvalidOperationException($"[{entityName}] schema could not be null. This usually indicates a bug");
                         }
                         return entitySet.Schema ?? entitySet.Schema1;
                     }
@@ -58,13 +53,13 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                     {
                         if (string.IsNullOrEmpty(entitySet.Schema1) && string.IsNullOrEmpty(entitySet.Schema))
                         {
-                            throw new InvalidOperationException(@$"[{entityName}] schema could not be null. This usually indicates a bug");
+                            throw new InvalidOperationException($"[{entityName}] schema could not be null. This usually indicates a bug");
                         }
                         return entitySet.Schema ?? entitySet.Schema1;
                     }
                 }
             }
-            throw new InvalidOperationException(@$"Unable to identify the database object schema for entity [{entityName}]. This usually indicates a bug");
+            throw new InvalidOperationException($"Unable to identify the database object schema for entity [{entityName}]. This usually indicates a bug");
         }
 
         public DatabaseModel Create(string edmxPath, DatabaseModelFactoryOptions options)
@@ -88,14 +83,18 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
             };
 
             // Detect the EDMX file version
-            // FIXME Provide an alternative to not load the whole document in memory /!\
             XDocument edmxFile = XDocument.Load(edmxPath);
 
             var edmxVersion = ((XElement)edmxFile.FirstNode).FirstAttribute.Value;
 
             if (string.Compare(edmxVersion, @"3.0", StringComparison.InvariantCultureIgnoreCase) == 0)
             {
-                var edmxv3 = LinqToEdmx.EdmxV3.Load(edmxPath);
+                var edmxv3 = EdmxV3.Load(edmxPath);
+                if (!edmxv3.Runtimes[0].StorageModels.StorageSchema.Provider.Equals("System.Data.SqlClient", StringComparison.Ordinal))
+                {
+                    throw new NotSupportedException("Only SQL Server EDMX files are currently supported");
+                }
+
                 var items = edmxv3.GetItems<LinqToEdmx.Model.StorageV3.EntityTypeStore>();
 
                 foreach (var item in items)
@@ -116,6 +115,10 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                 {
                     GetForeignKeysV3(edmxv3, item, dbModel);
                 }
+            }
+            else
+            {
+                throw new NotSupportedException("Only V3 edmx files supported.");
             }
 
             return dbModel;
@@ -152,11 +155,15 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
             }
         }
 
-        // FIXME Add provider string to deal with provider specific data type string to be returned. Only SQL Server for now.
         private string GetStoreTypeV3(LinqToEdmx.Model.StorageV3.EntityProperty col)
         {
             // SQL Server
             string dataTypeName = col.Type.ToString();
+
+            if (dataTypeName == "timestamp")
+            {
+                return "rowversion";
+            }
 
             if (dataTypeName == "decimal"
                 || dataTypeName == "numeric")
@@ -250,7 +257,7 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                 }
                 if (principalTable == null)
                 {
-                    throw new InvalidOperationException(@$"Unable to get foreign keys for entity with name [{entityName}]. This usually indicates a bug");
+                    throw new InvalidOperationException($"Unable to get foreign keys for entity with name [{entityName}]. This usually indicates a bug");
                 }
 
                 var foreignKey = new DatabaseForeignKey
@@ -294,27 +301,6 @@ namespace ErikEJ.EntityFrameworkCore.Edmx.Scaffolding
                 {
                     table.ForeignKeys.Add(foreignKey);
                 }
-            }
-        }
-
-        private static ReferentialAction? ConvertToReferentialAction(OnAction onDeleteAction)
-        {
-            switch (onDeleteAction.Action)
-            {
-                case "NoAction":
-                    return ReferentialAction.NoAction;
-
-                case "Cascade":
-                    return ReferentialAction.Cascade;
-
-                case "SetNull":
-                    return ReferentialAction.SetNull;
-
-                case "SetDefault":
-                    return ReferentialAction.SetDefault;
-
-                default:
-                    return null;
             }
         }
     }
