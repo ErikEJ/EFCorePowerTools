@@ -18,10 +18,6 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="linq2edmx" Version="0.0.1-pre" />
   </ItemGroup>

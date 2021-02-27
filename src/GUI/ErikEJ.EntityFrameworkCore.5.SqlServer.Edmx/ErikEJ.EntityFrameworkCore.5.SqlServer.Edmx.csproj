@@ -16,11 +16,7 @@
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
-  </ItemGroup>
-  
+ 
   <ItemGroup>
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Edmx\Scaffolding\SqlServerEdmxDatabaseModelFactory.cs">
       <Link>Scaffolding\SqlServerEdmxDatabaseModelFactory.cs</Link>
