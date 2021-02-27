@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Edmx</PackageId>
+		<PackageVersion>5.0.0-preview1</PackageVersion>
+		<NoWarn>$(NoWarn);EF1001</NoWarn>
+		<Authors>ErikEJ</Authors>
+		<Description>Enables reverse engineering an EF Core model from an Entity Framework 6 EDMX file targeting SQL Server.</Description>
+		<PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+		<!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Edmx.md</DocumentationFile>-->
+		<PackageReleaseNotes>Initial preview</PackageReleaseNotes>
+		<PackageTags>DbContext;EntityFramework;SqlServer;EDMX;EFCore;EntityFrameworkCore</PackageTags>
+		<RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer.Edmx</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+ 
+  <ItemGroup>
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Edmx\Scaffolding\SqlServerEdmxDatabaseModelFactory.cs">
+      <Link>Scaffolding\SqlServerEdmxDatabaseModelFactory.cs</Link>
+    </Compile>
+     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Edmx\Design\SqlServerEdmxDesignTimeServices.cs">
+      <Link>Design\SqlServerEdmxDesignTimeServices.cs</Link>
+    </Compile>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="linq2edmx" Version="0.0.1-pre" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
+  </ItemGroup>
+</Project>

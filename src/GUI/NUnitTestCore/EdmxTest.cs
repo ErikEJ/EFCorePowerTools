@@ -1,29 +1,20 @@
-﻿using System;
+﻿using ErikEJ.EntityFrameworkCore.SqlServer.Edmx.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ErikEJ.EntityFrameworkCore.Edmx.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using NUnit.Framework;
 
 namespace NUnitTestCore
 {
     [TestFixture]
     public class EdmxTest
     {
-        private string edmx;
-
-        [SetUp]
-        public void Setup()
-        {
-            edmx = TestPath("AdventureWorks2019.edmx");
-        }
-
         [Test]
         public void Issue551Storage()
         {
             // Arrange
-            var factory = new EdmxDatabaseModelFactory(null);
+            var factory = new SqlServerEdmxDatabaseModelFactory(null);
             var options = new DatabaseModelFactoryOptions(null, new List<string>());
 
             // Act
