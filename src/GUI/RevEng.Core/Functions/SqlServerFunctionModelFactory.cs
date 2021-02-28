@@ -22,15 +22,6 @@ namespace RevEng.Core.Procedures
             var found = new List<Tuple<string, string, int>>();
             var errors = new List<string>();
 
-            if (options.FullModel && !options.Modules.Any())
-            {
-                return new FunctionModel
-                {
-                    Functions = result,
-                    Errors = errors,
-                };
-            }
-
             var filter = options.Modules.ToHashSet();
 
             using (var connection = new SqlConnection(connectionString))

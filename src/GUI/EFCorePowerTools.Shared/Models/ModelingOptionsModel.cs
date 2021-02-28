@@ -33,6 +33,7 @@
         private bool _useNullableReferences;
         private bool _useNoConstructor;
         private bool _useNoNavigations;
+        private bool _useNoObjectFilter;
 
         public bool UseDataAnnotations
         {
@@ -294,6 +295,17 @@
             {
                 if (value == _useNoNavigations) return;
                 _useNoNavigations = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseNoObjectFilter
+        {
+            get => _useNoObjectFilter;
+            set
+            {
+                if (value == _useNoObjectFilter) return;
+                _useNoObjectFilter = value;
                 OnPropertyChanged();
             }
         }
