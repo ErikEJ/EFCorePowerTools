@@ -120,6 +120,14 @@ namespace EFCorePowerTools.ViewModels
                     }
 
                     break;
+
+                case nameof(ModelingOptionsModel.SelectedToBeGenerated):
+                    if (Model.InstallNuGetPackage && Model.SelectedToBeGenerated == 2)
+                    {
+                        Model.InstallNuGetPackage = false;
+                    }
+
+                    break;
             }
         }
 
