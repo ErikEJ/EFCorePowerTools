@@ -32,6 +32,7 @@ namespace RevEng.Shared
         public bool UseNullableReferences { get; set; }
         public bool UseNoConstructor { get; set; }
         public bool UseNoNavigations { get; set; }
+        public bool UseNoObjectFilter { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
     }

@@ -49,6 +49,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoConstructor = options.UseNoConstructor,
                 UseNoNavigations = options.UseNoNavigations,
+                UseNoObjectFilter = options.UseNoObjectFilter,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, useEFCore5);

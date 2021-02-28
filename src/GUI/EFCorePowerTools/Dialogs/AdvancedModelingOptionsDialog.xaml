@@ -10,7 +10,7 @@
                  mc:Ignorable="d"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
-                 d:DesignHeight="300"
+                 d:DesignHeight="350"
                  d:DesignWidth="337"
                  d:DataContext="{d:DesignInstance Type=viewModels:AdvancedModelingOptionsViewModel, IsDesignTimeCreatable=False}">
 
@@ -46,6 +46,11 @@
             <CheckBox TabIndex="0"
                       Content="Split DbContext into Configuration classes (preview)"
                       IsChecked="{Binding Model.UseDbContextSplitting}"
+                      Style="{StaticResource MarginCheckBlockStyle}"/>
+
+            <CheckBox TabIndex="1"
+                      Content="Always include all database objects (preview)"
+                      IsChecked="{Binding Model.UseNoObjectFilter}"
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="2"

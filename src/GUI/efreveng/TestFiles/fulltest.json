@@ -250,6 +250,7 @@
       "ObjectType": 2
     }
   ],
+  "UseNoObjectFilter": true,
   "UseBoolPropertiesWithoutDefaultSql": true,
   "UseDatabaseNames": false,
   "UseDbContextSplitting": false,

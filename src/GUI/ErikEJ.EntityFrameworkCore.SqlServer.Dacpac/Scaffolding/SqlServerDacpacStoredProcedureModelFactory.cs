@@ -42,15 +42,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
 
-            if (options.FullModel && !options.Modules.Any())
-            {
-                return new ProcedureModel
-                {
-                    Procedures = result,
-                    Errors = errors,
-                };
-            }
-
             var consolidator = new DacpacConsolidator();
             dacpacPath = consolidator.Consolidate(dacpacPath);
 

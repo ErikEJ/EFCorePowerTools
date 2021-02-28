@@ -44,6 +44,7 @@
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
             Model.UseNoConstructor = presets.UseNoConstructor;
             Model.UseNoNavigations = presets.UseNoNavigations;
+            Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseNullableReferences = presets.UseNullableReferences;
         }
     }

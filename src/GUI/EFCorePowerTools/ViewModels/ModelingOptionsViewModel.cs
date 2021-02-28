@@ -139,6 +139,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoConstructor = advancedModelingOptionsResult.Payload.UseNoConstructor;
             Model.UseNoNavigations = advancedModelingOptionsResult.Payload.UseNoNavigations;
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
+            Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
         }
 
         void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
@@ -167,6 +168,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoConstructor = presets.UseNoConstructor;
             Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNullableReferences = presets.UseNullableReferences;
+            Model.UseNoObjectFilter = presets.UseNoObjectFilter;
 
             Title = $"Generate EF Core Model in Project {Model.ProjectName}";
         }
