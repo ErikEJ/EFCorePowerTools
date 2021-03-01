@@ -39,6 +39,7 @@ namespace RevEng.Core.Procedures
                 var sql = $@"
 SELECT ROUTINE_SCHEMA, ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES
 WHERE ROUTINE_TYPE = 'PROCEDURE'
+AND NULLIF(ROUTINE_NAME, '') IS NOT NULL
 ORDER BY ROUTINE_NAME;";
 
                 using (var command = new SqlCommand(sql, connection))
