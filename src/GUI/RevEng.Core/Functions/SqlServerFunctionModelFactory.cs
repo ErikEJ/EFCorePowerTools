@@ -29,7 +29,8 @@ namespace RevEng.Core.Procedures
                 var sql = $@"
 SELECT SCHEMA_NAME(schema_id) AS [Schema], name AS [Name], object_id
 FROM sys.objects 
-WHERE objectproperty(OBJECT_ID,'IsScalarFunction') = 1;";
+WHERE objectproperty(OBJECT_ID,'IsScalarFunction') = 1
+AND NULLIF([name], '') IS NOT NULL;";
 
                 using (var command = new SqlCommand(sql, connection))
                 {
