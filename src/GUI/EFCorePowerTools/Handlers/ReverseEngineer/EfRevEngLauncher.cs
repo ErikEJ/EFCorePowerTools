@@ -15,6 +15,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
     {
         private readonly ReverseEngineerCommandOptions options;
         private readonly bool useEFCore5;
+        private readonly string revengFolder;
         private readonly ResultDeserializer resultDeserializer;
 
         public static ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options, bool useEFCore5)
@@ -60,6 +61,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             this.options = options;
             this.useEFCore5 = useEFCore5;
+            var versionSuffix = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            revengFolder = useEFCore5 ? "efreveng5." : "efreveng.";
+            revengFolder += versionSuffix;
             resultDeserializer = new ResultDeserializer();
         }
 
@@ -106,7 +110,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var path = Path.GetTempFileName() + ".json";
             File.WriteAllText(path, options.Write());
 
-            var launchPath = Path.Combine(Path.GetTempPath(), "efreveng");
+            var launchPath = Path.Combine(Path.GetTempPath(), revengFolder);
 
             var startInfo = new ProcessStartInfo
             {
@@ -180,7 +184,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private string DropNetCoreFiles()
         {
-            var toDir = Path.Combine(Path.GetTempPath(), "efreveng");
+            var toDir = Path.Combine(Path.GetTempPath(), revengFolder);
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
@@ -188,7 +192,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (Directory.Exists(toDir))
             {
-                Directory.Delete(toDir, true);
+                return toDir;
             }
 
             Directory.CreateDirectory(toDir);
@@ -200,6 +204,22 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng50.exe.zip"), ZipArchiveMode.Read))
                 {
                     archive.ExtractToDirectory(toDir, true);
+                }
+            }
+
+            var dirs = Directory.GetDirectories(Path.GetTempPath(), "efreveng*");
+            foreach (var dir in dirs)
+            {
+                if (!dir.Equals(toDir))
+                {
+                    try
+                    {
+                        Directory.Delete(dir, true);
+                    }
+                    catch
+                    { 
+                        // Ignore
+                    }
                 }
             }
 

@@ -20,6 +20,7 @@ namespace RevEng.Core
                 { "geography", "variant" },
                 { "geometry", "variant" },
                 { "hierarchyid", "variant" },
+                { "sysname", "nvarchar" },
             });
 
         public static Type ClrType(this ModuleParameter storedProcedureParameter)
@@ -54,8 +55,7 @@ namespace RevEng.Core
             return (SqlDbType)Enum.Parse(typeof(SqlDbType), cleanedTypeName, true);
         }
 
-
-        private static Type GetClrType(string storeType, bool isNullable)
+        public static Type GetClrType(string storeType, bool isNullable)
         {
             var sqlType = GetSqlDbType(storeType);
 

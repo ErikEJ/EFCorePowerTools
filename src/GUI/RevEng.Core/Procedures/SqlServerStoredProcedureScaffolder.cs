@@ -123,7 +123,7 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using Microsoft.Data.SqlClient;");
             _sb.AppendLine("using System;");
-            //To support System.Data.DateTable
+            //To support System.Data.DataTable
             _sb.AppendLine("using System.Data;");
             _sb.AppendLine("using System.Threading;");
             _sb.AppendLine("using System.Threading.Tasks;");
