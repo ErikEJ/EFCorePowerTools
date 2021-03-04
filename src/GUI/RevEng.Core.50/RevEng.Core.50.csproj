@@ -15,6 +15,7 @@
     <Compile Include="..\RevEng.Core\ColumnRemovingScaffoldingModelFactory.cs" Link="ColumnRemovingScaffoldingModelFactory.cs" />
     <Compile Include="..\RevEng.Core\CustomTemplateFileService.cs" Link="CustomTemplateFileService.cs" />
     <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
+    <Compile Include="..\RevEng.Core\DbModelCacheProvider.cs" Link="DbModelCacheProvider.cs" />
     <Compile Include="..\RevEng.Core\Functions\IFunctionScaffolder.cs" Link="Functions\IFunctionScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Functions\SqlServerFunctionModelFactory.cs" Link="Functions\SqlServerFunctionModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Functions\SqlServerFunctionScaffolder.cs" Link="Functions\SqlServerFunctionScaffolder.cs" />
@@ -46,6 +47,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="5.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="5.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="5.0.2" />

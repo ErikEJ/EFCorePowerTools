@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Model;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using RevEng.Shared;
-using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Abstractions;
 
 namespace RevEng.Core
 {
@@ -61,9 +61,11 @@ namespace RevEng.Core
         private List<DatabaseTable> GetTableDefinitions()
         {
             var dbModelFactory = _serviceProvider.GetService<IDatabaseModelFactory>();
-
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
-            var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
+
+            var cache = new DbModelCacheProvider();
+            
+            var dbModel = cache.GetModelFromFileCache(dbModelFactory, _connectionString, dbModelOptions);
 
             return dbModel.Tables.ToList();
         }
