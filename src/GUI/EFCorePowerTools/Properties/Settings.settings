@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EFCorePowerTools.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ModelCacheTimeToLive" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">90</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
