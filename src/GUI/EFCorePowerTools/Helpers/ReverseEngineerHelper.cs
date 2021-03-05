@@ -1,4 +1,6 @@
-﻿using RevEng.Shared;
+﻿using EFCorePowerTools.Locales;
+using Microsoft.Extensions.Primitives;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -56,22 +58,22 @@ namespace EFCorePowerTools.Helpers
             var errors = new StringBuilder();
             if (revEngResult.EntityErrors.Count == 0)
             {
-                errors.Append("Model generated successfully." + Environment.NewLine);
+                errors.Append(ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine);
             }
             else
             {
-                errors.Append("Please check the output window for errors" + Environment.NewLine);
+                errors.Append(ReverseEngineerLocale.CheckOutputWindowForErrors + Environment.NewLine);
             }
 
             if (revEngResult.EntityWarnings.Count > 0)
             {
-                errors.Append("Please check the output window for warnings" + Environment.NewLine);
+                errors.Append(ReverseEngineerLocale.CheckOutputWindowForWarnings + Environment.NewLine);
             }
 
             if (!string.IsNullOrEmpty(missingProviderPackage))
             {
                 errors.AppendLine();
-                errors.AppendFormat("The \"{0}\" NuGet package was not found in the project - it must be installed in order to build.", missingProviderPackage);
+                errors.AppendFormat(String.Format(ReverseEngineerLocale.PackageNotFoundInProject, missingProviderPackage));
             }
 
             return errors.ToString();

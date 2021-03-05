@@ -14,8 +14,9 @@
     using System.Linq;
     using System.Windows.Input;
     using RevEng.Shared;
+	using EFCorePowerTools.Locales;
 
-    public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
+	public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;
@@ -162,7 +163,7 @@
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage("Unable to add connection, maybe the provider is not supported: " + e.Message);
+                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
                 return;
             }
 
@@ -187,7 +188,7 @@
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage("Unable to remove connection: " + e.Message);
+                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToRemoveConnection}: {e.Message}");
                 return;
             }
 
@@ -203,7 +204,7 @@
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage("Unable to add to list: " + e.Message);
+                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddToList}: {e.Message}");
                 return;
             }
 

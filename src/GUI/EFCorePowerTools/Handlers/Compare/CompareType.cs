@@ -1,30 +1,31 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EFCorePowerTools.Locales;
+using System.ComponentModel.DataAnnotations;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
     public enum CompareType
     {
-        [Display(Name = "Not set")]
+        [Display(Name = "Not set", ResourceType = typeof(CompareLocale))]
         NoSet,
-        [Display(Name = "Match anything")]
+        [Display(Name = "MatchAnything", ResourceType = typeof(CompareLocale))]
         MatchAnything,
-        [Display(Name = "DbContext")]
+        [Display(Name = "DbContext", ResourceType = typeof(CompareLocale))]
         DbContext,
-        [Display(Name = "Entity")]
+        [Display(Name = "Entity", ResourceType = typeof(CompareLocale))]
         Entity,
-        [Display(Name = "Property")]
+        [Display(Name = "Property", ResourceType = typeof(CompareLocale))]
         Property,
-        [Display(Name = "Database")]
+        [Display(Name = "Database", ResourceType = typeof(CompareLocale))]
         Database,
-        [Display(Name = "Table")]
+        [Display(Name = "Table", ResourceType = typeof(CompareLocale))]
         Table,
-        [Display(Name = "Column")]
+        [Display(Name = "Column", ResourceType = typeof(CompareLocale))]
         Column,
-        [Display(Name = "Primary key")]
+        [Display(Name = "Primary key", ResourceType = typeof(CompareLocale))]
         PrimaryKey,
-        [Display(Name = "Foreign key")]
+        [Display(Name = "Foreign key", ResourceType = typeof(CompareLocale))]
         ForeignKey,
-        [Display(Name = "Index")]
+        [Display(Name = "Index", ResourceType = typeof(CompareLocale))]
         Index
     }
 

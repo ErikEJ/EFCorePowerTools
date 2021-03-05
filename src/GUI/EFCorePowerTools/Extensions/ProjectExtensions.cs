@@ -1,4 +1,5 @@
 ﻿using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
 using EnvDTE;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
@@ -252,7 +253,7 @@ namespace EFCorePowerTools.Extensions
                 if (item.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
                     || item.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 {
-                    EnvDteHelper.ShowError("Invalid name: " + item.Item1);
+                    EnvDteHelper.ShowError($"{SharedLocale.InvalidName}: {item.Item1}");
                     return list;
                 }
 

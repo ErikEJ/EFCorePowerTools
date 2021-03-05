@@ -3,7 +3,8 @@
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 Title="Advanced" 
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+                 Title="{x:Static locale:ReverseEngineerLocale.Advanced}" 
                  WindowStartupLocation="CenterOwner"
                  SizeToContent="WidthAndHeight"
                  ResizeMode="NoResize"
@@ -44,47 +45,47 @@
 
         <StackPanel Orientation="Vertical" Margin="5">
             <CheckBox TabIndex="0"
-                      Content="Split DbContext into Configuration classes (preview)"
+                      Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
                       IsChecked="{Binding Model.UseDbContextSplitting}"
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="1"
-                      Content="Always include all database objects (preview)"
+                      Content="{x:Static locale:ReverseEngineerLocale.AlwaysIncludeAllDatabaseObjects}"
                       IsChecked="{Binding Model.UseNoObjectFilter}"
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="2"
-                      Content="Map spatial types"
+                      Content="{x:Static locale:ReverseEngineerLocale.MapSpatialTypes}"
                       IsChecked="{Binding Model.MapSpatialTypes}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="3"
-                      Content="Map Noda Time types"
+                      Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
                       IsChecked="{Binding Model.MapNodaTimeTypes}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="4"
-                      Content="Use EF6 pluralizer"
+                      Content="{x:Static locale:ReverseEngineerLocale.UseEF6Pluralizer}"
                       IsChecked="{Binding Model.UseEf6Pluralizer}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="5"
-                      Content="Remove SQL default from bool columns (preview)"
+                      Content="{x:Static locale:ReverseEngineerLocale.RemoveSQLDefaultFromBoolColumns}"
                       IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
             
             <CheckBox TabIndex="6"
-                      Content="Use nullable reference types (experimental)"
+                      Content="{x:Static locale:ReverseEngineerLocale.UseNullableReferenceTypes}"
                       IsChecked="{Binding Model.UseNullableReferences}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
 
             <CheckBox TabIndex="7"
-                      Content="Remove constructor from entity classes (experimental)"
+                      Content="{x:Static locale:ReverseEngineerLocale.RemoveConstructorFromEntities}"
                       IsChecked="{Binding Model.UseNoConstructor}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>
             
             <CheckBox TabIndex="8"
-                      Content="Remove navigations from entity classes (experimental)"
+                      Content="{x:Static locale:ReverseEngineerLocale.RemoveNavigationsFromEntities}"
                       IsChecked="{Binding Model.UseNoNavigations}" 
                       Style="{StaticResource MarginCheckBlockStyle}"/>            
         </StackPanel>
@@ -92,11 +93,11 @@
         <StackPanel Grid.Row="20"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
-                             Content="OK"
+                             Content="{x:Static locale:SharedLocale.Ok}"
                              IsDefault="True"
                              Command="{Binding OkCommand}"/>
             <dw:DialogButton TabIndex="21"
-                             Content="Cancel"
+                             Content="{x:Static locale:SharedLocale.Cancel}"
                              IsCancel="True"
                              SnapsToDevicePixels="False"
                              Command="{Binding CancelCommand}" />

@@ -1,6 +1,7 @@
 ﻿using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
 using Microsoft.VisualStudio.Data.Services;
@@ -30,7 +31,7 @@ namespace EFCorePowerTools.Handlers.Compare
             {
                 if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
                 {
-                    EnvDteHelper.ShowError("Cannot compare context to database while debugging");
+                    EnvDteHelper.ShowError(CompareLocale.CannotCompareContextToDatabaseWhileDebugging);
                     return;
                 }
 
@@ -41,13 +42,13 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 if (project.Properties.Item("TargetFrameworkMoniker") == null)
                 {
-                    EnvDteHelper.ShowError("The selected project type has no TargetFrameworkMoniker");
+                    EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
                 if (!project.IsNetCore30OrHigher())
                 {
-                    EnvDteHelper.ShowError("Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
                     return;
                 }
 
@@ -57,23 +58,23 @@ namespace EFCorePowerTools.Handlers.Compare
                 {
                     if (!Version.TryParse(result.Item2, out Version version))
                     {
-                        EnvDteHelper.ShowError($"Cannot support version {result.Item2}, notice that previews have limited supported. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
+                        EnvDteHelper.ShowError(String.Format(CompareLocale.CannotSupportVersion, result.Item2));
                         return;
                     }
 
                     if (version.Major != 5)
                     {
-                        EnvDteHelper.ShowError($"Only EF Core 5 is supported.");
+                        EnvDteHelper.ShowError(CompareLocale.VersionSupported);
                         return;
                     }
 
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(5, 1, 3));
-                    EnvDteHelper.ShowError($"Installing EfCore.SchemaCompare version 5.1.3, please retry the command");
+                    EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }
 
-                _package.Dte2.StatusBar.Text = "Loading data";
+                _package.Dte2.StatusBar.Text = CompareLocale.LoadingData;
                 object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
                 _package.Dte2.StatusBar.Animate(true, icon);
 
@@ -103,14 +104,14 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 if (!pickDataSourceResult.Payload.ContextTypes.Any())
                 {
-                    EnvDteHelper.ShowError($"No contexts selected.");
+                    EnvDteHelper.ShowError(CompareLocale.NoContextsSelected);
                     return;
                 }
 
                 pickDataSourceResult.Payload.Connection.DataConnection.Open();
                 pickDataSourceResult.Payload.Connection.ConnectionString = DataProtection.DecryptString(pickDataSourceResult.Payload.Connection.DataConnection.EncryptedConnectionString);
 
-                _package.Dte2.StatusBar.Text = "Comparing database with context(s)...";
+                _package.Dte2.StatusBar.Text = CompareLocale.ComparingDatabaseWithContexts;
                 _package.Dte2.StatusBar.Animate(true, icon);
                 var timer = new Stopwatch();
                 timer.Start();
@@ -121,7 +122,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     pickDataSourceResult.Payload.ContextTypes.ToArray());
                 timer.Stop();
                 _package.Dte2.StatusBar.Animate(false, icon);
-                _package.Dte2.StatusBar.Text = $"Compare completed in {timer.Elapsed:h\\:mm\\:ss}";
+                _package.Dte2.StatusBar.Text = String.Format(CompareLocale.CompareCompletedIn, timer.Elapsed.ToString("h\\:mm\\:ss"));
                 
                 if (comparisonResult.Any())
                 {
@@ -131,7 +132,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 }
                 else
                 {
-                    EnvDteHelper.ShowMessage("Context(s) and database structure match");
+                    EnvDteHelper.ShowMessage(CompareLocale.ContextDatabaseMatch);
                 }
 
                 _package.Dte2.StatusBar.Clear();
@@ -159,7 +160,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
             if (string.IsNullOrEmpty(processResult))
             {
-                throw new ArgumentException("Unable to collect DbContext information", nameof(processResult));
+                throw new ArgumentException(CompareLocale.UnableToCollectDbContextInformation, nameof(processResult));
             }
 
             if (processResult.Contains("Error:"))
@@ -189,7 +190,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
             if (string.IsNullOrEmpty(processResult))
             {
-                throw new ArgumentException("Unable to collect SchemaCompare information", nameof(processResult));
+                throw new ArgumentException(CompareLocale.UnableToCollectSchemaCompareInformation, nameof(processResult));
             }
 
             if (processResult.Contains("Error:"))

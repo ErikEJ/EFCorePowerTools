@@ -117,94 +117,57 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App" xml:space="preserve">
-    <value />
+  <data name="AddMigration" xml:space="preserve">
+    <value>Add migration</value>
   </data>
-  <data name="bigint" xml:space="preserve">
-    <value />
+  <data name="BuildFailed" xml:space="preserve">
+    <value>Build failed</value>
   </data>
-  <data name="binary" xml:space="preserve">
-    <value />
+  <data name="CannotSupportVersion" xml:space="preserve">
+    <value>Cannot support version {0}, notice that previews are not supported.</value>
   </data>
-  <data name="bit" xml:space="preserve">
-    <value />
+  <data name="ContextName" xml:space="preserve">
+    <value>Context name</value>
   </data>
-  <data name="CanNotCreateWindow" xml:space="preserve">
-    <value />
+  <data name="CreatingMigrationInDbContext" xml:space="preserve">
+    <value>Creating Migration {0} in DbContext {1}</value>
   </data>
-  <data name="ClassTemplateCsharp" xml:space="preserve">
-    <value />
+  <data name="DatabaseModelSync" xml:space="preserve">
+    <value>Your database and model are in sync.</value>
   </data>
-  <data name="datetime" xml:space="preserve">
-    <value />
+  <data name="GettingMigrationStatus" xml:space="preserve">
+    <value>Getting Migration Status</value>
   </data>
-  <data name="floating" xml:space="preserve">
-    <value />
+  <data name="MigrationName" xml:space="preserve">
+    <value>Migration name</value>
   </data>
-  <data name="image" xml:space="preserve">
-    <value />
+  <data name="MigrationNameRequired" xml:space="preserve">
+    <value>Migration Name required</value>
   </data>
-  <data name="integer" xml:space="preserve">
-    <value />
+  <data name="NoMigrationsInProject" xml:space="preserve">
+    <value>No migrations are present in your project, create your initial migration.
+Enter a name for the new migration below.</value>
   </data>
-  <data name="money" xml:space="preserve">
-    <value />
+  <data name="NotAppliedMigrations" xml:space="preserve">
+    <value>There are migrations that have not been applied to the database.</value>
   </data>
-  <data name="MysqlVSProvider" xml:space="preserve">
-    <value />
+  <data name="PendingModelChanges" xml:space="preserve">
+    <value>There are pending model changes, add a migration with the changes.
+Enter a name for the migration below.</value>
   </data>
-  <data name="nchar" xml:space="preserve">
-    <value />
+  <data name="ScriptingMigrationsInDbContext" xml:space="preserve">
+    <value>Scripting migrations in DbContext {0}</value>
   </data>
-  <data name="NpgsqlProvider" xml:space="preserve">
-    <value />
+  <data name="ScriptMigrations" xml:space="preserve">
+    <value>Script migrations</value>
   </data>
-  <data name="ntext" xml:space="preserve">
-    <value />
+  <data name="UnableGetMigrationStatus" xml:space="preserve">
+    <value>Unable to get Migration status</value>
   </data>
-  <data name="numeric" xml:space="preserve">
-    <value />
+  <data name="UpdateDatabase" xml:space="preserve">
+    <value>Update Database</value>
   </data>
-  <data name="nvarchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="OracleProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="real" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rowversion" xml:space="preserve">
-    <value />
-  </data>
-  <data name="smallint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35Provider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteEF6InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteInvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tinyint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ToolWindowTitle" xml:space="preserve">
-    <value />
-  </data>
-  <data name="uniqueidentifier" xml:space="preserve">
-    <value />
-  </data>
-  <data name="varbinary" xml:space="preserve">
-    <value />
+  <data name="UpdatingDatabaseFromMigrationsInDbContext" xml:space="preserve">
+    <value>Updating Database from migrations in DbContext {0}</value>
   </data>
 </root>

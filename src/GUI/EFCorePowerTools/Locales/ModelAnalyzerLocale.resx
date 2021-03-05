@@ -117,94 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App" xml:space="preserve">
+  <data name="CurrentEFCoreVersion" xml:space="preserve">
     <value />
   </data>
-  <data name="bigint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="binary" xml:space="preserve">
-    <value />
-  </data>
-  <data name="bit" xml:space="preserve">
-    <value />
-  </data>
-  <data name="CanNotCreateWindow" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ClassTemplateCsharp" xml:space="preserve">
-    <value />
-  </data>
-  <data name="datetime" xml:space="preserve">
-    <value />
-  </data>
-  <data name="floating" xml:space="preserve">
-    <value />
-  </data>
-  <data name="image" xml:space="preserve">
-    <value />
-  </data>
-  <data name="integer" xml:space="preserve">
-    <value />
-  </data>
-  <data name="money" xml:space="preserve">
-    <value />
-  </data>
-  <data name="MysqlVSProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NpgsqlProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ntext" xml:space="preserve">
-    <value />
-  </data>
-  <data name="numeric" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nvarchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="OracleProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="real" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rowversion" xml:space="preserve">
-    <value />
-  </data>
-  <data name="smallint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35Provider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteEF6InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteInvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tinyint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ToolWindowTitle" xml:space="preserve">
-    <value />
-  </data>
-  <data name="uniqueidentifier" xml:space="preserve">
-    <value />
-  </data>
-  <data name="varbinary" xml:space="preserve">
+  <data name="UnableToCollectModelInformation" xml:space="preserve">
     <value />
   </data>
 </root>

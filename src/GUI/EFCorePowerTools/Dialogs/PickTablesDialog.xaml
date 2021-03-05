@@ -7,6 +7,7 @@
                  xmlns:ext="clr-namespace:EFCorePowerTools.Extensions"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  xmlns:contractvm="clr-namespace:EFCorePowerTools.Contracts.ViewModels"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  mc:Ignorable="d"
                  Title="Choose Database Objects"
@@ -95,11 +96,11 @@
                           IsThreeState="False"
                           VerticalAlignment="Center" 
                           Grid.Column="0"/>
-            <Label Content="Search"
+            <Label Content="{x:Static locale:ReverseEngineerLocale.Search}"
                    Margin="30,0,0,0"
                    Grid.Column="1"
                    VerticalAlignment="Center"/>
-            <TextBox ToolTip="Search for objects"
+            <TextBox ToolTip="{x:Static locale:ReverseEngineerLocale.SearchForObjects}"
                      Height="22"
                      TextWrapping="Wrap"
                      Background="White"
@@ -138,10 +139,10 @@
                     <StackPanel>
                         <RadioButton Margin="8"
                                      IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.Text}}"
-                                     Content="Use text search"></RadioButton>
+                                     Content="{x:Static locale:ReverseEngineerLocale.UseTextSearch}"></RadioButton>
                         <RadioButton Margin="8,0,8,8"
                                      IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.RegularExpression}}"
-                                     Content="Use regular expression"></RadioButton>
+                                     Content="{x:Static locale:ReverseEngineerLocale.UseRegularExpression}"></RadioButton>
                     </StackPanel>
                 </Border>
             </Popup>
@@ -319,13 +320,13 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Margin="12,10">
-            <dw:DialogButton Content="OK"
+            <dw:DialogButton Content="{x:Static locale:SharedLocale.Ok}"
                              IsDefault="True"
                              HorizontalAlignment="Right"
                              TabIndex="6"
                              Margin="0,0,12,8"
                              Command="{Binding OkCommand}" />
-            <dw:DialogButton Content="Cancel"
+            <dw:DialogButton Content="{x:Static locale:SharedLocale.Cancel}"
                              IsCancel="True"
                              HorizontalAlignment="Right"
                              TabIndex="7"
@@ -334,7 +335,7 @@
         </StackPanel>
         <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
             <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">
-                <TextBlock Text="Unchecking an item may cause the related file to be removed." />
+                <TextBlock Text="{x:Static locale:ReverseEngineerLocale.UncheckingFileRemoved}" />
             </StatusBar>
         </StackPanel>
     </Grid>

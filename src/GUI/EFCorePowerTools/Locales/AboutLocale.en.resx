@@ -117,94 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App" xml:space="preserve">
-    <value />
+  <data name="AboutCopiedToClipboard" xml:space="preserve">
+    <value>About info copied to clipboard</value>
   </data>
-  <data name="bigint" xml:space="preserve">
-    <value />
+  <data name="AddinFreeDisclaimer" xml:space="preserve">
+    <value>This add-in is FREE, but I would be grateful for a review</value>
   </data>
-  <data name="binary" xml:space="preserve">
-    <value />
+  <data name="No" xml:space="preserve">
+    <value>No</value>
   </data>
-  <data name="bit" xml:space="preserve">
-    <value />
+  <data name="SQLiteDDEXProvider" xml:space="preserve">
+    <value>System.Data.SQLite DDEX provider</value>
   </data>
-  <data name="CanNotCreateWindow" xml:space="preserve">
-    <value />
+  <data name="SQLiteProviderGAC" xml:space="preserve">
+    <value>SQLite EF6 DbProvider in GAC</value>
   </data>
-  <data name="ClassTemplateCsharp" xml:space="preserve">
-    <value />
+  <data name="SQLiteProviderIncluded" xml:space="preserve">
+    <value>SQLite ADO.NET Provider included</value>
   </data>
-  <data name="datetime" xml:space="preserve">
-    <value />
+  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
+    <value>SQLite Simple DDEX provider</value>
   </data>
-  <data name="floating" xml:space="preserve">
-    <value />
+  <data name="SupportFeedbackSourceCode" xml:space="preserve">
+    <value>For support, feedback and full source code, go to</value>
   </data>
-  <data name="image" xml:space="preserve">
-    <value />
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
   </data>
-  <data name="integer" xml:space="preserve">
-    <value />
+  <data name="VersionNotAvailable" xml:space="preserve">
+    <value>Version N/A</value>
   </data>
-  <data name="money" xml:space="preserve">
-    <value />
-  </data>
-  <data name="MysqlVSProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NpgsqlProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ntext" xml:space="preserve">
-    <value />
-  </data>
-  <data name="numeric" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nvarchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="OracleProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="real" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rowversion" xml:space="preserve">
-    <value />
-  </data>
-  <data name="smallint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35Provider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteEF6InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteInvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tinyint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ToolWindowTitle" xml:space="preserve">
-    <value />
-  </data>
-  <data name="uniqueidentifier" xml:space="preserve">
-    <value />
-  </data>
-  <data name="varbinary" xml:space="preserve">
-    <value />
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

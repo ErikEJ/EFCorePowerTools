@@ -7,7 +7,8 @@ namespace EFCorePowerTools.ViewModels
     using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
+	using EFCorePowerTools.Locales;
+	using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
     using Shared.Models;
@@ -69,9 +70,9 @@ namespace EFCorePowerTools.ViewModels
             Model.PropertyChanged += Model_PropertyChanged;
             GenerationModeList = new[]
             {
-                "EntityTypes & DbContext",
-                "DbContext only",
-                "EntityTypes only"
+                ReverseEngineerLocale.EntityTypesAndContext,
+                ReverseEngineerLocale.DbContextOnly,
+                ReverseEngineerLocale.EntityTypesOnly,
             };
             HandlebarsLanguageList = new[]
             {
@@ -86,13 +87,13 @@ namespace EFCorePowerTools.ViewModels
 
             if (string.IsNullOrWhiteSpace(Model.Namespace) && !individualNamespacesSet)
             {
-                _visualStudioAccess.ShowMessage("Namespace is required");
+                _visualStudioAccess.ShowMessage(ReverseEngineerLocale.NamespaceRequired);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(Model.ModelName))
             {
-                _visualStudioAccess.ShowMessage("Context name is required");
+                _visualStudioAccess.ShowMessage(ReverseEngineerLocale.ContextNameRequired);
                 return;
             }
 
@@ -178,7 +179,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
 
-            Title = $"Generate EF Core Model in Project {Model.ProjectName}";
+            Title = String.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }
     }
 }

@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
         ShowInTaskbar="False"
         MinHeight="280"
         MinWidth="450"
@@ -80,7 +81,7 @@
 
         <!-- Context name selection -->
         <dw:LiveTextBlock Grid.Row="0"
-                          Text="Context name"/>
+                          Text="{x:Static locale:MigrationsLocale.ContextName}"/>
         <ComboBox Grid.Row="1"
                   TabIndex="0"
                   ItemsSource="{Binding StatusList, Mode=OneWay}"
@@ -99,7 +100,7 @@
         <!-- Migration name input -->
         <dw:LiveTextBlock Grid.Row="3"
                           Grid.Column="0"
-                          Text="Migration Name"
+                          Text="{x:Static locale:MigrationsLocale.MigrationName}"
                           Visibility="{Binding MigrationNameVisibility, Mode=OneWay}"/>
         <TextBox Grid.Row="4"
                  TabIndex="2"
@@ -116,7 +117,7 @@
                 Visibility="{Binding StatusList, Mode=OneWay, Converter={StaticResource CollectionCountToVisibilityConverter}}"/>
         <dw:DialogButton Grid.Row="5"
                          TabIndex="21"
-                         Content="Close"
+                         Content="{x:Static locale:SharedLocale.Close}"
                          IsCancel="True"
                          Style="{StaticResource CloseButtonStyle}"
                          Command="{Binding CancelCommand}" />
