@@ -4,6 +4,7 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  Title="About" 
                  WindowStartupLocation="CenterOwner"
                  SizeToContent="WidthAndHeight"
@@ -58,10 +59,11 @@
 
         <TextBlock Grid.Row="2"
                    Style="{StaticResource MarginTextBlockStyle}">
-            For support, feedback and full source code, go to:<LineBreak/>
+            <Run Text="{x:Static locale:AboutLocale.SupportFeedbackSourceCode}" /><Run Text=":" />
+            <LineBreak/>
             <Bold><Hyperlink TextDecorations="" Command="{Binding OpenSourcesCommand}">https://github.com/ErikEJ/EFCorePowerTools</Hyperlink></Bold>
             <LineBreak/><LineBreak/>
-            This add-in is FREE, but I would be grateful for a review:
+            <Run Text="{x:Static locale:AboutLocale.AddinFreeDisclaimer}" /><Run Text=":" />
             <LineBreak/>
             <Bold><Hyperlink TextDecorations="" Command="{Binding OpenMarketplaceCommand}">Visual Studio Marketplace</Hyperlink></Bold>
         </TextBlock>

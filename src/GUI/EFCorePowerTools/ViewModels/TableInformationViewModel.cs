@@ -1,7 +1,8 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-    using EFCorePowerTools.Messages;
+	using EFCorePowerTools.Locales;
+	using EFCorePowerTools.Messages;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using GalaSoft.MvvmLight.Messaging;
@@ -171,7 +172,7 @@
             {
                 _messenger.Send(new ShowMessageBoxMessage
                 {
-                    Content = "New name cannot be empty"
+                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty
                 });
             }
             else

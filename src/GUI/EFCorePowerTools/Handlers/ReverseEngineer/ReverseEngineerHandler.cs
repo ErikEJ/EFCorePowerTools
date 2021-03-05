@@ -1,6 +1,7 @@
 ﻿using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
 using EFCorePowerTools.Shared.Models;
 using EnvDTE;
 using Microsoft.VisualStudio.Data.Services;
@@ -38,7 +39,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
                 {
-                    EnvDteHelper.ShowError("Cannot generate code while debugging");
+                    EnvDteHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
                     return;
                 }
                 var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
@@ -86,7 +87,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
                 {
-                    EnvDteHelper.ShowError("Cannot generate code while debugging");
+                    EnvDteHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
                     return;
                 }
 
@@ -110,7 +111,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     if (forceEdit)
                     {
-                        _package.Dte2.StatusBar.Text = "Database connection not found, cannot refresh.";
+                        _package.Dte2.StatusBar.Text = ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh;
                     }
                     else
                     {
@@ -125,19 +126,19 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (!ChooseDataBaseConnection(options))
                         return;
 
-                    _package.Dte2.StatusBar.Text = "Getting ready to connect...";
+                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GettingReadyToConnect;
 
                     DatabaseInfo dbInfo = GetDatabaseInfo(options);
 
                     if (dbInfo == null)
                         return;
 
-                    _package.Dte2.StatusBar.Text = "Loading database objects...";
+                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.LoadingDatabaseObjects;
 
                     if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
                         return;
 
-                    _package.Dte2.StatusBar.Text = "Loading options...";
+                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.LoadingOptions;
 
                     containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
                     options.InstallNuGetPackage = !containsEfCoreReference.Item1;
@@ -154,7 +155,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && project.IsNetCore30OrHigher())
                 {
-                    _package.Dte2.StatusBar.Text = "Installing EF Core provider package";
+                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.InstallingEFCoreProviderPackage;
                     var nuGetHelper = new NuGetHelper();
                     await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
                 }
@@ -278,7 +279,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
-                    EnvDteHelper.ShowMessage("Unable to build selected Database Project");
+                    EnvDteHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
                     return null;
                 }
             }
@@ -287,7 +288,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 || dbInfo.DatabaseType == DatabaseType.SQLCE40
                 || dbInfo.DatabaseType == DatabaseType.Undefined)
             {
-                EnvDteHelper.ShowError($"Unsupported provider: {dbInfo.ServerVersion}");
+                EnvDteHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}: {dbInfo.ServerVersion}");
                 return null;
             }
 
@@ -411,12 +412,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (rightsAndVersion.Item1 == false)
                 {
-                    EnvDteHelper.ShowMessage("The SQL Server user does not have 'VIEW DEFINITION' rights, default constraints may not be available.");
+                    EnvDteHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
                 }
 
                 if (rightsAndVersion.Item2.Major < 11)
                 {
-                    EnvDteHelper.ShowMessage($"SQL Server version {rightsAndVersion.Item2} may not be supported.");
+                    EnvDteHelper.ShowMessage(String.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
                 }
             }
         }
@@ -437,7 +438,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             _package.Dte2.StatusBar.Animate(true, _icon);
-            _package.Dte2.StatusBar.Text = "Generating code...";
+            _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GeneratingCode;
             var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
             _package.Dte2.StatusBar.Animate(false, _icon);
 
@@ -484,10 +485,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 missingProviderPackage = null;
             }
 
-            _package.Dte2.StatusBar.Text = "Reporting result...";
+            _package.Dte2.StatusBar.Text = ReverseEngineerLocale.ReportingResult;
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-            _package.Dte2.StatusBar.Text = $"Reverse engineer completed in {duration:h\\:mm\\:ss}";
+            _package.Dte2.StatusBar.Text = String.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss"));
 
             EnvDteHelper.ShowMessage(errors);
 

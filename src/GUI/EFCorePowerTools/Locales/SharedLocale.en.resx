@@ -117,94 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App" xml:space="preserve">
-    <value />
+  <data name="AnErrorOccurred" xml:space="preserve">
+    <value>An error occurred. See the Output window for details.</value>
   </data>
-  <data name="bigint" xml:space="preserve">
-    <value />
+  <data name="BuildFailed" xml:space="preserve">
+    <value>Build failed. Unable to discover a DbContext class.</value>
   </data>
-  <data name="binary" xml:space="preserve">
-    <value />
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="bit" xml:space="preserve">
-    <value />
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
   </data>
-  <data name="CanNotCreateWindow" xml:space="preserve">
-    <value />
+  <data name="EFCoreVersionNotFound" xml:space="preserve">
+    <value>EF Core 3.1 or later not found in project</value>
   </data>
-  <data name="ClassTemplateCsharp" xml:space="preserve">
-    <value />
+  <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
+    <value>Installing EFCore.Design version {0}, please retry the command</value>
   </data>
-  <data name="datetime" xml:space="preserve">
-    <value />
+  <data name="InvalidName" xml:space="preserve">
+    <value>Invalid name</value>
   </data>
-  <data name="floating" xml:space="preserve">
-    <value />
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
-  <data name="image" xml:space="preserve">
-    <value />
+  <data name="SelectedProjectTypeNoTargetFrameworkMoniker" xml:space="preserve">
+    <value>The selected project type has no TargetFrameworkMoniker</value>
   </data>
-  <data name="integer" xml:space="preserve">
-    <value />
+  <data name="SupportedFramework" xml:space="preserve">
+    <value>Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker</value>
   </data>
-  <data name="money" xml:space="preserve">
-    <value />
-  </data>
-  <data name="MysqlVSProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NpgsqlProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ntext" xml:space="preserve">
-    <value />
-  </data>
-  <data name="numeric" xml:space="preserve">
-    <value />
-  </data>
-  <data name="nvarchar" xml:space="preserve">
-    <value />
-  </data>
-  <data name="OracleProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="real" xml:space="preserve">
-    <value />
-  </data>
-  <data name="rowversion" xml:space="preserve">
-    <value />
-  </data>
-  <data name="smallint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlCompact35Provider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteEF6InvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteInvariantName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="tinyint" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ToolWindowTitle" xml:space="preserve">
-    <value />
-  </data>
-  <data name="uniqueidentifier" xml:space="preserve">
-    <value />
-  </data>
-  <data name="varbinary" xml:space="preserve">
-    <value />
+  <data name="UnableToLocateProjectAssembly" xml:space="preserve">
+    <value>Unable to locate project assembly</value>
   </data>
 </root>

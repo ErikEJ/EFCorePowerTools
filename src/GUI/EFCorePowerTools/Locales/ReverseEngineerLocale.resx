@@ -117,94 +117,223 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App" xml:space="preserve">
+  <data name="Add" xml:space="preserve">
     <value />
   </data>
-  <data name="bigint" xml:space="preserve">
+  <data name="AddDatabaseConnection" xml:space="preserve">
     <value />
   </data>
-  <data name="binary" xml:space="preserve">
+  <data name="AddExternalDacPac" xml:space="preserve">
     <value />
   </data>
-  <data name="bit" xml:space="preserve">
+  <data name="AddSchemasToFilter" xml:space="preserve">
     <value />
   </data>
-  <data name="CanNotCreateWindow" xml:space="preserve">
+  <data name="Advanced" xml:space="preserve">
     <value />
   </data>
-  <data name="ClassTemplateCsharp" xml:space="preserve">
+  <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
     <value />
   </data>
-  <data name="datetime" xml:space="preserve">
+  <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value />
   </data>
-  <data name="floating" xml:space="preserve">
+  <data name="CheckOutputWindowForErrors" xml:space="preserve">
     <value />
   </data>
-  <data name="image" xml:space="preserve">
+  <data name="CheckOutputWindowForWarnings" xml:space="preserve">
     <value />
   </data>
-  <data name="integer" xml:space="preserve">
+  <data name="ChooseConfigurationFile" xml:space="preserve">
     <value />
   </data>
-  <data name="money" xml:space="preserve">
+  <data name="ChooseDatabaseConnection" xml:space="preserve">
     <value />
   </data>
-  <data name="MysqlVSProvider" xml:space="preserve">
+  <data name="ChooseSchemas" xml:space="preserve">
     <value />
   </data>
-  <data name="nchar" xml:space="preserve">
+  <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
     <value />
   </data>
-  <data name="NpgsqlProvider" xml:space="preserve">
+  <data name="ContextName" xml:space="preserve">
     <value />
   </data>
-  <data name="ntext" xml:space="preserve">
+  <data name="ContextNameRequired" xml:space="preserve">
     <value />
   </data>
-  <data name="numeric" xml:space="preserve">
+  <data name="CustomizeUsingHandlebars" xml:space="preserve">
     <value />
   </data>
-  <data name="nvarchar" xml:space="preserve">
+  <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value />
   </data>
-  <data name="OracleProvider" xml:space="preserve">
+  <data name="DbContextOnly" xml:space="preserve">
     <value />
   </data>
-  <data name="real" xml:space="preserve">
+  <data name="DbContextPath" xml:space="preserve">
     <value />
   </data>
-  <data name="rowversion" xml:space="preserve">
+  <data name="DbContextSubNamespace" xml:space="preserve">
     <value />
   </data>
-  <data name="smallint" xml:space="preserve">
+  <data name="EntityTypesAndContext" xml:space="preserve">
     <value />
   </data>
-  <data name="SqlCompact35InvariantName" xml:space="preserve">
+  <data name="EntityTypesOnly" xml:space="preserve">
     <value />
   </data>
-  <data name="SqlCompact35Provider" xml:space="preserve">
+  <data name="EntityTypesPath" xml:space="preserve">
     <value />
   </data>
-  <data name="SQLiteEF6InvariantName" xml:space="preserve">
+  <data name="EntityTypesSubNamespace" xml:space="preserve">
     <value />
   </data>
-  <data name="SQLiteInvariantName" xml:space="preserve">
+  <data name="FilterSchemas" xml:space="preserve">
     <value />
   </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
+  <data name="Functions" xml:space="preserve">
     <value />
   </data>
-  <data name="tinyint" xml:space="preserve">
+  <data name="GenerateEFCoreModelInProject" xml:space="preserve">
     <value />
   </data>
-  <data name="ToolWindowTitle" xml:space="preserve">
+  <data name="GeneratingCode" xml:space="preserve">
     <value />
   </data>
-  <data name="uniqueidentifier" xml:space="preserve">
+  <data name="GettingReadyToConnect" xml:space="preserve">
     <value />
   </data>
-  <data name="varbinary" xml:space="preserve">
+  <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
+    <value />
+  </data>
+  <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LoadingDatabaseObjects" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LoadingOptions" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MapNodaTimeTypes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MapSpatialTypes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ModelGeneratedSuccesfully" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Namespace" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NamespaceRequired" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Naming" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NewNameCannotBeEmpty" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PackageNotFoundInProject" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RemoveConstructorFromEntities" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RemoveNavigationsFromEntities" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReportingResult" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReverseEngineerCompleted" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SearchForObjects" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SQLServerVersionNotSupported" xml:space="preserve">
+    <value />
+  </data>
+  <data name="StoredProcedures" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Tables" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToAddToList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UncheckingFileRemoved" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnsupportedProvider" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseDataAnnotations" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseEF6Pluralizer" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseEFCore5" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseNamesFromDatabase" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseNullableReferenceTypes" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseRegularExpression" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UseTextSearch" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WhatToGenerate" xml:space="preserve">
     <value />
   </data>
 </root>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EFCorePowerTools.Locales;
+using System.ComponentModel.DataAnnotations;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -7,13 +8,13 @@ namespace EFCorePowerTools.Handlers.Compare
         Debug,
         [Display(Name = "")]
         Ok,
-        [Display(Name = "Not checked")]
+        [Display(Name = "Not checked", ResourceType = typeof(CompareLocale))]
         NotChecked,
-        [Display(Name = "Different")]
+        [Display(Name = "Different", ResourceType = typeof(CompareLocale))]
         Different,
-        [Display(Name = "Not in database")]
+        [Display(Name = "NotInDatabase", ResourceType = typeof(CompareLocale))]
         NotInDatabase,
-        [Display(Name = "Not in context")]
+        [Display(Name = "NotInContext", ResourceType = typeof(CompareLocale))]
         ExtraInDatabase
     }
 }

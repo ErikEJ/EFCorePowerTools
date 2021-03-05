@@ -117,94 +117,151 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="App" xml:space="preserve">
+  <data name="Add" xml:space="preserve">
     <value />
   </data>
-  <data name="bigint" xml:space="preserve">
+  <data name="AddDatabaseConnection" xml:space="preserve">
     <value />
   </data>
-  <data name="binary" xml:space="preserve">
+  <data name="Anything" xml:space="preserve">
     <value />
   </data>
-  <data name="bit" xml:space="preserve">
+  <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
     <value />
   </data>
-  <data name="CanNotCreateWindow" xml:space="preserve">
+  <data name="CannotSupportVersion" xml:space="preserve">
     <value />
   </data>
-  <data name="ClassTemplateCsharp" xml:space="preserve">
+  <data name="ChooseDatabaseContexts" xml:space="preserve">
     <value />
   </data>
-  <data name="datetime" xml:space="preserve">
+  <data name="Close" xml:space="preserve">
     <value />
   </data>
-  <data name="floating" xml:space="preserve">
+  <data name="Column" xml:space="preserve">
     <value />
   </data>
-  <data name="image" xml:space="preserve">
+  <data name="ColumnName" xml:space="preserve">
     <value />
   </data>
-  <data name="integer" xml:space="preserve">
+  <data name="ColumnType" xml:space="preserve">
     <value />
   </data>
-  <data name="money" xml:space="preserve">
+  <data name="CompareCompletedIn" xml:space="preserve">
     <value />
   </data>
-  <data name="MysqlVSProvider" xml:space="preserve">
+  <data name="ComparingDatabaseWithContexts" xml:space="preserve">
     <value />
   </data>
-  <data name="nchar" xml:space="preserve">
+  <data name="ComparisonResult" xml:space="preserve">
     <value />
   </data>
-  <data name="NpgsqlProvider" xml:space="preserve">
+  <data name="ConstraintName" xml:space="preserve">
     <value />
   </data>
-  <data name="ntext" xml:space="preserve">
+  <data name="ContextDatabaseMatch" xml:space="preserve">
     <value />
   </data>
-  <data name="numeric" xml:space="preserve">
+  <data name="Database" xml:space="preserve">
     <value />
   </data>
-  <data name="nvarchar" xml:space="preserve">
+  <data name="DbContext" xml:space="preserve">
     <value />
   </data>
-  <data name="OracleProvider" xml:space="preserve">
+  <data name="DeleteBehabior" xml:space="preserve">
     <value />
   </data>
-  <data name="real" xml:space="preserve">
+  <data name="Different" xml:space="preserve">
     <value />
   </data>
-  <data name="rowversion" xml:space="preserve">
+  <data name="Entity" xml:space="preserve">
     <value />
   </data>
-  <data name="smallint" xml:space="preserve">
+  <data name="ForeignKey" xml:space="preserve">
     <value />
   </data>
-  <data name="SqlCompact35InvariantName" xml:space="preserve">
+  <data name="Index" xml:space="preserve">
     <value />
   </data>
-  <data name="SqlCompact35Provider" xml:space="preserve">
+  <data name="IndexConstraintName" xml:space="preserve">
     <value />
   </data>
-  <data name="SQLiteEF6InvariantName" xml:space="preserve">
+  <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
     <value />
   </data>
-  <data name="SQLiteInvariantName" xml:space="preserve">
+  <data name="LoadingData" xml:space="preserve">
     <value />
   </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
+  <data name="MatchAnything" xml:space="preserve">
     <value />
   </data>
-  <data name="tinyint" xml:space="preserve">
+  <data name="NoContextsSelected" xml:space="preserve">
     <value />
   </data>
-  <data name="ToolWindowTitle" xml:space="preserve">
+  <data name="NotChecked" xml:space="preserve">
     <value />
   </data>
-  <data name="uniqueidentifier" xml:space="preserve">
+  <data name="NotInContext" xml:space="preserve">
     <value />
   </data>
-  <data name="varbinary" xml:space="preserve">
+  <data name="NotInDatabase" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotMappedToDatabase" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotSet" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Nullability" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PersistentComputedColumn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PrimaryKey" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ShowDifferencesOnly" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SqlComputedColumn" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SqlDefaultValue" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Table" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TableName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToCollectDbContextInformation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToCollectSchemaCompareInformation" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Unique" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ValueGenerated" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VersionSupported" xml:space="preserve">
     <value />
   </data>
 </root>

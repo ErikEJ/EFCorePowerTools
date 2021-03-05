@@ -5,7 +5,8 @@
     using System.Text;
     using System.Windows.Input;
     using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
+	using EFCorePowerTools.Locales;
+	using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using GalaSoft.MvvmLight.Messaging;
     using Messages;
@@ -116,7 +117,7 @@
             _operatingSystemAccess.SetClipboardText(Version + Environment.NewLine + Environment.NewLine + StatusText);
             _messenger.Send(new ShowMessageBoxMessage
             {
-                Content = "About info copied to clipboard"
+                Content = AboutLocale.AboutCopiedToClipboard
             });
         }
 
@@ -125,27 +126,27 @@
         private void FormatVersion()
         {
             Version = _aboutExtensionModel.ExtensionVersion == null
-                          ? "Version N/A"
-                          : $"Version {_aboutExtensionModel.ExtensionVersion.ToString(4)}";
+                          ? AboutLocale.VersionNotAvailable
+                          : $"{AboutLocale.Version} {_aboutExtensionModel.ExtensionVersion.ToString(4)}";
         }
 
         private void FormatStatusText()
         {
             var sb = new StringBuilder();
 
-            sb.Append("SQLite ADO.NET Provider included: ");
-            sb.AppendLine(_aboutExtensionModel.SqLiteAdoNetProviderVersion == null ? "No" : _aboutExtensionModel.SqLiteAdoNetProviderVersion.ToString());
+            sb.Append($"{AboutLocale.SQLiteProviderIncluded}: ");
+            sb.AppendLine(_aboutExtensionModel.SqLiteAdoNetProviderVersion == null ? AboutLocale.No : _aboutExtensionModel.SqLiteAdoNetProviderVersion.ToString());
 
-            sb.Append("SQLite EF6 DbProvider in GAC - ");
-            sb.AppendLine(_aboutExtensionModel.SqLiteEf6DbProviderInstalled == true ? "Yes" : "No");
+            sb.Append($"{AboutLocale.SQLiteProviderGAC} - ");
+            sb.AppendLine(_aboutExtensionModel.SqLiteEf6DbProviderInstalled == true ? AboutLocale.Yes : AboutLocale.No);
 
             sb.AppendLine();
 
-            sb.Append("System.Data.SQLite DDEX provider - ");
-            sb.AppendLine(_aboutExtensionModel.SqLiteDdexProviderInstalled == true ? "Yes" : "No");
+            sb.Append($"{AboutLocale.SQLiteDDEXProvider} - ");
+            sb.AppendLine(_aboutExtensionModel.SqLiteDdexProviderInstalled == true ? AboutLocale.Yes : AboutLocale.No);
 
-            sb.Append("SQLite Simple DDEX provider - ");
-            sb.AppendLine(_aboutExtensionModel.SqlLiteSimpleDdexProviderInstalled == true ? "Yes" : "No");
+            sb.Append($"{AboutLocale.SQLiteSimpleDDEXProvider} - ");
+            sb.AppendLine(_aboutExtensionModel.SqlLiteSimpleDdexProviderInstalled == true ? AboutLocale.Yes : AboutLocale.No);
 
             StatusText = sb.ToString();
         }

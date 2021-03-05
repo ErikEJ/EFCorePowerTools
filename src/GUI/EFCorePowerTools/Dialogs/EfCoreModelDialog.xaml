@@ -5,6 +5,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
                  MinHeight="660"
@@ -96,7 +97,7 @@
 
         <DockPanel Grid.Row="0"  >
             <dw:LiveTextBlock Margin="5" 
-                Text="Context name"/>
+                Text="{x:Static locale:ReverseEngineerLocale.ContextName}"/>
             <TextBox 
                 x:Name="FirstTextBox"
                 Margin="5"
@@ -107,7 +108,7 @@
 
         <DockPanel Grid.Row="1">
             <dw:LiveTextBlock Margin="5,5,18,5" 
-                Text="Namespace"/>
+                Text="{x:Static locale:ReverseEngineerLocale.Namespace}"/>
             <TextBox TabIndex="1"
                 Margin="5"
                 Style="{StaticResource TextInputStyle}"
@@ -115,35 +116,35 @@
         </DockPanel>
 
         <dw:LiveTextBlock Grid.Row="4"
-                          Text="EntityTypes path (f.ex. Models) - optional"/>
+                          Text="{x:Static locale:ReverseEngineerLocale.EntityTypesPath}"/>
         <TextBox Grid.Row="5"
                  TabIndex="2"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="6"
-                          Text="EntityTypes sub-namespace (overrides path) - optional"/>
+                          Text="{x:Static locale:ReverseEngineerLocale.EntityTypesSubNamespace}"/>
         <TextBox Grid.Row="7"
                  TabIndex="3"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.ModelNamespace, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="8"
-                          Text="DbContext path (f.ex. Data) - optional"/>
+                          Text="{x:Static locale:ReverseEngineerLocale.DbContextPath}"/>
         <TextBox Grid.Row="9"
                  TabIndex="4"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="10"
-                          Text="DbContext sub-namespace (overrides path) - optional"/>
+                          Text="{x:Static locale:ReverseEngineerLocale.DbContextSubNamespace}"/>
         <TextBox Grid.Row="11"
                  TabIndex="5"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
 
         <dw:LiveTextBlock Grid.Row="12"
-                          Text="What to generate"/>
+                          Text="{x:Static locale:ReverseEngineerLocale.WhatToGenerate}"/>
         <ComboBox Grid.Row="12"
                   TabIndex="6"
                   ItemsSource="{Binding GenerationModeList}"
@@ -151,15 +152,15 @@
                   SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
 
         <GroupBox Grid.Row="13"
-                  Header="Naming"
+                  Header="{x:Static locale:ReverseEngineerLocale.Naming}"
                   Style="{StaticResource NamingGroupBoxStyle}">
             <StackPanel>
                 <CheckBox TabIndex="7"
-                          Content="Pluralize or singularize generated object names (English)"
+                          Content="{x:Static locale:ReverseEngineerLocale.PluralizeSingularizeObjectNames}"
                           IsChecked="{Binding Model.UsePluralizer}"
                           Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
                 <CheckBox TabIndex="8"
-                          Content="Use table and column names directly from the database"
+                          Content="{x:Static locale:ReverseEngineerLocale.UseNamesFromDatabase}"
                           IsChecked="{Binding Model.UseDatabaseNames}"
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
@@ -167,7 +168,7 @@
         
         <CheckBox Grid.Row="14"
                   TabIndex="10"
-                  Content="Use DataAnnotation attributes to configure the model"
+                  Content="{x:Static locale:ReverseEngineerLocale.UseDataAnnotations}"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
@@ -175,7 +176,7 @@
                     Grid.Row="15">
             <CheckBox TabIndex="11"
                       Name="UseHandlebarsCheckbox"
-                      Content="Customize code using Handlebars templates"
+                      Content="{x:Static locale:ReverseEngineerLocale.CustomizeUsingHandlebars}"
                       IsChecked="{Binding Model.UseHandlebars}"
                       Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
             <ComboBox TabIndex="11"
@@ -187,29 +188,29 @@
         
         <CheckBox Grid.Row="16"
                   TabIndex="12"
-                  Content="Include connection string in generated code"
+                  Content="{x:Static locale:ReverseEngineerLocale.IncludeConnectionStringGeneratedCode}"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
         <CheckBox Grid.Row="17"
                   TabIndex="14"
-                  Content="Install the EF Core provider package in the project"
+                  Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
         
         <StackPanel Grid.Row="18"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton TabIndex="20"
-                             Content="Advanced..."
+                             Content="{x:Static locale:ReverseEngineerLocale.Advanced}"
                              IsDefault="True"
                              Command="{Binding AdvancedCommand}"/>
             <dw:DialogButton TabIndex="20"
-                             Content="OK"
+                             Content="{x:Static locale:SharedLocale.Ok}"
                              IsDefault="True"
                              Command="{Binding OkCommand}"/>
             <dw:DialogButton TabIndex="21"
-                             Content="Cancel"
+                             Content="{x:Static locale:SharedLocale.Cancel}"
                              IsCancel="True"
                              SnapsToDevicePixels="False"
                              Command="{Binding CancelCommand}" />

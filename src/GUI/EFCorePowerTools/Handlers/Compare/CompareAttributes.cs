@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EFCorePowerTools.Locales;
+using System.ComponentModel.DataAnnotations;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -6,35 +7,35 @@ namespace EFCorePowerTools.Handlers.Compare
     {
         [Display(Name = "")]
         NotSet,
-        [Display(Name = "Anything")]
+        [Display(Name = "Anything", ResourceType = typeof(CompareLocale))]
         MatchAnything,
-        [Display(Name = "Column name")]
+        [Display(Name = "ColumnName", ResourceType = typeof(CompareLocale))]
         ColumnName,
-        [Display(Name = "Column type")]
+        [Display(Name = "ColumnType", ResourceType = typeof(CompareLocale))]
         ColumnType,
-        [Display(Name = "Nullability")]
+        [Display(Name = "Nullability", ResourceType = typeof(CompareLocale))]
         Nullability,
-        [Display(Name = "Sql default value")]
+        [Display(Name = "SqlDefaultValue", ResourceType = typeof(CompareLocale))]
         DefaultValueSql,
-        [Display(Name = "Sql computed column")]
+        [Display(Name = "SqlComputedColumn", ResourceType = typeof(CompareLocale))]
         ComputedColumnSql,
-        [Display(Name = "Persistent computed column")]
+        [Display(Name = "PersistentComputedColumn", ResourceType = typeof(CompareLocale))]
         PersistentComputedColumn,
-        [Display(Name = "Value generated")]
+        [Display(Name = "ValueGenerated", ResourceType = typeof(CompareLocale))]
         ValueGenerated,
-        [Display(Name = "Table name")]
+        [Display(Name = "TableName", ResourceType = typeof(CompareLocale))]
         TableName,
-        [Display(Name = "Primary key")]
+        [Display(Name = "PrimaryKey", ResourceType = typeof(CompareLocale))]
         PrimaryKey,
-        [Display(Name = "Constraint name")]
+        [Display(Name = "ConstraintName", ResourceType = typeof(CompareLocale))]
         ConstraintName,
-        [Display(Name = "Index constraint name")]
+        [Display(Name = "IndexConstraintName", ResourceType = typeof(CompareLocale))]
         IndexConstraintName,
-        [Display(Name = "Unique")]
+        [Display(Name = "Unique", ResourceType = typeof(CompareLocale))]
         Unique,
-        [Display(Name = "Delete behabior")]
+        [Display(Name = "DeleteBehabior", ResourceType = typeof(CompareLocale))]
         DeleteBehavior,
-        [Display(Name = "Not mapped to database")]
+        [Display(Name = "NotMappedToDatabase", ResourceType = typeof(CompareLocale))]
         NotMappedToDatabase
     }
 }

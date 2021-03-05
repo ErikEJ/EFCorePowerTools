@@ -8,6 +8,7 @@ using EFCorePowerTools.Handlers;
 using EFCorePowerTools.Handlers.Compare;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Shared.BLL;
 using EFCorePowerTools.Shared.DAL;
@@ -311,7 +312,7 @@ namespace EFCorePowerTools
 
             if (!project.TryBuild())
             {
-                _dte2.StatusBar.Text = "Build failed. Unable to discover a DbContext class.";
+                _dte2.StatusBar.Text = SharedLocale.BuildFailed;
 
                 return null;
             }
@@ -322,7 +323,7 @@ namespace EFCorePowerTools
                 return path;
             }
 
-            _dte2.StatusBar.Text = "Unable to locate project assembly.";
+            _dte2.StatusBar.Text = SharedLocale.UnableToLocateProjectAssembly;
 
             return null;
         }
@@ -397,7 +398,7 @@ namespace EFCorePowerTools
 
                 Telemetry.TrackException(exception);
 
-                _dte2.StatusBar.Text = "An error occurred. See the Output window for details.";
+                _dte2.StatusBar.Text = SharedLocale.AnErrorOccurred;
 
                 try
                 {

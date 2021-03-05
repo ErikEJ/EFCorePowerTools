@@ -1,7 +1,8 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
+	using EFCorePowerTools.Locales;
+	using GalaSoft.MvvmLight;
     using RevEng.Shared;
     using System;
     using System.Collections.Generic;
@@ -161,10 +162,10 @@
             if (objects == null) throw new ArgumentNullException(nameof(objects));
 
             var objectTypes = new List<(ObjectType ObjectType, string Text)> {
-                (ObjectType.Table, "Tables"),
-                (ObjectType.View, "Views"),
-                (ObjectType.Procedure, "Stored procedures"),
-                (ObjectType.ScalarFunction, "Functions")
+                (ObjectType.Table, ReverseEngineerLocale.Tables),
+                (ObjectType.View, ReverseEngineerLocale.Views),
+                (ObjectType.Procedure, ReverseEngineerLocale.StoredProcedures),
+                (ObjectType.ScalarFunction, ReverseEngineerLocale.Functions)
             };
 
             if (customReplacers != null)

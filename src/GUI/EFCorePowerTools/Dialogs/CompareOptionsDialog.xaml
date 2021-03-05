@@ -5,8 +5,9 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+                 Title="{x:Static locale:CompareLocale.ChooseDatabaseContexts}" 
                  mc:Ignorable="d"
-                 Title="Choose database and contexts"
                  ShowInTaskbar="False"
                  MinWidth="220"
                  MinHeight="150"
@@ -53,15 +54,15 @@
 
             <Button Grid.Column="1"
                     Margin="8,0,0,0"
-                    ToolTip="Remove selected connection"
+                    ToolTip="{x:Static locale:CompareLocale.RemoveSelectedConnection}"
                     Command="{Binding RemoveDatabaseConnectionCommand}">
                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
             </Button>
 
             <dw:DialogButton Grid.Column="2"
                              Margin="8,0,0,0"
-                             Content="Add..."
-                             ToolTip="Add Database Connection"
+                             Content="{x:Static locale:CompareLocale.Add}"
+                             ToolTip="{x:Static locale:CompareLocale.AddDatabaseConnection}"
                              Command="{Binding AddDatabaseConnectionCommand}"/>
         </Grid>
 
@@ -84,11 +85,11 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Margin="0,5,0,0">
-            <dw:DialogButton Content="OK"
+            <dw:DialogButton Content="{x:Static locale:SharedLocale.Ok}"
                              IsDefault="True"
                              Margin="0,0"
                              Command="{Binding OkCommand}"/>
-            <dw:DialogButton Content="Cancel"
+            <dw:DialogButton Content="{x:Static locale:SharedLocale.Cancel}"
                              Margin="8,0,0,0"
                              Command="{Binding CancelCommand}"/>
         </StackPanel>

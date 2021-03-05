@@ -8,7 +8,8 @@ namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
     using EFCorePowerTools.Helpers;
-    using Microsoft.VisualStudio.Shell;
+	using EFCorePowerTools.Locales;
+	using Microsoft.VisualStudio.Shell;
 
     internal class MigrationsHandler
     {
@@ -37,13 +38,13 @@ namespace EFCorePowerTools.Handlers
 
                 if (project.Properties.Item("TargetFrameworkMoniker") == null)
                 {
-                    EnvDteHelper.ShowError("The selected project type has no TargetFrameworkMoniker");
+                    EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
                 if (!project.IsNetCore30OrHigher())
                 {
-                    EnvDteHelper.ShowError("Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
                     return;
                 }
 
@@ -51,7 +52,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError("EF Core 3.1 or later not found in project");
+                    EnvDteHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
                     return;
                 }
 
@@ -59,12 +60,12 @@ namespace EFCorePowerTools.Handlers
                 {
                     if (!Version.TryParse(result.Item2, out Version version))
                     {
-                        EnvDteHelper.ShowError($"Cannot support version {version}, notice that previews are not supported.");
+                        EnvDteHelper.ShowError(String.Format(MigrationsLocale.CannotSupportVersion, version));
                         return;
                     }
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
+                    EnvDteHelper.ShowError(String.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
 

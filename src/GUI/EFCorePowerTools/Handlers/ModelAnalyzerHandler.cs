@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
@@ -33,33 +34,33 @@ namespace EFCorePowerTools.Handlers
 
                 if (project.Properties.Item("TargetFrameworkMoniker") == null)
                 {
-                    EnvDteHelper.ShowError("The selected project type has no TargetFrameworkMoniker");
+                    EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
                 if (!project.IsNetCore30OrHigher())
                 {
-                    EnvDteHelper.ShowError("Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker: " + project.Properties.Item("TargetFrameworkMoniker").Value);
+                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
                     return;
                 }
 
                 var result = await project.ContainsEfCoreDesignReferenceAsync();
                 if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError("EF Core 3.1 or later not found in project");
+                    EnvDteHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
                     return;
                 }
 
                 if (!Version.TryParse(result.Item2, out Version version))
                 {
-                    EnvDteHelper.ShowError($"You are using EF Core version {result.Item2}, notice that previews have limited support. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.");
+                    EnvDteHelper.ShowError(String.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
                 }
 
                 if (!result.Item1)
                 {
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    EnvDteHelper.ShowError($"Installing EFCore.Design version {version}, please retry the command");
+                    EnvDteHelper.ShowError(String.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
 
@@ -69,7 +70,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (string.IsNullOrEmpty(processResult))
                 {
-                    throw new ArgumentException("Unable to collect model information", nameof(processResult));
+                    throw new ArgumentException(ModelAnalyzerLocale.UnableToCollectModelInformation, nameof(processResult));
                 }
 
                 if (processResult.Contains("Error:"))
@@ -125,7 +126,7 @@ namespace EFCorePowerTools.Handlers
                 if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
                     || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 {
-                    EnvDteHelper.ShowError("Invalid name: " + info.Item1);
+                    EnvDteHelper.ShowError($"{SharedLocale.InvalidName}: {info.Item1}");
                     return;
                 }
 

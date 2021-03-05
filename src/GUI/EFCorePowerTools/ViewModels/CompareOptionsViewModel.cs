@@ -11,8 +11,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Windows.Input;
+	using EFCorePowerTools.Locales;
 
-    public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
+	public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private DatabaseConnectionModel _selectedDatabaseConnection;
@@ -64,7 +65,7 @@
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage("Unable to add connection, maybe the provider is not supported: " + e.Message);
+                _visualStudioAccess.ShowMessage($"{CompareLocale.UnableToAddConnection}: {e.Message}");
                 return;
             }
 
@@ -89,7 +90,7 @@
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage("Unable to remove connection: " + e.Message);
+                _visualStudioAccess.ShowMessage($"{CompareLocale.UnableToRemoveConnection}: {e.Message}");
                 return;
             }
 

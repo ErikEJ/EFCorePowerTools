@@ -4,7 +4,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
-    using System.Windows;
+	using System.Reflection;
+	using System.Resources;
+	using System.Windows;
     using System.Windows.Data;
 
     public class EnumToLabelConverter : IValueConverter
@@ -28,7 +30,16 @@
             var attributes = fi.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
             if (attributes?.Any() ?? false)
             {
-                return attributes.First().Name;
+                var attribute = attributes.First();
+                if (attribute.ResourceType != null)
+                {
+                    return ((ResourceManager)attribute.ResourceType.GetProperty("ResourceManager", BindingFlags.Static | BindingFlags.Public).GetValue(null, null)).GetString(attribute.Name);
+                }
+                else
+                {
+                    return attribute.Name;
+                }
+                
             }
 
             return value.ToString();

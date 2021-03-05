@@ -9,6 +9,9 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
+    <UICulture>en</UICulture>
+  </PropertyGroup>
+  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
@@ -170,6 +173,41 @@
     <Compile Include="Helpers\SqliteProviderRegistration.cs" />
     <Compile Include="Helpers\Telemetry.cs" />
     <Compile Include="Helpers\VsTheming.cs" />
+    <Compile Include="Locales\AboutLocale.Designer.cs">
+      <DependentUpon>AboutLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Locales\ModelAnalyzerLocale.Designer.cs">
+      <DependentUpon>ModelAnalyzerLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Locales\DgmlLocale.Designer.cs">
+      <DependentUpon>DgmlLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Locales\MigrationsLocale.Designer.cs">
+      <DependentUpon>MigrationsLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Locales\CompareLocale.Designer.cs">
+      <DependentUpon>CompareLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Locales\SharedLocale.Designer.cs">
+      <DependentUpon>SharedLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Locales\ReverseEngineerLocale.Designer.cs">
+      <DependentUpon>ReverseEngineerLocale.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Messages\ShowMessageBoxMessage.cs" />
     <Compile Include="Options\OptionsPageGeneral.cs">
       <SubType>Component</SubType>
@@ -182,9 +220,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.en.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -339,14 +382,74 @@
     <None Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Locales\AboutLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\AboutLocale.en.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>EFCorePowerTools.Locales.AboutLocale.en.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\CompareLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompareLocale.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\CompareLocale.en.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>EFCorePowerTools.Locales.CompareLocale.en.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\MigrationsLocale.en.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>EFCorePowerTools.Locales.MigrationsLocale.en.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelAnalyzerLocale.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\DgmlLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DgmlLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\DgmlLocale.en.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>EFCorePowerTools.Locales.DgmlLocale.en.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\MigrationsLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MigrationsLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.en.resx">
+	  <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>EFCorePowerTools.Locales.SharedLocale.en.resources</LogicalName>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Locales\SharedLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="VSPackage.resx">
+    <EmbeddedResource Include="Resources.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.en.resx">
       <MergeWithCTO>true</MergeWithCTO>
-      <ManifestResourceName>VSPackage</ManifestResourceName>
+      <LogicalName>VSPackage.en.Resources</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -426,7 +529,7 @@
     <Resource Include="Resources\3.png" />
     <Resource Include="Resources\4.png" />
     <Resource Include="Resources\5.png" />
-    <VSCTCompile Include="EFCorePowerToolsPackage.vsct">
+    <VSCTCompile Include="EFCorePowerToolsPackage.en.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>

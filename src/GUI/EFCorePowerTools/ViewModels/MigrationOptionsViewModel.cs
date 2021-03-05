@@ -9,7 +9,8 @@
     using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using EnvDTE;
+	using EFCorePowerTools.Locales;
+	using EnvDTE;
     using Extensions;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -200,29 +201,29 @@
 
         private void SetInformationForProjectInSync()
         {
-            StatusMessage = "Your database and model are in sync.";
+            StatusMessage = MigrationsLocale.DatabaseModelSync;
             MigrationNameVisibility = Visibility.Collapsed;
-            ApplyButtonContent = "Script Migrations";
+            ApplyButtonContent = MigrationsLocale.ScriptMigrations;
             BackgroundOpacity = 0.4;
         }
 
         private void SetInformationForProjectWithNoMigrations()
         {
-            StatusMessage = $"No migrations are present in your project, create your initial migration.{Environment.NewLine}Enter a name for the new migration below.";
-            ApplyButtonContent = "Add Migration";
+            StatusMessage = MigrationsLocale.NoMigrationsInProject;
+            ApplyButtonContent = MigrationsLocale.AddMigration;
         }
 
         private void SetInformationForProjectWithChanges()
         {
-            StatusMessage = $"There are pending model changes, add a migration with the changes.{Environment.NewLine}Enter a name for the migration below.";
-            ApplyButtonContent = "Add Migration";
+            StatusMessage = MigrationsLocale.PendingModelChanges;
+            ApplyButtonContent = MigrationsLocale.AddMigration;
         }
 
         private void SetInformationForProjectWithPending()
         {
-            StatusMessage = "There are migrations that have not been applied to the database.";
+            StatusMessage = MigrationsLocale.NotAppliedMigrations;
             MigrationNameVisibility = Visibility.Collapsed;
-            ApplyButtonContent = "Update Database";
+            ApplyButtonContent = MigrationsLocale.UpdateDatabase;
         }
 
         private SortedDictionary<string, string> BuildModelResult(string modelInfo)
@@ -244,7 +245,7 @@
 
             if (string.IsNullOrEmpty(processResult))
             {
-                _visualStudioAccess.ShowError("Unable to get Migration status");
+                _visualStudioAccess.ShowError(MigrationsLocale.UnableGetMigrationStatus);
                 return;
             }
 
@@ -263,7 +264,7 @@
             try
             {
                 _visualStudioAccess.StartStatusBarAnimation(ref _progressIcon);
-                _visualStudioAccess.SetStatusBarText("Getting Migration Status");
+                _visualStudioAccess.SetStatusBarText(MigrationsLocale.GettingMigrationStatus);
                 if (_project.TryBuild())
                 {
                     var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
@@ -272,7 +273,7 @@
                 }
                 else
                 {
-                    _visualStudioAccess.ShowError("Build failed");
+                    _visualStudioAccess.ShowError(MigrationsLocale.BuildFailed);
                 }
             }
             catch (Exception ex)
@@ -292,11 +293,11 @@
 
             if (string.IsNullOrEmpty(MigrationName))
             {
-                _visualStudioAccess.ShowError("Migration Name required");
+                _visualStudioAccess.ShowError(MigrationsLocale.MigrationNameRequired);
                 return false;
             }
 
-            _visualStudioAccess.SetStatusBarText($"Creating Migration {MigrationName} in DbContext {SelectedStatusKey}");
+            _visualStudioAccess.SetStatusBarText(String.Format(MigrationsLocale.CreatingMigrationInDbContext, MigrationName, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullName), GenerationType.MigrationAdd, SelectedStatusKey, MigrationName, _project.Properties.Item("DefaultNamespace").Value.ToString());
 
             var result = BuildModelResult(processResult);
@@ -328,7 +329,7 @@
 
         private async Task<bool> UpdateDatabaseAsync()
         {
-            _visualStudioAccess.SetStatusBarText($"Updating Database from migrations in DbContext {SelectedStatusKey}");
+            _visualStudioAccess.SetStatusBarText(String.Format(MigrationsLocale.UpdatingDatabaseFromMigrationsInDbContext, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationApply, SelectedStatusKey);
             if (!processResult.Contains("Error:")) return true;
 
@@ -339,7 +340,7 @@
 
         private async Task<bool> ScriptMigrationAsync()
         {
-            _visualStudioAccess.SetStatusBarText($"Scripting migrations in DbContext {SelectedStatusKey}");
+            _visualStudioAccess.SetStatusBarText(String.Format(MigrationsLocale.ScriptingMigrationsInDbContext, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationScript, SelectedStatusKey);
             if (processResult.Contains("Error:"))
             {
