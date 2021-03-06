@@ -89,7 +89,6 @@ namespace RevEng.Core
             SavedModelFiles functionPaths = GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 
             SavedModelFiles filePaths = GenerateDbContext(options, serviceProvider, scaffolder, schemas, outputContextDir, modelNamespace, contextNamespace);
-
 #if CORE50
 #else
             RemoveOnConfiguring(filePaths.ContextFile, options.IncludeConnectionString);
@@ -162,6 +161,7 @@ namespace RevEng.Core
                     codeOptions,
                     options.UseBoolPropertiesWithoutDefaultSql,
                     options.UseNoNavigations,
+                    options.DatabaseModelCacheTTLInSeconds,
                     serviceProvider);
 
             filePaths = scaffolder.Save(
@@ -270,6 +270,7 @@ namespace RevEng.Core
             ModelCodeGenerationOptions codeOptions,
             bool removeNullableBoolDefaults,
             bool excludeNavigations,
+            int cacheTtlSeconds,
             ServiceProvider serviceProvider)
         {
             var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
@@ -277,7 +278,7 @@ namespace RevEng.Core
             var _selector = serviceProvider.GetService<IModelCodeGeneratorSelector>();
             var cache = new DatabaseModelCacheProvider();
 
-            var databaseModel = cache.GetModelFromFileCache(_databaseModelFactory, connectionString, databaseOptions); 
+            var databaseModel = cache.GetModelFromFileCache(_databaseModelFactory, connectionString, databaseOptions, cacheTtlSeconds); 
 
             if (removeNullableBoolDefaults)
             {

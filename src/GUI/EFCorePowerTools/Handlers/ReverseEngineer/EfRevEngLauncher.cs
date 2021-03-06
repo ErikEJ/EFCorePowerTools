@@ -51,6 +51,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoConstructor = options.UseNoConstructor,
                 UseNoNavigations = options.UseNoNavigations,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                DatabaseModelCacheTTLInSeconds = Properties.Settings.Default.ModelCacheTimeToLive,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, useEFCore5);

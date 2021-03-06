@@ -11,25 +11,35 @@ namespace RevEng.Core
 {
     public class DatabaseModelCacheProvider
     {
-        public DatabaseModel GetModelFromFileCache(IDatabaseModelFactory factory, string connectionString, DatabaseModelFactoryOptions factoryOptions)
+        public DatabaseModel GetModelFromFileCache(IDatabaseModelFactory factory, string connectionString, DatabaseModelFactoryOptions factoryOptions, int cacheTtlSeconds)
         {
-            var model = GetModel(factory, connectionString, factoryOptions);
-            
-            //TODO Filter tables/views! 
-
-            return model;
+            return GetModel(factory, connectionString, factoryOptions, cacheTtlSeconds);
         }
 
-        private static DatabaseModel GetModel(IDatabaseModelFactory factory, string connectionString, DatabaseModelFactoryOptions factoryOptions)
+        private static DatabaseModel GetModel(IDatabaseModelFactory factory, string connectionString, DatabaseModelFactoryOptions factoryOptions, int cacheTtlSeconds)
         {
             var name = GetHashString(connectionString) + ".json";
             var path = Path.Combine(Path.GetTempPath(), name);
 
-            //TODO Make cache optional via setting
             if (File.Exists(path) 
-                && File.GetLastWriteTimeUtc(path) > DateTime.UtcNow.AddSeconds(-90))
+                && File.GetLastWriteTimeUtc(path) > DateTime.UtcNow.AddSeconds(-cacheTtlSeconds))
             {
-                return JsonConvert.DeserializeObject<DatabaseModel>(File.ReadAllText(path, Encoding.UTF8));
+                var modelFromCache = JsonConvert.DeserializeObject<DatabaseModel>(File.ReadAllText(path, Encoding.UTF8));
+
+                var filtered = factoryOptions.Tables.ToHashSet();
+
+                if (filtered.Count > 0)
+                {
+                    for (int i = modelFromCache.Tables.Count - 1; i >= 0; i--)
+                    {
+                        if (!filtered.Contains(modelFromCache.Tables[i].GetFullName(Shared.DatabaseType.SQLServer)))
+                        {
+                            modelFromCache.Tables.RemoveAt(i);
+                        }
+                    }
+                }
+
+                return modelFromCache;
             }
 
             var model = factory.Create(connectionString, factoryOptions);
@@ -56,17 +66,21 @@ namespace RevEng.Core
 
         private static string GetHashString(string inputString)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (byte b in GetHash(inputString))
+            {
                 sb.Append(b.ToString("X2"));
+            }
 
             return sb.ToString();
         }
 
         public static byte[] GetHash(string inputString)
         {
-            using (HashAlgorithm algorithm = SHA256.Create())
+            using (var algorithm = SHA256.Create())
+            {
                 return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace EFCorePowerTools
 
         [Category("Reverse Engineer"),
         DisplayName(@"TTL for DatabaseModel cache"),
-        Description("Sets the time to live value for the cache of persisted database models"),
+        Description("Sets the time to live for the cache of database models. Use 0 to disable caching."),
         DefaultValue(90)]
         public int ModelCacheTimeToLive { get; set; }
 

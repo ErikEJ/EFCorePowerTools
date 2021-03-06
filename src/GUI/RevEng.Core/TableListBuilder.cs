@@ -35,9 +35,9 @@ namespace RevEng.Core
             _serviceProvider = ServiceProviderBuilder.Build(options);
         }
 
-        public List<TableModel> GetTableModels()
+        public List<TableModel> GetTableModels(int cacheTtlSeconds)
         {
-            var databaseTables = GetTableDefinitions();
+            var databaseTables = GetTableDefinitions(cacheTtlSeconds);
 
             var buildResult = new List<TableModel>();
 
@@ -58,14 +58,14 @@ namespace RevEng.Core
             return buildResult;
         }
 
-        private List<DatabaseTable> GetTableDefinitions()
+        private List<DatabaseTable> GetTableDefinitions(int cacheTtlSeconds)
         {
             var dbModelFactory = _serviceProvider.GetService<IDatabaseModelFactory>();
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
 
             var cache = new DatabaseModelCacheProvider();
             
-            var dbModel = cache.GetModelFromFileCache(dbModelFactory, _connectionString, dbModelOptions);
+            var dbModel = cache.GetModelFromFileCache(dbModelFactory, _connectionString, dbModelOptions, cacheTtlSeconds);
 
             return dbModel.Tables.ToList();
         }

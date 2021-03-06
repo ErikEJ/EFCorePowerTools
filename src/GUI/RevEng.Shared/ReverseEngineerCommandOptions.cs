@@ -33,6 +33,7 @@ namespace RevEng.Shared
         public bool UseNoConstructor { get; set; }
         public bool UseNoNavigations { get; set; }
         public bool UseNoObjectFilter { get; set; }
+        public int DatabaseModelCacheTTLInSeconds { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
     }

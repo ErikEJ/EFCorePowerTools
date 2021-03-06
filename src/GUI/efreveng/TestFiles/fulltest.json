@@ -17,7 +17,7 @@
           "NewName": "Categories"
         },
         {
-          "Columns": [ ],
+          "Columns": [],
           "Navigations": [
             {
               "Name": "ShipVia",
@@ -44,6 +44,7 @@
     }
   ],
   "Dacpac": null,
+  "DatabaseModelCacheTTLInSeconds": 90,
   "DatabaseType": 3,
   "DefaultDacpacSchema": null,
   "FilterSchemas": false,
@@ -250,7 +251,7 @@
       "ObjectType": 2
     }
   ],
-  "UseNoObjectFilter": true,
+  "UseNoObjectFilter": false,
   "UseBoolPropertiesWithoutDefaultSql": true,
   "UseDatabaseNames": false,
   "UseDbContextSplitting": false,

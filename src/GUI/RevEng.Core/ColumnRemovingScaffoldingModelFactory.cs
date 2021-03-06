@@ -27,17 +27,7 @@ namespace RevEng.Core
 
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)
         {
-            string name;
-            if (_databaseType == DatabaseType.SQLServer || _databaseType == DatabaseType.SQLServerDacpac)
-            {
-                name = $"[{table.Schema}].[{table.Name}]";
-            }
-            else
-            {
-                name = string.IsNullOrEmpty(table.Schema)
-                    ? table.Name
-                    : $"{table.Schema}.{table.Name}";
-            }
+            string name = table.GetFullName(_databaseType);
 
             var tableDefinition = _tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
