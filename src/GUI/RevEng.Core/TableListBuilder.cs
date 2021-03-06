@@ -63,7 +63,7 @@ namespace RevEng.Core
             var dbModelFactory = _serviceProvider.GetService<IDatabaseModelFactory>();
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
 
-            var cache = new DbModelCacheProvider();
+            var cache = new DatabaseModelCacheProvider();
             
             var dbModel = cache.GetModelFromFileCache(dbModelFactory, _connectionString, dbModelOptions);
 

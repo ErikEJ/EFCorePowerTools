@@ -275,7 +275,7 @@ namespace RevEng.Core
             var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
             var _factory = serviceProvider.GetService<IScaffoldingModelFactory>();
             var _selector = serviceProvider.GetService<IModelCodeGeneratorSelector>();
-            var cache = new DbModelCacheProvider();
+            var cache = new DatabaseModelCacheProvider();
 
             var databaseModel = cache.GetModelFromFileCache(_databaseModelFactory, connectionString, databaseOptions); 
 
