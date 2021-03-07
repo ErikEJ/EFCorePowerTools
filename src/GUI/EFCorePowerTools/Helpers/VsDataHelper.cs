@@ -109,7 +109,7 @@ namespace EFCorePowerTools.Helpers
 
             var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
             if (info.Size == Guid.Empty.ToString()) return new DatabaseInfo { DatabaseType = DatabaseType.Undefined };
-
+            
             var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.Size));
             info.Caption = savedName;
             info.DataConnection = dialogResult;
@@ -239,7 +239,36 @@ namespace EFCorePowerTools.Helpers
         private static string PathFromConnectionString(string connectionString)
         {
             var builder = new SqlConnectionStringBuilder(connectionString);
-            return builder.DataSource + "." + builder.InitialCatalog;
+
+            var database = builder.InitialCatalog;
+            if (string.IsNullOrEmpty(database))
+            {
+                if (!string.IsNullOrEmpty(builder.AttachDBFilename))
+                {
+                    database = Path.GetFileName(builder.AttachDBFilename);
+                }
+            }
+
+            string server;
+            if (builder.DataSource.StartsWith("(localdb)", StringComparison.OrdinalIgnoreCase))
+            {
+                server = builder.DataSource;
+            }
+            else
+            {
+                using (var cmd = new SqlCommand(connectionString))
+                {
+                    using (var conn = new SqlConnection(connectionString))
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandText = "SELECT SERVERPROPERTY('ServerName')";
+                        conn.Open();
+                        server = (string)cmd.ExecuteScalar();
+                    }
+                }
+            }
+
+            return server + "." + database;
         }
 
         public static string GetDatabaseName(string connectionString, DatabaseType dbType)
