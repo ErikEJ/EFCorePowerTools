@@ -52,7 +52,12 @@ namespace RevEng.Core
                 cleanedTypeName = alias;
             }
 
-            return (SqlDbType)Enum.Parse(typeof(SqlDbType), cleanedTypeName, true);
+            if (!Enum.TryParse(cleanedTypeName, true, out SqlDbType result))
+            {
+                throw new ArgumentOutOfRangeException(nameof(cleanedTypeName), $"cleanedTypeName: {cleanedTypeName}");
+            }
+
+            return result;
         }
 
         public static Type GetClrType(string storeType, bool isNullable)
