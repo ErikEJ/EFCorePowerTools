@@ -1,5 +1,4 @@
 ﻿using EFCorePowerTools.Locales;
-using Microsoft.Extensions.Primitives;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
