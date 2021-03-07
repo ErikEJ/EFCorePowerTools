@@ -144,6 +144,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var result = RunProcess(startInfo);
 
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                return false;
+            }
+
             var isInstalled = false;
             var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in sdks)

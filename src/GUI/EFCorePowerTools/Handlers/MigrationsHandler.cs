@@ -2,7 +2,6 @@
 using EnvDTE;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -80,6 +79,5 @@ namespace EFCorePowerTools.Handlers
                 _package.LogError(new List<string>(), exception);
             }
         }
-
     }
 }
