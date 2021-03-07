@@ -1,11 +1,12 @@
-﻿using ErikEJ.SqlCeScripting;
-using Microsoft.VisualStudio.Data.Core;
+﻿using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
+using System.IO;
 using System.Windows.Forms;
 
 // ReSharper disable once CheckNamespace
@@ -209,8 +210,7 @@ namespace EFCorePowerTools.Helpers
         {
             if (dbType == DatabaseType.SQLServer)
             {
-                var helper = new SqlServerHelper();
-                return helper.PathFromConnectionString(connectionString);
+                return PathFromConnectionString(connectionString);
             }
 
             var builder = new DbConnectionStringBuilder();
@@ -234,6 +234,12 @@ namespace EFCorePowerTools.Helpers
             }
 
             return result;
+        }
+
+        private static string PathFromConnectionString(string connectionString)
+        {
+            var builder = new SqlConnectionStringBuilder(connectionString);
+            return builder.DataSource + "." + builder.InitialCatalog;
         }
 
         public static string GetDatabaseName(string connectionString, DatabaseType dbType)

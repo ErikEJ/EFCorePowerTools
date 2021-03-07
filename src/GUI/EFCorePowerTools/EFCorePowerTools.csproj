@@ -342,14 +342,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ISqlCeScripting">
-      <HintPath>..\lib\ISqlCeScripting.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SqlCeScripting40">
-      <HintPath>..\lib\SqlCeScripting40.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -425,10 +419,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.en.resx">
-	  <MergeWithCTO>true</MergeWithCTO>
+      <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>EFCorePowerTools.Locales.SharedLocale.en.resources</LogicalName>
     </EmbeddedResource>
-
     <EmbeddedResource Include="Locales\SharedLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
