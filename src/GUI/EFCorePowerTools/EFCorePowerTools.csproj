@@ -59,6 +59,15 @@
     <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParser.cs">
+      <Link>DgmlBuilder\DebugViewParser.cs</Link>
+    </Compile>
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParserResult.cs">
+      <Link>DgmlBuilder\DebugViewParserResult.cs</Link>
+    </Compile>
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
+      <Link>DgmlBuilder\DgmlBuilder.cs</Link>
+    </Compile>
     <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
@@ -264,14 +273,6 @@
     <Resource Include="Resources\Table_16x.png" />
     <Resource Include="Resources\Add_16x.png" />
     <Resource Include="Resources\Remove_16x.png" />
-    <Content Include="..\lib\Microsoft.VisualStudio.ProjectSystem.dll">
-      <Link>Microsoft.VisualStudio.ProjectSystem.dll</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\Microsoft.VisualStudio.ProjectSystem.VS.dll">
-      <Link>Microsoft.VisualStudio.ProjectSystem.VS.dll</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\7.png" />
     <Resource Include="Resources\TableWarning_16x.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
@@ -328,10 +329,6 @@
       <Project>{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}</Project>
       <Name>EFCorePowerTools.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj">
-      <Project>{079b9426-9230-468e-8d02-2a0de07c7237}</Project>
-      <Name>ErikEJ.EntityFrameworkCore.DgmlBuilder</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
       <Name>RevEng.Shared</Name>
@@ -342,14 +339,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ISqlCeScripting">
-      <HintPath>..\lib\ISqlCeScripting.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SqlCeScripting40">
-      <HintPath>..\lib\SqlCeScripting40.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -425,10 +416,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.en.resx">
-	  <MergeWithCTO>true</MergeWithCTO>
+      <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>EFCorePowerTools.Locales.SharedLocale.en.resources</LogicalName>
     </EmbeddedResource>
-
     <EmbeddedResource Include="Locales\SharedLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
@@ -535,9 +525,9 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights">
-      <Version>2.17.0</Version>
-    </PackageReference>
+	  <PackageReference Include="Microsoft.ApplicationInsights">
+		  <Version>2.17.0</Version>
+	  </PackageReference>	  
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.5.0</Version>
     </PackageReference>
