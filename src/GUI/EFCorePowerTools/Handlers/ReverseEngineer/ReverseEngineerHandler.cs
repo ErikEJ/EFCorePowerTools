@@ -437,6 +437,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
+            options.UseNullableReferences = project.IsNetFramework() ? false : options.UseNullableReferences;
+
             _package.Dte2.StatusBar.Animate(true, _icon);
             _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GeneratingCode;
             var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
