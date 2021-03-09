@@ -11,7 +11,7 @@ namespace RevEng.Core
     public static class DbContextSplitter
     {
         // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
-        public static List<string> Split(string dbContextPath, string configNamespace)
+        public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable)
         {
             var dbContextFilePath = Path.GetFullPath(dbContextPath);
 
@@ -72,7 +72,10 @@ namespace RevEng.Core
                 _sb.AppendLine(PathHelper.Header);
                 _sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
                 _sb.AppendLine();
-                _sb.AppendLine("#nullable disable");
+                if (supportNullable)
+                {
+                    _sb.AppendLine("#nullable disable");
+                }
                 _sb.AppendLine();
                 _sb.AppendLine($"namespace {configurationNamespace}");
                 _sb.AppendLine("{");

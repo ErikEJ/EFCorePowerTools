@@ -191,6 +191,13 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
+        public static bool IsNetFramework(this Project project)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework,");
+        }
+
         public static bool IsNetCore(this Project project)
         {
             ThreadHelper.ThrowIfNotOnUIThread();

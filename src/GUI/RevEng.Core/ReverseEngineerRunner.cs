@@ -101,7 +101,7 @@ namespace RevEng.Core
 
             PostProcess(filePaths.ContextFile);
 
-            var entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace);
+            var entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
 
             var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
 
@@ -334,14 +334,14 @@ namespace RevEng.Core
             return cleanUpPaths;
         }
 
-        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace)
+        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable)
         {
             if (!useDbContextSplitting)
             {
                 return new List<string>();
             }
 
-            return DbContextSplitter.Split(contextFile, contextNamespace);
+            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable);
         }
 
         private static void RemoveOnConfiguring(string contextFile, bool includeConnectionString)
