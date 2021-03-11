@@ -107,11 +107,17 @@ namespace RevEng.Core
 
             CleanUp(cleanUpPaths, entityTypeConfigurationPaths);
 
+            var allfiles = filePaths.AdditionalFiles.ToList();
+            allfiles.AddRange(procedurePaths.AdditionalFiles);
+            allfiles.Add(procedurePaths.ContextFile);
+            allfiles.AddRange(functionPaths.AdditionalFiles);
+            allfiles.Add(functionPaths.ContextFile);
+
             var result = new ReverseEngineerResult
             {
                 EntityErrors = errors,
                 EntityWarnings = warnings,
-                EntityTypeFilePaths = filePaths.AdditionalFiles,
+                EntityTypeFilePaths = allfiles,
                 ContextFilePath = filePaths.ContextFile,
                 ContextConfigurationFilePaths = entityTypeConfigurationPaths,
             };
