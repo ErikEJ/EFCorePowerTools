@@ -126,6 +126,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CannotUncheckPrimaryKey {
+            get {
+                return ResourceManager.GetString("CannotUncheckPrimaryKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CheckOutputWindowForErrors {
             get {
                 return ResourceManager.GetString("CheckOutputWindowForErrors", resourceCulture);
@@ -156,6 +165,15 @@ namespace EFCorePowerTools.Locales {
         public static string ChooseDatabaseConnection {
             get {
                 return ResourceManager.GetString("ChooseDatabaseConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ChooseDatabaseObjects {
+            get {
+                return ResourceManager.GetString("ChooseDatabaseObjects", resourceCulture);
             }
         }
         
@@ -426,6 +444,15 @@ namespace EFCorePowerTools.Locales {
         public static string NewNameCannotBeEmpty {
             get {
                 return ResourceManager.GetString("NewNameCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NoPrimaryKey {
+            get {
+                return ResourceManager.GetString("NoPrimaryKey", resourceCulture);
             }
         }
         

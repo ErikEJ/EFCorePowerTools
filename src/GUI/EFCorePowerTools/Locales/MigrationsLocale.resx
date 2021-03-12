@@ -138,6 +138,9 @@
   <data name="GettingMigrationStatus" xml:space="preserve">
     <value />
   </data>
+  <data name="ManageMigrationsInProject" xml:space="preserve">
+    <value />
+  </data>
   <data name="MigrationName" xml:space="preserve">
     <value />
   </data>

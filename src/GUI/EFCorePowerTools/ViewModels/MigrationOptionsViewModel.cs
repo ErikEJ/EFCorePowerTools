@@ -9,8 +9,8 @@
     using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-	using EFCorePowerTools.Locales;
-	using EnvDTE;
+    using EFCorePowerTools.Locales;
+    using EnvDTE;
     using Extensions;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -21,8 +21,6 @@
 
     public class MigrationOptionsViewModel : ViewModelBase, IMigrationOptionsViewModel
     {
-        private const string baseTitle = "Manage Migrations in Project";
-
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly RelayCommand _applyCommand;
 
@@ -141,8 +139,6 @@
         public MigrationOptionsViewModel(IVisualStudioAccess visualStudioAccess)
         {
             _visualStudioAccess = visualStudioAccess;
-
-            Title = baseTitle;
 
             LoadedCommand = new RelayCommand(async () => await Loaded_ExecutedAsync());
             _applyCommand = new RelayCommand(async () => await Apply_ExecutedAsync(), () => !_applying);
@@ -421,7 +417,7 @@
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            Title = baseTitle + " " + project.Name;
+            Title = string.Format(MigrationsLocale.ManageMigrationsInProject, project.Name);
             _project = project;
             _processLauncher = new ProcessLauncher(project);
         }

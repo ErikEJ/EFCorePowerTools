@@ -117,46 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
+  <data name="AnErrorOccurred" xml:space="preserve">
+    <value>发生错误。 有关详细信息，请参见“输出”窗口。</value>
   </data>
-  <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value>About info copied to clipboard</value>
+  <data name="BuildFailed" xml:space="preserve">
+    <value>生成失败。 无法找到DbContext类。</value>
   </data>
-  <data name="AddinFreeDisclaimer" xml:space="preserve">
-    <value>This add-in is FREE, but I would be grateful for a review</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
+  <data name="EFCoreVersionNotFound" xml:space="preserve">
+    <value>在项目中找不到 EF Core 3.1或更高版本</value>
+  </data>
+  <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
+    <value>正在安装 EFCore.Design {0} 版本，请重试该命令</value>
+  </data>
+  <data name="InvalidName" xml:space="preserve">
+    <value>无效名称</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+    <value>确定</value>
   </data>
-  <data name="SQLiteDDEXProvider" xml:space="preserve">
-    <value>System.Data.SQLite DDEX provider</value>
+  <data name="SelectedProjectTypeNoTargetFrameworkMoniker" xml:space="preserve">
+    <value>所选项目类型没有指定目标框架</value>
   </data>
-  <data name="SQLiteProviderGAC" xml:space="preserve">
-    <value>SQLite EF6 DbProvider in GAC</value>
+  <data name="SupportedFramework" xml:space="preserve">
+    <value>仅支持.NET Core 3.0 以上项目</value>
   </data>
-  <data name="SQLiteProviderIncluded" xml:space="preserve">
-    <value>SQLite ADO.NET Provider included</value>
-  </data>
-  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
-    <value>SQLite Simple DDEX provider</value>
-  </data>
-  <data name="SupportFeedbackSourceCode" xml:space="preserve">
-    <value>For support, feedback and full source code, go to</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="VersionNotAvailable" xml:space="preserve">
-    <value>Version N/A</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="UnableToLocateProjectAssembly" xml:space="preserve">
+    <value>无法找到程序集</value>
   </data>
 </root>

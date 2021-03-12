@@ -117,46 +117,60 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
+  <data name="AddMigration" xml:space="preserve">
+    <value>添加迁移</value>
   </data>
-  <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value>About info copied to clipboard</value>
+  <data name="BuildFailed" xml:space="preserve">
+    <value>生成失败</value>
   </data>
-  <data name="AddinFreeDisclaimer" xml:space="preserve">
-    <value>This add-in is FREE, but I would be grateful for a review</value>
+  <data name="CannotSupportVersion" xml:space="preserve">
+    <value>暂不支持 {0} 版本，请注意不支持预览版本</value>
   </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
+  <data name="ContextName" xml:space="preserve">
+    <value>上下文名称</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
+  <data name="CreatingMigrationInDbContext" xml:space="preserve">
+    <value>生成 {1} 上下文的 {0} 迁移中...</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+  <data name="DatabaseModelSync" xml:space="preserve">
+    <value>您的数据库和模型是同步的</value>
   </data>
-  <data name="SQLiteDDEXProvider" xml:space="preserve">
-    <value>System.Data.SQLite DDEX provider</value>
+  <data name="GettingMigrationStatus" xml:space="preserve">
+    <value>正在获取迁移状态...</value>
   </data>
-  <data name="SQLiteProviderGAC" xml:space="preserve">
-    <value>SQLite EF6 DbProvider in GAC</value>
+  <data name="ManageMigrationsInProject" xml:space="preserve">
+    <value>在 {0} 中管理迁移</value>
   </data>
-  <data name="SQLiteProviderIncluded" xml:space="preserve">
-    <value>SQLite ADO.NET Provider included</value>
+  <data name="MigrationName" xml:space="preserve">
+    <value>迁移名称</value>
   </data>
-  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
-    <value>SQLite Simple DDEX provider</value>
+  <data name="MigrationNameRequired" xml:space="preserve">
+    <value>迁移名称是必填项</value>
   </data>
-  <data name="SupportFeedbackSourceCode" xml:space="preserve">
-    <value>For support, feedback and full source code, go to</value>
+  <data name="NoMigrationsInProject" xml:space="preserve">
+    <value>您的项目中不存在任何迁移，请初始化迁移。
+在下方输入迁移的名称</value>
   </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
+  <data name="NotAppliedMigrations" xml:space="preserve">
+    <value>部分迁移尚未更新到数据库</value>
   </data>
-  <data name="VersionNotAvailable" xml:space="preserve">
-    <value>Version N/A</value>
+  <data name="PendingModelChanges" xml:space="preserve">
+    <value>模型发生变更，请添加包含这些更改的迁移。
+在下方输入迁移的名称</value>
   </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <data name="ScriptingMigrationsInDbContext" xml:space="preserve">
+    <value>生成 {0} 上下文的迁移脚本中...</value>
+  </data>
+  <data name="ScriptMigrations" xml:space="preserve">
+    <value>生成迁移脚本</value>
+  </data>
+  <data name="UnableGetMigrationStatus" xml:space="preserve">
+    <value>无法获得迁移状态</value>
+  </data>
+  <data name="UpdateDatabase" xml:space="preserve">
+    <value>更新数据库</value>
+  </data>
+  <data name="UpdatingDatabaseFromMigrationsInDbContext" xml:space="preserve">
+    <value>更新 {0} 上下文的数据库中...</value>
   </data>
 </root>

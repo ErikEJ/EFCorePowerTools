@@ -117,13 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value />
+  </data>
   <data name="AboutCopiedToClipboard" xml:space="preserve">
     <value />
   </data>
   <data name="AddinFreeDisclaimer" xml:space="preserve">
     <value />
   </data>
+  <data name="Copy" xml:space="preserve">
+    <value />
+  </data>
   <data name="No" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Ok" xml:space="preserve">
     <value />
   </data>
   <data name="SQLiteDDEXProvider" xml:space="preserve">
