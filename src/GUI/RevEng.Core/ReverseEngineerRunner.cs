@@ -108,10 +108,16 @@ namespace RevEng.Core
             CleanUp(cleanUpPaths, entityTypeConfigurationPaths);
 
             var allfiles = filePaths.AdditionalFiles.ToList();
-            allfiles.AddRange(procedurePaths.AdditionalFiles);
-            allfiles.Add(procedurePaths.ContextFile);
-            allfiles.AddRange(functionPaths.AdditionalFiles);
-            allfiles.Add(functionPaths.ContextFile);
+            if (procedurePaths != null)
+            {
+                allfiles.AddRange(procedurePaths.AdditionalFiles);
+                allfiles.Add(procedurePaths.ContextFile);
+            }
+            if (functionPaths != null)
+            {
+                allfiles.AddRange(functionPaths.AdditionalFiles);
+                allfiles.Add(functionPaths.ContextFile);
+            }
 
             var result = new ReverseEngineerResult
             {
