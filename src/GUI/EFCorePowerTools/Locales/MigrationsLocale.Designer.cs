@@ -126,6 +126,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ManageMigrationsInProject {
+            get {
+                return ResourceManager.GetString("ManageMigrationsInProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MigrationName {
             get {
                 return ResourceManager.GetString("MigrationName", resourceCulture);

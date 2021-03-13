@@ -117,46 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
+  <data name="100" xml:space="preserve">
+    <value>EF Core Power Tools</value>
   </data>
-  <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value>About info copied to clipboard</value>
+  <data name="101" xml:space="preserve">
+    <value>General</value>
   </data>
-  <data name="AddinFreeDisclaimer" xml:space="preserve">
-    <value>This add-in is FREE, but I would be grateful for a review</value>
+  <data name="110" xml:space="preserve">
+    <value>Entity Framework Core Power Tools</value>
   </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
+  <data name="112" xml:space="preserve">
+    <value>Adds useful design-time EF Core DbContext features to the Visual Studio Solution Explorer context menu. 
+
+</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="SQLiteDDEXProvider" xml:space="preserve">
-    <value>System.Data.SQLite DDEX provider</value>
-  </data>
-  <data name="SQLiteProviderGAC" xml:space="preserve">
-    <value>SQLite EF6 DbProvider in GAC</value>
-  </data>
-  <data name="SQLiteProviderIncluded" xml:space="preserve">
-    <value>SQLite ADO.NET Provider included</value>
-  </data>
-  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
-    <value>SQLite Simple DDEX provider</value>
-  </data>
-  <data name="SupportFeedbackSourceCode" xml:space="preserve">
-    <value>For support, feedback and full source code, go to</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="VersionNotAvailable" xml:space="preserve">
-    <value>Version N/A</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

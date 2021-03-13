@@ -180,6 +180,24 @@
   <data name="ForeignKey" xml:space="preserve">
     <value />
   </data>
+  <data name="HeaderAttribute" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HeaderExpected" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HeaderFound" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HeaderName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HeaderState" xml:space="preserve">
+    <value />
+  </data>
+  <data name="HeaderType" xml:space="preserve">
+    <value />
+  </data>
   <data name="Index" xml:space="preserve">
     <value />
   </data>
