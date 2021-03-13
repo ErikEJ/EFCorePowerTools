@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>关于</value>
   </data>
   <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value>About info copied to clipboard</value>
+    <value>关于信息已复制到剪贴板</value>
   </data>
   <data name="AddinFreeDisclaimer" xml:space="preserve">
-    <value>This add-in is FREE, but I would be grateful for a review</value>
+    <value>此扩展是免费的，但我将不胜感激的审查</value>
   </data>
   <data name="Copy" xml:space="preserve">
-    <value>Copy</value>
+    <value>复制</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>否</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+    <value>确定</value>
   </data>
   <data name="SQLiteDDEXProvider" xml:space="preserve">
     <value>System.Data.SQLite DDEX provider</value>
@@ -148,15 +148,15 @@
     <value>SQLite Simple DDEX provider</value>
   </data>
   <data name="SupportFeedbackSourceCode" xml:space="preserve">
-    <value>For support, feedback and full source code, go to</value>
+    <value>有关支持、反馈和完整源代码，请转到</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>版本</value>
   </data>
   <data name="VersionNotAvailable" xml:space="preserve">
-    <value>Version N/A</value>
+    <value>版本不可用</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>是</value>
   </data>
 </root>

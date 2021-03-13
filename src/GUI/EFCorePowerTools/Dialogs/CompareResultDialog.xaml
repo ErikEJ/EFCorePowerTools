@@ -68,7 +68,7 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTemplateColumn MinWidth="70" Header="Name">
+                <DataGridTemplateColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderName}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -117,11 +117,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn MinWidth="70" Header="Type" Binding="{Binding Type, Converter={StaticResource EnumToLabelConverter}}"/>
-                <DataGridTextColumn MinWidth="70" Header="State" Binding="{Binding State, Converter={StaticResource EnumToLabelConverter}}"/>
-                <DataGridTextColumn MinWidth="70" Header="Attribute" Binding="{Binding Attribute, Converter={StaticResource EnumToLabelConverter}}"/>
-                <DataGridTextColumn MinWidth="70" Header="Expected" Binding="{Binding Expected}" />
-                <DataGridTextColumn MinWidth="70" Header="Found" Binding="{Binding Found}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderType}" Binding="{Binding Type, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderState}" Binding="{Binding State, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderAttribute}" Binding="{Binding Attribute, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderExpected}" Binding="{Binding Expected}" />
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderFound}" Binding="{Binding Found}"/>
             </DataGrid.Columns>
         </DataGrid>
         <dw:DialogButton Content="{x:Static locale:CompareLocale.Close}"

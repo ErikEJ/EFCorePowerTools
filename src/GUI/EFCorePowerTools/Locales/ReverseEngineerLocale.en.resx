@@ -138,6 +138,9 @@
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>Cannot generate code while debugging</value>
   </data>
+  <data name="CannotUncheckPrimaryKey" xml:space="preserve">
+    <value>This column is part of the primary key and cannot be unchecked if the table is selected.</value>
+  </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
     <value>Please check the output window for errors</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="ChooseDatabaseConnection" xml:space="preserve">
     <value>Choose Database Connection</value>
+  </data>
+  <data name="ChooseDatabaseObjects" xml:space="preserve">
+    <value>Choose Database Objects</value>
   </data>
   <data name="ChooseSchemas" xml:space="preserve">
     <value>Choose Schemas</value>
@@ -239,6 +245,9 @@
   </data>
   <data name="NewNameCannotBeEmpty" xml:space="preserve">
     <value>New name cannot be empty</value>
+  </data>
+  <data name="NoPrimaryKey" xml:space="preserve">
+    <value>This table has no primary key defined.</value>
   </data>
   <data name="PackageNotFoundInProject" xml:space="preserve">
     <value>The "{0}" NuGet package was not found in the project - it must be installed in order to build.</value>
