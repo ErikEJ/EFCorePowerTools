@@ -160,7 +160,14 @@ namespace EFCorePowerTools.Handlers
             startInfo.FileName = "dotnet";
             startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
 
-            Debug.WriteLine(startInfo.Arguments);
+            try
+            {
+                File.WriteAllText(Path.Combine(Path.GetTempPath(), "efptparams.txt"), startInfo.Arguments);
+            }
+            catch
+            { 
+                // Ignore
+            }
 
             var standardOutput = new StringBuilder();
             using (var process = System.Diagnostics.Process.Start(startInfo))
