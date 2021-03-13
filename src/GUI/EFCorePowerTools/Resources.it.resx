@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="bigint" xml:space="preserve">
+    <value>Integer (whole number) data from –2^63 (–9,223,372,036,854,775,808) through 2^63–1 (9,223,372,036,854,775,807).
+Storage size is 8 bytes.</value>
+  </data>
+  <data name="bit" xml:space="preserve">
+    <value>Integer data with a value of either 1 or 0.
+Storage size is 1 bit.</value>
+  </data>
+  <data name="CanNotCreateWindow" xml:space="preserve">
+    <value>Can not create tool window.</value>
+  </data>
+  <data name="ClassTemplateCsharp" xml:space="preserve">
+    <value>using System;
+using System.Data.SqlServerCe;
+using System.Text;
+
+public class MergeReplication
+{
+    public static void Synchronize()
+    {
+        SqlCeReplication repl = new SqlCeReplication();  
+
+#ReplParams#
+        try
+        {
+            repl.AddSubscription(AddOption.ExistingDatabase);
+            repl.Synchronize();
+        }
+        catch (SqlCeException e)
+        {
+            Console.WriteLine(ShowErrors(e));
+        }
+    }
+
+    private static string ShowErrors(SqlCeException e)
+    {
+        SqlCeErrorCollection errorCollection = e.Errors;
+
+        StringBuilder bld = new StringBuilder();
+        Exception inner = e.InnerException;
+
+        if (null != inner)
+        {
+            bld.Append("Inner Exception: " + inner.ToString());
+        }
+        foreach (System.Data.SqlServerCe.SqlCeError err in errorCollection)
+        {
+            bld.Append("\n Error Code: " + err.HResult.ToString("X", System.Globalization.CultureInfo.InvariantCulture));
+            bld.Append("\n Message   : " + err.Message);
+            bld.Append("\n Minor Err.: " + err.NativeError);
+            bld.Append("\n Source    : " + err.Source);
+            // Enumerate each numeric parameter for the error.
+            foreach (int numPar in err.NumericErrorParameters)
+            {
+                if (0 != numPar) bld.Append("\n Num. Par. : " + numPar);
+            }
+            // Enumerate each string parameter for the error.
+            foreach (string errPar in err.ErrorParameters)
+            {
+                if (!string.IsNullOrEmpty(errPar)) bld.Append("\n Err. Par. : " + errPar);
+            }
+        }
+        return bld.ToString();
+    }
+
+}</value>
+  </data>
+  <data name="integer" xml:space="preserve">
+    <value>Integer (whole number) data from –2^31 (–2,147,483,648) through 2^31–1 (2,147,483,647).
+Storage size is 4 bytes.</value>
+  </data>
+  <data name="money" xml:space="preserve">
+    <value>Monetary data values from (–2^63/10000) (–922,337,203,685,477.5808) through 2^63–1 (922,337,203,685,477.5807), with accuracy to a ten-thousandth of a monetary unit.
+Storage size is 8 bytes</value>
+  </data>
+  <data name="numeric" xml:space="preserve">
+    <value>Fixed-precision and scale-numeric data from –10^38+1 through 10^38–1. The p variable specifies precision and can vary between 1 and 38. The s variable specifies scale and can vary between 0 and p.
+Storage size is 19 bytes.</value>
+  </data>
+  <data name="smallint" xml:space="preserve">
+    <value>Integer data from –32,768 to 32,767.
+Storage size is 2 bytes.</value>
+  </data>
+  <data name="tinyint" xml:space="preserve">
+    <value>Integer data from 0 to 255. 
+Storage size is 1 byte.</value>
+  </data>
+  <data name="ToolWindowTitle" xml:space="preserve">
+    <value>SQLite/SQL Server Compact Toolbox</value>
+  </data>
+  <data name="binary" xml:space="preserve">
+    <value>Fixed-length binary data with a maximum length of 8000 bytes. Default length = 1.
+Storage size is fixed, which is the length in bytes declared in the type.</value>
+  </data>
+  <data name="datetime" xml:space="preserve">
+    <value>Date and time data from January 1, 1753, to December 31, 9999, with an accuracy of one three-hundredth second, or 3.33 milliseconds. Values are rounded to increments of .000, .003, or .007 milliseconds. 
+Stored as two 4-byte integers. 
+The first 4 bytes store the number of days before or after the base date , January 1, 1900. The base date is the system's reference date. 
+Values for datetime earlier than January 1, 1753, are not permitted. The other 4 bytes store the time of day represented as the number of milliseconds after midnight. Seconds have a valid range of 0–59.</value>
+  </data>
+  <data name="floating" xml:space="preserve">
+    <value>Floating point number data from –1.79E +308 through 1.79E+308.
+Storage size is 8 bytes.</value>
+  </data>
+  <data name="image" xml:space="preserve">
+    <value>Variable-length binary data with a maximum length of 2^30–1 (1,073,741,823) bytes.
+Storage is the length of the value in bytes.</value>
+  </data>
+  <data name="nchar" xml:space="preserve">
+    <value>Fixed-length Unicode data with a maximum length of 4000 characters. Default length = 1.
+Storage size, in bytes, is two times the number of characters entered.</value>
+  </data>
+  <data name="ntext" xml:space="preserve">
+    <value>Variable-length Unicode data with a maximum length of (2^30–2)/2 (536,870,911) characters.
+Storage size, in bytes, is two times the number of characters entered.</value>
+  </data>
+  <data name="nvarchar" xml:space="preserve">
+    <value>Variable-length Unicode data with a length of 1 to 4000 characters. Default length = 1.
+Storage size, in bytes, is two times the number of characters entered.</value>
+  </data>
+  <data name="real" xml:space="preserve">
+    <value>Floating precision number data from –3.40E+38 through 3.40E+38.
+Storage size is 4 bytes.</value>
+  </data>
+  <data name="rowversion" xml:space="preserve">
+    <value>This is an automatically generated unique binary number.*
+Storage size is 8 bytes.</value>
+  </data>
+  <data name="uniqueidentifier" xml:space="preserve">
+    <value>A globally unique identifier (GUID).
+Storage size is 16 bytes.</value>
+  </data>
+  <data name="varbinary" xml:space="preserve">
+    <value>Variable-length binary data with a maximum length of 8000 bytes. Default length = 1. 
+Storage size varies. It is the length of the value in bytes.</value>
+  </data>
+  <data name="SqlCompact35InvariantName" xml:space="preserve">
+    <value>System.Data.SqlServerCe.3.5</value>
+  </data>
+  <data name="SqlCompact35Provider" xml:space="preserve">
+    <value>7c602b5b-accb-4acd-9dc0-ca66388c1533</value>
+  </data>
+  <data name="SqlServerDotNetProvider" xml:space="preserve">
+    <value>91510608-8809-4020-8897-fba057e22d54</value>
+  </data>
+  <data name="SQLiteInvariantName" xml:space="preserve">
+    <value>System.Data.SQLite</value>
+  </data>
+  <data name="App" xml:space="preserve">
+    <value>SQLite/SQL Server Compact Toolbox</value>
+  </data>
+  <data name="SQLiteEF6InvariantName" xml:space="preserve">
+    <value>System.Data.SQLite.EF6</value>
+  </data>
+  <data name="NpgsqlProvider" xml:space="preserve">
+    <value>70ba90f8-3027-4aF1-9b15-37abbd48744c</value>
+  </data>
+  <data name="MysqlVSProvider" xml:space="preserve">
+    <value>c6882346-e592-4da5-80ba-d2eadcda0359</value>
+  </data>
+  <data name="OracleProvider" xml:space="preserve">
+    <value>9D8FDBB9-EE60-4787-B7AE-49831D34AD4B</value>
+  </data>
+</root>

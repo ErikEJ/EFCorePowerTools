@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Aggiungi...</value>
+  </data>
+  <data name="AddDatabaseConnection" xml:space="preserve">
+    <value>Aggiungi database</value>
+  </data>
+  <data name="Anything" xml:space="preserve">
+    <value>Tutto</value>
+  </data>
+  <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
+    <value>Impossibile comparare il contesto e il database durante il debug</value>
+  </data>
+  <data name="CannotSupportVersion" xml:space="preserve">
+    <value>Versione {0} non supportata, ricorda che le preview hanno un supporto limitato. Puoi installare manualmente il pacchetto Microsoft.EntityFrameworkCore.Design preview.</value>
+  </data>
+  <data name="ChooseDatabaseContexts" xml:space="preserve">
+    <value>Seleziona il database e le classi di contesto</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Column" xml:space="preserve">
+    <value>Colonna</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>Nome colonna</value>
+  </data>
+  <data name="ColumnType" xml:space="preserve">
+    <value>Tipo colonna</value>
+  </data>
+  <data name="CompareCompletedIn" xml:space="preserve">
+    <value>Comparazione completata in {0}</value>
+  </data>
+  <data name="ComparingDatabaseWithContexts" xml:space="preserve">
+    <value>Sto comparando il database con i contesti...</value>
+  </data>
+  <data name="ComparisonResult" xml:space="preserve">
+    <value>Risultato della comparazione</value>
+  </data>
+  <data name="ConstraintName" xml:space="preserve">
+    <value>Nome vincolo</value>
+  </data>
+  <data name="ContextDatabaseMatch" xml:space="preserve">
+    <value>I contesti e la struttura del database sono uguali</value>
+  </data>
+  <data name="Database" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="DbContext" xml:space="preserve">
+    <value>DbContext</value>
+  </data>
+  <data name="DeleteBehabior" xml:space="preserve">
+    <value>Azione in cancellazione</value>
+  </data>
+  <data name="Different" xml:space="preserve">
+    <value>Differente</value>
+  </data>
+  <data name="Entity" xml:space="preserve">
+    <value>Entità</value>
+  </data>
+  <data name="ForeignKey" xml:space="preserve">
+    <value>Chiave esterna</value>
+  </data>
+  <data name="HeaderAttribute" xml:space="preserve">
+    <value>Attributo</value>
+  </data>
+  <data name="HeaderExpected" xml:space="preserve">
+    <value>Atteso</value>
+  </data>
+  <data name="HeaderFound" xml:space="preserve">
+    <value>Trovato</value>
+  </data>
+  <data name="HeaderName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="HeaderState" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="HeaderType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Indice</value>
+  </data>
+  <data name="IndexConstraintName" xml:space="preserve">
+    <value>Nome vincolo sull'indice</value>
+  </data>
+  <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
+    <value>Sto installando EfCore.SchemaCompare versione 5.1.3, riprova il comando</value>
+  </data>
+  <data name="LoadingData" xml:space="preserve">
+    <value>Sto caricando i dati</value>
+  </data>
+  <data name="MatchAnything" xml:space="preserve">
+    <value>Compara tutto</value>
+  </data>
+  <data name="NoContextsSelected" xml:space="preserve">
+    <value>Nessun contesto selezionato</value>
+  </data>
+  <data name="NotChecked" xml:space="preserve">
+    <value>Non selezionato</value>
+  </data>
+  <data name="NotInContext" xml:space="preserve">
+    <value>Non presente nel contesto</value>
+  </data>
+  <data name="NotInDatabase" xml:space="preserve">
+    <value>Non presente nel database</value>
+  </data>
+  <data name="NotMappedToDatabase" xml:space="preserve">
+    <value>Nonmappato nel database</value>
+  </data>
+  <data name="NotSet" xml:space="preserve">
+    <value>Non impostato</value>
+  </data>
+  <data name="Nullability" xml:space="preserve">
+    <value>Nullabilità</value>
+  </data>
+  <data name="PersistentComputedColumn" xml:space="preserve">
+    <value>Colonna calcolata persistente</value>
+  </data>
+  <data name="PrimaryKey" xml:space="preserve">
+    <value>Chiave primaria</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Proprietà</value>
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value>Rimuovi la connessione selezionata</value>
+  </data>
+  <data name="ShowDifferencesOnly" xml:space="preserve">
+    <value>Mostra solo le differenze</value>
+  </data>
+  <data name="SqlComputedColumn" xml:space="preserve">
+    <value>Colonna SQL calcolata </value>
+  </data>
+  <data name="SqlDefaultValue" xml:space="preserve">
+    <value>Valore SQL di default</value>
+  </data>
+  <data name="Table" xml:space="preserve">
+    <value>Tabella</value>
+  </data>
+  <data name="TableName" xml:space="preserve">
+    <value>Nome tabella</value>
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value>Impossibile aggiungere la connessione, forse ilprovider non è supportato</value>
+  </data>
+  <data name="UnableToCollectDbContextInformation" xml:space="preserve">
+    <value>Impossibile raccogliere informazioni sul contesto</value>
+  </data>
+  <data name="UnableToCollectSchemaCompareInformation" xml:space="preserve">
+    <value>Impossibile raccogliere informazioni da SchemaCompare</value>
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value>Impossibile rimuovere la connessione</value>
+  </data>
+  <data name="Unique" xml:space="preserve">
+    <value>Unico</value>
+  </data>
+  <data name="ValueGenerated" xml:space="preserve">
+    <value>Valore generato</value>
+  </data>
+  <data name="VersionSupported" xml:space="preserve">
+    <value>Solo EF Core 5 è supportato</value>
+  </data>
+</root>
