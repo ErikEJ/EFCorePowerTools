@@ -233,6 +233,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources.it.Designer.cs">
+      <DependentUpon>Resources.it.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources.zh.Designer.cs">
       <DependentUpon>Resources.zh.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -383,81 +388,58 @@
       <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\AboutLocale.en.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>EFCorePowerTools.Locales.AboutLocale.en.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\AboutLocale.en.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.it.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.zh.resx" />
-    <EmbeddedResource Include="Locales\CompareLocale.zh.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Locales\CompareLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CompareLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\CompareLocale.en.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>EFCorePowerTools.Locales.CompareLocale.en.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\DgmlLocale.zh.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.zh.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.en.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>EFCorePowerTools.Locales.MigrationsLocale.en.resources</LogicalName>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ModelAnalyzerLocale.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\CompareLocale.en.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.it.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.zh.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DgmlLocale.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\DgmlLocale.en.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>EFCorePowerTools.Locales.DgmlLocale.en.resources</LogicalName>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\DgmlLocale.it.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.en.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.zh.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MigrationsLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\SharedLocale.zh.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\SharedLocale.en.resx">
-      <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>EFCorePowerTools.Locales.SharedLocale.en.resources</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\SharedLocale.resx">
+    <EmbeddedResource Include="Locales\MigrationsLocale.en.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.it.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
+      <LastGenOutput>ModelAnalyzerLocale.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.it.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.zh.resx">
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\SharedLocale.it.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.en.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.zh.resx" />
+    <EmbeddedResource Include="Resources.it.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.zh.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.it.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
@@ -465,11 +447,22 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources.zh.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.zh.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.it.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.it.Resources</LogicalName>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+	
     <EmbeddedResource Include="VSPackage.zh.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.zh.Resources</LogicalName>
@@ -559,11 +552,12 @@
     <Resource Include="Resources\5.png" />
     <VSCTCompile Include="EFCorePowerToolsPackage.en.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
-      <SubType>Designer</SubType>
+    </VSCTCompile>
+    <VSCTCompile Include="EFCorePowerToolsPackage.it.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.zh.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
-      <SubType>Designer</SubType>
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
