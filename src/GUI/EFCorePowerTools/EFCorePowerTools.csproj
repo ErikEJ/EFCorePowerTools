@@ -238,8 +238,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resources.zh.Designer.cs">
-      <DependentUpon>Resources.zh.resx</DependentUpon>
+    <Compile Include="Resources.zh-Hans.Designer.cs">
+      <DependentUpon>Resources.zh-Hans.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -390,7 +390,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\AboutLocale.en.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.it.resx" />
-    <EmbeddedResource Include="Locales\AboutLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CompareLocale.Designer.cs</LastGenOutput>
@@ -398,14 +398,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\CompareLocale.en.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.it.resx" />
-    <EmbeddedResource Include="Locales\CompareLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DgmlLocale.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\DgmlLocale.it.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.en.resx" />
-    <EmbeddedResource Include="Locales\DgmlLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MigrationsLocale.Designer.cs</LastGenOutput>
@@ -413,7 +413,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\MigrationsLocale.en.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.it.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ModelAnalyzerLocale.Designer.cs</LastGenOutput>
@@ -421,7 +421,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.it.resx" />
-    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
@@ -429,14 +429,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\SharedLocale.it.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.en.resx" />
-    <EmbeddedResource Include="Locales\SharedLocale.zh.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Resources.it.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.it.Designer.cs</LastGenOutput>
@@ -447,9 +447,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.zh.resx">
+    <EmbeddedResource Include="Resources.zh-Hans.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.zh.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.zh-Hans.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.en.resx">
@@ -463,9 +463,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
 	
-    <EmbeddedResource Include="VSPackage.zh.resx">
+    <EmbeddedResource Include="VSPackage.zh-Hans.resx">
       <MergeWithCTO>true</MergeWithCTO>
-      <LogicalName>VSPackage.zh.Resources</LogicalName>
+      <LogicalName>VSPackage.zh-Hans.Resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.en.resx">
@@ -556,7 +556,7 @@
     <VSCTCompile Include="EFCorePowerToolsPackage.it.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <VSCTCompile Include="EFCorePowerToolsPackage.zh.vsct">
+    <VSCTCompile Include="EFCorePowerToolsPackage.zh-Hans.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
