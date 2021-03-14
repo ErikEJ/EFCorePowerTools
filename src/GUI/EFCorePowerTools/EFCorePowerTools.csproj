@@ -383,6 +383,7 @@
     <None Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
@@ -391,6 +392,7 @@
     <EmbeddedResource Include="Locales\AboutLocale.en.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.it.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.fr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CompareLocale.Designer.cs</LastGenOutput>
@@ -399,6 +401,7 @@
     <EmbeddedResource Include="Locales\CompareLocale.en.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.it.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.fr.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DgmlLocale.Designer.cs</LastGenOutput>
@@ -406,6 +409,7 @@
     <EmbeddedResource Include="Locales\DgmlLocale.it.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.en.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.fr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MigrationsLocale.Designer.cs</LastGenOutput>
@@ -414,6 +418,7 @@
     <EmbeddedResource Include="Locales\MigrationsLocale.en.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.it.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ModelAnalyzerLocale.Designer.cs</LastGenOutput>
@@ -422,6 +427,7 @@
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
@@ -430,6 +436,7 @@
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.fr.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
@@ -462,7 +469,6 @@
       <LogicalName>VSPackage.it.Resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-	
     <EmbeddedResource Include="VSPackage.zh-Hans.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.zh-Hans.Resources</LogicalName>
