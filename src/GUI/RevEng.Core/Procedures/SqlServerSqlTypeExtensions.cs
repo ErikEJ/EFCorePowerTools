@@ -45,6 +45,10 @@ namespace RevEng.Core
 
         private static SqlDbType GetSqlDbType(string storeType)
         {
+            if (string.IsNullOrEmpty(storeType))
+            {
+                throw new ArgumentException("storeType not specified");
+            }
             var cleanedTypeName = RemoveMatchingBraces(storeType);
 
             if (SqlTypeAliases.TryGetValue(cleanedTypeName.ToLowerInvariant(), out string alias))

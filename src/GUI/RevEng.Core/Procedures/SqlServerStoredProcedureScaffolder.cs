@@ -185,7 +185,8 @@ namespace RevEng.Core.Procedures
         private void GenerateProcedure(Procedure procedure, ProcedureModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
+                .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
+                .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
 
