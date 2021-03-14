@@ -102,7 +102,7 @@ ORDER BY ROUTINE_NAME;";
             var sql = $@"
 SELECT  
     'Parameter' = p.name,  
-    'Type'   = type_name(p.system_type_id),  
+    'Type'   = COALESCE(type_name(p.system_type_id), type_name(p.user_type_id)),  
     'Length'   = CAST(p.max_length AS INT),  
     'Precision'   = CAST(case when type_name(p.system_type_id) = 'uniqueidentifier' 
                 then p.precision  
