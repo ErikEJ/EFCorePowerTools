@@ -233,6 +233,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources.fr.Designer.cs">
+      <DependentUpon>Resources.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources.it.Designer.cs">
       <DependentUpon>Resources.it.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -444,6 +449,11 @@
     <EmbeddedResource Include="Locales\SharedLocale.it.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.en.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Resources.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources.it.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.it.Designer.cs</LastGenOutput>
@@ -464,6 +474,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.fr.resx" />
     <EmbeddedResource Include="VSPackage.it.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.it.Resources</LogicalName>
