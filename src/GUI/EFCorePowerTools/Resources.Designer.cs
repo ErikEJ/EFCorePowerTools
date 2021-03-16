@@ -61,106 +61,7 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string App {
-            get {
-                return ResourceManager.GetString("App", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string bigint {
-            get {
-                return ResourceManager.GetString("bigint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string binary {
-            get {
-                return ResourceManager.GetString("binary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string bit {
-            get {
-                return ResourceManager.GetString("bit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string CanNotCreateWindow {
-            get {
-                return ResourceManager.GetString("CanNotCreateWindow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string ClassTemplateCsharp {
-            get {
-                return ResourceManager.GetString("ClassTemplateCsharp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string datetime {
-            get {
-                return ResourceManager.GetString("datetime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string floating {
-            get {
-                return ResourceManager.GetString("floating", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string image {
-            get {
-                return ResourceManager.GetString("image", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string integer {
-            get {
-                return ResourceManager.GetString("integer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string money {
-            get {
-                return ResourceManager.GetString("money", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to c6882346-e592-4da5-80ba-d2eadcda0359.
         /// </summary>
         internal static string MysqlVSProvider {
             get {
@@ -169,16 +70,7 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string nchar {
-            get {
-                return ResourceManager.GetString("nchar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to 70ba90f8-3027-4aF1-9b15-37abbd48744c.
         /// </summary>
         internal static string NpgsqlProvider {
             get {
@@ -187,34 +79,7 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string ntext {
-            get {
-                return ResourceManager.GetString("ntext", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string numeric {
-            get {
-                return ResourceManager.GetString("numeric", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string nvarchar {
-            get {
-                return ResourceManager.GetString("nvarchar", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to 9D8FDBB9-EE60-4787-B7AE-49831D34AD4B.
         /// </summary>
         internal static string OracleProvider {
             get {
@@ -223,110 +88,11 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string real {
-            get {
-                return ResourceManager.GetString("real", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string rowversion {
-            get {
-                return ResourceManager.GetString("rowversion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string smallint {
-            get {
-                return ResourceManager.GetString("smallint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string SqlCompact35InvariantName {
-            get {
-                return ResourceManager.GetString("SqlCompact35InvariantName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string SqlCompact35Provider {
-            get {
-                return ResourceManager.GetString("SqlCompact35Provider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string SQLiteEF6InvariantName {
-            get {
-                return ResourceManager.GetString("SQLiteEF6InvariantName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string SQLiteInvariantName {
-            get {
-                return ResourceManager.GetString("SQLiteInvariantName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to 91510608-8809-4020-8897-fba057e22d54.
         /// </summary>
         internal static string SqlServerDotNetProvider {
             get {
                 return ResourceManager.GetString("SqlServerDotNetProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string tinyint {
-            get {
-                return ResourceManager.GetString("tinyint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string ToolWindowTitle {
-            get {
-                return ResourceManager.GetString("ToolWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string uniqueidentifier {
-            get {
-                return ResourceManager.GetString("uniqueidentifier", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string varbinary {
-            get {
-                return ResourceManager.GetString("varbinary", resourceCulture);
             }
         }
     }

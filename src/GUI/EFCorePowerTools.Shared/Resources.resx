@@ -117,19 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SqlCompact40PrivateProvider" xml:space="preserve">
-    <value>673BE80C-CB41-47A7-B0F3-9872B6DDE5E5</value>
-  </data>
-  <data name="SqlCompact40Provider" xml:space="preserve">
-    <value>0cfb2eeb-3e0e-4909-99b7-8ae9e1c3e871</value>
-  </data>
   <data name="SQLitePrivateProvider" xml:space="preserve">
     <value>687EA40E-7B91-472A-9A58-2A3D43DE1ACE</value>
   </data>
   <data name="SQLiteProvider" xml:space="preserve">
     <value>0ebaab6e-ca80-4b4a-8ddf-cbe6bf058c70</value>
-  </data>
-  <data name="SqlCompact40InvariantName" xml:space="preserve">
-    <value>System.Data.SqlServerCe.4.0</value>
   </data>
 </root>
