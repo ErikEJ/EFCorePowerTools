@@ -293,7 +293,9 @@
     <Resource Include="Resources\Table_16x.png" />
     <Resource Include="Resources\Add_16x.png" />
     <Resource Include="Resources\Remove_16x.png" />
-    <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct" />
+    <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
     <Content Include="Resources\7.png" />
     <Resource Include="Resources\TableWarning_16x.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
