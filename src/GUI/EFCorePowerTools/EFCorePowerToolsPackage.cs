@@ -396,7 +396,10 @@ namespace EFCorePowerTools
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-                Telemetry.TrackException(exception);
+                if (exception != null)
+                {
+                    Telemetry.TrackException(exception);
+                }
 
                 _dte2.StatusBar.Text = SharedLocale.AnErrorOccurred;
 
@@ -418,7 +421,7 @@ namespace EFCorePowerTools
                 }
                 catch
                 {
-                    EnvDteHelper.ShowError(exception.ToString());
+                    EnvDteHelper.ShowError($"Unable to log error to Output Window: {exception?.ToString()}");
                 }
             });
         }
