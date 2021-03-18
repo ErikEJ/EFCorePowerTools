@@ -133,7 +133,7 @@
     <value>No</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="SQLiteDDEXProvider" xml:space="preserve">
     <value>System.Data.SQLite DDEX provider</value>

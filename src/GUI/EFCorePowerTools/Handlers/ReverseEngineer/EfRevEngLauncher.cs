@@ -195,7 +195,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
-            if (Directory.Exists(toDir))
+            if (Directory.Exists(toDir)
+                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() > 100)
             {
                 return toDir;
             }

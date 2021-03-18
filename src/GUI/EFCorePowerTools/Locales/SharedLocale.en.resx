@@ -139,7 +139,7 @@
     <value>Invalid name</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+    <value>OK</value>
   </data>
   <data name="SelectedProjectTypeNoTargetFrameworkMoniker" xml:space="preserve">
     <value>The selected project type has no TargetFrameworkMoniker</value>
