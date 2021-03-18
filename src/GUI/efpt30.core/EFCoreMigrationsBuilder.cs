@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
-#if CORE50
+#if CORE50 || NET5_0_OR_GREATER
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -95,7 +95,7 @@ namespace Modelling
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-#if CORE50
+#if CORE50 || NET5_0_OR_GREATER
             var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
             var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
 
@@ -146,7 +146,7 @@ namespace Modelling
             EnsureServices(services);
 
             var migrator = services.GetRequiredService<IMigrator>();
-#if CORE50
+#if CORE50 || NET5_0_OR_GREATER
             return migrator.GenerateScript(null, null, MigrationsSqlGenerationOptions.Idempotent);
 #else
             return migrator.GenerateScript(null, null, idempotent: true);
