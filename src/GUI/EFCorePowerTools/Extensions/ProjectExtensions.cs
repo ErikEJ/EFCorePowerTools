@@ -148,16 +148,12 @@ namespace EFCorePowerTools.Extensions
 
         public static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsEfSchemaCompareReferenceAsync(this Project project)
         {
-            var designPackage = "EfCore.SchemaCompare";
-
-            return await ContainsReferenceAsync(project, designPackage);
+            return await ContainsReferenceAsync(project, "EfCore.SchemaCompare");
         }
 
         public static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsEfCoreDesignReferenceAsync(this Project project)
         {
-            var designPackage = "Microsoft.EntityFrameworkCore.Design";
-
-            return await ContainsReferenceAsync(project, designPackage);
+            return await ContainsReferenceAsync(project, "Microsoft.EntityFrameworkCore.Design");
         }
 
         private static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsReferenceAsync(Project project, string designPackage)

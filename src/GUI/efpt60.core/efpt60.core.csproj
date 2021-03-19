@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<AssemblyName>efpt</AssemblyName>
+		<RootNamespace>Modelling</RootNamespace>
+		<NoWarn>$(NoWarn);EF1001</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DefineConstants>TRACE;DEBUG</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\efpt30.core\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
+		<Compile Include="..\efpt30.core\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
+		<Compile Include="..\efpt30.core\Program.cs" Link="Program.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.2.21154.2" />
+	</ItemGroup>
+
+</Project>

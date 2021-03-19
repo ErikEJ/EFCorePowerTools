@@ -17,7 +17,7 @@ namespace Modelling
                 {
                     var builder = new EfCoreModelBuilder();
                     var migrationsBuilder = new EfCoreMigrationsBuilder();
-#if CORE50
+#if CORE50 
                     var compareBuilder = new EfCoreCompareBuilder();
 #endif
                     List<Tuple<string, string>> result;

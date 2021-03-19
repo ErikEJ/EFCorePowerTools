@@ -53,14 +53,14 @@ namespace EFCorePowerTools.Handlers
 
                 if (!Version.TryParse(result.Item2, out Version version))
                 {
-                    EnvDteHelper.ShowError(String.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
+                    EnvDteHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
                 }
 
                 if (!result.Item1)
                 {
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    EnvDteHelper.ShowError(String.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
 
