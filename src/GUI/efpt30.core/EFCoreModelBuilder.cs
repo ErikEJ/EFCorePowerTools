@@ -41,7 +41,7 @@ namespace Modelling
                 var generated = generateDdl
                     ? GenerateCreateScript(dbContext)
 #if CORE50 || NET5_0_OR_GREATER
-                    : dbContext.Model.AsModel().DebugView.LongView;
+                    : dbContext.Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 #else
                     : dbContext.Model.AsModel().DebugView.View;
 #endif

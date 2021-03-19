@@ -213,6 +213,10 @@ namespace EFCorePowerTools.Handlers
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt50.exe.zip"), toDir);
             }
+            else if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
+            {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt60.exe.zip"), toDir);
+            }
             else
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
