@@ -201,6 +201,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 return toDir;
             }
 
+            if (Directory.Exists(toDir))
+            {
+                Directory.Delete(toDir, true);
+            }
+
             Directory.CreateDirectory(toDir);
 
             ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
