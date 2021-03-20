@@ -22,6 +22,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
     {
         private readonly EFCorePowerToolsPackage _package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
+        private readonly VsDataHelper vsDataHelper;
         private readonly object _icon;
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
@@ -29,6 +30,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             _package = package;
             _icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
             reverseEngineerHelper = new ReverseEngineerHelper();
+            vsDataHelper = new VsDataHelper();
+
         }
 
         public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
@@ -179,7 +182,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var databaseList = VsDataHelper.GetDataConnections(_package);
+            var databaseList = vsDataHelper.GetDataConnections(_package);
             if (databaseList != null && databaseList.Any())
             {
                 var dataBaseInfo = databaseList.Values.FirstOrDefault(m => m.Caption == options.UiHint);
@@ -197,7 +200,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var databaseList = VsDataHelper.GetDataConnections(_package);
+            var databaseList = vsDataHelper.GetDataConnections(_package);
             var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
 
             var psd = _package.GetView<IPickServerDatabaseDialog>();

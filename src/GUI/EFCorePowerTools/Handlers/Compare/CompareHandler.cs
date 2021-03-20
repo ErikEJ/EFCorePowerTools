@@ -17,10 +17,12 @@ namespace EFCorePowerTools.Handlers.Compare
     internal class CompareHandler
     {
         private readonly EFCorePowerToolsPackage _package;
+        private readonly VsDataHelper vsDataHelper;
 
         public CompareHandler(EFCorePowerToolsPackage package)
         {
             _package = package;
+            vsDataHelper = new VsDataHelper();
         }
 
         public async System.Threading.Tasks.Task HandleComparisonAsync(string outputPath, Project project)
@@ -78,7 +80,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
                 _package.Dte2.StatusBar.Animate(true, icon);
 
-                var databaseList = VsDataHelper.GetDataConnections(_package);
+                var databaseList = vsDataHelper.GetDataConnections(_package);
                 var contextTypes = await GetDbContextTypesAsync(outputPath, project);
 
                 var optionsDialog = _package.GetView<ICompareOptionsDialog>();

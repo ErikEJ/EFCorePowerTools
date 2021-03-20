@@ -14,7 +14,7 @@ namespace EFCorePowerTools.Helpers
 {
     internal class VsDataHelper
     {
-        internal static Dictionary<string, DatabaseInfo> GetDataConnections(EFCorePowerToolsPackage package)
+        internal Dictionary<string, DatabaseInfo> GetDataConnections(EFCorePowerToolsPackage package)
         {
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
             Dictionary<string, DatabaseInfo> databaseList = new Dictionary<string, DatabaseInfo>();
@@ -25,7 +25,9 @@ namespace EFCorePowerTools.Helpers
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
 
-            if (dataExplorerConnectionManager != null)
+            if (dataExplorerConnectionManager != null 
+                && dataExplorerConnectionManager.Connections != null
+                && dataExplorerConnectionManager.Connections.Values != null)
             {
                 foreach (var connection in dataExplorerConnectionManager.Connections.Values)
                 {
