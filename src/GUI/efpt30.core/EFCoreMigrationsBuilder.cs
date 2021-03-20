@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
-#if CORE50 || NET5_0_OR_GREATER
+#if CORE50 || CORE60
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -95,11 +95,11 @@ namespace Modelling
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-#if CORE50 || NET5_0_OR_GREATER
-            var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
-            var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
 
             var hasDifferences = false;
+#if CORE50
+            var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
+            var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
 
             if (migrationsAssembly.ModelSnapshot != null)
             {
@@ -114,6 +114,26 @@ namespace Modelling
                     context.Model.GetRelationalModel());
             }
 
+            var pendingModelChanges = (!databaseExists || hasDifferences);
+#elif CORE60
+            if (migrationsAssembly.ModelSnapshot != null)
+            {
+                var snapshotModel = migrationsAssembly.ModelSnapshot?.Model;
+
+                if (snapshotModel is IMutableModel mutableModel)
+                {
+                    snapshotModel = mutableModel.FinalizeModel();
+                }
+
+                if (snapshotModel != null)
+                {
+                    snapshotModel = context.GetService<IModelRuntimeInitializer>().Initialize(snapshotModel, null);
+
+                    //TODO 6.0 preview 3!
+                    // modelDiffer.HasDifferences(snapshotModel.GetRelationalModel(), context.DesignModel.GetRelationalModel());
+                    hasDifferences = modelDiffer.HasDifferences(snapshotModel.GetRelationalModel(), context.Model.GetRelationalModel());
+                }
+            }
             var pendingModelChanges = (!databaseExists || hasDifferences);
 #else
             var pendingModelChanges
@@ -146,7 +166,7 @@ namespace Modelling
             EnsureServices(services);
 
             var migrator = services.GetRequiredService<IMigrator>();
-#if CORE50 || NET5_0_OR_GREATER
+#if CORE50 || CORE60
             return migrator.GenerateScript(null, null, MigrationsSqlGenerationOptions.Idempotent);
 #else
             return migrator.GenerateScript(null, null, idempotent: true);

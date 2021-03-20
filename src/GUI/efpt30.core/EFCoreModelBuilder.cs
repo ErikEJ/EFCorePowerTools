@@ -40,7 +40,7 @@ namespace Modelling
 
                 var generated = generateDdl
                     ? GenerateCreateScript(dbContext)
-#if CORE50 || NET5_0_OR_GREATER
+#if CORE50 || CORE60
                     : dbContext.Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 #else
                     : dbContext.Model.AsModel().DebugView.View;
@@ -59,7 +59,7 @@ namespace Modelling
             var generator = database.GetService<IMigrationsSqlGenerator>();
             var sql = database.GetService<ISqlGenerationHelper>();
 
-#if CORE50 || NET5_0_OR_GREATER
+#if CORE50 || CORE60
             var operations = differ.GetDifferences(null, model.GetRelationalModel());
 #else
             var operations = differ.GetDifferences(null, model);
