@@ -151,7 +151,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 VerifySQLServerRightsAndVersion(options);
 
-                GenerateEfRevEng(project, options, containsEfCoreReference);
+                GenerateFiles(project, options, containsEfCoreReference);
 
                 if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && project.IsNetCore30OrHigher())
                 {
@@ -422,7 +422,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private void GenerateEfRevEng(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference)
+        private void GenerateFiles(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
