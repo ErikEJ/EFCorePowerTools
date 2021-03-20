@@ -34,5 +34,17 @@ namespace EFCorePowerTools.Properties {
                 this["ModelCacheTimeToLive"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ParticipateInTelemetry {
+            get {
+                return ((bool)(this["ParticipateInTelemetry"]));
+            }
+            set {
+                this["ParticipateInTelemetry"] = value;
+            }
+        }
     }
 }

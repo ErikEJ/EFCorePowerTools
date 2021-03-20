@@ -33,7 +33,7 @@ namespace EFCorePowerTools
     [SqliteProviderRegistration]
     [InstalledProductRegistration("#110", "#112", "2.5", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(GuidList.guidDbContextPackagePkgString)]
-    //[ProvideOptionPage(typeof(OptionsPageGeneral), "EF Core Power Tools", "General", 100, 101, true)]
+    [ProvideOptionPage(typeof(OptionsPageGeneral), "EF Core Power Tools", "General", 100, 101, true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // ReSharper disable once InconsistentNaming
@@ -144,8 +144,7 @@ namespace EFCorePowerTools
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
 
-            //Only enable during previews, never in release!
-            Telemetry.Enabled = true;
+            Telemetry.Enabled = Properties.Settings.Default.ParticipateInTelemetry;
             if (Telemetry.Enabled)
             {
                 Telemetry.Initialize(Dte2,
