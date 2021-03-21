@@ -511,6 +511,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
+            if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
+            {
+                EnvDteHelper.ShowError($"Unable to save options, the file is readonly: {optionsPath}");
+                return;
+            }
+
             if (!File.Exists(optionsPath + ".ignore"))
             {
                 File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
@@ -519,6 +525,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count() > 0)
             {
+                if (File.Exists(renamingOptions.Item2) && File.GetAttributes(renamingOptions.Item2).HasFlag(FileAttributes.ReadOnly))
+                {
+                    EnvDteHelper.ShowError($"Unable to save renaming options, the file is readonly: {renamingOptions.Item2}");
+                    return;
+                }
+
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 project.ProjectItems.AddFromFile(renamingOptions.Item2);
             }
