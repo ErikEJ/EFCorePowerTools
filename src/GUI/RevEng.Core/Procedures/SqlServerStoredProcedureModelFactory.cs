@@ -182,7 +182,7 @@ SELECT
                 var parameter = new ProcedureResultElement()
                 {
                     Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
-                    StoreType = res["system_type_name"].ToString(),
+                    StoreType = string.IsNullOrEmpty(res["system_type_name"].ToString()) ? res["user_type_name"].ToString() : res["system_type_name"].ToString(),
                     Ordinal = int.Parse(res["column_ordinal"].ToString()),
                     Nullable = (bool)res["is_nullable"],
                 };
