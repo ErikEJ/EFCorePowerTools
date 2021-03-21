@@ -25,9 +25,7 @@ namespace EFCorePowerTools.Helpers
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
 
-            if (dataExplorerConnectionManager != null 
-                && dataExplorerConnectionManager.Connections != null
-                && dataExplorerConnectionManager.Connections.Values != null)
+            if (dataExplorerConnectionManager?.Connections?.Values != null)
             {
                 foreach (var connection in dataExplorerConnectionManager.Connections.Values)
                 {
