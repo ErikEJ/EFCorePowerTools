@@ -15,6 +15,7 @@
         private string _newName;
 
         private bool _isPrimaryKey;
+        private bool _isForeignKey;
 
         private bool _isTableSelected;
         private bool _isSelected;
@@ -74,6 +75,18 @@
             }
         }
 
+        public bool IsForeignKey
+        {
+            get => _isForeignKey;
+            set
+            {
+                if (Equals(value, _isForeignKey)) return;
+                _isForeignKey = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsEnabled));
+            }
+        }
+
         public bool IsColumn
         {
             get => !_isPrimaryKey;
@@ -113,7 +126,7 @@
             }
         }
 
-        public bool IsEnabled { get => IsTableSelected && !IsPrimaryKey; }
+        public bool IsEnabled { get => IsTableSelected && !IsPrimaryKey && !IsForeignKey; }
 
         public ICommand StartEditCommand { get; }
 
