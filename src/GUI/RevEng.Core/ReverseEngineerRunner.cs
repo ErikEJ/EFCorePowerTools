@@ -79,16 +79,17 @@ namespace RevEng.Core
                     : PathHelper.GetNamespaceFromOutputPath(outputContextDir, options.ProjectPath, options.ProjectRootNamespace);
             }
 
-            SavedModelFiles procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
-
-            SavedModelFiles functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
-
-            SavedModelFiles filePaths = ReverseEngineerScaffolder.GenerateDbContext(options, serviceProvider, schemas, outputContextDir, modelNamespace, contextNamespace);
-
             var entityTypeConfigurationPaths = new List<string>();
+            SavedModelFiles procedurePaths = null;
+            SavedModelFiles functionPaths = null;
+            
+            SavedModelFiles filePaths = ReverseEngineerScaffolder.GenerateDbContext(options, serviceProvider, schemas, outputContextDir, modelNamespace, contextNamespace);
 
             if (options.SelectedToBeGenerated != 2)
             {
+                procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
+
+                functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 #if CORE50
 #else
                 RemoveOnConfiguring(filePaths.ContextFile, options.IncludeConnectionString);
