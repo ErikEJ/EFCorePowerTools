@@ -94,7 +94,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
 
-                var renamingPath = project.GetRenamingPath();
+                var renamingPath = project.GetRenamingPath(optionsPath);
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
                 Tuple<bool, string> containsEfCoreReference = null;

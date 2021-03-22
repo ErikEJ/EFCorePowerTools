@@ -79,15 +79,24 @@ namespace EFCorePowerTools.Extensions
             return result.OrderBy(s => s).ToList();
         }
 
-        public static string GetRenamingPath(this Project project)
+        public static string GetRenamingPath(this Project project, string optionsPath)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+            string projectPath;
 
-            if (string.IsNullOrEmpty(projectPath))
+            if (string.IsNullOrEmpty(optionsPath))
             {
-                return null;
+                projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+
+                if (string.IsNullOrEmpty(projectPath))
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                projectPath = Path.GetDirectoryName(optionsPath);
             }
 
             return Path.Combine(projectPath, "efpt.renaming.json");
