@@ -79,23 +79,30 @@ namespace RevEng.Core
                     : PathHelper.GetNamespaceFromOutputPath(outputContextDir, options.ProjectPath, options.ProjectRootNamespace);
             }
 
-            SavedModelFiles procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
+            var entityTypeConfigurationPaths = new List<string>();
+            SavedModelFiles procedurePaths = null;
+            SavedModelFiles functionPaths = null;
+            
+            SavedModelFiles filePaths = ReverseEngineerScaffolder.GenerateDbContext(options, serviceProvider, schemas, outputContextDir, modelNamespace, contextNamespace);
 
-            SavedModelFiles functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
+            if (options.SelectedToBeGenerated != 2)
+            {
+                procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 
-            SavedModelFiles filePaths = ReverseEngineerScaffolder.GenerateDbContext(options, serviceProvider, scaffolder, schemas, outputContextDir, modelNamespace, contextNamespace);
+                functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 #if CORE50
 #else
-            RemoveOnConfiguring(filePaths.ContextFile, options.IncludeConnectionString);
+                RemoveOnConfiguring(filePaths.ContextFile, options.IncludeConnectionString);
 #endif
+                PostProcess(filePaths.ContextFile);
+
+                entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
+            }
+
             foreach (var file in filePaths.AdditionalFiles)
             {
                 PostProcess(file);
             }
-
-            PostProcess(filePaths.ContextFile);
-
-            var entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
 
             var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
 
@@ -158,6 +165,11 @@ namespace RevEng.Core
 
         private static void RemoveOnConfiguring(string contextFile, bool includeConnectionString)
         {
+            if (string.IsNullOrEmpty(contextFile))
+            {
+                return;            
+            }
+
             var finalLines = new List<string>();
             var lines = File.ReadAllLines(contextFile);
 
@@ -194,6 +206,11 @@ namespace RevEng.Core
 
         private static void PostProcess(string file)
         {
+            if (string.IsNullOrEmpty(file))
+            {
+                return;
+            }
+
             var text = File.ReadAllText(file, Encoding.UTF8);
             File.WriteAllText(file, PathHelper.Header 
                 + Environment.NewLine 
@@ -205,18 +222,23 @@ namespace RevEng.Core
 
         private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
         {
-            var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
+            var allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(entityTypeConfigurationPaths).ToHashSet();
 
-            var allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).Concat(entityTypeConfigurationPaths).ToList();
-
-            foreach (var contextFolderFile in contextFolderFiles)
+            if (!string.IsNullOrEmpty(filePaths.ContextFile))
             {
-                if (allGeneratedFiles.Contains(contextFolderFile, StringComparer.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
+                var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
 
-                TryRemoveFile(contextFolderFile);
+                allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).Concat(entityTypeConfigurationPaths).ToHashSet();
+
+                foreach (var contextFolderFile in contextFolderFiles)
+                {
+                    if (allGeneratedFiles.Contains(contextFolderFile, StringComparer.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    TryRemoveFile(contextFolderFile);
+                }
             }
 
             if (filePaths.AdditionalFiles.Count == 0)

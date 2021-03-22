@@ -453,14 +453,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     project.ProjectItems.AddFromFile(filePath);
                 }
-                if (options.SelectedToBeGenerated == 2)
-                {
-                    if (File.Exists(revEngResult.ContextFilePath)) File.Delete(revEngResult.ContextFilePath);
-                    foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
-                    {
-                        if (File.Exists(filePath)) File.Delete(filePath);
-                    }
-                }
             }
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
@@ -469,17 +461,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     project.ProjectItems.AddFromFile(filePath);
                 }
+
                 project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
 
                 _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
-
-                if (options.SelectedToBeGenerated == 1)
-                {
-                    foreach (var filePath in revEngResult.EntityTypeFilePaths)
-                    {
-                        if (File.Exists(filePath)) File.Delete(filePath);
-                    }
-                }
             }
 
             var duration = DateTime.Now - startTime;

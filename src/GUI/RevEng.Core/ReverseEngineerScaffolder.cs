@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace RevEng.Core
 {
@@ -19,7 +20,6 @@ namespace RevEng.Core
         public static SavedModelFiles GenerateDbContext(
             ReverseEngineerCommandOptions options,
             ServiceProvider serviceProvider,
-            IReverseEngineerScaffolder scaffolder,
             List<string> schemas,
             string outputContextDir,
             string modelNamespace,
@@ -59,12 +59,13 @@ namespace RevEng.Core
                     codeOptions,
                     options.UseBoolPropertiesWithoutDefaultSql,
                     options.UseNoNavigations,
+                    options.SelectedToBeGenerated == 1, //DbContext only
+                    options.SelectedToBeGenerated == 2, //Entities only
                     serviceProvider);
 
-            filePaths = scaffolder.Save(
+            filePaths = Save(
                 scaffoldedModel,
-                Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
-                overwriteFiles: true);
+                Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)));
             return filePaths;
         }
 
@@ -167,6 +168,8 @@ namespace RevEng.Core
             ModelCodeGenerationOptions codeOptions,
             bool removeNullableBoolDefaults,
             bool excludeNavigations,
+            bool dbContextOnly,
+            bool entitiesOnly,
             ServiceProvider serviceProvider)
         {
             var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
@@ -207,7 +210,42 @@ namespace RevEng.Core
 
             var codeGenerator = _selector.Select(codeOptions.Language);
 
-            return codeGenerator.GenerateModel(model, codeOptions);
+            var codeModel = codeGenerator.GenerateModel(model, codeOptions);
+            if (entitiesOnly)
+            {
+                codeModel.ContextFile = null;
+            }
+            if (dbContextOnly)
+            {
+                codeModel.AdditionalFiles.Clear();
+            }
+
+            return codeModel;
+        }
+
+        private static SavedModelFiles Save(
+           ScaffoldedModel scaffoldedModel,
+           string outputDir)
+        {
+            Directory.CreateDirectory(outputDir);
+
+            var contextPath = string.Empty;
+
+            if (scaffoldedModel.ContextFile != null)
+            {
+                contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile!.Path));
+                Directory.CreateDirectory(Path.GetDirectoryName(contextPath)!);
+                File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
+            }
+            var additionalFiles = new List<string>();
+            foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
+            {
+                var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
+                File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
+                additionalFiles.Add(additionalFilePath);
+            }
+
+            return new SavedModelFiles(contextPath, additionalFiles);
         }
     }
 }
