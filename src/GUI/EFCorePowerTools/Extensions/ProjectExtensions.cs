@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
@@ -99,7 +100,17 @@ namespace EFCorePowerTools.Extensions
                 renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            return Path.Combine(renamingPath, "efpt.renaming.json");
+            Regex customNamingRegex = new Regex(@"efpt.(?<xx>.{1,})config.json", RegexOptions.IgnoreCase);
+            Match customFileNameCheck = customNamingRegex.Match(Path.GetFileName(optionsPath));
+
+            string customConfigFileName = string.Empty;
+
+            if (customFileNameCheck.Success)
+            {
+                customConfigFileName = customFileNameCheck.Groups[1].Value;
+            }
+
+            return Path.Combine(renamingPath, $"efpt.{customConfigFileName}renaming.json");
         }
 
 
