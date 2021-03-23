@@ -6,6 +6,8 @@ namespace EFCorePowerTools.Contracts.ViewModels
     {
         bool IsPrimaryKey { get; set; }
 
+        bool IsForeignKey { get; set; }
+
         bool IsColumn { get; }
 
         bool IsTableSelected { get; set; }

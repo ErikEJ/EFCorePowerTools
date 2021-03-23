@@ -281,13 +281,14 @@ namespace UnitTests.ViewModels
             return new TableInformationViewModel(messenger.Object);
         }
 
-        private ColumnInformationViewModel CreateColumnViewModel(string name, bool isPrimaryKey = false)
+        private ColumnInformationViewModel CreateColumnViewModel(string name, bool isPrimaryKey = false, bool isForeignKey = false)
         {
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();
             var vm = new ColumnInformationViewModel(messenger.Object);
             vm.Name = name;
             vm.IsPrimaryKey = isPrimaryKey;
+            vm.IsForeignKey = isForeignKey;
             return vm;
         }
     }

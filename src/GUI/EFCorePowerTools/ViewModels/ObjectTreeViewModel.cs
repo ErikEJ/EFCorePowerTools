@@ -216,6 +216,7 @@
                                 cvm.Name = column.Name;
                                 cvm.NewName = columnReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
                                 cvm.IsPrimaryKey = column.IsPrimaryKey;
+                                cvm.IsForeignKey = column.IsForeignKey;
                                 tvm.Columns.Add(cvm);
                             }
                         }

@@ -121,9 +121,9 @@ namespace UnitTests.ViewModels
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             var objects = new TableModel[3];
-            objects[0] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false) }.ToArray());
-            objects[1] = new TableModel("employeedetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false) }.ToArray());
-            objects[2] = new TableModel("same", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("same", false) }.ToArray());
+            objects[0] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("DEPTCode", false, false) }.ToArray());
+            objects[1] = new TableModel("employeedetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("EMPCode", false, false) }.ToArray());
+            objects[2] = new TableModel("same", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("same", false, false) }.ToArray());
 
             var replacers = new Schema[1];
             replacers[0] = new Schema()
@@ -464,9 +464,9 @@ namespace UnitTests.ViewModels
             {
                 return new[]
                 {
-                    new ColumnModel("Id", true),
-                    new ColumnModel("column1", false),
-                    new ColumnModel("column2", false)
+                    new ColumnModel("Id", true, false),
+                    new ColumnModel("column1", false, false),
+                    new ColumnModel("column2", false, false)
                 };
             }
 
@@ -474,9 +474,9 @@ namespace UnitTests.ViewModels
             {
                 return new[]
                 {
-                    new ColumnModel("Id", false),
-                    new ColumnModel("column1", false),
-                    new ColumnModel("column2", false)
+                    new ColumnModel("Id", false, false),
+                    new ColumnModel("column1", false, false),
+                    new ColumnModel("column2", false, false)
                 };
             }
 
@@ -492,7 +492,7 @@ namespace UnitTests.ViewModels
             r[7] = new TableModel("view2", "views", DatabaseType.SQLServer, ObjectType.View, CreateColumnsWithoutId());
             r[8] = new TableModel("procedure1", "stored", DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
             r[9] = new TableModel("procedure2", "stored", DatabaseType.SQLServer, ObjectType.Procedure, new ColumnModel[0]);
-            r[10] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("departmentname", false), new ColumnModel("DEPTCode", false), new ColumnModel("Id", true) }.ToArray());
+            r[10] = new TableModel("departmentdetail", null, DatabaseType.Mysql, ObjectType.Table, new List<ColumnModel> { new ColumnModel("departmentname", false, false), new ColumnModel("DEPTCode", false, false), new ColumnModel("Id", true, false) }.ToArray());
             return r;
         }
 
