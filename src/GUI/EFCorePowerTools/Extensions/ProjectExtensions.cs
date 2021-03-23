@@ -107,7 +107,10 @@ namespace EFCorePowerTools.Extensions
 
             if (customFileNameCheck.Success)
             {
-                customConfigFileName = customFileNameCheck.Groups[1].Value;
+                if (customFileNameCheck.Groups.Count > 1)
+                {
+                    customConfigFileName = customFileNameCheck.Groups[1].Value;
+                }
             }
 
             return Path.Combine(renamingPath, $"efpt.{customConfigFileName}renaming.json");
