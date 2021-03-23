@@ -83,23 +83,23 @@ namespace EFCorePowerTools.Extensions
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            string projectPath;
+            string renamingPath;
 
             if (string.IsNullOrEmpty(optionsPath))
             {
-                projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+                renamingPath = project.Properties.Item("FullPath")?.Value.ToString();
 
-                if (string.IsNullOrEmpty(projectPath))
+                if (string.IsNullOrEmpty(renamingPath))
                 {
                     return null;
                 }
             }
             else
             {
-                projectPath = Path.GetDirectoryName(optionsPath);
+                renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            return Path.Combine(projectPath, "efpt.renaming.json");
+            return Path.Combine(renamingPath, "efpt.renaming.json");
         }
 
 
