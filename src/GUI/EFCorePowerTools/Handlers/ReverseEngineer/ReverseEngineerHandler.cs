@@ -447,22 +447,31 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
             _package.Dte2.StatusBar.Animate(false, _icon);
 
+            var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
+            bool isNetStandard = tfm.Contains(".NETStandard,Version=v2.");
+
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
             {
-                foreach (var filePath in revEngResult.EntityTypeFilePaths)
+                if (!project.IsNetCore() && !isNetStandard)
                 {
-                    project.ProjectItems.AddFromFile(filePath);
+                    foreach (var filePath in revEngResult.EntityTypeFilePaths)
+                    {
+                        project.ProjectItems.AddFromFile(filePath);
+                    }
                 }
             }
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
             {
-                foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
+                if (!project.IsNetCore() && !isNetStandard)
                 {
-                    project.ProjectItems.AddFromFile(filePath);
-                }
+                    foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
+                    {
+                        project.ProjectItems.AddFromFile(filePath);
+                    }
 
-                project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
+                    project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
+                }
 
                 _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
             }
