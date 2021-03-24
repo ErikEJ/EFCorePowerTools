@@ -1,5 +1,4 @@
-﻿using EFCorePowerTools.Handlers.ReverseEngineer;
-using RevEng.Shared;
+﻿using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,7 +61,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             this.options = options;
             this.useEFCore5 = useEFCore5;
             var versionSuffix = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            revengFolder = useEFCore5 ? "efreveng5." : "efreveng.";
+            revengFolder = useEFCore5 ? "efreveng5." : "efreveng3.";
             revengFolder += versionSuffix;
             resultDeserializer = new ResultDeserializer();
         }
@@ -110,7 +109,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var path = Path.GetTempFileName() + ".json";
             File.WriteAllText(path, options.Write());
 
-            var launchPath = Path.Combine(Path.GetTempPath(), revengFolder);
+            var launchPath = DropNetCoreFiles();
 
             var startInfo = new ProcessStartInfo
             {
@@ -218,7 +217,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            var dirs = Directory.GetDirectories(Path.GetTempPath(), "efreveng*");
+            var dirs = Directory.GetDirectories(Path.GetTempPath(), useEFCore5 ? "efreveng5*" : "efreveng3*");
+            
             foreach (var dir in dirs)
             {
                 if (!dir.Equals(toDir))
