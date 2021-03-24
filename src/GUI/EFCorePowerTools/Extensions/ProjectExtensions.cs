@@ -100,22 +100,8 @@ namespace EFCorePowerTools.Extensions
                 renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            Regex customNamingRegex = new Regex(@"efpt.(?<xx>.{1,})config.json", RegexOptions.IgnoreCase);
-            Match customFileNameCheck = customNamingRegex.Match(Path.GetFileName(optionsPath));
-
-            string customConfigFileName = string.Empty;
-
-            if (customFileNameCheck.Success)
-            {
-                if (customFileNameCheck.Groups.Count > 1)
-                {
-                    customConfigFileName = customFileNameCheck.Groups[1].Value;
-                }
-            }
-
-            return Path.Combine(renamingPath, $"efpt.{customConfigFileName}renaming.json");
+            return Path.Combine(renamingPath, "efpt.renaming.json");
         }
-
 
         public static async System.Threading.Tasks.Task<string> GetCspPropertyAsync(this Project project, string propertyName)
         {
