@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
@@ -79,20 +80,28 @@ namespace EFCorePowerTools.Extensions
             return result.OrderBy(s => s).ToList();
         }
 
-        public static string GetRenamingPath(this Project project)
+        public static string GetRenamingPath(this Project project, string optionsPath)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+            string renamingPath;
 
-            if (string.IsNullOrEmpty(projectPath))
+            if (string.IsNullOrEmpty(optionsPath))
             {
-                return null;
+                renamingPath = project.Properties.Item("FullPath")?.Value.ToString();
+
+                if (string.IsNullOrEmpty(renamingPath))
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            return Path.Combine(projectPath, "efpt.renaming.json");
+            return Path.Combine(renamingPath, "efpt.renaming.json");
         }
-
 
         public static async System.Threading.Tasks.Task<string> GetCspPropertyAsync(this Project project, string propertyName)
         {
