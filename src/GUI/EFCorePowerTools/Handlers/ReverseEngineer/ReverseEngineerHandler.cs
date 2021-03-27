@@ -507,6 +507,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
             {
+                //TODO Localize
                 EnvDteHelper.ShowError($"Unable to save options, the file is readonly: {optionsPath}");
                 return;
             }
@@ -521,6 +522,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 if (File.Exists(renamingOptions.Item2) && File.GetAttributes(renamingOptions.Item2).HasFlag(FileAttributes.ReadOnly))
                 {
+                    //TODO Localize
                     EnvDteHelper.ShowError($"Unable to save renaming options, the file is readonly: {renamingOptions.Item2}");
                     return;
                 }
@@ -560,12 +562,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
             }
             
-            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
-        }
-
-        private async Task<List<TableModel>> GetEdmxTablesAsync(string dacpacPath, bool useEFCore5)
-        {
-            var builder = new TableListBuilder(dacpacPath, DatabaseType.Edmx, null);
             return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 

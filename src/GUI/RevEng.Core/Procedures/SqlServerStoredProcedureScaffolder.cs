@@ -135,16 +135,41 @@ namespace RevEng.Core.Procedures
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public static class {procedureScaffolderOptions.ContextName}ProceduresExtensions");
+                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}");
                 _sb.AppendLine("{");
-                
                 using (_sb.Indent())
                 {
-                    _sb.AppendLine($"public static {procedureScaffolderOptions.ContextName}Procedures GetProcedures(this {procedureScaffolderOptions.ContextName} context)");
+                    _sb.AppendLine($"private {procedureScaffolderOptions.ContextName}Procedures _procedures;");
+                    _sb.AppendLine();
+                    _sb.AppendLine($"public {procedureScaffolderOptions.ContextName}Procedures Procedures");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
                     {
-                        _sb.AppendLine($"return new {procedureScaffolderOptions.ContextName}Procedures(context);");
+                        _sb.AppendLine("get");
+                        _sb.AppendLine("{");
+                        using (_sb.Indent())
+                        {
+                            _sb.AppendLine($"_procedures ??= new {procedureScaffolderOptions.ContextName}Procedures(this);");
+                            _sb.AppendLine("return _procedures;");
+
+                        }
+                        _sb.AppendLine("}");
+                        _sb.AppendLine("set");
+                        _sb.AppendLine("{");
+                        using (_sb.Indent())
+                        {
+                            _sb.AppendLine("_procedures = value;");
+
+                        }
+                        _sb.AppendLine("}");
+                    }
+                    _sb.AppendLine("}");
+                    _sb.AppendLine("");
+                    _sb.AppendLine($"public {procedureScaffolderOptions.ContextName}Procedures GetProcedures()");
+                    _sb.AppendLine("{");
+                    using (_sb.Indent())
+                    {
+                        _sb.AppendLine("return Procedures;");
                     }
                     _sb.AppendLine("}");
                 }
@@ -289,7 +314,7 @@ namespace RevEng.Core.Procedures
                 returnType = $"Task<int>";
             }
 
-            var line = $"public async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
+            var line = $"public virtual async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
 
             if (outParams.Count() > 0)
             {
