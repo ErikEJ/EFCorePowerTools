@@ -149,7 +149,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("{");
                         using (_sb.Indent())
                         {
-                            _sb.AppendLine($"_procedures ??= new {procedureScaffolderOptions.ContextName}Procedures(this);");
+                            _sb.AppendLine($"if (_procedures is null) _procedures = new {procedureScaffolderOptions.ContextName}Procedures(this);");
                             _sb.AppendLine("return _procedures;");
 
                         }
