@@ -1,6 +1,6 @@
 # EF Core Power Tools
 
-Reverse engineering, model visualization and migrations UI for EF Core.
+Reverse engineering, model visualization and migrations UI for EF Core. For Visual Studio 2019.
 
 Aims to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineering of an existing database, creating migrations and visualizing your DbContext model.
 
