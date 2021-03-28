@@ -1,15 +1,15 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Input;
 
     public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {

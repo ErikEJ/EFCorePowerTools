@@ -156,7 +156,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 GenerateFiles(project, options, containsEfCoreReference);
 
-                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && project.IsNetCore30OrHigher())
+                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && project.IsNetCore31OrHigher())
                 {
                     _package.Dte2.StatusBar.Text = ReverseEngineerLocale.InstallingEFCoreProviderPackage;
                     var nuGetHelper = new NuGetHelper();
@@ -452,7 +452,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
             {
-                if (!project.IsNetCore() && !isNetStandard)
+                if (!project.IsNetCore31OrHigher() && !isNetStandard)
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
                     {
@@ -463,7 +463,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
             {
-                if (!project.IsNetCore() && !isNetStandard)
+                if (!project.IsNetCore31OrHigher() && !isNetStandard)
                 {
                     foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
                     {

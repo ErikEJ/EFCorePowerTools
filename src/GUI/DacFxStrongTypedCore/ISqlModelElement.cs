@@ -26,9 +26,8 @@
 //------------------------------------------------------------------------------
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
-    using System;
-    using Microsoft.SqlServer.TransactSql.ScriptDom;
     using Microsoft.SqlServer.Dac.Model;
+    using Microsoft.SqlServer.TransactSql.ScriptDom;
     using System.Collections.Generic;
     public interface ISqlModelElement
     {

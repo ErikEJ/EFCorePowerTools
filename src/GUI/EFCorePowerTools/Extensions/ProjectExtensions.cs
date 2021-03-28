@@ -202,25 +202,11 @@ namespace EFCorePowerTools.Extensions
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework,");
         }
 
-        public static bool IsNetCore(this Project project)
+        public static bool IsNetCore31OrHigher(this Project project)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v");
-        }
-
-        public static bool IsNetCore30OrHigher(this Project project)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            return IsNetCore30(project) || IsNetCore31(project) || IsNet50(project);
-        }
-
-        private static bool IsNetCore30(this Project project)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v3.0");
+            return IsNetCore31(project) || IsNet50(project);
         }
 
         private static bool IsNetCore31(this Project project)

@@ -1,6 +1,5 @@
 ﻿namespace EFCorePowerTools.DAL
 {
-    using System;
     using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Data.Services;
     using Microsoft.VisualStudio.Shell;
@@ -8,6 +7,7 @@
     using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
+    using System;
 
     public class VisualStudioAccess : IVisualStudioAccess
     {

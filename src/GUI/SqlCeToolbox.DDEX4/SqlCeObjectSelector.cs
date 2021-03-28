@@ -8,13 +8,13 @@ using System.Diagnostics;
 
 namespace ErikEJ.SqlCeToolbox.DDEX4
 {
-	/// <summary>
-	/// Represents a custom data object selector to supplement or replace
-	/// the schema collections supplied by the .NET Framework Data Provider
-	/// for SQL Server.  Many of the enumerations here are required for full
-	/// support of the built in data design scenarios.
-	/// </summary>
-	internal class SqlCeObjectSelector : DataObjectSelector
+    /// <summary>
+    /// Represents a custom data object selector to supplement or replace
+    /// the schema collections supplied by the .NET Framework Data Provider
+    /// for SQL Server.  Many of the enumerations here are required for full
+    /// support of the built in data design scenarios.
+    /// </summary>
+    internal class SqlCeObjectSelector : DataObjectSelector
 	{
 		#region Protected Methods
 

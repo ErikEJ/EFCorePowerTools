@@ -1,8 +1,8 @@
-﻿using System;
-using EnvDTE;
+﻿using EnvDTE;
 using EnvDTE80;
 using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
+using System;
 
 namespace EFCorePowerTools.Helpers
 {

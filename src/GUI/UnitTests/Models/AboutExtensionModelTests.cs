@@ -2,9 +2,9 @@
 
 namespace UnitTests.Models
 {
+    using EFCorePowerTools.Shared.Models;
     using System;
     using System.Collections.Generic;
-    using EFCorePowerTools.Shared.Models;
 
     [TestFixture]
     public class AboutExtensionModelTests

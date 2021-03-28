@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-namespace EFCorePowerTools.Contracts.ViewModels
+﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     public interface IColumnInformationViewModel : IObjectTreeEditableViewModel, IObjectTreeSelectableViewModel, IViewModel
     {

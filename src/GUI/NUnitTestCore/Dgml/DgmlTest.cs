@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DgmlBuilder;
+using NUnit.Framework;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using DgmlBuilder;
-using NUnit.Framework;
 
 namespace UnitTests
 {

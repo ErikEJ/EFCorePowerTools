@@ -2,14 +2,14 @@
 
 namespace UnitTests.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Shared;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     [TestFixture]
     public class ObjectTreeViewModelTests

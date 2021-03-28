@@ -27,15 +27,15 @@
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
-	using System;
-	using System.Linq;
-	using Microsoft.Data.SqlClient.Server;
-	using Microsoft.SqlServer.Dac.Model;
-	using System.Collections.Generic;
-	/// <summary>
-	/// Explicit implementation of <see cref="ISql90TSqlColumn"/>.
-	/// </summary>
-	public partial class TSqlColumn : ISql90TSqlColumn
+    using Microsoft.Data.SqlClient.Server;
+    using Microsoft.SqlServer.Dac.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    /// <summary>
+    /// Explicit implementation of <see cref="ISql90TSqlColumn"/>.
+    /// </summary>
+    public partial class TSqlColumn : ISql90TSqlColumn
 	{		
 		String ISql90TSqlColumn.Collation 
 		{

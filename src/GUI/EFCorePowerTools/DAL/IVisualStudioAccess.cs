@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.Shared.DAL
 {
-    using System;
     using Microsoft.VisualStudio.Data.Services;
     using Models;
+    using System;
 
     public interface IVisualStudioAccess
     {

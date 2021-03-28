@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.DAL
 {
+    using Shared.DAL;
     using System;
     using System.Reflection;
-    using Shared.DAL;
 
     public class DotNetAccess : IDotNetAccess
     {

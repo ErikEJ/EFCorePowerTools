@@ -4,14 +4,9 @@ using NUnit.Framework;
 
 namespace UnitTests.ViewModels
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
-    using RevEng.Shared;
-    
+    using System.Linq;
+
     [TestFixture]
     public class SchemaInformationViewModelTests
     {

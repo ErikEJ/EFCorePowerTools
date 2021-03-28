@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using System.Collections.Generic;
     using RevEng.Shared;
+    using System.Collections.Generic;
 
     public interface IPickTablesDialog : IDialog<PickTablesDialogResult>
     {

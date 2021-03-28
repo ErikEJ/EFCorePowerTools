@@ -1,9 +1,9 @@
 ﻿namespace EFCorePowerTools.Extensions
 {
-    using System;
-    using System.Linq;
     using EnvDTE;
     using Microsoft.VisualStudio.Shell;
+    using System;
+    using System.Linq;
 
     internal static class ProjectItemsExtensions
     {

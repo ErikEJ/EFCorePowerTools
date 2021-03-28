@@ -1,12 +1,5 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Windows;
-    using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
@@ -17,6 +10,13 @@
     using Handlers;
     using Microsoft.VisualStudio.Shell;
     using Shared.DAL;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
     using Constants = Microsoft.VisualStudio.Shell.Interop.Constants;
 
     public class MigrationOptionsViewModel : ViewModelBase, IMigrationOptionsViewModel

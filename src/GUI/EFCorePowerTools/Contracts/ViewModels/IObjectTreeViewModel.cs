@@ -1,6 +1,5 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
-    using EFCorePowerTools.Shared.Models;
     using RevEng.Shared;
     using System;
     using System.Collections.Generic;

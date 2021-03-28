@@ -27,7 +27,6 @@
 
 using Microsoft.SqlServer.Dac.Model;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype

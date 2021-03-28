@@ -2,12 +2,12 @@
 
 namespace UnitTests.BLL
 {
-    using System;
     using EFCorePowerTools.BLL;
     using EFCorePowerTools.Shared.BLL;
     using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using Moq;
+    using System;
 
     [TestFixture]
     public class InstalledComponentsServiceTests

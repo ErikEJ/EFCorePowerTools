@@ -25,13 +25,13 @@
 //</copyright>
 //------------------------------------------------------------------------------
 
+using Microsoft.SqlServer.Dac.Model;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.SqlServer.Dac.Model;
 using Index = Microsoft.SqlServer.Dac.Model.Index;
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
-{   
+{
     public partial class TSqlTable
     {
         public IEnumerable<ISqlIndex> Indexes

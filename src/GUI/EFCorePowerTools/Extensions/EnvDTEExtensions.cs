@@ -1,11 +1,11 @@
 ﻿using EnvDTE;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.ProjectSystem;
 
 namespace EFCorePowerTools.Extensions
 {

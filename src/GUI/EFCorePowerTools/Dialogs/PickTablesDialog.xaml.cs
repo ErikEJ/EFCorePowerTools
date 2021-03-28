@@ -1,13 +1,13 @@
 ﻿namespace EFCorePowerTools.Dialogs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Controls;
-    using System.Windows.Input;
     using Contracts.ViewModels;
     using Contracts.Views;
     using RevEng.Shared;
     using Shared.DAL;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Controls;
+    using System.Windows.Input;
 
     public partial class PickTablesDialog : IPickTablesDialog
     {

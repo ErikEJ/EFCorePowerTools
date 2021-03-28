@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EnvDTE;
+﻿using EnvDTE;
 using Microsoft.VisualStudio.ComponentModelHost;
 using NuGet.VisualStudio;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Helpers
 {

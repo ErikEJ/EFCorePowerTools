@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Humanizer;
+﻿using Humanizer;
+using NUnit.Framework;
 using RevEng.Core;
 
 namespace UnitTests

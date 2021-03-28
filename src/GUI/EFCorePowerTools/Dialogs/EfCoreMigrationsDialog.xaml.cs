@@ -1,10 +1,10 @@
 ﻿namespace EFCorePowerTools.Dialogs
 {
-    using System;
     using Contracts.ViewModels;
     using Contracts.Views;
     using EnvDTE;
     using Shared.DAL;
+    using System;
 
     public partial class EfCoreMigrationsDialog : IMigrationOptionsDialog
     {

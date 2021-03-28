@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.VisualStudio.Shell;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.Shell;
 
 // ReSharper disable once CheckNamespace
 namespace EFCorePowerTools

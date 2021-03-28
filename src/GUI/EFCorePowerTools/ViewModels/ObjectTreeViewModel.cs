@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-	using EFCorePowerTools.Locales;
-	using GalaSoft.MvvmLight;
+    using EFCorePowerTools.Locales;
+    using GalaSoft.MvvmLight;
     using RevEng.Shared;
     using System;
     using System.Collections.Generic;

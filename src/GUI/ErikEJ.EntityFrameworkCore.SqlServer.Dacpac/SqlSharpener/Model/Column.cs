@@ -1,7 +1,7 @@
-﻿using dac = Microsoft.SqlServer.Dac.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using dac = Microsoft.SqlServer.Dac.Model;
 
 namespace SqlSharpener.Model
 {

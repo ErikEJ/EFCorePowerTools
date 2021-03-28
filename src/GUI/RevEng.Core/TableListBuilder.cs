@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Model;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using RevEng.Shared;
-using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Abstractions;
 
 namespace RevEng.Core
 {

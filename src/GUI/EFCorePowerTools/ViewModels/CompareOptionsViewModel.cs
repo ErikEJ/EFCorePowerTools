@@ -2,18 +2,18 @@
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
+    using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
     using Shared.Models;
     using System;
-    using System.Collections.ObjectModel;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
-	using EFCorePowerTools.Locales;
 
-	public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
+    public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private DatabaseConnectionModel _selectedDatabaseConnection;

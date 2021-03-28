@@ -7,8 +7,8 @@ namespace EFCorePowerTools.Handlers
 {
     using Contracts.Views;
     using EFCorePowerTools.Helpers;
-	using EFCorePowerTools.Locales;
-	using Microsoft.VisualStudio.Shell;
+    using EFCorePowerTools.Locales;
+    using Microsoft.VisualStudio.Shell;
 
     internal class MigrationsHandler
     {
@@ -41,7 +41,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!project.IsNetCore30OrHigher())
+                if (!project.IsNetCore31OrHigher())
                 {
                     EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
                     return;

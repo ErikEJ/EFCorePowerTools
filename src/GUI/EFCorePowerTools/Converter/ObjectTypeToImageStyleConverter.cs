@@ -1,7 +1,6 @@
 ﻿namespace EFCorePowerTools.Converter
 {
     using EFCorePowerTools.Contracts.ViewModels;
-    using RevEng.Shared;
     using System;
     using System.Globalization;
     using System.Windows;

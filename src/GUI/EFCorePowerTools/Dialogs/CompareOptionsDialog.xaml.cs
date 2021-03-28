@@ -1,11 +1,11 @@
 ﻿namespace EFCorePowerTools.Dialogs
 {
-    using System;
-    using System.Collections.Generic;
     using Contracts.ViewModels;
     using Contracts.Views;
     using EFCorePowerTools.Shared.Models;
     using Shared.DAL;
+    using System;
+    using System.Collections.Generic;
 
     public partial class CompareOptionsDialog : ICompareOptionsDialog
     {

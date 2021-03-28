@@ -1,9 +1,9 @@
 ﻿namespace EFCorePowerTools.BLL
 {
-    using System;
-    using Shared.Models;
     using Shared.BLL;
     using Shared.DAL;
+    using Shared.Models;
+    using System;
 
     public class InstalledComponentsService : IInstalledComponentsService
     {

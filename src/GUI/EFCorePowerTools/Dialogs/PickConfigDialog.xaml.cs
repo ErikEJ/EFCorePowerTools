@@ -1,12 +1,12 @@
 ﻿namespace EFCorePowerTools.Dialogs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows;
     using Contracts.ViewModels;
     using Contracts.Views;
     using Shared.DAL;
     using Shared.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
 
     public partial class PickConfigDialog : IPickConfigDialog
     {

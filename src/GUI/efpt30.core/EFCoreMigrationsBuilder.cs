@@ -95,9 +95,8 @@ namespace Modelling
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-
-            var hasDifferences = false;
 #if CORE50
+            var hasDifferences = false;
             var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
             var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
 
@@ -116,6 +115,7 @@ namespace Modelling
 
             var pendingModelChanges = (!databaseExists || hasDifferences);
 #elif CORE60
+            var hasDifferences = false;
             if (migrationsAssembly.ModelSnapshot != null)
             {
                 var snapshotModel = migrationsAssembly.ModelSnapshot?.Model;

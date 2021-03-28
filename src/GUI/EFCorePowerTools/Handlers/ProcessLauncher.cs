@@ -9,7 +9,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers
@@ -20,7 +19,7 @@ namespace EFCorePowerTools.Handlers
 
         public ProcessLauncher(Project project)
         {
-            if (!project.IsNetCore30OrHigher())
+            if (!project.IsNetCore31OrHigher())
             {
                 throw new ArgumentException("Only .NET Core 3.0, 3.1 and 5.0 are supported");
             }

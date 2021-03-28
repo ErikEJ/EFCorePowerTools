@@ -4,9 +4,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using System.Linq;
-	using System.Reflection;
-	using System.Resources;
-	using System.Windows;
+    using System.Reflection;
+    using System.Resources;
+    using System.Windows;
     using System.Windows.Data;
 
     public class EnumToLabelConverter : IValueConverter

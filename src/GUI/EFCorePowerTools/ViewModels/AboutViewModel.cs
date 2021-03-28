@@ -1,18 +1,18 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
-    using System;
-    using System.ComponentModel;
-    using System.Text;
-    using System.Windows.Input;
     using Contracts.ViewModels;
-	using EFCorePowerTools.Locales;
-	using GalaSoft.MvvmLight;
+    using EFCorePowerTools.Locales;
+    using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using GalaSoft.MvvmLight.Messaging;
     using Messages;
     using Shared.BLL;
     using Shared.DAL;
     using Shared.Models;
+    using System;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Windows.Input;
 
     public class AboutViewModel : ViewModelBase, IAboutViewModel
     {

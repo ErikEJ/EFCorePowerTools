@@ -2,13 +2,13 @@
 
 namespace UnitTests.ViewModels
 {
-    using System;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Contracts.Views;
     using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
+    using System;
 
     [TestFixture]
     public class PickServerDatabaseViewModelTests

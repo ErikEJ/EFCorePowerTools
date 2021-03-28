@@ -1,10 +1,10 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
+    using EventArgs;
+    using RevEng.Shared;
     using System;
     using System.Collections.Generic;
     using System.Windows.Input;
-    using EventArgs;
-    using RevEng.Shared;
 
     public interface IPickTablesViewModel : IViewModel
     {

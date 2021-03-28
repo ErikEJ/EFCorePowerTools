@@ -1,15 +1,15 @@
 ﻿namespace EFCorePowerTools.Dialogs
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
     using Contracts.ViewModels;
     using Contracts.Views;
+    using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
-    using RevEng.Shared;
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
+    using System.Windows;
     using System.Windows.Documents;
 
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog

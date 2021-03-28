@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.DAL
 {
+    using Shared.DAL;
     using System.Diagnostics;
     using System.Windows;
-    using Shared.DAL;
 
     public class OperatingSystemAccess : IOperatingSystemAccess
     {

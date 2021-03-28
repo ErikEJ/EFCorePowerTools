@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using EFCorePowerTools.Helpers;
-using EFCorePowerTools.Shared.Models;
+﻿using EFCorePowerTools.Helpers;
 using NUnit.Framework;
 using RevEng.Shared;
+using System.Collections.Generic;
 
 namespace UnitTests
 {

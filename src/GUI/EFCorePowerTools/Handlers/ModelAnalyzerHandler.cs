@@ -38,7 +38,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!project.IsNetCore30OrHigher())
+                if (!project.IsNetCore31OrHigher())
                 {
                     EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
                     return;

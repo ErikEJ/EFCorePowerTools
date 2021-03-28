@@ -27,12 +27,12 @@
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Globalization;
-	using Microsoft.SqlServer.Dac.Model;
-	    
-	public static class UtilityMethods
+    using Microsoft.SqlServer.Dac.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+
+    public static class UtilityMethods
 	{
 
 		/// <summary>

@@ -1,11 +1,11 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
+    using EnvDTE;
+    using EventArgs;
     using System;
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Input;
-    using EnvDTE;
-    using EventArgs;
 
     public interface IMigrationOptionsViewModel : IViewModel
     {

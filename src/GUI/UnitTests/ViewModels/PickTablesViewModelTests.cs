@@ -2,11 +2,11 @@
 
 namespace UnitTests.ViewModels
 {
-    using System.Collections.Generic;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using Moq;
     using RevEng.Shared;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class PickTablesViewModelTests

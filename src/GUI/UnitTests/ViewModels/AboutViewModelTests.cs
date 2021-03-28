@@ -2,7 +2,6 @@
 
 namespace UnitTests.ViewModels
 {
-    using System;
     using EFCorePowerTools.Messages;
     using EFCorePowerTools.Shared.BLL;
     using EFCorePowerTools.Shared.DAL;
@@ -10,6 +9,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
+    using System;
 
     [TestFixture]
     public class AboutViewModelTests

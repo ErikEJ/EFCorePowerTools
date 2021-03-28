@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Shared.BLL
 {
-    using System;
     using Models;
+    using System;
 
     public interface IExtensionVersionService
     {

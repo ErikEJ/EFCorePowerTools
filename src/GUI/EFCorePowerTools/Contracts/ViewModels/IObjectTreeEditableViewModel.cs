@@ -1,6 +1,5 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
-    using RevEng.Shared;
     using System.Windows.Input;
 
     public interface IObjectTreeEditableViewModel

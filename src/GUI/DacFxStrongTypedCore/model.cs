@@ -27,12 +27,12 @@
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
-	using System;
-	using System.Linq;
-	using System.Collections.Generic;
-    using System.Globalization;
     using Microsoft.Data.SqlClient.Server;
-	using Microsoft.SqlServer.Dac.Model;
+    using Microsoft.SqlServer.Dac.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
     using Index = Model.Index;
 
     public partial class TSqlModelElement

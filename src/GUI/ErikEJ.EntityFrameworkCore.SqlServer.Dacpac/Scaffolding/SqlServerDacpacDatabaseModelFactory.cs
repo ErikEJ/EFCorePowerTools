@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.IO;
-using System.Linq;
-using GOEddie.Dacpac.References;
+﻿using GOEddie.Dacpac.References;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -12,6 +7,11 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.IO;
+using System.Linq;
 
 namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {

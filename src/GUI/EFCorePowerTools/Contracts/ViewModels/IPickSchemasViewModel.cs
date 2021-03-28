@@ -1,10 +1,10 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     using EventArgs;
+    using RevEng.Shared;
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
-    using RevEng.Shared;
 
     public interface IPickSchemasViewModel : IViewModel
     {

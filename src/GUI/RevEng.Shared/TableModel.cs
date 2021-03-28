@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Runtime.Serialization;
-    using RevEng.Shared;
 
     /// <summary>
     /// A class holding schema information about database objects.

@@ -2,12 +2,9 @@
 
 namespace UnitTests.ViewModels
 {
-    using System.Collections.Generic;
-    using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using RevEng.Shared;
 
     [TestFixture]
     public class ColumnInformationViewModelTests

@@ -1,5 +1,4 @@
-﻿using Microsoft.SqlServer.Dac.Model;
-//------------------------------------------------------------------------------
+﻿//------------------------------------------------------------------------------
 //<copyright company="Microsoft">
 //
 //    The MIT License (MIT)
@@ -25,10 +24,7 @@
 //    SOFTWARE.
 //</copyright>
 //------------------------------------------------------------------------------
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {

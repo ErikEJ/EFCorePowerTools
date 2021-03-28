@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using System.Collections.Generic;
     using Shared.Models;
+    using System.Collections.Generic;
 
     public interface IPickConfigDialog : IDialog<ConfigModel>
     {

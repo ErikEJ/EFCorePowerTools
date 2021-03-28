@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-	using EFCorePowerTools.Locales;
-	using EFCorePowerTools.Messages;
+    using EFCorePowerTools.Locales;
+    using EFCorePowerTools.Messages;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using GalaSoft.MvvmLight.Messaging;

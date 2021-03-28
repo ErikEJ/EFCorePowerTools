@@ -3,20 +3,20 @@
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using Contracts.Views;
+    using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
+    using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
     using System;
-    using System.Collections.ObjectModel;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq;
     using System.Windows.Input;
-    using RevEng.Shared;
-	using EFCorePowerTools.Locales;
 
-	public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
+    public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;

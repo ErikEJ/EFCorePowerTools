@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using System.Collections.Generic;
-    using Shared.Models;
     using RevEng.Shared;
+    using Shared.Models;
+    using System.Collections.Generic;
 
     public interface IPickServerDatabaseDialog : IDialog<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)>
     {

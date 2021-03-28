@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System;
-using Microsoft.VisualStudio.Data.Services;
+﻿using Microsoft.VisualStudio.Data.Services;
 using RevEng.Shared;
+using System;
+using System.ComponentModel;
 
 [DefaultProperty("Caption")]
 // ReSharper disable once CheckNamespace

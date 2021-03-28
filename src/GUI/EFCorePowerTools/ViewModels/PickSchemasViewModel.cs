@@ -6,11 +6,11 @@ namespace EFCorePowerTools.ViewModels
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
+    using RevEng.Shared;
     using System;
     using System.Collections.ObjectModel;
-    using System.Windows.Input;
     using System.Linq;
-    using RevEng.Shared;
+    using System.Windows.Input;
 
     public class PickSchemasViewModel : ViewModelBase, IPickSchemasViewModel
     {

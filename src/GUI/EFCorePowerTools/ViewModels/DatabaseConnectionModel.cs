@@ -1,10 +1,10 @@
 ﻿namespace EFCorePowerTools.Shared.Models
 {
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
     using JetBrains.Annotations;
     using Microsoft.VisualStudio.Data.Services;
     using RevEng.Shared;
+    using System.ComponentModel;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// A model holding data about a database connection.

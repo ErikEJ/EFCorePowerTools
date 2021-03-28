@@ -2,16 +2,16 @@
 
 namespace EFCorePowerTools.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Input;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-	using EFCorePowerTools.Locales;
-	using GalaSoft.MvvmLight;
+    using EFCorePowerTools.Locales;
+    using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
     using Shared.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Input;
 
     public class ModelingOptionsViewModel : ViewModelBase, IModelingOptionsViewModel
     {

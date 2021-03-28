@@ -1,17 +1,17 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Microsoft.VisualStudio.Data.Framework.AdoDotNet;
 using Microsoft.VisualStudio.Data.Services;
-using Microsoft.VisualStudio.Data.Framework.AdoDotNet;
+using System;
 using System.Data.Common;
+using System.Diagnostics;
 
 namespace ErikEJ.SqlCeToolbox.DDEX4
 {
-	/// <summary>
-	/// Represents a custom data source information class that is able to
-	/// provide data source information values that require some form of
-	/// computation, perhaps based on an active connection.
-	/// </summary>
-	internal class SqlCeSourceInformation : AdoDotNetSourceInformation
+    /// <summary>
+    /// Represents a custom data source information class that is able to
+    /// provide data source information values that require some form of
+    /// computation, perhaps based on an active connection.
+    /// </summary>
+    internal class SqlCeSourceInformation : AdoDotNetSourceInformation
 	{
 		#region Constructors
 
