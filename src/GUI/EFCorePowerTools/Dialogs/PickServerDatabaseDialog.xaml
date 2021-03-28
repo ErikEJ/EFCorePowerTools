@@ -4,6 +4,7 @@
                  xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
                  Title="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}" 
                  WindowStyle="SingleBorderWindow"
                  WindowStartupLocation="CenterOwner"
@@ -80,12 +81,24 @@
                     <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
             </Button>
 
-            <dw:DialogButton Grid.Column="2"
+            <xctk:SplitButton Grid.Column="2"
+                              Width="72"
+                              Margin="12,12,0,12"
+                              Content="{x:Static locale:ReverseEngineerLocale.Add}"
+                              ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
+                              TabIndex="2"
+                              Command="{Binding AddDatabaseConnectionCommand}"
+                              >
+                <xctk:SplitButton.DropDownContent>
+                    <dw:DialogButton Grid.Column="1"
                              TabIndex="2"
                              Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="{x:Static locale:ReverseEngineerLocale.Add}"
-                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
-                             Command="{Binding AddDatabaseConnectionCommand}"/>
+                             Content="Add ad-hoc (SQLite)..."
+                             Command="{Binding AddAdhocDatabaseConnectionCommand}"
+                            />
+                </xctk:SplitButton.DropDownContent>
+            </xctk:SplitButton>
+
         </Grid>
 
         <TextBlock Grid.Row="1" Margin="10,0,0,0"

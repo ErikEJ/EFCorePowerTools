@@ -143,6 +143,7 @@ namespace EFCorePowerTools
             }
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
+            typeof(Xceed.Wpf.Toolkit.SplitButton).ToString();
 
             Telemetry.Enabled = Properties.Settings.Default.ParticipateInTelemetry;
             if (Telemetry.Enabled)
@@ -336,14 +337,16 @@ namespace EFCorePowerTools
 
             // Register views
             services.AddTransient<IAboutDialog, AboutDialog>()
-                    .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
                     .AddTransient<IPickConfigDialog, PickConfigDialog>()
+                    .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
                     .AddTransient<IPickTablesDialog, PickTablesDialog>()
                     .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>()
                     .AddTransient<IMigrationOptionsDialog, EfCoreMigrationsDialog>()
                     .AddTransient<IPickSchemasDialog, PickSchemasDialog>()
+                    .AddTransient<IPickConnectionDialog, ConnectionDialog>()
                     .AddTransient<IAdvancedModelingOptionsDialog, AdvancedModelingOptionsDialog>()
                     .AddSingleton<Func<IPickSchemasDialog>>(sp => sp.GetService<IPickSchemasDialog>)
+                    .AddSingleton<Func<IPickConnectionDialog>>(sp => sp.GetService<IPickConnectionDialog>)
                     .AddSingleton<Func<IAdvancedModelingOptionsDialog>>(sp => sp.GetService<IAdvancedModelingOptionsDialog>)
                     .AddTransient<ICompareOptionsDialog, CompareOptionsDialog>()
                     .AddTransient<ICompareResultDialog, CompareResultDialog>();
@@ -351,6 +354,7 @@ namespace EFCorePowerTools
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickConfigViewModel, PickConfigViewModel>()
+                    .AddTransient<IPickConnectionViewModel, PickConnectionViewModel>()
                     .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
                     .AddTransient<IPickTablesViewModel, PickTablesViewModel>()
                     .AddSingleton<Func<ISchemaInformationViewModel>>(() => new SchemaInformationViewModel())
