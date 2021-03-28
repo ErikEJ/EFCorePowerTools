@@ -20,6 +20,7 @@
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;
+        private readonly Func<IPickConnectionDialog> _pickConnectionDialogFactory;
 
         private DatabaseConnectionModel _selectedDatabaseConnection;
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
@@ -30,6 +31,7 @@
 
         public ICommand LoadedCommand { get; }
         public ICommand AddDatabaseConnectionCommand { get; }
+        public ICommand AddAdhocDatabaseConnectionCommand { get; }
         public ICommand RemoveDatabaseConnectionCommand { get; }
         public ICommand AddDatabaseDefinitionCommand { get; }
         public ICommand OkCommand { get; }
@@ -119,13 +121,17 @@
             }
         }
 
-        public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess, Func<IPickSchemasDialog> pickSchemasDialogFactory)
+        public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess, 
+            Func<IPickSchemasDialog> pickSchemasDialogFactory,
+            Func<IPickConnectionDialog> pickConnectionDialogFactory)
         {
             _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
             _pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
+            _pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
+            AddAdhocDatabaseConnectionCommand = new RelayCommand(AddAdhocDatabaseConnection_Executed);
             AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
             RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
@@ -165,6 +171,24 @@
             {
                 _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
                 return;
+            }
+
+            if (newDatabaseConnection == null)
+                return;
+
+            DatabaseConnections.Add(newDatabaseConnection);
+            SelectedDatabaseConnection = newDatabaseConnection;
+        }
+
+        private void AddAdhocDatabaseConnection_Executed()
+        {
+            DatabaseConnectionModel newDatabaseConnection = null;
+
+            IPickConnectionDialog dialog = _pickConnectionDialogFactory();
+            var dialogResult = dialog.ShowAndAwaitUserResponse(true);
+            if (dialogResult.ClosedByOK)
+            {
+                newDatabaseConnection = dialogResult.Payload;
             }
 
             if (newDatabaseConnection == null)

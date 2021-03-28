@@ -77,6 +77,7 @@
     <Compile Include="Contracts\ViewModels\IObjectTreeEditableViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IMigrationOptionsViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IObjectTreeRootItemViewModel.cs" />
+    <Compile Include="Contracts\ViewModels\IPickConnectionViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickSchemasViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickConfigViewModel.cs" />
     <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Contracts\Views\ICompareResultDialog.cs" />
     <Compile Include="Contracts\Views\IDialog.cs" />
     <Compile Include="Contracts\Views\IMigrationOptionsDialog.cs" />
+    <Compile Include="Contracts\Views\IPickConnectionDialog.cs" />
     <Compile Include="Contracts\Views\IPickSchemasDialog.cs" />
     <Compile Include="Contracts\Views\IPickConfigDialog.cs" />
     <Compile Include="Contracts\Views\ICompareOptionsDialog.cs" />
@@ -121,6 +123,9 @@
     </Compile>
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ConnectionDialog.xaml.cs">
+      <DependentUpon>ConnectionDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\CompareResultDialog.xaml.cs">
       <DependentUpon>CompareResultDialog.xaml</DependentUpon>
@@ -247,6 +252,7 @@
     <Compile Include="ViewModels\AdvancedModelingOptionsViewModel.cs" />
     <Compile Include="ViewModels\ModelingOptionsViewModel.cs" />
     <Compile Include="ViewModels\ObjectTreeRootItemViewModel.cs" />
+    <Compile Include="ViewModels\PickConnectionViewModel.cs" />
     <Compile Include="ViewModels\PickSchemasViewModel.cs" />
     <Compile Include="ViewModels\PickConfigViewModel.cs" />
     <Compile Include="ViewModels\CompareOptionsViewModel.cs" />
@@ -471,6 +477,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\ConnectionDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
