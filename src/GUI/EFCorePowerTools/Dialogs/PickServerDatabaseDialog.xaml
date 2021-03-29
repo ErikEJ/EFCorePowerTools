@@ -93,7 +93,7 @@
                     <dw:DialogButton Grid.Column="1"
                              TabIndex="2"
                              Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="Add ad-hoc (SQLite)..."
+                             Content="Add ad-hoc (SQLite/Firebird)..."
                              Command="{Binding AddAdhocDatabaseConnectionCommand}"
                             />
                 </xctk:SplitButton.DropDownContent>

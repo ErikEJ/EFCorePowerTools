@@ -16,18 +16,34 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="100" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Name" Margin="12,0" />
+            <TextBox Grid.Column="1" IsEnabled="False" 
+                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
+                Margin="12,0"></TextBox>
+        </Grid>
+        <Label Content="Connection String" Grid.Row="1" Margin="12,0" />
 
-        <TextBox Text="{Binding ConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" x:Name="txtConnection" Grid.Row="1"  Margin="12,12,12,0" TabIndex="0" Height="80" VerticalAlignment="Top" />
-        <Label Content="Connection String" Grid.Row="0" Margin="12,0" />
+        <TextBox Text="{Binding ConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 TextWrapping="Wrap" 
+                 Grid.Row="2"  Margin="12,0,12,0" TabIndex="0" Height="80" VerticalAlignment="Top" />
         <ComboBox  
-                  x:Name="cmdDatabaseType" SelectedValue="{Binding DbType, Mode=TwoWay}" SelectedValuePath="Tag" Grid.Row="2" Margin="12,12" Width="150" HorizontalAlignment="Left" >
+            x:Name="cmdDatabaseType"
+            SelectedValue="{Binding DbType, Mode=TwoWay}" 
+            SelectedValuePath="Tag" Grid.Row="3" Margin="12,0" Width="150" HorizontalAlignment="Left" >
             <ComboBoxItem Tag="4" >SQLite</ComboBoxItem>
+            <ComboBoxItem Tag="10" >Firebird</ComboBoxItem>
         </ComboBox>
-        <dw:DialogButton Command="{Binding CancelCommand}" Name="CancelButton" IsCancel="True" Grid.Row="4" TabIndex="6" Margin="0,10,12,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75">Cancel</dw:DialogButton>
-        <dw:DialogButton Command="{Binding OkCommand}" Name="SaveButton" IsDefault="True" Grid.Row="4" TabIndex="5" Margin="0,10,93,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75">OK</dw:DialogButton>
+        <dw:DialogButton Command="{Binding CancelCommand}" IsCancel="True" Grid.Row="4" TabIndex="6" Margin="0,10,12,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75">Cancel</dw:DialogButton>
+        <dw:DialogButton Command="{Binding OkCommand}" IsDefault="True" Grid.Row="4" TabIndex="5" Margin="0,10,93,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75">OK</dw:DialogButton>
     </Grid>
 </dw:DialogWindow>

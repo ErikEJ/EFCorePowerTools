@@ -141,6 +141,10 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Oracle.EntityFrameworkCore";
             }
+            if (dbType == DatabaseType.Firebird)
+            {
+                providerPackage = "FirebirdSql.EntityFrameworkCore.Firebird";
+            }
 
             var vsProject = project.Object as VSProject;
             if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);

@@ -2,7 +2,6 @@
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using Contracts.Views;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using JetBrains.Annotations;
@@ -16,6 +15,7 @@
     public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel, INotifyPropertyChanged
     {
         private string _connectionString;
+        private string _name;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -29,6 +29,17 @@
             {
                 if (Equals(value, _connectionString)) return;
                 _connectionString = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (Equals(value, _name)) return;
+                _name = value;
                 OnPropertyChanged();
             }
         }
@@ -48,7 +59,7 @@
             }
         }
 
-        public PickConnectionViewModel(Func<IPickConnectionDialog> pickConnectionDialogFactory)
+        public PickConnectionViewModel()
         {
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
@@ -59,7 +70,7 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => !string.IsNullOrWhiteSpace(ConnectionString) && DbType == DatabaseType.SQLite;
+        private bool Ok_CanExecute() => !string.IsNullOrWhiteSpace(ConnectionString);
 
         private void Cancel_Executed()
         {
