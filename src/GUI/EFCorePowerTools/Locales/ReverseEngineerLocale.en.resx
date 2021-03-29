@@ -294,6 +294,9 @@
   <data name="StoredProcedures" xml:space="preserve">
     <value>Stored procedures</value>
   </data>
+  <data name="StoredProceduresReturnList" xml:space="preserve">
+    <value>Stored procedures return List (default array)</value>
+  </data>
   <data name="Tables" xml:space="preserve">
     <value>Tables</value>
   </data>

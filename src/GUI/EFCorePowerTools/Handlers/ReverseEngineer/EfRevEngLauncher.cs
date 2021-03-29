@@ -50,6 +50,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoConstructor = options.UseNoConstructor,
                 UseNoNavigations = options.UseNoNavigations,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                ProceduresReturnList = options.ProceduresReturnList,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, useEFCore5);
@@ -218,7 +219,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), useEFCore5 ? "efreveng5*" : "efreveng3*");
-            
+
             foreach (var dir in dirs)
             {
                 if (!dir.Equals(toDir))
@@ -228,7 +229,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         Directory.Delete(dir, true);
                     }
                     catch
-                    { 
+                    {
                         // Ignore
                     }
                 }
