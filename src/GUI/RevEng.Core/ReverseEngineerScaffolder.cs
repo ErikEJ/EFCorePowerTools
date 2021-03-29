@@ -145,6 +145,7 @@ namespace RevEng.Core
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
+                    ProceduresReturnList = options.ProceduresReturnList,
                 };
 
                 var procedureScaffoldedModel = procedureModelScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);

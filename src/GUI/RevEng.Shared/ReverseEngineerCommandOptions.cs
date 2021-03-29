@@ -35,5 +35,7 @@ namespace RevEng.Shared
         public bool UseNoObjectFilter { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
+        public bool ProceduresReturnList { get; set; }
+
     }
 }

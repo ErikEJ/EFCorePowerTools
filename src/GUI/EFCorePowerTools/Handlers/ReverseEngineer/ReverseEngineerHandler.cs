@@ -269,16 +269,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!string.IsNullOrEmpty(options.Dacpac))
             {
-                
+
                 dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase)) 
+                if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase))
                 {
                     dbInfo.DatabaseType = DatabaseType.Edmx;
                 }
                 dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
-                
+
                 options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
@@ -366,6 +366,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoNavigations = options.UseNoNavigations,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                ProceduresReturnList = options.ProceduresReturnList,
             };
 
             var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -401,6 +402,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseNoConstructor = modelingOptionsResult.Payload.UseNoConstructor;
             options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
+            options.ProceduresReturnList = modelingOptionsResult.Payload.ProceduresReturnList;
 
             return true;
         }
@@ -561,7 +563,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
             }
-            
+
             return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 

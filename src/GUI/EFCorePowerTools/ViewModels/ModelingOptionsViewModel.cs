@@ -53,7 +53,7 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public ModelingOptionsViewModel(IVisualStudioAccess visualStudioAccess, 
+        public ModelingOptionsViewModel(IVisualStudioAccess visualStudioAccess,
             Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
         {
             _visualStudioAccess = visualStudioAccess;
@@ -149,6 +149,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoNavigations = advancedModelingOptionsResult.Payload.UseNoNavigations;
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
+            Model.ProceduresReturnList = advancedModelingOptionsResult.Payload.ProceduresReturnList;
         }
 
         void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
@@ -178,6 +179,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
+            Model.ProceduresReturnList = presets.ProceduresReturnList;
 
             Title = String.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }

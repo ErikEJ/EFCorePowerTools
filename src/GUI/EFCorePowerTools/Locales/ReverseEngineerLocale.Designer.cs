@@ -592,6 +592,15 @@ namespace EFCorePowerTools.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stored procedures return List (default array).
+        /// </summary>
+        public static string StoredProceduresReturnList {
+            get {
+                return ResourceManager.GetString("StoredProceduresReturnList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string Tables {
