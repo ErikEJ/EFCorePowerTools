@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Edmx.Scaffolding;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -158,6 +159,11 @@ namespace RevEng.Core
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
+
+                case DatabaseType.Firebird:
+                    var firebirdProvider = new FbDesignTimeServices();
+                    firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
                 case DatabaseType.SQLite:

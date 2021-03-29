@@ -13,5 +13,6 @@ namespace RevEng.Shared
         Oracle = 7,
         SQLServerDacpac = 8,
         Edmx = 9,
+        Firebird = 10,
     }
 }
