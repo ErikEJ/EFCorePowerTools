@@ -3,18 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>5.0.0</PackageVersion>	  
+    <PackageVersion>5.0.3</PackageVersion>	  
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
     <!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.md</DocumentationFile>-->
-    <PackageReleaseNotes>For EF Core 5.0</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 5.0, fix bad assembly name</PackageReleaseNotes>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,22 +42,29 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4897.1" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5084.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
-      <PrivateAssets>all</PrivateAssets>
-    </ProjectReference>
-    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj">
+			<PrivateAssets>all</PrivateAssets>
+		</ProjectReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\DacFxStrongTypedCore\bin\$(Configuration)\netstandard2.0\DacFxStrongTypedCore.dll">
-      <Visible>false</Visible>
-      <Pack>true</Pack>
-      <PackagePath>lib\$(TargetFramework)</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+	    <None Include="..\DacFxStrongTypedCore\bin\$(Configuration)\netstandard2.0\DacFxStrongTypedCore.dll">
+		    <Visible>false</Visible>
+		    <Pack>true</Pack>
+		    <PackagePath>lib\$(TargetFramework)</PackagePath>
+	    </None>
+	    <None Include="..\RevEng.Core.Abstractions\bin\$(Configuration)\netstandard2.0\RevEng.Core.Abstractions.dll">
+		    <Visible>false</Visible>
+		    <Pack>true</Pack>
+		    <PackagePath>lib\$(TargetFramework)</PackagePath>
+	    </None>
+    </ItemGroup>
 
 </Project>
