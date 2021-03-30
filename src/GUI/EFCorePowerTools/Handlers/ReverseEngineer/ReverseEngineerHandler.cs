@@ -412,6 +412,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac))
             {
+                if (options.ConnectionString.ToLowerInvariant().Contains(".database.windows.net"))
+                {
+                    return;
+                }
+
                 var rightsAndVersion = reverseEngineerHelper.HasSqlServerViewDefinitionRightsAndVersion(options.ConnectionString);
 
                 if (rightsAndVersion.Item1 == false)
