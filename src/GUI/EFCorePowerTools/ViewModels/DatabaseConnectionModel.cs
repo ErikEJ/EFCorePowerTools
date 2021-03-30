@@ -27,6 +27,19 @@
             }
         }
 
+        public string DisplayName
+        {
+            get
+            {
+                if (DataConnection == null)
+                {
+                    return $"{ConnectionName} ({DatabaseType})";
+                }
+
+                return ConnectionName;
+            }
+        }
+
         public string ConnectionString
         {
             get => _connectionString;

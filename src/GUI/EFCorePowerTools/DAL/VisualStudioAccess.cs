@@ -26,7 +26,7 @@
 
             return new DatabaseConnectionModel
             {
-                ConnectionName = info.Caption,
+                ConnectionName = info.ConnectionName,
                 ConnectionString = info.ConnectionString,
                 DatabaseType = info.DatabaseType,
                 DataConnection = info.DataConnection,
