@@ -3,6 +3,7 @@
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using Contracts.Views;
+    using EFCorePowerTools.DAL;
     using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -19,6 +20,7 @@
     public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
+        private readonly ICredentialStore _credentialStore;
         private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;
         private readonly Func<IPickConnectionDialog> _pickConnectionDialogFactory;
 
@@ -122,12 +124,14 @@
         }
 
         public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess, 
+            ICredentialStore credentialStore,
             Func<IPickSchemasDialog> pickSchemasDialogFactory,
             Func<IPickConnectionDialog> pickConnectionDialogFactory)
         {
             _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
             _pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
             _pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
+            _credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
@@ -194,6 +198,16 @@
             if (newDatabaseConnection == null)
                 return;
 
+            try
+            {
+                _credentialStore.SaveCredential(newDatabaseConnection);
+            }
+            catch (Exception e)
+            {
+                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
+                return;
+            }
+
             DatabaseConnections.Add(newDatabaseConnection);
             SelectedDatabaseConnection = newDatabaseConnection;
         }
@@ -207,7 +221,15 @@
 
             try
             {
-                _visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                if (SelectedDatabaseConnection.DataConnection is null)
+                {
+                    _credentialStore.DeleteCredential(SelectedDatabaseConnection.ConnectionName);
+                }
+                else
+                {
+                    _visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                }
+                
                 DatabaseConnections.Remove(SelectedDatabaseConnection);
             }
             catch (Exception e)

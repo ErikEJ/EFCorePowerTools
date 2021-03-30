@@ -70,7 +70,7 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => !string.IsNullOrWhiteSpace(ConnectionString);
+        private bool Ok_CanExecute() => !string.IsNullOrWhiteSpace(ConnectionString) && !string.IsNullOrWhiteSpace(Name);
 
         private void Cancel_Executed()
         {

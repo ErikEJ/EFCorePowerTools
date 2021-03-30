@@ -380,6 +380,7 @@ namespace EFCorePowerTools
             services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(this))
                     .AddSingleton<ITelemetryAccess, TelemetryAccess>()
                     .AddSingleton<IOperatingSystemAccess, OperatingSystemAccess>()
+                    .AddSingleton<ICredentialStore, CredentialStore>()
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
 
             return services.BuildServiceProvider();
