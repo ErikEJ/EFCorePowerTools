@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>	  
-    <PackageVersion>3.1.8</PackageVersion>
+    <PackageVersion>3.1.9</PackageVersion>
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
@@ -19,14 +19,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[3.1.0, 5.0.0)" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.4897.1" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5084.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
       <PrivateAssets>all</PrivateAssets>
     </ProjectReference>
-    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj">
+		<PrivateAssets>all</PrivateAssets>
+	</ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +37,11 @@
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)</PackagePath>
     </None>
+	<None Include="..\RevEng.Core.Abstractions\bin\$(Configuration)\netstandard2.0\RevEng.Core.Abstractions.dll">
+		<Visible>false</Visible>
+		<Pack>true</Pack>
+		<PackagePath>lib\$(TargetFramework)</PackagePath>
+	</None>	  
   </ItemGroup>
 
 </Project>
