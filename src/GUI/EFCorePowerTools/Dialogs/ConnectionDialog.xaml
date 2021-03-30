@@ -27,9 +27,9 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="Name" Margin="12,0" />
-            <TextBox Grid.Column="1" IsEnabled="False" 
+            <TextBox Grid.Column="1" 
                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
-                Margin="12,0"></TextBox>
+                Margin="12,2"></TextBox>
         </Grid>
         <Label Content="Connection String" Grid.Row="1" Margin="12,0" />
 
