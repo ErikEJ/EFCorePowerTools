@@ -41,12 +41,11 @@ namespace EFCorePowerTools.Helpers
 
         public bool SaveCredential(DatabaseConnectionModel databaseConnection)
         {
-
             var cred = (new NetworkCredential(databaseConnection.ConnectionName, databaseConnection.ConnectionString)).ToICredential();
             cred.TargetName = Root + databaseConnection.ConnectionName;
             cred.Attributes = new Dictionary<string, object>
             {
-                { nameof(DatabaseType), databaseConnection.DatabaseType }
+                { nameof(DatabaseType), (int)databaseConnection.DatabaseType }
             };
             cred.Persistance = Persistance.LocalMachine;
             cred.Type = CredentialType.Generic;

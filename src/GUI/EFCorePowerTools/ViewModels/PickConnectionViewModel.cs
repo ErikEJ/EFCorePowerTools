@@ -52,7 +52,7 @@
             {
                 if (Ok_CanExecute())
                 {
-                    return new DatabaseConnectionModel { DatabaseType = DbType, ConnectionString = ConnectionString, ConnectionName = ConnectionString };
+                    return new DatabaseConnectionModel { DatabaseType = DbType, ConnectionString = ConnectionString, ConnectionName = Name };
                 }
 
                 return null;

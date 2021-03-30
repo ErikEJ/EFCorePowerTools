@@ -72,7 +72,7 @@
                       Style="{StaticResource SourceSelectionComboBoxStyle}"
                       ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
                       SelectedItem="{Binding SelectedDatabaseConnection, Mode=TwoWay}"
-                      DisplayMemberPath="ConnectionName"/>
+                      DisplayMemberPath="DisplayName"/>
 
             <Button Grid.Column="1"
                     Margin="8,12,0,12"

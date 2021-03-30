@@ -89,7 +89,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 {
                     optionsDialog.AddConnections(databaseList.Select(m => new DatabaseConnectionModel
                     {
-                        ConnectionName = m.Value.Caption,
+                        ConnectionName = m.Value.ConnectionName,
                         ConnectionString = m.Value.ConnectionString,
                         DatabaseType = m.Value.DatabaseType,
                         DataConnection = m.Value.DataConnection,

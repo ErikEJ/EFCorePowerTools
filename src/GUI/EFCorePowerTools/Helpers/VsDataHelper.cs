@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Data.Core;
+﻿using EFCorePowerTools.Shared.Models;
+using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Shared;
@@ -14,10 +15,12 @@ namespace EFCorePowerTools.Helpers
 {
     internal class VsDataHelper
     {
-        internal Dictionary<string, DatabaseInfo> GetDataConnections(EFCorePowerToolsPackage package)
+        internal Dictionary<string, DatabaseConnectionModel> GetDataConnections(EFCorePowerToolsPackage package)
         {
+            var credentialStore = new CredentialStore();
+
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
-            Dictionary<string, DatabaseInfo> databaseList = new Dictionary<string, DatabaseInfo>();
+            Dictionary<string, DatabaseConnectionModel> databaseList = new Dictionary<string, DatabaseConnectionModel>();
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
             Guid providerSqLite = new Guid(EFCorePowerTools.Shared.Resources.SQLiteProvider);
             Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Shared.Resources.SQLitePrivateProvider);
@@ -32,10 +35,9 @@ namespace EFCorePowerTools.Helpers
                     try
                     {
                         var sConnectionString = DataProtection.DecryptString(connection.EncryptedConnectionString);
-                        var info = new DatabaseInfo()
+                        var info = new DatabaseConnectionModel()
                         {
-                            Caption = connection.DisplayName,
-                            FromServerExplorer = true,
+                            ConnectionName = connection.DisplayName,
                             DatabaseType = DatabaseType.SQLCE35,
                             ConnectionString = sConnectionString,
                             DataConnection = connection.Connection,
@@ -77,6 +79,19 @@ namespace EFCorePowerTools.Helpers
                     }
                 }
             }
+
+            try
+            {
+                foreach (var connection in credentialStore.GetStoredDatabaseConnections())
+                {
+                    databaseList.Add(connection.ConnectionName, connection);
+                }
+            }
+            catch (Exception ex)
+            {
+                package.LogError(new List<string> { ex.Message }, ex);
+            }
+
             return databaseList;
         }
 
@@ -96,7 +111,7 @@ namespace EFCorePowerTools.Helpers
             return false;
         }
 
-        internal static DatabaseInfo PromptForInfo(EFCorePowerToolsPackage package)
+        internal static DatabaseConnectionModel PromptForInfo(EFCorePowerToolsPackage package)
         {
             // Show dialog with SqlClient selected by default
             var dialogFactory = package.GetService<IVsDataConnectionDialogFactory>();
@@ -105,13 +120,13 @@ namespace EFCorePowerTools.Helpers
             dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
             var dialogResult = dialog.ShowDialog(connect: true);
 
-            if (dialogResult == null) return new DatabaseInfo {DatabaseType = DatabaseType.Undefined};
+            if (dialogResult == null) return new DatabaseConnectionModel {DatabaseType = DatabaseType.Undefined};
 
             var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
-            if (info.Size == Guid.Empty.ToString()) return new DatabaseInfo { DatabaseType = DatabaseType.Undefined };
+            if (info.ConnectionName == Guid.Empty.ToString()) return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
             
-            var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.Size));
-            info.Caption = savedName;
+            var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.ConnectionName));
+            info.ConnectionName = savedName;
             info.DataConnection = dialogResult;
             return info;
         }
@@ -152,7 +167,7 @@ namespace EFCorePowerTools.Helpers
             }
         }
 
-        private static DatabaseInfo GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
+        private static DatabaseConnectionModel GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
         {
             var dbType = DatabaseType.SQLCE35;
             var providerInvariant = "N/A";
@@ -197,12 +212,11 @@ namespace EFCorePowerTools.Helpers
                 }
             }
 
-            return new DatabaseInfo
+            return new DatabaseConnectionModel
             {
                 DatabaseType = dbType,
                 ConnectionString = connectionString,
-                ServerVersion = providerInvariant,
-                Size = providerGuid
+                ConnectionName = providerGuid,
             };
         }
 

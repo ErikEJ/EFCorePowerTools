@@ -131,7 +131,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GettingReadyToConnect;
 
-                    DatabaseInfo dbInfo = GetDatabaseInfo(options);
+                    DatabaseConnectionModel dbInfo = GetDatabaseInfo(options);
 
                     if (dbInfo == null)
                         return;
@@ -185,7 +185,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var databaseList = vsDataHelper.GetDataConnections(_package);
             if (databaseList != null && databaseList.Any())
             {
-                var dataBaseInfo = databaseList.Values.FirstOrDefault(m => m.Caption == options.UiHint);
+                var dataBaseInfo = databaseList.Values.FirstOrDefault(m => m.ConnectionName == options.UiHint);
                 if (dataBaseInfo != null)
                 {
                     options.ConnectionString = dataBaseInfo.ConnectionString;
@@ -209,7 +209,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
                 {
-                    ConnectionName = m.Value.Caption,
+                    ConnectionName = m.Value.ConnectionName,
                     ConnectionString = m.Value.ConnectionString,
                     DatabaseType = m.Value.DatabaseType,
                     DataConnection = m.Value.DataConnection,
@@ -255,11 +255,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return true;
         }
 
-        private DatabaseInfo GetDatabaseInfo(ReverseEngineerOptions options)
+        private DatabaseConnectionModel GetDatabaseInfo(ReverseEngineerOptions options)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            DatabaseInfo dbInfo = new DatabaseInfo();
+            var dbInfo = new DatabaseConnectionModel();
 
             if (!string.IsNullOrEmpty(options.ConnectionString))
             {
@@ -269,7 +269,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!string.IsNullOrEmpty(options.Dacpac))
             {
-
                 dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
                 if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase))
                 {
@@ -291,14 +290,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 || dbInfo.DatabaseType == DatabaseType.SQLCE40
                 || dbInfo.DatabaseType == DatabaseType.Undefined)
             {
-                EnvDteHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}: {dbInfo.ServerVersion}");
+                EnvDteHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
                 return null;
             }
 
             return dbInfo;
         }
 
-        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseInfo dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath)
+        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -567,7 +566,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
         }
 
-        private async Task<List<TableModel>> GetTablesAsync(DatabaseInfo dbInfo, bool useEFCore5, SchemaInfo[] schemas)
+        private async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, bool useEFCore5, SchemaInfo[] schemas)
         {
             if (dbInfo.DataConnection != null)
             {
