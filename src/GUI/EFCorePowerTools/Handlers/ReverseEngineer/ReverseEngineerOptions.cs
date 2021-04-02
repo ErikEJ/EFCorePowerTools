@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string ProjectRootNamespace { get; set; }
         public string ModelNamespace { get; set; }
         public string ContextNamespace { get; set; }
-        public bool UseFluentApiOnly { get; set; }
+        public bool UseFluentApiOnly { get; set; } = true;
         public string ContextClassName { get; set; }
         public List<SerializationTableModel> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
