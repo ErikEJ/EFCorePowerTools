@@ -28,6 +28,7 @@
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
         private bool _includeViews = true;
         private bool _filterSchemas = false;
+        private string _uiHint;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -108,18 +109,20 @@
                     return SelectedDatabaseDefinition.FilePath;
                 }
 
-                return null;  
+                return _uiHint;  
             } 
             set
             {
                 var databaseConnectionCandidate = DatabaseConnections
-                    .Where(c => c.ConnectionName == value)
+                    .Where(c => c.ConnectionName.ToLowerInvariant() == value.ToLowerInvariant())
                     .FirstOrDefault();
 
                 if (databaseConnectionCandidate != null)
                 {
                     SelectedDatabaseConnection = databaseConnectionCandidate;
                 }
+
+                _uiHint = value;
             }
         }
 
@@ -150,17 +153,35 @@
 
         private void Loaded_Executed()
         {
-            // Database first
+            // Database connection first
             if (DatabaseConnections.Any() && SelectedDatabaseConnection == null)
             {
+                if (DatabaseDefinitions.Any() 
+                    && !string.IsNullOrEmpty(UiHint)
+                    && UiHint.EndsWith(".sqlproj")
+                )
+                {
+                    var candidate = DatabaseDefinitions
+                        .Where(m => !string.IsNullOrWhiteSpace(m.FilePath)
+                            && m.FilePath.EndsWith(".sqlproj")
+                            && m.FilePath.Equals(UiHint))
+                        .FirstOrDefault();
+
+                    if (candidate != null)
+                    {
+                        SelectedDatabaseDefinition = candidate;
+                        return;
+                    }
+                }
+
                 SelectedDatabaseConnection = DatabaseConnections.First();
                 return;
             }
 
             // Database definition (SQL project) first
-            if (DatabaseDefinitions.Any())
+            if (DatabaseDefinitions.Any() && SelectedDatabaseConnection == null)
             {
-                SelectedDatabaseDefinition = PreSelectDatabaseDefinition();
+                SelectedDatabaseDefinition = PreSelectDatabaseDefinition(UiHint);
             }
         }
 
@@ -288,10 +309,22 @@
 
         private bool FilterSchemas_CanExecute() => FilterSchemas;
 
-        private DatabaseDefinitionModel PreSelectDatabaseDefinition()
+        private DatabaseDefinitionModel PreSelectDatabaseDefinition(string uiHint)
         {
-            var subset = DatabaseDefinitions.Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
-                                            .ToArray();
+            var subset = DatabaseDefinitions
+                .Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
+                .ToArray();
+            if (!string.IsNullOrEmpty(uiHint) && uiHint.EndsWith(".sqlproj"))
+            {
+                var candidate = subset
+                    .FirstOrDefault(m => m.FilePath.Equals(uiHint));
+
+                if (candidate != null)
+                {
+                    return candidate;
+                }
+            }
+
             return subset.Any()
                        ? subset.OrderBy(m => Path.GetFileNameWithoutExtension(m.FilePath)).First()
                        : null;
