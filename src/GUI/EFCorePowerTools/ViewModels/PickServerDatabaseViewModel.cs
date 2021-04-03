@@ -28,6 +28,7 @@
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
         private bool _includeViews = true;
         private bool _filterSchemas = false;
+        private string _uiHint;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -108,7 +109,7 @@
                     return SelectedDatabaseDefinition.FilePath;
                 }
 
-                return null;  
+                return _uiHint;  
             } 
             set
             {
@@ -120,6 +121,8 @@
                 {
                     SelectedDatabaseConnection = databaseConnectionCandidate;
                 }
+
+                _uiHint = value;
             }
         }
 
