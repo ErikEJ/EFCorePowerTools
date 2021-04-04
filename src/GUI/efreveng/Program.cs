@@ -1,6 +1,7 @@
 ﻿using RevEng.Core;
 using RevEng.Shared;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -70,7 +71,7 @@ namespace efreveng
             catch (Exception ex)
             {
                 Console.Out.WriteLine("Error:");
-                Console.Out.WriteLine(ex);
+                Console.Out.WriteLine(ex.Demystify());
                 return 1;
             }
         }

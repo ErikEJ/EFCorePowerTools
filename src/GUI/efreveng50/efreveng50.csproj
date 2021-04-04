@@ -12,6 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Ben.Demystifier" Version="0.3.0" />
+  </ItemGroup>	
+
+  <ItemGroup>
     <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
   </ItemGroup>
 
