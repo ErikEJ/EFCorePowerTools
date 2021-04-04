@@ -118,6 +118,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                     else
                     {
+                        var dbInfo = GetDatabaseInfo(options);
+
+                        if (dbInfo == null)
+                            return;
+
                         containsEfCoreReference = new Tuple<bool, string>(true, null);
                         options.CustomReplacers = namingOptionsAndPath.Item1;
                         options.InstallNuGetPackage = false;
@@ -131,7 +136,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GettingReadyToConnect;
 
-                    DatabaseConnectionModel dbInfo = GetDatabaseInfo(options);
+                    var dbInfo = GetDatabaseInfo(options);
 
                     if (dbInfo == null)
                         return;
@@ -193,6 +198,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return true;
                 }
             }
+
+            var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
+            if (dacpacList != null && dacpacList.Any())
+            { 
+                if (!string.IsNullOrEmpty(options.UiHint) 
+                    && options.UiHint.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    var candidate = dacpacList
+                        .Where(m => !string.IsNullOrWhiteSpace(m) && m.EndsWith(".sqlproj"))
+                        .FirstOrDefault(m => m.Equals(options.UiHint, StringComparison.OrdinalIgnoreCase));
+
+                    if (candidate != null)
+                    {
+                        options.Dacpac = candidate;
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 
