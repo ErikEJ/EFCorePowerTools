@@ -16,8 +16,14 @@ namespace EFCorePowerTools.Helpers
         {
             var result = new List<DatabaseConnectionModel>();
 
-            var credentials = CredentialManager.EnumerateICredentials()
-                .Where(c => c.TargetName.StartsWith($"{Root}", System.StringComparison.Ordinal)).ToList();
+            var list = CredentialManager.EnumerateICredentials();
+
+            if (list == null)
+            {
+                return result;
+            }
+            
+            var credentials = list.Where(c => c.TargetName.StartsWith($"{Root}", System.StringComparison.Ordinal)).ToList();
 
             foreach (var credential in credentials)
             {

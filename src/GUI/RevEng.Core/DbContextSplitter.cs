@@ -100,7 +100,7 @@ namespace RevEng.Core
 
                 result.Add(configurationFilePath);
 
-                configurationLines.Add($"{new string(' ', 12)}modelBuilder.ApplyConfiguration(new {entityName}Configuration());");
+                configurationLines.Add($"{new string(' ', 12)}modelBuilder.ApplyConfiguration(new Configurations.{entityName}Configuration());");
             }
 
             var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
