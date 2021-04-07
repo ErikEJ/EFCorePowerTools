@@ -170,21 +170,28 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             startInfo.RedirectStandardError = true;
             startInfo.CreateNoWindow = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
-
             var standardOutput = new StringBuilder();
-            using (var process = Process.Start(startInfo))
-            {
-                while (process != null && !process.HasExited)
-                {
-                    standardOutput.Append(process.StandardOutput.ReadToEnd());
-                }
-                if (process != null)
-                {
-                    standardOutput.Append(process.StandardOutput.ReadToEnd());
-                }
-            }
 
-            return standardOutput.ToString();
+            try
+            {
+                using (var process = Process.Start(startInfo))
+                {
+                    while (process != null && !process.HasExited)
+                    {
+                        standardOutput.Append(process.StandardOutput.ReadToEnd());
+                    }
+                    if (process != null)
+                    {
+                        standardOutput.Append(process.StandardOutput.ReadToEnd());
+                    }
+                }
+
+                return standardOutput.ToString();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private string DropNetCoreFiles()

@@ -565,6 +565,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AdysTech.CredentialManager" Version="2.3.0" />
+    <PackageReference Include="Ben.Demystifier" Version="0.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights">
       <Version>2.17.0</Version>
     </PackageReference>
