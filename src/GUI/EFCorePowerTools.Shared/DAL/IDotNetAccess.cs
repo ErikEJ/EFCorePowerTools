@@ -5,9 +5,5 @@
     public interface IDotNetAccess
     {
         Version GetExtensionVersion();
-
-        Version GetAssemblyVersion(string assemblyName);
-
-        bool DoesDbProviderFactoryExist(string providerInvariantName);
     }
 }

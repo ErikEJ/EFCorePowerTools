@@ -180,7 +180,6 @@
     <Compile Include="Handlers\ReverseEngineer\ReverseEngineerHandler.cs" />
     <Compile Include="Helpers\CredentialStore.cs" />
     <Compile Include="DAL\ICredentialStore.cs" />
-    <Compile Include="Helpers\InstalledComponentsService.cs" />
     <Compile Include="Helpers\VsDataHelper.cs" />
     <Compile Include="Helpers\EnvDTEHelper.cs" />
     <Compile Include="Helpers\NuGetHelper.cs" />

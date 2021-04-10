@@ -14,9 +14,6 @@
 
         void ShowMessage(string message);
 
-        bool IsDdexProviderInstalled(Guid id);
-        bool IsSqLiteDbProviderInstalled();
-
         void StartStatusBarAnimation(ref object icon);
         void StopStatusBarAnimation(ref object icon);
 

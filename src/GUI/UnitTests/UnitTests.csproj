@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="BLL\CredentialStoreTest.cs" />
     <Compile Include="BLL\ExtensionVersionServiceTests.cs" />
-    <Compile Include="BLL\InstalledComponentsServiceTests.cs" />
     <Compile Include="ResultDeserializerTest.cs" />
     <Compile Include="ReverseEngineerHelperTest.cs" />
     <Compile Include="Models\AboutExtensionModelTests.cs" />

@@ -374,7 +374,6 @@ namespace EFCorePowerTools
             messenger.Register<ShowMessageBoxMessage>(this, HandleShowMessageBoxMessage);
 
             services.AddSingleton<IExtensionVersionService, ExtensionVersionService>()
-                    .AddSingleton<IInstalledComponentsService, InstalledComponentsService>()
                     .AddSingleton<IMessenger>(messenger);
 
             // Register DAL

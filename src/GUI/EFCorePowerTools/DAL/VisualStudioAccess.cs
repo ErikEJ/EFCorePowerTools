@@ -7,7 +7,6 @@
     using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
-    using System;
 
     public class VisualStudioAccess : IVisualStudioAccess
     {
@@ -59,20 +58,6 @@
 
             EnvDteHelper.ShowMessage(message);
         }
-
-        bool IVisualStudioAccess.IsDdexProviderInstalled(Guid id)
-        {
-            try
-            {
-                return VsDataHelper.DdexProviderIsInstalled(id);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        bool IVisualStudioAccess.IsSqLiteDbProviderInstalled() => VsDataHelper.IsSqLiteDbProviderInstalled();
 
         void IVisualStudioAccess.StartStatusBarAnimation(ref object icon)
         {
