@@ -4,7 +4,6 @@
     using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using GalaSoft.MvvmLight.Messaging;
     using Shared.BLL;
     using Shared.DAL;
     using Shared.Models;
@@ -19,7 +18,6 @@
         private readonly IOperatingSystemAccess _operatingSystemAccess;
 
         private string _version;
-        private string _statusText;
 
         public event EventHandler CloseRequested;
 
@@ -27,7 +25,6 @@
         public ICommand OkCommand { get; }
         public ICommand OpenSourcesCommand { get; }
         public ICommand OpenMarketplaceCommand { get; }
-        public ICommand CopyToClipboardCommand { get; }
 
         public string Version
         {
@@ -36,17 +33,6 @@
             {
                 if (Equals(value, _version)) return;
                 _version = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public string StatusText
-        {
-            get => _statusText;
-            private set
-            {
-                if (Equals(value, _statusText)) return;
-                _statusText = value;
                 RaisePropertyChanged();
             }
         }
