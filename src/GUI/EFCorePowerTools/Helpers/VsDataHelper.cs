@@ -1,7 +1,6 @@
 ﻿using EFCorePowerTools.Shared.Models;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
-using Microsoft.VisualStudio.Shell;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -93,22 +92,6 @@ namespace EFCorePowerTools.Helpers
             }
 
             return databaseList;
-        }
-
-        internal static bool DdexProviderIsInstalled(Guid id)
-        {
-            try
-            {
-                var objIVsDataProviderManager =
-                    Package.GetGlobalService(typeof(IVsDataProviderManager)) as IVsDataProviderManager;
-                return objIVsDataProviderManager != null &&
-                    objIVsDataProviderManager.Providers.TryGetValue(id, out IVsDataProvider _);
-            }
-            catch
-            {
-                //Ignored
-            }
-            return false;
         }
 
         internal static DatabaseConnectionModel PromptForInfo(EFCorePowerToolsPackage package)
@@ -310,19 +293,6 @@ namespace EFCorePowerTools.Helpers
                 return dataSource2.ToString();
             }
             return dbType.ToString();
-        }
-
-        internal static bool IsSqLiteDbProviderInstalled()
-        {
-            try
-            {
-                System.Data.Common.DbProviderFactories.GetFactory("System.Data.SQLite.EF6");
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
         }
     }
 }

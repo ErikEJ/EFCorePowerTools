@@ -12,7 +12,7 @@
                  mc:Ignorable="d"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
-                 d:DesignHeight="634"
+                 d:DesignHeight="334"
                  d:DesignWidth="337"
                  d:DataContext="{d:DesignInstance Type=viewModels:AboutViewModel, IsDesignTimeCreatable=False}">
 
@@ -72,13 +72,6 @@
                    Style="{StaticResource MarginTextBlockStyle}"
                    TextWrapping="WrapWithOverflow"
                    Text="{Binding StatusText}"/>
-
-        <dw:DialogButton Grid.Row="4"
-                         HorizontalAlignment="Left"
-                         Margin="12,0,0,12"
-                         Width="30"
-                         Content="{x:Static locale:AboutLocale.Copy}"
-                         Command="{Binding CopyToClipboardCommand}"/>
         <dw:DialogButton Grid.Row="4"
                          HorizontalAlignment="Right"
                          Margin="0,0,12,12"
