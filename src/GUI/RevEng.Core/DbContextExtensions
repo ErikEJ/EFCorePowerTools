@@ -15,7 +15,7 @@ namespace #NAMESPACE#
     {
         public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
-            parameters ??= new object[] { };
+            parameters ?? new object[] { };
 
             if (typeof(T).GetProperties().Any())
             {
