@@ -15,6 +15,9 @@ using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
 using RevEng.Shared;
+#if CORE50
+using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+#endif
 using System;
 
 namespace RevEng.Core
@@ -108,7 +111,13 @@ namespace RevEng.Core
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if CORE50
+                    if (options.UseNodaTime)
+                    {
+                        var nodaTime = new SqlServerNodaTimeDesignTimeServices();
+                        nodaTime.ConfigureDesignTimeServices(serviceCollection);
+                    }
+#endif
                     break;
 
                 case DatabaseType.SQLServerDacpac:
