@@ -73,10 +73,6 @@ namespace SqlSharpener.Model
                             var tSqlObjectReferenced = referenced[0];
                             SetProperties(tSqlObjectReferenced);
                         }
-                        else
-                        {
-                            // TODO: how to get and evaluate the expression?
-                        }
                         break;
                 }
             }
