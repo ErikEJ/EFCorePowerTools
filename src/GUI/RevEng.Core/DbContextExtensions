@@ -15,8 +15,11 @@ namespace #NAMESPACE#
     {
         public static async Task<T[]> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
-            parameters ?? new object[] { };
-
+            if (parameters is null)
+            {
+                parameters = new object[] { };
+            }
+         
             if (typeof(T).GetProperties().Any())
             {
                 using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
@@ -34,7 +37,10 @@ namespace #NAMESPACE#
 
         public static async Task<List<T>> SqlQueryToListAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
-            parameters ??= new object[] { };
+            if (parameters is null)
+            {
+                parameters = new object[] { };
+            }
 
             if (typeof(T).GetProperties().Any())
             {

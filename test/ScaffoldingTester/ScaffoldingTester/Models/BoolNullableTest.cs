@@ -8,5 +8,6 @@ namespace ScaffoldingTester.Models
     {
         public int Id { get; set; }
         public bool TestBool { get; set; }
+        public DateTime? Noda { get; set; }
     }
 }

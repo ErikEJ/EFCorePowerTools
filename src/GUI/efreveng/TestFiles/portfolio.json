@@ -1,0 +1,76 @@
+{
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Portfolio;Integrated Security=True",
+  "ContextClassName": "PortfolioContext",
+  "ContextNamespace": null,
+  "CustomReplacers": [
+    {
+      "SchemaName": "dbo",
+      "Tables": [
+        {
+          "Columns": [],
+          "Name": "PortfolioItemRelationships",
+          "NewName": "PortfolioItemRelationships",
+          "Navigations": [
+            {
+              "Name": "Portfolios",
+              "NewName": "ParentPortfolio"
+            },
+            {
+              "Name": "Portfolios",
+              "NewName": "ParentPortfolio"
+            }
+          ]
+        }
+      ],
+      "UseSchemaName": false
+    },
+    {
+      "SchemaName": "dev",
+      "UseSchemaName": true
+    },
+    {
+      "SchemaName": "test",
+      "UseSchemaName": true
+    },
+    {
+      "SchemaName": "prod",
+      "UseSchemaName": true
+    }
+  ],
+  "Dacpac": null,
+  "DatabaseType": 3,
+  "DefaultDacpacSchema": null,
+  "FilterSchemas": false,
+  "IncludeConnectionString": true,
+  "ModelNamespace": null,
+  "OutputContextPath": null,
+  "OutputPath": "Models",
+  "ProjectPath": "C:\\Temp\\Test\\",
+  "ProjectRootNamespace": "ScaffoldingTester",
+  "Schemas": null,
+  "SelectedHandlebarsLanguage": 0,
+  "SelectedToBeGenerated": 0,
+  "Tables": [
+    {
+      "Name": "[dbo].[PortfolioItemRelationships]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Portfolios]",
+      "ObjectType": 0
+    }
+  ],
+  "UseNoObjectFilter": false,
+  "UseBoolPropertiesWithoutDefaultSql": true,
+  "UseDatabaseNames": false,
+  "UseDbContextSplitting": false,
+  "UseFluentApiOnly": true,
+  "UseHandleBars": false,
+  "UseInflector": false,
+  "UseLegacyPluralizer": false,
+  "UseNoConstructor": false,
+  "UseNoNavigations": false,
+  "UseNodaTime": false,
+  "UseNullableReferences": false,
+  "UseSpatial": false
+}
