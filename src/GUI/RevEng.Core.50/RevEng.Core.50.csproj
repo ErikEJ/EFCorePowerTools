@@ -42,7 +42,7 @@
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="5.0.1" />
-    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.0.0" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.0.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.4" />
@@ -52,8 +52,8 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="5.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="5.0.2" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="5.21.1" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="5.0.0-alpha.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-beta.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="5.0.0-beta.1" />
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="5.0.2" />
     <PackageReference Include="System.CodeDom" Version="5.0.0" />
   </ItemGroup>
