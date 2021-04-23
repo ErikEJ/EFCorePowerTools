@@ -99,12 +99,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 Tuple<bool, string> containsEfCoreReference = null;
 
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath) ?? new ReverseEngineerOptions();
+                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
+                if (options == null)
+                {
+                    options = new ReverseEngineerOptions
+                    {
+                        ProjectRootNamespace = project.Properties.Item("DefaultNamespace").Value.ToString()
+                    };
+                }
 
                 options.ProjectPath = project.Properties.Item("FullPath")?.Value.ToString();
-
-                if (string.IsNullOrWhiteSpace(options.ProjectRootNamespace))
-                    options.ProjectRootNamespace = project.Properties.Item("DefaultNamespace").Value.ToString();
 
                 bool forceEdit = false;
 
