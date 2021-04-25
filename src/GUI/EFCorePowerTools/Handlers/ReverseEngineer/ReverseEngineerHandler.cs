@@ -269,7 +269,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (!pickDataSourceResult.ClosedByOK)
                 return false;
 
-            options.CodeGenerationMode = pickDataSourceResult.Payload.IncludeViews ? CodeGenerationMode.EFCore5 : CodeGenerationMode.EFCore3;
+            options.CodeGenerationMode = pickDataSourceResult.Payload.CodeGenerationMode;
             options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
             options.Schemas = options.FilterSchemas ? pickDataSourceResult.Payload.Schemas?.ToList() : null;
             options.UiHint = pickDataSourceResult.Payload.UiHint;
@@ -332,8 +332,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             _package.Dte2.StatusBar.Animate(true, _icon);
             var predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode == CodeGenerationMode.EFCore5)
-                                       : await GetTablesAsync(dbInfo, options.CodeGenerationMode == CodeGenerationMode.EFCore5, options.Schemas?.ToArray());
+                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
+                                       : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
             _package.Dte2.StatusBar.Animate(false, _icon);
 
             var preselectedTables = new List<SerializationTableModel>();
@@ -479,7 +479,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             _package.Dte2.StatusBar.Animate(true, _icon);
             _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GeneratingCode;
-            var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
+            var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, options.CodeGenerationMode);
             _package.Dte2.StatusBar.Animate(false, _icon);
 
             var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
@@ -584,7 +584,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return false;
         }
 
-        private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, bool useEFCore5)
+        private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
         {
             TableListBuilder builder;
 
@@ -597,10 +597,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
             }
 
-            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(codeGenerationMode));
         }
 
-        private async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, bool useEFCore5, SchemaInfo[] schemas)
+        private async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, CodeGenerationMode codeGenerationMode, SchemaInfo[] schemas)
         {
             if (dbInfo.DataConnection != null)
             {
@@ -609,7 +609,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
-            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(useEFCore5));
+            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(codeGenerationMode));
         }
     }
 }

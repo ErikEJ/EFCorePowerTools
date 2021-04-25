@@ -5,6 +5,6 @@ namespace RevEng.Shared
     {
         EFCore5 = 0,
         EFCore3 = 1,
-        POCO = 2,
+        EFCore6 = 2,
     }
 }

@@ -78,7 +78,7 @@
                     Margin="8,12,0,12"
                     ToolTip="{x:Static locale:ReverseEngineerLocale.RemoveSelectedConnection}"
                     Command="{Binding RemoveDatabaseConnectionCommand}">
-                    <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
+                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
             </Button>
 
             <xctk:SplitButton Grid.Column="2"
@@ -130,7 +130,7 @@
                              ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
                              Command="{Binding AddDatabaseDefinitionCommand}"/>
         </Grid>
-        
+
         <StackPanel Grid.Row="3" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
@@ -157,19 +157,18 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center">
-            <CheckBox x:Name="IncludeViews" 
-                      IsChecked="{Binding IncludeViews}" 
-                      TabIndex="6" 
-                      ToolTip="{x:Static locale:ReverseEngineerLocale.UncheckedEFCoreVersionUsed}"
-                      Margin="0,5,0,0" >
-                <TextBlock Text="{x:Static locale:ReverseEngineerLocale.UseEFCore5}" />
-            </CheckBox>
+            <ComboBox
+                  TabIndex="6"
+                  Margin="0,5,0,0"
+                  Style="{StaticResource SourceSelectionComboBoxStyle}"
+                  ItemsSource="{Binding CodeGenerationModeList}"
+                  SelectedIndex="{Binding CodeGenerationMode, Mode=TwoWay}" />
         </StackPanel>
 
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
+                    VerticalAlignment="Center"  
                     Margin="0,5,0,0">
             <TextBlock
                 ToolTip="{x:Static locale:ReverseEngineerLocale.ReleaseNotes}"
