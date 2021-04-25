@@ -120,6 +120,9 @@ namespace RevEng.Core
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
+//TODO Maybe re-enable navigation renaming ?
+#if CORE60
+#else
         public override string GetPrincipalEndCandidateNavigationPropertyName(IForeignKey foreignKey, string dependentEndNavigationPropertyName)
         {
             var baseName = base.GetPrincipalEndCandidateNavigationPropertyName(foreignKey, dependentEndNavigationPropertyName);
@@ -188,6 +191,7 @@ namespace RevEng.Core
 
             return baseName;
         }
+#endif
 
         private Schema GetSchema(string originalSchema)
             => _customNameOptions?
@@ -235,7 +239,7 @@ namespace RevEng.Core
             }
             catch (RegexMatchTimeoutException)
             {
-                Console.WriteLine($"Regex pattern {pattern} time out when tryign to match {originalName}, name won't be replaced");
+                Console.WriteLine($"Regex pattern {pattern} time out when trying to match {originalName}, name won't be replaced");
             }
 
             return newName;

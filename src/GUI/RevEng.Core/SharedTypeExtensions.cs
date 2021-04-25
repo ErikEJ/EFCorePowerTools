@@ -124,7 +124,7 @@ namespace System
             }
         }
 
-        public static IEnumerable<string> GetNamespacesEx([NotNull] this Type type)
+        public static IEnumerable<string> GetNamespacesEx(this Type type)
         {
             if (_builtInTypeNames.ContainsKey(type))
             {

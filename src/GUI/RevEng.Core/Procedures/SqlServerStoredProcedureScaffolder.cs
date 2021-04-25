@@ -1,4 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿#if CORE60
+using System.Diagnostics.CodeAnalysis;
+#else
+using JetBrains.Annotations;
+#endif
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
