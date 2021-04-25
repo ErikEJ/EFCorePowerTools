@@ -46,13 +46,17 @@ namespace EFCorePowerTools.Dialogs
 
             if (cmdDatabaseType.SelectedIndex == 0)
             {
-                txtSample.Text = "Data Source=C:\\data\\Application.db";
+                txtSample.Text = "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;";
             }
             if (cmdDatabaseType.SelectedIndex == 1)
             {
-                txtSample.Text = "Server=myserver.database.windows.net;Authentication=Active Directory Interactive;Database=mydatabase;User Id=user@domain.com";
+                txtSample.Text = "Data Source=C:\\data\\Application.db";
             }
             if (cmdDatabaseType.SelectedIndex == 2)
+            {
+                txtSample.Text = "Server=myserver.database.windows.net;Authentication=Active Directory Interactive;Database=mydatabase;User Id=user@domain.com";
+            }
+            if (cmdDatabaseType.SelectedIndex == 3)
             {
                 txtSample.Text = "database=localhost:demo.fdb;user=sysdba;password=masterkey";
             }
