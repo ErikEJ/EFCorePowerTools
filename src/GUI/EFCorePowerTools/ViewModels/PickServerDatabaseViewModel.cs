@@ -26,7 +26,6 @@
 
         private DatabaseConnectionModel _selectedDatabaseConnection;
         private DatabaseDefinitionModel _selectedDatabaseDefinition;
-        private bool _includeViews = true;
         private bool _filterSchemas = false;
         private string _uiHint;
         private int _codeGenerationMode;
@@ -151,7 +150,7 @@
             {
                 "EF Core 5",
                 "EF Core 3",
-                "EF Core 6",
+                "EF Core 6 (preview)",
             };
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
