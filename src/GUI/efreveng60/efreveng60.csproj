@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+	<Version>2.5.0</Version>
+  </PropertyGroup>
+	
+ <PropertyGroup>
+    <DefineConstants>TRACE;CORE60</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+  </ItemGroup>	
+
+  <ItemGroup>
+    <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
+  </ItemGroup>	
+
+</Project>

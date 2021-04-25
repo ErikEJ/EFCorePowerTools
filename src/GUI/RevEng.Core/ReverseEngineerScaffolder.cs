@@ -199,7 +199,7 @@ namespace RevEng.Core
                 }
             }
 
-#if CORE50
+#if CORE50 || CORE60
             var model = _factory.Create(databaseModel, modelOptions);
 #else
             var model = _factory.Create(databaseModel, modelOptions.UseDatabaseNames);

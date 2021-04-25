@@ -23,8 +23,9 @@ namespace RevEng.Core.Functions
 
         private IndentedStringBuilder _sb;
 
-        public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code)
+        public SqlServerFunctionScaffolder(ICSharpHelper code)
         {
+            if (code == null) throw new ArgumentNullException(nameof(code));
             this.code = code;
         }
 
