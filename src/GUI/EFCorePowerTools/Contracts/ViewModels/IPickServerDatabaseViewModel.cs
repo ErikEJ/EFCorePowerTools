@@ -26,7 +26,7 @@
         DatabaseDefinitionModel SelectedDatabaseDefinition { get; set; }
 
         string UiHint { get; set; }
-        bool IncludeViews { get; set; }
+        int CodeGenerationMode { get; set; }
         bool FilterSchemas { get; set; }
     }
 }

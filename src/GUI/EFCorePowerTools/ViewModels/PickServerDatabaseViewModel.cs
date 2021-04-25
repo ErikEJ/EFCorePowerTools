@@ -29,6 +29,7 @@
         private bool _includeViews = true;
         private bool _filterSchemas = false;
         private string _uiHint;
+        private int _codeGenerationMode;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -45,14 +46,15 @@
         public ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
 
         public List<SchemaInfo> Schemas { get; private set; }
+        public IReadOnlyList<string> CodeGenerationModeList { get; }
 
-        public bool IncludeViews
+        public int CodeGenerationMode
         {
-            get => _includeViews;
+            get => _codeGenerationMode;
             set
             {
-                if (value == _includeViews) return;
-                _includeViews = value;
+                if (value == _codeGenerationMode) return;
+                _codeGenerationMode = value;
                 RaisePropertyChanged();
             }
         }
@@ -144,6 +146,13 @@
             OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
             CancelCommand = new RelayCommand(Cancel_Executed);
             FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
+
+            CodeGenerationModeList = new[]
+            {
+                "EF Core 5",
+                "EF Core 3",
+                "EF Core 6",
+            };
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
             DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();

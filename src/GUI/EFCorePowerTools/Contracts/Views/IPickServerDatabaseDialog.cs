@@ -4,7 +4,7 @@
     using Shared.Models;
     using System.Collections.Generic;
 
-    public interface IPickServerDatabaseDialog : IDialog<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, bool IncludeViews, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)>
+    public interface IPickServerDatabaseDialog : IDialog<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)>
     {
         void PublishConnections(IEnumerable<DatabaseConnectionModel> connections);
         void PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions);
