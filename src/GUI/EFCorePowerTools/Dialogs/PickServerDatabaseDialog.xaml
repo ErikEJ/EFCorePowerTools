@@ -93,7 +93,7 @@
                     <dw:DialogButton Grid.Column="1"
                              TabIndex="2"
                              Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="Add Azure SQL/SQLite/Firebird..."
+                             Content="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
                              Command="{Binding AddAdhocDatabaseConnectionCommand}"
                             />
                 </xctk:SplitButton.DropDownContent>

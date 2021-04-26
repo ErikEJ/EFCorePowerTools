@@ -123,9 +123,6 @@
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Add Database Connection</value>
   </data>
-  <data name="Anything" xml:space="preserve">
-    <value>Anything</value>
-  </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
     <value>Cannot compare context to database while debugging</value>
   </data>
@@ -138,15 +135,6 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="Column" xml:space="preserve">
-    <value>Column</value>
-  </data>
-  <data name="ColumnName" xml:space="preserve">
-    <value>Column name</value>
-  </data>
-  <data name="ColumnType" xml:space="preserve">
-    <value>Column type</value>
-  </data>
   <data name="CompareCompletedIn" xml:space="preserve">
     <value>Compare completed in {0}</value>
   </data>
@@ -156,29 +144,8 @@
   <data name="ComparisonResult" xml:space="preserve">
     <value>Comparison result</value>
   </data>
-  <data name="ConstraintName" xml:space="preserve">
-    <value>Constraint name</value>
-  </data>
   <data name="ContextDatabaseMatch" xml:space="preserve">
     <value>Context(s) and database structure match</value>
-  </data>
-  <data name="Database" xml:space="preserve">
-    <value>Database</value>
-  </data>
-  <data name="DbContext" xml:space="preserve">
-    <value>DbContext</value>
-  </data>
-  <data name="DeleteBehabior" xml:space="preserve">
-    <value>Delete behabior</value>
-  </data>
-  <data name="Different" xml:space="preserve">
-    <value>Different</value>
-  </data>
-  <data name="Entity" xml:space="preserve">
-    <value>Entity</value>
-  </data>
-  <data name="ForeignKey" xml:space="preserve">
-    <value>Foreign key</value>
   </data>
   <data name="HeaderAttribute" xml:space="preserve">
     <value>Attribute</value>
@@ -198,68 +165,20 @@
   <data name="HeaderType" xml:space="preserve">
     <value>Type</value>
   </data>
-  <data name="Index" xml:space="preserve">
-    <value>Index</value>
-  </data>
-  <data name="IndexConstraintName" xml:space="preserve">
-    <value>Index constraint name</value>
-  </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
     <value>Installing EfCore.SchemaCompare version 5.1.3, please retry the command</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>Loading data</value>
   </data>
-  <data name="MatchAnything" xml:space="preserve">
-    <value>Match anything</value>
-  </data>
   <data name="NoContextsSelected" xml:space="preserve">
     <value>No contexts selected</value>
-  </data>
-  <data name="NotChecked" xml:space="preserve">
-    <value>Not checked</value>
-  </data>
-  <data name="NotInContext" xml:space="preserve">
-    <value>Not in context</value>
-  </data>
-  <data name="NotInDatabase" xml:space="preserve">
-    <value>Not in database</value>
-  </data>
-  <data name="NotMappedToDatabase" xml:space="preserve">
-    <value>Not mapped to database</value>
-  </data>
-  <data name="NotSet" xml:space="preserve">
-    <value>Not set</value>
-  </data>
-  <data name="Nullability" xml:space="preserve">
-    <value>Nullability</value>
-  </data>
-  <data name="PersistentComputedColumn" xml:space="preserve">
-    <value>Persistent computed column</value>
-  </data>
-  <data name="PrimaryKey" xml:space="preserve">
-    <value>Primary key</value>
-  </data>
-  <data name="Property" xml:space="preserve">
-    <value>Property</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
     <value>Remove selected connection</value>
   </data>
   <data name="ShowDifferencesOnly" xml:space="preserve">
     <value>Show differences only</value>
-  </data>
-  <data name="SqlComputedColumn" xml:space="preserve">
-    <value>Sql computed column</value>
-  </data>
-  <data name="SqlDefaultValue" xml:space="preserve">
-    <value>Sql default value</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>Table</value>
-  </data>
-  <data name="TableName" xml:space="preserve">
-    <value>Table name</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
     <value>Unable to add connection, maybe the provider is not supported</value>
@@ -272,12 +191,6 @@
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
     <value>Unable to remove connection</value>
-  </data>
-  <data name="Unique" xml:space="preserve">
-    <value>Unique</value>
-  </data>
-  <data name="ValueGenerated" xml:space="preserve">
-    <value>Value generated</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
     <value>Only EF Core 5 is supported.</value>

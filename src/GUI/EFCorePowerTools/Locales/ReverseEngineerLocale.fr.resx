@@ -120,6 +120,12 @@
   <data name="Add" xml:space="preserve">
     <value>Ajouter...</value>
   </data>
+  <data name="AddAdhocConnection" xml:space="preserve">
+    <value>Add ad hoc Connection (preview)</value>
+  </data>
+  <data name="AddAdhocDatabaseConnection" xml:space="preserve">
+    <value>Add Azure SQL/SQLite/Firebird...</value>
+  </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Ajouter une connexion à la base de données</value>
   </data>
@@ -161,6 +167,15 @@
   </data>
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
     <value>Choisissez le projet de base de données SQL Server (.dacpac)</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ConnectionSample" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Connection String</value>
   </data>
   <data name="ContextName" xml:space="preserve">
     <value>Nom du contexte</value>
@@ -326,9 +341,6 @@
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>Utiliser le pluraliseur EF6</value>
-  </data>
-  <data name="UseEFCore5" xml:space="preserve">
-    <value>Utilisez EF Core 5</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Utilisez les noms de table et de colonne directement à partir de la base de données</value>

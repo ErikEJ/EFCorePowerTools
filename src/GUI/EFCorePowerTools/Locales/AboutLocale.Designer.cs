@@ -72,15 +72,6 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string AboutCopiedToClipboard {
-            get {
-                return ResourceManager.GetString("AboutCopiedToClipboard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string AddinFreeDisclaimer {
             get {
                 return ResourceManager.GetString("AddinFreeDisclaimer", resourceCulture);
@@ -90,63 +81,9 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Copy {
-            get {
-                return ResourceManager.GetString("Copy", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string Ok {
             get {
                 return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SQLiteDDEXProvider {
-            get {
-                return ResourceManager.GetString("SQLiteDDEXProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SQLiteProviderGAC {
-            get {
-                return ResourceManager.GetString("SQLiteProviderGAC", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SQLiteProviderIncluded {
-            get {
-                return ResourceManager.GetString("SQLiteProviderIncluded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SQLiteSimpleDDEXProvider {
-            get {
-                return ResourceManager.GetString("SQLiteSimpleDDEXProvider", resourceCulture);
             }
         }
         
@@ -174,15 +111,6 @@ namespace EFCorePowerTools.Locales {
         public static string VersionNotAvailable {
             get {
                 return ResourceManager.GetString("VersionNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }
