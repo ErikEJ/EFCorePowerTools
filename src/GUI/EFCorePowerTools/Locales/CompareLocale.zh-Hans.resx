@@ -123,9 +123,6 @@
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>添加数据库连接</value>
   </data>
-  <data name="Anything" xml:space="preserve">
-    <value>全部</value>
-  </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
     <value>调试时，上下文与数据库无法进行比较</value>
   </data>
@@ -138,15 +135,6 @@
   <data name="Close" xml:space="preserve">
     <value>关闭</value>
   </data>
-  <data name="Column" xml:space="preserve">
-    <value>列</value>
-  </data>
-  <data name="ColumnName" xml:space="preserve">
-    <value>列名</value>
-  </data>
-  <data name="ColumnType" xml:space="preserve">
-    <value>列类型</value>
-  </data>
   <data name="CompareCompletedIn" xml:space="preserve">
     <value>比较在 {0} 内完成</value>
   </data>
@@ -156,29 +144,8 @@
   <data name="ComparisonResult" xml:space="preserve">
     <value>比较结果</value>
   </data>
-  <data name="ConstraintName" xml:space="preserve">
-    <value>约束名称</value>
-  </data>
   <data name="ContextDatabaseMatch" xml:space="preserve">
     <value>数据库上下文和数据库结构匹配</value>
-  </data>
-  <data name="Database" xml:space="preserve">
-    <value>数据库</value>
-  </data>
-  <data name="DbContext" xml:space="preserve">
-    <value>上下文</value>
-  </data>
-  <data name="DeleteBehabior" xml:space="preserve">
-    <value>删除行为</value>
-  </data>
-  <data name="Different" xml:space="preserve">
-    <value>不同的</value>
-  </data>
-  <data name="Entity" xml:space="preserve">
-    <value>实体</value>
-  </data>
-  <data name="ForeignKey" xml:space="preserve">
-    <value>外键</value>
   </data>
   <data name="HeaderAttribute" xml:space="preserve">
     <value>属性</value>
@@ -198,68 +165,20 @@
   <data name="HeaderType" xml:space="preserve">
     <value>类型</value>
   </data>
-  <data name="Index" xml:space="preserve">
-    <value>索引</value>
-  </data>
-  <data name="IndexConstraintName" xml:space="preserve">
-    <value>索引约束名称</value>
-  </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
     <value>正在安装 EfCore.SchemaCompare 包，请重试该命令</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>正在加载数据...</value>
   </data>
-  <data name="MatchAnything" xml:space="preserve">
-    <value>全部匹配</value>
-  </data>
   <data name="NoContextsSelected" xml:space="preserve">
     <value>未选择上下文</value>
-  </data>
-  <data name="NotChecked" xml:space="preserve">
-    <value>未检查</value>
-  </data>
-  <data name="NotInContext" xml:space="preserve">
-    <value>不在上下文中</value>
-  </data>
-  <data name="NotInDatabase" xml:space="preserve">
-    <value>不在数据库中</value>
-  </data>
-  <data name="NotMappedToDatabase" xml:space="preserve">
-    <value>未映射到数据库</value>
-  </data>
-  <data name="NotSet" xml:space="preserve">
-    <value>未设置</value>
-  </data>
-  <data name="Nullability" xml:space="preserve">
-    <value>可为空</value>
-  </data>
-  <data name="PersistentComputedColumn" xml:space="preserve">
-    <value>持久化计算列</value>
-  </data>
-  <data name="PrimaryKey" xml:space="preserve">
-    <value>主键</value>
-  </data>
-  <data name="Property" xml:space="preserve">
-    <value>属性</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
     <value>删除选定的连接</value>
   </data>
   <data name="ShowDifferencesOnly" xml:space="preserve">
     <value>仅显示差异</value>
-  </data>
-  <data name="SqlComputedColumn" xml:space="preserve">
-    <value>SQL计算列</value>
-  </data>
-  <data name="SqlDefaultValue" xml:space="preserve">
-    <value>SQL默认值</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>表</value>
-  </data>
-  <data name="TableName" xml:space="preserve">
-    <value>表名</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
     <value>无法添加连接，可能不支持该提供程序</value>
@@ -272,12 +191,6 @@
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
     <value>无法删除连接</value>
-  </data>
-  <data name="Unique" xml:space="preserve">
-    <value>唯一约束</value>
-  </data>
-  <data name="ValueGenerated" xml:space="preserve">
-    <value>生成值</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
     <value>仅支持 EF Core 5</value>

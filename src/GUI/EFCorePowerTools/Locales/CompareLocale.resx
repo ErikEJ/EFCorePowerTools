@@ -123,9 +123,6 @@
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value />
   </data>
-  <data name="Anything" xml:space="preserve">
-    <value />
-  </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
     <value />
   </data>
@@ -138,15 +135,6 @@
   <data name="Close" xml:space="preserve">
     <value />
   </data>
-  <data name="Column" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ColumnName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ColumnType" xml:space="preserve">
-    <value />
-  </data>
   <data name="CompareCompletedIn" xml:space="preserve">
     <value />
   </data>
@@ -156,28 +144,7 @@
   <data name="ComparisonResult" xml:space="preserve">
     <value />
   </data>
-  <data name="ConstraintName" xml:space="preserve">
-    <value />
-  </data>
   <data name="ContextDatabaseMatch" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Database" xml:space="preserve">
-    <value />
-  </data>
-  <data name="DbContext" xml:space="preserve">
-    <value />
-  </data>
-  <data name="DeleteBehabior" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Different" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Entity" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ForeignKey" xml:space="preserve">
     <value />
   </data>
   <data name="HeaderAttribute" xml:space="preserve">
@@ -198,67 +165,19 @@
   <data name="HeaderType" xml:space="preserve">
     <value />
   </data>
-  <data name="Index" xml:space="preserve">
-    <value />
-  </data>
-  <data name="IndexConstraintName" xml:space="preserve">
-    <value />
-  </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
     <value />
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value />
   </data>
-  <data name="MatchAnything" xml:space="preserve">
-    <value />
-  </data>
   <data name="NoContextsSelected" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NotChecked" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NotInContext" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NotInDatabase" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NotMappedToDatabase" xml:space="preserve">
-    <value />
-  </data>
-  <data name="NotSet" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Nullability" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PersistentComputedColumn" xml:space="preserve">
-    <value />
-  </data>
-  <data name="PrimaryKey" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Property" xml:space="preserve">
     <value />
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
     <value />
   </data>
   <data name="ShowDifferencesOnly" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlComputedColumn" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SqlDefaultValue" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value />
-  </data>
-  <data name="TableName" xml:space="preserve">
     <value />
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
@@ -271,12 +190,6 @@
     <value />
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Unique" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ValueGenerated" xml:space="preserve">
     <value />
   </data>
   <data name="VersionSupported" xml:space="preserve">

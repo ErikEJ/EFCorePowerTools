@@ -81,15 +81,6 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Anything {
-            get {
-                return ResourceManager.GetString("Anything", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string CannotCompareContextToDatabaseWhileDebugging {
             get {
                 return ResourceManager.GetString("CannotCompareContextToDatabaseWhileDebugging", resourceCulture);
@@ -126,33 +117,6 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Column {
-            get {
-                return ResourceManager.GetString("Column", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ColumnName {
-            get {
-                return ResourceManager.GetString("ColumnName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ColumnType {
-            get {
-                return ResourceManager.GetString("ColumnType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string CompareCompletedIn {
             get {
                 return ResourceManager.GetString("CompareCompletedIn", resourceCulture);
@@ -180,72 +144,9 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string ConstraintName {
-            get {
-                return ResourceManager.GetString("ConstraintName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string ContextDatabaseMatch {
             get {
                 return ResourceManager.GetString("ContextDatabaseMatch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Database {
-            get {
-                return ResourceManager.GetString("Database", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string DbContext {
-            get {
-                return ResourceManager.GetString("DbContext", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string DeleteBehabior {
-            get {
-                return ResourceManager.GetString("DeleteBehabior", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Different {
-            get {
-                return ResourceManager.GetString("Different", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Entity {
-            get {
-                return ResourceManager.GetString("Entity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ForeignKey {
-            get {
-                return ResourceManager.GetString("ForeignKey", resourceCulture);
             }
         }
         
@@ -306,24 +207,6 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Index {
-            get {
-                return ResourceManager.GetString("Index", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string IndexConstraintName {
-            get {
-                return ResourceManager.GetString("IndexConstraintName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string InstallingEfCoreSchemaCompare {
             get {
                 return ResourceManager.GetString("InstallingEfCoreSchemaCompare", resourceCulture);
@@ -342,99 +225,9 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string MatchAnything {
-            get {
-                return ResourceManager.GetString("MatchAnything", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
         public static string NoContextsSelected {
             get {
                 return ResourceManager.GetString("NoContextsSelected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string NotChecked {
-            get {
-                return ResourceManager.GetString("NotChecked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string NotInContext {
-            get {
-                return ResourceManager.GetString("NotInContext", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string NotInDatabase {
-            get {
-                return ResourceManager.GetString("NotInDatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string NotMappedToDatabase {
-            get {
-                return ResourceManager.GetString("NotMappedToDatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string NotSet {
-            get {
-                return ResourceManager.GetString("NotSet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Nullability {
-            get {
-                return ResourceManager.GetString("Nullability", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string PersistentComputedColumn {
-            get {
-                return ResourceManager.GetString("PersistentComputedColumn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string PrimaryKey {
-            get {
-                return ResourceManager.GetString("PrimaryKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Property {
-            get {
-                return ResourceManager.GetString("Property", resourceCulture);
             }
         }
         
@@ -453,42 +246,6 @@ namespace EFCorePowerTools.Locales {
         public static string ShowDifferencesOnly {
             get {
                 return ResourceManager.GetString("ShowDifferencesOnly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SqlComputedColumn {
-            get {
-                return ResourceManager.GetString("SqlComputedColumn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string SqlDefaultValue {
-            get {
-                return ResourceManager.GetString("SqlDefaultValue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Table {
-            get {
-                return ResourceManager.GetString("Table", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string TableName {
-            get {
-                return ResourceManager.GetString("TableName", resourceCulture);
             }
         }
         
@@ -525,24 +282,6 @@ namespace EFCorePowerTools.Locales {
         public static string UnableToRemoveConnection {
             get {
                 return ResourceManager.GetString("UnableToRemoveConnection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Unique {
-            get {
-                return ResourceManager.GetString("Unique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ValueGenerated {
-            get {
-                return ResourceManager.GetString("ValueGenerated", resourceCulture);
             }
         }
         

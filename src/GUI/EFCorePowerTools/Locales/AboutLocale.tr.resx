@@ -120,32 +120,11 @@
   <data name="About" xml:space="preserve">
     <value>Hakkında</value>
   </data>
-  <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value>Hakkında bilgisi panoya kopyalandı.</value>
-  </data>
   <data name="AddinFreeDisclaimer" xml:space="preserve">
     <value>Bu uzantı ÜCRETSİZDİR ancak bir inceleme yazarsanız minnet duyarım</value>
   </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Kopyala</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Hayır</value>
-  </data>
   <data name="Ok" xml:space="preserve">
     <value>Tamam</value>
-  </data>
-  <data name="SQLiteDDEXProvider" xml:space="preserve">
-    <value>System.Data.SQLite DDEX sağlayıcı</value>
-  </data>
-  <data name="SQLiteProviderGAC" xml:space="preserve">
-    <value>SQLite EF6 DbProvider GAC içinde</value>
-  </data>
-  <data name="SQLiteProviderIncluded" xml:space="preserve">
-    <value>Eklenen SQLite ADO.NET sağlayıcı</value>
-  </data>
-  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
-    <value>SQLite Simple DDEX sağlayıcı</value>
   </data>
   <data name="SupportFeedbackSourceCode" xml:space="preserve">
     <value>Destek, geri bildirim ve kaynak kodu için şu adrese gidin</value>
@@ -155,8 +134,5 @@
   </data>
   <data name="VersionNotAvailable" xml:space="preserve">
     <value>Sürüm yok</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Evet</value>
   </data>
 </root>

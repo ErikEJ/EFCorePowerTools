@@ -123,9 +123,6 @@
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Veritabanı bağlantısı ekle</value>
   </data>
-  <data name="Anything" xml:space="preserve">
-    <value>Herhangi bir şey</value>
-  </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
     <value>Hata ayıklama sırasında bağlamla veritabanı karşılaştırılamaz.</value>
   </data>
@@ -138,15 +135,6 @@
   <data name="Close" xml:space="preserve">
     <value>Kapat</value>
   </data>
-  <data name="Column" xml:space="preserve">
-    <value>Sütun</value>
-  </data>
-  <data name="ColumnName" xml:space="preserve">
-    <value>Sütun adı</value>
-  </data>
-  <data name="ColumnType" xml:space="preserve">
-    <value>Sütun tipi</value>
-  </data>
   <data name="CompareCompletedIn" xml:space="preserve">
     <value>Karşılaştırma {0} içinde tamamlandı.</value>
   </data>
@@ -156,29 +144,8 @@
   <data name="ComparisonResult" xml:space="preserve">
     <value>Karşılaştırma sonucu</value>
   </data>
-  <data name="ConstraintName" xml:space="preserve">
-    <value>Kısıt adı</value>
-  </data>
   <data name="ContextDatabaseMatch" xml:space="preserve">
     <value>Bağlam(lar) ile veritabanı yapısı eşleşiyor.</value>
-  </data>
-  <data name="Database" xml:space="preserve">
-    <value>Database</value>
-  </data>
-  <data name="DbContext" xml:space="preserve">
-    <value>DbContext</value>
-  </data>
-  <data name="DeleteBehabior" xml:space="preserve">
-    <value>Davranışı sil</value>
-  </data>
-  <data name="Different" xml:space="preserve">
-    <value>Farklı</value>
-  </data>
-  <data name="Entity" xml:space="preserve">
-    <value>Varlık</value>
-  </data>
-  <data name="ForeignKey" xml:space="preserve">
-    <value>Yabancı anahtar</value>
   </data>
   <data name="HeaderAttribute" xml:space="preserve">
     <value>Nitelik</value>
@@ -198,68 +165,20 @@
   <data name="HeaderType" xml:space="preserve">
     <value>Tip</value>
   </data>
-  <data name="Index" xml:space="preserve">
-    <value>İndeks</value>
-  </data>
-  <data name="IndexConstraintName" xml:space="preserve">
-    <value>İndeks kısıt adı</value>
-  </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
     <value>EfCore.SchemaCompare sürüm 5.1.3 yükleniyor. Lütfen komutu yeniden deneyin.</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>Veri yükleniyor...</value>
   </data>
-  <data name="MatchAnything" xml:space="preserve">
-    <value>Herhangi bir şeyle eşleş</value>
-  </data>
   <data name="NoContextsSelected" xml:space="preserve">
     <value>Bağlam seçilmedi</value>
-  </data>
-  <data name="NotChecked" xml:space="preserve">
-    <value>Seçilmedi</value>
-  </data>
-  <data name="NotInContext" xml:space="preserve">
-    <value>Bağlamda yok</value>
-  </data>
-  <data name="NotInDatabase" xml:space="preserve">
-    <value>Veritabanında yok</value>
-  </data>
-  <data name="NotMappedToDatabase" xml:space="preserve">
-    <value>Veritabanına eşlenmemiş</value>
-  </data>
-  <data name="NotSet" xml:space="preserve">
-    <value>Atanmadı</value>
-  </data>
-  <data name="Nullability" xml:space="preserve">
-    <value>Boş olabilirlik</value>
-  </data>
-  <data name="PersistentComputedColumn" xml:space="preserve">
-    <value>Kalıcı hesaplanan sütun</value>
-  </data>
-  <data name="PrimaryKey" xml:space="preserve">
-    <value>Birincil anahtar</value>
-  </data>
-  <data name="Property" xml:space="preserve">
-    <value>Özellik</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
     <value>Seçili bağlantıyı kaldır</value>
   </data>
   <data name="ShowDifferencesOnly" xml:space="preserve">
     <value>Yalnızca farklıları göster</value>
-  </data>
-  <data name="SqlComputedColumn" xml:space="preserve">
-    <value>Sql hesaplanan sütun</value>
-  </data>
-  <data name="SqlDefaultValue" xml:space="preserve">
-    <value>Sql varsayılan değeri</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>Tablo</value>
-  </data>
-  <data name="TableName" xml:space="preserve">
-    <value>Tablo adı</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
     <value>Bağlantı eklenemiyor. Sağlayıcı desteklenmiyor olabilir.</value>
@@ -272,12 +191,6 @@
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
     <value>Bağlantı kaldırılamıyor.</value>
-  </data>
-  <data name="Unique" xml:space="preserve">
-    <value>Benzersiz</value>
-  </data>
-  <data name="ValueGenerated" xml:space="preserve">
-    <value>Üretilen değer</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
     <value>Yalnızca EF Core 5 destekleniyor.</value>

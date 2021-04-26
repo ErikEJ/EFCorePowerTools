@@ -127,9 +127,7 @@
     <value>Entity Framework Core Power Tools</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Adds useful design-time EF Core DbContext features to the Visual Studio Solution Explorer context menu. 
-
-</value>
+    <value>Adds useful design-time EF Core DbContext features to the Visual Studio Solution Explorer context menu.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

@@ -127,9 +127,7 @@
     <value>Entity Framework Core Power Tools</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Aggiunge strumenti di design-time per EF Core al menu contestuale del progetto nella finestra Esplora soluzioni di Visual Studio 
-
-</value>
+    <value>Aggiunge strumenti di design-time per EF Core al menu contestuale del progetto nella finestra Esplora soluzioni di Visual Studio.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
