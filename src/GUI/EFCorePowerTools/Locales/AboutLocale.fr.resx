@@ -120,32 +120,11 @@
   <data name="About" xml:space="preserve">
     <value>À propos</value>
   </data>
-  <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value>Les informations À propos ont été copiées dans le presse-papiers</value>
-  </data>
   <data name="AddinFreeDisclaimer" xml:space="preserve">
     <value>Ce complément est GRATUIT, mais je vous serais reconnaissant pour une évaluation</value>
   </data>
-  <data name="Copy" xml:space="preserve">
-    <value>Copie</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
-  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
-  </data>
-  <data name="SQLiteDDEXProvider" xml:space="preserve">
-    <value>System.Data.SQLite DDEX provider</value>
-  </data>
-  <data name="SQLiteProviderGAC" xml:space="preserve">
-    <value>SQLite EF6 DbProvider dans le GAC</value>
-  </data>
-  <data name="SQLiteProviderIncluded" xml:space="preserve">
-    <value>SQLite ADO.NET Provider inclus</value>
-  </data>
-  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
-    <value>SQLite Simple DDEX provider</value>
   </data>
   <data name="SupportFeedbackSourceCode" xml:space="preserve">
     <value>Pour obtenir de l'aide, des commentaires et le code source complet, accédez à</value>
@@ -155,8 +134,5 @@
   </data>
   <data name="VersionNotAvailable" xml:space="preserve">
     <value>Version N/A</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
   </data>
 </root>

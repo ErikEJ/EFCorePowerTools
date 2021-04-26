@@ -120,31 +120,10 @@
   <data name="About" xml:space="preserve">
     <value />
   </data>
-  <data name="AboutCopiedToClipboard" xml:space="preserve">
-    <value />
-  </data>
   <data name="AddinFreeDisclaimer" xml:space="preserve">
     <value />
   </data>
-  <data name="Copy" xml:space="preserve">
-    <value />
-  </data>
-  <data name="No" xml:space="preserve">
-    <value />
-  </data>
   <data name="Ok" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteDDEXProvider" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteProviderGAC" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteProviderIncluded" xml:space="preserve">
-    <value />
-  </data>
-  <data name="SQLiteSimpleDDEXProvider" xml:space="preserve">
     <value />
   </data>
   <data name="SupportFeedbackSourceCode" xml:space="preserve">
@@ -154,9 +133,6 @@
     <value />
   </data>
   <data name="VersionNotAvailable" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Yes" xml:space="preserve">
     <value />
   </data>
 </root>
