@@ -72,6 +72,24 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string AddAdhocConnection {
+            get {
+                return ResourceManager.GetString("AddAdhocConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AddAdhocDatabaseConnection {
+            get {
+                return ResourceManager.GetString("AddAdhocDatabaseConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AddDatabaseConnection {
             get {
                 return ResourceManager.GetString("AddDatabaseConnection", resourceCulture);
@@ -192,6 +210,33 @@ namespace EFCorePowerTools.Locales {
         public static string ChooseSqlServerDatabaseProject {
             get {
                 return ResourceManager.GetString("ChooseSqlServerDatabaseProject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ConnectionName {
+            get {
+                return ResourceManager.GetString("ConnectionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ConnectionSample {
+            get {
+                return ResourceManager.GetString("ConnectionSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ConnectionString {
+            get {
+                return ResourceManager.GetString("ConnectionString", resourceCulture);
             }
         }
         
@@ -592,7 +637,7 @@ namespace EFCorePowerTools.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stored procedures return List (default array).
+        ///   Looks up a localized string similar to .
         /// </summary>
         public static string StoredProceduresReturnList {
             get {
@@ -687,15 +732,6 @@ namespace EFCorePowerTools.Locales {
         public static string UseEF6Pluralizer {
             get {
                 return ResourceManager.GetString("UseEF6Pluralizer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string UseEFCore5 {
-            get {
-                return ResourceManager.GetString("UseEFCore5", resourceCulture);
             }
         }
         

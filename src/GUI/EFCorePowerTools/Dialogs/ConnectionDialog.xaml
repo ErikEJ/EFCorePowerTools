@@ -1,18 +1,19 @@
 ﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.ConnectionDialog"
-        xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Add ad hoc Connection (preview)" 
-        WindowStyle="SingleBorderWindow"
-        WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize" 
-        ShowInTaskbar="False"
-        mc:Ignorable="d" 
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"                 
-        d:DataContext="{d:DesignInstance Type=viewModels:PickConnectionViewModel, IsDesignTimeCreatable=False}"                 
-        Height="230" Width="400">
+                 xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+                 Title="{x:Static locale:ReverseEngineerLocale.AddAdhocConnection}"
+                 WindowStyle="SingleBorderWindow"
+                 WindowStartupLocation="CenterOwner"
+                 ResizeMode="NoResize" 
+                 ShowInTaskbar="False"
+                 mc:Ignorable="d" 
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"                 
+                 d:DataContext="{d:DesignInstance Type=viewModels:PickConnectionViewModel, IsDesignTimeCreatable=False}"                 
+                 Height="230" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -28,7 +29,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Name" Margin="12,0" />
+            <Label Grid.Column="0" Content="{x:Static locale:ReverseEngineerLocale.ConnectionName}" Margin="12,0" />
             <TextBox Grid.Column="1" TabIndex="0" 
                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
                 Margin="12,2"></TextBox>
@@ -45,7 +46,7 @@
             </ComboBox>
 
         </Grid>
-        <Label Content="Connection String" Grid.Row="1" Margin="12,0" />
+        <Label Content="{x:Static locale:ReverseEngineerLocale.ConnectionString}" Grid.Row="1" Margin="12,0" />
 
         <TextBox Text="{Binding ConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  TabIndex="2"
@@ -57,13 +58,30 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Sample" Margin="12,0" />
+            <Label Grid.Column="0" Content="{x:Static locale:ReverseEngineerLocale.ConnectionSample}" Margin="12,0" />
             <TextBox Margin="12, 2" x:Name="txtSample" 
                      Grid.Column="1" 
                      IsTabStop="False" />
         </Grid>
 
-        <dw:DialogButton Command="{Binding CancelCommand}" IsCancel="True" Grid.Row="5" TabIndex="6" Margin="0,10,12,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75">Cancel</dw:DialogButton>
-        <dw:DialogButton Command="{Binding OkCommand}" IsDefault="True" Grid.Row="5" TabIndex="5" Margin="0,10,93,0" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75">OK</dw:DialogButton>
+        <dw:DialogButton Command="{Binding CancelCommand}"
+                         IsCancel="True"
+                         Grid.Row="5"
+                         TabIndex="6"
+                         Margin="0,10,12,0"
+                         Height="23" VerticalAlignment="Top"
+                         HorizontalAlignment="Right"
+                         Width="75"
+                         Content="{x:Static locale:SharedLocale.Cancel}" />
+        <dw:DialogButton Command="{Binding OkCommand}"
+                         IsDefault="True"
+                         Grid.Row="5"
+                         TabIndex="5"
+                         Margin="0,10,93,0"
+                         Height="23"
+                         VerticalAlignment="Top"
+                         HorizontalAlignment="Right"
+                         Width="75"
+                         Content="{x:Static locale:SharedLocale.Ok}" />
     </Grid>
 </dw:DialogWindow>

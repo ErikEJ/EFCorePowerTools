@@ -120,6 +120,12 @@
   <data name="Add" xml:space="preserve">
     <value>添加</value>
   </data>
+  <data name="AddAdhocConnection" xml:space="preserve">
+    <value>添加 ad hoc 连接（预览） </value>
+  </data>
+  <data name="AddAdhocDatabaseConnection" xml:space="preserve">
+    <value>添加 Azure SQL/SQLite/Firebird...</value>
+  </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>添加数据库连接</value>
   </data>
@@ -161,6 +167,15 @@
   </data>
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
     <value>选择 SQL Server 数据库项目(.dacpac)</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="ConnectionSample" xml:space="preserve">
+    <value>样例</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>连接字符串</value>
   </data>
   <data name="ContextName" xml:space="preserve">
     <value>上下文名称</value>
@@ -295,7 +310,7 @@
     <value>存储过程</value>
   </data>
   <data name="StoredProceduresReturnList" xml:space="preserve">
-    <value>Stored procedures return List (default array)</value>
+    <value>存储过程返回列表（默认数组）</value>
   </data>
   <data name="Tables" xml:space="preserve">
     <value>表</value>
@@ -326,9 +341,6 @@
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>使用 EF6 的复数形式</value>
-  </data>
-  <data name="UseEFCore5" xml:space="preserve">
-    <value>使用 EF Core 5</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>使用数据库中的表名和列名</value>

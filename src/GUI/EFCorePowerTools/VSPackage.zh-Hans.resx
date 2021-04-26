@@ -118,18 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="100" xml:space="preserve">
-    <value>EF Core Power Tools</value>
+    <value>EF Core 工具</value>
   </data>
   <data name="101" xml:space="preserve">
     <value>General</value>
   </data>
   <data name="110" xml:space="preserve">
-    <value>Entity Framework Core Power Tools</value>
+    <value>EF Core 工具</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Adds useful design-time EF Core DbContext features to the Visual Studio Solution Explorer context menu. 
-
-</value>
+    <value>将 EF Core 工具添加到Visual Studio的解决方案的资源管理器的上下文菜单中。</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
