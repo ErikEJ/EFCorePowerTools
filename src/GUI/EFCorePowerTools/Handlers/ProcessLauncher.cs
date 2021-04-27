@@ -169,15 +169,30 @@ namespace EFCorePowerTools.Handlers
             }
 
             var standardOutput = new StringBuilder();
+            var error = string.Empty;
             using (var process = System.Diagnostics.Process.Start(startInfo))
             {
                 while (process != null && !process.HasExited)
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
-                if (process != null) standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                if (process != null)
+                {
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                }
+                if (process != null)
+                {
+                    error = await process.StandardError.ReadToEndAsync();
+                }
             }
-            return standardOutput.ToString();
+
+            var result = standardOutput.ToString();
+            if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
+            {
+                result = "Error:" + Environment.NewLine + error;
+            }
+
+            return result;
         }
 
         private static string FixExtension(string startupOutputPath)

@@ -164,7 +164,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 VerifySQLServerRightsAndVersion(options);
 
-                GenerateFiles(project, options, containsEfCoreReference);
+                await GenerateFilesAsync(project, options, containsEfCoreReference);
 
                 if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && project.IsNetCore31OrHigher())
                 {
@@ -460,9 +460,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private void GenerateFiles(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             var startTime = DateTime.Now;
 
@@ -479,7 +479,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             _package.Dte2.StatusBar.Animate(true, _icon);
             _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GeneratingCode;
-            var revEngResult = EfRevEngLauncher.LaunchExternalRunner(options, options.CodeGenerationMode);
+            var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
             _package.Dte2.StatusBar.Animate(false, _icon);
 
             var tfm = project.Properties.Item("TargetFrameworkMoniker").Value.ToString();
@@ -597,7 +597,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
             }
 
-            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(codeGenerationMode));
+            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
 
         private async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, CodeGenerationMode codeGenerationMode, SchemaInfo[] schemas)
@@ -609,7 +609,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
-            return await System.Threading.Tasks.Task.Run(() => builder.GetTableDefinitions(codeGenerationMode));
+            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
     }
 }

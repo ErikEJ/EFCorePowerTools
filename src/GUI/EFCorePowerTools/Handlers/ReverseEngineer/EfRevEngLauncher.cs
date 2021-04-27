@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -18,7 +19,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly string revengRoot;
         private readonly ResultDeserializer resultDeserializer;
 
-        public static ReverseEngineerResult LaunchExternalRunner(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode)
+        public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode)
         {
             var commandOptions = new ReverseEngineerCommandOptions
             {
@@ -55,7 +56,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
-            return launcher.GetOutput();
+            return await launcher.GetOutputAsync();
         }
 
         public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
@@ -87,13 +88,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             resultDeserializer = new ResultDeserializer();
         }
 
-        public List<TableModel> GetDacpacTables(string dacpacPath)
-        {
-            var arguments = "\"" + dacpacPath + "\"";
-            return GetTablesInternal(arguments);
-        }
-
-        public List<TableModel> GetTables(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
+        public async Task<List<TableModel>> GetTablesAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
             var arguments = ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
 
@@ -102,10 +97,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 arguments += $" \"{string.Join(",", schemas.Select(s => s.Name.Replace("\"", "\\\"")))}\"";
             }
 
-            return GetTablesInternal(arguments);
+            return await GetTablesInternalAsync(arguments);
         }
 
-        private List<TableModel> GetTablesInternal(string arguments)
+        private async Task<List<TableModel>> GetTablesInternalAsync(string arguments)
         {
             string version = "3.1";
 
@@ -114,7 +109,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 version = "5.0";
             }
 
-            if (!IsDotnetInstalled(version))
+            if (await IsDotnetInstalledAsync(version) == false)
             {
                 throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version {version}. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
             }
@@ -127,12 +122,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 Arguments = arguments,
             };
 
-            var standardOutput = RunProcess(startInfo);
+            var standardOutput = await RunProcessAsync(startInfo);
 
             return resultDeserializer.BuildTableResult(standardOutput);
         }
 
-        private ReverseEngineerResult GetOutput()
+        private async Task<ReverseEngineerResult> GetOutputAsync()
         {
             var path = Path.GetTempFileName() + ".json";
             File.WriteAllText(path, options.Write());
@@ -145,7 +140,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 Arguments = "\"" + path + "\"",
             };
 
-            var standardOutput = RunProcess(startInfo);
+            var standardOutput = await RunProcessAsync(startInfo);
 
             try
             {
@@ -171,7 +166,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private bool IsDotnetInstalled(string version)
+        private async Task<bool> IsDotnetInstalledAsync(string version)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -179,7 +174,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 Arguments = "--list-runtimes",
             };
 
-            var result = RunProcess(startInfo);
+            var result = await RunProcessAsync(startInfo);
 
             if (string.IsNullOrWhiteSpace(result))
             {
@@ -200,7 +195,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return isInstalled;
         }
 
-        private static string RunProcess(ProcessStartInfo startInfo)
+        private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
@@ -216,15 +211,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     while (process != null && !process.HasExited)
                     {
-                        standardOutput.Append(process.StandardOutput.ReadToEnd());
+                        standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                     }
                     if (process != null)
                     {
-                        standardOutput.Append(process.StandardOutput.ReadToEnd());
+                        standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                     }
                     if (process != null)
                     {
-                        error = process.StandardError.ReadToEnd();
+                        error = await process.StandardError.ReadToEndAsync();
                     }
                 }
 

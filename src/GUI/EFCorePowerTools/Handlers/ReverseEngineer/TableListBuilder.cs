@@ -1,6 +1,7 @@
 ﻿using RevEng.Shared;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -22,11 +23,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             _schemas = schemas;
         }
 
-        public List<TableModel> GetTableDefinitions(CodeGenerationMode codeGenerationMode)
+        public async Task<List<TableModel>> GetTableDefinitionsAsync(CodeGenerationMode codeGenerationMode)
         {
             var launcher = new EfRevEngLauncher(null, codeGenerationMode);
 
-            return launcher.GetTables(_connectionString, _databaseType, _schemas);
+            return await launcher.GetTablesAsync(_connectionString, _databaseType, _schemas);
         }
     }
 }
