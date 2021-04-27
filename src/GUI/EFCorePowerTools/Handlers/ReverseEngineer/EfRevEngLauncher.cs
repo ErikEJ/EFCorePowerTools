@@ -208,6 +208,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             startInfo.CreateNoWindow = true;
             startInfo.StandardOutputEncoding = Encoding.UTF8;
             var standardOutput = new StringBuilder();
+            var error = string.Empty;
 
             try
             {
@@ -221,9 +222,20 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     {
                         standardOutput.Append(process.StandardOutput.ReadToEnd());
                     }
+                    if (process != null)
+                    {
+                        error = process.StandardError.ReadToEnd();
+                    }
                 }
 
-                return standardOutput.ToString();
+                var result = standardOutput.ToString();
+
+                if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
+                {
+                    result = "Error:" + Environment.NewLine + error;
+                }
+
+                return result;
             }
             catch
             {
