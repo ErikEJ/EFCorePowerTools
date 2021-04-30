@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-#nullable disable
 
 namespace ConsoleApp.Models.Configurations
 {

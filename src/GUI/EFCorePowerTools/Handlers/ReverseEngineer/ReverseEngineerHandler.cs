@@ -455,7 +455,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (rightsAndVersion.Item2.Major < 11)
                 {
-                    EnvDteHelper.ShowMessage(String.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
+                    EnvDteHelper.ShowMessage(string.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
                 }
             }
         }
@@ -508,7 +508,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     project.ProjectItems.AddFromFile(revEngResult.ContextFilePath);
                 }
 
-                _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
+                if (Properties.Settings.Default.OpenGeneratedDbContext)
+                {
+                    _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
+                }
             }
 
             var duration = DateTime.Now - startTime;
@@ -522,7 +525,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             _package.Dte2.StatusBar.Text = ReverseEngineerLocale.ReportingResult;
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-            _package.Dte2.StatusBar.Text = String.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss"));
+            _package.Dte2.StatusBar.Text = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss"));
 
             EnvDteHelper.ShowMessage(errors);
 
