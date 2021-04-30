@@ -45,18 +45,18 @@ namespace ConsoleApp.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.ApplyConfiguration(new AlbumConfiguration());
-            modelBuilder.ApplyConfiguration(new ArtistConfiguration());
-            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
-            modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-            modelBuilder.ApplyConfiguration(new GenreConfiguration());
-            modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
-            modelBuilder.ApplyConfiguration(new InvoiceLineConfiguration());
-            modelBuilder.ApplyConfiguration(new MediaTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new PlaylistConfiguration());
-            modelBuilder.ApplyConfiguration(new PlaylistTrackConfiguration());
-            modelBuilder.ApplyConfiguration(new TitleConfiguration());
-            modelBuilder.ApplyConfiguration(new TrackConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.AlbumConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.ArtistConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.EmployeeConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.GenreConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.InvoiceConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.InvoiceLineConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.MediaTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.PlaylistConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.PlaylistTrackConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.TitleConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.TrackConfiguration());
             OnModelCreatingPartial(modelBuilder);
         }
 

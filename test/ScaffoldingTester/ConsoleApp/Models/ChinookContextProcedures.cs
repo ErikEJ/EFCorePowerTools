@@ -2,17 +2,34 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using ConsoleApp.Models;
 
 namespace ConsoleApp.Models
 {
-    public static class ChinookContextProceduresExtensions
+    public partial class ChinookContext
     {
-        public static ChinookContextProcedures GetProcedures(this ChinookContext context)
+        private ChinookContextProcedures _procedures;
+
+        public ChinookContextProcedures Procedures
         {
-            return new ChinookContextProcedures(context);
+            get
+            {
+                if (_procedures is null) _procedures = new ChinookContextProcedures(this);
+                return _procedures;
+            }
+            set
+            {
+                _procedures = value;
+            }
+        }
+
+        public ChinookContextProcedures GetProcedures()
+        {
+            return Procedures;
         }
     }
 
@@ -25,7 +42,7 @@ namespace ConsoleApp.Models
             _context = context;
         }
 
-        public async Task<GetTitlesResult[]> GetTitlesAsync(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<GetTitlesResult[]> GetTitlesAsync(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {

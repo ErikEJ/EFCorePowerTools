@@ -8,6 +8,7 @@
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
+   "ProceduresReturnList": false,
    "ProjectRootNamespace": "ConsoleApp",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
@@ -76,6 +77,7 @@
    "UseLegacyPluralizer": false,
    "UseNoConstructor": false,
    "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
    "UseSpatial": false

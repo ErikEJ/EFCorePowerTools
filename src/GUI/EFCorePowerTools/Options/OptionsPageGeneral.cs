@@ -11,8 +11,15 @@ namespace EFCorePowerTools
         protected override void OnActivate(CancelEventArgs e)
         {
             ParticipateInTelemetry = Properties.Settings.Default.ParticipateInTelemetry;
+            OpenGeneratedDbContext = Properties.Settings.Default.OpenGeneratedDbContext;
             base.OnActivate(e);
         }
+
+        [Category("Reverse Engineering"),
+        DisplayName(@"Open generated DbContext"),
+        Description("Open the generated DbContext after reverse engineering"),
+        DefaultValue(true)]
+        public bool OpenGeneratedDbContext { get; set; }
 
         [Category("Other"),
         DisplayName(@"Participate in Telemetry"),
@@ -23,6 +30,7 @@ namespace EFCorePowerTools
         protected override void OnApply(PageApplyEventArgs e)
         {
             Properties.Settings.Default.ParticipateInTelemetry = ParticipateInTelemetry;
+            Properties.Settings.Default.OpenGeneratedDbContext = OpenGeneratedDbContext;
             Properties.Settings.Default.Save();
             base.OnApply(e);
         }
