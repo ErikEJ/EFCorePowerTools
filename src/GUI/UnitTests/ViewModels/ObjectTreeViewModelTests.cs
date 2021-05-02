@@ -150,20 +150,12 @@ namespace UnitTests.ViewModels
                             new ColumnNamer { Name = "EMPCode", NewName = "EMPCode" },
 
                         },
-                        Navigations = new List<NavigationRenamer>
-                        {
-                            new NavigationRenamer { Name = "First", NewName = "Second" },
-                        },
                     },
                     new TableRenamer
                     {
                         Name = "same",
                         NewName = "same",
                         Columns = new List<ColumnNamer>(),
-                        Navigations = new List<NavigationRenamer>
-                        {
-                            new NavigationRenamer { Name = "SameFirst", NewName = "SameSecond" },
-                        },
                     },
                 },
             };
@@ -176,11 +168,8 @@ namespace UnitTests.ViewModels
             // Assert
             Assert.AreEqual(3, renamers[0].Tables.Count);
             Assert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
-            Assert.AreEqual(0, renamers[0].Tables[0].Navigations.Count);
             Assert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
-            Assert.AreEqual(1, renamers[0].Tables[1].Navigations.Count);
             Assert.AreEqual(0, renamers[0].Tables[2].Columns.Count);
-            Assert.AreEqual(1, renamers[0].Tables[1].Navigations.Count);
         }
 
         [Test]
