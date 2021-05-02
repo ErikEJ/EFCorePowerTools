@@ -166,10 +166,9 @@ namespace UnitTests.ViewModels
             var renamers = vm.GetRenamedObjects().ToList();
 
             // Assert
-            Assert.AreEqual(3, renamers[0].Tables.Count);
+            Assert.AreEqual(2, renamers[0].Tables.Count);
             Assert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
             Assert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
-            Assert.AreEqual(0, renamers[0].Tables[2].Columns.Count);
         }
 
         [Test]
