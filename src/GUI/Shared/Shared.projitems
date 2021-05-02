@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9774f070-c59a-4fc2-93a5-90b7e7435fe8</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IColumnInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ICompareOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ICompareResultViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IMigrationOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IModelingOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeEditableViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeRootItemViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeSelectableViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickConfigViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickConnectionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickSchemasViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickTablesViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ISchemaInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ITableInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ObjectTypeIcon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\SearchMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IAboutDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IAdvancedModelingOptionsDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\ICompareOptionsDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\ICompareResultDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IMigrationOptionsDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IModelingOptionsDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickConfigDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickConnectionDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickSchemasDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickServerDatabaseDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickTablesDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\PickTablesDialogResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolInvertConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\CollectionCountToEnabledConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\CollectionCountToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\ColumnEnabledConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\EnumToBoolConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\EnumToLabelConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\FilePathToDisplayNameConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\LevelToWidthConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\ObjectTypeToImageStyleConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\DotNetAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\ICredentialStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\IVisualStudioAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\OperatingSystemAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\TelemetryAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\VisualStudioAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CustomNameOptionsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnvDTEExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ProjectExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ProjectItemsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ReverseEngineerOptionsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ZipArchiveExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\AboutHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareAttributes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareLogModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\DgmlNugetHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\GenerationType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\MigrationsHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ModelAnalyzerHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProcessLauncher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ResultDeserializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\TableListBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CredentialStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\EnvDTEHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\NuGetHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ReverseEngineerHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Telemetry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsDataHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsTheming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Options\OptionsPageGeneral.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AdvancedModelingOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ColumnInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareLogItemViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareResultViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DatabaseConnectionModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MigrationOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModelingOptionsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeRootItemViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickConfigViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickConnectionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickSchemasViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickServerDatabaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickTablesViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SchemaInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TableInformationViewModel.cs" />
+  </ItemGroup>
+</Project>
