@@ -17,28 +17,15 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+		<OutputPath>bin\Debug\</OutputPath>
+	</PropertyGroup>	
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform>AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{C670BE03-6397-4AC0-9914-AD1BB679778F}</ProjectGuid>
@@ -68,56 +55,6 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
-    <Compile Include="Contracts\EventArgs\CloseRequestedEventArgs.cs" />
-    <Compile Include="Contracts\ViewModels\IAboutViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\ICompareResultViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\ICompareOptionsViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IObjectTreeSelectableViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IObjectTreeEditableViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IMigrationOptionsViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IObjectTreeRootItemViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IPickConnectionViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IPickSchemasViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IPickConfigViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IPickServerDatabaseViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IPickTablesViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IModelingOptionsViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IColumnInformationViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IObjectTreeViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\ISchemaInformationViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\ITableInformationViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\IViewModel.cs" />
-    <Compile Include="Contracts\ViewModels\SearchMode.cs" />
-    <Compile Include="Contracts\ViewModels\ObjectTypeIcon.cs" />
-    <Compile Include="Contracts\Views\IAboutDialog.cs" />
-    <Compile Include="Contracts\Views\IAdvancedModelingOptionsDialog.cs" />
-    <Compile Include="Contracts\Views\ICompareResultDialog.cs" />
-    <Compile Include="Contracts\Views\IDialog.cs" />
-    <Compile Include="Contracts\Views\IMigrationOptionsDialog.cs" />
-    <Compile Include="Contracts\Views\IPickConnectionDialog.cs" />
-    <Compile Include="Contracts\Views\IPickSchemasDialog.cs" />
-    <Compile Include="Contracts\Views\IPickConfigDialog.cs" />
-    <Compile Include="Contracts\Views\ICompareOptionsDialog.cs" />
-    <Compile Include="Contracts\Views\IPickServerDatabaseDialog.cs" />
-    <Compile Include="Contracts\Views\PickTablesDialogResult.cs" />
-    <Compile Include="Contracts\Views\IPickTablesDialog.cs" />
-    <Compile Include="Contracts\Views\IModelingOptionsDialog.cs" />
-    <Compile Include="Contracts\Views\IView.cs" />
-    <Compile Include="Converter\BoolInvertConverter.cs" />
-    <Compile Include="Converter\EnumToBoolConverter.cs" />
-    <Compile Include="Converter\LevelToWidthConverter.cs" />
-    <Compile Include="Converter\EnumToLabelConverter.cs" />
-    <Compile Include="Converter\ObjectTypeToImageStyleConverter.cs" />
-    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converter\CollectionCountToEnabledConverter.cs" />
-    <Compile Include="Converter\ColumnEnabledConverter.cs" />
-    <Compile Include="Converter\FilePathToDisplayNameConverter.cs" />
-    <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
-    <Compile Include="DAL\DotNetAccess.cs" />
-    <Compile Include="DAL\IVisualStudioAccess.cs" />
-    <Compile Include="DAL\OperatingSystemAccess.cs" />
-    <Compile Include="DAL\TelemetryAccess.cs" />
     <Compile Include="Dialogs\AdvancedModelingOptionsDialog.xaml.cs">
       <DependentUpon>AdvancedModelingOptionsDialog.xaml</DependentUpon>
     </Compile>
@@ -152,41 +89,8 @@
       <DependentUpon>PickTablesDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="EFCorePowerToolsPackage.cs" />
-    <Compile Include="Extensions\CustomNameOptionsExtensions.cs" />
-    <Compile Include="Extensions\EnvDTEExtensions.cs" />
-    <Compile Include="Extensions\FocusExtensions.cs" />
-    <Compile Include="Extensions\ReverseEngineerOptionsExtensions.cs" />
-    <Compile Include="Extensions\ProjectExtensions.cs" />
-    <Compile Include="Extensions\ProjectItemsExtensions.cs" />
-    <Compile Include="Extensions\ZipArchiveExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Guids.cs" />
-    <Compile Include="Handlers\AboutHandler.cs" />
-    <Compile Include="Handlers\Compare\CompareAttributes.cs" />
-    <Compile Include="Handlers\Compare\CompareLogModel.cs" />
-    <Compile Include="Handlers\Compare\CompareState.cs" />
-    <Compile Include="Handlers\Compare\CompareType.cs" />
-    <Compile Include="Handlers\DgmlNugetHandler.cs" />
-    <Compile Include="Handlers\GenerationType.cs" />
-    <Compile Include="Handlers\MigrationsHandler.cs" />
-    <Compile Include="Handlers\ModelAnalyzerHandler.cs" />
-    <Compile Include="Handlers\ProcessLauncher.cs" />
-    <Compile Include="Handlers\Compare\CompareHandler.cs" />
-    <Compile Include="Handlers\ReverseEngineer\ResultDeserializer.cs" />
-    <Compile Include="Handlers\ReverseEngineer\TableListBuilder.cs" />
-    <Compile Include="Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
-    <Compile Include="Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
-    <Compile Include="Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
-    <Compile Include="Handlers\ReverseEngineer\ReverseEngineerHandler.cs" />
-    <Compile Include="Helpers\CredentialStore.cs" />
-    <Compile Include="DAL\ICredentialStore.cs" />
-    <Compile Include="Helpers\VsDataHelper.cs" />
-    <Compile Include="Helpers\EnvDTEHelper.cs" />
-    <Compile Include="Helpers\NuGetHelper.cs" />
-    <Compile Include="Helpers\ReverseEngineerHelper.cs" />
-    <Compile Include="Helpers\SqliteProviderRegistration.cs" />
-    <Compile Include="Helpers\Telemetry.cs" />
-    <Compile Include="Helpers\VsTheming.cs" />
     <Compile Include="Locales\AboutLocale.Designer.cs">
       <DependentUpon>AboutLocale.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -222,10 +126,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Messages\ShowMessageBoxMessage.cs" />
-    <Compile Include="Options\OptionsPageGeneral.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PkgCmdID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -243,25 +143,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ViewModels\AboutViewModel.cs" />
-    <Compile Include="DAL\VisualStudioAccess.cs" />
-    <Compile Include="ViewModels\CompareLogItemViewModel.cs" />
-    <Compile Include="ViewModels\CompareResultViewModel.cs" />
-    <Compile Include="ViewModels\DatabaseConnectionModel.cs" />
-    <Compile Include="ViewModels\MigrationOptionsViewModel.cs" />
-    <Compile Include="ViewModels\AdvancedModelingOptionsViewModel.cs" />
-    <Compile Include="ViewModels\ModelingOptionsViewModel.cs" />
-    <Compile Include="ViewModels\ObjectTreeRootItemViewModel.cs" />
-    <Compile Include="ViewModels\PickConnectionViewModel.cs" />
-    <Compile Include="ViewModels\PickSchemasViewModel.cs" />
-    <Compile Include="ViewModels\PickConfigViewModel.cs" />
-    <Compile Include="ViewModels\CompareOptionsViewModel.cs" />
-    <Compile Include="ViewModels\PickServerDatabaseViewModel.cs" />
-    <Compile Include="ViewModels\PickTablesViewModel.cs" />
-    <Compile Include="ViewModels\ColumnInformationViewModel.cs" />
-    <Compile Include="ViewModels\ObjectTreeViewModel.cs" />
-    <Compile Include="ViewModels\SchemaInformationViewModel.cs" />
-    <Compile Include="ViewModels\TableInformationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\ScalarFunction_16x.png" />
@@ -339,10 +220,6 @@
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
       <Name>RevEng.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SqlCeToolbox.DDEX4\SqlCeToolbox.DDEX4.csproj">
-      <Project>{42939e33-fc72-459c-9403-b62ab074635e}</Project>
-      <Name>SqlCeToolbox.DDEX4</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -603,6 +480,7 @@
       <Version>5.9.1</Version>
     </PackageReference>
   </ItemGroup>
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

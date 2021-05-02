@@ -31,7 +31,6 @@ using System.Threading;
 namespace EFCorePowerTools
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [SqliteProviderRegistration]
     [InstalledProductRegistration("#110", "#112", "2.5", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(GuidList.guidDbContextPackagePkgString)]
     [ProvideOptionPage(typeof(OptionsPageGeneral), "EF Core Power Tools", "General", 100, 101, true)]

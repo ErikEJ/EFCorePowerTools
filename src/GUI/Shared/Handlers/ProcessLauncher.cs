@@ -19,6 +19,8 @@ namespace EFCorePowerTools.Handlers
 
         public ProcessLauncher(Project project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!project.IsNetCore31OrHigher())
             {
                 throw new ArgumentException("Only .NET Core 3.0, 3.1 and 5.0 are supported");
