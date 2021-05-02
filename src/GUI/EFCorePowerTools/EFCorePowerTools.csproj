@@ -17,23 +17,8 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -184,7 +169,6 @@
     <Compile Include="Helpers\EnvDTEHelper.cs" />
     <Compile Include="Helpers\NuGetHelper.cs" />
     <Compile Include="Helpers\ReverseEngineerHelper.cs" />
-    <Compile Include="Helpers\SqliteProviderRegistration.cs" />
     <Compile Include="Helpers\Telemetry.cs" />
     <Compile Include="Helpers\VsTheming.cs" />
     <Compile Include="Locales\AboutLocale.Designer.cs">
@@ -339,10 +323,6 @@
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj">
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
       <Name>RevEng.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SqlCeToolbox.DDEX4\SqlCeToolbox.DDEX4.csproj">
-      <Project>{42939e33-fc72-459c-9403-b62ab074635e}</Project>
-      <Name>SqlCeToolbox.DDEX4</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
