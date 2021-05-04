@@ -6,7 +6,7 @@
     <SharedGUID>9774f070-c59a-4fc2-93a5-90b7e7435fe8</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Shared</Import_RootNamespace>
+    <Import_RootNamespace>EFCorePowerTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
@@ -81,6 +81,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ModelAnalyzerHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProcessLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\NupkgExtractor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ResultDeserializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerHandler.cs" />

@@ -114,7 +114,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version {version}. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
             }
 
-            var launchPath = DropNetCoreFiles();
+            var launchPath = await DropNetCoreFilesAsync();
 
             var startInfo = new ProcessStartInfo
             {
@@ -132,7 +132,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var path = Path.GetTempFileName() + ".json";
             File.WriteAllText(path, options.Write());
 
-            var launchPath = DropNetCoreFiles();
+            var launchPath = await DropNetCoreFilesAsync();
 
             var startInfo = new ProcessStartInfo
             {
@@ -238,7 +238,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private string DropNetCoreFiles()
+        private async Task<string> DropNetCoreFilesAsync()
         {
             var toDir = Path.Combine(Path.GetTempPath(), revengFolder);
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -277,6 +277,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
+            var extractor = new NupkgExtractor();
+            await extractor.ExtractNupgkAsync("Microsoft.SqlServer.DacFx", "150.5084.2", new DirectoryInfo(toDir));
+
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
 
             foreach (var dir in dirs)
@@ -293,6 +296,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                 }
             }
+
 
             return toDir;
         }
