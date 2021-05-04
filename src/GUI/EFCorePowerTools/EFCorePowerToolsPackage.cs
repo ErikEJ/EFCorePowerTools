@@ -45,7 +45,7 @@ namespace EFCorePowerTools
         private readonly DgmlNugetHandler _dgmlNugetHandler;
         private readonly MigrationsHandler _migrationsHandler;
         private readonly CompareHandler _compareHandler;
-        private readonly IServiceProvider _extensionServices;
+        private IServiceProvider _extensionServices;
         private DTE2 _dte2;
 
         public EFCorePowerToolsPackage()
@@ -56,7 +56,6 @@ namespace EFCorePowerTools
             _dgmlNugetHandler = new DgmlNugetHandler(this);
             _migrationsHandler = new MigrationsHandler(this);
             _compareHandler = new CompareHandler(this);
-            _extensionServices = CreateServiceProvider();
         }
 
         internal DTE2 Dte2 => _dte2;
@@ -144,6 +143,8 @@ namespace EFCorePowerTools
             typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
             typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
             typeof(Xceed.Wpf.Toolkit.SplitButton).ToString();
+
+            _extensionServices = CreateServiceProvider();
 
             Telemetry.Enabled = Properties.Settings.Default.ParticipateInTelemetry;
             if (Telemetry.Enabled)

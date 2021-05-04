@@ -1,7 +1,6 @@
 ﻿using EFCorePowerTools.Shared.Models;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
-using Microsoft.VisualStudio.Shell;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -17,8 +16,6 @@ namespace EFCorePowerTools.Helpers
     {
         internal Dictionary<string, DatabaseConnectionModel> GetDataConnections(EFCorePowerToolsPackage package)
         {
-            ThreadHelper.ThrowIfOnUIThread();
-
             var credentialStore = new CredentialStore();
 
             // http://www.mztools.com/articles/2007/MZ2007018.aspx

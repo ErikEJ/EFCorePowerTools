@@ -51,7 +51,7 @@ del bin\Release\net5.0\publish\System.Security.Cryptography.ProtectedData.dll
 del bin\Release\net5.0\publish\System.Security.Permissions.dll
 del bin\Release\net5.0\publish\System.Windows.Extensions.dll
 
-"C:\Program Files\7-Zip\7z.exe" a efreveng60.exe.zip .\bin\Release\net5.0\publish\*
+"C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng60.exe.zip .\bin\Release\net5.0\publish\*
 
 move /Y efreveng60.exe.zip ..\lib\
 
