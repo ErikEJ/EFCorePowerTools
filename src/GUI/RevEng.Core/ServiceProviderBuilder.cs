@@ -1,7 +1,6 @@
 ﻿#if CORE60
 #else
 using EntityFrameworkCore.Scaffolding.Handlebars;
-using ErikEJ.EntityFrameworkCore.SqlServer.Edmx.Scaffolding;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
@@ -102,16 +101,6 @@ namespace RevEng.Core
             // Add database provider services
             switch (options.DatabaseType)
             {
-#if CORE60
-#else
-                case DatabaseType.Edmx:
-                    var edmxProvider = new SqlServerDesignTimeServices();
-                    edmxProvider.ConfigureDesignTimeServices(serviceCollection);
-
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerEdmxDatabaseModelFactory>();
-
-                    break;
-#endif
                 case DatabaseType.SQLServer:
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
