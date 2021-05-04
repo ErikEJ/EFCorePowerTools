@@ -121,10 +121,6 @@ namespace EFCorePowerTools.Extensions
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
-            if (dbType == DatabaseType.SQLCE40)
-            {
-                providerPackage = "EntityFrameworkCore.SqlServerCompact40";
-            }
             if (dbType == DatabaseType.SQLite)
             {
                 providerPackage = "Microsoft.EntityFrameworkCore.Sqlite";

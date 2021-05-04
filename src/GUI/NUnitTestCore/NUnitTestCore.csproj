@@ -23,7 +23,6 @@
     <None Remove="Samurai.txt" />
     <None Remove="SingleNav.txt" />
     <None Remove="TestDb.dacpac" />
-    <None Remove="AdventureWorks2019.edmx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,9 +40,6 @@
     </Content>
     <Content Include="Dgml\Issue687.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="AdventureWorks2019.edmx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Dgml\Identity.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -90,7 +86,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Edmx\ErikEJ.EntityFrameworkCore.SqlServer.Edmx.csproj" />
     <ProjectReference Include="..\RevEng.Core\RevEng.Core.csproj" />
   </ItemGroup>
 

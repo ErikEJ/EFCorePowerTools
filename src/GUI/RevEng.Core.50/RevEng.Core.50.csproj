@@ -62,7 +62,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.5.SqlServer.Edmx\ErikEJ.EntityFrameworkCore.5.SqlServer.Edmx.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
   </ItemGroup>

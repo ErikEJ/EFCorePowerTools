@@ -68,6 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ProjectItemsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ZipArchiveExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Guids.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\AboutHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareHandler.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Options\OptionsPageGeneral.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PkgCmdID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AdvancedModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ColumnInformationViewModel.cs" />

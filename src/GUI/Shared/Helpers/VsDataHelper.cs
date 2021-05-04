@@ -37,7 +37,7 @@ namespace EFCorePowerTools.Helpers
                         var info = new DatabaseConnectionModel()
                         {
                             ConnectionName = connection.DisplayName,
-                            DatabaseType = DatabaseType.SQLCE35,
+                            DatabaseType = DatabaseType.Undefined,
                             ConnectionString = sConnectionString,
                             DataConnection = connection.Connection,
                         };
@@ -66,7 +66,7 @@ namespace EFCorePowerTools.Helpers
                             info.DatabaseType = DatabaseType.Oracle;
                         }
 
-                        if (info.DatabaseType != DatabaseType.SQLCE35
+                        if (info.DatabaseType != DatabaseType.Undefined
                             && !databaseList.ContainsKey(sConnectionString))
                         {
                             databaseList.Add(sConnectionString, info);
@@ -118,11 +118,11 @@ namespace EFCorePowerTools.Helpers
         {
             var ofd = new OpenFileDialog
             {
-                Filter = "SQL Server Database Project|*.dacpac|EDMX file|*.edmx",
+                Filter = "SQL Server Database Project|*.dacpac",
                 CheckFileExists = true,
                 Multiselect = false,
                 ValidateNames = true,
-                Title = "Select .dacpac/.edmx File"
+                Title = "Select .dacpac File"
             };
             if (ofd.ShowDialog() != DialogResult.OK) return null;
             return ofd.FileName;
@@ -152,8 +152,7 @@ namespace EFCorePowerTools.Helpers
 
         private static DatabaseConnectionModel GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
         {
-            var dbType = DatabaseType.SQLCE35;
-            var providerInvariant = "N/A";
+            var dbType = DatabaseType.Undefined;
             var providerGuid = Guid.Empty.ToString();
             // Find provider
             var providerManager = package.GetService<IVsDataProviderManager>();
@@ -161,8 +160,8 @@ namespace EFCorePowerTools.Helpers
             providerManager.Providers.TryGetValue(provider, out dp);
             if (dp != null)
             {
-                providerInvariant = (string)dp.GetProperty("InvariantName");
-                dbType = DatabaseType.SQLCE35;
+                var providerInvariant = (string)dp.GetProperty("InvariantName");
+                dbType = DatabaseType.Undefined;
 
                 if (providerInvariant == "System.Data.SQLite.EF6")
                 {

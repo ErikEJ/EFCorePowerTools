@@ -299,10 +299,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (!string.IsNullOrEmpty(options.Dacpac))
             {
                 dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                if (options.Dacpac.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase))
-                {
-                    dbInfo.DatabaseType = DatabaseType.Edmx;
-                }
                 dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
@@ -315,9 +311,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            if (dbInfo.DatabaseType == DatabaseType.SQLCE35
-                || dbInfo.DatabaseType == DatabaseType.SQLCE40
-                || dbInfo.DatabaseType == DatabaseType.Undefined)
+            if (dbInfo.DatabaseType == DatabaseType.Undefined)
             {
                 EnvDteHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
                 return null;
@@ -589,16 +583,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
         {
-            TableListBuilder builder;
-
-            if (dacpacPath.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase))
-            {
-                builder = new TableListBuilder(dacpacPath, DatabaseType.Edmx, null);
-            }
-            else
-            {
-                builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
-            }
+            var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
 
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
