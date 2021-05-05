@@ -24,6 +24,13 @@ rmdir bin\Release\netcoreapp3.1\publish\ru-RU /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\zh-CN /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\zh-TW /S /Q
 
+del bin\Release\netcoreapp3.1\publish\Microsoft.Data.Tools.Schema.Sql.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.Data.Tools.Utilities.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.SqlServer.Dac.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.SqlServer.Dac.Extensions.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.SqlServer.TransactSql.ScriptDom.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.SqlServer.Types.dll 
+
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng.exe.zip .\bin\Release\netcoreapp3.1\publish\*
 
 move /Y efreveng.exe.zip ..\lib\
