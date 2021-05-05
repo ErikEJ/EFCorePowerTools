@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var cache = new SourceCacheContext();
             var packageSource = new PackageSource("https://api.nuget.org/v3/index.json");
-            var sourceRepository = Repository.Factory.GetCoreV3(packageSource); // new SourceRepository(packageSource, FactoryExtensionsV3.GetCoreV3(Repository.Factory.GetCoreV3());
+            var sourceRepository = Repository.Factory.GetCoreV3(packageSource);
             var resource = await sourceRepository.GetResourceAsync<FindPackageByIdResource>();
 
             var packageVersion = new NuGetVersion(version);
