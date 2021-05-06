@@ -311,20 +311,27 @@ namespace EFCorePowerTools
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (!project.TryBuild())
+            try
             {
-                _dte2.StatusBar.Text = SharedLocale.BuildFailed;
+                if (!project.TryBuild())
+                {
+                    _dte2.StatusBar.Text = SharedLocale.BuildFailed;
 
-                return null;
+                    return null;
+                }
+
+                var path = project.GetOutPutAssemblyPath();
+                if (path != null)
+                {
+                    return path;
+                }
+
+                _dte2.StatusBar.Text = SharedLocale.UnableToLocateProjectAssembly;
             }
-
-            var path = project.GetOutPutAssemblyPath();
-            if (path != null)
+            catch (Exception ex)
             {
-                return path;
+                LogError(new List<string>(), ex);
             }
-
-            _dte2.StatusBar.Text = SharedLocale.UnableToLocateProjectAssembly;
 
             return null;
         }
