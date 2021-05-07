@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 namespace EFCorePowerTools
@@ -414,25 +415,20 @@ namespace EFCorePowerTools
 
                 _dte2.StatusBar.Text = SharedLocale.AnErrorOccurred;
 
-                try
+                var messageBuilder = new StringBuilder();
+
+                foreach (var error in statusMessages)
                 {
-                    var buildOutputWindow = _dte2.ToolWindows.OutputWindow.OutputWindowPanes.Item("Build");
-                    buildOutputWindow.OutputString(Environment.NewLine);
-
-                    foreach (var error in statusMessages)
-                    {
-                        buildOutputWindow.OutputString(error + Environment.NewLine);
-                    }
-                    if (exception != null)
-                    {
-                        buildOutputWindow.OutputString(exception.Demystify() + Environment.NewLine);
-                    }
-
-                    buildOutputWindow.Activate();
+                    messageBuilder.AppendLine(error);
                 }
-                catch
+
+                if (exception != null)
                 {
-                    EnvDteHelper.ShowError($"Unable to log error to Output Window: {exception?.ToString()}");
+                    await exception.Demystify().LogAsync(messageBuilder.ToString());
+                }
+                else
+                {
+                    await exception.LogAsync(messageBuilder.ToString());
                 }
             });
         }
