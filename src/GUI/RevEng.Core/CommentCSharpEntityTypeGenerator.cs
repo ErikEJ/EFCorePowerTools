@@ -301,11 +301,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                     {
                         if (navigation.ForeignKey?.IsRequired == true)
                         {
-                            nullableAnnotation = "?";
+                            defaultAnnotation = $" = default!;";
                         }
                         else
                         {
-                            defaultAnnotation = $" = default!;";
+                            nullableAnnotation = "?";
                         }
                     }
 
