@@ -156,6 +156,11 @@ namespace RevEng.Core.Functions
 
         private string GenerateUniqueName(Function function, FunctionModel model)
         {
+            if (!string.IsNullOrEmpty(function.NewName))
+            {
+                return function.NewName;
+            }
+
             var numberOfNames = model.Functions.Where(p => p.Name == function.Name).Count();
 
             if (numberOfNames > 1)

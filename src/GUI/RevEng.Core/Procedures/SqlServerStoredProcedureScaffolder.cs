@@ -533,6 +533,11 @@ namespace RevEng.Core.Procedures
 
         private string GenerateUniqueName(Procedure procedure, ProcedureModel model)
         {
+            if (!string.IsNullOrEmpty(procedure.NewName))
+            {
+                return procedure.NewName;
+            }
+
             var numberOfNames = model.Procedures.Where(p => p.Name == procedure.Name).Count();
 
             if (numberOfNames > 1)

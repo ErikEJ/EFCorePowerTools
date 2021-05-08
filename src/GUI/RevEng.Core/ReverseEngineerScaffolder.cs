@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 using RevEng.Core.Functions;
 using RevEng.Core.Procedures;
@@ -92,6 +93,8 @@ namespace RevEng.Core
 
                 var functionModel = functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
 
+                ApplyRenamers(functionModel.Functions, options.CustomReplacers);
+
                 var functionOptions = new ModuleScaffolderOptions
                 {
                     ContextDir = outputContextDir,
@@ -137,6 +140,8 @@ namespace RevEng.Core
                 };
 
                 var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
+
+                ApplyRenamers(procedureModel.Procedures, options.CustomReplacers);
 
                 var procedureOptions = new ModuleScaffolderOptions
                 {
@@ -245,8 +250,30 @@ namespace RevEng.Core
                 File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
                 additionalFiles.Add(additionalFilePath);
             }
-
+            
             return new SavedModelFiles(contextPath, additionalFiles);
+        }
+        
+        private static void ApplyRenamers(IEnumerable<SqlObjectBase> sqlObjects, List<Schema> renamers)
+        {
+            if (renamers == null || !renamers.Any())
+            {
+                return;
+            }
+
+            foreach (var sqlObject in sqlObjects)
+            {
+                var schema = renamers
+                    .FirstOrDefault(x => x.SchemaName == sqlObject.Schema);
+
+                if (schema != null)
+                {
+                    if (schema.Tables != null && schema.Tables.Any(t => t.Name == sqlObject.Name))
+                    {
+                        sqlObject.NewName = schema.Tables.SingleOrDefault(t => t.Name == sqlObject.Name)?.NewName;
+                    }
+                }
+            }
         }
     }
 }

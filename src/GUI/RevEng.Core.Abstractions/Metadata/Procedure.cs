@@ -2,10 +2,8 @@
 
 namespace RevEng.Core.Abstractions.Metadata
 {
-    public class Procedure
+    public class Procedure : SqlObjectBase
     {
-        public string Name { get; set; }
-        public string Schema { get; set; }
         public bool HasValidResultSet { get; set; }
 
         public List<ModuleParameter> Parameters = new List<ModuleParameter>();

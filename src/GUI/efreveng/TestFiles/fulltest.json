@@ -17,7 +17,12 @@
           "NewName": "Categories"
         },
         {
-          "Columns": [ ],
+          "Columns": [],
+          "Name": "CustOrdersDetail",
+          "NewName": "CustomerOrdersDetail"
+        },
+        {
+          "Columns": [],
           "Navigations": [
             {
               "Name": "ShipVia",

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Shared;
 using System;
@@ -14,15 +12,10 @@ namespace RevEng.Core
     public class ReplacingCandidateNamingService : CandidateNamingService
     {
         private readonly List<Schema> _customNameOptions;
-        private readonly List<TableRenamer> _navigationReplacers;
 
         public ReplacingCandidateNamingService(List<Schema> customNameOptions)
         {
             _customNameOptions = customNameOptions;
-            _navigationReplacers = customNameOptions
-                .Where(o => o.Tables != null)
-                .SelectMany(t => t.Tables)
-                .ToList();
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
