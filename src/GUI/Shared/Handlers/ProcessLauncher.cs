@@ -150,7 +150,7 @@ namespace EFCorePowerTools.Handlers
             {
                 dotNetParams += $"--runtimeconfig \"{runtimeConfig}\" ";
             }
-            else if (runtimeFrameworkVersion != null)
+            else if (!string.IsNullOrEmpty(runtimeFrameworkVersion))
             {
                 dotNetParams += $"--fx-version {runtimeFrameworkVersion} ";
             }
