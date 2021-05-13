@@ -150,6 +150,7 @@ namespace RevEng.Core
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
+                    UseSchemaFolders = options.UseSchemaFolders,
                     ProceduresReturnList = options.ProceduresReturnList,
                 };
 
@@ -247,6 +248,7 @@ namespace RevEng.Core
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
             {
                 var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
+                Directory.CreateDirectory(Path.GetDirectoryName(additionalFilePath));
                 File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
                 additionalFiles.Add(additionalFilePath);
             }

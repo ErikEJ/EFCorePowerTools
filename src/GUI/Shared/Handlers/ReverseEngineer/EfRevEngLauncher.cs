@@ -34,6 +34,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 ContextNamespace = options.ContextNamespace,
                 ModelNamespace = options.ModelNamespace,
                 OutputContextPath = options.OutputContextPath,
+                UseSchemaFolders = options.UseSchemaFolders,
                 ProjectPath = options.ProjectPath,
                 ProjectRootNamespace = options.ProjectRootNamespace,
                 SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,

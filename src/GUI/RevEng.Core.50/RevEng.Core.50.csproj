@@ -33,7 +33,8 @@
 		<Compile Include="..\RevEng.Core\ServiceProviderBuilder.cs" Link="ServiceProviderBuilder.cs" />
 		<Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
 		<Compile Include="..\RevEng.Core\SqlServerHelper.cs" Link="SqlServerHelper.cs" />
-		<Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
+    <Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
+    <Compile Include="..\RevEng.Core\Tables\CSharpModelGeneratorExtend.cs" Link="Tables\CSharpModelGeneratorExtend.cs" />
 	</ItemGroup>
 
   <ItemGroup>

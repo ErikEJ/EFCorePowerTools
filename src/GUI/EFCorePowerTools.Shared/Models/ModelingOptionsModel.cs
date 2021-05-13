@@ -19,6 +19,7 @@
         private string _ns;
         private string _outputPath;
         private string _outputContextPath;
+        private bool _useSchemaFolders;
         private string _modelNamespace;
         private string _contextNamespace;
         private string _modelName;
@@ -76,6 +77,17 @@
             {
                 if (value == _outputContextPath) return;
                 _outputContextPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseSchemaFolders
+        {
+            get => _useSchemaFolders;
+            set
+            {
+                if (value == _useSchemaFolders) return;
+                _useSchemaFolders = value;
                 OnPropertyChanged();
             }
         }

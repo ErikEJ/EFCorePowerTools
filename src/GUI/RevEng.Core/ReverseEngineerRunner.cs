@@ -256,7 +256,14 @@ namespace RevEng.Core
             if (filePaths.AdditionalFiles.Count == 0)
                 return;
 
-            foreach (var modelFile in Directory.GetFiles(Path.GetDirectoryName(filePaths.AdditionalFiles.First()), "*.cs"))
+            string[] modelFiles;
+            var allChildDirectories = filePaths.AdditionalFiles.Select(x => Path.GetDirectoryName(x)).Distinct().ToArray();
+            var parentDirectory = allChildDirectories.Length > 1
+                                   ? Directory.GetParent(allChildDirectories.First()).FullName
+                                   : allChildDirectories.First();
+            modelFiles = Directory.GetFiles(parentDirectory, "*.cs", SearchOption.AllDirectories);
+
+            foreach (var modelFile in modelFiles)
             {
                 if (allGeneratedFiles.Contains(modelFile, StringComparer.OrdinalIgnoreCase))
                 {
@@ -264,6 +271,14 @@ namespace RevEng.Core
                 }
 
                 TryRemoveFile(modelFile);
+            }
+
+            foreach (var directoryPath in Directory.GetDirectories(parentDirectory))
+            {
+                if(!Directory.EnumerateFileSystemEntries(directoryPath).Any())
+                {
+                    Directory.Delete(directoryPath);
+                }
             }
         }
 

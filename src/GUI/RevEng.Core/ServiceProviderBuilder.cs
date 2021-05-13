@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using RevEng.Core.Procedures;
+using RevEng.Core.Tables;
 using RevEng.Shared;
 #if CORE50
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
@@ -34,6 +35,12 @@ namespace RevEng.Core
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
+                .AddSingleton<IModelCodeGenerator>(provider =>
+                    new CSharpModelGeneratorExtend(
+                        provider.GetService<ModelCodeGeneratorDependencies>(),
+                        provider.GetService<ICSharpDbContextGenerator>(),
+                        provider.GetService<ICSharpEntityTypeGenerator>(),
+                        options))
 #if CORE50
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
                  new CommentCSharpEntityTypeGenerator(                    
