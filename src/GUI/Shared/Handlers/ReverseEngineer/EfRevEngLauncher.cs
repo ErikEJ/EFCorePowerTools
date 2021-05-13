@@ -205,37 +205,30 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var standardOutput = new StringBuilder();
             var error = string.Empty;
 
-            try
+            using (var process = Process.Start(startInfo))
             {
-                using (var process = Process.Start(startInfo))
+                while (process != null && !process.HasExited)
                 {
-                    while (process != null && !process.HasExited)
-                    {
-                        standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
-                    }
-                    if (process != null)
-                    {
-                        standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
-                    }
-                    if (process != null)
-                    {
-                        error = await process.StandardError.ReadToEndAsync();
-                    }
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
-
-                var result = standardOutput.ToString();
-
-                if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
+                if (process != null)
                 {
-                    result = "Error:" + Environment.NewLine + error;
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
-
-                return result;
+                if (process != null)
+                {
+                    error = await process.StandardError.ReadToEndAsync();
+                }
             }
-            catch
+
+            var result = standardOutput.ToString();
+
+            if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
             {
-                return null;
+                result = "Error:" + Environment.NewLine + error;
             }
+
+            return result;
         }
 
         private async Task<string> DropNetCoreFilesAsync()
