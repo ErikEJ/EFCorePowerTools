@@ -118,7 +118,7 @@ namespace RevEng.Core
 
             var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
 
-            CleanUp(cleanUpPaths, entityTypeConfigurationPaths);
+            CleanUp(cleanUpPaths, entityTypeConfigurationPaths, outputDir);
 
             var allfiles = filePaths.AdditionalFiles.ToList();
             if (procedurePaths != null)
@@ -232,7 +232,7 @@ namespace RevEng.Core
                 ;
         }
 
-        private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
+        private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
         {
             var allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(entityTypeConfigurationPaths).ToHashSet();
 
@@ -256,14 +256,7 @@ namespace RevEng.Core
             if (filePaths.AdditionalFiles.Count == 0)
                 return;
 
-            string[] modelFiles;
-            var allChildDirectories = filePaths.AdditionalFiles.Select(x => Path.GetDirectoryName(x)).Distinct().ToArray();
-            var parentDirectory = allChildDirectories.Length > 1
-                                   ? Directory.GetParent(allChildDirectories.First()).FullName
-                                   : allChildDirectories.First();
-            modelFiles = Directory.GetFiles(parentDirectory, "*.cs", SearchOption.AllDirectories);
-
-            foreach (var modelFile in modelFiles)
+            foreach (var modelFile in Directory.GetFiles(outputDir, "*.cs", SearchOption.AllDirectories))
             {
                 if (allGeneratedFiles.Contains(modelFile, StringComparer.OrdinalIgnoreCase))
                 {
@@ -273,7 +266,7 @@ namespace RevEng.Core
                 TryRemoveFile(modelFile);
             }
 
-            foreach (var directoryPath in Directory.GetDirectories(parentDirectory))
+            foreach (var directoryPath in Directory.GetDirectories(outputDir))
             {
                 if(!Directory.EnumerateFileSystemEntries(directoryPath).Any())
                 {

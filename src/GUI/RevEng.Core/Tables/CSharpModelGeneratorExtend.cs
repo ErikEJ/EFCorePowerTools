@@ -1,52 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using RevEng.Shared;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace RevEng.Core.Tables
+namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 {
-    /// <summary>
-    ///     This is an extension of internal API that supports the Entity Framework Core infrastructure and not subject to
-    ///     the same compatibility standards as public APIs. The base CSharpModelGenerator may be changed or removed without 
-    ///     notice in any release. Updating Entity Framework Core version in project may result application failures.
-    ///     
-    ///     Base class implementation: https://github.com/dotnet/efcore/blob/main/src/EFCore.Design/Scaffolding/Internal/CSharpModelGenerator.cs
-    /// </summary>
     public class CSharpModelGeneratorExtend : CSharpModelGenerator
     {
-        /// <summary>
-        ///     This is an extension of internal API that supports the Entity Framework Core infrastructure and not subject to
-        ///     the same compatibility standards as public APIs. The base CSharpModelGenerator may be changed or removed without 
-        ///     notice in any release. Updating Entity Framework Core version in project may result application failures.
-        /// </summary>
-        private ReverseEngineerCommandOptions ReverseEngineerCommandOptions { get; set; }
+        private bool UseSchemaFolders { get; set; }
 
-        /// <summary>
-        ///     This is an extension of internal API that supports the Entity Framework Core infrastructure and not subject to
-        ///     the same compatibility standards as public APIs. The base CSharpModelGenerator may be changed or removed without 
-        ///     notice in any release. Updating Entity Framework Core version in project may result application failures.
-        /// </summary>
         public CSharpModelGeneratorExtend(
             ModelCodeGeneratorDependencies dependencies,
             ICSharpDbContextGenerator cSharpDbContextGenerator,
             ICSharpEntityTypeGenerator cSharpEntityTypeGenerator,
-            ReverseEngineerCommandOptions reverseEngineerCommandOptions)
+            bool useSchemaFolders)
             : base(dependencies, cSharpDbContextGenerator, cSharpEntityTypeGenerator)
         {
-            ReverseEngineerCommandOptions = reverseEngineerCommandOptions;
+            UseSchemaFolders = useSchemaFolders;
         }
 
         private const string FileExtension = ".cs";
 
-        /// <summary>
-        ///     This is an extension of internal API that supports the Entity Framework Core infrastructure and not subject to
-        ///     the same compatibility standards as public APIs. The base CSharpModelGenerator may be changed or removed without 
-        ///     notice in any release. Updating Entity Framework Core version in project may result application failures.
-        /// </summary>
         public override ScaffoldedModel GenerateModel(
             [NotNull] IModel model,
             [NotNull] ModelCodeGenerationOptions options)
@@ -97,13 +73,19 @@ namespace RevEng.Core.Tables
 
                 // output EntityType poco .cs file
                 var entityTypeFileName = entityType.Name + FileExtension;
+                var entityTypeSchema = entityType.GetSchema();
+#if CORE50 || CORE60
+                if (entityType.GetViewName() != null)
+                {
+                    entityTypeSchema = entityType.GetViewSchema();
+                }
+#endif
+
                 resultingFiles.AdditionalFiles.Add(
                     new ScaffoldedFile 
                     {
-                        Path = ReverseEngineerCommandOptions.UseSchemaFolders
-                            ? Path.Combine(entityType.FindAnnotation("Relational:Schema")?.Value.ToString() ??
-                                           entityType.FindAnnotation("Relational:ViewSchema")?.Value.ToString() ??
-                                           "dbo", entityTypeFileName)
+                        Path = UseSchemaFolders && !string.IsNullOrEmpty(entityTypeSchema)
+                            ? Path.Combine(entityTypeSchema, entityTypeFileName)
                             : entityTypeFileName,
                         Code = generatedCode 
                     });
