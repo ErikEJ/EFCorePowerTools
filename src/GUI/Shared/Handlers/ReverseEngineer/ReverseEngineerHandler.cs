@@ -377,6 +377,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 IncludeConnectionString = options.IncludeConnectionString,
                 OutputPath = options.OutputPath,
                 OutputContextPath = options.OutputContextPath,
+                UseSchemaFolders = options.UseSchemaFolders,
                 ModelNamespace = options.ModelNamespace,
                 ContextNamespace = options.ContextNamespace,
                 SelectedToBeGenerated = options.SelectedToBeGenerated,
@@ -407,6 +408,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.OutputPath = modelingOptionsResult.Payload.OutputPath;
             options.OutputContextPath = modelingOptionsResult.Payload.OutputContextPath;
             options.ContextNamespace = modelingOptionsResult.Payload.ContextNamespace;
+            options.UseSchemaFolders = modelingOptionsResult.Payload.UseSchemaFolders;
             options.ModelNamespace = modelingOptionsResult.Payload.ModelNamespace;
             options.ProjectRootNamespace = modelingOptionsResult.Payload.Namespace;
             options.UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames;

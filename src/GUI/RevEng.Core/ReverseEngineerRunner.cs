@@ -118,7 +118,7 @@ namespace RevEng.Core
 
             var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
 
-            CleanUp(cleanUpPaths, entityTypeConfigurationPaths);
+            CleanUp(cleanUpPaths, entityTypeConfigurationPaths, outputDir);
 
             var allfiles = filePaths.AdditionalFiles.ToList();
             if (procedurePaths != null)
@@ -232,7 +232,7 @@ namespace RevEng.Core
                 ;
         }
 
-        private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths)
+        private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
         {
             var allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(entityTypeConfigurationPaths).ToHashSet();
 
@@ -256,7 +256,7 @@ namespace RevEng.Core
             if (filePaths.AdditionalFiles.Count == 0)
                 return;
 
-            foreach (var modelFile in Directory.GetFiles(Path.GetDirectoryName(filePaths.AdditionalFiles.First()), "*.cs"))
+            foreach (var modelFile in Directory.GetFiles(outputDir, "*.cs", SearchOption.AllDirectories))
             {
                 if (allGeneratedFiles.Contains(modelFile, StringComparer.OrdinalIgnoreCase))
                 {
@@ -264,6 +264,14 @@ namespace RevEng.Core
                 }
 
                 TryRemoveFile(modelFile);
+            }
+
+            foreach (var directoryPath in Directory.GetDirectories(outputDir))
+            {
+                if(!Directory.EnumerateFileSystemEntries(directoryPath).Any())
+                {
+                    Directory.Delete(directoryPath);
+                }
             }
         }
 

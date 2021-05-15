@@ -351,6 +351,9 @@
   <data name="UseRegularExpression" xml:space="preserve">
     <value>Utiliser une expression régulière</value>
   </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>Utiliser la séparation des dossiers de schéma (expérimental)</value>
+  </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Utiliser la recherche textuelle</value>
   </data>

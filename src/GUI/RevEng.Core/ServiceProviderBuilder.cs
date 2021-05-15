@@ -34,6 +34,12 @@ namespace RevEng.Core
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
+                .AddSingleton<IModelCodeGenerator>(provider =>
+                    new CSharpModelGeneratorExtend(
+                        provider.GetService<ModelCodeGeneratorDependencies>(),
+                        provider.GetService<ICSharpDbContextGenerator>(),
+                        provider.GetService<ICSharpEntityTypeGenerator>(),
+                        options.UseSchemaFolders))
 #if CORE50
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
                  new CommentCSharpEntityTypeGenerator(                    

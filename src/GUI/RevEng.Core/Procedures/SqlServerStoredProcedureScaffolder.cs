@@ -70,7 +70,9 @@ namespace RevEng.Core.Procedures
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
                     Code = classContent,
-                    Path = $"{name}.cs",
+                    Path = procedureScaffolderOptions.UseSchemaFolders
+                            ? Path.Combine(procedure.Schema, $"{name}.cs")
+                            : $"{name}.cs"
                 });
             }
 
@@ -103,6 +105,7 @@ namespace RevEng.Core.Procedures
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
             {
                 var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
+                Directory.CreateDirectory(Path.GetDirectoryName(additionalFilePath));
                 File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
                 additionalFiles.Add(additionalFilePath);
             }

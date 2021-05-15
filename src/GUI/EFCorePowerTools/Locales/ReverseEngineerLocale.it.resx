@@ -351,6 +351,9 @@
   <data name="UseRegularExpression" xml:space="preserve">
     <value>Usa regular expression</value>
   </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>Usa la separazione delle cartelle dello schema (sperimentale)</value>
+  </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Usa ricerca testuale</value>
   </data>

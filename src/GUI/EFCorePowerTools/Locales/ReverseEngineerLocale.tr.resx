@@ -351,6 +351,9 @@
   <data name="UseRegularExpression" xml:space="preserve">
     <value>Düzenli ifade kullan</value>
   </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>Şema klasörü ayırma kullanın (deneysel)</value>
+  </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Metin arama kullan</value>
   </data>

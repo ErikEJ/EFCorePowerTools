@@ -150,6 +150,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
             Model.ProceduresReturnList = advancedModelingOptionsResult.Payload.ProceduresReturnList;
+            Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
         }
 
         void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
@@ -164,6 +165,7 @@ namespace EFCorePowerTools.ViewModels
             Model.Namespace = presets.Namespace;
             Model.OutputPath = presets.OutputPath;
             Model.OutputContextPath = presets.OutputContextPath;
+            Model.UseSchemaFolders = presets.UseSchemaFolders;
             Model.ModelNamespace = presets.ModelNamespace;
             Model.ContextNamespace = presets.ContextNamespace;
             Model.ModelName = presets.ModelName;

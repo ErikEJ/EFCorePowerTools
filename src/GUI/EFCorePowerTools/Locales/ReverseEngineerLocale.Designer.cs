@@ -765,6 +765,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string UseSchemaFolders {
+            get {
+                return ResourceManager.GetString("UseSchemaFolders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string UseTextSearch {
             get {
                 return ResourceManager.GetString("UseTextSearch", resourceCulture);
