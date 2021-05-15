@@ -270,8 +270,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            var extractor = new NupkgExtractor();
-            await extractor.ExtractNupgkAsync("Microsoft.SqlServer.DacFx", "150.5084.2", new DirectoryInfo(toDir));
+            //var extractor = new NupkgExtractor();
+            //await extractor.ExtractNupgkAsync("Microsoft.SqlServer.DacFx", "150.5084.2", new DirectoryInfo(toDir));
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
 
