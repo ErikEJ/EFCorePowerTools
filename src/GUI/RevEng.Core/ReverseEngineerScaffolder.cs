@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -62,6 +64,7 @@ namespace RevEng.Core
                     options.UseNoNavigations,
                     options.SelectedToBeGenerated == 1, //DbContext only
                     options.SelectedToBeGenerated == 2, //Entities only
+                    options.UseSchemaFolders,
                     serviceProvider);
 
             filePaths = Save(
@@ -177,6 +180,7 @@ namespace RevEng.Core
             bool excludeNavigations,
             bool dbContextOnly,
             bool entitiesOnly,
+            bool useSchemaFolders,
             ServiceProvider serviceProvider)
         {
             var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
@@ -226,8 +230,34 @@ namespace RevEng.Core
             {
                 codeModel.AdditionalFiles.Clear();
             }
+            AppendSchemaFolders(model, codeModel, useSchemaFolders);
 
             return codeModel;
+        }
+
+        private static void AppendSchemaFolders(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders)
+        {
+            // Tables and views only
+            if (!useSchemaFolders)
+                return;
+
+            foreach (var entityType in scaffoldedModel.AdditionalFiles)
+            {
+                var entityTypeName = Path.GetFileNameWithoutExtension(entityType.Path);
+                var entityTypeExtension = Path.GetExtension(entityType.Path);
+                var entityMatch = databaseModel.GetEntityTypes().Where(x => x.Name == entityTypeName).FirstOrDefault();
+                var entityTypeSchema = entityMatch?.GetSchema();
+#if CORE50 || CORE60
+                    if (entityMatch?.GetViewName() != null)
+                    {
+                        entityTypeSchema = entityMatch?.GetViewSchema();
+                    }
+#endif
+                if (!string.IsNullOrEmpty(entityTypeSchema))
+                {
+                    entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
+                }
+            }
         }
 
         private static SavedModelFiles Save(
