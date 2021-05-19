@@ -37,9 +37,6 @@ namespace RevEng.Core
             if (schema.UseSchemaName)
             {
                 candidateStringBuilder.Append(ToPascalCase(originalTable.Schema));
-                candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
-
-                return candidateStringBuilder.ToString();
             }
 
             var newTableName = string.Empty;
@@ -54,7 +51,7 @@ namespace RevEng.Core
             }
             else
             {
-                return base.GenerateCandidateIdentifier(originalTable);
+                newTableName = base.GenerateCandidateIdentifier(originalTable);
             }
 
             if (string.IsNullOrWhiteSpace(newTableName))
