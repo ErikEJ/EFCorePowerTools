@@ -22,9 +22,9 @@ namespace ScaffoldingTester
                 }
 
                 var spacesResult = await db.GetProcedures().SpacesAsync();
-                if (spacesResult.Length != 1)
+                if (spacesResult.Count != 1)
                 {
-                    Console.Error.WriteLine($"AssertEqual failed. Expected: 1. Actual: {spacesResult.Length}.");
+                    Console.Error.WriteLine($"AssertEqual failed. Expected: 1. Actual: {spacesResult.Count}.");
                 }
 
                 var output1 = new OutputParameter<string>();
@@ -33,9 +33,9 @@ namespace ScaffoldingTester
                 var result = await db.GetProcedures().TestMethodOutputNoResultAsync(0, null, output1, output2, output3);
 
                 var result2 = await db.GetProcedures().CustOrderHistDupeAsync("ALFKI");
-                if (result2.Length != 11)
+                if (result2.Count != 11)
                 {
-                    Console.Error.WriteLine($"AssertEqual failed. Expected: 11. Actual: {result2.Length}.");
+                    Console.Error.WriteLine($"AssertEqual failed. Expected: 11. Actual: {result2.Count}.");
                 }
 
                 var return1 = new OutputParameter<int>();

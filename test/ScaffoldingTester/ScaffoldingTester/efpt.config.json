@@ -8,7 +8,6 @@
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
-   "ProceduresReturnList": false,
    "ProjectRootNamespace": "ScaffoldingTester",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
@@ -220,5 +219,6 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
+   "UseSchemaFolders": false,
    "UseSpatial": false
 }
