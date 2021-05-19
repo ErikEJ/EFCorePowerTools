@@ -40,6 +40,43 @@ namespace UnitTests.Services
         }
 
         [Test]
+        public void GeneratePascalCaseTableNameWithSchemaName_Issue988()
+        {
+            //Arrange
+            var expected = "PetGuineaPig";
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                       SchemaName = "pet",
+                       UseSchemaName = true,
+                       Tables = new List<TableRenamer>
+                       { 
+                            new TableRenamer
+                            { 
+                                Name = "GUINEAPig",
+                                NewName = "GuineaPig",
+                            },
+                       },
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "GUINEAPig",
+                Schema = "pet"
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+
+            //Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        [Test]
         public void GeneratePascalCaseTableNameWithSchemaNameWithMoreThanTwoSchemas()
         {
             //Arrange
