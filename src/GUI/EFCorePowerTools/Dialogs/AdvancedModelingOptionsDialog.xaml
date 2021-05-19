@@ -93,15 +93,10 @@
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="8" />
 
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.StoredProceduresReturnList}"
-                      IsChecked="{Binding Model.ProceduresReturnList}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="9" />
-
             <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
                       IsChecked="{Binding Model.UseSchemaFolders}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="10" />
+                      TabIndex="9" />
 
         </StackPanel>
 

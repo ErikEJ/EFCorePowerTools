@@ -204,7 +204,7 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Procedures)
                 {
-                    GenerateProcedure(procedure, model, procedureScaffolderOptions.ProceduresReturnList);
+                    GenerateProcedure(procedure, model);
                 }
 
                 _sb.AppendLine("}");
@@ -215,7 +215,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Procedure procedure, ProcedureModel model, bool returnList)
+        private void GenerateProcedure(Procedure procedure, ProcedureModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
@@ -235,7 +235,7 @@ namespace RevEng.Core.Procedures
 
             var identifier = GenerateIdentifierName(procedure, model);
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, returnList);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier);
 
             using (_sb.Indent())
             {
@@ -276,14 +276,8 @@ namespace RevEng.Core.Procedures
                     {
                         _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
-                    else if (returnList)
-                    {
-
-                        _sb.AppendLine($"var _ = await _context.SqlQueryToListAsync<{identifier}Result>({fullExec});");
-                    }
                     else
                     {
-
                         _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
                     }
 
@@ -319,7 +313,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, bool returnList)
+        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             string returnType;
 
@@ -327,13 +321,9 @@ namespace RevEng.Core.Procedures
             {
                 returnType = $"Task<int>";
             }
-            else if (returnList)
-            {
-                returnType = $"Task<List<{identifier}Result>>";
-            }
             else
             {
-                returnType = $"Task<{identifier}Result[]>";
+                returnType = $"Task<List<{identifier}Result>>";
             }
 
             var line = $"public virtual async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";

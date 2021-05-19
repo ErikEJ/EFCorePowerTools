@@ -46,7 +46,6 @@
             Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseNullableReferences = presets.UseNullableReferences;
-            Model.ProceduresReturnList = presets.ProceduresReturnList;
             Model.UseSchemaFolders = presets.UseSchemaFolders;
         }
     }
