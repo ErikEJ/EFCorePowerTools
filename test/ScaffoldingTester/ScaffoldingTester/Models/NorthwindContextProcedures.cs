@@ -75,7 +75,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<CustOrderHistDboResult[]> CustOrderHistDboAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<CustOrderHistDboResult>> CustOrderHistDboAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -102,7 +102,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<CustOrderHistDupeResult[]> CustOrderHistDupeAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<CustOrderHistDupeResult>> CustOrderHistDupeAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -129,7 +129,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<CustOrdersDetailResult[]> CustOrdersDetailAsync(int? OrderID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? OrderID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -155,7 +155,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<CustOrdersOrdersResult[]> CustOrdersOrdersAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -182,7 +182,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<EmployeeSalesbyCountryResult[]> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -272,7 +272,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<SalesbyYearResult[]> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -304,7 +304,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<SalesByCategoryResult[]> SalesByCategoryAsync(string CategoryName, string OrdYear, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string CategoryName, string OrdYear, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -338,7 +338,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<SpacesResult[]> SpacesAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SpacesResult>> SpacesAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -358,7 +358,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<TempObjectsResult[]> TempObjectsAsync(int? DetailID, OutputParameter<int?> returnCode, OutputParameter<string> result, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TempObjectsResult>> TempObjectsAsync(int? DetailID, OutputParameter<int?> returnCode, OutputParameter<string> result, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnCode = new SqlParameter
             {
@@ -401,7 +401,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<TenMostExpensiveProductsResult[]> TenMostExpensiveProductsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -421,7 +421,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<TestResult[]> TestAsync(string something, string something1, string something2, string something3, string something4, string something5, string something6, string something7, string something8, string something9, string something10, string something11, string something12, string something13, string something14, string something15, string something16, OutputParameter<int?> myOutput, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<TestResult>> TestAsync(string something, string something1, string something2, string something3, string something4, string something5, string something6, string something7, string something8, string something9, string something10, string something11, string something12, string something13, string something14, string something15, string something16, OutputParameter<int?> myOutput, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parametermyOutput = new SqlParameter
             {

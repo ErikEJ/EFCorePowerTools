@@ -50,7 +50,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         [IgnoreDataMember]
         public bool InstallNuGetPackage { get; set; }
-        public bool ProceduresReturnList { get; set; }
 
         public static ReverseEngineerOptions FromV1(ReverseEngineerOptionsV1 v1)
         {

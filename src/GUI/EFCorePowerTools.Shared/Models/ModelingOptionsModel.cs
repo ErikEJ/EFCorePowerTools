@@ -35,7 +35,6 @@
         private bool _useNoConstructor;
         private bool _useNoNavigations;
         private bool _useNoObjectFilter;
-        private bool _proceduresReturnList;
 
         public bool UseDataAnnotations
         {
@@ -319,17 +318,6 @@
             {
                 if (value == _useNoObjectFilter) return;
                 _useNoObjectFilter = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ProceduresReturnList
-        {
-            get => _proceduresReturnList;
-            set
-            {
-                if (value == _proceduresReturnList) return;
-                _proceduresReturnList = value;
                 OnPropertyChanged();
             }
         }

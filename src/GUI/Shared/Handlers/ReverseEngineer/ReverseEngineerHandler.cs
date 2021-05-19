@@ -389,7 +389,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoNavigations = options.UseNoNavigations,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
-                ProceduresReturnList = options.ProceduresReturnList,
             };
 
             var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -426,7 +425,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseNoConstructor = modelingOptionsResult.Payload.UseNoConstructor;
             options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
-            options.ProceduresReturnList = modelingOptionsResult.Payload.ProceduresReturnList;
 
             return true;
         }
