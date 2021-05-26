@@ -192,7 +192,7 @@ namespace RevEng.Core
             {
                 foreach (var column in databaseModel.Tables
                     .SelectMany(table => table.Columns
-                        .Where(column => column.StoreType == "bit"
+                        .Where(column => column.StoreType == "bit" || column.StoreType == "bool"
                             && !column.IsNullable
                             && !string.IsNullOrEmpty(column.DefaultValueSql))))
                 {
