@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-<Node Id="IModel" Label="ChinookContext" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot" PropertyAccessMode="PropertyAccessMode.Default" ProductVersion="6.0.0-preview.2.21154.2" Annotations="Relational:Collation: SQL_Latin1_General_CP1_CI_AS
+<Node Id="IModel" Label="ChinookContext" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot" PropertyAccessMode="PropertyAccessMode.Default" ProductVersion="6.0.0-preview.4.21253.1" Annotations="Relational:Collation: SQL_Latin1_General_CP1_CI_AS
 Relational:MaxIdentifierLength: 128
 SqlServer:ValueGenerationStrategy: IdentityColumn" Category="Model" Group="Expanded" />
 <Node Id = "Album" Label="Album" Name="Album" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Comment: Album table

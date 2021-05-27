@@ -40,8 +40,10 @@ namespace Modelling
 
                 var generated = generateDdl
                     ? GenerateCreateScript(dbContext)
-#if CORE50 || CORE60
+#if CORE50
                     : dbContext.Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
+#elif CORE60
+                    : dbContext.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 #else
                     : dbContext.Model.AsModel().DebugView.View;
 #endif

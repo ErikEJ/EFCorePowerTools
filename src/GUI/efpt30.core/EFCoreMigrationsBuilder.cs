@@ -127,13 +127,10 @@ namespace Modelling
 
                 if (snapshotModel != null)
                 {
-                    snapshotModel = context.GetService<IModelRuntimeInitializer>().Initialize(snapshotModel, null);
-
-                    //TODO 6.0 preview 4!
-                    //hasDifferences = context.GetService<IMigrationsModelDiffer>().HasDifferences(
-                    //snapshotModel.GetRelationalModel(),
-                    //context.GetService<IDesignTimeModel>().Model.GetRelationalModel());
-                    hasDifferences = modelDiffer.HasDifferences(snapshotModel.GetRelationalModel(), context.Model.GetRelationalModel());
+                    snapshotModel = context.GetService<IModelRuntimeInitializer>().Initialize(snapshotModel);
+                    hasDifferences = context.GetService<IMigrationsModelDiffer>().HasDifferences(
+                        snapshotModel.GetRelationalModel(),
+                        context.GetService<IDesignTimeModel>().Model.GetRelationalModel());
                 }
             }
             var pendingModelChanges = (!databaseExists || hasDifferences);
