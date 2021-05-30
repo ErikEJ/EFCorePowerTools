@@ -192,7 +192,7 @@ namespace RevEng.Core
             {
                 foreach (var column in databaseModel.Tables
                     .SelectMany(table => table.Columns
-                        .Where(column => column.StoreType == "bit" || column.StoreType == "bool"
+                        .Where(column => (column.StoreType == "bit" || column.StoreType == "boolean")
                             && !column.IsNullable
                             && !string.IsNullOrEmpty(column.DefaultValueSql))))
                 {
@@ -281,10 +281,10 @@ namespace RevEng.Core
                 File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
                 additionalFiles.Add(additionalFilePath);
             }
-            
+
             return new SavedModelFiles(contextPath, additionalFiles);
         }
-        
+
         private static void ApplyRenamers(IEnumerable<SqlObjectBase> sqlObjects, List<Schema> renamers)
         {
             if (renamers == null || !renamers.Any())
