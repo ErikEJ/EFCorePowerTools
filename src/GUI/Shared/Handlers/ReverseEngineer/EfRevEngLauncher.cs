@@ -124,7 +124,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(startInfo.FileName))
             {
-                throw new Exception($"Reverse engineer error: Unable to launch {startInfo.FileName}. It could not be found.");
+                throw new Exception($"Reverse engineer error: Unable to launch {startInfo.FileName}. It could not be found. Removed by virus scanner? Try to remove the containing folder.");
             }
 
             var standardOutput = await RunProcessAsync(startInfo);
