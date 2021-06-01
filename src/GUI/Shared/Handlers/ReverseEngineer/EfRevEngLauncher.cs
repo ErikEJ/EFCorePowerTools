@@ -122,6 +122,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 Arguments = arguments,
             };
 
+            if (!File.Exists(startInfo.FileName))
+            {
+                throw new Exception($"Reverse engineer error: Unable to launch {startInfo.FileName}. It could not be found.");
+            }
+
             var standardOutput = await RunProcessAsync(startInfo);
 
             return resultDeserializer.BuildTableResult(standardOutput);
