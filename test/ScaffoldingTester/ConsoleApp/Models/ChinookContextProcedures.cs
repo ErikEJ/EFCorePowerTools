@@ -42,7 +42,7 @@ namespace ConsoleApp.Models
             _context = context;
         }
 
-        public virtual async Task<GetTitlesResult[]> GetTitlesAsync(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<GetTitlesResult>> GetTitlesAsync(string Title, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {

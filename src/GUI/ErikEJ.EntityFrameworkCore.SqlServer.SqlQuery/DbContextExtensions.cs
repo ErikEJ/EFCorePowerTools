@@ -28,7 +28,6 @@ namespace Microsoft.EntityFrameworkCore
         /// <returns>
         /// A <see cref="List{T}" /> object that will contain the result of the query.
         /// </returns>
-
         public static async Task<List<T>> SqlQueryValueAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
         {
             if (parameters is null)
