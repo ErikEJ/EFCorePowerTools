@@ -118,7 +118,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), GetExeName()),
+                FileName = launchPath,
                 Arguments = arguments,
             };
 
@@ -141,7 +141,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(launchPath ?? throw new InvalidOperationException(), GetExeName()),
+                FileName = launchPath,
                 Arguments = "\"" + path + "\"",
             };
 
@@ -156,20 +156,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return resultDeserializer.BuildResult(standardOutput);
         }
 
-        private string GetExeName()
-        {
-            switch (codeGenerationMode)
-            {   
-                case CodeGenerationMode.EFCore5:
-                    return "efreveng50.exe";
-                case CodeGenerationMode.EFCore3:
-                    return "efreveng.exe";
-                case CodeGenerationMode.EFCore6:
-                    return "efreveng60.exe";
-                default:
-                    throw new NotSupportedException("Unsupported code generation mode");
-            }
-        }
 
         private async Task<bool> IsDotnetInstalledAsync(string version)
         {
@@ -244,10 +230,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
+            var fullPath = Path.Combine(toDir, GetExeName());
+
             if (Directory.Exists(toDir)
+                && File.Exists(Path.Combine(toDir, GetExeName()))
                 && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() > 99)
             {
-                return toDir;
+                return fullPath;
             }
 
             if (Directory.Exists(toDir))
@@ -295,8 +284,22 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
+            return fullPath;
+        }
 
-            return toDir;
+        private string GetExeName()
+        {
+            switch (codeGenerationMode)
+            {
+                case CodeGenerationMode.EFCore5:
+                    return "efreveng50.exe";
+                case CodeGenerationMode.EFCore3:
+                    return "efreveng.exe";
+                case CodeGenerationMode.EFCore6:
+                    return "efreveng60.exe";
+                default:
+                    throw new NotSupportedException("Unsupported code generation mode");
+            }
         }
     }
 }

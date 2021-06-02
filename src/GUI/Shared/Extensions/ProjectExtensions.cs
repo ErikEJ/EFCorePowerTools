@@ -41,6 +41,11 @@ namespace EFCorePowerTools.Extensions
 
             var outputPath = GetOutputPath(project);
 
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                return null;
+            }
+
             if (File.Exists(Path.Combine(outputPath, assemblyNameExe)))
             {
                 return Path.Combine(outputPath, assemblyNameExe);
