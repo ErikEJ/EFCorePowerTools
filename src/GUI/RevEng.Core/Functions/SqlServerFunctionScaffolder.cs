@@ -265,15 +265,18 @@ namespace RevEng.Core.Functions
                 throw new ArgumentNullException(nameof(function));
             }
 
-            return CreateIdentifier(GenerateUniqueName(function, model));
+            return CreateIdentifier(GenerateUniqueName(function, model)).Item1;
         }
 
-        private string CreateIdentifier(string name)
+        private Tuple<string, string> CreateIdentifier(string name)
         {
             var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
 
+            string columAttribute = null;
+
             if (!isValid)
             {
+                columAttribute = $"[Column(\"{name}\")]";
                 // File name contains invalid chars, remove them
                 var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
                 name = regex.Replace(name, "");
@@ -285,7 +288,7 @@ namespace RevEng.Core.Functions
                 }
             }
 
-            return name.Replace(" ", string.Empty);
+            return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
         }
 
         private string GenerateUniqueName(Function function, FunctionModel model)
