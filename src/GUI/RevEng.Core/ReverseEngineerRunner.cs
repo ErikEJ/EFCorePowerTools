@@ -103,7 +103,7 @@ namespace RevEng.Core
             }
             else if (options.SelectedToBeGenerated == 2
                 && (options.Tables.Count(t => t.ObjectType == ObjectType.Procedure) > 0
-                || options.Tables.Count(t => t.ObjectType == ObjectType.ScalarFunction) > 0))
+                || options.Tables.Count(t => t.ObjectType == ObjectType.Function) > 0))
             {
                 warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
             }
@@ -160,6 +160,10 @@ namespace RevEng.Core
             if (functionPaths != null)
             {
                 cleanUpPaths.AdditionalFiles.Add(functionPaths.ContextFile);
+                foreach (var additionalFile in functionPaths.AdditionalFiles)
+                {
+                    cleanUpPaths.AdditionalFiles.Add(additionalFile);
+                }
             }
 
             return cleanUpPaths;

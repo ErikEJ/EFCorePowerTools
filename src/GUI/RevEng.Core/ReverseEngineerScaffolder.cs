@@ -83,7 +83,7 @@ namespace RevEng.Core
         {
             var functionModelScaffolder = serviceProvider.GetService<IFunctionScaffolder>();
             if (functionModelScaffolder != null
-                && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
+                && (options.Tables.Any(t => t.ObjectType == ObjectType.Function)
                     || !options.Tables.Any()))
             {
                 var functionModelFactory = serviceProvider.GetService<IFunctionModelFactory>();
@@ -91,7 +91,7 @@ namespace RevEng.Core
                 var modelFactoryOptions = new ModuleModelFactoryOptions
                 {
                     FullModel = true,
-                    Modules = options.Tables.Where(t => t.ObjectType == ObjectType.ScalarFunction).Select(m => m.Name),
+                    Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Function).Select(m => m.Name),
                 };
 
                 var functionModel = functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
@@ -307,4 +307,3 @@ namespace RevEng.Core
             }
         }
     }
-}

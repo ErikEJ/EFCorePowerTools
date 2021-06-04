@@ -6,6 +6,6 @@
         TableWithoutKey,
         View,
         Procedure,
-        ScalarFunction,
+        Function,
     }
 }

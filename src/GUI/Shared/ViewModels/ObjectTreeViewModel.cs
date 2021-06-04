@@ -160,7 +160,7 @@
                 (ObjectType.Table, ReverseEngineerLocale.Tables),
                 (ObjectType.View, ReverseEngineerLocale.Views),
                 (ObjectType.Procedure, ReverseEngineerLocale.StoredProcedures),
-                (ObjectType.ScalarFunction, ReverseEngineerLocale.Functions)
+                (ObjectType.Function, ReverseEngineerLocale.Functions)
             };
 
             if (customReplacers != null)

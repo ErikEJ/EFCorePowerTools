@@ -117,7 +117,7 @@ namespace RevEng.Core
 
             foreach (var function in functionModel.Functions)
             {
-                result.Add(new TableModel(function.Name, function.Schema, _databaseType, ObjectType.ScalarFunction, null));
+                result.Add(new TableModel(function.Name, function.Schema, _databaseType, ObjectType.Function, null));
             }
 
             return result.OrderBy(c => c.DisplayName).ToList();
