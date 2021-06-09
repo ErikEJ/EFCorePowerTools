@@ -118,14 +118,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = launchPath,
-                Arguments = arguments,
+                FileName = "dotnet",
+                Arguments = $"\"{launchPath}\" {arguments}",
             };
-
-            if (!File.Exists(startInfo.FileName))
-            {
-                throw new Exception($"Reverse engineer error: Unable to launch {startInfo.FileName}. It could not be found. Removed by virus scanner? Try to remove the containing folder.");
-            }
 
             var standardOutput = await RunProcessAsync(startInfo);
 
@@ -141,8 +136,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = launchPath,
-                Arguments = "\"" + path + "\"",
+                FileName = "dotnet",
+                Arguments = $"\"{launchPath}\" \"{path}\"",
             };
 
             var standardOutput = await RunProcessAsync(startInfo);
@@ -292,11 +287,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             switch (codeGenerationMode)
             {
                 case CodeGenerationMode.EFCore5:
-                    return "efreveng50.exe";
+                    return "efreveng50.dll";
                 case CodeGenerationMode.EFCore3:
-                    return "efreveng.exe";
+                    return "efreveng.dll";
                 case CodeGenerationMode.EFCore6:
-                    return "efreveng60.exe";
+                    return "efreveng60.dll";
                 default:
                     throw new NotSupportedException("Unsupported code generation mode");
             }
