@@ -50,4 +50,4 @@ If you encounter a bug or have a feature request, please use the [Issue Tracker]
 
 # Building and debugging
 
-To build and debug, run latest version of Visual Studio as Administrator with the "Visual Studio extension development workload" installed. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, x86 (not AnyCPU).
+To build and debug, run latest version of Visual Studio as Administrator with the "Visual Studio extension development workload" installed. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, AnyCPU.
