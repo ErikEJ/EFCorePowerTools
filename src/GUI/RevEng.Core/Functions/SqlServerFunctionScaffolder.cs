@@ -38,16 +38,16 @@ namespace RevEng.Core.Functions
 
             foreach (var function in model.Functions.Where(f => !f.IsScalar))
             {
-                var name = GenerateIdentifierName(function, model) + "Result";
+                var typeName = GenerateIdentifierName(function, model) + "Result";
 
-                var classContent = WriteResultClass(function, scaffolderOptions, name);
+                var classContent = WriteResultClass(function, scaffolderOptions, typeName);
 
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
                     Code = classContent,
                     Path = scaffolderOptions.UseSchemaFolders
-                            ? Path.Combine(function.Schema, $"{name}.cs")
-                            : $"{name}.cs"
+                            ? Path.Combine(function.Schema, $"{typeName}.cs")
+                            : $"{typeName}.cs"
                 });
             }
 
@@ -110,6 +110,8 @@ namespace RevEng.Core.Functions
                     {
                         GenerateFunctionStub(function, model);
                     }
+
+                    GenerateModelCreation(model);
                 }
                 _sb.AppendLine("}");
             }
@@ -117,6 +119,25 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("}");
 
             return _sb.ToString();
+        }
+
+        private void GenerateModelCreation(FunctionModel model)
+        {
+            _sb.AppendLine();
+            _sb.AppendLine("protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)");
+            _sb.AppendLine("{");
+
+            using (_sb.Indent())
+            {
+                foreach (var function in model.Functions.Where(f => !f.IsScalar))
+                {
+                    var typeName = GenerateIdentifierName(function, model) + "Result";
+
+                    _sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey();");
+                }
+            }
+
+            _sb.AppendLine("}");
         }
 
         private void GenerateFunctionStub(Function function, FunctionModel model)
@@ -151,7 +172,9 @@ namespace RevEng.Core.Functions
             }
             else
             {
-                var returnType = $"IQueryable<{identifier}Result>";
+                var typeName = $"{identifier}Result";
+                var returnType = $"IQueryable<{typeName}>";
+
                 var parameters = string.Empty;
 
                 if (function.Parameters.Any())

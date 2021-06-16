@@ -91,6 +91,16 @@ namespace RevEng.Core
 
                 functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 #if CORE50
+                if (functionPaths != null)
+                {
+                    var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
+                    var index = dbContextLines.IndexOf("            OnModelCreatingPartial(modelBuilder);");
+                    if (index != -1)
+                    {
+                        dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
+                        File.WriteAllLines(filePaths.ContextFile, dbContextLines);
+                    }
+                }
 #else
                 RemoveOnConfiguring(filePaths.ContextFile, options.IncludeConnectionString);
 #endif
