@@ -1,20 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
 using RevEng.Shared;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace RevEng.Core.Functions
 {
@@ -48,7 +41,7 @@ namespace RevEng.Core.Functions
 
                 using (_sb.Indent())
                 {
-                    foreach (var function in model.Routines.OfType<Function>())
+                    foreach (var function in model.Routines)
                     {
                         GenerateFunctionStub(function, model);
                     }
@@ -71,7 +64,7 @@ namespace RevEng.Core.Functions
 
             using (_sb.Indent())
             {
-                foreach (var function in model.Routines.OfType<Function>().Where(f => !f.IsScalar))
+                foreach (var function in model.Routines.Where(f => !f.IsScalar))
                 {
                     var typeName = GenerateIdentifierName(function, model) + "Result";
 
@@ -82,7 +75,7 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("}");
         }
 
-        private void GenerateFunctionStub(Function function, ModuleModel model)
+        private void GenerateFunctionStub(Module function, ModuleModel model)
         {
             var paramStrings = function.Parameters
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
@@ -95,23 +88,23 @@ namespace RevEng.Core.Functions
 
             if (function.IsScalar)
             {
-            var returnType = paramStrings.First();
-            var parameters = string.Empty;
+                var returnType = paramStrings.First();
+                var parameters = string.Empty;
 
-            if (function.Parameters.Count > 1)
-            {
-                parameters = string.Join(", ", paramStrings.Skip(1));
+                if (function.Parameters.Count > 1)
+                {
+                    parameters = string.Join(", ", paramStrings.Skip(1));
+                }
+
+                _sb.AppendLine($"public static {returnType}{identifier}({parameters})");
+
+                _sb.AppendLine("{");
+                using (_sb.Indent())
+                {
+                    _sb.AppendLine("throw new NotSupportedException(\"This method can only be called from Entity Framework Core queries\");");
+                }
+                _sb.AppendLine("}");
             }
-
-            _sb.AppendLine($"public static {returnType}{identifier}({parameters})");
-
-            _sb.AppendLine("{");
-            using (_sb.Indent())
-            {
-                _sb.AppendLine("throw new NotSupportedException(\"This method can only be called from Entity Framework Core queries\");");
-            }
-            _sb.AppendLine("}");
-        }
             else
             {
                 var typeName = $"{identifier}Result";

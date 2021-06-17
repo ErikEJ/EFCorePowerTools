@@ -81,7 +81,7 @@ namespace RevEng.Core.Modules
             var fileNameSuffix = (this is SqlServerStoredProcedureScaffolder)
                 ? "Procedures"
                 : ".Functions";
-            result.ContextFile = new ScaffoldedFile
+           result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
                 Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{fileNameSuffix}.cs")),

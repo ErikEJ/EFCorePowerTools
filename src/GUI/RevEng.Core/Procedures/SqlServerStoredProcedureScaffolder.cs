@@ -150,7 +150,7 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("}");
                 }
 
-                foreach (var procedure in model.Routines.OfType<Procedure>())
+                foreach (var procedure in model.Routines)
                 {
                     GenerateProcedure(procedure, model);
                 }
@@ -163,7 +163,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Procedure procedure, ModuleModel model)
+        private void GenerateProcedure(Module procedure, ModuleModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
@@ -247,7 +247,7 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private static string GenerateProcedureStatement(Procedure procedure, string retValueName)
+        private static string GenerateProcedureStatement(Module procedure, string retValueName)
         {
             var paramNames = procedure.Parameters
                 .Select(p => $"{parameterPrefix}{p.Name}");
@@ -261,7 +261,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        private static string GenerateMethodSignature(Module procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             string returnType;
 

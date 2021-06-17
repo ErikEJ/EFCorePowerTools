@@ -21,6 +21,7 @@
 		<Compile Include="..\RevEng.Core\Functions\SqlServerFunctionScaffolder.cs" Link="Functions\SqlServerFunctionScaffolder.cs" />
 		<Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
     <Compile Include="..\RevEng.Core\Modules\IModuleScaffolder.cs" Link="Modules\IModuleScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Modules\SqlServerModuleModelFactory.cs" Link="Modules\SqlServerModuleModelFactory.cs" />
     <Compile Include="..\RevEng.Core\Modules\SqlServerModuleScaffolder.cs" Link="Modules\SqlServerModuleScaffolder.cs" />
     <Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
 		<Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
