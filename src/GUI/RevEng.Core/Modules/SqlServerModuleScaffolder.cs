@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Procedures;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -8,8 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Procedures;
+using System.Text.RegularExpressions;
 
 #if CORE50 || CORE60
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -59,17 +61,17 @@ namespace RevEng.Core.Modules
 
             errors = model.Errors;
 
-            foreach (var function in model.Routines.Where(f => !(f is Function func) || !func.IsScalar))
+            foreach (var routine in model.Routines.Where(r => !(r is Function f) || !f.IsScalar))
             {
-                var typeName = GenerateIdentifierName(function, model) + "Result";
+                var typeName = GenerateIdentifierName(routine, model) + "Result";
 
-                var classContent = WriteResultClass(function, scaffolderOptions, typeName);
+                var classContent = WriteResultClass(routine, scaffolderOptions, typeName);
 
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
                     Code = classContent,
                     Path = scaffolderOptions.UseSchemaFolders
-                            ? Path.Combine(function.Schema, $"{typeName}.cs")
+                            ? Path.Combine(routine.Schema, $"{typeName}.cs")
                             : $"{typeName}.cs"
                 });
             }
@@ -93,17 +95,125 @@ namespace RevEng.Core.Modules
             throw new NotImplementedException();
         }
 
-        protected virtual string WriteResultClass(Module module, ModuleScaffolderOptions scaffolderOptions, string typeName)
+        private string WriteResultClass(Module module, ModuleScaffolderOptions options, string name)
         {
-            throw new NotImplementedException();
+            var @namespace = options.ModelNamespace;
+
+            _sb = new IndentedStringBuilder();
+
+            _sb.AppendLine(PathHelper.Header);
+            _sb.AppendLine("using System;");
+            _sb.AppendLine("using System.Collections.Generic;");
+            _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
+            _sb.AppendLine();
+
+            if (options.NullableReferences)
+            {
+                _sb.AppendLine("#nullable enable");
+                _sb.AppendLine();
+            }
+
+            _sb.AppendLine($"namespace {@namespace}");
+            _sb.AppendLine("{");
+
+            using (_sb.Indent())
+            {
+                GenerateClass(module, name, options.NullableReferences);
+            }
+
+            _sb.AppendLine("}");
+
+            return _sb.ToString();
         }
 
-        protected virtual string GenerateIdentifierName(Module module, ModuleModel model)
+        private void GenerateClass(Module module, string name, bool nullableReferences)
         {
-            throw new NotImplementedException();
+            _sb.AppendLine($"public partial class {name}");
+            _sb.AppendLine("{");
+
+            using (_sb.Indent())
+            {
+                GenerateProperties(module, nullableReferences);
+            }
+
+            _sb.AppendLine("}");
         }
 
-        protected string GenerateUniqueName(Module module, ModuleModel model)
+        private void GenerateProperties(Module module, bool nullableReferences)
+        {
+            foreach (var property in module.ResultElements.OrderBy(e => e.Ordinal))
+            {
+                var propertyNames = GeneratePropertyName(property.Name);
+
+                if (!string.IsNullOrEmpty(propertyNames.Item2))
+                {
+                    _sb.AppendLine(propertyNames.Item2);
+                }
+
+                var propertyType = property.ClrType();
+                string nullableAnnotation = string.Empty;
+                string defaultAnnotation = string.Empty;
+
+                if (nullableReferences && !propertyType.IsValueType)
+                {
+                    if (property.Nullable)
+                    {
+                        nullableAnnotation = "?";
+                    }
+                    else
+                    {
+                        defaultAnnotation = $" = default!;";
+                    }
+                }
+
+                _sb.AppendLine($"public {code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
+            }
+        }
+
+        private Tuple<string, string> GeneratePropertyName(string propertyName)
+        {
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            return CreateIdentifier(propertyName);
+        }
+
+        protected string GenerateIdentifierName(Module module, ModuleModel model)
+        {
+            if (module == null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            return CreateIdentifier(GenerateUniqueName(module, model)).Item1;
+        }
+
+        private Tuple<string, string> CreateIdentifier(string name)
+        {
+            var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
+
+            string columAttribute = null;
+
+            if (!isValid)
+            {
+                columAttribute = $"[Column(\"{name}\")]";
+                // File name contains invalid chars, remove them
+                var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
+                name = regex.Replace(name, "");
+
+                // Class name doesn't begin with a letter, insert an underscore
+                if (!char.IsLetter(name, 0))
+                {
+                    name = name.Insert(0, "_");
+                }
+            }
+
+            return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
+        }
+
+        private string GenerateUniqueName(Module module, ModuleModel model)
         {
             if (!string.IsNullOrEmpty(module.NewName))
                 return module.NewName;
