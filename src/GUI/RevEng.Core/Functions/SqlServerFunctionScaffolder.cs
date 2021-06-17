@@ -11,14 +11,14 @@ using System.Linq;
 
 namespace RevEng.Core.Functions
 {
-    public class SqlServerFunctionScaffolder : SqlServerModuleScaffolder, IFunctionScaffolder
+    public class SqlServerFunctionScaffolder : SqlServerRoutineScaffolder, IFunctionScaffolder
     {
         public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code)
             : base(code)
         {
         }
 
-        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, ModuleModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -56,7 +56,7 @@ namespace RevEng.Core.Functions
             return _sb.ToString();
         }
 
-        private void GenerateModelCreation(ModuleModel model)
+        private void GenerateModelCreation(RoutineModel model)
         {
             _sb.AppendLine();
             _sb.AppendLine("protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)");
@@ -75,7 +75,7 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("}");
         }
 
-        private void GenerateFunctionStub(Module function, ModuleModel model)
+        private void GenerateFunctionStub(Routine function, RoutineModel model)
         {
             var paramStrings = function.Parameters
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");

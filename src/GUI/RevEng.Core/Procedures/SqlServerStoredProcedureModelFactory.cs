@@ -9,14 +9,14 @@ using System.Data;
 
 namespace RevEng.Core.Procedures
 {
-    public class SqlServerStoredProcedureModelFactory : SqlServerModuleModelFactory, IProcedureModelFactory
+    public class SqlServerStoredProcedureModelFactory : SqlServerRoutineModelFactory, IProcedureModelFactory
     {
         public SqlServerStoredProcedureModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
             : base(logger)
         {
         }
 
-        public ModuleModel Create(string connectionString, ModuleModelFactoryOptions options)
+        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
             return GetRoutines(connectionString, options, "procedure");
         }

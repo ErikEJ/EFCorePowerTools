@@ -21,12 +21,12 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace RevEng.Core.Modules
 {
-    public class SqlServerModuleScaffolder : IModuleScaffolder
+    public class SqlServerRoutineScaffolder : IRoutineScaffolder
     {
         protected readonly ICSharpHelper code;
         protected IndentedStringBuilder _sb;
 
-        public SqlServerModuleScaffolder([NotNull] ICSharpHelper code)
+        public SqlServerRoutineScaffolder([NotNull] ICSharpHelper code)
         {
             if (code == null) throw new ArgumentNullException(nameof(code));
             this.code = code;
@@ -53,7 +53,7 @@ namespace RevEng.Core.Modules
             return new SavedModelFiles(contextPath, additionalFiles);
         }
 
-        public ScaffoldedModel ScaffoldModel(ModuleModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
@@ -90,12 +90,12 @@ namespace RevEng.Core.Modules
             return result;
         }
 
-        protected virtual string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, ModuleModel model)
+        protected virtual string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
         {
             throw new NotImplementedException();
         }
 
-        private string WriteResultClass(Module module, ModuleScaffolderOptions options, string name)
+        private string WriteResultClass(Routine routine, ModuleScaffolderOptions options, string name)
         {
             var @namespace = options.ModelNamespace;
 
@@ -118,7 +118,7 @@ namespace RevEng.Core.Modules
 
             using (_sb.Indent())
             {
-                GenerateClass(module, name, options.NullableReferences);
+                GenerateClass(routine, name, options.NullableReferences);
             }
 
             _sb.AppendLine("}");
@@ -126,22 +126,22 @@ namespace RevEng.Core.Modules
             return _sb.ToString();
         }
 
-        private void GenerateClass(Module module, string name, bool nullableReferences)
+        private void GenerateClass(Routine routine, string name, bool nullableReferences)
         {
             _sb.AppendLine($"public partial class {name}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                GenerateProperties(module, nullableReferences);
+                GenerateProperties(routine, nullableReferences);
             }
 
             _sb.AppendLine("}");
         }
 
-        private void GenerateProperties(Module module, bool nullableReferences)
+        private void GenerateProperties(Routine routine, bool nullableReferences)
         {
-            foreach (var property in module.ResultElements.OrderBy(e => e.Ordinal))
+            foreach (var property in routine.ResultElements.OrderBy(e => e.Ordinal))
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 
@@ -180,14 +180,14 @@ namespace RevEng.Core.Modules
             return CreateIdentifier(propertyName);
         }
 
-        protected string GenerateIdentifierName(Module module, ModuleModel model)
+        protected string GenerateIdentifierName(Routine routine, RoutineModel model)
         {
-            if (module == null)
+            if (routine == null)
             {
-                throw new ArgumentNullException(nameof(module));
+                throw new ArgumentNullException(nameof(routine));
             }
 
-            return CreateIdentifier(GenerateUniqueName(module, model)).Item1;
+            return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
         }
 
         private Tuple<string, string> CreateIdentifier(string name)
@@ -213,17 +213,17 @@ namespace RevEng.Core.Modules
             return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
         }
 
-        private string GenerateUniqueName(Module module, ModuleModel model)
+        private string GenerateUniqueName(Routine routine, RoutineModel model)
         {
-            if (!string.IsNullOrEmpty(module.NewName))
-                return module.NewName;
+            if (!string.IsNullOrEmpty(routine.NewName))
+                return routine.NewName;
 
-            var numberOfNames = model.Routines.Where(p => p.Name == module.Name).Count();
+            var numberOfNames = model.Routines.Where(p => p.Name == routine.Name).Count();
 
             if (numberOfNames > 1)
-                return module.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(module.Schema);
+                return routine.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(routine.Schema);
 
-            return module.Name;
+            return routine.Name;
         }
     }
 }

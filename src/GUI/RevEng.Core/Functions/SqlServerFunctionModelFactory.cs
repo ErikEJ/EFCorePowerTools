@@ -9,19 +9,19 @@ using System.Data;
 
 namespace RevEng.Core.Procedures
 {
-    public class SqlServerFunctionModelFactory : SqlServerModuleModelFactory, IFunctionModelFactory
+    public class SqlServerFunctionModelFactory : SqlServerRoutineModelFactory, IFunctionModelFactory
     {
         public SqlServerFunctionModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
             : base(logger)
         {
         }
 
-        public ModuleModel Create(string connectionString, ModuleModelFactoryOptions options)
+        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
             return GetRoutines(connectionString, options, "function");
         }
 
-        protected override List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name)// int objectId)
+        protected override List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
             var result = new List<ModuleResultElement>();

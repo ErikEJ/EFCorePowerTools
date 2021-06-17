@@ -6,21 +6,17 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
 using RevEng.Shared;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
-using Module = RevEng.Core.Abstractions.Metadata.Module;
 
 namespace RevEng.Core.Procedures
 {
-    public class SqlServerStoredProcedureScaffolder : SqlServerModuleScaffolder, IProcedureScaffolder
+    public class SqlServerStoredProcedureScaffolder : SqlServerRoutineScaffolder, IProcedureScaffolder
     {
         private const string parameterPrefix = "parameter";
 
@@ -69,7 +65,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, ModuleModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, RoutineModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -163,7 +159,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Module procedure, ModuleModel model)
+        private void GenerateProcedure(Routine procedure, RoutineModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
@@ -247,7 +243,7 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private static string GenerateProcedureStatement(Module procedure, string retValueName)
+        private static string GenerateProcedureStatement(Routine procedure, string retValueName)
         {
             var paramNames = procedure.Parameters
                 .Select(p => $"{parameterPrefix}{p.Name}");
@@ -261,7 +257,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Module procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             string returnType;
 

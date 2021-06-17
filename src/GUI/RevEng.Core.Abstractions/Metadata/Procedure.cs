@@ -1,6 +1,6 @@
 ﻿namespace RevEng.Core.Abstractions.Metadata
 {
-    public class Procedure : Module
+    public class Procedure : Routine
     {
     }
 }

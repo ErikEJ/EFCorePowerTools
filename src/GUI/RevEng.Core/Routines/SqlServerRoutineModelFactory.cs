@@ -12,18 +12,18 @@ using System.Text;
 
 namespace RevEng.Core.Procedures
 {
-    public abstract class SqlServerModuleModelFactory
+    public abstract class SqlServerRoutineModelFactory
     {
         protected readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
-        public SqlServerModuleModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        public SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
         {
             _logger = logger;
         }
 
-        protected ModuleModel GetRoutines(string connectionString, ModuleModelFactoryOptions options, string routineType)
+        protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options, string routineType)
         {
-            var result = new List<Module>();
+            var result = new List<Routine>();
             var found = new List<Tuple<string, string, string, bool>>();
             var errors = new List<string>();
 
@@ -66,7 +66,7 @@ AND ROUTINE_TYPE = '{routineType}'");
                 {
                     if (filter.Count == 0 || filter.Contains($"[{foundModule.Item1}].[{foundModule.Item2}]"))
                     {
-                        var module = new Module
+                        var module = new Routine
                         {
                             Schema = foundModule.Item1,
                             Name = foundModule.Item2,
@@ -98,9 +98,9 @@ AND ROUTINE_TYPE = '{routineType}'");
                 }
             }
 
-            return new ModuleModel
+            return new RoutineModel
             {
-                Routines = result.Cast<Module>().ToList(),
+                Routines = result,
                 Errors = errors,
             };
         }

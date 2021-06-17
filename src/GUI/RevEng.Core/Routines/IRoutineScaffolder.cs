@@ -5,9 +5,9 @@ using RevEng.Core.Abstractions;
 
 namespace RevEng.Core.Modules
 {
-    public interface IModuleScaffolder
+    public interface IRoutineScaffolder
     {
         SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace);
-        ScaffoldedModel ScaffoldModel(ModuleModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors);
+        ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors);
     }
 }

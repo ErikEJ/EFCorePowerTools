@@ -2,7 +2,7 @@
 
 namespace RevEng.Core.Procedures
 {
-    public interface IProcedureScaffolder : IModuleScaffolder
+    public interface IProcedureScaffolder : IRoutineScaffolder
     {
     }
 }

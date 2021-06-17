@@ -2,7 +2,7 @@
 
 namespace RevEng.Core.Functions
 {
-    public interface IFunctionScaffolder : IModuleScaffolder
+    public interface IFunctionScaffolder : IRoutineScaffolder
     {
     }
 }
