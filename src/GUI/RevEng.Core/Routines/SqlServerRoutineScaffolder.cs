@@ -22,7 +22,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace RevEng.Core.Modules
 {
-    public class SqlServerRoutineScaffolder : IRoutineScaffolder
+    public abstract class SqlServerRoutineScaffolder : IRoutineScaffolder
     {
         protected readonly ICSharpHelper code;
         protected IndentedStringBuilder _sb;
@@ -95,10 +95,7 @@ namespace RevEng.Core.Modules
             return result;
         }
 
-        protected virtual string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
 
         private string WriteResultClass(Routine routine, ModuleScaffolderOptions options, string name)
         {
