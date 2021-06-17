@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -6,11 +8,19 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace RevEng.Core.Procedures
 {
     public class SqlServerFunctionModelFactory : IFunctionModelFactory
     {
+        private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
+
+        public SqlServerFunctionModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        {
+            _logger = logger;
+        }
+
         public FunctionModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
             return GetFunctions(connectionString, options);
@@ -19,18 +29,30 @@ namespace RevEng.Core.Procedures
         private FunctionModel GetFunctions(string connectionString, ModuleModelFactoryOptions options)
         {
             var result = new List<Function>();
-            var found = new List<Tuple<string, string, int>>();
+            var found = new List<Tuple<string, string, int, bool>>();
             var errors = new List<string>();
 
             var filter = options.Modules.ToHashSet();
 
             using (var connection = new SqlConnection(connectionString))
             {
-                var sql = $@"
-SELECT SCHEMA_NAME(schema_id) AS [Schema], name AS [Name], object_id
+#if CORE50 || CORE60
+
+                var sql = @"
+SELECT SCHEMA_NAME(schema_id) AS [Schema], name AS [Name], object_id, CAST(objectproperty(OBJECT_ID,'IsScalarFunction') AS bit) AS IsScalar
+FROM sys.objects 
+WHERE (objectproperty(OBJECT_ID,'IsScalarFunction') = 1 OR objectproperty(OBJECT_ID,'IsTableFunction') = 1)
+AND NULLIF([name], '') IS NOT NULL;";
+
+#else
+
+                var sql = @"
+SELECT SCHEMA_NAME(schema_id) AS [Schema], name AS [Name], object_id, CAST(objectproperty(OBJECT_ID,'IsScalarFunction') AS bit) AS IsScalar
 FROM sys.objects 
 WHERE objectproperty(OBJECT_ID,'IsScalarFunction') = 1
 AND NULLIF([name], '') IS NOT NULL;";
+
+#endif
 
                 using (var command = new SqlCommand(sql, connection))
                 {
@@ -39,7 +61,7 @@ AND NULLIF([name], '') IS NOT NULL;";
                     {
                         while (reader.Read())
                         {
-                            found.Add(new Tuple<string, string, int>(reader.GetString(0), reader.GetString(1), reader.GetInt32(2)));
+                            found.Add(new Tuple<string, string, int, bool>(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3)));
                         }
                     }
                 }
@@ -52,12 +74,26 @@ AND NULLIF([name], '') IS NOT NULL;";
                         {
                             Schema = foundFunction.Item1,
                             Name = foundFunction.Item2,
-                            IsScalar = true,
+                            IsScalar = foundFunction.Item4
                         };
 
                         if (options.FullModel)
                         {
                             function.Parameters = GetFunctionParameters(connection, foundFunction.Item3);
+
+                            if (!function.IsScalar)
+                            {
+                                try
+                                {
+                                    function.ResultElements = GetTableFunctionResultElements(connection, foundFunction.Item3);
+                                }
+                                catch (Exception ex)
+                                {
+                                    function.HasValidResultSet = false;
+                                    errors.Add($"Unable to get result set shape for function '{function.Schema}.{function.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                                    _logger?.Logger.LogWarning(ex, $"Unable to scaffold {function.Schema}.{function.Name}");
+                                }
+                            }
                         }
 
                         result.Add(function);
@@ -120,6 +156,47 @@ SELECT
                 };
 
                 result.Add(parameter);
+            }
+
+            return result;
+        }
+
+        private List<TableFunctionResultElement> GetTableFunctionResultElements(SqlConnection connection, int objectId)
+        {
+            var dtResult = new DataTable();
+            var result = new List<TableFunctionResultElement>();
+
+            var sql = $@"
+SELECT 
+    c.name,
+    COALESCE(type_name(c.system_type_id), type_name(c.user_type_id)) AS type_name,
+    c.column_id AS column_ordinal,
+    c.is_nullable
+FROM sys.columns c
+WHERE object_id = {objectId};";
+
+            var adapter = new SqlDataAdapter
+            {
+                SelectCommand = new SqlCommand(sql, connection)
+            };
+
+            adapter.Fill(dtResult);
+
+            int rCounter = 0;
+
+            foreach (DataRow res in dtResult.Rows)
+            {
+                var parameter = new TableFunctionResultElement()
+                {
+                    Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
+                    StoreType = res["type_name"].ToString(),
+                    Ordinal = int.Parse(res["column_ordinal"].ToString()),
+                    Nullable = (bool)res["is_nullable"],
+                };
+
+                result.Add(parameter);
+
+                rCounter++;
             }
 
             return result;

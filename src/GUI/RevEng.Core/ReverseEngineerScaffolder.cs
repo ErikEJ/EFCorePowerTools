@@ -247,10 +247,10 @@ namespace RevEng.Core
                 var entityMatch = databaseModel.GetEntityTypes().Where(x => x.Name == entityTypeName).FirstOrDefault();
                 var entityTypeSchema = entityMatch?.GetSchema();
 #if CORE50 || CORE60
-                    if (entityMatch?.GetViewName() != null)
-                    {
-                        entityTypeSchema = entityMatch?.GetViewSchema();
-                    }
+                if (entityMatch?.GetViewName() != null)
+                {
+                    entityTypeSchema = entityMatch?.GetViewSchema();
+                }
 #endif
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {

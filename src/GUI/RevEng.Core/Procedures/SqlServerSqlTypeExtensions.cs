@@ -1,4 +1,4 @@
-using RevEng.Core.Abstractions.Metadata;
+﻿using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,6 +36,11 @@ namespace RevEng.Core
         public static Type ClrType(this ProcedureResultElement storedProcedureResultElement)
         {
             return GetClrType(storedProcedureResultElement.StoreType, storedProcedureResultElement.Nullable);
+        }
+
+        public static Type ClrType(this TableFunctionResultElement tableFunctionResultElement)
+        {
+            return GetClrType(tableFunctionResultElement.StoreType, tableFunctionResultElement.Nullable);
         }
 
         private static SqlDbType GetSqlDbType(string storeType)
