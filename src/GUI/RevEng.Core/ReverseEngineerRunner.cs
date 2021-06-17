@@ -282,7 +282,7 @@ namespace RevEng.Core
 
             foreach (var directoryPath in Directory.GetDirectories(outputDir))
             {
-                if (!Directory.EnumerateFileSystemEntries(directoryPath).Any())
+                if(!Directory.EnumerateFileSystemEntries(directoryPath).Any())
                 {
                     Directory.Delete(directoryPath);
                 }
