@@ -85,7 +85,7 @@ AND NULLIF([name], '') IS NOT NULL;";
                             {
                                 try
                                 {
-                                    function.ResultElements = GetTableFunctionResultElements(connection, foundFunction.Item3);
+                                    function.ResultElements = GetTableFunctionResultElements(connection, foundFunction.Item3).Cast<ModuleResultElement>().ToList();
                                 }
                                 catch (Exception ex)
                                 {
@@ -103,7 +103,7 @@ AND NULLIF([name], '') IS NOT NULL;";
 
             return new FunctionModel
             {
-                Functions = result,
+                Routines = result.Cast<ModuleBase>().ToList(),
                 Errors = errors,
             };
         }

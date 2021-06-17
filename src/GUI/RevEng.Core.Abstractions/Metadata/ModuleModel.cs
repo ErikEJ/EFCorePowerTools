@@ -2,10 +2,9 @@
 
 namespace RevEng.Core.Abstractions.Metadata
 {
-    public class ModuleModel<T>
-        where T : ModuleBase
+    public class ModuleModel
     {
-        public List<T> Routines { get; set; }
+        public List<ModuleBase> Routines { get; set; }
         public List<string> Errors { get; set; }
     }
 }

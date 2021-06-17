@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using RevEng.Core.Abstractions;
 
 #if CORE50 || CORE60
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -49,8 +50,41 @@ namespace RevEng.Core.Modules
             return new SavedModelFiles(contextPath, additionalFiles);
         }
 
-        protected string GenerateUniqueName<T>(ModuleBase module, ModuleModel<T> model)
-            where T : ModuleBase
+        //public ScaffoldedModel ScaffoldModel(FunctionModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
+        //{
+        //    if (model == null) throw new ArgumentNullException(nameof(model));
+
+        //    var result = new ScaffoldedModel();
+
+        //    errors = model.Errors;
+
+        //    foreach (var function in model.Routines.Where(f => !f.IsScalar))
+        //    {
+        //        var typeName = GenerateIdentifierName(function, model) + "Result";
+
+        //        var classContent = WriteResultClass(function, scaffolderOptions, typeName);
+
+        //        result.AdditionalFiles.Add(new ScaffoldedFile
+        //        {
+        //            Code = classContent,
+        //            Path = scaffolderOptions.UseSchemaFolders
+        //                    ? Path.Combine(function.Schema, $"{typeName}.cs")
+        //                    : $"{typeName}.cs"
+        //        });
+        //    }
+
+        //    var dbContext = WriteFunctionsClass(scaffolderOptions, model);
+
+        //    result.ContextFile = new ScaffoldedFile
+        //    {
+        //        Code = dbContext,
+        //        Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + ".Functions.cs")),
+        //    };
+
+        //    return result;
+        //}
+
+        protected string GenerateUniqueName(ModuleBase module, ModuleModel model)
         {
             if (!string.IsNullOrEmpty(module.NewName))
                 return module.NewName;

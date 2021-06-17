@@ -70,7 +70,7 @@ ORDER BY ROUTINE_NAME;";
                             procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
                             try
                             {
-                                procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name);
+                                procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name).Cast<ModuleResultElement>().ToList();
                             }
                             catch (Exception ex)
                             {
@@ -87,7 +87,7 @@ ORDER BY ROUTINE_NAME;";
 
             return new ProcedureModel
             {
-                Procedures = result,
+                Routines = result.Cast<ModuleBase>().ToList(),
                 Errors = errors,
             };
         }

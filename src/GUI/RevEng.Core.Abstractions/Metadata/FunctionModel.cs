@@ -1,13 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace RevEng.Core.Abstractions.Metadata
+﻿namespace RevEng.Core.Abstractions.Metadata
 {
-    public class FunctionModel : ModuleModel<Function>
+    public class FunctionModel : ModuleModel
     {
-        public List<Function> Functions
-        {
-            get => Routines;
-            set => Routines = value;
-        }
     }
 }

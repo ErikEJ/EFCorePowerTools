@@ -55,7 +55,7 @@ namespace RevEng.Core.Procedures
 
             errors = model.Errors;
 
-            foreach (var procedure in model.Procedures)
+            foreach (var procedure in model.Routines.OfType<Procedure>())
             {
                 var name = GenerateIdentifierName(procedure, model) + "Result";
 
@@ -183,7 +183,7 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("}");
                 }
 
-                foreach (var procedure in model.Procedures)
+                foreach (var procedure in model.Routines.OfType<Procedure>())
                 {
                     GenerateProcedure(procedure, model);
                 }
@@ -433,7 +433,7 @@ namespace RevEng.Core.Procedures
 
         private void GenerateProperties(Procedure storedProcedure, bool nullableReferences)
         {
-            foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
+            foreach (var property in storedProcedure.ResultElements.OfType<ProcedureResultElement>().OrderBy(e => e.Ordinal))
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 

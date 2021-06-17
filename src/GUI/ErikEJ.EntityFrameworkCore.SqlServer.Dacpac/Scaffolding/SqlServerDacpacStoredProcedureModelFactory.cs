@@ -68,7 +68,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                         try
                         {
-                            procedure.ResultElements = GetStoredProcedureResultElements(proc);
+                            procedure.ResultElements = GetStoredProcedureResultElements(proc).Cast<ModuleResultElement>().ToList();
                         }
                         catch (Exception ex)
                         {
@@ -83,7 +83,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             return new ProcedureModel
             {
-                Procedures = result,
+                Routines = result.Cast<ModuleBase>().ToList(),
                 Errors = errors,
             };
         }

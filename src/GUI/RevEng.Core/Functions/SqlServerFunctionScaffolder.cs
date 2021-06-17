@@ -33,7 +33,7 @@ namespace RevEng.Core.Functions
 
             errors = model.Errors;
 
-            foreach (var function in model.Functions.Where(f => !f.IsScalar))
+            foreach (var function in model.Routines.OfType<Function>().Where(f => !f.IsScalar))
             {
                 var typeName = GenerateIdentifierName(function, model) + "Result";
 
@@ -82,7 +82,7 @@ namespace RevEng.Core.Functions
 
                 using (_sb.Indent())
                 {
-                    foreach (var function in model.Functions)
+                    foreach (var function in model.Routines.OfType<Function>())
                     {
                         GenerateFunctionStub(function, model);
                     }
@@ -105,7 +105,7 @@ namespace RevEng.Core.Functions
 
             using (_sb.Indent())
             {
-                foreach (var function in model.Functions.Where(f => !f.IsScalar))
+                foreach (var function in model.Routines.OfType<Function>().Where(f => !f.IsScalar))
                 {
                     var typeName = GenerateIdentifierName(function, model) + "Result";
 
@@ -218,7 +218,7 @@ namespace RevEng.Core.Functions
 
         private void GenerateProperties(Function function, bool nullableReferences)
         {
-            foreach (var property in function.ResultElements.OrderBy(e => e.Ordinal))
+            foreach (var property in function.ResultElements.OfType<TableFunctionResultElement>().OrderBy(e => e.Ordinal))
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 

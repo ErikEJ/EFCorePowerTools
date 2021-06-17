@@ -97,7 +97,7 @@ namespace RevEng.Core
 
                 var functionModel = functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
 
-                ApplyRenamers(functionModel.Functions, options.CustomReplacers);
+                ApplyRenamers(functionModel.Routines, options.CustomReplacers);
 
                 var functionOptions = new ModuleScaffolderOptions
                 {
@@ -145,7 +145,7 @@ namespace RevEng.Core
 
                 var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
 
-                ApplyRenamers(procedureModel.Procedures, options.CustomReplacers);
+                ApplyRenamers(procedureModel.Routines, options.CustomReplacers);
 
                 var procedureOptions = new ModuleScaffolderOptions
                 {

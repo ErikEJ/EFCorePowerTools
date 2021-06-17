@@ -10,6 +10,6 @@ namespace RevEng.Core.Abstractions.Metadata
         public bool HasValidResultSet { get; set; }
 
         public List<ModuleParameter> Parameters = new List<ModuleParameter>();
-        public List<ProcedureResultElement> ResultElements = new List<ProcedureResultElement>();
+        public List<ModuleResultElement> ResultElements = new List<ModuleResultElement>();
     }
 }
