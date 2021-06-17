@@ -1,18 +1,15 @@
-﻿#if CORE60
-using System.Diagnostics.CodeAnalysis;
-#else
-using JetBrains.Annotations;
-#endif
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Modules;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,11 +19,9 @@ using System.Text.RegularExpressions;
 
 namespace RevEng.Core.Procedures
 {
-    public class SqlServerStoredProcedureScaffolder : IProcedureScaffolder
+    public class SqlServerStoredProcedureScaffolder : SqlServerModuleScaffolder, IProcedureScaffolder
     {
         private const string parameterPrefix = "parameter";
-
-        private readonly ICSharpHelper code;
 
         private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
         {
@@ -46,11 +41,10 @@ namespace RevEng.Core.Procedures
             SqlDbType.NVarChar,
         };
 
-        private IndentedStringBuilder _sb;
 
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
+            : base(code)
         {
-            this.code = code;
         }
 
         public ScaffoldedModel ScaffoldModel(ProcedureModel model, ModuleScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
@@ -87,30 +81,17 @@ namespace RevEng.Core.Procedures
             return result;
         }
 
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
         {
-            Directory.CreateDirectory(outputDir);
+            var files = base.Save(scaffoldedModel, outputDir, nameSpace);
 
-            var contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
-            Directory.CreateDirectory(Path.GetDirectoryName(contextPath));
-            File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
-
-            var additionalFiles = new List<string>();
-
+            var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = GetDbContextExtensionsText();
-            var dbContextExtensionsPath = Path.Combine(Path.GetDirectoryName(contextPath), "DbContextExtensions.cs");
+            var dbContextExtensionsPath = Path.Combine(contextDir, "DbContextExtensions.cs");
             File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpace), Encoding.UTF8);
-            additionalFiles.Add(dbContextExtensionsPath);
+            files.AdditionalFiles.Add(dbContextExtensionsPath);
 
-            foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
-            {
-                var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
-                Directory.CreateDirectory(Path.GetDirectoryName(additionalFilePath));
-                File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
-                additionalFiles.Add(additionalFilePath);
-            }
-
-            return new SavedModelFiles(contextPath, additionalFiles);
+            return files;
         }
 
         private string GetDbContextExtensionsText()
@@ -522,23 +503,6 @@ namespace RevEng.Core.Procedures
             }
 
             return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
-        }
-
-        private string GenerateUniqueName(Procedure procedure, ProcedureModel model)
-        {
-            if (!string.IsNullOrEmpty(procedure.NewName))
-            {
-                return procedure.NewName;
-            }
-
-            var numberOfNames = model.Procedures.Where(p => p.Name == procedure.Name).Count();
-
-            if (numberOfNames > 1)
-            {
-                return procedure.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(procedure.Schema);
-            }
-
-            return procedure.Name;
         }
     }
 }
