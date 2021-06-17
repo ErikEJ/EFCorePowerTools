@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 
 namespace RevEng.Core.Procedures
 {
@@ -30,7 +31,8 @@ namespace RevEng.Core.Procedures
 
             using (var connection = new SqlConnection(connectionString))
             {
-                var sql = $@"
+                var sql = new StringBuilder();
+                sql.AppendLine($@"
 SELECT
     ROUTINE_SCHEMA,
     ROUTINE_NAME,
@@ -38,11 +40,16 @@ SELECT
     CAST(CASE WHEN (ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
 FROM INFORMATION_SCHEMA.ROUTINES
 WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
-AND ROUTINE_TYPE = '{routineType}'
-ORDER BY ROUTINE_NAME;
-";
+AND ROUTINE_TYPE = '{routineType}'");
 
-                using (var command = new SqlCommand(sql, connection))
+#if !CORE50 && !CORE60
+                // Filters out table-valued functions without filtering out stored procedures
+                sql.AppendLine("AND COALESCE(DATA_TYPE, '') != 'TABLE'");
+#endif
+
+                sql.AppendLine("ORDER BY ROUTINE_NAME;");
+
+                using (var command = new SqlCommand(sql.ToString(), connection))
                 {
                     connection.Open();
                     using (var reader = command.ExecuteReader())
