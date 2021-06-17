@@ -66,37 +66,37 @@ AND NULLIF([name], '') IS NOT NULL;";
                     }
                 }
 
-                foreach (var foundFunction in found)
+                foreach (var foundModule in found)
                 {
-                    if (filter.Count == 0 || filter.Contains($"[{foundFunction.Item1}].[{foundFunction.Item2}]"))
+                    if (filter.Count == 0 || filter.Contains($"[{foundModule.Item1}].[{foundModule.Item2}]"))
                     {
-                        var function = new Function
+                        var module = new Function
                         {
-                            Schema = foundFunction.Item1,
-                            Name = foundFunction.Item2,
-                            IsScalar = foundFunction.Item4
+                            Schema = foundModule.Item1,
+                            Name = foundModule.Item2,
+                            IsScalar = foundModule.Item4
                         };
 
                         if (options.FullModel)
                         {
-                            function.Parameters = GetFunctionParameters(connection, foundFunction.Item3);
+                            module.Parameters = GetParameters(connection, foundModule.Item3);
 
-                            if (!function.IsScalar)
+                            if (!module.IsScalar)
                             {
                                 try
                                 {
-                                    function.ResultElements = GetTableFunctionResultElements(connection, foundFunction.Item3);
+                                    module.ResultElements = GetResultElements(connection, foundModule.Item3);
                                 }
                                 catch (Exception ex)
                                 {
-                                    function.HasValidResultSet = false;
-                                    errors.Add($"Unable to get result set shape for function '{function.Schema}.{function.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
-                                    _logger?.Logger.LogWarning(ex, $"Unable to scaffold {function.Schema}.{function.Name}");
+                                    module.HasValidResultSet = false;
+                                    errors.Add($"Unable to get result set shape for function '{module.Schema}.{module.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                                    _logger?.Logger.LogWarning(ex, $"Unable to scaffold {module.Schema}.{module.Name}");
                                 }
                             }
                         }
 
-                        result.Add(function);
+                        result.Add(module);
                     }
                 }
             }
@@ -108,7 +108,7 @@ AND NULLIF([name], '') IS NOT NULL;";
             };
         }
 
-        private List<ModuleParameter> GetFunctionParameters(SqlConnection connection, long objectId)
+        private List<ModuleParameter> GetParameters(SqlConnection connection, long objectId)
         {
             var dtResult = new DataTable();
             var result = new List<ModuleParameter>();
@@ -161,7 +161,7 @@ SELECT
             return result;
         }
 
-        private List<ModuleResultElement> GetTableFunctionResultElements(SqlConnection connection, int objectId)
+        private List<ModuleResultElement> GetResultElements(SqlConnection connection, int objectId)
         {
             var dtResult = new DataTable();
             var result = new List<ModuleResultElement>();

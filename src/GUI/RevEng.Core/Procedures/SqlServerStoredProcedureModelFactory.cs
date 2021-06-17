@@ -54,33 +54,33 @@ ORDER BY ROUTINE_NAME;";
                     }
                 }
 
-                foreach (var foundProcedure in found)
+                foreach (var foundModule in found)
                 {
-                    if (filter.Count == 0 || filter.Contains($"[{foundProcedure.Item1}].[{foundProcedure.Item2}]"))
+                    if (filter.Count == 0 || filter.Contains($"[{foundModule.Item1}].[{foundModule.Item2}]"))
                     {
-                        var procedure = new Procedure
+                        var module = new Procedure
                         {
-                            Schema = foundProcedure.Item1,
-                            Name = foundProcedure.Item2,
+                            Schema = foundModule.Item1,
+                            Name = foundModule.Item2,
                             HasValidResultSet = true,
                         };
 
                         if (options.FullModel)
                         {
-                            procedure.Parameters = GetStoredProcedureParameters(connection, procedure.Schema, procedure.Name);
+                            module.Parameters = GetParameters(connection, module.Schema, module.Name);
                             try
                             {
-                                procedure.ResultElements = GetStoredProcedureResultElements(connection, procedure.Schema, procedure.Name).Cast<ModuleResultElement>().ToList();
+                                module.ResultElements = GetResultElements(connection, module.Schema, module.Name);
                             }
                             catch (Exception ex)
                             {
-                                procedure.HasValidResultSet = false;
-                                errors.Add($"Unable to get result set shape for procedure '{procedure.Schema}.{procedure.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
-                                _logger?.Logger.LogWarning(ex, $"Unable to scaffold {procedure.Schema}.{procedure.Name}");
+                                module.HasValidResultSet = false;
+                                errors.Add($"Unable to get result set shape for procedure '{module.Schema}.{module.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                                _logger?.Logger.LogWarning(ex, $"Unable to scaffold {module.Schema}.{module.Name}");
                             }
                         }
 
-                        result.Add(procedure);
+                        result.Add(module);
                     }
                 }
             }
@@ -92,7 +92,7 @@ ORDER BY ROUTINE_NAME;";
             };
         }
 
-        private List<ModuleParameter> GetStoredProcedureParameters(SqlConnection connection, string schema, string name)
+        private List<ModuleParameter> GetParameters(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
             var result = new List<ModuleParameter>();
@@ -109,9 +109,6 @@ SELECT
                 else OdbcPrec(p.system_type_id, p.max_length, p.precision) end AS INT),  
     'Scale'   = CAST(OdbcScale(p.system_type_id, p.scale) AS INT),  
     'Order'  = CAST(parameter_id AS INT),  
-    'Collation'   = convert(sysname, 
-                    case when p.system_type_id in (35, 99, 167, 175, 231, 239)  
-                    then ServerProperty('collation') end),
     p.is_output AS output,
     'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id))
     from sys.parameters p
@@ -161,7 +158,7 @@ SELECT
             return result;
         }
 
-        private List<ModuleResultElement> GetStoredProcedureResultElements(SqlConnection connection, string schema, string name)
+        private List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
             var result = new List<ModuleResultElement>();
