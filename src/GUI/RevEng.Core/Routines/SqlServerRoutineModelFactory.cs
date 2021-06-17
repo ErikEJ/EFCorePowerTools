@@ -66,19 +66,21 @@ AND ROUTINE_TYPE = '{routineType}'");
                 {
                     if (filter.Count == 0 || filter.Contains($"[{foundModule.Item1}].[{foundModule.Item2}]"))
                     {
-                        var module = new Routine
-                        {
-                            Schema = foundModule.Item1,
-                            Name = foundModule.Item2,
-                            HasValidResultSet = true,
-                            IsScalar = foundModule.Item4,
-                        };
+                        var isScalar = foundModule.Item4;
+
+                        var module = routineType == "procedure"
+                            ? (Routine)new Procedure()
+                            : new Function { IsScalar = isScalar };
+
+                        module.Schema = foundModule.Item1;
+                        module.Name = foundModule.Item2;
+                        module.HasValidResultSet = true;
 
                         if (options.FullModel)
                         {
                             module.Parameters = GetParameters(connection, module.Schema, module.Name);
 
-                            if (!module.IsScalar)
+                            if (!isScalar)
                             {
                                 try
                                 {

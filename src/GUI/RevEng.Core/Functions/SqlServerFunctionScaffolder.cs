@@ -64,7 +64,7 @@ namespace RevEng.Core.Functions
 
             using (_sb.Indent())
             {
-                foreach (var function in model.Routines.Where(f => !f.IsScalar))
+                foreach (var function in model.Routines.Cast<Function>().Where(f => !f.IsScalar))
                 {
                     var typeName = GenerateIdentifierName(function, model) + "Result";
 
@@ -86,7 +86,7 @@ namespace RevEng.Core.Functions
 
             _sb.AppendLine($"[DbFunction(\"{function.Name}\", \"{function.Schema}\")]");
 
-            if (function.IsScalar)
+            if ((function as Function)!.IsScalar)
             {
                 var returnType = paramStrings.First();
                 var parameters = string.Empty;

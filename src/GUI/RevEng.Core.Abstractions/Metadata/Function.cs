@@ -2,5 +2,6 @@
 {
     public class Function : Routine
     {
+        public bool IsScalar { get; set; }
     }
 }
