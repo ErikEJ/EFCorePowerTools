@@ -68,7 +68,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                         try
                         {
-                            procedure.ResultElements = GetStoredProcedureResultElements(proc).Cast<ModuleResultElement>().ToList();
+                            procedure.ResultElements = GetStoredProcedureResultElements(proc);
                         }
                         catch (Exception ex)
                         {
@@ -121,9 +121,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return result;
         }
 
-        private List<ProcedureResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
+        private List<ModuleResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
-            var result = new List<ProcedureResultElement>();
+            var result = new List<ModuleResultElement>();
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
 
             if (metaProc.Selects == null || metaProc.Selects.Count() == 0)
@@ -134,7 +134,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             int ordinal = 0;
             foreach (var column in metaProc.Selects.FirstOrDefault()?.Columns)
             {
-                result.Add(new ProcedureResultElement
+                result.Add(new ModuleResultElement
                 { 
                     Name = column.Name,
                     Nullable = column.IsNullable,

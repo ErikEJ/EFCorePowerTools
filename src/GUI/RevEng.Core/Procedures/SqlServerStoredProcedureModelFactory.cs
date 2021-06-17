@@ -161,12 +161,12 @@ SELECT
             return result;
         }
 
-        private List<ProcedureResultElement> GetStoredProcedureResultElements(SqlConnection connection, string schema, string name)
+        private List<ModuleResultElement> GetStoredProcedureResultElements(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
-            var result = new List<ProcedureResultElement>();
+            var result = new List<ModuleResultElement>();
 
-            var sql = $@"exec dbo.sp_describe_first_result_set N'[{schema}].[{name}]';";
+            var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{name}]';";
 
             var adapter = new SqlDataAdapter
             {
@@ -179,7 +179,7 @@ SELECT
 
             foreach (DataRow res in dtResult.Rows)
             {
-                var parameter = new ProcedureResultElement()
+                var parameter = new ModuleResultElement()
                 {
                     Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
                     StoreType = string.IsNullOrEmpty(res["system_type_name"].ToString()) ? res["user_type_name"].ToString() : res["system_type_name"].ToString(),

@@ -85,7 +85,7 @@ AND NULLIF([name], '') IS NOT NULL;";
                             {
                                 try
                                 {
-                                    function.ResultElements = GetTableFunctionResultElements(connection, foundFunction.Item3).Cast<ModuleResultElement>().ToList();
+                                    function.ResultElements = GetTableFunctionResultElements(connection, foundFunction.Item3);
                                 }
                                 catch (Exception ex)
                                 {
@@ -161,10 +161,10 @@ SELECT
             return result;
         }
 
-        private List<TableFunctionResultElement> GetTableFunctionResultElements(SqlConnection connection, int objectId)
+        private List<ModuleResultElement> GetTableFunctionResultElements(SqlConnection connection, int objectId)
         {
             var dtResult = new DataTable();
-            var result = new List<TableFunctionResultElement>();
+            var result = new List<ModuleResultElement>();
 
             var sql = $@"
 SELECT 
@@ -186,7 +186,7 @@ WHERE object_id = {objectId};";
 
             foreach (DataRow res in dtResult.Rows)
             {
-                var parameter = new TableFunctionResultElement()
+                var parameter = new ModuleResultElement()
                 {
                     Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
                     StoreType = res["type_name"].ToString(),

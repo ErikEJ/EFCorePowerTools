@@ -38,16 +38,6 @@ namespace RevEng.Core
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
-        public static Type ClrType(this ProcedureResultElement storedProcedureResultElement)
-        {
-            return GetClrType(storedProcedureResultElement.StoreType, storedProcedureResultElement.Nullable);
-        }
-
-        public static Type ClrType(this TableFunctionResultElement tableFunctionResultElement)
-        {
-            return GetClrType(tableFunctionResultElement.StoreType, tableFunctionResultElement.Nullable);
-        }
-
         private static SqlDbType GetSqlDbType(string storeType)
         {
             if (string.IsNullOrEmpty(storeType))
