@@ -18,7 +18,7 @@ namespace RevEng.Core.Procedures
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
-            return GetRoutines(connectionString, options, "procedure");
+            return GetRoutines(connectionString, options);
         }
 
         protected override List<ModuleParameter> GetParameters(SqlConnection connection, string schema, string name)

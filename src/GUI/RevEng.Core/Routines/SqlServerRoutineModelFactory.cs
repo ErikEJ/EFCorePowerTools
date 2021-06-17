@@ -16,13 +16,20 @@ namespace RevEng.Core.Procedures
     {
         protected readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
-        public SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        protected SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
         {
             _logger = logger;
         }
 
-        protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options, string routineType)
+        protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
+            var routineType = this switch
+            {
+                SqlServerStoredProcedureModelFactory _ => "procedure",
+                SqlServerFunctionModelFactory _ => "function",
+                _ => throw new InvalidOperationException($"Unknown type '{GetType().Name}'"),
+            };
+
             var result = new List<Routine>();
             var found = new List<Tuple<string, string, string, bool>>();
             var errors = new List<string>();
