@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using RevEng.Core.Abstractions;
+using RevEng.Core.Procedures;
 
 #if CORE50 || CORE60
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -50,41 +51,59 @@ namespace RevEng.Core.Modules
             return new SavedModelFiles(contextPath, additionalFiles);
         }
 
-        //public ScaffoldedModel ScaffoldModel(FunctionModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
-        //{
-        //    if (model == null) throw new ArgumentNullException(nameof(model));
+        public ScaffoldedModel ScaffoldModel(ModuleModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
 
-        //    var result = new ScaffoldedModel();
+            var result = new ScaffoldedModel();
 
-        //    errors = model.Errors;
+            errors = model.Errors;
 
-        //    foreach (var function in model.Routines.Where(f => !f.IsScalar))
-        //    {
-        //        var typeName = GenerateIdentifierName(function, model) + "Result";
+            foreach (var function in model.Routines.Where(f => !(f is Function func) || !func.IsScalar))
+            {
+                var typeName = GenerateIdentifierName(function, model) + "Result";
 
-        //        var classContent = WriteResultClass(function, scaffolderOptions, typeName);
+                var classContent = WriteResultClass(function, scaffolderOptions, typeName);
 
-        //        result.AdditionalFiles.Add(new ScaffoldedFile
-        //        {
-        //            Code = classContent,
-        //            Path = scaffolderOptions.UseSchemaFolders
-        //                    ? Path.Combine(function.Schema, $"{typeName}.cs")
-        //                    : $"{typeName}.cs"
-        //        });
-        //    }
+                result.AdditionalFiles.Add(new ScaffoldedFile
+                {
+                    Code = classContent,
+                    Path = scaffolderOptions.UseSchemaFolders
+                            ? Path.Combine(function.Schema, $"{typeName}.cs")
+                            : $"{typeName}.cs"
+                });
+            }
 
-        //    var dbContext = WriteFunctionsClass(scaffolderOptions, model);
+            var dbContext = WriteDbContext(scaffolderOptions, model);
 
-        //    result.ContextFile = new ScaffoldedFile
-        //    {
-        //        Code = dbContext,
-        //        Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + ".Functions.cs")),
-        //    };
+            var fileNameSuffix = (this is SqlServerStoredProcedureScaffolder)
+                ? "Procedures"
+                : ".Functions";
+            result.ContextFile = new ScaffoldedFile
+            {
+                Code = dbContext,
+                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{fileNameSuffix}.cs")),
+            };
 
-        //    return result;
-        //}
+            return result;
+        }
 
-        protected string GenerateUniqueName(ModuleBase module, ModuleModel model)
+        protected virtual string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, ModuleModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual string WriteResultClass(Module module, ModuleScaffolderOptions scaffolderOptions, string typeName)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual string GenerateIdentifierName(Module module, ModuleModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected string GenerateUniqueName(Module module, ModuleModel model)
         {
             if (!string.IsNullOrEmpty(module.NewName))
                 return module.NewName;

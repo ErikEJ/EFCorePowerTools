@@ -21,12 +21,12 @@ namespace RevEng.Core.Procedures
             _logger = logger;
         }
 
-        public ProcedureModel Create(string connectionString, ModuleModelFactoryOptions options)
+        public ModuleModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
             return GetStoredProcedures(connectionString, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string connectionString, ModuleModelFactoryOptions options)
+        private ModuleModel GetStoredProcedures(string connectionString, ModuleModelFactoryOptions options)
         {
             var result = new List<Procedure>();
             var found = new List<Tuple<string, string>>();
@@ -85,7 +85,7 @@ ORDER BY ROUTINE_NAME;";
                 }
             }
 
-            return new ProcedureModel
+            return new ModuleModel
             {
                 Routines = result.Cast<Module>().ToList(),
                 Errors = errors,

@@ -4,6 +4,6 @@ namespace RevEng.Core.Abstractions.Model
 {
     public interface IProcedureModelFactory
     {
-        ProcedureModel Create(string connectionString, ModuleModelFactoryOptions options);
+        ModuleModel Create(string connectionString, ModuleModelFactoryOptions options);
     }
 }

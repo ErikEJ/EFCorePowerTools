@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Module = RevEng.Core.Abstractions.Metadata.Module;
 
 namespace RevEng.Core.Procedures
 {
@@ -47,40 +48,6 @@ namespace RevEng.Core.Procedures
         {
         }
 
-        public ScaffoldedModel ScaffoldModel(ProcedureModel model, ModuleScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var result = new ScaffoldedModel();
-
-            errors = model.Errors;
-
-            foreach (var procedure in model.Routines.OfType<Procedure>())
-            {
-                var name = GenerateIdentifierName(procedure, model) + "Result";
-
-                var classContent = WriteResultClass(procedure, procedureScaffolderOptions, name);
-
-                result.AdditionalFiles.Add(new ScaffoldedFile
-                {
-                    Code = classContent,
-                    Path = procedureScaffolderOptions.UseSchemaFolders
-                            ? Path.Combine(procedure.Schema, $"{name}.cs")
-                            : $"{name}.cs"
-                });
-            }
-
-            var dbContext = WriteProcedureDbContext(procedureScaffolderOptions, model);
-
-            result.ContextFile = new ScaffoldedFile
-            {
-                Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(procedureScaffolderOptions.ContextDir, procedureScaffolderOptions.ContextName + "Procedures.cs")),
-            };
-
-            return result;
-        }
-
         public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
         {
             var files = base.Save(scaffoldedModel, outputDir, nameSpace);
@@ -102,7 +69,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        private string WriteProcedureDbContext(ModuleScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, ModuleModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -196,7 +163,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Procedure procedure, ProcedureModel model)
+        private void GenerateProcedure(Procedure procedure, ModuleModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
@@ -387,7 +354,7 @@ namespace RevEng.Core.Procedures
             _sb.Append("}");
         }
 
-        private string WriteResultClass(Procedure storedProcedure, ModuleScaffolderOptions options, string name)
+        protected override string WriteResultClass(Module storedProcedure, ModuleScaffolderOptions options, string name)
         {
             var @namespace = options.ModelNamespace;
 
@@ -418,7 +385,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateClass(Procedure storedProcedure, string name, bool nullableReferences)
+        private void GenerateClass(Module storedProcedure, string name, bool nullableReferences)
         {
             _sb.AppendLine($"public partial class {name}");
             _sb.AppendLine("{");
@@ -431,7 +398,7 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("}");
         }
 
-        private void GenerateProperties(Procedure storedProcedure, bool nullableReferences)
+        private void GenerateProperties(Module storedProcedure, bool nullableReferences)
         {
             foreach (var property in storedProcedure.ResultElements.OfType<ProcedureResultElement>().OrderBy(e => e.Ordinal))
             {
@@ -472,7 +439,7 @@ namespace RevEng.Core.Procedures
             return CreateIdentifier(propertyName);
         }
 
-        private string GenerateIdentifierName(Procedure procedure, ProcedureModel model)
+        protected override string GenerateIdentifierName(Module procedure, ModuleModel model)
         {
             if (procedure == null)
             {

@@ -23,7 +23,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             _logger = logger;
         }
 
-        public ProcedureModel Create(string dacpacPath, ModuleModelFactoryOptions options)
+        public ModuleModel Create(string dacpacPath, ModuleModelFactoryOptions options)
         {
             if (string.IsNullOrEmpty(dacpacPath))
             {
@@ -37,7 +37,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return GetStoredProcedures(dacpacPath, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
+        private ModuleModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
         {
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
@@ -81,7 +81,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 }
             }
 
-            return new ProcedureModel
+            return new ModuleModel
             {
                 Routines = result.Cast<Module>().ToList(),
                 Errors = errors,

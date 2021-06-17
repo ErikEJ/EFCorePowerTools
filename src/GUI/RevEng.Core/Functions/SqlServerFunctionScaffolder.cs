@@ -25,41 +25,7 @@ namespace RevEng.Core.Functions
         {
         }
 
-        public ScaffoldedModel ScaffoldModel(FunctionModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var result = new ScaffoldedModel();
-
-            errors = model.Errors;
-
-            foreach (var function in model.Routines.OfType<Function>().Where(f => !f.IsScalar))
-            {
-                var typeName = GenerateIdentifierName(function, model) + "Result";
-
-                var classContent = WriteResultClass(function, scaffolderOptions, typeName);
-
-                result.AdditionalFiles.Add(new ScaffoldedFile
-                {
-                    Code = classContent,
-                    Path = scaffolderOptions.UseSchemaFolders
-                            ? Path.Combine(function.Schema, $"{typeName}.cs")
-                            : $"{typeName}.cs"
-                });
-            }
-
-            var dbContext = WriteFunctionsClass(scaffolderOptions, model);
-
-            result.ContextFile = new ScaffoldedFile
-            {
-                Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + ".Functions.cs")),
-            };
-
-            return result;
-        }
-
-        private string WriteFunctionsClass(ModuleScaffolderOptions scaffolderOptions, FunctionModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, ModuleModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -97,7 +63,7 @@ namespace RevEng.Core.Functions
             return _sb.ToString();
         }
 
-        private void GenerateModelCreation(FunctionModel model)
+        private void GenerateModelCreation(ModuleModel model)
         {
             _sb.AppendLine();
             _sb.AppendLine("protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)");
@@ -116,7 +82,7 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("}");
         }
 
-        private void GenerateFunctionStub(Function function, FunctionModel model)
+        private void GenerateFunctionStub(Function function, ModuleModel model)
         {
             var paramStrings = function.Parameters
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
@@ -172,7 +138,7 @@ namespace RevEng.Core.Functions
             }
         }
 
-        private string WriteResultClass(Function function, ModuleScaffolderOptions options, string name)
+        protected override string WriteResultClass(Module function, ModuleScaffolderOptions options, string name)
         {
             var @namespace = options.ModelNamespace;
 
@@ -203,7 +169,7 @@ namespace RevEng.Core.Functions
             return _sb.ToString();
         }
 
-        private void GenerateClass(Function function, string name, bool nullableReferences)
+        private void GenerateClass(Module function, string name, bool nullableReferences)
         {
             _sb.AppendLine($"public partial class {name}");
             _sb.AppendLine("{");
@@ -216,7 +182,7 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("}");
         }
 
-        private void GenerateProperties(Function function, bool nullableReferences)
+        private void GenerateProperties(Module function, bool nullableReferences)
         {
             foreach (var property in function.ResultElements.OfType<TableFunctionResultElement>().OrderBy(e => e.Ordinal))
             {
@@ -257,7 +223,7 @@ namespace RevEng.Core.Functions
             return CreateIdentifier(propertyName);
         }
 
-        private string GenerateIdentifierName(Function function, FunctionModel model)
+        protected override string GenerateIdentifierName(Module function, ModuleModel model)
         {
             if (function == null)
             {
