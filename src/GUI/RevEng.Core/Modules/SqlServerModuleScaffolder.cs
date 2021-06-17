@@ -61,7 +61,7 @@ namespace RevEng.Core.Modules
 
             errors = model.Errors;
 
-            foreach (var routine in model.Routines.Where(r => !(r is Function f) || !f.IsScalar))
+            foreach (var routine in model.Routines.Where(r => !r.IsScalar))
             {
                 var typeName = GenerateIdentifierName(routine, model) + "Result";
 

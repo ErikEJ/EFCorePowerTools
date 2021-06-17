@@ -59,7 +59,7 @@ ORDER BY ROUTINE_NAME;
                 {
                     if (filter.Count == 0 || filter.Contains($"[{foundModule.Item1}].[{foundModule.Item2}]"))
                     {
-                        var module = new Procedure
+                        var module = new Module
                         {
                             Schema = foundModule.Item1,
                             Name = foundModule.Item2,
