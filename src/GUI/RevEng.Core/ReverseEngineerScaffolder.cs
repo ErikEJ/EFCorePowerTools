@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace RevEng.Core
 {
@@ -303,8 +304,28 @@ namespace RevEng.Core
                     {
                         sqlObject.NewName = schema.Tables.SingleOrDefault(t => t.Name == sqlObject.Name)?.NewName;
                     }
+                    else if (!string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null)
+                    {
+                        sqlObject.NewName = RegexNameReplace(schema.TableRegexPattern, sqlObject.Name, schema.TablePatternReplaceWith);
+                    }
                 }
             }
+        }
+
+        private static string RegexNameReplace(string pattern, string originalName, string replacement, int timeout = 100)
+        {
+            string newName = string.Empty;
+
+            try
+            {
+                newName = Regex.Replace(originalName, pattern, replacement, RegexOptions.None, TimeSpan.FromMilliseconds(timeout));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                Console.WriteLine($"Regex pattern {pattern} time out when trying to match {originalName}, name won't be replaced");
+            }
+
+            return newName;
         }
     }
 }
