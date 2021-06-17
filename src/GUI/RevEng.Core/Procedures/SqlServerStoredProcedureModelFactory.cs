@@ -87,7 +87,7 @@ ORDER BY ROUTINE_NAME;";
 
             return new ProcedureModel
             {
-                Routines = result.Cast<ModuleBase>().ToList(),
+                Routines = result.Cast<Module>().ToList(),
                 Errors = errors,
             };
         }

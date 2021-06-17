@@ -103,7 +103,7 @@ AND NULLIF([name], '') IS NOT NULL;";
 
             return new FunctionModel
             {
-                Routines = result.Cast<ModuleBase>().ToList(),
+                Routines = result.Cast<Module>().ToList(),
                 Errors = errors,
             };
         }

@@ -83,7 +83,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             return new ProcedureModel
             {
-                Routines = result.Cast<ModuleBase>().ToList(),
+                Routines = result.Cast<Module>().ToList(),
                 Errors = errors,
             };
         }

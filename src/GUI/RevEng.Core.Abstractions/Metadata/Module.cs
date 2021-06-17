@@ -5,7 +5,7 @@ namespace RevEng.Core.Abstractions.Metadata
     /// <summary>
     /// Base object for functions and stored procedures
     /// </summary>
-    public class ModuleBase : SqlObjectBase
+    public class Module : SqlObjectBase
     {
         public bool HasValidResultSet { get; set; }
 
