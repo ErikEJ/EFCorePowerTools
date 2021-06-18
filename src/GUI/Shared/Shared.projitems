@@ -61,6 +61,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DAL\OperatingSystemAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\TelemetryAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\VisualStudioAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EFCorePowerToolsPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\EnvDTEExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
@@ -94,11 +95,56 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Telemetry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsDataHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsTheming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.Designer.cs">
+      <DependentUpon>AboutLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.Designer.cs">
+      <DependentUpon>CompareLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.Designer.cs">
+      <DependentUpon>DgmlLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.Designer.cs">
+      <DependentUpon>MigrationsLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.Designer.cs">
+      <DependentUpon>ModelAnalyzerLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.Designer.cs">
+      <DependentUpon>ReverseEngineerLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.Designer.cs">
+      <DependentUpon>SharedLocale.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Options\OptionsPageGeneral.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)PkgCmdID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Resources.en.Designer.cs">
+      <DependentUpon>Resources.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AdvancedModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ColumnInformationViewModel.cs" />
@@ -117,5 +163,97 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickTablesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SchemaInformationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TableInformationViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\AboutLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>CompareLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\CompareLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.resx">
+      <LastGenOutput>DgmlLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\DgmlLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>MigrationsLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\MigrationsLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>ModelAnalyzerLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ModelAnalyzerLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\ReverseEngineerLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.it.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.resx">
+      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Locales\SharedLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources.en.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.en.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.fr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.it.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.tr.resx" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)VSPackage.zh-Hans.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\Package.ico" />
   </ItemGroup>
 </Project>
