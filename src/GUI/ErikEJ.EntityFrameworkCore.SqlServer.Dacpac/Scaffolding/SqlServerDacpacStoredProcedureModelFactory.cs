@@ -23,7 +23,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             _logger = logger;
         }
 
-        public ProcedureModel Create(string dacpacPath, ModuleModelFactoryOptions options)
+        public RoutineModel Create(string dacpacPath, ModuleModelFactoryOptions options)
         {
             if (string.IsNullOrEmpty(dacpacPath))
             {
@@ -37,7 +37,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return GetStoredProcedures(dacpacPath, options);
         }
 
-        private ProcedureModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
+        private RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
         {
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
@@ -81,9 +81,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 }
             }
 
-            return new ProcedureModel
+            return new RoutineModel
             {
-                Procedures = result,
+                Routines = result.Cast<Routine>().ToList(),
                 Errors = errors,
             };
         }
@@ -121,9 +121,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return result;
         }
 
-        private List<ProcedureResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
+        private List<ModuleResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
-            var result = new List<ProcedureResultElement>();
+            var result = new List<ModuleResultElement>();
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
 
             if (metaProc.Selects == null || metaProc.Selects.Count() == 0)
@@ -134,7 +134,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             int ordinal = 0;
             foreach (var column in metaProc.Selects.FirstOrDefault()?.Columns)
             {
-                result.Add(new ProcedureResultElement
+                result.Add(new ModuleResultElement
                 { 
                     Name = column.Name,
                     Nullable = column.IsNullable,

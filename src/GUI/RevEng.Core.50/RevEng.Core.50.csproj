@@ -20,7 +20,10 @@
 		<Compile Include="..\RevEng.Core\Functions\SqlServerFunctionModelFactory.cs" Link="Functions\SqlServerFunctionModelFactory.cs" />
 		<Compile Include="..\RevEng.Core\Functions\SqlServerFunctionScaffolder.cs" Link="Functions\SqlServerFunctionScaffolder.cs" />
 		<Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
-		<Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Routines\IRoutineScaffolder.cs" Link="Routines\IRoutineScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Routines\SqlServerRoutineModelFactory.cs" Link="Routines\SqlServerRoutineModelFactory.cs" />
+    <Compile Include="..\RevEng.Core\Routines\SqlServerRoutineScaffolder.cs" Link="Routines\SqlServerRoutineScaffolder.cs" />
+    <Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
 		<Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
 		<Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureModelFactory.cs" Link="Procedures\SqlServerStoredProcedureModelFactory.cs" />
 		<Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureScaffolder.cs" Link="Procedures\SqlServerStoredProcedureScaffolder.cs" />
