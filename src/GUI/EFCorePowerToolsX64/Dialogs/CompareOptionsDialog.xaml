@@ -1,0 +1,97 @@
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.CompareOptionsDialog"
+                 xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+                 Title="{x:Static locale:CompareLocale.ChooseDatabaseContexts}" 
+                 mc:Ignorable="d"
+                 ShowInTaskbar="False"
+                 MinWidth="220"
+                 MinHeight="150"
+                 MaxWidth="420"
+                 MaxHeight="250"
+                 ResizeMode="CanResize"
+                 WindowStartupLocation="CenterOwner"
+                 d:DataContext="{d:DesignInstance Type=viewModels:CompareOptionsViewModel, IsDesignTimeCreatable=False}">
+
+    <dw:DialogWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style.xaml"/>
+                <ResourceDictionary Source="Converter.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </dw:DialogWindow.Resources>
+
+    <dw:DialogWindow.Background>
+        <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+    </dw:DialogWindow.Background>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Grid.Column="0"
+                      Margin="0"
+                      ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedDatabaseConnection}"
+                      DisplayMemberPath="ConnectionName">
+            </ComboBox>
+
+            <Button Grid.Column="1"
+                    Margin="8,0,0,0"
+                    ToolTip="{x:Static locale:CompareLocale.RemoveSelectedConnection}"
+                    Command="{Binding RemoveDatabaseConnectionCommand}">
+                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
+            </Button>
+
+            <dw:DialogButton Grid.Column="2"
+                             Margin="8,0,0,0"
+                             Content="{x:Static locale:CompareLocale.Add}"
+                             ToolTip="{x:Static locale:CompareLocale.AddDatabaseConnection}"
+                             Command="{Binding AddDatabaseConnectionCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ListBox Grid.Column="0"
+                     ItemsSource="{Binding ContextTypes, Mode=OneWay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}" />
+                            <TextBlock Text="{Binding Name, Mode=OneTime}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,5,0,0">
+            <dw:DialogButton Content="{x:Static locale:SharedLocale.Ok}"
+                             IsDefault="True"
+                             Margin="0,0"
+                             Command="{Binding OkCommand}"/>
+            <dw:DialogButton Content="{x:Static locale:SharedLocale.Cancel}"
+                             Margin="8,0,0,0"
+                             Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</dw:DialogWindow>

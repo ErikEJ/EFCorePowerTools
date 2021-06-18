@@ -1,0 +1,90 @@
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.PickSchemasDialog"
+                 xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 Title="{x:Static locale:ReverseEngineerLocale.ChooseSchemas}" 
+                 WindowStyle="SingleBorderWindow"
+                 WindowStartupLocation="CenterOwner"
+                 ResizeMode="NoResize" 
+                 ShowInTaskbar="False"
+                 SizeToContent="WidthAndHeight"
+                 mc:Ignorable="d" 
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 MinWidth="420"
+                 MinHeight="200"
+                 d:DataContext="{d:DesignInstance Type=viewModels:PickSchemasViewModel, IsDesignTimeCreatable=False}">
+
+    <dw:DialogWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style.xaml"/>
+                <ResourceDictionary Source="Converter.xaml"/>
+                <ResourceDictionary>
+                    <Style x:Key="SourceSelectionButtonStyle" TargetType="dw:DialogButton">
+                        <Setter Property="Margin" Value="10, 0, 0, 0"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </dw:DialogWindow.Resources>
+
+    <dw:DialogWindow.Background>
+        <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+    </dw:DialogWindow.Background>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <ListBox ItemsSource="{Binding Schemas}" SelectedItem="{Binding SelectedSchema, Mode=TwoWay}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Margin="0,5,0,0">
+            <dw:ImageButton TabIndex="4" 
+                            ImageNormal="pack://application:,,,/EFCorePowerTools;component/Resources/Add_16x.png"
+                            ImageHover="pack://application:,,,/EFCorePowerTools;component/Resources/Add_16x.png"
+                            ImagePressed="pack://application:,,,/EFCorePowerTools;component/Resources/Add_16x.png"
+                            Command="{Binding AddCommand}"/>
+            <dw:ImageButton TabIndex="5"
+                            ImageNormal="pack://application:,,,/EFCorePowerTools;component/Resources/Remove_16x.png"
+                            ImageHover="pack://application:,,,/EFCorePowerTools;component/Resources/Remove_16x.png"
+                            ImagePressed="pack://application:,,,/EFCorePowerTools;component/Resources/Remove_16x.png"
+                            Margin="5,0,0,0"
+                            Content="{x:Static locale:SharedLocale.Cancel}"
+                            Command="{Binding RemoveCommand}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0,5,0,0">
+            <dw:DialogButton TabIndex="4"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="{x:Static locale:SharedLocale.Ok}"
+                             IsDefault="True"
+                             Command="{Binding OkCommand}"/>
+            <dw:DialogButton TabIndex="5"
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="{x:Static locale:SharedLocale.Cancel}"
+                             Command="{Binding CancelCommand}"/>
+        </StackPanel>
+    </Grid>
+</dw:DialogWindow>

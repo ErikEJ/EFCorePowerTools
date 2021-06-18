@@ -53,10 +53,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Core.60", "RevEng.Co
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{9774F070-C59A-4FC2-93A5-90B7E7435FE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery", "ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery.csproj", "{2F99336C-48D4-4454-9877-15669E68B2BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery", "ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery.csproj", "{2F99336C-48D4-4454-9877-15669E68B2BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCorePowerToolsX64", "EFCorePowerToolsX64\EFCorePowerToolsX64.csproj", "{0C756DC7-B18F-4C6D-A8C6-7F2CC9D99E5D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{0c756dc7-b18f-4c6d-a8c6-7f2cc9d99e5d}*SharedItemsImports = 4
 		Shared\Shared.projitems*{9774f070-c59a-4fc2-93a5-90b7e7435fe8}*SharedItemsImports = 13
 		Shared\Shared.projitems*{c670be03-6397-4ac0-9914-ad1bb679778f}*SharedItemsImports = 4
 	EndGlobalSection
@@ -153,6 +156,10 @@ Global
 		{2F99336C-48D4-4454-9877-15669E68B2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F99336C-48D4-4454-9877-15669E68B2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F99336C-48D4-4454-9877-15669E68B2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C756DC7-B18F-4C6D-A8C6-7F2CC9D99E5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C756DC7-B18F-4C6D-A8C6-7F2CC9D99E5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C756DC7-B18F-4C6D-A8C6-7F2CC9D99E5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C756DC7-B18F-4C6D-A8C6-7F2CC9D99E5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

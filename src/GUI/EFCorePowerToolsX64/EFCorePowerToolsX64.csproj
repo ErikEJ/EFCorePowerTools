@@ -28,7 +28,7 @@
     <Platform>AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{C670BE03-6397-4AC0-9914-AD1BB679778F}</ProjectGuid>
+    <ProjectGuid>{0C756DC7-B18F-4C6D-A8C6-7F2CC9D99E5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EFCorePowerTools</RootNamespace>
@@ -109,6 +109,10 @@
     <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <Content Include="..\EFCorePowerTools\db.png">
+      <Link>db.png</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\7.png" />
     <Resource Include="Resources\TableWarning_16x.png" />
     <Resource Include="Resources\StatusInvalid_16x.png" />
@@ -116,9 +120,6 @@
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
-    <Content Include="CodeTemplates.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efpt30.exe.zip">
       <Link>efpt30.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -135,18 +136,24 @@
       <Link>efreveng50.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="CodeTemplates5.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="CodeTemplates501.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efpt60.exe.zip">
       <Link>efpt60.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\lib\efreveng60.exe.zip">
       <Link>efreveng60.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\EFCorePowerTools\CodeTemplates.zip">
+      <Link>CodeTemplates.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\EFCorePowerTools\CodeTemplates5.zip">
+      <Link>CodeTemplates5.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\EFCorePowerTools\CodeTemplates501.zip">
+      <Link>CodeTemplates501.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
@@ -207,9 +214,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Package.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Dialogs\AdvancedModelingOptionsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -264,9 +268,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="db.png">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <EmbeddedResource Include="DgmlBuilder\readme.txt" />
     <Resource Include="Resources\Diagram_16x.png" />
     <Resource Include="Resources\DatabaseStoredProcedure_16x.png" />
@@ -304,7 +305,7 @@
     <PackageReference Include="AdysTech.CredentialManager" Version="2.3.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Community.VisualStudio.Toolkit">
-      <Version>16.0.75.59</Version>
+      <Version>17.0.75.103-pre</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.7.0</Version>
@@ -313,14 +314,14 @@
       <Version>3.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework">
-      <Version>16.7.30328.74</Version>
+      <Version>17.0.0-previews-1-31410-258</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.ProjectSystem">
       <Version>16.2.133-pre</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.0-previews-1-31410-273" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>16.9.1050</Version>
+      <Version>17.0.1619-preview1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
