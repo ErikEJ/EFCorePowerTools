@@ -1,32 +1,24 @@
-﻿#if CORE60
-using System.Diagnostics.CodeAnalysis;
-#else
-using JetBrains.Annotations;
-#endif
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Modules;
 using RevEng.Shared;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace RevEng.Core.Procedures
 {
-    public class SqlServerStoredProcedureScaffolder : IProcedureScaffolder
+    public class SqlServerStoredProcedureScaffolder : SqlServerRoutineScaffolder, IProcedureScaffolder
     {
         private const string parameterPrefix = "parameter";
-
-        private readonly ICSharpHelper code;
 
         private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
         {
@@ -46,71 +38,23 @@ namespace RevEng.Core.Procedures
             SqlDbType.NVarChar,
         };
 
-        private IndentedStringBuilder _sb;
 
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
+            : base(code)
         {
-            this.code = code;
         }
 
-        public ScaffoldedModel ScaffoldModel(ProcedureModel model, ModuleScaffolderOptions procedureScaffolderOptions, ref List<string> errors)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
+            var files = base.Save(scaffoldedModel, outputDir, nameSpace);
 
-            var result = new ScaffoldedModel();
-
-            errors = model.Errors;
-
-            foreach (var procedure in model.Procedures)
-            {
-                var name = GenerateIdentifierName(procedure, model) + "Result";
-
-                var classContent = WriteResultClass(procedure, procedureScaffolderOptions, name);
-
-                result.AdditionalFiles.Add(new ScaffoldedFile
-                {
-                    Code = classContent,
-                    Path = procedureScaffolderOptions.UseSchemaFolders
-                            ? Path.Combine(procedure.Schema, $"{name}.cs")
-                            : $"{name}.cs"
-                });
-            }
-
-            var dbContext = WriteProcedureDbContext(procedureScaffolderOptions, model);
-
-            result.ContextFile = new ScaffoldedFile
-            {
-                Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(procedureScaffolderOptions.ContextDir, procedureScaffolderOptions.ContextName + "Procedures.cs")),
-            };
-
-            return result;
-        }
-
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
-        {
-            Directory.CreateDirectory(outputDir);
-
-            var contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
-            Directory.CreateDirectory(Path.GetDirectoryName(contextPath));
-            File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
-
-            var additionalFiles = new List<string>();
-
+            var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = GetDbContextExtensionsText();
-            var dbContextExtensionsPath = Path.Combine(Path.GetDirectoryName(contextPath), "DbContextExtensions.cs");
+            var dbContextExtensionsPath = Path.Combine(contextDir, "DbContextExtensions.cs");
             File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpace), Encoding.UTF8);
-            additionalFiles.Add(dbContextExtensionsPath);
+            files.AdditionalFiles.Add(dbContextExtensionsPath);
 
-            foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
-            {
-                var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
-                Directory.CreateDirectory(Path.GetDirectoryName(additionalFilePath));
-                File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
-                additionalFiles.Add(additionalFilePath);
-            }
-
-            return new SavedModelFiles(contextPath, additionalFiles);
+            return files;
         }
 
         private string GetDbContextExtensionsText()
@@ -121,7 +65,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        private string WriteProcedureDbContext(ModuleScaffolderOptions procedureScaffolderOptions, ProcedureModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, RoutineModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -202,7 +146,7 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine("}");
                 }
 
-                foreach (var procedure in model.Procedures)
+                foreach (var procedure in model.Routines)
                 {
                     GenerateProcedure(procedure, model);
                 }
@@ -215,7 +159,7 @@ namespace RevEng.Core.Procedures
             return _sb.ToString();
         }
 
-        private void GenerateProcedure(Procedure procedure, ProcedureModel model)
+        private void GenerateProcedure(Routine procedure, RoutineModel model)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
@@ -299,7 +243,7 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private static string GenerateProcedureStatement(Procedure procedure, string retValueName)
+        private static string GenerateProcedureStatement(Routine procedure, string retValueName)
         {
             var paramNames = procedure.Parameters
                 .Select(p => $"{parameterPrefix}{p.Name}");
@@ -313,7 +257,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Procedure procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
+        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier)
         {
             string returnType;
 
@@ -404,141 +348,6 @@ namespace RevEng.Core.Procedures
             }
 
             _sb.Append("}");
-        }
-
-        private string WriteResultClass(Procedure storedProcedure, ModuleScaffolderOptions options, string name)
-        {
-            var @namespace = options.ModelNamespace;
-
-            _sb = new IndentedStringBuilder();
-
-            _sb.AppendLine(PathHelper.Header);
-            _sb.AppendLine("using System;");
-            _sb.AppendLine("using System.Collections.Generic;");
-            _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
-            _sb.AppendLine();
-
-            if (options.NullableReferences)
-            {
-                _sb.AppendLine("#nullable enable");
-                _sb.AppendLine();
-            }
-
-            _sb.AppendLine($"namespace {@namespace}");
-            _sb.AppendLine("{");
-
-            using (_sb.Indent())
-            {
-                GenerateClass(storedProcedure, name, options.NullableReferences);
-            }
-
-            _sb.AppendLine("}");
-
-            return _sb.ToString();
-        }
-
-        private void GenerateClass(Procedure storedProcedure, string name, bool nullableReferences)
-        {
-            _sb.AppendLine($"public partial class {name}");
-            _sb.AppendLine("{");
-
-            using (_sb.Indent())
-            {
-                GenerateProperties(storedProcedure, nullableReferences);
-            }
-
-            _sb.AppendLine("}");
-        }
-
-        private void GenerateProperties(Procedure storedProcedure, bool nullableReferences)
-        {
-            foreach (var property in storedProcedure.ResultElements.OrderBy(e => e.Ordinal))
-            {
-                var propertyNames = GeneratePropertyName(property.Name);
-
-                if (!string.IsNullOrEmpty(propertyNames.Item2))
-                {
-                    _sb.AppendLine(propertyNames.Item2);
-                }
-
-                var propertyType = property.ClrType();
-                string nullableAnnotation = string.Empty;
-                string defaultAnnotation = string.Empty;
-
-                if (nullableReferences && !propertyType.IsValueType)
-                {
-                    if (property.Nullable)
-                    {
-                        nullableAnnotation = "?";
-                    }
-                    else
-                    {
-                        defaultAnnotation = $" = default!;";
-                    }
-                }
-
-                _sb.AppendLine($"public {code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
-            }
-        }
-
-        private Tuple<string, string> GeneratePropertyName(string propertyName)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-
-            return CreateIdentifier(propertyName);
-        }
-
-        private string GenerateIdentifierName(Procedure procedure, ProcedureModel model)
-        {
-            if (procedure == null)
-            {
-                throw new ArgumentNullException(nameof(procedure));
-            }
-
-            return CreateIdentifier(GenerateUniqueName(procedure, model)).Item1;
-        }
-
-        private Tuple<string, string> CreateIdentifier(string name)
-        {
-            var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
-
-            string columAttribute = null;
-
-            if (!isValid)
-            {
-                columAttribute = $"[Column(\"{name}\")]";
-                // File name contains invalid chars, remove them
-                var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
-                name = regex.Replace(name, "");
-
-                // Class name doesn't begin with a letter, insert an underscore
-                if (!char.IsLetter(name, 0))
-                {
-                    name = name.Insert(0, "_");
-                }
-            }
-
-            return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
-        }
-
-        private string GenerateUniqueName(Procedure procedure, ProcedureModel model)
-        {
-            if (!string.IsNullOrEmpty(procedure.NewName))
-            {
-                return procedure.NewName;
-            }
-
-            var numberOfNames = model.Procedures.Where(p => p.Name == procedure.Name).Count();
-
-            if (numberOfNames > 1)
-            {
-                return procedure.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(procedure.Schema);
-            }
-
-            return procedure.Name;
         }
     }
 }

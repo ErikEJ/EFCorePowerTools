@@ -88,7 +88,7 @@ namespace RevEng.Core
 
             var procedureModel = procedureModelFactory.Create(_connectionString, procedureModelOptions);
 
-            foreach (var procedure in procedureModel.Procedures)
+            foreach (var procedure in procedureModel.Routines)
             {
                 result.Add(new TableModel(procedure.Name, procedure.Schema, _databaseType, ObjectType.Procedure, null));
             }
@@ -115,7 +115,7 @@ namespace RevEng.Core
 
             var functionModel = functionModelFactory.Create(_connectionString, functionModelOptions);
 
-            foreach (var function in functionModel.Functions)
+            foreach (var function in functionModel.Routines)
             {
                 result.Add(new TableModel(function.Name, function.Schema, _databaseType, ObjectType.ScalarFunction, null));
             }

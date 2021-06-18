@@ -1,13 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Abstractions.Metadata;
-using System.Collections.Generic;
+﻿using RevEng.Core.Modules;
 
 namespace RevEng.Core.Functions
 {
-    public interface IFunctionScaffolder
+    public interface IFunctionScaffolder : IRoutineScaffolder
     {
-        ScaffoldedModel ScaffoldModel(FunctionModel model, ModuleScaffolderOptions procedureOptions, ref List<string> errors);
-        SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace);
     }
 }
