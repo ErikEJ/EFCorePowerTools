@@ -1,6 +1,5 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
@@ -83,8 +82,14 @@ namespace EFCorePowerTools.Extensions
 
         private static void AddFiles(HashSet<string> result, string path)
         {
-            result.AddRange(Directory.GetFiles(path, "*.sqlproj", SearchOption.AllDirectories));
-            result.AddRange(Directory.GetFiles(path, "*.dacpac", SearchOption.AllDirectories));
+            foreach (var file in Directory.GetFiles(path, "*.sqlproj", SearchOption.AllDirectories))
+            {
+                result.Add(file);
+            }
+            foreach (var file in Directory.GetFiles(path, "*.dacpac", SearchOption.AllDirectories))
+            {
+                result.Add(file);
+            }
         }
 
         /// <summary>

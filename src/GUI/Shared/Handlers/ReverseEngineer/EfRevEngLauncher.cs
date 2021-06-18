@@ -114,7 +114,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version {version}. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
             }
 
-            var launchPath = await DropNetCoreFilesAsync();
+            var launchPath = DropNetCoreFiles();
 
             var startInfo = new ProcessStartInfo
             {
@@ -132,7 +132,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var path = Path.GetTempFileName() + ".json";
             File.WriteAllText(path, options.Write());
 
-            var launchPath = await DropNetCoreFilesAsync();
+            var launchPath = DropNetCoreFiles();
 
             var startInfo = new ProcessStartInfo
             {
@@ -217,7 +217,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return result;
         }
 
-        private async Task<string> DropNetCoreFilesAsync()
+        private string DropNetCoreFiles()
         {
             var toDir = Path.Combine(Path.GetTempPath(), revengFolder);
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

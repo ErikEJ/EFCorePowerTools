@@ -1,0 +1,58 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
+                    xmlns:locale="clr-namespace:EFCorePowerTools.Locales">
+
+    <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
+    <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converter:FilePathToDisplayNameConverter x:Key="FilePathToDisplayNameConverter" />
+    <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter" />
+    <converter:CollectionCountToEnabledConverter x:Key="CollectionCountToEnabledConverter" />
+    <converter:ColumnEnabledConverter x:Key="ColumnEnabledConverter" />
+    <converter:EnumToLabelConverter x:Key="EnumToLabelConverter" />
+    <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+    <converter:LevelToWidthConverter x:Key="LevelToWidthConverter" />
+    <converter:ObjectTypeIconToImageStyleConverter x:Key="ObjectTypeIconToImageStyleConverter">
+        <converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
+            <ResourceDictionary>
+                <Style x:Key="TableImageStyle"
+                       TargetType="Image">
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table_16x.png" />
+                    <Setter Property="Width" Value="16" />
+                    <Setter Property="Height" Value="16" />
+                    <Setter Property="Margin" Value="0,0,0,0" />
+                </Style>
+                <Style x:Key="ViewImageStyle"
+                       TargetType="Image">
+                    <Setter Property="ToolTip" Value="" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View_16x.png" />
+                    <Setter Property="Width" Value="16" />
+                    <Setter Property="Height" Value="16" />
+                    <Setter Property="Margin" Value="0,0,0,0" />
+                </Style>
+                <Style x:Key="ProcedureImageStyle"
+                       TargetType="Image">
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedure_16x.png" />
+                    <Setter Property="Width" Value="16" />
+                    <Setter Property="Height" Value="16" />
+                    <Setter Property="Margin" Value="0,0,0,0" />
+                </Style>
+                <Style x:Key="ScalarFunctionImageStyle"
+                       TargetType="Image">
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/ScalarFunction_16x.png" />
+                    <Setter Property="Width" Value="16" />
+                    <Setter Property="Height" Value="16" />
+                    <Setter Property="Margin" Value="0,0,0,0" />
+                </Style>
+                <Style x:Key="TableWithoutKeyImageStyle"
+                       TargetType="Image">
+                    <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.NoPrimaryKey}" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning_16x.png" />
+                    <Setter Property="Width" Value="16" />
+                    <Setter Property="Height" Value="16" />
+                    <Setter Property="Margin" Value="0,0,0,0" />
+                </Style>
+            </ResourceDictionary>
+        </converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
+    </converter:ObjectTypeIconToImageStyleConverter>
+</ResourceDictionary>
