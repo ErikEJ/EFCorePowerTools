@@ -1,6 +1,7 @@
 ﻿using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
@@ -22,7 +23,7 @@ namespace EFCorePowerTools.Extensions
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var dte = project.DTE;
+            var dte = (DTE2)project.DTE;
             var configuration = dte.Solution.SolutionBuild.ActiveConfiguration.Name;
 
             dte.Solution.SolutionBuild.BuildProject(configuration, project.UniqueName, true);
