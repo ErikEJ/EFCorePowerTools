@@ -204,7 +204,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
+            var dacpacList = _package.Dte2.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
             if (dacpacList != null && dacpacList.Any())
             { 
                 if (!string.IsNullOrEmpty(options.UiHint) 
@@ -230,7 +230,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var databaseList = vsDataHelper.GetDataConnections(_package);
-            var dacpacList = _package.Dte2.DTE.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
+            var dacpacList = _package.Dte2.GetDacpacFilesInActiveSolution(EnvDteHelper.GetProjectFilesInSolution(_package));
 
             var psd = _package.GetView<IPickServerDatabaseDialog>();
 
@@ -303,7 +303,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = _package.Dte2.DTE.BuildSqlProj(options.Dacpac);
+                options.Dacpac = _package.Dte2.BuildSqlProj(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     EnvDteHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);

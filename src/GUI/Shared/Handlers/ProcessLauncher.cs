@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using NuGet.ProjectModel;
 using System;
@@ -69,7 +70,8 @@ namespace EFCorePowerTools.Handlers
 
             var launchPath = await DropNetCoreFilesAsync();
 
-            var startupOutputPath = _project.DTE.GetStartupProjectOutputPath() ?? outputPath;
+            var dte2 = (DTE2)_project.DTE;
+            var startupOutputPath = dte2.GetStartupProjectOutputPath() ?? outputPath;
 
             outputPath = FixExtension(outputPath);
 

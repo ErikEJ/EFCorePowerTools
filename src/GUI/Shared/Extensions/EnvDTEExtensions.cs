@@ -1,4 +1,5 @@
 ﻿using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using System;
@@ -10,7 +11,7 @@ namespace EFCorePowerTools.Extensions
 {
     internal static class EnvDTEExtensions
     {
-        public static string[] GetDacpacFilesInActiveSolution(this DTE dte, string[] projectPaths)
+        public static string[] GetDacpacFilesInActiveSolution(this DTE2 dte, string[] projectPaths)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -55,7 +56,7 @@ namespace EFCorePowerTools.Extensions
                 .ToArray();
         }
 
-        public static string GetStartupProjectOutputPath(this DTE dte)
+        public static string GetStartupProjectOutputPath(this DTE2 dte)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -144,7 +145,7 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        public static string BuildSqlProj(this DTE dte, string sqlprojPath)
+        public static string BuildSqlProj(this DTE2 dte, string sqlprojPath)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -181,7 +182,7 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
-        private static Project GetProject(DTE dte, string projectItemPath)
+        private static Project GetProject(DTE2 dte, string projectItemPath)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -208,7 +209,7 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
-        private static IList<Project> Projects(DTE dte)
+        private static IList<Project> Projects(DTE2 dte)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
