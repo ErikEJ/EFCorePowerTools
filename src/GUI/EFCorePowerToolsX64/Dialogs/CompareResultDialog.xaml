@@ -1,0 +1,133 @@
+﻿<dw:DialogWindow x:Class="EFCorePowerTools.Dialogs.CompareResultDialog"
+                 xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+                 xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+                 Title="{x:Static locale:CompareLocale.ComparisonResult}" 
+                 mc:Ignorable="d"
+                 ShowInTaskbar="False"
+                 ResizeMode="CanResize"
+                 MinHeight="300"
+                 MinWidth="400"
+                 WindowStartupLocation="CenterOwner"
+                 HasMaximizeButton="True"
+                 d:DataContext="{d:DesignInstance Type=viewModels:CompareResultViewModel, IsDesignTimeCreatable=False}">
+
+    <dw:DialogWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style.xaml"/>
+                <ResourceDictionary Source="Converter.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </dw:DialogWindow.Resources>
+
+    <dw:DialogWindow.Background>
+        <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+    </dw:DialogWindow.Background>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 8">
+            <CheckBox IsChecked="{Binding ShowDifferencesOnly}" VerticalContentAlignment="Center" />
+            <TextBlock Text="{x:Static locale:CompareLocale.ShowDifferencesOnly}" 
+                       Margin="4,0"/>
+        </StackPanel>
+        <DataGrid AutoGenerateColumns="False" 
+                  Name="grid" 
+                  Grid.Row="1" 
+                  CanUserAddRows="False"
+                  ItemsSource="{Binding Logs}"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  GridLinesVisibility="Horizontal"
+                  RowHeaderWidth="0"
+                  CanUserDeleteRows="False"
+                  SelectionUnit="FullRow">
+            <DataGrid.HorizontalGridLinesBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0" MappingMode="Absolute" SpreadMethod="Repeat">
+                    <GradientStop Offset="0" Color="LightGray"/>
+                    <GradientStop Offset="0.5" Color="LightGray"/>
+                    <GradientStop Offset="0.5" Color="Transparent"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </DataGrid.HorizontalGridLinesBrush>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Visibility" Value="{Binding Visible, Converter={StaticResource BoolToVisibilityConverter}}"></Setter>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderName}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding Level, Converter={StaticResource LevelToWidthConverter}}"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ToggleButton Grid.Column="1"
+									              Command="{Binding DataContext.SetVisibilityCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                  CommandParameter="{Binding}"
+                                                  Width="20"
+                                                  Visibility="{Binding HasChildren, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                  IsChecked="{Binding Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <Grid>
+                                        <Image Width="16"
+                                                   Source="pack://application:,,,/EFCorePowerTools;component/Resources/GlyphRight_16x.png" 
+                                                   Visibility="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=ToggleButton}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}" />
+                                        <Image Width="16"
+                                                   Source="pack://application:,,,/EFCorePowerTools;component/Resources/ScrollbarArrowsDownRight_16x.png" 
+                                                   Visibility="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=ToggleButton}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                    </Grid>
+                                    <ToggleButton.Style>
+                                        <Style TargetType="ToggleButton">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ToggleButton">
+                                                        <ContentPresenter x:Name="contentPresenter" 
+                                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                              Margin="{TemplateBinding Padding}" 
+                                                                              RecognizesAccessKey="True" 
+                                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                                                              ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                                              Content="{TemplateBinding Content}"></ContentPresenter>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                                <TextBlock Grid.Column="2"
+									           Text="{Binding Name}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderType}" Binding="{Binding Type, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderState}" Binding="{Binding State, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderAttribute}" Binding="{Binding Attribute, Converter={StaticResource EnumToLabelConverter}}"/>
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderExpected}" Binding="{Binding Expected}" />
+                <DataGridTextColumn MinWidth="70" Header="{x:Static locale:CompareLocale.HeaderFound}" Binding="{Binding Found}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <dw:DialogButton Content="{x:Static locale:CompareLocale.Close}"
+                         Grid.Row="2"
+                         HorizontalAlignment="Right"
+                         Command="{Binding CloseCommand}"
+                         Margin="0, 12, 0, 0"></dw:DialogButton>
+    </Grid>
+</dw:DialogWindow>
