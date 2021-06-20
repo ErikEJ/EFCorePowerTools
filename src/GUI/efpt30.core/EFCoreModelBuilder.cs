@@ -104,9 +104,14 @@ namespace Modelling
                 startupAssembly = Load(startupOutputPath);
             }
 
-            var reporter = new OperationReporter(new OperationReportHandler());
-
+            var reporter = new OperationReporter(
+                new OperationReportHandler());
+#if CORE60
+            //TODO Collect project, rootNamespace,language and nullable for optimize later
+            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
+#else
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
+#endif
         }
 
         private Assembly Load(string assemblyPath)
