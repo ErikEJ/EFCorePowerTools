@@ -1,5 +1,4 @@
-﻿using EnvDTE;
-using EnvDTE80;
+﻿using EnvDTE80;
 using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
 using System;
@@ -12,7 +11,6 @@ namespace EFCorePowerTools.Helpers
     public static class Telemetry
     {
         private static TelemetryClient _telemetry;
-        private static DTEEvents _events;
 
         /// <summary>
         /// Initializes the telemetry client.
@@ -32,9 +30,6 @@ namespace EFCorePowerTools.Helpers
             _telemetry.Context.Device.Type = dte.Edition;
             _telemetry.InstrumentationKey = telemetryKey;
             _telemetry.Context.Component.Version = version;
-
-            _events = dte.Events.DTEEvents;
-            _events.OnBeginShutdown += delegate { _telemetry.Flush(); };
 
             Enabled = true;
         }
@@ -70,6 +65,7 @@ namespace EFCorePowerTools.Helpers
             {
                 var telex = new Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry(ex);
                 _telemetry.TrackException(telex);
+                _telemetry.Flush();
             }
 #endif
         }
