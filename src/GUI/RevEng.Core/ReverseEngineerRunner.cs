@@ -279,14 +279,6 @@ namespace RevEng.Core
 
                 TryRemoveFile(modelFile);
             }
-
-            foreach (var directoryPath in Directory.GetDirectories(outputDir))
-            {
-                if(!Directory.EnumerateFileSystemEntries(directoryPath).Any())
-                {
-                    Directory.Delete(directoryPath);
-                }
-            }
         }
 
         private static void TryRemoveFile(string codeFile)
