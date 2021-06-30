@@ -89,7 +89,7 @@ namespace RevEng.Core
                 {
                     serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
                 }
-#if CORE50
+#if CORE50 || CORE60
 #else
                 else
                 {

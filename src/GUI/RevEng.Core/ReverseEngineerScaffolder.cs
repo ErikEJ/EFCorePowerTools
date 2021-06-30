@@ -33,7 +33,7 @@ namespace RevEng.Core
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = options.UseDatabaseNames,
-#if CORE50
+#if CORE50 || CORE60
                 NoPluralize = !options.UseInflector,
 #endif
             };
@@ -49,7 +49,7 @@ namespace RevEng.Core
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = options.ConnectionString,
-#if CORE50
+#if CORE50 ||CORE60
                 SuppressOnConfiguring = !options.IncludeConnectionString,
 #endif
             };

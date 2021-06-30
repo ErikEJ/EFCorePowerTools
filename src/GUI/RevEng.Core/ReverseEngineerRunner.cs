@@ -90,7 +90,7 @@ namespace RevEng.Core
                 procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 
                 functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
-#if CORE50
+#if CORE50 || CORE60
                 if (functionPaths != null)
                 {
                     var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
