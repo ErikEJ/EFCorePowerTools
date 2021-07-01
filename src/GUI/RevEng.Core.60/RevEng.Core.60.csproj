@@ -47,8 +47,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.5.21301.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.0-preview.5.21301.9" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.0-preview4" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.0-preview4" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.0-preview5" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.0-preview5" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="6.0.0-preview.5" />
 		<PackageReference Include="System.CodeDom" Version="5.0.0" />
 	</ItemGroup>
