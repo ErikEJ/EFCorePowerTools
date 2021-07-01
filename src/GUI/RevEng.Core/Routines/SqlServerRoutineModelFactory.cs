@@ -47,7 +47,7 @@ SELECT
     CAST(CASE WHEN (ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
 FROM INFORMATION_SCHEMA.ROUTINES
 WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
-AND ROUTINE_TYPE = '{routineType}'");
+AND ROUTINE_TYPE = N'{routineType}'");
 
 #if !CORE50 && !CORE60
                 // Filters out table-valued functions without filtering out stored procedures
