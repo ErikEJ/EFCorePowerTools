@@ -25,8 +25,8 @@ namespace RevEng.Core.Procedures
         {
             var routineType = this switch
             {
-                SqlServerStoredProcedureModelFactory _ => "procedure",
-                SqlServerFunctionModelFactory _ => "function",
+                SqlServerStoredProcedureModelFactory _ => "PROCEDURE",
+                SqlServerFunctionModelFactory _ => "FUNCTION",
                 _ => throw new InvalidOperationException($"Unknown type '{GetType().Name}'"),
             };
 
