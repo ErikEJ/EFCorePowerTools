@@ -21,6 +21,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode)
         {
+            var databaseObjects = options.Tables;
+            if (databaseObjects.Where(t => t.ObjectType == ObjectType.Table).Count() == 0)
+            {
+                // No tables selected, so add a dummy table in order to generate an empty DbContext
+                databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null));
+            }
+
             var commandOptions = new ReverseEngineerCommandOptions
             {
                 ConnectionString = options.ConnectionString,
@@ -39,7 +46,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 ProjectRootNamespace = options.ProjectRootNamespace,
                 SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
                 SelectedToBeGenerated = options.SelectedToBeGenerated,
-                Tables = options.Tables,
+                Tables = databaseObjects,
                 UseDatabaseNames = options.UseDatabaseNames,
                 UseFluentApiOnly = options.UseFluentApiOnly,
                 UseHandleBars = options.UseHandleBars,
