@@ -3,6 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+#nullable disable
+
 namespace ScaffoldingTester.Models
 {
     public partial class NorthwindContext : DbContext
@@ -51,13 +53,15 @@ namespace ScaffoldingTester.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
             modelBuilder.Entity<AlphabeticalListOfProduct>(entity =>
             {
                 entity.HasNoKey();
@@ -88,8 +92,8 @@ namespace ScaffoldingTester.Models
                 entity.ToTable("BoolNullableTest");
 
                 entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
             });
 
             modelBuilder.Entity<Category>(entity =>
@@ -105,8 +109,8 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.Description).HasColumnType("ntext");
 
                 entity.Property(e => e.Image)
-                    .HasColumnName("Picture")
-                    .HasColumnType("image");
+                    .HasColumnType("image")
+                    .HasColumnName("Picture");
             });
 
             modelBuilder.Entity<CategorySalesFor1997>(entity =>
@@ -129,8 +133,8 @@ namespace ScaffoldingTester.Models
                 entity.ToView("Current Product List");
 
                 entity.Property(e => e.ProductId)
-                    .HasColumnName("ProductID")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ProductID");
 
                 entity.Property(e => e.ProductName)
                     .IsRequired()
@@ -140,9 +144,9 @@ namespace ScaffoldingTester.Models
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.Property(e => e.CustomerId)
-                    .HasColumnName("CustomerID")
                     .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasColumnName("CustomerID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.Address).HasMaxLength(60);
 
@@ -195,17 +199,14 @@ namespace ScaffoldingTester.Models
 
                 entity.ToTable("Department");
 
-                entity.HasIndex(e => e.ClusterKey)
-                    .HasName("IX_DepartmentClusterKey")
+                entity.HasIndex(e => e.ClusterKey, "IX_DepartmentClusterKey")
                     .IsUnique()
                     .IsClustered();
 
-                entity.HasIndex(e => e.DepartmentCode)
-                    .HasName("IX_DepartmentDepartmentCode")
+                entity.HasIndex(e => e.DepartmentCode, "IX_DepartmentDepartmentCode")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Name)
-                    .HasName("IX_DepartmentName")
+                entity.HasIndex(e => e.Name, "IX_DepartmentName")
                     .IsUnique();
 
                 entity.Property(e => e.DepartmentId).HasDefaultValueSql("(newid())");
@@ -225,7 +226,7 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.ExtendedName)
                     .IsRequired()
                     .HasMaxLength(62)
-                    .HasComputedColumnSql("(([DepartmentCode]+': ')+[Name])");
+                    .HasComputedColumnSql("(([DepartmentCode]+': ')+[Name])", true);
 
                 entity.Property(e => e.ModifiedBy)
                     .IsRequired()
@@ -295,8 +296,8 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.TerritoryId)
-                    .HasColumnName("TerritoryID")
-                    .HasMaxLength(20);
+                    .HasMaxLength(20)
+                    .HasColumnName("TerritoryID");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeTerritories)
@@ -324,9 +325,9 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.Country).HasMaxLength(15);
 
                 entity.Property(e => e.CustomerId)
-                    .HasColumnName("CustomerID")
                     .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasColumnName("CustomerID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.CustomerName)
                     .IsRequired()
@@ -382,9 +383,9 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
                 entity.Property(e => e.CustomerId)
-                    .HasColumnName("CustomerID")
                     .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasColumnName("CustomerID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
@@ -501,9 +502,9 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.Country).HasMaxLength(15);
 
                 entity.Property(e => e.CustomerId)
-                    .HasColumnName("CustomerID")
                     .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasColumnName("CustomerID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
@@ -629,9 +630,9 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.Country).HasMaxLength(15);
 
                 entity.Property(e => e.CustomerId)
-                    .HasColumnName("CustomerID")
                     .HasMaxLength(5)
-                    .IsFixedLength();
+                    .HasColumnName("CustomerID")
+                    .IsFixedLength(true);
             });
 
             modelBuilder.Entity<Region>(entity =>
@@ -642,13 +643,13 @@ namespace ScaffoldingTester.Models
                 entity.ToTable("Region");
 
                 entity.Property(e => e.RegionId)
-                    .HasColumnName("RegionID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedNever()
+                    .HasColumnName("RegionID");
 
                 entity.Property(e => e.RegionDescription)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .IsFixedLength();
+                    .IsFixedLength(true);
             });
 
             modelBuilder.Entity<RegionShipper>(entity =>
@@ -776,15 +777,15 @@ namespace ScaffoldingTester.Models
                     .IsClustered(false);
 
                 entity.Property(e => e.TerritoryId)
-                    .HasColumnName("TerritoryID")
-                    .HasMaxLength(20);
+                    .HasMaxLength(20)
+                    .HasColumnName("TerritoryID");
 
                 entity.Property(e => e.RegionId).HasColumnName("RegionID");
 
                 entity.Property(e => e.TerritoryDescription)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .IsFixedLength();
+                    .IsFixedLength(true);
 
                 entity.HasOne(d => d.Region)
                     .WithMany(p => p.Territories)
@@ -793,6 +794,7 @@ namespace ScaffoldingTester.Models
                     .HasConstraintName("FK_Territories_Region");
             });
 
+            OnModelCreatingGeneratedFunctions(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 

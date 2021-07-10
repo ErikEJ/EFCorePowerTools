@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace ScaffoldingTester.Models
 {
-    public partial class BoolNullableTest
+    public partial class ProductsAboveAveragePrice
     {
-        public int Id { get; set; }
-        public bool TestBool { get; set; }
+        public string ProductName { get; set; }
+        public decimal? UnitPrice { get; set; }
     }
 }

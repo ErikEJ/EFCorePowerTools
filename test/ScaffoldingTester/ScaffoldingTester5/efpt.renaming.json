@@ -1,0 +1,30 @@
+﻿[
+   {
+      "SchemaName": "dbo",
+      "Tables": [
+         {
+            "Columns": [
+               {
+                  "Name": "Picture",
+                  "NewName": "Image"
+               }
+            ],
+            "Name": "Categories",
+            "NewName": "Categories"
+         }
+      ],
+      "UseSchemaName": false
+   },
+   {
+      "SchemaName": "dev",
+      "UseSchemaName": true
+   },
+   {
+      "SchemaName": "test",
+      "UseSchemaName": true
+   },
+   {
+      "SchemaName": "prod",
+      "UseSchemaName": true
+   }
+]

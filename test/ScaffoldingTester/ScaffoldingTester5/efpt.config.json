@@ -1,5 +1,5 @@
 ﻿{
-   "CodeGenerationMode": 1,
+   "CodeGenerationMode": 0,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
@@ -198,11 +198,19 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[ActiveProducts]",
+         "ObjectType": 2
+      },
+      {
          "Name": "[dbo].[GetCustInfo]",
          "ObjectType": 2
       },
       {
          "Name": "[dbo].[GetCustInfoNoParams]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[ProductsWithMinimumInStock]",
          "ObjectType": 2
       }
    ],

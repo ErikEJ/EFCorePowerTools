@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace ScaffoldingTester.Models
 {
-    public partial class BoolNullableTest
+    public partial class CategorySalesFor1997
     {
-        public int Id { get; set; }
-        public bool TestBool { get; set; }
+        public string CategoryName { get; set; }
+        public decimal? CategorySales { get; set; }
     }
 }
