@@ -60,6 +60,10 @@ namespace ScaffoldingTester
                 var udfTest = db.Categories
                     .Where(c => c.CategoryName == NorthwindContext.GetCustInfo("x", null))
                     .ToList();
+
+                var tvfTest = db.ProductsWithMinimumInStock(5)
+                    .OrderBy(p => p.ProductName)
+                    .ToList();
             }
         }
     }
