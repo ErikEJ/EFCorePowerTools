@@ -101,9 +101,8 @@ namespace RevEng.Core
                         File.WriteAllLines(filePaths.ContextFile, dbContextLines);
                     }
                 }
-#else
-                RemoveOnConfiguring(filePaths.ContextFile, options.IncludeConnectionString);
 #endif
+                RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
                 if (!options.UseHandleBars)
                 {
                     PostProcess(filePaths.ContextFile);
@@ -189,7 +188,7 @@ namespace RevEng.Core
             return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable);
         }
 
-        private static void RemoveOnConfiguring(string contextFile, bool includeConnectionString)
+        private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor)
         {
             if (string.IsNullOrEmpty(contextFile))
             {
@@ -197,7 +196,18 @@ namespace RevEng.Core
             }
 
             var finalLines = new List<string>();
-            var lines = File.ReadAllLines(contextFile);
+            var lines = File.ReadAllLines(contextFile).ToList();
+
+            if (removeDefaultConstructor)
+            {
+                var index = lines.IndexOf($"        public {contextName}()");
+                if (index != -1)
+                {
+                    lines.RemoveAt(index + 2);
+                    lines.RemoveAt(index + 1);
+                    lines.RemoveAt(index);
+                }
+            }
 
             int i = 1;
             var inConfiguring = false;
@@ -227,6 +237,7 @@ namespace RevEng.Core
                 finalLines.Add(line);
                 i++;
             }
+
             File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
         }
 
