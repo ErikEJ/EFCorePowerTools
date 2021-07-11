@@ -540,6 +540,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string RemoveDefaultConstructor {
+            get {
+                return ResourceManager.GetString("RemoveDefaultConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string RemoveNavigationsFromEntities {
             get {
                 return ResourceManager.GetString("RemoveNavigationsFromEntities", resourceCulture);

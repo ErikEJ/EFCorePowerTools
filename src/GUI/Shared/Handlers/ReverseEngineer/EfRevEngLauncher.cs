@@ -60,6 +60,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoConstructor = options.UseNoConstructor,
                 UseNoNavigations = options.UseNoNavigations,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                UseNoDefaultConstructor = options.UseNoDefaultConstructor,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

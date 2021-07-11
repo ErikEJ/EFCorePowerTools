@@ -33,6 +33,7 @@
         private bool _useBoolPropertiesWithoutDefaultSql;
         private bool _useNullableReferences;
         private bool _useNoConstructor;
+        private bool _useNoDefaultConstructor;
         private bool _useNoNavigations;
         private bool _useNoObjectFilter;
 
@@ -318,6 +319,17 @@
             {
                 if (value == _useNoObjectFilter) return;
                 _useNoObjectFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseNoDefaultConstructor
+        {
+            get => _useNoDefaultConstructor;
+            set
+            {
+                if (value == _useNoDefaultConstructor) return;
+                _useNoDefaultConstructor = value;
                 OnPropertyChanged();
             }
         }

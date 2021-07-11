@@ -276,6 +276,9 @@
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
     <value>Remove constructor from entity classes (experimental)</value>
   </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>Remove default DbContext constructor</value>
+  </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
     <value>Remove navigations from entity classes (experimental)</value>
   </data>

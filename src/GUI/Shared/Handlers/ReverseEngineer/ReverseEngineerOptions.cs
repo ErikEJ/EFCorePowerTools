@@ -44,6 +44,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseNoConstructor { get; set; }
         public bool UseNoNavigations { get; set; }
         public bool UseNoObjectFilter { get; set; }
+        public bool UseNoDefaultConstructor { get; set; }
         public CodeGenerationMode CodeGenerationMode { get; set; }
         public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }

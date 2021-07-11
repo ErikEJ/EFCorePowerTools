@@ -146,6 +146,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseEf6Pluralizer = advancedModelingOptionsResult.Payload.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = advancedModelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
             Model.UseNoConstructor = advancedModelingOptionsResult.Payload.UseNoConstructor;
+            Model.UseNoDefaultConstructor = advancedModelingOptionsResult.Payload.UseNoDefaultConstructor;
             Model.UseNoNavigations = advancedModelingOptionsResult.Payload.UseNoNavigations;
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
@@ -177,6 +178,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
             Model.UseNoConstructor = presets.UseNoConstructor;
+            Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
             Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;

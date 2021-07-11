@@ -48,59 +48,80 @@
 
         <StackPanel Margin="5"
                     Orientation="Vertical">
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
-                      IsChecked="{Binding Model.UseDbContextSplitting}"
+            <GroupBox Header="Code generation" >
+                <StackPanel>
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveDefaultConstructor}"
+                      IsChecked="{Binding Model.UseNoDefaultConstructor}"
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="0" />
 
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.AlwaysIncludeAllDatabaseObjects}"
-                      IsChecked="{Binding Model.UseNoObjectFilter}"
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveSQLDefaultFromBoolColumns}"
+                      IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}"
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="1" />
 
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapSpatialTypes}"
-                      IsChecked="{Binding Model.MapSpatialTypes}"
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseNullableReferenceTypes}"
+                      IsChecked="{Binding Model.UseNullableReferences}"
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="2" />
 
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
-                      IsChecked="{Binding Model.MapNodaTimeTypes}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="3" />
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.AlwaysIncludeAllDatabaseObjects}"
+                          IsChecked="{Binding Model.UseNoObjectFilter}"
+                          Style="{StaticResource MarginCheckBlockStyle}"
+                          TabIndex="3" />
+                </StackPanel>
+            </GroupBox>
 
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseEF6Pluralizer}"
-                      IsChecked="{Binding Model.UseEf6Pluralizer}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="4" />
-
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveSQLDefaultFromBoolColumns}"
-                      IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="5" />
-
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseNullableReferenceTypes}"
-                      IsChecked="{Binding Model.UseNullableReferences}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="6" />
-
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveConstructorFromEntities}"
-                      IsChecked="{Binding Model.UseNoConstructor}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="7" />
-
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveNavigationsFromEntities}"
-                      IsChecked="{Binding Model.UseNoNavigations}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="8" />
-
-            <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
+            <GroupBox Header="File layout">
+                <StackPanel>
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
+                          IsChecked="{Binding Model.UseDbContextSplitting}"
+                          Style="{StaticResource MarginCheckBlockStyle}"
+                          TabIndex="10" />
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
                       IsChecked="{Binding Model.UseSchemaFolders}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="9" />
+                      TabIndex="11" />
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Mapping">
+                <StackPanel>
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapSpatialTypes}"
+                          IsChecked="{Binding Model.MapSpatialTypes}"
+                          Style="{StaticResource MarginCheckBlockStyle}"
+                          TabIndex="20" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
+                      IsChecked="{Binding Model.MapNodaTimeTypes}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="21" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseEF6Pluralizer}"
+                      IsChecked="{Binding Model.UseEf6Pluralizer}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="22" />
+
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="POCO entities">
+                <StackPanel>
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveConstructorFromEntities}"
+                      IsChecked="{Binding Model.UseNoConstructor}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="30" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveNavigationsFromEntities}"
+                      IsChecked="{Binding Model.UseNoNavigations}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="31" />
+                </StackPanel>
+            </GroupBox>
 
         </StackPanel>
 
-        <StackPanel Grid.Row="20"
+        <StackPanel Grid.Row="1"
                     Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton Command="{Binding OkCommand}"
                              Content="{x:Static locale:SharedLocale.Ok}"

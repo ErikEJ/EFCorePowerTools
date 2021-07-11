@@ -276,6 +276,9 @@
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
     <value />
   </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value />
+  </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
     <value />
   </data>

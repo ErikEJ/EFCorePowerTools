@@ -43,6 +43,7 @@
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
             Model.UseNoConstructor = presets.UseNoConstructor;
+            Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
             Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseNullableReferences = presets.UseNullableReferences;
