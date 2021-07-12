@@ -203,6 +203,7 @@ namespace RevEng.Core
                 var index = lines.IndexOf($"        public {contextName}()");
                 if (index != -1)
                 {
+                    lines.RemoveAt(index + 3);
                     lines.RemoveAt(index + 2);
                     lines.RemoveAt(index + 1);
                     lines.RemoveAt(index);
