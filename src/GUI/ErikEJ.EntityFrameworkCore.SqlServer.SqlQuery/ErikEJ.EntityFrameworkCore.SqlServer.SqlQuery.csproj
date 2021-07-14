@@ -9,6 +9,7 @@
 		<Description>Provides the SqlQueryAsync&lt;T&gt; and SqlQueryValueAsync&lt;T&gt; methods to help you populate arbitrary classes or a list of primitive types from a raw SQL query</Description>
 		<PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
 		<PackageReleaseNotes>Initial preview</PackageReleaseNotes>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>		
 		<PackageTags>DbContext;EntityFramework;SqlServer;EFCore;EntityFrameworkCore</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<SignAssembly>true</SignAssembly>
