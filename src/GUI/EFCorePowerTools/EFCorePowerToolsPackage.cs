@@ -82,62 +82,62 @@ namespace EFCorePowerTools
             {
                 var menuCommandId3 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDgmlBuild);
-                var menuItem3 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId3);
+                var menuItem3 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId3);
                 oleMenuCommandService.AddCommand(menuItem3);
 
                 var menuCommandId5 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
-                var menuItem5 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId5);
+                var menuItem5 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId5);
                 oleMenuCommandService.AddCommand(menuItem5);
 
                 var menuCommandId7 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidAbout);
-                var menuItem7 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId7);
+                var menuItem7 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId7);
                 oleMenuCommandService.AddCommand(menuItem7);
 
                 var menuCommandId8 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDgmlNuget);
-                var menuItem8 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId8);
+                var menuItem8 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId8);
                 oleMenuCommandService.AddCommand(menuItem8);
 
                 var menuCommandId9 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                    (int)PkgCmdIDList.cmdidSqlBuild);
-                var menuItem9 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId9);
+                var menuItem9 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId9);
                 oleMenuCommandService.AddCommand(menuItem9);
 
                 var menuCommandId10 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDebugViewBuild);
-                var menuItem10 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId10);
+                var menuItem10 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId10);
                 oleMenuCommandService.AddCommand(menuItem10);
 
                 var menuCommandId11 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidMigrationStatus);
-                var menuItem11 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId11);
+                var menuItem11 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId11);
                 oleMenuCommandService.AddCommand(menuItem11);
 
                 var menuCommandId12 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                     (int)PkgCmdIDList.cmdidDbCompare);
-                var menuItem12 = new OleMenuCommand(async (s, e) => await OnProjectContextMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnProjectMenuBeforeQueryStatusAsync(s, e), menuCommandId12);
+                var menuItem12 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
+                    OnProjectMenuBeforeQueryStatus, menuCommandId12);
                 oleMenuCommandService.AddCommand(menuItem12);
 
                 var menuCommandId1101 = new CommandID(GuidList.guidReverseEngineerMenu,
                     (int)PkgCmdIDList.cmdidReverseEngineerEdit);
-                var menuItem251 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1101);
+                var menuItem251 = new OleMenuCommand(OnReverseEngineerConfigFileMenuInvokeHandler, null,
+                    OnReverseEngineerConfigFileMenuBeforeQueryStatus, menuCommandId1101);
                 oleMenuCommandService.AddCommand(menuItem251);
 
                 var menuCommandId1102 = new CommandID(GuidList.guidReverseEngineerMenu,
                     (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
-                var menuItem252 = new OleMenuCommand(async (s, e) => await OnReverseEngineerConfigFileMenuInvokeHandlerAsync(s, e), null,
-                    async (s, e) => await OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(s, e), menuCommandId1102);
+                var menuItem252 = new OleMenuCommand(OnReverseEngineerConfigFileMenuInvokeHandler, null,
+                    OnReverseEngineerConfigFileMenuBeforeQueryStatus, menuCommandId1102);
                 oleMenuCommandService.AddCommand(menuItem252);
 
             }
@@ -160,9 +160,9 @@ namespace EFCorePowerTools
 
         private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture), 0);
 
-        private async System.Threading.Tasks.Task OnReverseEngineerConfigFileMenuBeforeQueryStatusAsync(object sender, EventArgs e)
+        private void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             var menuCommand = sender as MenuCommand;
             if (menuCommand == null || _dte2.SelectedItems.Count != 1)
@@ -183,9 +183,9 @@ namespace EFCorePowerTools
                 itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
-        private async System.Threading.Tasks.Task OnProjectMenuBeforeQueryStatusAsync(object sender, EventArgs e)
+        private void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             var menuCommand = sender as MenuCommand;
 
@@ -213,7 +213,7 @@ namespace EFCorePowerTools
             return;
         }
 
-        private async System.Threading.Tasks.Task OnReverseEngineerConfigFileMenuInvokeHandlerAsync(object sender, EventArgs e)
+        private async void OnReverseEngineerConfigFileMenuInvokeHandler(object sender, EventArgs e)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -247,7 +247,7 @@ namespace EFCorePowerTools
             }
         }
 
-        private async System.Threading.Tasks.Task OnProjectContextMenuInvokeHandlerAsync(object sender, EventArgs e)
+        private async void OnProjectContextMenuInvokeHandler(object sender, EventArgs e)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
