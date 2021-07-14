@@ -12,6 +12,7 @@
     <PackageReleaseNotes>Bug fixes</PackageReleaseNotes>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
+	<MinClientVersion>5.0</MinClientVersion>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>

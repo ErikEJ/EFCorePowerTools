@@ -12,6 +12,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>		
 		<PackageTags>DbContext;EntityFramework;SqlServer;EFCore;EntityFrameworkCore</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<MinClientVersion>5.0</MinClientVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>

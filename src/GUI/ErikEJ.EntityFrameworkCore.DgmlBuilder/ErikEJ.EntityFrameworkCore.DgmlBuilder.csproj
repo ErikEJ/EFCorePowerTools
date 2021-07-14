@@ -12,7 +12,7 @@
         <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
         <PackageTags>DbContext;EntityFramework;DGML;graph;EFCore;EntityFrameworkCore</PackageTags>
         <RootNamespace>DgmlBuilder</RootNamespace>
-        <MinClientVersion>4.0</MinClientVersion>
+        <MinClientVersion>5.0</MinClientVersion>
         <Dependencies>
           <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.1.0" />
         </Dependencies>
