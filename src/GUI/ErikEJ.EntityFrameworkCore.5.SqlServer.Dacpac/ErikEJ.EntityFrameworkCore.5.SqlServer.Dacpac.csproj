@@ -3,19 +3,26 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>5.0.3</PackageVersion>	  
+    <PackageVersion>5.0.4</PackageVersion>	  
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
     <!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.md</DocumentationFile>-->
-    <PackageReleaseNotes>For EF Core 5.0, fix bad assembly name</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 5.0</PackageReleaseNotes>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	<DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'True'">
+	  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,6 +50,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5164.1" />
+	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>	  
   </ItemGroup>
 
 	<ItemGroup>

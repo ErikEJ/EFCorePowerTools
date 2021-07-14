@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
         <NoWarn>$(NoWarn);EF1001</NoWarn>
-        <PackageVersion>5.0.0-preview1</PackageVersion>
+        <PackageVersion>5.0.0-preview2</PackageVersion>
         <Authors>ErikEJ</Authors>
         <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -19,7 +19,14 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <DebugType>embedded</DebugType>	
     </PropertyGroup>
+	
+	<PropertyGroup Condition="'$(CI)' == 'True'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
 
     <PropertyGroup>
       <DefineConstants>TRACE;CORE50</DefineConstants>
@@ -38,6 +45,7 @@
 
     <ItemGroup>
 	    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>	
     </ItemGroup>
 
 </Project>
