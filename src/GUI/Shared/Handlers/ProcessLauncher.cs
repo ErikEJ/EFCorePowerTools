@@ -24,7 +24,7 @@ namespace EFCorePowerTools.Handlers
 
             if (!project.IsNetCore31OrHigher())
             {
-                throw new ArgumentException("Only .NET Core 3.0, 3.1 and 5.0 are supported");
+                throw new ArgumentException("Only .NET Core 3.1, 5.0 and 6.0 are supported");
             }
             _project = project;
         }

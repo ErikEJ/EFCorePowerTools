@@ -212,7 +212,7 @@ namespace EFCorePowerTools.Extensions
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            return IsNetCore31(project) || IsNet50(project);
+            return IsNetCore31(project) || IsNet50(project) || IsNet60(project);
         }
 
         private static bool IsNetCore31(this Project project)
@@ -227,6 +227,13 @@ namespace EFCorePowerTools.Extensions
             ThreadHelper.ThrowIfNotOnUIThread();
 
             return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v5.0");
+        }
+
+        private static bool IsNet60(this Project project)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v6.0");
         }
 
         private static string GetOutputPath(Project project)
