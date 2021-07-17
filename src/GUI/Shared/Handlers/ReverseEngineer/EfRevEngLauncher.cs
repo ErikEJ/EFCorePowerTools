@@ -237,7 +237,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (Directory.Exists(toDir)
                 && File.Exists(Path.Combine(toDir, GetExeName()))
-                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() > 99)
+                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 99)
             {
                 return fullPath;
             }

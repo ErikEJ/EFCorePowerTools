@@ -42,6 +42,10 @@ namespace RevEng.Core
             {
                 options.Tables = new List<SerializationTableModel>();
             }
+            foreach (var table in options.Tables)
+            {
+                table.Name = table.Name.Replace("'", "''");
+            }
 
             var outputDir = !string.IsNullOrEmpty(options.OutputPath)
                ? Path.IsPathFullyQualified(options.OutputPath)
