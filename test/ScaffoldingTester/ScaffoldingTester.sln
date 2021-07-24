@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30503.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31512.422
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScaffoldingTester", "ScaffoldingTester\ScaffoldingTester.csproj", "{F1BA9BB2-8BF3-4CA9-A7B2-D4E79F53BBEB}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbContextExtensionsTester", "DbContextExtensionsTester\DbContextExtensionsTester.csproj", "{F307A465-4CA4-482C-9FE4-A624502AB09B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScaffoldingTester5", "ScaffoldingTester5\ScaffoldingTester5.csproj", "{8504497C-7B99-4B91-A5F2-1C22AF150D5E}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{565BAB2E-D930-40A1-954F-E76BB66E3F8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,12 @@ Global
 		{8504497C-7B99-4B91-A5F2-1C22AF150D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8504497C-7B99-4B91-A5F2-1C22AF150D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8504497C-7B99-4B91-A5F2-1C22AF150D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565BAB2E-D930-40A1-954F-E76BB66E3F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{565BAB2E-D930-40A1-954F-E76BB66E3F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{565BAB2E-D930-40A1-954F-E76BB66E3F8F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{565BAB2E-D930-40A1-954F-E76BB66E3F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{565BAB2E-D930-40A1-954F-E76BB66E3F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{565BAB2E-D930-40A1-954F-E76BB66E3F8F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

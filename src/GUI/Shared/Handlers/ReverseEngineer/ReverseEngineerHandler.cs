@@ -99,7 +99,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 Tuple<bool, string> containsEfCoreReference = null;
 
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath, project.GetDirectory());
 
                 if (options == null)
                 {
@@ -548,7 +548,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(optionsPath + ".ignore"))
             {
-                File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
+                File.WriteAllText(optionsPath, options.Write(project.GetDirectory()), Encoding.UTF8);
                 project.ProjectItems.AddFromFile(optionsPath);
             }
 
