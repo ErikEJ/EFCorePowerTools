@@ -12,19 +12,10 @@ namespace EFCorePowerTools.Extensions
             if (!File.Exists(optionsPath)) return null;
             if (File.Exists(optionsPath + ".ignore")) return null;
 
-            // Top-down deserialization:
-            // Try to deserialize the current head version of the class.
-            // If this fails, go top down with older versions and migrate them to the head version.
-
             var couldRead = TryRead(optionsPath, out ReverseEngineerOptions deserialized);
             if (couldRead)
                 return deserialized;
 
-            couldRead = TryRead(optionsPath, out ReverseEngineerOptionsV1 deserializedV1);
-            if (couldRead)
-                return ReverseEngineerOptions.FromV1(deserializedV1);
-
-            // Fallback
             return null;
         }
 
