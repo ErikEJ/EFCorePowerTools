@@ -47,14 +47,14 @@ SELECT
     CAST(CASE WHEN (ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
 FROM INFORMATION_SCHEMA.ROUTINES
 WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
-AND OBJECTPROPERTY(OBJECT_ID(ROUTINE_NAME), 'IsMSShipped') = 0
+AND OBJECTPROPERTY(OBJECT_ID(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)), 'IsMSShipped') = 0
 AND (
             select 
                 major_id 
             from 
                 sys.extended_properties 
             where 
-                major_id = object_id(ROUTINE_NAME) and 
+                major_id = object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) and 
                 minor_id = 0 and 
                 class = 1 and 
                 name = N'microsoft_database_tools_support'
