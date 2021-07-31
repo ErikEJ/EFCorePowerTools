@@ -286,6 +286,8 @@ namespace RevEng.Core
             if (filePaths.AdditionalFiles.Count == 0)
                 return;
 
+            var allowedFolders = allGeneratedFiles.Select(s => Path.GetDirectoryName(s)).Distinct().ToHashSet();
+
             foreach (var modelFile in Directory.GetFiles(outputDir, "*.cs", SearchOption.AllDirectories))
             {
                 if (allGeneratedFiles.Contains(modelFile, StringComparer.OrdinalIgnoreCase))
@@ -293,7 +295,10 @@ namespace RevEng.Core
                     continue;
                 }
 
-                TryRemoveFile(modelFile);
+                if (allowedFolders.Contains(Path.GetDirectoryName(modelFile)))
+                {
+                    TryRemoveFile(modelFile);
+                }
             }
         }
 
