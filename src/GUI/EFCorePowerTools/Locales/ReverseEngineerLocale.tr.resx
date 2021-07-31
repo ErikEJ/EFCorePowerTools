@@ -139,7 +139,7 @@
     <value>Gelişmiş...</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Her zaman tüm veritabanı nesnelerini dahil et (önizleme)</value>
+    <value>Her zaman tüm veritabanı nesnelerini dahil et</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>Hata ayıklama sırasında kod üretilemez.</value>
@@ -283,7 +283,7 @@
     <value>Seçili bağlantıyı kaldır</value>
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
-    <value>SQL varsayılanını bool sütunlarından kaldır (önizleme)</value>
+    <value>SQL varsayılanını bool sütunlarından kaldır</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>Sonuç bildiriliyor...</value>

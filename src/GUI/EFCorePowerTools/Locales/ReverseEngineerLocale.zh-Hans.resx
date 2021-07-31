@@ -139,7 +139,7 @@
     <value>高级</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>始终生成所有数据库对象（预览）</value>
+    <value>始终生成所有数据库对象</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>调试时无法生成代码</value>
@@ -283,7 +283,7 @@
     <value>删除选定的连接</value>
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
-    <value>删除bool列的SQL默认值（预览）</value>
+    <value>删除bool列的SQL默认值</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>报告结果...</value>

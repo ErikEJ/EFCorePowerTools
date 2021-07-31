@@ -139,7 +139,7 @@
     <value>Advanced...</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Always include all database objects (preview)</value>
+    <value>Always include all database objects</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>Cannot generate code while debugging</value>
@@ -286,7 +286,7 @@
     <value>Remove selected connection</value>
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
-    <value>Remove SQL default from bool columns (preview)</value>
+    <value>Remove SQL default from bool columns</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>Reporting result...</value>

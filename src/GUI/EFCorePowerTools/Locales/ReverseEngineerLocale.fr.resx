@@ -139,7 +139,7 @@
     <value>Avancé...</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Toujours inclure tous les objets de la base de données (préversion)</value>
+    <value>Toujours inclure tous les objets de la base de données</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>Impossible de générer du code lors du débogage</value>
@@ -283,7 +283,7 @@
     <value>Supprimer la connexion sélectionnée</value>
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
-    <value>Supprimer la valeur SQL par défaut des colonnes booléennes (aperçu)</value>
+    <value>Supprimer la valeur SQL par défaut des colonnes booléennes</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>Rapport de résultats...</value>
