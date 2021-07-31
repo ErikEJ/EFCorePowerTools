@@ -114,7 +114,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (codeGenerationMode == CodeGenerationMode.EFCore6)
             {
-                version = "5.0";
+                version = "6.0";
             }
 
             if (await IsDotnetInstalledAsync(version) == false)
