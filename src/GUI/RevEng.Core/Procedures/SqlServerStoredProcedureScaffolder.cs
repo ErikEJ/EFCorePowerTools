@@ -331,7 +331,7 @@ namespace RevEng.Core.Procedures
 
                 if (parameter.Output)
                 {
-                    _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
+                    _sb.AppendLine("Direction = System.Data.ParameterDirection.InputOutput,");
                 }
                 else
                 {
