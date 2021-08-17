@@ -48,7 +48,7 @@
 
         <StackPanel Margin="5"
                     Orientation="Vertical">
-            <GroupBox Header="Code generation" >
+            <GroupBox Header="{x:Static locale:ReverseEngineerLocale.CodeGeneration}" >
                 <StackPanel>
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveDefaultConstructor}"
                       IsChecked="{Binding Model.UseNoDefaultConstructor}"
@@ -72,7 +72,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="File layout">
+            <GroupBox Header="{x:Static locale:ReverseEngineerLocale.FileLayout}">
                 <StackPanel>
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
                           IsChecked="{Binding Model.UseDbContextSplitting}"
@@ -85,7 +85,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Mapping">
+            <GroupBox Header="{x:Static locale:ReverseEngineerLocale.Mapping}">
                 <StackPanel>
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapSpatialTypes}"
                           IsChecked="{Binding Model.MapSpatialTypes}"
@@ -105,7 +105,7 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="POCO entities">
+            <GroupBox Header="{x:Static locale:ReverseEngineerLocale.POCOEntities}">
                 <StackPanel>
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveConstructorFromEntities}"
                       IsChecked="{Binding Model.UseNoConstructor}"

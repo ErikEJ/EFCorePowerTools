@@ -168,6 +168,9 @@
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
     <value />
   </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value />
+  </data>
   <data name="ConnectionName" xml:space="preserve">
     <value />
   </data>
@@ -210,6 +213,9 @@
   <data name="EntityTypesSubNamespace" xml:space="preserve">
     <value />
   </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value />
+  </data>
   <data name="FilterSchemas" xml:space="preserve">
     <value />
   </data>
@@ -243,6 +249,9 @@
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value />
   </data>
+  <data name="Mapping" xml:space="preserve">
+    <value />
+  </data>
   <data name="MapSpatialTypes" xml:space="preserve">
     <value />
   </data>
@@ -268,6 +277,9 @@
     <value />
   </data>
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
+    <value />
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
     <value />
   </data>
   <data name="ReleaseNotes" xml:space="preserve">
