@@ -168,6 +168,9 @@
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
     <value>选择 SQL Server 数据库项目(.dacpac)</value>
   </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>代码生成</value>
+  </data>
   <data name="ConnectionName" xml:space="preserve">
     <value>名称</value>
   </data>
@@ -210,6 +213,9 @@
   <data name="EntityTypesSubNamespace" xml:space="preserve">
     <value>实体子命名空间</value>
   </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>文件存储</value>
+  </data>
   <data name="FilterSchemas" xml:space="preserve">
     <value>筛选架构</value>
   </data>
@@ -243,6 +249,9 @@
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>映射 NodaTime 数据类型</value>
   </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>映射</value>
+  </data>
   <data name="MapSpatialTypes" xml:space="preserve">
     <value>映射空间数据类型</value>
   </data>
@@ -270,11 +279,17 @@
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
     <value>使用单数或复数形式</value>
   </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>POCO实体</value>
+  </data>
   <data name="ReleaseNotes" xml:space="preserve">
     <value>发行说明</value>
   </data>
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
     <value>从实体类中删除构造函数（实验性）</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>删除默认的DbContext构造函数</value>
   </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
     <value>从实体类中删除导航属性（实验性）</value>
@@ -350,6 +365,9 @@
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
     <value>使用正则表达式</value>
+  </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>使用架构文件夹模式(实验性)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>使用文本搜索</value>

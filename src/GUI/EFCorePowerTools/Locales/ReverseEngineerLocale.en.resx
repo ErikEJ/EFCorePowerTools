@@ -168,6 +168,9 @@
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
     <value>Choose SQL Server Database project (.dacpac)</value>
   </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>Code generation</value>
+  </data>
   <data name="ConnectionName" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -210,6 +213,9 @@
   <data name="EntityTypesSubNamespace" xml:space="preserve">
     <value>EntityTypes sub-namespace (overrides path) - optional</value>
   </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>File layout</value>
+  </data>
   <data name="FilterSchemas" xml:space="preserve">
     <value>Filter schemas</value>
   </data>
@@ -243,6 +249,9 @@
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>Map Noda Time types</value>
   </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>Mapping</value>
+  </data>
   <data name="MapSpatialTypes" xml:space="preserve">
     <value>Map spatial types</value>
   </data>
@@ -269,6 +278,9 @@
   </data>
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
     <value>Pluralize or singularize generated object names (English)</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>POCO entities</value>
   </data>
   <data name="ReleaseNotes" xml:space="preserve">
     <value>Release Notes</value>
