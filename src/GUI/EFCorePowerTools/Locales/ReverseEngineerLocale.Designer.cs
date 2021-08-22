@@ -216,6 +216,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CodeGeneration {
+            get {
+                return ResourceManager.GetString("CodeGeneration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ConnectionName {
             get {
                 return ResourceManager.GetString("ConnectionName", resourceCulture);
@@ -342,6 +351,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FileLayout {
+            get {
+                return ResourceManager.GetString("FileLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FilterSchemas {
             get {
                 return ResourceManager.GetString("FilterSchemas", resourceCulture);
@@ -441,6 +459,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Mapping {
+            get {
+                return ResourceManager.GetString("Mapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MapSpatialTypes {
             get {
                 return ResourceManager.GetString("MapSpatialTypes", resourceCulture);
@@ -516,6 +543,15 @@ namespace EFCorePowerTools.Locales {
         public static string PluralizeSingularizeObjectNames {
             get {
                 return ResourceManager.GetString("PluralizeSingularizeObjectNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string POCOEntities {
+            get {
+                return ResourceManager.GetString("POCOEntities", resourceCulture);
             }
         }
         
