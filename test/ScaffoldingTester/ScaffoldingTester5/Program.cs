@@ -1,4 +1,5 @@
-﻿using ScaffoldingTester.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ScaffoldingTester.Models;
 using System;
 using System.Linq;
 
@@ -10,7 +11,6 @@ namespace ScaffoldingTester
         {
             using (var db = new NorthwindContext())
             {
-
                 //var procs = new NorthwindContextProcedures(db);
 
                 var sret = new OutputParameter<string>();
@@ -65,6 +65,37 @@ namespace ScaffoldingTester
                     .OrderBy(p => p.ProductName)
                     .ToList();
             }
+
+            using (var splits = new StringSplitContext())
+            {
+                var elements = splits.Split( "a,b" , ",").ToList();
+            }
         }
+    }
+
+    public class StringSplitContext : DbContext
+    {
+        [DbFunction(IsBuiltIn = true, Name = "STRING_SPLIT")]
+        public IQueryable<StringSplitResult> Split(string source, string separator)
+            => FromExpression(() => Split(source, separator));
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True");
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StringSplitResult>().HasNoKey();
+        }
+    }
+
+    public class StringSplitResult
+    { 
+        public string Value { get; set; }
     }
 }
