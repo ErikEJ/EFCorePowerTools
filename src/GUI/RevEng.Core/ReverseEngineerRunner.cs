@@ -42,11 +42,14 @@ namespace RevEng.Core
             {
                 options.Tables = new List<SerializationTableModel>();
             }
+#if CORE60
+#else
+
             foreach (var table in options.Tables)
             {
                 table.Name = table.Name.Replace("'", "''");
             }
-
+#endif
             var outputDir = !string.IsNullOrEmpty(options.OutputPath)
                ? Path.IsPathFullyQualified(options.OutputPath)
                     ? options.OutputPath
