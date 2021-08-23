@@ -64,38 +64,19 @@ namespace ScaffoldingTester
                 var tvfTest = db.ProductsWithMinimumInStock(5)
                     .OrderBy(p => p.ProductName)
                     .ToList();
-            }
 
-            using (var splits = new StringSplitContext())
-            {
-                var elements = splits.Split( "a,b" , ",").ToList();
-            }
-        }
-    }
+                var query = db.Suppliers
+                    .Where(s => db.Split("ALFKI;DADAD", ";").Any(split => split.Value == s.CompanyName));
 
-    public class StringSplitContext : DbContext
-    {
-        [DbFunction(IsBuiltIn = true, Name = "STRING_SPLIT")]
-        public IQueryable<StringSplitResult> Split(string source, string separator)
-            => FromExpression(() => Split(source, separator));
+                var sql = query.ToQueryString();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True");
+                var list = "ALFKI;DADAD";
+
+                var suppliers = db.Suppliers
+                    .Where(s => db.Split(list, ";").Any(split => split.Value == s.CompanyName))
+                    .ToList();
+
             }
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<StringSplitResult>().HasNoKey();
-        }
-    }
-
-    public class StringSplitResult
-    { 
-        public string Value { get; set; }
     }
 }
