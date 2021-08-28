@@ -67,7 +67,7 @@ namespace EFCorePowerTools
             {
                 await base.InitializeAsync(cancellationToken, progress);
 
-                _dte2 = await GetServiceAsync(typeof(DTE)) as DTE2;
+                _dte2 = await GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as DTE2;
 
                 Assumes.Present(_dte2);
 
