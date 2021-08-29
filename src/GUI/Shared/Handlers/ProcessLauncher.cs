@@ -1,6 +1,5 @@
-﻿using EFCorePowerTools.Extensions;
-using EnvDTE;
-using EnvDTE80;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Extensions;
 using Microsoft.VisualStudio.Shell;
 using NuGet.ProjectModel;
 using System;
@@ -22,10 +21,6 @@ namespace EFCorePowerTools.Handlers
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (!project.IsNetCore31OrHigher())
-            {
-                throw new ArgumentException("Only .NET Core 3.1, 5.0 and 6.0 are supported");
-            }
             _project = project;
         }
 
@@ -70,8 +65,7 @@ namespace EFCorePowerTools.Handlers
 
             var launchPath = await DropNetCoreFilesAsync();
 
-            var dte2 = (DTE2)_project.DTE;
-            var startupOutputPath = dte2.GetStartupProjectOutputPath() ?? outputPath;
+            var startupOutputPath = await EnvDTEExtensions.GetStartupProjectOutputPath() ?? outputPath;
 
             outputPath = FixExtension(outputPath);
 
@@ -129,8 +123,8 @@ namespace EFCorePowerTools.Handlers
             var depsFile = fileRoot + ".deps.json";
             var runtimeConfig = fileRoot + ".runtimeconfig.json";
 
-            var projectAssetsFile = await _project.GetCspPropertyAsync("ProjectAssetsFile");
-            var runtimeFrameworkVersion = await _project.GetCspPropertyAsync("RuntimeFrameworkVersion");
+            var projectAssetsFile = await _project.GetAttributeAsync("ProjectAssetsFile");
+            var runtimeFrameworkVersion = await _project.GetAttributeAsync("RuntimeFrameworkVersion");
 
             var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
 

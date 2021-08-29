@@ -1,4 +1,5 @@
-﻿using EFCorePowerTools.BLL;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.BLL;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.DAL;
@@ -14,7 +15,6 @@ using EFCorePowerTools.Shared.BLL;
 using EFCorePowerTools.Shared.DAL;
 using EFCorePowerTools.Shared.Models;
 using EFCorePowerTools.ViewModels;
-using EnvDTE;
 using EnvDTE80;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft;
@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools
 {
@@ -154,18 +155,21 @@ namespace EFCorePowerTools
                 {
                     Telemetry.Initialize(Dte2,
                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                        VisualStudioVersion.ToString(),
+                        (await VisualStudioVersion()).ToString(),
                         "00dac4de-337c-4fed-a835-70db30078b2a");
                 }
-                Telemetry.TrackEvent("Platform: Visual Studio " + VisualStudioVersion.ToString(1));
+                Telemetry.TrackEvent("Platform: Visual Studio " + (await VisualStudioVersion()).ToString(1));
             }
             catch (Exception ex)
-            { 
+            {
                 LogError(new List<string>(), ex);
             }
         }
 
-        private Version VisualStudioVersion => new Version(int.Parse(_dte2.Version.Split('.')[0], System.Globalization.CultureInfo.InvariantCulture), 0);
+        private async Task<Version> VisualStudioVersion()
+        { 
+            return await VS.Shell.GetVsVersionAsync();
+        }
 
         private void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
         {
@@ -232,27 +236,28 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                var itemName = _dte2.SelectedItems.Item(1).Name;
+                var item = await VS.Solutions.GetActiveItemAsync();
+
+                var itemName = item.Name;
                 if (!IsConfigFile(itemName))
                 {
                     return;
                 }
 
-                string filename = (string)_dte2.SelectedItems.Item(1).ProjectItem.Properties.Item("FullPath").Value;
-
-                var project = _dte2.SelectedItems.Item(1).ProjectItem.ContainingProject;
-                if (project == null)
+                if (item.Parent as Project == null)
                 {
                     return;
                 }
 
+                string filename = item.FullPath;
+
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(item.Parent as Project, filename, false);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(item.Parent as Project, filename, true);
                 }
             }
             catch (Exception ex)
@@ -273,7 +278,7 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                var project = _dte2.SelectedItems.Item(1).Project;
+                var project = await VS.Solutions.GetActiveProjectAsync();
                 if (project == null)
                 {
                     return;
@@ -296,7 +301,7 @@ namespace EFCorePowerTools
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
-                    await _dgmlNugetHandler.InstallDgmlNugetAsync(project);
+                    await _dgmlNugetHandler.InstallDgmlNugetAsync(_dte2);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
@@ -329,20 +334,20 @@ namespace EFCorePowerTools
             }
         }
 
-        private async System.Threading.Tasks.Task<string> LocateProjectAssemblyPathAsync(Project project)
+        private async Task<string> LocateProjectAssemblyPathAsync(Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             try
             {
-                if (!project.TryBuild())
+                if (!await VS.Build.BuildProjectAsync(project))
                 {
                     _dte2.StatusBar.Text = SharedLocale.BuildFailed;
 
                     return null;
                 }
 
-                var path = project.GetOutPutAssemblyPath();
+                var path = await project.GetOutPutAssemblyPath();
                 if (path != null)
                 {
                     return path;

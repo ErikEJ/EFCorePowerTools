@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
-    using EnvDTE;
+    using Community.VisualStudio.Toolkit;
     using EventArgs;
     using System;
     using System.Collections.Generic;

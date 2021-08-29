@@ -1,9 +1,9 @@
-﻿using EFCorePowerTools.Contracts.Views;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Shared.Models;
-using EnvDTE;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using System;
@@ -31,7 +31,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
             try
             {
-                if (_package.Dte2.Mode == vsIDEMode.vsIDEModeDebug)
+                if (await EnvDteHelper.IsDebugModeAsync())
                 {
                     EnvDteHelper.ShowError(CompareLocale.CannotCompareContextToDatabaseWhileDebugging);
                     return;
@@ -42,15 +42,15 @@ namespace EFCorePowerTools.Handlers.Compare
                     throw new ArgumentNullException(nameof(project));
                 }
 
-                if (project.Properties.Item("TargetFrameworkMoniker") == null)
+                if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
                     EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
-                if (!project.IsNetCore31OrHigher())
+                if (!await project.IsNetCore31OrHigher())
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
+                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
@@ -70,8 +70,9 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
+                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
                     var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(5, 1, 3));
+                    nugetHelper.InstallPackage("EfCore.SchemaCompare", dteProject, new Version(5, 1, 3));
                     EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }

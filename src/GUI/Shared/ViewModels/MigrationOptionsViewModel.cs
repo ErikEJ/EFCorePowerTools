@@ -1,9 +1,9 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
+    using Community.VisualStudio.Toolkit;
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
-    using EnvDTE;
     using Extensions;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
@@ -261,7 +261,7 @@
             {
                 _visualStudioAccess.StartStatusBarAnimation(ref _progressIcon);
                 _visualStudioAccess.SetStatusBarText(MigrationsLocale.GettingMigrationStatus);
-                if (_project.TryBuild())
+                if (!await VS.Build.BuildProjectAsync(_project))
                 {
                     var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
 
@@ -293,8 +293,8 @@
                 return false;
             }
 
-            _visualStudioAccess.SetStatusBarText(String.Format(MigrationsLocale.CreatingMigrationInDbContext, MigrationName, SelectedStatusKey));
-            var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullName), GenerationType.MigrationAdd, SelectedStatusKey, MigrationName, _project.Properties.Item("DefaultNamespace").Value.ToString());
+            _visualStudioAccess.SetStatusBarText(string.Format(MigrationsLocale.CreatingMigrationInDbContext, MigrationName, SelectedStatusKey));
+            var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullPath), GenerationType.MigrationAdd, SelectedStatusKey, MigrationName, await _project.GetAttributeAsync("DefaultNamespace"));
 
             var result = BuildModelResult(processResult);
 
@@ -312,11 +312,8 @@
                                                            );
                 if (lines.Length == 3)
                 {
-                    _project.ProjectItems.AddFromFile(lines[1]); // migrationFile
-                    _visualStudioAccess.OpenFile(lines[1]); // migrationFile
-
-                    _project.ProjectItems.AddFromFile(lines[0]); // metadataFile
-                    _project.ProjectItems.AddFromFile(lines[2]); // snapshotFile
+                    await _project.AddExistingFilesAsync(lines);
+                    await VS.Documents.OpenViaProjectAsync(lines[1]); 
                 }
             }
 
@@ -325,7 +322,7 @@
 
         private async Task<bool> UpdateDatabaseAsync()
         {
-            _visualStudioAccess.SetStatusBarText(String.Format(MigrationsLocale.UpdatingDatabaseFromMigrationsInDbContext, SelectedStatusKey));
+            _visualStudioAccess.SetStatusBarText(string.Format(MigrationsLocale.UpdatingDatabaseFromMigrationsInDbContext, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationApply, SelectedStatusKey);
             if (!processResult.Contains("Error:")) return true;
 

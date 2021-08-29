@@ -1,15 +1,14 @@
-﻿using EFCorePowerTools.Extensions;
-using EnvDTE;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
+using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 
 namespace EFCorePowerTools.Handlers
 {
-    using Contracts.Views;
-    using EFCorePowerTools.Helpers;
-    using EFCorePowerTools.Locales;
-    using Microsoft.VisualStudio.Shell;
-
     internal class MigrationsHandler
     {
         private readonly EFCorePowerToolsPackage _package;
@@ -35,15 +34,15 @@ namespace EFCorePowerTools.Handlers
                     throw new ArgumentNullException(nameof(project));
                 }
 
-                if (project.Properties.Item("TargetFrameworkMoniker") == null)
+                if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
                     EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
-                if (!project.IsNetCore31OrHigher())
+                if (!await project.IsNetCore31OrHigher())
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
+                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
@@ -62,8 +61,10 @@ namespace EFCorePowerTools.Handlers
                         EnvDteHelper.ShowError(string.Format(MigrationsLocale.CannotSupportVersion, version));
                         return;
                     }
+                    
+                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
                     var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", dteProject, version);
                     EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
