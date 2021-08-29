@@ -301,7 +301,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await _package.Dte2.BuildSqlProjAsync(options.Dacpac);
+                options.Dacpac = await EnvDTEExtensions.BuildSqlProjAsync(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     EnvDteHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);

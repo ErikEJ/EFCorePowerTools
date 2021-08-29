@@ -1,5 +1,4 @@
 ﻿using Community.VisualStudio.Toolkit;
-using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -13,6 +12,31 @@ namespace EFCorePowerTools.Extensions
 {
     internal static class EnvDTEExtensions
     {
+        public static async Task<string> GetStartupProjectOutputPath()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            IVsSolutionBuildManager buildManager;
+            IVsHierarchy startupProject;
+            Project project;
+
+            try
+            {
+                buildManager = await VS.Services.GetSolutionBuildManagerAsync();
+
+                ErrorHandler.ThrowOnFailure(buildManager.get_StartupProject(out startupProject));
+
+                project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
+
+                return await project.GetOutPutAssemblyPath();
+
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public static async Task<string[]> GetDacpacFilesInActiveSolution()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -37,7 +61,6 @@ namespace EFCorePowerTools.Extensions
                 {
                     // Ignore
                 }
-
             }
 
             if (result.Count == 0)
@@ -49,29 +72,35 @@ namespace EFCorePowerTools.Extensions
                 .ToArray();
         }
 
-        public static async Task<string> GetStartupProjectOutputPath()
+        public static async Task<string> BuildSqlProjAsync(string sqlprojPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            
-            IVsSolutionBuildManager buildManager;
-            IVsHierarchy startupProject;
-            Project project;
 
-            try
+            if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
+
+            var project = await GetProject(sqlprojPath);
+            if (project == null) return null;
+
+            var searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
+
+            var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories);
+
+            if (!await VS.Build.ProjectIsUpToDateAsync(project))
             {
-                buildManager = await VS.Services.GetSolutionBuildManagerAsync();
+                var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Rebuild);
 
-                ErrorHandler.ThrowOnFailure(buildManager.get_StartupProject(out startupProject));
-
-                project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
-
-                return await project.GetOutPutAssemblyPath();
-
+                if (!ok)
+                {
+                    throw new Exception("Dacpac build failed");
+                }
             }
-            catch
+
+            if (files.Length == 1)
             {
-                return null;
+                return files[0];
             }
+
+            throw new Exception("Dacpac build failed, please pick the file manually");
         }
 
         private static void AddFiles(HashSet<string> result, string path)
@@ -87,24 +116,11 @@ namespace EFCorePowerTools.Extensions
         }
 
         /// <summary>
-        /// Looks for *.dacpac items which are added to the solution as links
-        /// </summary>
-        /// <param name="result">A collection with file paths. New unique paths will be added there</param>
-        /// <param name="project"></param>
-        private static async System.Threading.Tasks.Task AddLinkedFiles(HashSet<string> result, Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            if (project.Children == null) return;
-
-            await LinkedFilesSearch(project.Children, result);
-        }
-
-        /// <summary>
         /// Recursively walks over the project item tree and looks for *.dacpac linked files
         /// </summary>
         /// <param name="projectItems"></param>
         /// <param name="files"></param>
-        private static async System.Threading.Tasks.Task LinkedFilesSearch(IEnumerable<SolutionItem>  projectItems, HashSet<string> files)
+        private static async System.Threading.Tasks.Task LinkedFilesSearch(IEnumerable<SolutionItem> projectItems, HashSet<string> files)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -131,41 +147,17 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        public static async Task<string> BuildSqlProjAsync(this DTE2 dte, string sqlprojPath)
+        /// <summary>
+        /// Looks for *.dacpac items which are added to the solution as links
+        /// </summary>
+        /// <param name="result">A collection with file paths. New unique paths will be added there</param>
+        /// <param name="project"></param>
+        private static async System.Threading.Tasks.Task AddLinkedFiles(HashSet<string> result, Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            if (project.Children == null) return;
 
-            if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
-
-            if (sqlprojPath.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
-
-            var project = await GetProject(sqlprojPath);
-            if (project == null) return null;
-
-            var searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
-
-            var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories);
-
-            foreach (var file in files)
-            {
-                File.Delete(file);
-            }
-
-            var buildStartTime = DateTime.Now;
-            await project.BuildAsync();
-
-            files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories);
-
-            foreach (var file in files)
-            {
-                var lastWriteTime = File.GetLastWriteTime(file);
-                if (lastWriteTime > buildStartTime)
-                {
-                    return file;
-                }
-            }
-
-            return null;
+            await LinkedFilesSearch(project.Children, result);
         }
 
         private static async Task<Project> GetProject(string projectItemPath)
