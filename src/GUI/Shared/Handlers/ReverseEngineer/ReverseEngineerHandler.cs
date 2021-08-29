@@ -152,7 +152,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     _package.Dte2.StatusBar.Text = ReverseEngineerLocale.LoadingOptions;
 
-                    containsEfCoreReference = project.ContainsEfCoreReference(options.DatabaseType);
+                    containsEfCoreReference = await project.ContainsEfCoreReference(options.DatabaseType);
                     options.InstallNuGetPackage = !containsEfCoreReference.Item1;
 
                     if (!GetModelOptions(options, project.Name))
@@ -169,8 +169,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     _package.Dte2.StatusBar.Text = ReverseEngineerLocale.InstallingEFCoreProviderPackage;
                     var nuGetHelper = new NuGetHelper();
-                    //TODO How to get EnvDTE project for NuGetHelper?
-                    //await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
+                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
+                    await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, dteProject);
                 }
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
@@ -462,12 +462,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.UseHandleBars)
             {
-                var dropped = (DropTemplates(options.ProjectPath, options.CodeGenerationMode == CodeGenerationMode.EFCore5));
-                if (dropped)
-                {
-                    //TODO How to do this?
-                    //project.ProjectItems.AddFromDirectory(Path.Combine(options.ProjectPath, "CodeTemplates"));
-                }
+                DropTemplates(options.ProjectPath, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
             }
 
             options.UseNullableReferences = await project.IsNetFramework() ? false : options.UseNullableReferences;
@@ -563,7 +558,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private bool DropTemplates(string projectPath, bool useEFCore5)
+        private void DropTemplates(string projectPath, bool useEFCore5)
         {
             var zipName = useEFCore5 ? "CodeTemplates501.zip" : "CodeTemplates.zip";
 
@@ -574,10 +569,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 Directory.CreateDirectory(toDir);
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, zipName), toDir);
-                return true;
             }
-
-            return false;
         }
 
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)

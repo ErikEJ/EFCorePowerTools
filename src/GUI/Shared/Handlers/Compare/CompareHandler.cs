@@ -70,10 +70,10 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    //TODO How to get "EnvDTE.Project" here?
-                    //var nugetHelper = new NuGetHelper();
-                    //nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(5, 1, 3));
-                    //EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
+                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("EfCore.SchemaCompare", dteProject, new Version(5, 1, 3));
+                    EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }
 

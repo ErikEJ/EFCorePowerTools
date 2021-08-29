@@ -58,11 +58,11 @@ namespace EFCorePowerTools.Handlers
 
                 if (!result.Item1)
                 {
-                    //TODO How to install?
-                    //var nugetHelper = new NuGetHelper();
-                    //nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    //EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
-                    //return;
+                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", dteProject, version);
+                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    return;
                 }
 
                 var processLauncher = new ProcessLauncher(project);

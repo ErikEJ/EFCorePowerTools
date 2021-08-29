@@ -1,6 +1,6 @@
 ﻿using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using System.IO;
 using System.Reflection;
@@ -17,9 +17,10 @@ namespace EFCorePowerTools.Handlers
             _package = package;
         }
 
-        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(Project project)
+        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(DTE2 dte)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            var project = dte.SelectedItems.Item(0).Project;
 
             _package.Dte2.StatusBar.Text = DgmlLocale.InstallingPackage;
             var nuGetHelper = new NuGetHelper();

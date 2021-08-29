@@ -299,11 +299,10 @@ namespace EFCorePowerTools
                 {
                     await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
                 }
-                //TODO Enable!
-                //else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
-                //{
-                //    await _dgmlNugetHandler.InstallDgmlNugetAsync(project);
-                //}
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
+                {
+                    await _dgmlNugetHandler.InstallDgmlNugetAsync(_dte2);
+                }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
                     await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);

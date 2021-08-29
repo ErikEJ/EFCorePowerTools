@@ -94,10 +94,8 @@ namespace EFCorePowerTools.Extensions
             return Path.Combine(renamingPath, "efpt.renaming.json");
         }
 
-        public static Tuple<bool, string> ContainsEfCoreReference(this Project project, DatabaseType dbType)
+        public static async Task<Tuple<bool, string>> ContainsEfCoreReference(this Project project, DatabaseType dbType)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
             var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
             if (dbType == DatabaseType.SQLite)
             {
@@ -120,19 +118,11 @@ namespace EFCorePowerTools.Extensions
                 providerPackage = "FirebirdSql.EntityFrameworkCore.Firebird";
             }
 
-            //TODO Re-implement based on ContainsReferenceAsync below!
+            if ((await ContainsReferenceAsync(project, providerPackage)).Item1)
+            {
+                return new Tuple<bool, string>(true, providerPackage);
+            }
 
-
-
-            //var vsProject = project.Object as VSProject;
-            //if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
-            //for (var i = 1; i < vsProject.References.Count + 1; i++)
-            //{
-            //    if (vsProject.References.Item(i).Name.Equals(providerPackage))
-            //    {
-            //        return new Tuple<bool, string>(true, providerPackage);
-            //    }
-            //}
             return new Tuple<bool, string>(false, providerPackage);
         }
 
