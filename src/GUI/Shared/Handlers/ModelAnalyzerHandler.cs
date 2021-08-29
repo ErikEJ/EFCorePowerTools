@@ -1,7 +1,7 @@
-﻿using EFCorePowerTools.Extensions;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using System;
@@ -32,15 +32,15 @@ namespace EFCorePowerTools.Handlers
                     throw new ArgumentException(outputPath, nameof(outputPath));
                 }
 
-                if (project.Properties.Item("TargetFrameworkMoniker") == null)
+                if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
                     EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
-                if (!project.IsNetCore31OrHigher())
+                if (!await project.IsNetCore31OrHigher())
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {project.Properties.Item("TargetFrameworkMoniker").Value}");
+                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
@@ -58,10 +58,11 @@ namespace EFCorePowerTools.Handlers
 
                 if (!result.Item1)
                 {
-                    var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
-                    return;
+                    //TODO How to install?
+                    //var nugetHelper = new NuGetHelper();
+                    //nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
+                    //EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    //return;
                 }
 
                 var processLauncher = new ProcessLauncher(project);
@@ -112,12 +113,10 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private void GenerateDgml(List<Tuple<string, string>> modelResult, Project project)
+        private async System.Threading.Tasks.Task GenerateDgml(List<Tuple<string, string>> modelResult, Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
-            ProjectItem item = null;
+            string target = null;
 
             foreach (var info in modelResult)
             {
@@ -133,18 +132,14 @@ namespace EFCorePowerTools.Handlers
                 var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
 
                 File.WriteAllText(path, dgmlText, Encoding.UTF8);
-                item = project.ProjectItems.GetItem(Path.GetFileName(path));
-                if (item != null)
-                {
-                    item.Delete();
-                }
-                item = project.ProjectItems.AddFromFileCopy(path);
-            }
 
-            if (item != null)
+                target = Path.Combine(Path.GetDirectoryName(project.FullPath), Path.GetFileName(path));
+
+                File.Copy(path, target, true);
+            }
+            if (target != null)
             {
-                var window = item.Open();
-                window.Document.Activate();
+                await VS.Documents.OpenAsync(target);
             }
         }
 

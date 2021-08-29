@@ -66,7 +66,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\PathExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ProjectExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ProjectItemsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ZipArchiveExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Guids.cs" />

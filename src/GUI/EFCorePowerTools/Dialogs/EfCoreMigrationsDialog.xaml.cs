@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.Dialogs
 {
+    using Community.VisualStudio.Toolkit;
     using Contracts.ViewModels;
     using Contracts.Views;
-    using EnvDTE;
     using Shared.DAL;
     using System;
 

@@ -1,28 +1,29 @@
-﻿using EnvDTE;
+﻿using Community.VisualStudio.Toolkit;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Extensions
 {
     internal static class EnvDTEExtensions
     {
-        public static string[] GetDacpacFilesInActiveSolution(this DTE2 dte, string[] projectPaths)
+        public static async Task<string[]> GetDacpacFilesInActiveSolution()
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             var result = new HashSet<string>();
 
-            if (!dte.Solution.IsOpen)
-                return null;
+            var projects = await VS.Solutions.GetAllProjectsAsync();
 
-            foreach (var projectPath in projectPaths)
+            foreach (var item in projects)
             {
-                var folder = Path.GetDirectoryName(projectPath);
+                var folder = Path.GetDirectoryName(item.FullPath);
                 if (Directory.Exists(folder))
                 {
                     AddFiles(result, folder);
@@ -30,15 +31,7 @@ namespace EFCorePowerTools.Extensions
 
                 try
                 {
-                    var project = dte.Solution.Projects
-                        .OfType<Project>()
-#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
-                        .FirstOrDefault(p => p.FullName == projectPath);
-#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
-                    if (project != null)
-                    {
-                        AddLinkedFiles(result, project);
-                    }
+                    await AddLinkedFiles(result, item);
                 }
                 catch
                 {
@@ -56,24 +49,24 @@ namespace EFCorePowerTools.Extensions
                 .ToArray();
         }
 
-        public static string GetStartupProjectOutputPath(this DTE2 dte)
+        public static async Task<string> GetStartupProjectOutputPath()
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            object[] startupProject = (object[])dte.Solution.SolutionBuild.StartupProjects;
-
-            if (startupProject?.Length != 1)
-            {
-                return null;
-            }
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            
+            IVsSolutionBuildManager buildManager;
+            IVsHierarchy startupProject;
+            Project project;
 
             try
             {
-                var project = dte.Solution.Item((string)startupProject[0]);
+                buildManager = await VS.Services.GetSolutionBuildManagerAsync();
 
-                var path = project.GetOutPutAssemblyPath();
+                ErrorHandler.ThrowOnFailure(buildManager.get_StartupProject(out startupProject));
 
-                return path;
+                project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
+
+                return await project.GetOutPutAssemblyPath();
+
             }
             catch
             {
@@ -98,13 +91,12 @@ namespace EFCorePowerTools.Extensions
         /// </summary>
         /// <param name="result">A collection with file paths. New unique paths will be added there</param>
         /// <param name="project"></param>
-        private static void AddLinkedFiles(HashSet<string> result, Project project)
+        private static async System.Threading.Tasks.Task AddLinkedFiles(HashSet<string> result, Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            if (project.Children == null) return;
 
-            if (project.ProjectItems == null) return;
-
-            LinkedFilesSearch(project.ProjectItems, result);
+            await LinkedFilesSearch(project.Children, result);
         }
 
         /// <summary>
@@ -112,51 +104,45 @@ namespace EFCorePowerTools.Extensions
         /// </summary>
         /// <param name="projectItems"></param>
         /// <param name="files"></param>
-        private static void LinkedFilesSearch(ProjectItems projectItems, HashSet<string> files)
+        private static async System.Threading.Tasks.Task LinkedFilesSearch(IEnumerable<SolutionItem>  projectItems, HashSet<string> files)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            foreach (ProjectItem item in projectItems)
+            foreach (var item in projectItems)
             {
-                if (item.ProjectItems?.Count > 0)
+                if (item.Children.Count() > 0)
                 {
-                    LinkedFilesSearch(item.ProjectItems, files);
+                    await LinkedFilesSearch(item.Children, files);
                 }
 
-                if (item.Kind == VSConstants.ItemTypeGuid.PhysicalFile_string)
+                if (item.Type == SolutionItemType.PhysicalFile && item is Project)
                 {
-                    try
+                    var project = item as Project;
+                    var isLink = await project.GetAttributeAsync("IsLink");
+                    var extension = await project.GetAttributeAsync("Extension");
+                    if (isLink != null && isLink == "true" &&
+                        extension != null && extension.Equals(".dacpac", StringComparison.OrdinalIgnoreCase))
                     {
-                        var isLink = item.Properties.Item("IsLink")?.Value as bool?;
-                        var extension = item.Properties.Item("Extension")?.Value as string;
-                        if (isLink != null && isLink.Value &&
-                            extension != null && extension.Equals(".dacpac", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var fullPath = item.Properties.Item("FullPath").Value as string;
-                            if (!string.IsNullOrEmpty(fullPath))
-                                files.Add(fullPath);
-                        }
-                    }
-                    catch
-                    {
-                        // Just in case 'index' parameter in Properties.Item(object index) is not a string
+                        var fullPath = item.FullPath;
+                        if (!string.IsNullOrEmpty(fullPath))
+                            files.Add(fullPath);
                     }
                 }
             }
         }
 
-        public static string BuildSqlProj(this DTE2 dte, string sqlprojPath)
+        public static async Task<string> BuildSqlProjAsync(this DTE2 dte, string sqlprojPath)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
 
             if (sqlprojPath.EndsWith(".edmx", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
 
-            var project = GetProject(dte, sqlprojPath);
+            var project = await GetProject(sqlprojPath);
             if (project == null) return null;
 
-            var searchPath = Path.Combine(Path.GetDirectoryName(project.FullName), "bin");
+            var searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
 
             var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories);
 
@@ -166,7 +152,7 @@ namespace EFCorePowerTools.Extensions
             }
 
             var buildStartTime = DateTime.Now;
-            if (!project.TryBuild()) return null;
+            await project.BuildAsync();
 
             files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories);
 
@@ -182,86 +168,13 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
-        private static Project GetProject(DTE2 dte, string projectItemPath)
+        private static async Task<Project> GetProject(string projectItemPath)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var projects = Projects(dte);
-            foreach (var project in projects)
-            {
-                // Accessing project.FullName might throw a NotImplementedException (from COM).
-                // In that case, the best match we can find is using the UniqueName.
-                try
-                {
-                    if (project.FullName == projectItemPath)
-                    {
-                        return project;
-                    }
-                }
-                catch (NotImplementedException)
-                {
-                    if (projectItemPath.EndsWith(project.UniqueName))
-                    {
-                        return project;
-                    }
-                }
-            }
-            return null;
+            return (await VS.Solutions.GetAllProjectsAsync())
+                .Where(p => p.FullPath == projectItemPath)
+                .SingleOrDefault();
         }
-
-        private static IList<Project> Projects(DTE2 dte)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            Projects projects = dte.Solution.Projects;
-            List<Project> list = new List<Project>();
-            var item = projects.GetEnumerator();
-            while (item.MoveNext())
-            {
-                var project = item.Current as Project;
-                if (project == null)
-                {
-                    continue;
-                }
-
-                if (project.Kind == "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}")
-                {
-                    list.AddRange(GetSolutionFolderProjects(project));
-                }
-                else
-                {
-                    list.Add(project);
-                }
-            }
-
-            return list;
-        }
-
-        private static IEnumerable<Project> GetSolutionFolderProjects(Project solutionFolder)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            List<Project> list = new List<Project>();
-            for (var i = 1; i <= solutionFolder.ProjectItems.Count; i++)
-            {
-                var subProject = solutionFolder.ProjectItems.Item(i).SubProject;
-                if (subProject == null)
-                {
-                    continue;
-                }
-
-                // If this is another solution folder, do a recursive call, otherwise add
-                if (subProject.Kind == "{66A26720-8FB5-11D2-AA7E-00C04F688DDE}")
-                {
-                    list.AddRange(GetSolutionFolderProjects(subProject));
-                }
-                else
-                {
-                    list.Add(subProject);
-                }
-            }
-            return list;
-        }
-
     }
 }

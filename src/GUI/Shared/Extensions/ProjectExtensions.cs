@@ -1,9 +1,6 @@
-﻿using EFCorePowerTools.Helpers;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EnvDTE;
-using EnvDTE80;
-using Microsoft.VisualStudio.ProjectSystem;
-using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.Shell;
 using NuGet.ProjectModel;
 using RevEng.Shared;
@@ -11,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using VSLangProj;
 
 namespace EFCorePowerTools.Extensions
@@ -19,28 +17,16 @@ namespace EFCorePowerTools.Extensions
     {
         public const int SOk = 0;
 
-        public static bool TryBuild(this Project project)
+        public static async Task<string> GetOutPutAssemblyPath(this Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var dte = (DTE2)project.DTE;
-            var configuration = dte.Solution.SolutionBuild.ActiveConfiguration.Name;
-
-            dte.Solution.SolutionBuild.BuildProject(configuration, project.UniqueName, true);
-
-            return dte.Solution.SolutionBuild.LastBuildInfo == 0;
-        }
-
-        public static string GetOutPutAssemblyPath(this Project project)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var assemblyName = project.Properties.Item("AssemblyName").Value.ToString();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            
+            var assemblyName = await project.GetAttributeAsync("AssemblyName");
 
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
 
-            var outputPath = GetOutputPath(project);
+            var outputPath = await GetOutputPath(project);
 
             if (string.IsNullOrEmpty(outputPath))
             {
@@ -66,7 +52,7 @@ namespace EFCorePowerTools.Extensions
 
             var result = new List<string>();
 
-            var projectPath = project.Properties.Item("FullPath")?.Value.ToString();
+            var projectPath = Path.GetDirectoryName(project.FullPath);
 
             if (string.IsNullOrEmpty(projectPath))
             {
@@ -93,7 +79,7 @@ namespace EFCorePowerTools.Extensions
 
             if (string.IsNullOrEmpty(optionsPath))
             {
-                renamingPath = project.Properties.Item("FullPath")?.Value.ToString();
+                renamingPath = project.FullPath;
 
                 if (string.IsNullOrEmpty(renamingPath))
                 {
@@ -106,20 +92,6 @@ namespace EFCorePowerTools.Extensions
             }
 
             return Path.Combine(renamingPath, "efpt.renaming.json");
-        }
-
-        public static async System.Threading.Tasks.Task<string> GetCspPropertyAsync(this Project project, string propertyName)
-        {
-            var unconfiguredProject = GetUnconfiguredProject(project);
-            var configuredProject = await unconfiguredProject.GetSuggestedConfiguredProjectAsync();
-            var properties = configuredProject.Services.ProjectPropertiesProvider.GetCommonProperties();
-            return await properties.GetEvaluatedPropertyValueAsync(propertyName);
-        }
-
-        private static UnconfiguredProject GetUnconfiguredProject(EnvDTE.Project project)
-        {
-            var context = project as IVsBrowseObjectContext;
-            return context?.UnconfiguredProject;
         }
 
         public static Tuple<bool, string> ContainsEfCoreReference(this Project project, DatabaseType dbType)
@@ -148,35 +120,39 @@ namespace EFCorePowerTools.Extensions
                 providerPackage = "FirebirdSql.EntityFrameworkCore.Firebird";
             }
 
-            var vsProject = project.Object as VSProject;
-            if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
-            for (var i = 1; i < vsProject.References.Count + 1; i++)
-            {
-                if (vsProject.References.Item(i).Name.Equals(providerPackage))
-                {
-                    return new Tuple<bool, string>(true, providerPackage);
-                }
-            }
+            //TODO Re-implement based on ContainsReferenceAsync below!
+
+
+
+            //var vsProject = project.Object as VSProject;
+            //if (vsProject == null) return new Tuple<bool, string>(false, providerPackage);
+            //for (var i = 1; i < vsProject.References.Count + 1; i++)
+            //{
+            //    if (vsProject.References.Item(i).Name.Equals(providerPackage))
+            //    {
+            //        return new Tuple<bool, string>(true, providerPackage);
+            //    }
+            //}
             return new Tuple<bool, string>(false, providerPackage);
         }
 
-        public static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsEfSchemaCompareReferenceAsync(this Project project)
+        public static async Task<Tuple<bool, string>> ContainsEfSchemaCompareReferenceAsync(this Project project)
         {
             return await ContainsReferenceAsync(project, "EfCore.SchemaCompare");
         }
 
-        public static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsEfCoreDesignReferenceAsync(this Project project)
+        public static async Task<Tuple<bool, string>> ContainsEfCoreDesignReferenceAsync(this Project project)
         {
             return await ContainsReferenceAsync(project, "Microsoft.EntityFrameworkCore.Design");
         }
 
-        private static async System.Threading.Tasks.Task<Tuple<bool, string>> ContainsReferenceAsync(Project project, string designPackage)
+        private static async Task<Tuple<bool, string>> ContainsReferenceAsync(Project project, string designPackage)
         {
             var corePackage = "Microsoft.EntityFrameworkCore";
 
             bool hasDesign = false;
             string coreVersion = string.Empty;
-            var projectAssetsFile = await project.GetCspPropertyAsync("ProjectAssetsFile");
+            var projectAssetsFile = await project.GetAttributeAsync("ProjectAssetsFile");
 
             if (projectAssetsFile != null && File.Exists(projectAssetsFile))
             {
@@ -201,51 +177,37 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
-        public static bool IsNetFramework(this Project project)
+        public static async Task<bool> IsNetFramework(this Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETFramework,");
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETFramework,") ?? false;
         }
 
-        public static bool IsNetCore31OrHigher(this Project project)
+        public static async Task<bool> IsNetCore31OrHigher(this Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            return IsNetCore31(project) || IsNet50(project) || IsNet60(project);
+            return await IsNetCore31(project) || await IsNet50(project) || await IsNet60(project);
         }
 
-        private static bool IsNetCore31(this Project project)
+        private static async Task<bool> IsNetCore31(this Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v3.1");
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v3.1") ?? false;
         }
 
-        private static bool IsNet50(this Project project)
+        private static async Task<bool> IsNet50(this Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v5.0");
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v5.0") ?? false;
         }
 
-        private static bool IsNet60(this Project project)
+        private static async Task<bool> IsNet60(this Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            return project.Properties.Item("TargetFrameworkMoniker").Value.ToString().Contains(".NETCoreApp,Version=v6.0");
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ?? false;
         }
 
-        private static string GetOutputPath(Project project)
+        private async static Task<string> GetOutputPath(Project project)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var configManager = project.ConfigurationManager;
-            if (configManager == null) return null;
-
-            var activeConfig = configManager.ActiveConfiguration;
-            var outputPath = activeConfig.Properties.Item("OutputPath").Value.ToString();
-            var fullName = project.FullName;
+            var outputPath = await project.GetAttributeAsync("OutputPath");
+            var fullName = project.FullPath;
 
             var absoluteOutputPath = RevEng.Shared.PathHelper.GetAbsPath(outputPath, fullName);
 
