@@ -132,7 +132,6 @@ namespace EFCorePowerTools
 
                 }
                 typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
-                typeof(Microsoft.VisualStudio.ProjectSystem.ProjectCapabilities).ToString();
                 typeof(Xceed.Wpf.Toolkit.SplitButton).ToString();
 
                 _extensionServices = CreateServiceProvider();
