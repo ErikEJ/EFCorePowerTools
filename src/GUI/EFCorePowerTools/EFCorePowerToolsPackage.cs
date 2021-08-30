@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -153,7 +154,7 @@ namespace EFCorePowerTools
                 Telemetry.Enabled = Properties.Settings.Default.ParticipateInTelemetry;
                 if (Telemetry.Enabled)
                 {
-                    Telemetry.Initialize(Dte2,
+                    Telemetry.Initialize(
                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                         (await VisualStudioVersion()).ToString(),
                         "00dac4de-337c-4fed-a835-70db30078b2a");
@@ -171,17 +172,15 @@ namespace EFCorePowerTools
             return await VS.Shell.GetVsVersionAsync();
         }
 
-        private void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
+        private async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
             var menuCommand = sender as MenuCommand;
-            if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+            if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
             {
-                return;
+                return; 
             }
 
-            var itemName = _dte2.SelectedItems.Item(1).Name;
+            var itemName = (await VS.Solutions.GetActiveItemAsync()).Name;
             menuCommand.Visible = IsConfigFile(itemName);
 
             return;
@@ -194,10 +193,8 @@ namespace EFCorePowerTools
                 itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
-        private void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
+        private async void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
             var menuCommand = sender as MenuCommand;
 
             if (menuCommand == null)
@@ -205,12 +202,7 @@ namespace EFCorePowerTools
                 return;
             }
 
-            if (_dte2.SelectedItems.Count != 1)
-            {
-                return;
-            }
-
-            var project = _dte2.SelectedItems.Item(1).Project;
+            var project = await VS.Solutions.GetActiveProjectAsync();
 
             if (project == null)
             {
@@ -218,8 +210,8 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible =
-                project.Kind == "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" ||
-                project.Kind == "{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"; // csproj
+                await project.IsKindAsync("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") ||
+                await project.IsKindAsync("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"); // csproj
 
             return;
         }
@@ -231,7 +223,7 @@ namespace EFCorePowerTools
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var menuCommand = sender as MenuCommand;
-                if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+                if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
                 {
                     return;
                 }
@@ -273,7 +265,7 @@ namespace EFCorePowerTools
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var menuCommand = sender as MenuCommand;
-                if (menuCommand == null || _dte2.SelectedItems.Count != 1)
+                if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
                 {
                     return;
                 }
@@ -299,10 +291,11 @@ namespace EFCorePowerTools
                 {
                     await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
                 }
-                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
-                {
-                    await _dgmlNugetHandler.InstallDgmlNugetAsync(_dte2);
-                }
+                //TODO Enable
+                //else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
+                //{
+                //    await _dgmlNugetHandler.InstallDgmlNugetAsync(_dte2.SelectedItems.Item(0).Project);
+                //}
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
                     await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
@@ -342,7 +335,7 @@ namespace EFCorePowerTools
             {
                 if (!await VS.Build.BuildProjectAsync(project))
                 {
-                    _dte2.StatusBar.Text = SharedLocale.BuildFailed;
+                    await VS.StatusBar.ShowMessageAsync(SharedLocale.BuildFailed);
 
                     return null;
                 }
@@ -353,7 +346,7 @@ namespace EFCorePowerTools
                     return path;
                 }
 
-                _dte2.StatusBar.Text = SharedLocale.UnableToLocateProjectAssembly;
+                await VS.StatusBar.ShowMessageAsync(SharedLocale.UnableToLocateProjectAssembly);
             }
             catch (Exception ex)
             {
@@ -439,7 +432,7 @@ namespace EFCorePowerTools
                     Telemetry.TrackException(exception);
                 }
 
-                _dte2.StatusBar.Text = SharedLocale.AnErrorOccurred;
+                await VS.StatusBar.ShowMessageAsync(SharedLocale.AnErrorOccurred);
 
                 var messageBuilder = new StringBuilder();
 

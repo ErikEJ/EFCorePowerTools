@@ -1,6 +1,6 @@
-﻿using EFCorePowerTools.Helpers;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using System.IO;
 using System.Reflection;
@@ -17,19 +17,18 @@ namespace EFCorePowerTools.Handlers
             _package = package;
         }
 
-        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(DTE2 dte)
+        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(EnvDTE.Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            var project = dte.SelectedItems.Item(0).Project;
 
-            _package.Dte2.StatusBar.Text = DgmlLocale.InstallingPackage;
+            await VS.StatusBar.ShowMessageAsync(DgmlLocale.InstallingPackage);
             var nuGetHelper = new NuGetHelper();
             await nuGetHelper.InstallPackageAsync("ErikEJ.EntityFrameworkCore.DgmlBuilder", project);
-            _package.Dte2.StatusBar.Text = DgmlLocale.PackageInstalled;
+            await VS.StatusBar.ShowMessageAsync(DgmlLocale.PackageInstalled);
             var path = Path.GetTempFileName() + ".txt";
             File.WriteAllText(path, GetReadme(), Encoding.UTF8);
-            var window = _package.Dte2.ItemOperations.OpenFile(path);
-            window.Document.Activate();
+            var window = await VS.Documents.OpenAsync(path);
+            await window.WindowFrame.ShowAsync();
             Telemetry.TrackEvent("PowerTools.InstallDgmlNuget");
         }
 

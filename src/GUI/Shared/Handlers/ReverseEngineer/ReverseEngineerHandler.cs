@@ -118,7 +118,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     if (forceEdit)
                     {
-                        _package.Dte2.StatusBar.Text = ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh;
+                        await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh);
                     }
                     else
                     {
@@ -138,24 +138,24 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (!await ChooseDataBaseConnection(options))
                         return;
 
-                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GettingReadyToConnect;
+                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
 
                     var dbInfo = await GetDatabaseInfoAsync(options);
 
                     if (dbInfo == null)
                         return;
 
-                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.LoadingDatabaseObjects;
+                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
                     if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
                         return;
 
-                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.LoadingOptions;
+                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     containsEfCoreReference = await project.ContainsEfCoreReference(options.DatabaseType);
                     options.InstallNuGetPackage = !containsEfCoreReference.Item1;
 
-                    if (!GetModelOptions(options, project.Name))
+                    if (!await GetModelOptions(options, project.Name))
                         return;
 
                     await SaveOptions(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
@@ -167,7 +167,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && await project.IsNetCore31OrHigher())
                 {
-                    _package.Dte2.StatusBar.Text = ReverseEngineerLocale.InstallingEFCoreProviderPackage;
+                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
                     var nuGetHelper = new NuGetHelper();
                     var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
                     await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, dteProject);
@@ -322,11 +322,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            _package.Dte2.StatusBar.Animate(true, _icon);
+            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             var predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
                                        ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
                                        : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
-            _package.Dte2.StatusBar.Animate(false, _icon);
+            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
 
             var preselectedTables = new List<SerializationTableModel>();
 
@@ -336,7 +336,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 preselectedTables.AddRange(normalizedTables);
             }
 
-            _package.Dte2.StatusBar.Clear();
+            await VS.StatusBar.ClearAsync();
 
             var ptd = _package.GetView<IPickTablesDialog>()
                               .AddTables(predefinedTables, namingOptionsAndPath.Item1)
@@ -349,10 +349,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return (pickTablesResult.ClosedByOK);
         }
 
-        private bool GetModelOptions(ReverseEngineerOptions options, string projectName)
+        private async Task<bool> GetModelOptions(ReverseEngineerOptions options, string projectName)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
             var classBasis = VsDataHelper.GetDatabaseName(options.ConnectionString, options.DatabaseType);
             var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
 
@@ -392,8 +390,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var modelDialog = _package.GetView<IModelingOptionsDialog>()
                                           .ApplyPresets(presets);
-
-            _package.Dte2.StatusBar.Clear();
+            
+            await VS.StatusBar.ClearAsync();
 
             var modelingOptionsResult = modelDialog.ShowAndAwaitUserResponse(true);
 
@@ -467,10 +465,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             options.UseNullableReferences = await project.IsNetFramework() ? false : options.UseNullableReferences;
 
-            _package.Dte2.StatusBar.Animate(true, _icon);
-            _package.Dte2.StatusBar.Text = ReverseEngineerLocale.GeneratingCode;
+            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
+            
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
-            _package.Dte2.StatusBar.Animate(false, _icon);
+
+            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
 
             var tfm = await project.GetAttributeAsync("TargetFrameworkMoniker");
             bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
@@ -511,10 +511,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 missingProviderPackage = null;
             }
 
-            _package.Dte2.StatusBar.Text = ReverseEngineerLocale.ReportingResult;
+            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.ReportingResult);
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-            _package.Dte2.StatusBar.Text = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss"));
+            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
 
             EnvDteHelper.ShowMessage(errors);
 

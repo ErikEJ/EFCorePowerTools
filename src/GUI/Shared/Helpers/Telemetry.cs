@@ -1,5 +1,4 @@
-﻿using EnvDTE80;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
 using System;
 
@@ -15,7 +14,7 @@ namespace EFCorePowerTools.Helpers
         /// <summary>
         /// Initializes the telemetry client.
         /// </summary>
-        public static void Initialize(DTE2 dte, string version, string vsVersion, string telemetryKey)
+        public static void Initialize(string version, string vsVersion, string telemetryKey)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -27,7 +26,6 @@ namespace EFCorePowerTools.Helpers
             _telemetry.Context.User.Id = (Environment.UserName + Environment.MachineName).GetHashCode().ToString();
             _telemetry.Context.Device.Model = vsVersion;
             _telemetry.Context.Device.OperatingSystem = Environment.OSVersion.Version.ToString();
-            _telemetry.Context.Device.Type = dte.Edition;
             _telemetry.InstrumentationKey = telemetryKey;
             _telemetry.Context.Component.Version = version;
 

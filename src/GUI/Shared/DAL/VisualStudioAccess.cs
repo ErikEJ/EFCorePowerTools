@@ -1,5 +1,6 @@
 ﻿namespace EFCorePowerTools.DAL
 {
+    using Community.VisualStudio.Toolkit;
     using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Data.Services;
     using Microsoft.VisualStudio.Shell;
@@ -80,7 +81,7 @@
             ThreadHelper.JoinableTaskFactory.Run(async delegate {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                _package.Dte2.StatusBar.Text = text;
+                await VS.StatusBar.ShowMessageAsync(text);
             });
             
         }
@@ -97,7 +98,7 @@
             ThreadHelper.JoinableTaskFactory.Run(async delegate {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                _package.Dte2.ItemOperations.OpenFile(fileName);
+                await VS.Documents.OpenAsync(fileName);
             });
             
         }
