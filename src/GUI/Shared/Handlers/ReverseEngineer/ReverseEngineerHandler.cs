@@ -23,12 +23,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly EFCorePowerToolsPackage _package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
-        private readonly object _icon;
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
         {
             _package = package;
-            _icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
             reverseEngineerHelper = new ReverseEngineerHelper();
             vsDataHelper = new VsDataHelper();
 
@@ -169,8 +167,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
                     var nuGetHelper = new NuGetHelper();
-                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
-                    await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, dteProject);
+                    var dte2 = await _package.GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as EnvDTE80.DTE2;
+
+                    if (dte2 != null)
+                    {
+                        var dteProject = dte2.SelectedItems.Item(0).Project;
+                        await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, dteProject);
+                    }
                 }
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
@@ -499,7 +502,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (Properties.Settings.Default.OpenGeneratedDbContext)
                 {
-                    _package.Dte2.ItemOperations.OpenFile(revEngResult.ContextFilePath);
+                    await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                 }
             }
 

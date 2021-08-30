@@ -58,10 +58,15 @@ namespace EFCorePowerTools.Handlers
 
                 if (!result.Item1)
                 {
-                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
-                    var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", dteProject, version);
-                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    var dte2 = await _package.GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as EnvDTE80.DTE2;
+
+                    if (dte2 != null)
+                    {
+                        var dteProject = dte2.SelectedItems.Item(0).Project;
+                        var nugetHelper = new NuGetHelper();
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", dteProject, version);
+                        EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    }
                     return;
                 }
 
@@ -91,7 +96,7 @@ namespace EFCorePowerTools.Handlers
                         var files = project.GenerateFiles(modelResult, ".sql");
                         foreach (var file in files)
                         {
-                            _package.Dte2.ItemOperations.OpenFile(file);
+                            await VS.Documents.OpenAsync(file);
                         }
                         Telemetry.TrackEvent("PowerTools.GenerateSqlCreate");
                         break;
@@ -99,7 +104,7 @@ namespace EFCorePowerTools.Handlers
                         var views = project.GenerateFiles(modelResult, ".txt");
                         foreach (var file in views)
                         {
-                            _package.Dte2.ItemOperations.OpenFile(file);
+                            await VS.Documents.OpenAsync(file);
                         }
                         Telemetry.TrackEvent("PowerTools.GenerateDebugView");
                         break;

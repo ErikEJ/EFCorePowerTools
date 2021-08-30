@@ -15,9 +15,7 @@ using EFCorePowerTools.Shared.BLL;
 using EFCorePowerTools.Shared.DAL;
 using EFCorePowerTools.Shared.Models;
 using EFCorePowerTools.ViewModels;
-using EnvDTE80;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -49,7 +47,6 @@ namespace EFCorePowerTools
         private readonly MigrationsHandler _migrationsHandler;
         private readonly CompareHandler _compareHandler;
         private IServiceProvider _extensionServices;
-        private DTE2 _dte2;
 
         public EFCorePowerToolsPackage()
         {
@@ -61,22 +58,11 @@ namespace EFCorePowerTools
             _compareHandler = new CompareHandler(this);
         }
 
-        internal DTE2 Dte2 => _dte2;
-
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
             {
                 await base.InitializeAsync(cancellationToken, progress);
-
-                _dte2 = await GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as DTE2;
-
-                Assumes.Present(_dte2);
-
-                if (_dte2 == null)
-                {
-                    return;
-                }
 
                 var oleMenuCommandService = await GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
 

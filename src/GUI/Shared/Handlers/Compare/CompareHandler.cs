@@ -70,16 +70,21 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    var dteProject = _package.Dte2.SelectedItems.Item(0).Project;
-                    var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("EfCore.SchemaCompare", dteProject, new Version(5, 1, 3));
-                    EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
+                    var dte2 = await _package.GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as EnvDTE80.DTE2;
+
+                    if (dte2 != null)
+                    {
+                        var dteProject = dte2.SelectedItems.Item(0).Project;
+                        var nugetHelper = new NuGetHelper();
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", dteProject, new Version(5, 1, 3));
+                        EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
+                    }
                     return;
                 }
 
-                _package.Dte2.StatusBar.Text = CompareLocale.LoadingData;
-                object icon = (short)Microsoft.VisualStudio.Shell.Interop.Constants.SBAI_Build;
-                _package.Dte2.StatusBar.Animate(true, icon);
+                await VS.StatusBar.ShowMessageAsync(CompareLocale.LoadingData);
+
+                await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
 
                 var databaseList = vsDataHelper.GetDataConnections(_package);
                 var contextTypes = await GetDbContextTypesAsync(outputPath, project);
@@ -99,8 +104,9 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 optionsDialog.AddContextTypes(contextTypes);
 
-                _package.Dte2.StatusBar.Animate(false, icon);
-                _package.Dte2.StatusBar.Clear();
+                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+                await VS.StatusBar.ClearAsync();
+
                 var pickDataSourceResult = optionsDialog.ShowAndAwaitUserResponse(true);
                 if (!pickDataSourceResult.ClosedByOK)
                     return;
@@ -114,8 +120,9 @@ namespace EFCorePowerTools.Handlers.Compare
                 pickDataSourceResult.Payload.Connection.DataConnection.Open();
                 pickDataSourceResult.Payload.Connection.ConnectionString = DataProtection.DecryptString(pickDataSourceResult.Payload.Connection.DataConnection.EncryptedConnectionString);
 
-                _package.Dte2.StatusBar.Text = CompareLocale.ComparingDatabaseWithContexts;
-                _package.Dte2.StatusBar.Animate(true, icon);
+                await VS.StatusBar.ShowMessageAsync(CompareLocale.ComparingDatabaseWithContexts);
+                await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+
                 var timer = new Stopwatch();
                 timer.Start();
                 var comparisonResult = await GetComparisonResultAsync( 
@@ -124,8 +131,9 @@ namespace EFCorePowerTools.Handlers.Compare
                     pickDataSourceResult.Payload.Connection, 
                     pickDataSourceResult.Payload.ContextTypes.ToArray());
                 timer.Stop();
-                _package.Dte2.StatusBar.Animate(false, icon);
-                _package.Dte2.StatusBar.Text = String.Format(CompareLocale.CompareCompletedIn, timer.Elapsed.ToString("h\\:mm\\:ss"));
+
+                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+                await VS.StatusBar.ShowMessageAsync(string.Format(CompareLocale.CompareCompletedIn, timer.Elapsed.ToString("h\\:mm\\:ss")));
                 
                 if (comparisonResult.Any())
                 {
@@ -138,7 +146,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     EnvDteHelper.ShowMessage(CompareLocale.ContextDatabaseMatch);
                 }
 
-                _package.Dte2.StatusBar.Clear();
+                await VS.StatusBar.ClearAsync();
 
                 Telemetry.TrackEvent("PowerTools.Compare");
             }
