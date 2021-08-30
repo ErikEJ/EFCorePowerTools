@@ -12,7 +12,7 @@ namespace EFCorePowerTools.Extensions
 {
     internal static class EnvDTEExtensions
     {
-        public static async Task<string> GetStartupProjectOutputPath()
+        public static async Task<string> GetStartupProjectOutputPathAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -28,7 +28,7 @@ namespace EFCorePowerTools.Extensions
 
                 project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
 
-                return await project.GetOutPutAssemblyPath();
+                return await project.GetOutPutAssemblyPathAsync();
 
             }
             catch
@@ -37,7 +37,7 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        public static async Task<string[]> GetDacpacFilesInActiveSolution()
+        public static async Task<string[]> GetDacpacFilesInActiveSolutionAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -55,7 +55,7 @@ namespace EFCorePowerTools.Extensions
 
                 try
                 {
-                    await AddLinkedFiles(result, item);
+                    await AddLinkedFilesAsync(result, item);
                 }
                 catch
                 {
@@ -78,7 +78,7 @@ namespace EFCorePowerTools.Extensions
 
             if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
 
-            var project = await GetProject(sqlprojPath);
+            var project = await GetProjectAsync(sqlprojPath);
             if (project == null) return null;
 
             var searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
@@ -120,7 +120,7 @@ namespace EFCorePowerTools.Extensions
         /// </summary>
         /// <param name="projectItems"></param>
         /// <param name="files"></param>
-        private static async System.Threading.Tasks.Task LinkedFilesSearch(IEnumerable<SolutionItem> projectItems, HashSet<string> files)
+        private static async System.Threading.Tasks.Task LinkedFilesSearchAsync(IEnumerable<SolutionItem> projectItems, HashSet<string> files)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -128,7 +128,7 @@ namespace EFCorePowerTools.Extensions
             {
                 if (item.Children.Count() > 0)
                 {
-                    await LinkedFilesSearch(item.Children, files);
+                    await LinkedFilesSearchAsync(item.Children, files);
                 }
 
                 if (item.Type == SolutionItemType.PhysicalFile && item is Project)
@@ -152,15 +152,15 @@ namespace EFCorePowerTools.Extensions
         /// </summary>
         /// <param name="result">A collection with file paths. New unique paths will be added there</param>
         /// <param name="project"></param>
-        private static async System.Threading.Tasks.Task AddLinkedFiles(HashSet<string> result, Project project)
+        private static async System.Threading.Tasks.Task AddLinkedFilesAsync(HashSet<string> result, Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             if (project.Children == null) return;
 
-            await LinkedFilesSearch(project.Children, result);
+            await LinkedFilesSearchAsync(project.Children, result);
         }
 
-        private static async Task<Project> GetProject(string projectItemPath)
+        private static async Task<Project> GetProjectAsync(string projectItemPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

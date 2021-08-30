@@ -16,7 +16,7 @@ namespace EFCorePowerTools.Extensions
     {
         public const int SOk = 0;
 
-        public static async Task<string> GetOutPutAssemblyPath(this Project project)
+        public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             
@@ -25,7 +25,7 @@ namespace EFCorePowerTools.Extensions
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
 
-            var outputPath = await GetOutputPath(project);
+            var outputPath = await GetOutputPathAsync(project);
 
             if (string.IsNullOrEmpty(outputPath))
             {
@@ -93,7 +93,7 @@ namespace EFCorePowerTools.Extensions
             return Path.Combine(renamingPath, "efpt.renaming.json");
         }
 
-        public static async Task<Tuple<bool, string>> ContainsEfCoreReference(this Project project, DatabaseType dbType)
+        public static async Task<Tuple<bool, string>> ContainsEfCoreReferenceAsync(this Project project, DatabaseType dbType)
         {
             var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
             if (dbType == DatabaseType.SQLite)
@@ -166,34 +166,34 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
-        public static async Task<bool> IsNetFramework(this Project project)
+        public static async Task<bool> IsNetFrameworkAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETFramework,") ?? false;
         }
 
-        public static async Task<bool> IsNetCore31OrHigher(this Project project)
+        public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
         {
-            return await IsNetCore31(project) || await IsNet50(project) || await IsNet60(project);
+            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
         }
 
-        private static async Task<bool> IsNetCore31(this Project project)
+        private static async Task<bool> IsNetCore31Async(this Project project)
         {
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v3.1") ?? false;
         }
 
-        private static async Task<bool> IsNet50(this Project project)
+        private static async Task<bool> IsNet50Async(this Project project)
         {
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v5.0") ?? false;
         }
 
-        private static async Task<bool> IsNet60(this Project project)
+        private static async Task<bool> IsNet60Async(this Project project)
         {
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ?? false;
         }
 
-        private async static Task<string> GetOutputPath(Project project)
+        private async static Task<string> GetOutputPathAsync(Project project)
         {
             var outputPath = await project.GetAttributeAsync("OutputPath");
             var fullName = project.FullPath;

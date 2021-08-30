@@ -4,7 +4,6 @@
     using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Data.Services;
     using Microsoft.VisualStudio.Shell;
-    using Microsoft.VisualStudio.Shell.Interop;
     using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
@@ -60,30 +59,19 @@
             EnvDteHelper.ShowMessage(message);
         }
 
-        void IVisualStudioAccess.StartStatusBarAnimation(ref object icon)
+        async System.Threading.Tasks.Task IVisualStudioAccess.StartStatusBarAnimationAsync()
         {
-#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
-            var statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
-            statusBar.Animation(1, ref icon);
-#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
+            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
         }
 
-        void IVisualStudioAccess.StopStatusBarAnimation(ref object icon)
+        async System.Threading.Tasks.Task IVisualStudioAccess.StopStatusBarAnimationAsync()
         {
-#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
-            var statusBar = (IVsStatusbar)_package.GetService<SVsStatusbar>();
-            statusBar.Animation(0, ref icon);
-#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
+            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
         }
 
-        void IVisualStudioAccess.SetStatusBarText(string text)
+        async System.Threading.Tasks.Task IVisualStudioAccess.SetStatusBarTextAsync(string text)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async delegate {
-                // Switch to main thread
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                await VS.StatusBar.ShowMessageAsync(text);
-            });
-            
+            await VS.StatusBar.ShowMessageAsync(text);            
         }
 
         void IVisualStudioAccess.ShowError(string error)

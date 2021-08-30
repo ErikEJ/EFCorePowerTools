@@ -141,10 +141,10 @@ namespace EFCorePowerTools
                 {
                     Telemetry.Initialize(
                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                        (await VisualStudioVersion()).ToString(),
+                        (await VisualStudioVersionAsync()).ToString(),
                         "00dac4de-337c-4fed-a835-70db30078b2a");
                 }
-                Telemetry.TrackEvent("Platform: Visual Studio " + (await VisualStudioVersion()).ToString(1));
+                Telemetry.TrackEvent("Platform: Visual Studio " + (await VisualStudioVersionAsync()).ToString(1));
             }
             catch (Exception ex)
             {
@@ -152,7 +152,7 @@ namespace EFCorePowerTools
             }
         }
 
-        private async Task<Version> VisualStudioVersion()
+        private async Task<Version> VisualStudioVersionAsync()
         { 
             return await VS.Shell.GetVsVersionAsync();
         }
@@ -325,7 +325,7 @@ namespace EFCorePowerTools
                     return null;
                 }
 
-                var path = await project.GetOutPutAssemblyPath();
+                var path = await project.GetOutPutAssemblyPathAsync();
                 if (path != null)
                 {
                     return path;

@@ -112,7 +112,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (onlyGenerate)
                 {
-                    forceEdit = !await ChooseDataBaseConnectionByUiHint(options);
+                    forceEdit = !await ChooseDataBaseConnectionByUiHintAsync(options);
 
                     if (forceEdit)
                     {
@@ -133,7 +133,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (!onlyGenerate || forceEdit)
                 {
-                    if (!await ChooseDataBaseConnection(options))
+                    if (!await ChooseDataBaseConnectionAsync(options))
                         return;
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
@@ -150,20 +150,20 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
-                    containsEfCoreReference = await project.ContainsEfCoreReference(options.DatabaseType);
+                    containsEfCoreReference = await project.ContainsEfCoreReferenceAsync(options.DatabaseType);
                     options.InstallNuGetPackage = !containsEfCoreReference.Item1;
 
-                    if (!await GetModelOptions(options, project.Name))
+                    if (!await GetModelOptionsAsync(options, project.Name))
                         return;
 
-                    await SaveOptions(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+                    await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
                 VerifySQLServerRightsAndVersion(options);
 
                 await GenerateFilesAsync(project, options, containsEfCoreReference);
 
-                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && await project.IsNetCore31OrHigher())
+                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && await project.IsNetCore31OrHigherAsync())
                 {
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
                     var nuGetHelper = new NuGetHelper();
@@ -191,7 +191,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private async Task<bool> ChooseDataBaseConnectionByUiHint(ReverseEngineerOptions options)
+        private async Task<bool> ChooseDataBaseConnectionByUiHintAsync(ReverseEngineerOptions options)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -207,7 +207,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            var dacpacList = await EnvDTEExtensions.GetDacpacFilesInActiveSolution();
+            var dacpacList = await EnvDTEExtensions.GetDacpacFilesInActiveSolutionAsync();
             if (dacpacList != null && dacpacList.Any())
             { 
                 if (!string.IsNullOrEmpty(options.UiHint) 
@@ -228,10 +228,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return false;
         }
 
-        private async Task<bool> ChooseDataBaseConnection(ReverseEngineerOptions options)
+        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options)
         {
             var databaseList = vsDataHelper.GetDataConnections(_package);
-            var dacpacList = await EnvDTEExtensions.GetDacpacFilesInActiveSolution();
+            var dacpacList = await EnvDTEExtensions.GetDacpacFilesInActiveSolutionAsync();
 
             var psd = _package.GetView<IPickServerDatabaseDialog>();
 
@@ -352,7 +352,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return (pickTablesResult.ClosedByOK);
         }
 
-        private async Task<bool> GetModelOptions(ReverseEngineerOptions options, string projectName)
+        private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName)
         {
             var classBasis = VsDataHelper.GetDatabaseName(options.ConnectionString, options.DatabaseType);
             var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
@@ -466,7 +466,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 DropTemplates(options.ProjectPath, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
             }
 
-            options.UseNullableReferences = await project.IsNetFramework() ? false : options.UseNullableReferences;
+            options.UseNullableReferences = await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
 
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
@@ -480,7 +480,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
             {
-                if (!await project.IsNetCore31OrHigher() && !isNetStandard)
+                if (!await project.IsNetCore31OrHigherAsync() && !isNetStandard)
                 {
                     foreach (var filePath in revEngResult.EntityTypeFilePaths)
                     {
@@ -491,7 +491,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
             {
-                if (!await project.IsNetCore31OrHigher() && !isNetStandard)
+                if (!await project.IsNetCore31OrHigherAsync() && !isNetStandard)
                 {
                     foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
                     {
@@ -531,7 +531,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private async System.Threading.Tasks.Task SaveOptions(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
+        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
         {
             if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
             {

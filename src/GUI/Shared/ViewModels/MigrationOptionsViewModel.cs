@@ -17,14 +17,12 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
-    using Constants = Microsoft.VisualStudio.Shell.Interop.Constants;
 
     public class MigrationOptionsViewModel : ViewModelBase, IMigrationOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly RelayCommand _applyCommand;
 
-        private object _progressIcon;
         private string _title;
         private string _applyButtonContent;
         private SortedDictionary<string, string> _statusList;
@@ -143,8 +141,6 @@
             LoadedCommand = new RelayCommand(async () => await Loaded_ExecutedAsync());
             _applyCommand = new RelayCommand(async () => await Apply_ExecutedAsync(), () => !_applying);
             CancelCommand = new RelayCommand(Cancel_Executed);
-
-            _progressIcon = (short)Constants.SBAI_Build;
         }
 
         private void UpdateStatusList(SortedDictionary<string, string> statusList)
@@ -237,7 +233,7 @@
 
         private void ReportStatus(string processResult)
         {
-            _visualStudioAccess.SetStatusBarText(string.Empty);
+            _visualStudioAccess.SetStatusBarTextAsync(string.Empty);
 
             if (string.IsNullOrEmpty(processResult))
             {
@@ -259,8 +255,8 @@
         {
             try
             {
-                _visualStudioAccess.StartStatusBarAnimation(ref _progressIcon);
-                _visualStudioAccess.SetStatusBarText(MigrationsLocale.GettingMigrationStatus);
+                await _visualStudioAccess.StartStatusBarAnimationAsync();
+                await _visualStudioAccess.SetStatusBarTextAsync(MigrationsLocale.GettingMigrationStatus);
                 if (!await VS.Build.BuildProjectAsync(_project))
                 {
                     var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
@@ -278,8 +274,8 @@
             }
             finally
             {
-                _visualStudioAccess.SetStatusBarText(string.Empty);
-                _visualStudioAccess.StopStatusBarAnimation(ref _progressIcon);
+                await _visualStudioAccess.SetStatusBarTextAsync(string.Empty);
+                await _visualStudioAccess.StopStatusBarAnimationAsync();
             }
         }
 
@@ -293,7 +289,7 @@
                 return false;
             }
 
-            _visualStudioAccess.SetStatusBarText(string.Format(MigrationsLocale.CreatingMigrationInDbContext, MigrationName, SelectedStatusKey));
+            await _visualStudioAccess.SetStatusBarTextAsync(string.Format(MigrationsLocale.CreatingMigrationInDbContext, MigrationName, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullPath), GenerationType.MigrationAdd, SelectedStatusKey, MigrationName, await _project.GetAttributeAsync("DefaultNamespace"));
 
             var result = BuildModelResult(processResult);
@@ -322,7 +318,7 @@
 
         private async Task<bool> UpdateDatabaseAsync()
         {
-            _visualStudioAccess.SetStatusBarText(string.Format(MigrationsLocale.UpdatingDatabaseFromMigrationsInDbContext, SelectedStatusKey));
+            await _visualStudioAccess.SetStatusBarTextAsync(string.Format(MigrationsLocale.UpdatingDatabaseFromMigrationsInDbContext, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationApply, SelectedStatusKey);
             if (!processResult.Contains("Error:")) return true;
 
@@ -333,7 +329,7 @@
 
         private async Task<bool> ScriptMigrationAsync()
         {
-            _visualStudioAccess.SetStatusBarText(String.Format(MigrationsLocale.ScriptingMigrationsInDbContext, SelectedStatusKey));
+            await _visualStudioAccess.SetStatusBarTextAsync(String.Format(MigrationsLocale.ScriptingMigrationsInDbContext, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationScript, SelectedStatusKey);
             if (processResult.Contains("Error:"))
             {
@@ -367,7 +363,7 @@
             {
                 _applying = true;
                 _applyCommand.RaiseCanExecuteChanged();
-                _visualStudioAccess.StartStatusBarAnimation(ref _progressIcon);
+                await _visualStudioAccess.StartStatusBarAnimationAsync();
 
                 if (!StatusList.TryGetValue(SelectedStatusKey, out var selectedStatusValue))
                     throw new ArgumentOutOfRangeException(nameof(SelectedStatusKey));
@@ -398,8 +394,8 @@
             }
             finally
             {
-                _visualStudioAccess.StopStatusBarAnimation(ref _progressIcon);
-                _visualStudioAccess.SetStatusBarText(string.Empty);
+                await _visualStudioAccess.StopStatusBarAnimationAsync();
+                await _visualStudioAccess.SetStatusBarTextAsync(string.Empty);
                 _applying = false;
                 _applyCommand.RaiseCanExecuteChanged();
             }

@@ -2,7 +2,7 @@
 {
     using Microsoft.VisualStudio.Data.Services;
     using Models;
-    using System;
+    using System.Threading.Tasks;
 
     public interface IVisualStudioAccess
     {
@@ -14,10 +14,10 @@
 
         void ShowMessage(string message);
 
-        void StartStatusBarAnimation(ref object icon);
-        void StopStatusBarAnimation(ref object icon);
+        Task StartStatusBarAnimationAsync();
+        Task StopStatusBarAnimationAsync();
 
-        void SetStatusBarText(string text);
+        Task SetStatusBarTextAsync(string text);
         void ShowError(string error);
 
         void OpenFile(string fileName);

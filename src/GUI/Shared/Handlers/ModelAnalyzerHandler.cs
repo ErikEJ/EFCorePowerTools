@@ -38,7 +38,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!await project.IsNetCore31OrHigher())
+                if (!await project.IsNetCore31OrHigherAsync())
                 {
                     EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
@@ -89,7 +89,7 @@ namespace EFCorePowerTools.Handlers
                 switch (generationType)
                 {
                     case GenerationType.Dgml:
-                        GenerateDgml(modelResult, project);
+                        await GenerateDgmlAsync(modelResult, project);
                         Telemetry.TrackEvent("PowerTools.GenerateModelDgml");
                         break;
                     case GenerationType.Ddl:
@@ -118,7 +118,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private async System.Threading.Tasks.Task GenerateDgml(List<Tuple<string, string>> modelResult, Project project)
+        private async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
         {
             var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
             string target = null;
