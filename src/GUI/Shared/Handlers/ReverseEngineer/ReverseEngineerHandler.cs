@@ -167,13 +167,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
                     var nuGetHelper = new NuGetHelper();
-                    var dte2 = await _package.GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as EnvDTE80.DTE2;
-
-                    if (dte2 != null)
-                    {
-                        var dteProject = dte2.SelectedItems.Item(0).Project;
-                        await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, dteProject);
-                    }
+                       
+                    await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, _package);
                 }
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");

@@ -17,13 +17,13 @@ namespace EFCorePowerTools.Handlers
             _package = package;
         }
 
-        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(EnvDTE.Project project)
+        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(EFCorePowerToolsPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             await VS.StatusBar.ShowMessageAsync(DgmlLocale.InstallingPackage);
             var nuGetHelper = new NuGetHelper();
-            await nuGetHelper.InstallPackageAsync("ErikEJ.EntityFrameworkCore.DgmlBuilder", project);
+            await nuGetHelper.InstallPackageAsync("ErikEJ.EntityFrameworkCore.DgmlBuilder", package);
             await VS.StatusBar.ShowMessageAsync(DgmlLocale.PackageInstalled);
             var path = Path.GetTempFileName() + ".txt";
             File.WriteAllText(path, GetReadme(), Encoding.UTF8);

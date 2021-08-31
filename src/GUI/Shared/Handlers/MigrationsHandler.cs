@@ -61,14 +61,10 @@ namespace EFCorePowerTools.Handlers
                         EnvDteHelper.ShowError(string.Format(MigrationsLocale.CannotSupportVersion, version));
                         return;
                     }
-                    var dte2 = await _package.GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as EnvDTE80.DTE2;
 
-                    if (dte2 != null)
-                    {
-                        var dteProject = dte2.SelectedItems.Item(0).Project; var nugetHelper = new NuGetHelper();
-                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", dteProject, version);
-                        EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
-                    }
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _package, version);
+                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
 

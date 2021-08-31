@@ -70,15 +70,9 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    var dte2 = await _package.GetServiceAsync(typeof(Microsoft.VisualStudio.Shell.Interop.SDTE)) as EnvDTE80.DTE2;
-
-                    if (dte2 != null)
-                    {
-                        var dteProject = dte2.SelectedItems.Item(0).Project;
-                        var nugetHelper = new NuGetHelper();
-                        nugetHelper.InstallPackage("EfCore.SchemaCompare", dteProject, new Version(5, 1, 3));
-                        EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
-                    }
+                    var nugetHelper = new NuGetHelper();
+                    nugetHelper.InstallPackage("EfCore.SchemaCompare", _package, new Version(5, 1, 3));
+                    EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }
 
