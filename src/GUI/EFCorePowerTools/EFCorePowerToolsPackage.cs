@@ -278,11 +278,10 @@ namespace EFCorePowerTools
                 {
                     await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
                 }
-                //TODO Enable
-                //else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
-                //{
-                //    await _dgmlNugetHandler.InstallDgmlNugetAsync(_dte2.SelectedItems.Item(0).Project);
-                //}
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
+                {
+                    await _dgmlNugetHandler.InstallDgmlNugetAsync(this);
+                }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
                     await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
