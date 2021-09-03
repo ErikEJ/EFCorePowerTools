@@ -403,7 +403,7 @@ namespace EFCorePowerTools
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            EnvDteHelper.ShowMessage(msg.Content);
+            VSHelper.ShowMessage(msg.Content);
         }
 
         internal void LogError(List<string> statusMessages, Exception exception)

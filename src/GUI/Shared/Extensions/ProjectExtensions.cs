@@ -214,7 +214,7 @@ namespace EFCorePowerTools.Extensions
                 if (item.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
                     || item.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.InvalidName}: {item.Item1}");
+                    VSHelper.ShowError($"{SharedLocale.InvalidName}: {item.Item1}");
                     return list;
                 }
 

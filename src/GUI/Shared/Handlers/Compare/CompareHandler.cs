@@ -31,9 +31,9 @@ namespace EFCorePowerTools.Handlers.Compare
 
             try
             {
-                if (await EnvDteHelper.IsDebugModeAsync())
+                if (await VSHelper.IsDebugModeAsync())
                 {
-                    EnvDteHelper.ShowError(CompareLocale.CannotCompareContextToDatabaseWhileDebugging);
+                    VSHelper.ShowError(CompareLocale.CannotCompareContextToDatabaseWhileDebugging);
                     return;
                 }
 
@@ -44,13 +44,13 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
-                    EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
+                    VSHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
                 if (!await project.IsNetCore31OrHigherAsync())
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
+                    VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
@@ -60,19 +60,19 @@ namespace EFCorePowerTools.Handlers.Compare
                 {
                     if (!Version.TryParse(result.Item2, out Version version))
                     {
-                        EnvDteHelper.ShowError(String.Format(CompareLocale.CannotSupportVersion, result.Item2));
+                        VSHelper.ShowError(String.Format(CompareLocale.CannotSupportVersion, result.Item2));
                         return;
                     }
 
                     if (version.Major != 5)
                     {
-                        EnvDteHelper.ShowError(CompareLocale.VersionSupported);
+                        VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
                     }
 
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("EfCore.SchemaCompare", _package, new Version(5, 1, 3));
-                    EnvDteHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
+                    VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }
 
@@ -107,7 +107,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 if (!pickDataSourceResult.Payload.ContextTypes.Any())
                 {
-                    EnvDteHelper.ShowError(CompareLocale.NoContextsSelected);
+                    VSHelper.ShowError(CompareLocale.NoContextsSelected);
                     return;
                 }
 
@@ -137,7 +137,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 }
                 else
                 {
-                    EnvDteHelper.ShowMessage(CompareLocale.ContextDatabaseMatch);
+                    VSHelper.ShowMessage(CompareLocale.ContextDatabaseMatch);
                 }
 
                 await VS.StatusBar.ClearAsync();

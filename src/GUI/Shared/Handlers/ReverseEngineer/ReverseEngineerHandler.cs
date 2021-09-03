@@ -38,9 +38,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             try
             {
-                if (await EnvDteHelper.IsDebugModeAsync())
+                if (await VSHelper.IsDebugModeAsync())
                 {
-                    EnvDteHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
                     return;
                 }
 
@@ -85,9 +85,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             try
             {
-                if (await EnvDteHelper.IsDebugModeAsync())
+                if (await VSHelper.IsDebugModeAsync())
                 {
-                    EnvDteHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
                     return;
                 }
 
@@ -302,14 +302,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.Dacpac = await EnvDTEExtensions.BuildSqlProjAsync(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
-                    EnvDteHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
+                    VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
                     return null;
                 }
             }
 
             if (dbInfo.DatabaseType == DatabaseType.Undefined)
             {
-                EnvDteHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
+                VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
                 return null;
             }
 
@@ -440,12 +440,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (rightsAndVersion.Item1 == false)
                 {
-                    EnvDteHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
+                    VSHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
                 }
 
                 if (rightsAndVersion.Item2.Major < 11)
                 {
-                    EnvDteHelper.ShowMessage(string.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
+                    VSHelper.ShowMessage(string.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
                 }
             }
         }
@@ -514,7 +514,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
 
-            EnvDteHelper.ShowMessage(errors);
+            VSHelper.ShowMessage(errors);
 
             if (revEngResult.EntityErrors.Count > 0)
             {
@@ -531,7 +531,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
             {
                 //TODO Localize
-                EnvDteHelper.ShowError($"Unable to save options, the file is readonly: {optionsPath}");
+                VSHelper.ShowError($"Unable to save options, the file is readonly: {optionsPath}");
                 return;
             }
 
@@ -547,7 +547,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 if (File.Exists(renamingOptions.Item2) && File.GetAttributes(renamingOptions.Item2).HasFlag(FileAttributes.ReadOnly))
                 {
                     //TODO Localize
-                    EnvDteHelper.ShowError($"Unable to save renaming options, the file is readonly: {renamingOptions.Item2}");
+                    VSHelper.ShowError($"Unable to save renaming options, the file is readonly: {renamingOptions.Item2}");
                     return;
                 }
 

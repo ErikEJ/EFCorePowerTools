@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 // ReSharper disable once CheckNamespace
 namespace EFCorePowerTools.Helpers
 {
-    internal class EnvDteHelper
+    internal class VSHelper
     {
         public static async Task<bool> IsDebugModeAsync()
         {

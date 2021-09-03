@@ -34,33 +34,33 @@ namespace EFCorePowerTools.Handlers
 
                 if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
-                    EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
+                    VSHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
                 if (!await project.IsNetCore31OrHigherAsync())
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
+                    VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
                 var result = await project.ContainsEfCoreDesignReferenceAsync();
                 if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
+                    VSHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
                     return;
                 }
 
                 if (!Version.TryParse(result.Item2, out Version version))
                 {
-                    EnvDteHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
+                    VSHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
                 }
 
                 if (!result.Item1)
                 {
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _package, version);
-                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
 
@@ -124,7 +124,7 @@ namespace EFCorePowerTools.Handlers
                 if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
                     || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.InvalidName}: {info.Item1}");
+                    VSHelper.ShowError($"{SharedLocale.InvalidName}: {info.Item1}");
                     return;
                 }
 

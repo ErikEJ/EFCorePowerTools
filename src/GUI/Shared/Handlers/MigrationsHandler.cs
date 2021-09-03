@@ -36,13 +36,13 @@ namespace EFCorePowerTools.Handlers
 
                 if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
-                    EnvDteHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
+                    VSHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
                     return;
                 }
 
                 if (!await project.IsNetCore31OrHigherAsync())
                 {
-                    EnvDteHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
+                    VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
@@ -50,7 +50,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (string.IsNullOrEmpty(result.Item2))
                 {
-                    EnvDteHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
+                    VSHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
                     return;
                 }
 
@@ -58,13 +58,13 @@ namespace EFCorePowerTools.Handlers
                 {
                     if (!Version.TryParse(result.Item2, out Version version))
                     {
-                        EnvDteHelper.ShowError(string.Format(MigrationsLocale.CannotSupportVersion, version));
+                        VSHelper.ShowError(string.Format(MigrationsLocale.CannotSupportVersion, version));
                         return;
                     }
 
                     var nugetHelper = new NuGetHelper();
                     nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", _package, version);
-                    EnvDteHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
                     return;
                 }
 

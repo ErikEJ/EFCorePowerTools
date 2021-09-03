@@ -56,7 +56,7 @@
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            EnvDteHelper.ShowMessage(message);
+            VSHelper.ShowMessage(message);
         }
 
         async System.Threading.Tasks.Task IVisualStudioAccess.StartStatusBarAnimationAsync()
@@ -78,7 +78,7 @@
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            EnvDteHelper.ShowError(error);
+            VSHelper.ShowError(error);
         }
 
         void IVisualStudioAccess.OpenFile(string fileName)
