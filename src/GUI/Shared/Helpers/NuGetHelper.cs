@@ -1,29 +1,71 @@
-﻿//using Microsoft.VisualStudio.ComponentModelHost;
-//using NuGet.VisualStudio;
+﻿using Community.VisualStudio.Toolkit;
 using System;
-using System.Threading;
+using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Helpers
 {
     public class NuGetHelper
     {
-        public void InstallPackage(string packageId, EFCorePowerToolsPackage package, Version version = null)
+        public async Task<bool> InstallPackageAsync(string packageId, Project project, Version version = null)
         {
-            //TODO run "dotnet add package"!
-            // https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-add-package
+            var args = $"add {project.FullPath} package {packageId} ";
+            if (version != null)
+            {
+                args += "-v" + version.ToString(3);
+            }
 
-            //var dte2 = package.GetService<Microsoft.VisualStudio.Shell.Interop.SDTE>() as EnvDTE80.DTE2;
-            //var project = dte2.SelectedItems.Item(0).Project;
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                Arguments = args,
+            };
 
-            //var componentModel = (IComponentModel)Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SComponentModel));
-            //var nuGetInstaller = componentModel.GetService<IVsPackageInstaller>();
-            //nuGetInstaller?.InstallPackage(null, project, packageId, version, false);
+            var result = await RunProcessAsync(startInfo);
+
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task InstallPackageAsync(string packageId, EFCorePowerToolsPackage package, CancellationToken ct = default(CancellationToken))
+        private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
-            await Task.Run(() => InstallPackage(packageId, package), ct);
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            startInfo.CreateNoWindow = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+            var standardOutput = new StringBuilder();
+            var error = string.Empty;
+
+            using (var process = Process.Start(startInfo))
+            {
+                while (process != null && !process.HasExited)
+                {
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                }
+                if (process != null)
+                {
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                }
+                if (process != null)
+                {
+                    error = await process.StandardError.ReadToEndAsync();
+                }
+            }
+
+            var result = standardOutput.ToString();
+
+            if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
+            {
+                result = "Error:" + Environment.NewLine + error;
+            }
+
+            return result;
         }
     }
 }

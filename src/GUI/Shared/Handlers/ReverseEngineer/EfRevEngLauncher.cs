@@ -159,7 +159,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return resultDeserializer.BuildResult(standardOutput);
         }
 
-
         private async Task<bool> IsDotnetInstalledAsync(string version)
         {
             var startInfo = new ProcessStartInfo

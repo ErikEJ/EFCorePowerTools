@@ -71,7 +71,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     }
 
                     var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("EfCore.SchemaCompare", _package, new Version(5, 1, 3));
+                    await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(5, 1, 3));
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }

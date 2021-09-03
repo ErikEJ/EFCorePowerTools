@@ -88,7 +88,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\TableListBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CredentialStore.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\EnvDTEHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\VSHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\NuGetHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ReverseEngineerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Telemetry.cs" />

@@ -69,9 +69,6 @@
     <Content Include="ErrorResult.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Microsoft.VisualStudio.Data.Services.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TableResult2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

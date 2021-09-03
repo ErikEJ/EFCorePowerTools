@@ -280,7 +280,7 @@ namespace EFCorePowerTools
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
-                    await _dgmlNugetHandler.InstallDgmlNugetAsync(this);
+                    await _dgmlNugetHandler.InstallDgmlNugetAsync(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
