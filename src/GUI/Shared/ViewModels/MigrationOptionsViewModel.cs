@@ -231,9 +231,9 @@
             return result;
         }
 
-        private void ReportStatus(string processResult)
+        private async System.Threading.Tasks.Task ReportStatusAsync(string processResult)
         {
-            _visualStudioAccess.SetStatusBarTextAsync(string.Empty);
+            await _visualStudioAccess.SetStatusBarTextAsync(string.Empty);
 
             if (string.IsNullOrEmpty(processResult))
             {
@@ -261,7 +261,7 @@
                 {
                     var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
 
-                    ReportStatus(processResult);
+                    await ReportStatusAsync(processResult);
                 }
                 else
                 {
