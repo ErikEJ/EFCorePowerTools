@@ -27,58 +27,64 @@ namespace EFCorePowerTools.Helpers
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
 
-            if (dataExplorerConnectionManager?.Connections?.Values != null)
+            try
             {
-                foreach (var connection in dataExplorerConnectionManager.Connections.Values)
+                if (dataExplorerConnectionManager?.Connections?.Values != null)
                 {
-                    try
+                    foreach (var connection in dataExplorerConnectionManager.Connections.Values)
                     {
-                        var sConnectionString = DataProtection.DecryptString(connection.EncryptedConnectionString);
-                        var info = new DatabaseConnectionModel()
+                        try
                         {
-                            ConnectionName = connection.DisplayName,
-                            DatabaseType = DatabaseType.Undefined,
-                            ConnectionString = sConnectionString,
-                            DataConnection = connection.Connection,
-                        };
+                            var sConnectionString = DataProtection.DecryptString(connection.EncryptedConnectionString);
+                            var info = new DatabaseConnectionModel()
+                            {
+                                ConnectionName = connection.DisplayName,
+                                DatabaseType = DatabaseType.Undefined,
+                                ConnectionString = sConnectionString,
+                                DataConnection = connection.Connection,
+                            };
 
-                        var objProviderGuid = connection.Provider;
+                            var objProviderGuid = connection.Provider;
 
-                        if (objProviderGuid == providerSqLite
-                            || objProviderGuid == providerSqlitePrivate)
-                        {
-                            info.DatabaseType = DatabaseType.SQLite;
-                        }
-                        if (objProviderGuid == new Guid(Resources.SqlServerDotNetProvider)
-                            || objProviderGuid == providerNpgsql)
-                        {
-                            info.DatabaseType = objProviderGuid == providerNpgsql ? DatabaseType.Npgsql : DatabaseType.SQLServer;
-                        }
+                            if (objProviderGuid == providerSqLite
+                                || objProviderGuid == providerSqlitePrivate)
+                            {
+                                info.DatabaseType = DatabaseType.SQLite;
+                            }
+                            if (objProviderGuid == new Guid(Resources.SqlServerDotNetProvider)
+                                || objProviderGuid == providerNpgsql)
+                            {
+                                info.DatabaseType = objProviderGuid == providerNpgsql ? DatabaseType.Npgsql : DatabaseType.SQLServer;
+                            }
 
-                        // This provider depends on https://dev.mysql.com/downloads/windows/visualstudio/
-                        if (objProviderGuid == providerMysql)
-                        {
-                            info.DatabaseType = DatabaseType.Mysql;
-                        }
+                            // This provider depends on https://dev.mysql.com/downloads/windows/visualstudio/
+                            if (objProviderGuid == providerMysql)
+                            {
+                                info.DatabaseType = DatabaseType.Mysql;
+                            }
 
-                        if (objProviderGuid == providerOracle)
-                        {
-                            info.DatabaseType = DatabaseType.Oracle;
-                        }
+                            if (objProviderGuid == providerOracle)
+                            {
+                                info.DatabaseType = DatabaseType.Oracle;
+                            }
 
-                        if (info.DatabaseType != DatabaseType.Undefined
-                            && !databaseList.ContainsKey(sConnectionString))
-                        {
-                            databaseList.Add(sConnectionString, info);
+                            if (info.DatabaseType != DatabaseType.Undefined
+                                && !databaseList.ContainsKey(sConnectionString))
+                            {
+                                databaseList.Add(sConnectionString, info);
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        package.LogError(new List<string> { ex.Message }, ex);
+                        catch (Exception ex)
+                        {
+                            package.LogError(new List<string> { ex.Message }, ex);
+                        }
                     }
                 }
             }
-
+            catch (Exception ex)
+            {
+                package.LogError(new List<string> { ex.Message }, ex);
+            }
             try
             {
                 foreach (var connection in credentialStore.GetStoredDatabaseConnections())
