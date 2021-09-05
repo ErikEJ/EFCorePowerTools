@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>An error occurred. See the Output window for details.</value>
+    <value>An error occurred. See the"Extensions" Output window for details.</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
     <value>Build failed. Unable to discover a DbContext class.</value>
