@@ -455,9 +455,9 @@
       <Version>3.1.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework">
-      <Version>16.10.31320.204</Version>
+      <Version>16.9.31025.104</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.10.31321.278" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.9.31025.194" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
       <Version>17.0.4194-preview4</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
