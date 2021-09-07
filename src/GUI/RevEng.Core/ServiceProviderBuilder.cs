@@ -79,6 +79,7 @@ namespace RevEng.Core
                 {
                     hbOptions.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;
                     hbOptions.LanguageOptions = (LanguageOptions)options.SelectedHandlebarsLanguage;
+                    hbOptions.EnableNullableReferenceTypes = options.UseNullableReferences;
                 });
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
             }

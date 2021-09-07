@@ -184,15 +184,15 @@
     <Content Include="CodeTemplates5.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="CodeTemplates501.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efpt60.exe.zip">
       <Link>efpt60.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\lib\efreveng60.exe.zip">
       <Link>efreveng60.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="CodeTemplates502.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
