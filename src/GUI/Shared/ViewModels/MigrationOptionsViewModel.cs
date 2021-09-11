@@ -290,7 +290,10 @@
             }
 
             await _visualStudioAccess.SetStatusBarTextAsync(string.Format(MigrationsLocale.CreatingMigrationInDbContext, MigrationName, SelectedStatusKey));
-            var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullPath), GenerationType.MigrationAdd, SelectedStatusKey, MigrationName, await _project.GetAttributeAsync("DefaultNamespace"));
+            
+            var nameSpace = await _project.GetAttributeAsync("RootNamespace");
+
+            var processResult = await _processLauncher.GetOutputAsync(_outputPath, Path.GetDirectoryName(_project.FullPath), GenerationType.MigrationAdd, SelectedStatusKey, MigrationName, nameSpace);
 
             var result = BuildModelResult(processResult);
 
