@@ -47,7 +47,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -80,7 +80,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -107,7 +107,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -134,7 +134,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -160,7 +160,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -187,7 +187,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -220,20 +220,20 @@ namespace ScaffoldingTester.Models
             {
                 ParameterName = "RESPONSESTATUS",
                 Size = 20,
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterRESPONSEMESSSAGE = new SqlParameter
             {
                 ParameterName = "RESPONSEMESSSAGE",
                 Size = 200,
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -257,7 +257,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -277,7 +277,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -309,7 +309,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -343,7 +343,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -363,20 +363,20 @@ namespace ScaffoldingTester.Models
             var parameterreturnCode = new SqlParameter
             {
                 ParameterName = "returnCode",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
             var parameterresult = new SqlParameter
             {
                 ParameterName = "result",
                 Size = -1,
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -406,7 +406,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -426,13 +426,13 @@ namespace ScaffoldingTester.Models
             var parametermyOutput = new SqlParameter
             {
                 ParameterName = "myOutput",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -573,7 +573,7 @@ namespace ScaffoldingTester.Models
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
@@ -594,20 +594,20 @@ namespace ScaffoldingTester.Models
             {
                 ParameterName = "testParameter2",
                 Size = 255,
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parametertestParameter3 = new SqlParameter
             {
                 ParameterName = "testParameter3",
                 Size = 255,
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.InputOutput,
+                Direction = System.Data.ParameterDirection.Output,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
 
