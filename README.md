@@ -1,6 +1,6 @@
 # EF Core Power Tools
 
-Reverse engineering, model visualization and migrations UI for EF Core. For Visual Studio 2019.
+Reverse engineering, model visualization and migrations UI for EF Core. For Visual Studio 2019 and 2022.
 
 Aims to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineering of an existing database, creating migrations and visualizing your DbContext model.
 
@@ -30,7 +30,7 @@ If you use my free tools, I would be very grateful for a [rating or review here]
 
 ## Requirements 
 
-.NET Framework 4.7.1 or later is required. For EF Core reverse engineering, .NET Core 3.1 x64 runtime must be installed.
+.NET Framework 4.7.2 or later is required. For EF Core reverse engineering, .NET Core 3.1 x64 runtime must be installed.
 
 ## Release
 
