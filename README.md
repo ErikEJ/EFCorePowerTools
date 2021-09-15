@@ -18,7 +18,7 @@ Demo video - Advanced features
 
 [My tools and utilities for embedded database development](https://erikej.github.io/SqlCeToolbox/)
 
-If you use my free tools, I would be very grateful for a [rating or review here](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools#review-details)
+The tool and GitHub based support is free, but I would be very grateful for a [rating or review here](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools#review-details), and I also appreciate [sponsorships](https://github.com/sponsors/ErikEJ)
 
 # Documentation
 
