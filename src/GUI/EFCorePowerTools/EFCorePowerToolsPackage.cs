@@ -223,7 +223,8 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                if (item.Parent as Project == null)
+                Project project = FindProject(item);
+                if (project == null)
                 {
                     return;
                 }
@@ -232,17 +233,28 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(item.Parent as Project, filename, false);
+                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(item.Parent as Project, filename, true);
+                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
                 }
             }
             catch (Exception ex)
             { 
                 LogError(new List<string>(), ex);
             }
+        }
+
+        private Project FindProject(SolutionItem item)
+        {
+            var parent = item.Parent;
+            while (parent != null && !(parent is Project))
+            {
+                parent = parent.Parent;
+            }
+
+            return parent as Project;
         }
 
         private async void OnProjectContextMenuInvokeHandler(object sender, EventArgs e)
