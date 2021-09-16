@@ -47,6 +47,7 @@ namespace RevEng.Core
 
                 var primaryKeyColumnNames = databaseTable.PrimaryKey?.Columns.Select(c => c.Name).ToHashSet();
                 var foreignKeyColumnNames = databaseTable.ForeignKeys?.SelectMany(c => c.Columns).Select(c => c.Name).ToHashSet();
+                var indexColumns = databaseTable.Indexes?.SelectMany(c => c.Columns);
 
                 foreach (var colum in databaseTable.Columns)
                 {
