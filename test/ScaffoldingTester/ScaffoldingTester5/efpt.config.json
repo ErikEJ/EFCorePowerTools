@@ -1,5 +1,5 @@
 ﻿{
-   "CodeGenerationMode": 0,
+   "CodeGenerationMode": 2,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
@@ -214,7 +214,7 @@
          "ObjectType": 2
       }
    ],
-   "UiHint": "desktop-9uilcl8\\sqlexpress.Northwind.dbo",
+   "UiHint": "DESKTOP-9UILCL8\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
@@ -223,6 +223,7 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,

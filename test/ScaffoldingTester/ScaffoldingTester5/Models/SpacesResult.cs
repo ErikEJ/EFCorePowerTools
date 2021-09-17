@@ -10,5 +10,6 @@ namespace ScaffoldingTester.Models
         [Column("ID Results Log")]
         public string IDResultsLog { get; set; }
         public string Sector { get; set; }
+        public string @event { get; set; }
     }
 }

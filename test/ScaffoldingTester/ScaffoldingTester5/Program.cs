@@ -11,6 +11,8 @@ namespace ScaffoldingTester
         {
             using (var db = new NorthwindContext())
             {
+                var res = db.Shippers.ToList();
+
                 //var procs = new NorthwindContextProcedures(db);
 
                 var sret = new OutputParameter<string>();
