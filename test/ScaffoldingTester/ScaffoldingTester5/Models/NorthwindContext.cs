@@ -286,8 +286,8 @@ namespace ScaffoldingTester.Models
                     .WithMany(p => p.Employees)
                     .UsingEntity<Dictionary<string, object>>(
                         "EmployeeTerritory",
-                        l => l.HasOne<Territory>().WithMany().HasForeignKey("EmployeeId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EmployeeTerritories_Employees"),
-                        r => r.HasOne<Employee>().WithMany().HasForeignKey("TerritoryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EmployeeTerritories_Territories"),
+                        l => l.HasOne<Territory>().WithMany().HasForeignKey("TerritoryId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EmployeeTerritories_Territories"),
+                        r => r.HasOne<Employee>().WithMany().HasForeignKey("EmployeeId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EmployeeTerritories_Employees"),
                         j =>
                         {
                             j.HasKey("EmployeeId", "TerritoryId").IsClustered(false);
@@ -643,8 +643,8 @@ namespace ScaffoldingTester.Models
                     .WithMany(p => p.Regions)
                     .UsingEntity<Dictionary<string, object>>(
                         "RegionShipper",
-                        l => l.HasOne<Shipper>().WithMany().HasForeignKey("RegionId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Shipper_Region"),
-                        r => r.HasOne<Region>().WithMany().HasForeignKey("ShipperId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Region_Shipper"),
+                        l => l.HasOne<Shipper>().WithMany().HasForeignKey("ShipperId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Region_Shipper"),
+                        r => r.HasOne<Region>().WithMany().HasForeignKey("RegionId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_Shipper_Region"),
                         j =>
                         {
                             j.HasKey("RegionId", "ShipperId");
