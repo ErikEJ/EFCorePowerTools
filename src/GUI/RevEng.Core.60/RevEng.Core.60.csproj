@@ -44,10 +44,7 @@
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
 		<PackageReference Include="Humanizer.Core" Version="2.9.9" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-rtm.21468.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-rtm.21468.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-rtm.21468.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.0-rtm.21468.2" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.0-preview7" />
