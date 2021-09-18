@@ -1,40 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <TargetFramework>net6.0</TargetFramework>
-	  <NoWarn>$(NoWarn);EF1001</NoWarn>
-	  <RootNamespace>RevEng.Core</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<NoWarn>$(NoWarn);EF1001</NoWarn>
+		<RootNamespace>RevEng.Core</RootNamespace>
+	</PropertyGroup>
 
 	<PropertyGroup>
 		<DefineConstants>TRACE;CORE60</DefineConstants>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\RevEng.Core\ColumnRemovingScaffoldingModelFactory.cs" Link="ColumnRemovingScaffoldingModelFactory.cs" />
-    <Compile Include="..\RevEng.Core\DbContextSplitter.cs" Link="DbContextSplitter.cs" />
-    <Compile Include="..\RevEng.Core\Functions\IFunctionScaffolder.cs" Link="Functions\IFunctionScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Functions\SqlServerFunctionModelFactory.cs" Link="Functions\SqlServerFunctionModelFactory.cs" />
-    <Compile Include="..\RevEng.Core\Functions\SqlServerFunctionScaffolder.cs" Link="Functions\SqlServerFunctionScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\LegacyPluralizer.cs" Link="LegacyPluralizer.cs" />
-    <Compile Include="..\RevEng.Core\Routines\IRoutineScaffolder.cs" Link="Routines\IRoutineScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Routines\SqlServerRoutineModelFactory.cs" Link="Routines\SqlServerRoutineModelFactory.cs" />
-    <Compile Include="..\RevEng.Core\Routines\SqlServerRoutineScaffolder.cs" Link="Routines\SqlServerRoutineScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\IProcedureScaffolder.cs" Link="Procedures\IProcedureScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\SqlServerSqlTypeExtensions.cs" Link="Procedures\SqlServerSqlTypeExtensions.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureModelFactory.cs" Link="Procedures\SqlServerStoredProcedureModelFactory.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureScaffolder.cs" Link="Procedures\SqlServerStoredProcedureScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\Procedures\SqlServerStoredProcedureServiceCollectionExtensions.cs" Link="Procedures\SqlServerStoredProcedureServiceCollectionExtensions.cs" />
-    <Compile Include="..\RevEng.Core\ReplacingCandidateNamingService.cs" Link="ReplacingCandidateNamingService.cs" />
-    <Compile Include="..\RevEng.Core\ReverseEngineerOptionsExtensions.cs" Link="ReverseEngineerOptionsExtensions.cs" />
-    <Compile Include="..\RevEng.Core\ReverseEngineerResultExtensions.cs" Link="ReverseEngineerResultExtensions.cs" />
-    <Compile Include="..\RevEng.Core\ReverseEngineerRunner.cs" Link="ReverseEngineerRunner.cs" />
-    <Compile Include="..\RevEng.Core\ReverseEngineerScaffolder.cs" Link="ReverseEngineerScaffolder.cs" />
-    <Compile Include="..\RevEng.Core\ServiceProviderBuilder.cs" Link="ServiceProviderBuilder.cs" />
-    <Compile Include="..\RevEng.Core\SharedTypeExtensions.cs" Link="SharedTypeExtensions.cs" />
-    <Compile Include="..\RevEng.Core\SqlServerHelper.cs" Link="SqlServerHelper.cs" />
-    <Compile Include="..\RevEng.Core\TableListBuilder.cs" Link="TableListBuilder.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="..\RevEng.Core\*.cs" Link="%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="..\RevEng.Core\Check.cs" />
+	  <Compile Remove="..\RevEng.Core\CommentCSharpEntityTypeGenerator.cs" />
+	  <Compile Remove="..\RevEng.Core\CustomTemplateFileService.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="..\RevEng.Core\DbContextExtensions" Link="DbContextExtensions" />
