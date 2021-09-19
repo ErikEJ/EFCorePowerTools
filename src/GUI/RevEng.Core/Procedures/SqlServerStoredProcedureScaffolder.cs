@@ -171,6 +171,8 @@ namespace RevEng.Core.Procedures
 
             var retValueName = allOutParams.Last().Name;
 
+            var retValueType = allOutParams.Last().ClrType().Name;
+
             var outParamStrings = outParams
                 .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {p.Name}")
                 .ToList();
@@ -232,11 +234,12 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine($"{parameter.Name}.SetValue({parameterPrefix}{parameter.Name}.Value);");
                     }
 
-                    _sb.AppendLine($"{retValueName}?.SetValue({parameterPrefix}{retValueName}.Value);");
-
                     _sb.AppendLine();
 
-                    _sb.AppendLine("return _;");
+                    _sb.AppendLine($"// The {retValueName} parameter that is passed in is the default value if the database call returns null. ");
+                    _sb.AppendLine($"// If no default value is specified when called, the call may return null, which may throw an exception. ");
+
+                    _sb.AppendLine($"return {parameterPrefix}{retValueName}.Value == null ? {retValueName}.Value : ({retValueType}){parameterPrefix}{retValueName}.Value;");
                 }
 
                 _sb.AppendLine("}");
