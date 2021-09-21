@@ -1,10 +1,10 @@
 ﻿#if CORE60
 #else
 using EntityFrameworkCore.Scaffolding.Handlebars;
-using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -127,11 +127,9 @@ namespace RevEng.Core
                     var dacProvider = new SqlServerDesignTimeServices();
                     dacProvider.ConfigureDesignTimeServices(serviceCollection);
 
-#if CORE60
-#else
                     serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
                     serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices();
-#endif
+
                     if (options.UseSpatial)
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();

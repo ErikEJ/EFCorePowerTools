@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.89
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{562B5F7B-6229-4019-BFA9-CD7FD4773081}"
 EndProject
@@ -56,6 +56,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery", "ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery.csproj", "{2F99336C-48D4-4454-9877-15669E68B2BD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac", "ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj", "{BCDBF137-E38B-40E8-8BAD-651D4D097032}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -155,6 +157,10 @@ Global
 		{2F99336C-48D4-4454-9877-15669E68B2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F99336C-48D4-4454-9877-15669E68B2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F99336C-48D4-4454-9877-15669E68B2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +185,7 @@ Global
 		{FBA5F2B1-6BDD-4EC0-9476-00F95C151952} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{A45A6FCB-485D-4D20-AB30-08A72FDEFFCB} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{2F99336C-48D4-4454-9877-15669E68B2BD} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
+		{BCDBF137-E38B-40E8-8BAD-651D4D097032} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}
