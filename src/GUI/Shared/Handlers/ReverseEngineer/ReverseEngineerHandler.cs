@@ -558,7 +558,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private void DropTemplates(string projectPath, bool useEFCore5)
         {
-            var zipName = useEFCore5 ? "CodeTemplates501.zip" : "CodeTemplates.zip";
+            var zipName = useEFCore5 ? "CodeTemplates502.zip" : "CodeTemplates.zip";
 
             var toDir = Path.Combine(projectPath, "CodeTemplates");
             var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

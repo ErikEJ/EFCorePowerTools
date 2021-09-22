@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace ScaffoldingTester.Models
 {
     public partial class Employee
     {
         public Employee()
         {
+            EmployeeTerritories = new HashSet<EmployeeTerritory>();
             InverseReportsToNavigation = new HashSet<Employee>();
             Orders = new HashSet<Order>();
         }
@@ -32,9 +35,8 @@ namespace ScaffoldingTester.Models
         public string PhotoPath { get; set; }
 
         public virtual Employee ReportsToNavigation { get; set; }
+        public virtual ICollection<EmployeeTerritory> EmployeeTerritories { get; set; }
         public virtual ICollection<Employee> InverseReportsToNavigation { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-
-        public virtual ICollection<Territory> Territories { get; set; }
     }
 }
