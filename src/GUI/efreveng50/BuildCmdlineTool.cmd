@@ -1,6 +1,8 @@
 
 dotnet publish -o bin\Release\netcoreapp3.1\publish -f netcoreapp3.1 -r win-x64 -c Release --no-self-contained
 
+if %errorlevel% equ 1 goto notbuilt
+
 rmdir bin\Release\netcoreapp3.1\publish\cs /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\de /S /Q
 rmdir bin\Release\netcoreapp3.1\publish\es /S /Q
@@ -75,4 +77,10 @@ del bin\Release\netcoreapp3.1\publish\LinqToXsd.dll
 
 move /Y efreveng50.exe.zip ..\lib\
 
+goto end
+
+:notbuilt
+echo Build error
+
+:end
 pause
