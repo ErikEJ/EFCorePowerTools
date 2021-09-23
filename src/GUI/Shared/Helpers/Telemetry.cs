@@ -62,8 +62,11 @@ namespace EFCorePowerTools.Helpers
             if (Enabled)
             {
                 var telex = new Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry(ex);
-                _telemetry.TrackException(telex);
-                _telemetry.Flush();
+                if (_telemetry != null)
+                {
+                    _telemetry.TrackException(telex);
+                    _telemetry.Flush();
+                }
             }
 #endif
         }
