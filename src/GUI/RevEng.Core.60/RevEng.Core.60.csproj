@@ -37,6 +37,7 @@
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.0-preview7" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.0-preview7" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="6.0.0-preview.5" />
+		<PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="6.0.0-rc.1.21452.0" />
 		<PackageReference Include="System.CodeDom" Version="5.0.0" />
 	</ItemGroup>
 

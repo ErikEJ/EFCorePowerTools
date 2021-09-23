@@ -18,7 +18,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
 using RevEng.Shared;
-#if CORE50
+#if CORE50 || CORE60
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
 using System;
@@ -114,7 +114,7 @@ namespace RevEng.Core
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-#if CORE50
+#if CORE50 || CORE60
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
