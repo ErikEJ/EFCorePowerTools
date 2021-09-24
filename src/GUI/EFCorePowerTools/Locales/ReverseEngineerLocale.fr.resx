@@ -124,7 +124,7 @@
     <value>Add ad hoc Connection (preview)</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Azure SQL/SQLite/Firebird...</value>
+    <value>Add Ad Hoc Connection...</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Ajouter une connexion à la base de données</value>

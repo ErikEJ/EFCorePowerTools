@@ -124,7 +124,7 @@
     <value>添加 ad hoc 连接（预览） </value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>添加 Azure SQL/SQLite/Firebird...</value>
+    <value>添加 ad hoc 连接...</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>添加数据库连接</value>
