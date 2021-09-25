@@ -49,8 +49,6 @@ namespace ConsoleApp.Models
             modelBuilder.ApplyConfiguration(new Configurations.TitleConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TrackConfiguration());
 
-            });
-
             OnModelCreatingPartial(modelBuilder);
         }
 

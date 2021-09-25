@@ -82,9 +82,9 @@ namespace RevEng.Core
                 var _sb = new StringBuilder();
                 _sb.AppendLine(PathHelper.Header);
                 _sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
-                _sb.AppendLine();
                 if (supportNullable)
                 {
+                    _sb.AppendLine();
                     _sb.AppendLine("#nullable disable");
                 }
                 _sb.AppendLine();
@@ -95,7 +95,6 @@ namespace RevEng.Core
                 _sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
                 _sb.AppendLine(new string(' ', 8) + "{");
                 _sb.AppendLine(new string(' ', 12) + statements);
-                _sb.AppendLine();
                 _sb.AppendLine(new string(' ', 12) + "OnConfigurePartial(entity);");
                 _sb.AppendLine(new string(' ', 8) + "}");
                 _sb.AppendLine();
@@ -200,7 +199,7 @@ namespace RevEng.Core
                 {
                     if (!string.IsNullOrWhiteSpace(section.ToString()))
                     {
-                        finalSections.Add(section.ToString());
+                        finalSections.Add(section.ToString().TrimStart());
                         section.Clear();
                     }
 
@@ -212,7 +211,7 @@ namespace RevEng.Core
                 {
                     if (line.StartsWith(spaces + "{"))
                     {
-                        section.AppendLine(spaces);
+                        section.AppendLine();
                         continue;
                     }
                     section.AppendLine(line);

@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 
-
 namespace ConsoleApp.Models.Configurations
 {
     public partial class PlaylistConfiguration : IEntityTypeConfiguration<Playlist>
@@ -30,6 +29,7 @@ namespace ConsoleApp.Models.Configurations
                         j.ToTable("PlaylistTrack");
 
                         j.HasIndex(new[] { "TrackId" }, "IFK_PlaylistTrackTrackId");
+                    });
 
             OnConfigurePartial(entity);
         }
