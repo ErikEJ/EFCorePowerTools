@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace ConsoleApp.Models
 {
     public partial class Track
@@ -11,7 +9,6 @@ namespace ConsoleApp.Models
         public Track()
         {
             InvoiceLines = new HashSet<InvoiceLine>();
-            PlaylistTracks = new HashSet<PlaylistTrack>();
         }
 
         public int TrackId { get; set; }
@@ -28,6 +25,7 @@ namespace ConsoleApp.Models
         public virtual Genre Genre { get; set; }
         public virtual MediaType MediaType { get; set; }
         public virtual ICollection<InvoiceLine> InvoiceLines { get; set; }
-        public virtual ICollection<PlaylistTrack> PlaylistTracks { get; set; }
+
+        public virtual ICollection<Playlist> Playlists { get; set; }
     }
 }

@@ -1,0 +1,90 @@
+﻿{
+  "DatabaseType": 3,
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Chinook;Integrated Security=True",
+  "ProjectPath": "C:\\Temp\\Test\\",
+
+  "CodeGenerationMode": 2,
+  "ContextClassName": "ChinookContext",
+  "ContextNamespace": null,
+  "DefaultDacpacSchema": null,
+  "FilterSchemas": false,
+  "IncludeConnectionString": true,
+  "ModelNamespace": null,
+  "OutputContextPath": null,
+  "OutputPath": "Chinook",
+
+  "ProjectRootNamespace": "ConsoleApp",
+  "Schemas": null,
+  "SelectedHandlebarsLanguage": 0,
+  "SelectedToBeGenerated": 0,
+  "Tables": [
+    {
+      "Name": "[dbo].[Album]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Artist]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Customer]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Employee]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Genre]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Invoice]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[InvoiceLine]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[MediaType]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Playlist]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[PlaylistTrack]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Track]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Titles]",
+      "ObjectType": 3
+    },
+    {
+      "Name": "[dbo].[GetTitles]",
+      "ObjectType": 1
+    }
+  ],
+  "UiHint": "DESKTOP-9UILCL8\\SQLEXPRESS.Chinook",
+  "UseBoolPropertiesWithoutDefaultSql": false,
+  "UseDatabaseNames": false,
+  "UseDbContextSplitting": true,
+  "UseFluentApiOnly": true,
+  "UseHandleBars": false,
+  "UseInflector": true,
+  "UseLegacyPluralizer": false,
+  "UseNoConstructor": false,
+  "UseNoDefaultConstructor": true,
+  "UseNoNavigations": false,
+  "UseNoObjectFilter": false,
+  "UseNodaTime": false,
+  "UseNullableReferences": false,
+  "UseSchemaFolders": false,
+  "UseSpatial": false
+}
