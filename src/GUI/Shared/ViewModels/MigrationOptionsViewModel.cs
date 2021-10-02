@@ -257,16 +257,21 @@
             {
                 await _visualStudioAccess.StartStatusBarAnimationAsync();
                 await _visualStudioAccess.SetStatusBarTextAsync(MigrationsLocale.GettingMigrationStatus);
-                if (!await VS.Build.BuildProjectAsync(_project))
-                {
-                    var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
 
-                    await ReportStatusAsync(processResult);
-                }
-                else
+                if (!await VS.Build.ProjectIsUpToDateAsync(_project))
                 {
-                    _visualStudioAccess.ShowError(MigrationsLocale.BuildFailed);
+                    var ok = await VS.Build.BuildProjectAsync(_project);
+
+                    if (!ok)
+                    {
+                        _visualStudioAccess.ShowError(MigrationsLocale.BuildFailed);
+                        return;
+                    }
                 }
+
+                var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationStatus, null);
+
+                await ReportStatusAsync(processResult);
             }
             catch (Exception ex)
             {
