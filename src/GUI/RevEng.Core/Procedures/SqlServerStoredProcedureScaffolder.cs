@@ -93,7 +93,7 @@ namespace RevEng.Core.Procedures
                 {
                     _sb.AppendLine($"private {procedureScaffolderOptions.ContextName}Procedures _procedures;");
                     _sb.AppendLine();
-                    _sb.AppendLine($"public {procedureScaffolderOptions.ContextName}Procedures Procedures");
+                    _sb.AppendLine($"public virtual {procedureScaffolderOptions.ContextName}Procedures Procedures");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
                     {
