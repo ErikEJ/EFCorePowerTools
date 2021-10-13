@@ -63,6 +63,7 @@ namespace RevEng.Core
                     provider.GetService<IModelRuntimeInitializer>(),
 #endif
                     options.Tables,
+                    options.ColumnTypeMappings,
                     options.DatabaseType
                 ));
 
