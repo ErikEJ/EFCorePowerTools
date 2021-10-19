@@ -512,12 +512,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.ReportingResult);
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
+            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
+
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
-                await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
+                VSHelper.ShowMessage(errors);
             }
-
-            VSHelper.ShowMessage(errors);
 
             if (revEngResult.EntityErrors.Count > 0)
             {
