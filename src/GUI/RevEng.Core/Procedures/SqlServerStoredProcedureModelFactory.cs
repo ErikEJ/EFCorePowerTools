@@ -32,6 +32,7 @@ namespace RevEng.Core.Procedures
                 StoreType = "int",
                 Output = true,
                 Nullable = false,
+                IsReturnValue = true,
             });
 
             return moduleParameters;

@@ -329,14 +329,22 @@ namespace RevEng.Core.Procedures
                     _sb.AppendLine($"Size = {parameter.Length},");
                 }
 
-                if (parameter.Output)
+
+                if (!parameter.IsReturnValue)
                 {
-                    _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
+                    if (parameter.Output)
+                    {
+                        _sb.AppendLine("Direction = System.Data.ParameterDirection.InputOutput,");
+                        AppendValue(parameter);
+                    }
+                    else
+                    {
+                        AppendValue(parameter);
+                    }
                 }
                 else
                 {
-                    var value = parameter.Nullable ? $"{parameter.Name} ?? Convert.DBNull" : $"{parameter.Name}";
-                    _sb.AppendLine($"Value = {value},");
+                    _sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
                 }
 
                 _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{sqlDbType},");
@@ -348,6 +356,17 @@ namespace RevEng.Core.Procedures
             }
 
             _sb.Append("}");
+        }
+
+        private void AppendValue(ModuleParameter parameter)
+        {
+
+            var value = parameter.Nullable ? $"{parameter.Name} ?? Convert.DBNull" : $"{parameter.Name}";
+            if (parameter.Output)
+            {
+                value = parameter.Nullable ? $"{parameter.Name}?._value ?? Convert.DBNull" : $"{parameter.Name}?._value";
+            }
+            _sb.AppendLine($"Value = {value},");
         }
     }
 }
