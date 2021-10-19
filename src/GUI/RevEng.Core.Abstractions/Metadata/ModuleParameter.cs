@@ -9,6 +9,7 @@
         public int? Scale { get; set; }
         public bool Output { get; set; }
         public bool Nullable { get; set; }
-        public string TypeName { get; set; }        
+        public string TypeName { get; set; }
+        public bool IsReturnValue { get; set; }
     }
 }
