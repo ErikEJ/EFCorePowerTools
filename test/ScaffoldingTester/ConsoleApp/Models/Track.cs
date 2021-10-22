@@ -9,6 +9,7 @@ namespace ConsoleApp.Models
         public Track()
         {
             InvoiceLines = new HashSet<InvoiceLine>();
+            Playlists = new HashSet<Playlist>();
         }
 
         public int TrackId { get; set; }

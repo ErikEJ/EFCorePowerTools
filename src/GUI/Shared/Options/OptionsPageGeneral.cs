@@ -12,6 +12,7 @@ namespace EFCorePowerTools
         {
             ParticipateInTelemetry = Properties.Settings.Default.ParticipateInTelemetry;
             OpenGeneratedDbContext = Properties.Settings.Default.OpenGeneratedDbContext;
+            RunCleanup = Properties.Settings.Default.RunCleanup;
             base.OnActivate(e);
         }
 
@@ -20,6 +21,12 @@ namespace EFCorePowerTools
         Description("Open the generated DbContext after reverse engineering"),
         DefaultValue(true)]
         public bool OpenGeneratedDbContext { get; set; }
+
+        [Category("Reverse Engineering"),
+        DisplayName(@"Run cleanup of obsolete files"),
+        Description("Remove obsolete files after reverse engineering"),
+        DefaultValue(true)]
+        public bool RunCleanup { get; set; }
 
         [Category("Other"),
         DisplayName(@"Participate in Telemetry"),
@@ -31,6 +38,7 @@ namespace EFCorePowerTools
         {
             Properties.Settings.Default.ParticipateInTelemetry = ParticipateInTelemetry;
             Properties.Settings.Default.OpenGeneratedDbContext = OpenGeneratedDbContext;
+            Properties.Settings.Default.RunCleanup = RunCleanup;
             Properties.Settings.Default.Save();
             base.OnApply(e);
         }
