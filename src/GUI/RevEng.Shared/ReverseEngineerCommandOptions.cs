@@ -37,5 +37,6 @@ namespace RevEng.Shared
         public bool UseNoDefaultConstructor { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
+        public bool RunCleanup { get; set; }
     }
 }

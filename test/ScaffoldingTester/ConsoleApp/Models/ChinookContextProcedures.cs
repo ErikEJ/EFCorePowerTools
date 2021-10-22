@@ -14,7 +14,7 @@ namespace ConsoleApp.Models
     {
         private ChinookContextProcedures _procedures;
 
-        public ChinookContextProcedures Procedures
+        public virtual ChinookContextProcedures Procedures
         {
             get
             {
