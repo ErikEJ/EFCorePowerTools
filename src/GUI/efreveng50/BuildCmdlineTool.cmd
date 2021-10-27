@@ -69,9 +69,6 @@ del bin\Release\netcoreapp3.1\publish\System.Security.Permissions.dll
 del bin\Release\netcoreapp3.1\publish\System.Windows.Extensions.dll
 del bin\Release\netcoreapp3.1\publish\System.IO.Packaging.dll
 del bin\Release\netcoreapp3.1\publish\System.Resources.Extensions.dll
-del bin\Release\netcoreapp3.1\publish\FSharp.Core.dll
-del bin\Release\netcoreapp3.1\publish\LinqToEdmx.dll
-del bin\Release\netcoreapp3.1\publish\LinqToXsd.dll
 
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng50.exe.zip .\bin\Release\netcoreapp3.1\publish\*
 
