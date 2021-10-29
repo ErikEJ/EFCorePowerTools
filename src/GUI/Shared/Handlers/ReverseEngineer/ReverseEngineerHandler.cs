@@ -143,6 +143,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (dbInfo == null)
                         return;
 
+                    VerifySQLServerRightsAndVersion(options);
+
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
                     if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
@@ -158,8 +160,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
-
-                VerifySQLServerRightsAndVersion(options);
 
                 await GenerateFilesAsync(project, options, containsEfCoreReference);
 
