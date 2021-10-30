@@ -52,6 +52,9 @@ namespace RevEng.Core
 #if CORE50 ||CORE60
                 SuppressOnConfiguring = !options.IncludeConnectionString,
 #endif
+#if CORE60
+                UseNullableReferenceTypes = options.UseNullableReferences,
+#endif
             };
 
             var dbOptions = new DatabaseModelFactoryOptions(options.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), schemas);
