@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5164.1" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5282.3" />
   </ItemGroup>
 
   <ItemGroup>

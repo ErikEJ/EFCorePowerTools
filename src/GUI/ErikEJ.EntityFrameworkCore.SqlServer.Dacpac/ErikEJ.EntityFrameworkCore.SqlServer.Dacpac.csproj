@@ -28,8 +28,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[3.1.0, 5.0.0)" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5164.1" />
-	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="150.5282.3" />
+	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

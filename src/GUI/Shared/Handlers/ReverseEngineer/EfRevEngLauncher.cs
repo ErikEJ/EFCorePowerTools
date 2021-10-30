@@ -62,6 +62,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 ColumnTypeMappings = options.ColumnTypeMappings,
+                RunCleanup = Properties.Settings.Default.RunCleanup,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

@@ -38,5 +38,6 @@ namespace RevEng.Shared
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
         public List<ColumnTypeMapping> ColumnTypeMappings { get; set; }
+        public bool RunCleanup { get; set; }
     }
 }

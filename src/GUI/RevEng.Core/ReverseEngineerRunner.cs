@@ -132,9 +132,12 @@ namespace RevEng.Core
                 }
             }
 
-            var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
+            if (options.RunCleanup)
+            {
+                var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
 
-            CleanUp(cleanUpPaths, entityTypeConfigurationPaths, outputDir);
+                CleanUp(cleanUpPaths, entityTypeConfigurationPaths, outputDir);
+            }
 
             var allfiles = filePaths.AdditionalFiles.ToList();
             if (procedurePaths != null)

@@ -316,7 +316,7 @@
     <value>Split DbContext into Configuration classes (preview)</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
-    <value>The SQL Server user does not have 'VIEW DEFINITION' rights, default constraints may not be available.</value>
+    <value>The credentials in use has not been granted 'VIEW DEFINITION' rights, so functionality may be degraded or faulty.</value>
   </data>
   <data name="SQLServerVersionNotSupported" xml:space="preserve">
     <value>SQL Server version {0} may not be supported.</value>

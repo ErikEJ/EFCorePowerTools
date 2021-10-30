@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ConsoleApp.Models;
+using System;
+using System.Linq;
 
 namespace ConsoleApp
 {
@@ -6,7 +8,8 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            using var db = new ChinookContext();
+            db.Customers.ToList();
         }
     }
 }

@@ -49,7 +49,7 @@ namespace RevEng.Core
                 var foreignKeyColumnNames = databaseTable.ForeignKeys?.SelectMany(c => c.Columns).Select(c => c.Name).ToHashSet();
                 var indexColumns = databaseTable.Indexes?.SelectMany(c => c.Columns);
 
-                foreach (var colum in databaseTable.Columns)
+                foreach (var colum in databaseTable.Columns.Where(c => !string.IsNullOrWhiteSpace(c.Name)))
                 {
                     columns.Add(new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false, foreignKeyColumnNames?.Contains(colum.Name) ?? false));
                 }

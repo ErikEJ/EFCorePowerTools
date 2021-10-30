@@ -14,7 +14,7 @@ namespace ScaffoldingTester.Models
     {
         private NorthwindContextProcedures _procedures;
 
-        public NorthwindContextProcedures Procedures
+        public virtual NorthwindContextProcedures Procedures
         {
             get
             {
@@ -220,14 +220,16 @@ namespace ScaffoldingTester.Models
             {
                 ParameterName = "RESPONSESTATUS",
                 Size = 20,
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = RESPONSESTATUS?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterRESPONSEMESSSAGE = new SqlParameter
             {
                 ParameterName = "RESPONSEMESSSAGE",
                 Size = 200,
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = RESPONSEMESSSAGE?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterreturnValue = new SqlParameter
@@ -363,14 +365,16 @@ namespace ScaffoldingTester.Models
             var parameterreturnCode = new SqlParameter
             {
                 ParameterName = "returnCode",
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = returnCode?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
             var parameterresult = new SqlParameter
             {
                 ParameterName = "result",
                 Size = -1,
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = result?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterreturnValue = new SqlParameter
@@ -426,7 +430,8 @@ namespace ScaffoldingTester.Models
             var parametermyOutput = new SqlParameter
             {
                 ParameterName = "myOutput",
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = myOutput?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.Int,
             };
             var parameterreturnValue = new SqlParameter
@@ -594,14 +599,16 @@ namespace ScaffoldingTester.Models
             {
                 ParameterName = "testParameter2",
                 Size = 255,
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = testParameter2?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parametertestParameter3 = new SqlParameter
             {
                 ParameterName = "testParameter3",
                 Size = 255,
-                Direction = System.Data.ParameterDirection.Output,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = testParameter3?._value ?? Convert.DBNull,
                 SqlDbType = System.Data.SqlDbType.VarChar,
             };
             var parameterreturnValue = new SqlParameter
