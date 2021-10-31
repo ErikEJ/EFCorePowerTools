@@ -5,11 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScaffoldingTester.Models
 {
-    public partial class SpacesResult
+    public partial class CustOrderHistResult
     {
-        [Column("ID Results Log")]
-        public string IDResultsLog { get; set; }
-        public string Sector { get; set; }
-        public string @event { get; set; }
+        public string ProductName { get; set; }
+        public int? Total { get; set; }
     }
 }

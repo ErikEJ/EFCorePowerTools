@@ -17,13 +17,13 @@ namespace ScaffoldingTester.Models
         }
 
         public virtual DbSet<AlphabeticalListOfProduct> AlphabeticalListOfProducts { get; set; }
-        public virtual DbSet<BoolNullableTest> BoolNullableTests { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategorySalesFor1997> CategorySalesFor1997s { get; set; }
         public virtual DbSet<CurrentProductList> CurrentProductLists { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAndSuppliersByCity> CustomerAndSuppliersByCities { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<CustomerCustomerDemo> CustomerCustomerDemos { get; set; }
+        public virtual DbSet<CustomerDemographic> CustomerDemographics { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
@@ -38,7 +38,6 @@ namespace ScaffoldingTester.Models
         public virtual DbSet<ProductsByCategory> ProductsByCategories { get; set; }
         public virtual DbSet<QuarterlyOrder> QuarterlyOrders { get; set; }
         public virtual DbSet<Region> Regions { get; set; }
-        public virtual DbSet<RegionShipper> RegionShippers { get; set; }
         public virtual DbSet<SalesByCategory> SalesByCategories { get; set; }
         public virtual DbSet<SalesTotalsByAmount> SalesTotalsByAmounts { get; set; }
         public virtual DbSet<Shipper> Shippers { get; set; }
@@ -83,18 +82,10 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.UnitPrice).HasColumnType("money");
             });
 
-            modelBuilder.Entity<BoolNullableTest>(entity =>
-            {
-                entity.ToTable("BoolNullableTest");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
-            });
-
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.HasComment("Table contains information for File Reference entites.");
+                entity.HasIndex(e => e.CategoryName)
+                    .HasName("CategoryName");
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
 
@@ -139,6 +130,18 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Customer>(entity =>
             {
+                entity.HasIndex(e => e.City)
+                    .HasName("City");
+
+                entity.HasIndex(e => e.CompanyName)
+                    .HasName("CompanyName");
+
+                entity.HasIndex(e => e.PostalCode)
+                    .HasName("PostalCode");
+
+                entity.HasIndex(e => e.Region)
+                    .HasName("Region");
+
                 entity.Property(e => e.CustomerId)
                     .HasColumnName("CustomerID")
                     .HasMaxLength(5)
@@ -187,62 +190,57 @@ namespace ScaffoldingTester.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Department>(entity =>
+            modelBuilder.Entity<CustomerCustomerDemo>(entity =>
             {
-                entity.HasKey(e => e.DepartmentId)
-                    .HasName("PK_DepartmentDepartments")
+                entity.HasKey(e => new { e.CustomerId, e.CustomerTypeId })
                     .IsClustered(false);
 
-                entity.ToTable("Department");
+                entity.ToTable("CustomerCustomerDemo");
 
-                entity.HasIndex(e => e.ClusterKey)
-                    .HasName("IX_DepartmentClusterKey")
-                    .IsUnique()
-                    .IsClustered();
+                entity.Property(e => e.CustomerId)
+                    .HasColumnName("CustomerID")
+                    .HasMaxLength(5)
+                    .IsFixedLength();
 
-                entity.HasIndex(e => e.DepartmentCode)
-                    .HasName("IX_DepartmentDepartmentCode")
-                    .IsUnique();
+                entity.Property(e => e.CustomerTypeId)
+                    .HasColumnName("CustomerTypeID")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
 
-                entity.HasIndex(e => e.Name)
-                    .HasName("IX_DepartmentName")
-                    .IsUnique();
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.CustomerCustomerDemos)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerCustomerDemo_Customers");
 
-                entity.Property(e => e.DepartmentId).HasDefaultValueSql("(newid())");
+                entity.HasOne(d => d.CustomerType)
+                    .WithMany(p => p.CustomerCustomerDemos)
+                    .HasForeignKey(d => d.CustomerTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerCustomerDemo");
+            });
 
-                entity.Property(e => e.ActiveFrom)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
+            modelBuilder.Entity<CustomerDemographic>(entity =>
+            {
+                entity.HasKey(e => e.CustomerTypeId)
+                    .IsClustered(false);
 
-                entity.Property(e => e.ActiveTo).HasColumnType("datetime");
+                entity.Property(e => e.CustomerTypeId)
+                    .HasColumnName("CustomerTypeID")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
 
-                entity.Property(e => e.ClusterKey).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.DepartmentCode)
-                    .IsRequired()
-                    .HasMaxLength(10);
-
-                entity.Property(e => e.ExtendedName)
-                    .IsRequired()
-                    .HasMaxLength(62)
-                    .HasComputedColumnSql("(([DepartmentCode]+': ')+[Name])");
-
-                entity.Property(e => e.ModifiedBy)
-                    .IsRequired()
-                    .HasMaxLength(15);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Timestamp)
-                    .IsRequired()
-                    .IsRowVersion()
-                    .IsConcurrencyToken();
+                entity.Property(e => e.CustomerDesc).HasColumnType("ntext");
             });
 
             modelBuilder.Entity<Employee>(entity =>
             {
+                entity.HasIndex(e => e.LastName)
+                    .HasName("LastName");
+
+                entity.HasIndex(e => e.PostalCode)
+                    .HasName("PostalCode");
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.Address).HasMaxLength(60);
@@ -379,6 +377,24 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.HasIndex(e => e.CustomerId)
+                    .HasName("CustomersOrders");
+
+                entity.HasIndex(e => e.EmployeeId)
+                    .HasName("EmployeesOrders");
+
+                entity.HasIndex(e => e.OrderDate)
+                    .HasName("OrderDate");
+
+                entity.HasIndex(e => e.ShipPostalCode)
+                    .HasName("ShipPostalCode");
+
+                entity.HasIndex(e => e.ShipVia)
+                    .HasName("ShippersOrders");
+
+                entity.HasIndex(e => e.ShippedDate)
+                    .HasName("ShippedDate");
+
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
                 entity.Property(e => e.CustomerId)
@@ -432,6 +448,12 @@ namespace ScaffoldingTester.Models
                     .HasName("PK_Order_Details");
 
                 entity.ToTable("Order Details");
+
+                entity.HasIndex(e => e.OrderId)
+                    .HasName("OrdersOrder_Details");
+
+                entity.HasIndex(e => e.ProductId)
+                    .HasName("ProductsOrder_Details");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
@@ -536,6 +558,15 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.HasIndex(e => e.CategoryId)
+                    .HasName("CategoryID");
+
+                entity.HasIndex(e => e.ProductName)
+                    .HasName("ProductName");
+
+                entity.HasIndex(e => e.SupplierId)
+                    .HasName("SuppliersProducts");
+
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -651,23 +682,6 @@ namespace ScaffoldingTester.Models
                     .IsFixedLength();
             });
 
-            modelBuilder.Entity<RegionShipper>(entity =>
-            {
-                entity.HasKey(e => new { e.RegionId, e.ShipperId });
-
-                entity.HasOne(d => d.Region)
-                    .WithMany(p => p.RegionShippers)
-                    .HasForeignKey(d => d.RegionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Shipper_Region");
-
-                entity.HasOne(d => d.Shipper)
-                    .WithMany(p => p.RegionShippers)
-                    .HasForeignKey(d => d.ShipperId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Region_Shipper");
-            });
-
             modelBuilder.Entity<SalesByCategory>(entity =>
             {
                 entity.HasNoKey();
@@ -743,6 +757,12 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Supplier>(entity =>
             {
+                entity.HasIndex(e => e.CompanyName)
+                    .HasName("CompanyName");
+
+                entity.HasIndex(e => e.PostalCode)
+                    .HasName("PostalCode");
+
                 entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
 
                 entity.Property(e => e.Address).HasMaxLength(60);

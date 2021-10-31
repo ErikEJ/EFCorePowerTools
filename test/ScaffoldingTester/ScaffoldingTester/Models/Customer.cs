@@ -8,6 +8,7 @@ namespace ScaffoldingTester.Models
     {
         public Customer()
         {
+            CustomerCustomerDemos = new HashSet<CustomerCustomerDemo>();
             Orders = new HashSet<Order>();
         }
 
@@ -23,6 +24,7 @@ namespace ScaffoldingTester.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
 
+        public virtual ICollection<CustomerCustomerDemo> CustomerCustomerDemos { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

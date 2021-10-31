@@ -14,19 +14,19 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[BoolNullableTest]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Categories]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Customers]",
+         "Name": "[dbo].[CustomerCustomerDemo]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Department]",
+         "Name": "[dbo].[CustomerDemographics]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Customers]",
          "ObjectType": 0
       },
       {
@@ -51,10 +51,6 @@
       },
       {
          "Name": "[dbo].[Region]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[RegionShippers]",
          "ObjectType": 0
       },
       {
@@ -134,10 +130,6 @@
          "ObjectType": 3
       },
       {
-         "Name": "[dbo].[CategoryUpdate]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[CustOrderHist]",
          "ObjectType": 1
       },
@@ -154,14 +146,6 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[OutputFail]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[ReturnValue]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[Sales by Year]",
          "ObjectType": 1
       },
@@ -170,43 +154,11 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[Spaces]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[TempObjects]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[Ten Most Expensive Products]",
          "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[Test]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[TestMethodOutputNoParams]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[TestMethodOutputNoResult]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dupe].[CustOrderHist]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[GetCustInfo]",
-         "ObjectType": 2
-      },
-      {
-         "Name": "[dbo].[GetCustInfoNoParams]",
-         "ObjectType": 2
       }
    ],
-   "UiHint": "DESKTOP-9UILCL8\\SQLEXPRESS.Northwind",
+   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

@@ -11,7 +11,6 @@ namespace ScaffoldingTester.Models
         public Shipper()
         {
             Orders = new HashSet<Order>();
-            RegionShippers = new HashSet<RegionShipper>();
         }
 
         public int ShipperId { get; set; }
@@ -19,6 +18,5 @@ namespace ScaffoldingTester.Models
         public string Phone { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<RegionShipper> RegionShippers { get; set; }
     }
 }
