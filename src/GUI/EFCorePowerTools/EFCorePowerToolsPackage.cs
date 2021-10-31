@@ -196,9 +196,9 @@ namespace EFCorePowerTools
 
             menuCommand.Visible =
                 project.FullPath.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase);
-                //TODO Report bug
-                //(await project.IsKindAsync(ProjectTypes.CSHARP)) ||
-                //(await project.IsKindAsync(ProjectTypes.DOTNET_CORE));
+            //TODO see https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
+            //(await project.IsKindAsync(ProjectTypes.CSHARP)) ||
+            //(await project.IsKindAsync(ProjectTypes.DOTNET_CORE));
 
             return;
         }
