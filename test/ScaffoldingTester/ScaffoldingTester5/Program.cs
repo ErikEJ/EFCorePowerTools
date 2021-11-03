@@ -13,12 +13,12 @@ namespace ScaffoldingTester
             {
                 var res = db.Shippers.ToList();
 
-                var list = "ALFKI;BERGS;VAFFE";
+                var list = new[] { "ALFKI", "BERGS", "VAFFE" };
 
                 var customersQuery = db.Orders
-                    .Where(s => db.Split(list, ";").Any(split => split.Value == s.CustomerId));
+                    .Where(s => db.AsSplit(list, ",").Contains(s.CustomerId));
 
-                var sql = customersQuery.ToQueryString();
+                Console.WriteLine(customersQuery.ToQueryString());
 
                 var result = customersQuery.ToList();
 
