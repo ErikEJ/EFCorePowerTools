@@ -2,6 +2,7 @@
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Shared;
 using System;
@@ -166,6 +167,16 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
+        public static bool IsCSharpProject(this Project project)
+        {
+            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160#issuecomment-960683498
+            project.GetItemInfo(out IVsHierarchy hierarchy, out _, out _);
+
+            return hierarchy.IsCapabilityMatch("CSharp");
+
+            // bool isCSharpAndNetCore = hierarchy.IsCapabilityMatch("CSharp & CPS");
+        }
+
         public static async Task<bool> IsNetFrameworkAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -203,7 +214,8 @@ namespace EFCorePowerTools.Extensions
             return absoluteOutputPath;
         }
 
-        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
+
+        public static List<string> GenerateFiles(this Project _, List<Tuple<string, string>> result, string extension)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 

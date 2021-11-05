@@ -165,8 +165,15 @@ namespace EFCorePowerTools
                 return; 
             }
 
+            var project = await VS.Solutions.GetActiveProjectAsync();
+
+            if (project == null)
+            {
+                return;
+            }
+
             var itemName = (await VS.Solutions.GetActiveItemAsync()).Name;
-            menuCommand.Visible = IsConfigFile(itemName);
+            menuCommand.Visible = IsConfigFile(itemName) && project.IsCSharpProject();
 
             return;
         }
@@ -194,11 +201,7 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible =
-                project.FullPath.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase);
-            //TODO see https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            //(await project.IsKindAsync(ProjectTypes.CSHARP)) ||
-            //(await project.IsKindAsync(ProjectTypes.DOTNET_CORE));
+            menuCommand.Visible = project.IsCSharpProject();
 
             return;
         }
