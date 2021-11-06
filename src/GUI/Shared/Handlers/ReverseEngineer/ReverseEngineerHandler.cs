@@ -540,6 +540,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(optionsPath + ".ignore"))
             {
+                if (!Properties.Settings.Default.IncludeUiHintInConfig)
+                {
+                    options.UiHint = null;
+                }
+
                 File.WriteAllText(optionsPath, options.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);
 
                 await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());
@@ -561,15 +566,23 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private void DropTemplates(string projectPath, bool useEFCore5)
         {
-            var zipName = useEFCore5 ? "CodeTemplates502.zip" : "CodeTemplates.zip";
+            var defaultZip = "CodeTemplates.zip";
+            var zipName = useEFCore5 ? "CodeTemplates502.zip" : defaultZip;
 
             var toDir = Path.Combine(projectPath, "CodeTemplates");
-            var fromDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            
+            var userTemplateZip = Path.Combine(projectPath, defaultZip);
+            var templateZip = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), zipName);
+
+            if (File.Exists(userTemplateZip))
+            {
+                templateZip = userTemplateZip;
+            }
 
             if (!Directory.Exists(toDir) || IsDirectoryEmpty(toDir))
             {
                 Directory.CreateDirectory(toDir);
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, zipName), toDir);
+                ZipFile.ExtractToDirectory(templateZip, toDir);
             }
         }
 

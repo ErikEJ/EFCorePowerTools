@@ -13,6 +13,7 @@ namespace EFCorePowerTools
             ParticipateInTelemetry = Properties.Settings.Default.ParticipateInTelemetry;
             OpenGeneratedDbContext = Properties.Settings.Default.OpenGeneratedDbContext;
             RunCleanup = Properties.Settings.Default.RunCleanup;
+            IncludeUiHintInConfig = Properties.Settings.Default.IncludeUiHintInConfig;
             base.OnActivate(e);
         }
 
@@ -28,6 +29,13 @@ namespace EFCorePowerTools
         DefaultValue(true)]
         public bool RunCleanup { get; set; }
 
+
+        [Category("Reverse Engineering"),
+        DisplayName(@"Save connection name"),
+        Description("Save connection name in efpt.config.json"),
+        DefaultValue(true)]
+        public bool IncludeUiHintInConfig { get; set; }
+
         [Category("Other"),
         DisplayName(@"Participate in Telemetry"),
         Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports"),
@@ -39,6 +47,7 @@ namespace EFCorePowerTools
             Properties.Settings.Default.ParticipateInTelemetry = ParticipateInTelemetry;
             Properties.Settings.Default.OpenGeneratedDbContext = OpenGeneratedDbContext;
             Properties.Settings.Default.RunCleanup = RunCleanup;
+            Properties.Settings.Default.IncludeUiHintInConfig = IncludeUiHintInConfig;
             Properties.Settings.Default.Save();
             base.OnApply(e);
         }
