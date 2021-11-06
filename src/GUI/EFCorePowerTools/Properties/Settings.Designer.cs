@@ -58,5 +58,17 @@ namespace EFCorePowerTools.Properties {
                 this["RunCleanup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IncludeUiHintInConfig {
+            get {
+                return ((bool)(this["IncludeUiHintInConfig"]));
+            }
+            set {
+                this["IncludeUiHintInConfig"] = value;
+            }
+        }
     }
 }

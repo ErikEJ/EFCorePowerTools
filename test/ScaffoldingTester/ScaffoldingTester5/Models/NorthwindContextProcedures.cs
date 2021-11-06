@@ -14,7 +14,7 @@ namespace ScaffoldingTester.Models
     {
         private NorthwindContextProcedures _procedures;
 
-        public NorthwindContextProcedures Procedures
+        public virtual NorthwindContextProcedures Procedures
         {
             get
             {
