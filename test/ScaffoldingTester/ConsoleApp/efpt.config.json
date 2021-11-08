@@ -56,17 +56,9 @@
       {
          "Name": "[dbo].[Track]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Titles]",
-         "ObjectType": 3
-      },
-      {
-         "Name": "[dbo].[GetTitles]",
-         "ObjectType": 1
       }
    ],
-   "UiHint": "DESKTOP-9UILCL8\\SQLEXPRESS.Chinook",
+   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Chinook",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": true,

@@ -14,14 +14,11 @@ namespace ConsoleApp.Models.Configurations
         {
             entity.ToTable("Album");
 
-            entity.HasComment("Album table");
-
             entity.HasIndex(e => e.ArtistId, "IFK_AlbumArtistId");
 
             entity.Property(e => e.Title)
                 .IsRequired()
-                .HasMaxLength(160)
-                .HasComment("Title of album");
+                .HasMaxLength(160);
 
             entity.HasOne(d => d.Artist)
                 .WithMany(p => p.Albums)

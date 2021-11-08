@@ -461,7 +461,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 DropTemplates(options.ProjectPath, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
             }
 
-            options.UseNullableReferences = await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
+            options.UseNullableReferences = await SetNullableAsync(options, project);
 
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
@@ -608,6 +608,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+        }
+
+        private async Task<bool> SetNullableAsync(ReverseEngineerOptions options, Project project)
+        {
+            var nullable = await project.GetAttributeAsync("Nullable");
+            if (string.Equals(nullable, "enable", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(nullable, "annotations", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            
+            return await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
         }
     }
 }
