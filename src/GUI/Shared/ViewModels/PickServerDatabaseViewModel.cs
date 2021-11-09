@@ -150,7 +150,7 @@
             {
                 "EF Core 5",
                 "EF Core 3",
-                "EF Core 6 (preview)",
+                "EF Core 6",
             };
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
