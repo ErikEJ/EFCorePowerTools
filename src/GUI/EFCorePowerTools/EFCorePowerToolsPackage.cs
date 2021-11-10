@@ -172,7 +172,7 @@ namespace EFCorePowerTools
                 return;
             }
 
-            var itemName = (await VS.Solutions.GetActiveItemAsync()).Name;
+            var itemName = System.IO.Path.GetFileName((await VS.Solutions.GetActiveItemAsync()).Name);
             menuCommand.Visible = IsConfigFile(itemName) && project.IsCSharpProject();
 
             return;
