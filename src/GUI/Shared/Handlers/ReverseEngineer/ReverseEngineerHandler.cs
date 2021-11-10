@@ -461,7 +461,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 DropTemplates(options.ProjectPath, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
             }
 
-            options.UseNullableReferences = await SetNullableAsync(options, project);
+            options.UseNullableReferences = await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
+            //TODO Disable for now - see #1164  await SetNullableAsync(options, project);
 
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
