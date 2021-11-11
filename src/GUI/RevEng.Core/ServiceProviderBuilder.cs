@@ -183,6 +183,15 @@ namespace RevEng.Core
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
+
+#if CORE50 || CORE60
+                    if (options.UseNodaTime)
+                    {
+                        var nodaTime = new SqliteNodaTimeDesignTimeServices();
+                        nodaTime.ConfigureDesignTimeServices(serviceCollection);
+                    }
+#endif
+
                     break;
 
                 default:
