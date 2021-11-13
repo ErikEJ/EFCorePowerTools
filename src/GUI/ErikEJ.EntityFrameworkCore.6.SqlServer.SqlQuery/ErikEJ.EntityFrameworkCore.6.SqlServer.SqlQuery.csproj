@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery</PackageId>
+		<PackageVersion>6.0.0-preview1</PackageVersion>
+		<NoWarn>$(NoWarn);EF1001</NoWarn>
+		<Authors>ErikEJ</Authors>
+		<Description>Provides the SqlQueryAsync&lt;T&gt; and SqlQueryValueAsync&lt;T&gt; methods to help you populate arbitrary classes or a list of primitive types from a raw SQL query</Description>
+		<PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+		<PackageReleaseNotes>Initial preview</PackageReleaseNotes>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>		
+		<PackageTags>DbContext;EntityFramework;SqlServer;EFCore;EntityFrameworkCore</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<MinClientVersion>5.0</MinClientVersion>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(CI)' == 'True'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\DbContextExtensions.cs" Link="DbContextExtensions.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0" PrivateAssets="All" />
+	</ItemGroup>
+
+</Project>

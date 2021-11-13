@@ -59,6 +59,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{8B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac", "ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj", "{BCDBF137-E38B-40E8-8BAD-651D4D097032}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.6.DgmlBuilder", "ErikEJ.EntityFrameworkCore.6.DgmlBuilder\ErikEJ.EntityFrameworkCore.6.DgmlBuilder.csproj", "{42C3E4B4-656F-4087-82B4-2048713D1BBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery", "ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery.csproj", "{8F75978E-966D-47BF-8948-42B886ED1BD9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\Shared.projitems*{9774f070-c59a-4fc2-93a5-90b7e7435fe8}*SharedItemsImports = 13
@@ -161,6 +165,14 @@ Global
 		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCDBF137-E38B-40E8-8BAD-651D4D097032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42C3E4B4-656F-4087-82B4-2048713D1BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42C3E4B4-656F-4087-82B4-2048713D1BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42C3E4B4-656F-4087-82B4-2048713D1BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42C3E4B4-656F-4087-82B4-2048713D1BBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F75978E-966D-47BF-8948-42B886ED1BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F75978E-966D-47BF-8948-42B886ED1BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F75978E-966D-47BF-8948-42B886ED1BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F75978E-966D-47BF-8948-42B886ED1BD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +198,8 @@ Global
 		{A45A6FCB-485D-4D20-AB30-08A72FDEFFCB} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{2F99336C-48D4-4454-9877-15669E68B2BD} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 		{BCDBF137-E38B-40E8-8BAD-651D4D097032} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
+		{42C3E4B4-656F-4087-82B4-2048713D1BBC} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
+		{8F75978E-966D-47BF-8948-42B886ED1BD9} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}

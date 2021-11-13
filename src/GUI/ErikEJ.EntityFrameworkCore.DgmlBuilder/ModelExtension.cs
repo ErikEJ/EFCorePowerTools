@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.IO;
 using System.Reflection;
@@ -29,6 +31,8 @@ namespace Microsoft.EntityFrameworkCore
             var model = context.Model;
 #if CORE50
             return model.AsModel().DebugView.LongView;
+#elif CORE60
+            return context.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 #else
             return model.AsModel().DebugView.View;
 #endif
