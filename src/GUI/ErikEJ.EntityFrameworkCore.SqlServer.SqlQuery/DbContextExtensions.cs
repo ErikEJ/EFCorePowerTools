@@ -128,9 +128,9 @@ namespace Microsoft.EntityFrameworkCore
             }
         }
 
-        private class ValueReturn<T>
+        internal class ValueReturn<T>
         {
-            public T Value { get; set; }
+            public T Value { get; private set; }
         }
     }
 }
