@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
         <NoWarn>$(NoWarn);EF1001</NoWarn>
-        <PackageVersion>5.0.0</PackageVersion>
+        <PackageVersion>5.0.1</PackageVersion>
         <Authors>ErikEJ</Authors>
         <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -20,7 +20,8 @@
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
         <DebugType>embedded</DebugType>	
     </PropertyGroup>
 	
@@ -39,13 +40,17 @@
       <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ModelExtension.cs" Link="ModelExtension.cs" />
     </ItemGroup>
 
-    <ItemGroup>
+	<ItemGroup>
+		<None Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
       <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml" Link="template.dgml" />
     </ItemGroup>
 
     <ItemGroup>
 	    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>	
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />	
     </ItemGroup>
 
 </Project>

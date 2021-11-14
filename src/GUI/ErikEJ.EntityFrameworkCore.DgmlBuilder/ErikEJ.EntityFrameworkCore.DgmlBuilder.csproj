@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
         <NoWarn>$(NoWarn);EF1001</NoWarn>
-        <PackageVersion>3.1.4</PackageVersion>
+        <PackageVersion>3.1.5</PackageVersion>
         <Authors>ErikEJ</Authors>
         <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,7 +17,8 @@
           <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.1.0" />
         </Dependencies>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <SignAssembly>true</SignAssembly>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -28,6 +29,10 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
+	<ItemGroup>
+  	  <None Include="readme.md" Pack="true" PackagePath="\"/>	  
+    </ItemGroup>
+	
     <ItemGroup>
 	    <None Remove="template.dgml" />
     </ItemGroup>
