@@ -73,8 +73,9 @@ namespace ScaffoldingTester.Models
     public class OutputParameter<TValue>
     {
         private bool _valueSet = false;
+        
+        private TValue _value;
 
-        public TValue _value;
         public TValue Value
         {
             get
