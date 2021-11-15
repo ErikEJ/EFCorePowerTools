@@ -172,8 +172,14 @@ namespace EFCorePowerTools
                 return;
             }
 
-            var itemName = System.IO.Path.GetFileName((await VS.Solutions.GetActiveItemAsync()).Name);
-            menuCommand.Visible = IsConfigFile(itemName) && project.IsCSharpProject();
+            var item = await VS.Solutions.GetActiveItemAsync();
+
+            if (item == null)
+            {
+                return;
+            }
+
+            menuCommand.Visible = IsConfigFile(item.Text) && project.IsCSharpProject();
 
             return;
         }
@@ -220,8 +226,12 @@ namespace EFCorePowerTools
 
                 var item = await VS.Solutions.GetActiveItemAsync();
 
-                var itemName = item.Name;
-                if (!IsConfigFile(itemName))
+                if (item == null)
+                {
+                    return;
+                }
+
+                if (!IsConfigFile(item.Text))
                 {
                     return;
                 }
