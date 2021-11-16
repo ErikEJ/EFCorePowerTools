@@ -15,6 +15,7 @@
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
 	<MinClientVersion>5.0</MinClientVersion>	  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageReadmeFile>readme.md</PackageReadmeFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
@@ -54,6 +55,10 @@
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.5332.1-preview" />
 	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0" PrivateAssets="All" />	  
   </ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
