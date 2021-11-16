@@ -65,7 +65,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	    <None Include="..\DacFxStrongTypedCore\bin\$(Configuration)\netstandard2.0\DacFxStrongTypedCore.dll">
+	    <None Include="..\DacFxStrongTypedCore\bin\$(Configuration)\netstandard2.1\DacFxStrongTypedCore.dll">
 		    <Visible>false</Visible>
 		    <Pack>true</Pack>
 		    <PackagePath>lib\$(TargetFramework)</PackagePath>
