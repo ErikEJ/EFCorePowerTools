@@ -61,8 +61,10 @@ namespace Modelling
             var generator = database.GetService<IMigrationsSqlGenerator>();
             var sql = database.GetService<ISqlGenerationHelper>();
 
-#if CORE50 || CORE60
+#if CORE50
             var operations = differ.GetDifferences(null, model.GetRelationalModel());
+#elif CORE60
+            var operations = differ.GetDifferences(null, dbContext.GetService<IDesignTimeModel>().Model.GetRelationalModel());
 #else
             var operations = differ.GetDifferences(null, model);
 #endif
