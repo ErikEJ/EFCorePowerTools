@@ -26,6 +26,11 @@ namespace ScaffoldingTester
                 {
                     Console.WriteLine(item.OrderDate);
                 }
+
+                var productCount = new OutputParameter<int?>();
+                var description = new OutputParameter<string>();
+                var outputRes = db.GetProcedures()
+                    .OutputScenariosAsync(2021, productCount, description);
             }
         }
     }

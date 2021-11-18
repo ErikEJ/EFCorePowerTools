@@ -75,6 +75,7 @@ namespace ScaffoldingTester.Models
         private bool _valueSet = false;
 
         public TValue _value;
+
         public TValue Value
         {
             get
