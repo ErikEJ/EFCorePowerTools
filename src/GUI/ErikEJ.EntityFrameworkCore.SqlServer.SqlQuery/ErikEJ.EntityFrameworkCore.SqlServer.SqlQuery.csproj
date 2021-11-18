@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery</PackageId>
-		<PackageVersion>5.0.0-preview1</PackageVersion>
+		<PackageVersion>5.0.0-preview2</PackageVersion>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>
 		<Authors>ErikEJ</Authors>
 		<Description>Provides the SqlQueryAsync&lt;T&gt; and SqlQueryValueAsync&lt;T&gt; methods to help you populate arbitrary classes or a list of primitive types from a raw SQL query</Description>
@@ -12,6 +12,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>		
 		<PackageTags>DbContext;EntityFramework;SqlServer;EFCore;EntityFrameworkCore</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<MinClientVersion>5.0</MinClientVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
@@ -25,7 +26,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[5.0.0, 7.0.0)" />
+		<None Include="..\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
 	</ItemGroup>
 
