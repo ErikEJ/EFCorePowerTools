@@ -60,6 +60,10 @@ namespace EFCorePowerTools.Dialogs
             {
                 txtSample.Text = "database=localhost:demo.fdb;user=sysdba;password=masterkey";
             }
+            if (cmdDatabaseType.SelectedIndex == 4)
+            {
+                txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
+            }
         }
     }
 }

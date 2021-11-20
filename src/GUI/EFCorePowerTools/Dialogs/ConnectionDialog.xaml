@@ -43,6 +43,7 @@
                 <ComboBoxItem Tag="4" >SQLite</ComboBoxItem>
                 <ComboBoxItem Tag="3" >Azure SQL DB</ComboBoxItem>
                 <ComboBoxItem Tag="10" >Firebird</ComboBoxItem>
+                <ComboBoxItem Tag="6" >MySQL</ComboBoxItem>
             </ComboBox>
 
         </Grid>
