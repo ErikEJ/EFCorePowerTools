@@ -121,10 +121,10 @@
     <value>Add...</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>Add ad hoc Connection (preview)</value>
+    <value>Add Custom Connection</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Ad Hoc Connection...</value>
+    <value>Add Custom Connection...</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Add Database Connection</value>
