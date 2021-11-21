@@ -11,20 +11,22 @@ namespace ScaffoldingTester
         {
             using (var db = new NorthwindContext())
             {
-                var res = db.Shippers.ToList();
+                //var list = new[] { "ALFKI", "BERGS", "VAFFE" };
 
-                var list = new[] { "ALFKI", "BERGS", "VAFFE" };
+                var list = new[] { 10253L, 10255L, 10260L };
 
                 var customersQuery = db.Orders
-                    .Where(s => db.AsSplit(list, ",").Contains(s.CustomerId));
+                    .Where(s => db.AsSplit(list).Contains(s.OrderId))
+                    .Select(o => new { o.OrderDate, o.CustomerId });
 
+#if DEBUG
                 Console.WriteLine(customersQuery.ToQueryString());
-
+#endif
                 var result = customersQuery.ToList();
 
                 foreach (var item in result)
                 {
-                    Console.WriteLine(item.OrderDate);
+                    Console.WriteLine($"{item.CustomerId} : {item.OrderDate}");
                 }
 
                 var productCount = new OutputParameter<int?>();
