@@ -9,6 +9,30 @@ namespace RevEng.Core
 {
     public static class SqlServerSqlTypeExtensions
     {
+        private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
+        {
+            SqlDbType.Decimal,
+            SqlDbType.Money,
+            SqlDbType.SmallMoney,
+        };
+
+        private static readonly ISet<SqlDbType> _varTimeTypes = new HashSet<SqlDbType>
+        {
+            SqlDbType.DateTimeOffset,
+            SqlDbType.DateTime2,
+            SqlDbType.Time,
+        };
+
+        private static readonly ISet<SqlDbType> _lengthRequiredTypes = new HashSet<SqlDbType>
+        {
+            SqlDbType.Binary,
+            SqlDbType.VarBinary,
+            SqlDbType.Char,
+            SqlDbType.VarChar,
+            SqlDbType.NChar,
+            SqlDbType.NVarChar,
+        };
+
         private static readonly ReadOnlyDictionary<string, string> SqlTypeAliases
         = new ReadOnlyDictionary<string, string>(
             new Dictionary<string, string>()
@@ -22,6 +46,21 @@ namespace RevEng.Core
                 { "hierarchyid", "variant" },
                 { "sysname", "nvarchar" },
             });
+
+        public static bool IsScaleType(this SqlDbType sqlDbType)
+        {
+            return _scaleTypes.Contains(sqlDbType);
+        }
+
+        public static bool IsVarTimeType(this SqlDbType sqlDbType)
+        {
+            return _varTimeTypes.Contains(sqlDbType);
+        }
+
+        public static bool IsLengthRequiredType(this SqlDbType sqlDbType)
+        {
+            return _lengthRequiredTypes.Contains(sqlDbType);
+        }
 
         public static Type ClrType(this ModuleParameter storedProcedureParameter)
         {

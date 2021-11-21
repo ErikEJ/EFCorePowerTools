@@ -20,25 +20,6 @@ namespace RevEng.Core.Procedures
     {
         private const string parameterPrefix = "parameter";
 
-        private static readonly ISet<SqlDbType> _scaleTypes = new HashSet<SqlDbType>
-        {
-            SqlDbType.DateTimeOffset,
-            SqlDbType.DateTime2,
-            SqlDbType.Time,
-            SqlDbType.Decimal,
-        };
-
-        private static readonly ISet<SqlDbType> _lengthRequiredTypes = new HashSet<SqlDbType>
-        {
-            SqlDbType.Binary,
-            SqlDbType.VarBinary,
-            SqlDbType.Char,
-            SqlDbType.VarChar,
-            SqlDbType.NChar,
-            SqlDbType.NVarChar,
-        };
-
-
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
             : base(code)
         {
@@ -312,7 +293,7 @@ namespace RevEng.Core.Procedures
             {
                 _sb.AppendLine($"ParameterName = \"{parameter.Name}\",");
 
-                if (_scaleTypes.Contains(sqlDbType))
+                if (sqlDbType.IsScaleType())
                 {
                     if (parameter.Precision > 0)
                     {
@@ -324,11 +305,18 @@ namespace RevEng.Core.Procedures
                     }
                 }
 
-                if (_lengthRequiredTypes.Contains(sqlDbType))
+                if (sqlDbType.IsVarTimeType())
+                {
+                    if (parameter.Scale > 0)
+                    {
+                        _sb.AppendLine($"Scale = {parameter.Scale},");
+                    }
+                }
+
+                if (sqlDbType.IsLengthRequiredType())
                 {
                     _sb.AppendLine($"Size = {parameter.Length},");
                 }
-
 
                 if (!parameter.IsReturnValue)
                 {
