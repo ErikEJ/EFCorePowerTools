@@ -61,6 +61,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoNavigations = options.UseNoNavigations,
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
+                UseManyToManyEntity = options.UseManyToManyEntity,
                 RunCleanup = Properties.Settings.Default.RunCleanup,
             };
 

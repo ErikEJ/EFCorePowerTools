@@ -357,6 +357,9 @@
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value />
   </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value />
+  </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value />
   </data>

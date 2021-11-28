@@ -1,9 +1,9 @@
 ﻿#if CORE60
 #else
-using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -51,6 +51,8 @@ namespace RevEng.Core
 #endif
                 .AddSingleton<IOperationReporter, OperationReporter>()
                 .AddSingleton<IOperationReportHandler, OperationReportHandler>()
+#if CORE60
+
                 .AddSingleton<IScaffoldingModelFactory>(provider =>
                 new ColumnRemovingScaffoldingModelFactory(
                     provider.GetService<IOperationReporter>(),
@@ -59,31 +61,43 @@ namespace RevEng.Core
                     provider.GetService<ICSharpUtilities>(),
                     provider.GetService<IScaffoldingTypeMapper>(),
                     provider.GetService<LoggingDefinitions>(),
-#if CORE60
                     provider.GetService<IModelRuntimeInitializer>(),
-#endif
+                    options.Tables,
+                    options.DatabaseType,
+                    options.UseManyToManyEntity
+                ));
+#else
+                .AddSingleton<IScaffoldingModelFactory>(provider =>
+                new ColumnRemovingScaffoldingModelFactory(
+                    provider.GetService<IOperationReporter>(),
+                    provider.GetService<ICandidateNamingService>(),
+                    provider.GetService<IPluralizer>(),
+                    provider.GetService<ICSharpUtilities>(),
+                    provider.GetService<IScaffoldingTypeMapper>(),
+                    provider.GetService<LoggingDefinitions>(),
                     options.Tables,
                     options.DatabaseType
-                ));
-
+               ));
+#endif
             if (options.CustomReplacers != null)
             {
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
             }
 
-#if CORE60
-#else
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
                 {
                     hbOptions.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;
                     hbOptions.LanguageOptions = (LanguageOptions)options.SelectedHandlebarsLanguage;
+#if CORE60
+#else
                     hbOptions.EnableNullableReferenceTypes = options.UseNullableReferences;
+#endif
                 });
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
             }
-#endif
+
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)

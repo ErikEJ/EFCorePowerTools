@@ -65,10 +65,15 @@
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="2" />
 
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseManyToManyEntity }"
+                      IsChecked="{Binding Model.UseManyToManyEntity}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="3" />                    
+                    
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.AlwaysIncludeAllDatabaseObjects}"
                           IsChecked="{Binding Model.UseNoObjectFilter}"
                           Style="{StaticResource MarginCheckBlockStyle}"
-                          TabIndex="3" />
+                          TabIndex="4" />
                 </StackPanel>
             </GroupBox>
 

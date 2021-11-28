@@ -151,6 +151,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
             Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
+            Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
         }
 
         void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
@@ -182,6 +183,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
+            Model.UseManyToManyEntity = presets.UseManyToManyEntity;
 
             Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }

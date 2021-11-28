@@ -384,6 +384,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
+                UseManyToManyEntity = options.UseManyToManyEntity,
             };
 
             var modelDialog = _package.GetView<IModelingOptionsDialog>()
@@ -421,6 +422,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
             options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
+            options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
 
             return true;
         }
@@ -431,7 +433,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac))
             {
-                if (options.ConnectionString.ToLowerInvariant().Contains(".database.windows.net"))
+                if (options.ConnectionString.ToLowerInvariant().Contains(".database.windows.net")
+                    && options.ConnectionString.ToLowerInvariant().Contains("active directory interactive"))
                 {
                     return;
                 }
@@ -458,7 +461,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.UseHandleBars)
             {
-                DropTemplates(options.ProjectPath, options.CodeGenerationMode == CodeGenerationMode.EFCore5);
+                DropTemplates(options.ProjectPath, options.CodeGenerationMode);
             }
 
             options.UseNullableReferences = await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
@@ -565,10 +568,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private void DropTemplates(string projectPath, bool useEFCore5)
+        private void DropTemplates(string projectPath, CodeGenerationMode codeGenerationMode)
         {
+            string zipName;
+            switch (codeGenerationMode)
+            {
+                case CodeGenerationMode.EFCore5:
+                    zipName = "CodeTemplates502.zip";
+                    break;
+                case CodeGenerationMode.EFCore3:
+                    zipName = "CodeTemplates.zip";
+                    break;
+                case CodeGenerationMode.EFCore6:
+                    zipName = "CodeTemplates600.zip";
+                    break;
+                default:
+                    throw new ArgumentException($"Unsupported code generation mode: {codeGenerationMode}");
+            }
+
             var defaultZip = "CodeTemplates.zip";
-            var zipName = useEFCore5 ? "CodeTemplates502.zip" : defaultZip;
 
             var toDir = Path.Combine(projectPath, "CodeTemplates");
             

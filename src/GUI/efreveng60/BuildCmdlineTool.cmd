@@ -26,17 +26,25 @@ rmdir bin\Release\net6.0\publish\ru-RU /S /Q
 rmdir bin\Release\net6.0\publish\zh-CN /S /Q
 rmdir bin\Release\net6.0\publish\zh-TW /S /Q
 
+del bin\Release\net6.0\publish\Azure.Core.dll
+del bin\Release\net6.0\publish\Azure.Identity.dll 
 del bin\Release\net6.0\publish\Ben.Demystifier.dll
 del bin\Release\net6.0\publish\Bricelam.EntityFrameworkCore.Pluralizer.dll
+del bin\Release\net6.0\publish\DacFxStrongTypedCore.dll 
+del bin\Release\net6.0\publish\DacFxStrongTypedCore.pdb 
 del bin\Release\net6.0\publish\Humanizer.dll
 del bin\Release\net6.0\publish\Microsoft.Build.dll 
-del bin\Release\net6.0\publish\Microsoft.Build.Framework.dll 
+del bin\Release\net6.0\publish\Microsoft.Build.Framework.dll
+del bin\Release\net6.0\publish\Microsoft.Build.Utilities.Core.dll 
 del bin\Release\net6.0\publish\Microsoft.Data.SqlClient.dll 
 del bin\Release\net6.0\publish\Microsoft.Data.SqlClient.SNI.dll 
 del bin\Release\net6.0\publish\Microsoft.Data.SqlClient.SNI.pdb 
+del bin\Release\net6.0\publish\Microsoft.Data.Tools.Schema.Tasks.Sql.dll 
 del bin\Release\net6.0\publish\Microsoft.Data.Tools.Schema.Sql.dll 
+del bin\Release\net6.0\publish\Microsoft.Data.Tools.Sql.DesignServices.dll 
 del bin\Release\net6.0\publish\Microsoft.Data.Tools.Utilities.dll 
 del bin\Release\net6.0\publish\Microsoft.Identity.Client.dll 
+del bin\Release\net6.0\publish\Microsoft.Identity.Client.Extensions.Msal.dll 
 del bin\Release\net6.0\publish\Microsoft.IdentityModel.JsonWebTokens.dll 
 del bin\Release\net6.0\publish\Microsoft.IdentityModel.Logging.dll 
 del bin\Release\net6.0\publish\Microsoft.IdentityModel.Protocols.dll 
@@ -49,12 +57,17 @@ del bin\Release\net6.0\publish\Microsoft.SqlServer.Types.dll
 del bin\Release\net6.0\publish\Microsoft.Win32.SystemEvents.dll
 del bin\Release\net6.0\publish\NetTopologySuite.dll
 del bin\Release\net6.0\publish\NetTopologySuite.IO.SqlServerBytes.dll
+del bin\Release\net6.0\publish\RevEng.Core.Abstractions.dll 
+del bin\Release\net6.0\publish\RevEng.Core.Abstractions.pdb 
 del bin\Release\net6.0\publish\RevEng.Shared.dll
 del bin\Release\net6.0\publish\RevEng.Shared.pdb
 del bin\Release\net6.0\publish\System.CodeDom.dll
 del bin\Release\net6.0\publish\System.Configuration.ConfigurationManager.dll
 del bin\Release\net6.0\publish\System.Drawing.Common.dll
 del bin\Release\net6.0\publish\System.IdentityModel.Tokens.Jwt.dll
+del bin\Release\net6.0\publish\System.IO.Packaging.dll 
+del bin\Release\net6.0\publish\System.Memory.Data.dll 
+del bin\Release\net6.0\publish\System.Resources.Extensions.dll
 del bin\Release\net6.0\publish\System.Runtime.Caching.dll
 del bin\Release\net6.0\publish\System.Security.Cryptography.ProtectedData.dll
 del bin\Release\net6.0\publish\System.Security.Permissions.dll

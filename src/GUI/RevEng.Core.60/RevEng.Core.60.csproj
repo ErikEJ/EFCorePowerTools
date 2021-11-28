@@ -20,7 +20,6 @@
 	<ItemGroup>
 	  <Compile Remove="..\RevEng.Core\Check.cs" />
 	  <Compile Remove="..\RevEng.Core\CommentCSharpEntityTypeGenerator.cs" />
-	  <Compile Remove="..\RevEng.Core\CustomTemplateFileService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,6 +28,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
+		<PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="6.0.0-preview2" />
 		<PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0" />
 		<PackageReference Include="Humanizer.Core" Version="2.9.9" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.1" />

@@ -36,6 +36,7 @@
         private bool _useNoDefaultConstructor;
         private bool _useNoNavigations;
         private bool _useNoObjectFilter;
+        private bool _useManyToManyEntity;
 
         public bool UseDataAnnotations
         {
@@ -330,6 +331,17 @@
             {
                 if (value == _useNoDefaultConstructor) return;
                 _useNoDefaultConstructor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseManyToManyEntity
+        {
+            get => _useManyToManyEntity;
+            set
+            {
+                if (value == _useManyToManyEntity) return;
+                _useManyToManyEntity = value;
                 OnPropertyChanged();
             }
         }

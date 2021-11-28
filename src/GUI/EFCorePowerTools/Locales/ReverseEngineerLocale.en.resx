@@ -357,6 +357,9 @@
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>Use EF6 pluralizer</value>
   </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Use many to many entity (EF Core 6)</value>
+  </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Use table and column names directly from the database</value>
   </data>

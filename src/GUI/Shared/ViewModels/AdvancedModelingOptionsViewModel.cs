@@ -48,6 +48,7 @@
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseSchemaFolders = presets.UseSchemaFolders;
+            Model.UseManyToManyEntity = presets.UseManyToManyEntity;
         }
     }
 }
