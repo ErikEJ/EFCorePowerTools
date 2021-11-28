@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScaffoldingTester.Models
 {
-    public partial class MultiSetResult
+    public partial class MultiSetResult2
     {
-        public int ShipperID { get; set; }
-        public string CompanyName { get; set; }
-        public string Phone { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public string Description { get; set; }
+        public byte[] Image { get; set; }
     }
 }
