@@ -146,6 +146,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[MultiSet]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[OutputScenarios]",
          "ObjectType": 1
       },

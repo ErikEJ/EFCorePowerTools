@@ -11,6 +11,9 @@ namespace ScaffoldingTester
         {
             using (var db = new NorthwindContext())
             {
+                var multi = await db.GetProcedures().MultiSetAsync(new DateTime(2021, 12, 24), 7.6m);
+
+
                 //var list = new[] { "ALFKI", "BERGS", "VAFFE" };
 
                 var list = new[] { 10253L, 10255L, 10260L };

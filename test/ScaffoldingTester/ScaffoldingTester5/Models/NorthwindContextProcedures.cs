@@ -154,6 +154,40 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
+        public virtual async Task<List<MultiSetResult>> MultiSetAsync(DateTime? Year, decimal? ProductValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "Year",
+                    Precision = 23,
+                    Scale = 3,
+                    Value = Year ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime2,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "ProductValue",
+                    Value = ProductValue ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.SmallMoney,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<MultiSetResult>("EXEC @returnValue = [dbo].[MultiSet] @Year, @ProductValue", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<OutputScenariosResult>> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterProductCount = new SqlParameter
