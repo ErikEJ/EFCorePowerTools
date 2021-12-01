@@ -142,6 +142,7 @@ namespace RevEng.Core
 
                 var procedureModelFactoryOptions = new ModuleModelFactoryOptions
                 {
+                    DiscoverMultipleResultSets = options.UseMultipleSprocResultSets,
                     FullModel = true,
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
                 };

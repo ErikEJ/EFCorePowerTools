@@ -21,10 +21,10 @@ namespace RevEng.Core.Procedures
             return GetRoutines(connectionString, options);
         }
 
-        protected override List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResultSets = false)
         {
             var dtResult = new DataTable();
-            var result = new List<ModuleResultElement>();
+            var list = new List<ModuleResultElement>();
 
             var sql = $@"
 SELECT 
@@ -33,7 +33,7 @@ SELECT
     c.column_id AS column_ordinal,
     c.is_nullable
 FROM sys.columns c
-WHERE object_id = OBJECT_ID('{schema}.{name}');";
+WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
 
             var adapter = new SqlDataAdapter
             {
@@ -54,10 +54,15 @@ WHERE object_id = OBJECT_ID('{schema}.{name}');";
                     Nullable = (bool)res["is_nullable"],
                 };
 
-                result.Add(parameter);
+                list.Add(parameter);
 
                 rCounter++;
             }
+
+            var result = new List<List<ModuleResultElement>>
+            {
+                list
+            };
 
             return result;
         }

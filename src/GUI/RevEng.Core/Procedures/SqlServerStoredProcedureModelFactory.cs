@@ -38,10 +38,51 @@ namespace RevEng.Core.Procedures
             return moduleParameters;
         }
 
-        protected override List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResultSets)
+        {
+            if (multipleResultSets)
+            {
+                GetAllResultSets(connection, module);        
+            }
+
+            return GetFirstResultSet(connection, module.Schema, module.Name);
+        }
+
+
+        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine model)
+        {
+            var list = new List<ModuleResultElement>();
+
+            var sqlCommand = connection.CreateCommand();
+            //Add parameters!
+
+            using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
+
+            do
+            {
+                // http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqldatareader.getschematable.aspx
+                var schemaTable = schemaReader.GetSchemaTable();
+
+                //For each field in the table...
+                foreach (DataRow row in schemaTable.Rows)
+                {
+                    
+                }
+            } while (schemaReader.NextResult());
+
+
+            var result = new List<List<ModuleResultElement>>
+            {
+                list
+            };
+
+            return result;
+        }
+
+        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
-            var result = new List<ModuleResultElement>();
+            var list = new List<ModuleResultElement>();
 
             var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{name}]';";
 
@@ -64,10 +105,15 @@ namespace RevEng.Core.Procedures
                     Nullable = (bool)res["is_nullable"],
                 };
 
-                result.Add(parameter);
+                list.Add(parameter);
 
                 rCounter++;
             }
+
+            var result = new List<List<ModuleResultElement>>
+            {
+                list
+            };
 
             return result;
         }
