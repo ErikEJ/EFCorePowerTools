@@ -66,7 +66,7 @@ namespace RevEng.Core.Modules
             {
                 var typeName = GenerateIdentifierName(routine, model) + "Result";
 
-                var classContent = WriteResultClass(routine, scaffolderOptions, typeName);
+                var classContent = WriteResultClass(routine.Results[0], scaffolderOptions, typeName);
 
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
@@ -97,7 +97,7 @@ namespace RevEng.Core.Modules
 
         protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
 
-        private string WriteResultClass(Routine routine, ModuleScaffolderOptions options, string name)
+        private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name)
         {
             var @namespace = options.ModelNamespace;
 
@@ -120,7 +120,7 @@ namespace RevEng.Core.Modules
 
             using (_sb.Indent())
             {
-                GenerateClass(routine, name, options.NullableReferences);
+                GenerateClass(resultElements, name, options.NullableReferences);
             }
 
             _sb.AppendLine("}");
@@ -128,22 +128,22 @@ namespace RevEng.Core.Modules
             return _sb.ToString();
         }
 
-        private void GenerateClass(Routine routine, string name, bool nullableReferences)
+        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences)
         {
             _sb.AppendLine($"public partial class {name}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                GenerateProperties(routine, nullableReferences);
+                GenerateProperties(resultElements, nullableReferences);
             }
 
             _sb.AppendLine("}");
         }
 
-        private void GenerateProperties(Routine routine, bool nullableReferences)
+        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences)
         {
-            foreach (var property in routine.ResultElements.OrderBy(e => e.Ordinal))
+            foreach (var property in resultElements.OrderBy(e => e.Ordinal))
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 

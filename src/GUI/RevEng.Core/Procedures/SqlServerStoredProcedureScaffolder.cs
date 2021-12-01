@@ -197,7 +197,7 @@ namespace RevEng.Core.Procedures
                     }
                     _sb.AppendLine("};");
 
-                    if (procedure.HasValidResultSet && procedure.ResultElements.Count == 0)
+                    if (procedure.HasValidResultSet && procedure.Results[0].Count == 0)
                     {
                         _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
@@ -242,7 +242,7 @@ namespace RevEng.Core.Procedures
         {
             string returnType;
 
-            if (procedure.HasValidResultSet && procedure.ResultElements.Count == 0)
+            if (procedure.HasValidResultSet && procedure.Results[0].Count == 0)
             {
                 returnType = $"Task<int>";
             }

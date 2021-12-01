@@ -68,7 +68,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                         try
                         {
-                            procedure.ResultElements = GetStoredProcedureResultElements(proc);
+                            procedure.Results.Add(GetStoredProcedureResultElements(proc));
                         }
                         catch (Exception ex)
                         {

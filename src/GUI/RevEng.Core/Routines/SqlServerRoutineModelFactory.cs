@@ -103,7 +103,7 @@ AND ROUTINE_TYPE = N'{routineType}'");
                             {
                                 try
                                 {
-                                    module.ResultElements = GetResultElements(connection, module.Schema, module.Name);
+                                    module.Results.Add(GetResultElements(connection, module.Schema, module.Name));
                                 }
                                 catch (Exception ex)
                                 {
