@@ -103,7 +103,7 @@ AND ROUTINE_TYPE = N'{routineType}'");
                             {
                                 try
                                 {
-                                    module.Results.AddRange(GetResultElementLists(connection, module));
+                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets));
                                 }
                                 catch (Exception ex)
                                 {

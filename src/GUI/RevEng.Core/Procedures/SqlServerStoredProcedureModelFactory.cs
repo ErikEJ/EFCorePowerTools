@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace RevEng.Core.Procedures
 {
@@ -42,39 +44,50 @@ namespace RevEng.Core.Procedures
         {
             if (multipleResultSets)
             {
-                GetAllResultSets(connection, module);        
+                return GetAllResultSets(connection, module);        
             }
 
             return GetFirstResultSet(connection, module.Schema, module.Name);
         }
 
 
-        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine model)
+        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module)
         {
-            var list = new List<ModuleResultElement>();
+            var result = new List<List<ModuleResultElement>>();
+            using var sqlCommand = connection.CreateCommand();
 
-            var sqlCommand = connection.CreateCommand();
-            //Add parameters!
+            sqlCommand.CommandText = "[dbo].[MultiSet]";
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            var parameters = module.Parameters.Take(module.Parameters.Count - 1);
+
+            foreach (var parameter in parameters)
+            {
+                var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
+                sqlCommand.Parameters.Add(param);
+            }
 
             using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
-
+            
             do
             {
                 // http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqldatareader.getschematable.aspx
                 var schemaTable = schemaReader.GetSchemaTable();
+                var list = new List<ModuleResultElement>();
 
-                //For each field in the table...
                 foreach (DataRow row in schemaTable.Rows)
                 {
-                    
+                    list.Add(new ModuleResultElement
+                    {
+                        Name = row["ColumnName"].ToString(),
+                        Nullable = (bool?)row["AllowDBNull"] ?? true,
+                        Ordinal = (int)row["ColumnOrdinal"],
+                        StoreType = row["DataTypeName"].ToString(),
+                    });
                 }
+
+                result.Add(list);
             } while (schemaReader.NextResult());
-
-
-            var result = new List<List<ModuleResultElement>>
-            {
-                list
-            };
 
             return result;
         }
