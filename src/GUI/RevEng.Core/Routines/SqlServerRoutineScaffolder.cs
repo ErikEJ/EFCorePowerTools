@@ -64,17 +64,28 @@ namespace RevEng.Core.Modules
 
             foreach (var routine in model.Routines.Where(r => !(r is Function f) || !f.IsScalar))
             {
-                var typeName = GenerateIdentifierName(routine, model) + "Result";
+                int i = 1;
 
-                var classContent = WriteResultClass(routine.Results[0], scaffolderOptions, typeName);
-
-                result.AdditionalFiles.Add(new ScaffoldedFile
+                foreach (var resultSet in routine.Results)
                 {
-                    Code = classContent,
-                    Path = scaffolderOptions.UseSchemaFolders
-                            ? Path.Combine(routine.Schema, $"{typeName}.cs")
-                            : $"{typeName}.cs"
-                });
+                    var suffix = string.Empty;
+                    if (routine.Results.Count > 0)
+                    {
+                        suffix = $"{i++}";
+                    }
+
+                    var typeName = GenerateIdentifierName(routine, model) + "Result" + suffix;
+
+                    var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName);
+
+                    result.AdditionalFiles.Add(new ScaffoldedFile
+                    {
+                        Code = classContent,
+                        Path = scaffolderOptions.UseSchemaFolders
+                                ? Path.Combine(routine.Schema, $"{typeName}.cs")
+                                : $"{typeName}.cs"
+                    });
+                }
             }
 
             var dbContext = WriteDbContext(scaffolderOptions, model);

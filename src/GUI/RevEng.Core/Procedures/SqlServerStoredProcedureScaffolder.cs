@@ -19,6 +19,7 @@ namespace RevEng.Core.Procedures
     public class SqlServerStoredProcedureScaffolder : SqlServerRoutineScaffolder, IProcedureScaffolder
     {
         private const string parameterPrefix = "parameter";
+        private bool supportsMultipleResultSets = false;
 
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
             : base(code)
@@ -48,19 +49,40 @@ namespace RevEng.Core.Procedures
 
         protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, RoutineModel model)
         {
+            supportsMultipleResultSets = model.Routines.Any(r => r.Results.Count > 0);
+
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);
 
-            _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
-            _sb.AppendLine("using Microsoft.Data.SqlClient;");
-            _sb.AppendLine("using System;");
-            _sb.AppendLine("using System.Collections.Generic;");
-            //To support System.Data.DataTable
-            _sb.AppendLine("using System.Data;");
-            _sb.AppendLine("using System.Threading;");
-            _sb.AppendLine("using System.Threading.Tasks;");
-            _sb.AppendLine($"using {procedureScaffolderOptions.ModelNamespace};");
+            var usings = new List<string>()
+            {
+                "using Microsoft.EntityFrameworkCore;",
+                "using Microsoft.Data.SqlClient;",
+                "using System;",
+                "using System.Collections.Generic;",
+                "using System.Data;",
+                "using System.Threading;",
+                "using System.Threading.Tasks;",
+                $"using {procedureScaffolderOptions.ModelNamespace};",
+            };
+
+            if (supportsMultipleResultSets)
+            {
+                usings.AddRange(new List<string>()
+                {
+                    "using Dapper;",
+                    "using Microsoft.EntityFrameworkCore.Storage;",
+                    "using System.Linq;",
+                });    
+            }
+
+            usings.Sort();
+
+            foreach (var statement in usings)
+            {
+                _sb.AppendLine(statement);
+            }
 
             _sb.AppendLine();
             _sb.AppendLine($"namespace {procedureScaffolderOptions.ContextNamespace}");
