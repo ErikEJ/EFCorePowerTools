@@ -69,7 +69,7 @@ namespace RevEng.Core.Modules
                 foreach (var resultSet in routine.Results)
                 {
                     var suffix = string.Empty;
-                    if (routine.Results.Count > 0)
+                    if (routine.Results.Count > 1)
                     {
                         suffix = $"{i++}";
                     }

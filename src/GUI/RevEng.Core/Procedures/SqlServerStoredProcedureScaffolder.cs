@@ -49,8 +49,6 @@ namespace RevEng.Core.Procedures
 
         protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, RoutineModel model)
         {
-            supportsMultipleResultSets = model.Routines.Any(r => r.Results.Count > 0);
-
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);
@@ -151,10 +149,12 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
+                    supportsMultipleResultSets = procedure.Results.Count > 0;
+
                     GenerateProcedure(procedure, model);
                 }
 
-                if (supportsMultipleResultSets)
+                if (model.Routines.Any(r => r.Results.Count > 0))
                 {
                     GenerateDapperSupport();
                 }

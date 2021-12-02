@@ -56,7 +56,7 @@ namespace RevEng.Core.Procedures
             var result = new List<List<ModuleResultElement>>();
             using var sqlCommand = connection.CreateCommand();
 
-            sqlCommand.CommandText = "[dbo].[MultiSet]";
+            sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             var parameters = module.Parameters.Take(module.Parameters.Count - 1);

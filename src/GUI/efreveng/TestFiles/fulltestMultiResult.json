@@ -69,6 +69,10 @@
     {
       "Name": "[dbo].[MultiSet]",
       "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[CustOrderHist]",
+      "ObjectType": 1
     }
   ],
   "UseNoObjectFilter": false,
@@ -84,5 +88,5 @@
   "UseNodaTime": true,
   "UseNullableReferences": false,
   "UseSpatial": false,
-  "UseMultipleSprocResultSets":  true
+  "UseMultipleSprocResultSets": true
 }
