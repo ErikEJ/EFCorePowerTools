@@ -312,9 +312,6 @@ namespace RevEng.Core.Modules
 "while",
         };
 
-
-
-
         private string GenerateUniqueName(Routine routine, RoutineModel model)
         {
             if (!string.IsNullOrEmpty(routine.NewName))

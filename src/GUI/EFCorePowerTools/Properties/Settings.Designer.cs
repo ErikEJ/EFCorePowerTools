@@ -70,5 +70,17 @@ namespace EFCorePowerTools.Properties {
                 this["IncludeUiHintInConfig"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DiscoverMultipleResultSets {
+            get {
+                return ((bool)(this["DiscoverMultipleResultSets"]));
+            }
+            set {
+                this["DiscoverMultipleResultSets"] = value;
+            }
+        }
     }
 }

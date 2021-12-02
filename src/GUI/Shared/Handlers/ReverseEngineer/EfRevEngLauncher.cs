@@ -63,6 +63,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 RunCleanup = Properties.Settings.Default.RunCleanup,
+                UseMultipleSprocResultSets = Properties.Settings.Default.DiscoverMultipleResultSets,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
