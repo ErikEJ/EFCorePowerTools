@@ -39,5 +39,6 @@ namespace RevEng.Shared
         public List<SchemaInfo> Schemas { get; set; }
         public bool RunCleanup { get; set; }
         public bool UseManyToManyEntity { get; set; }
+        public bool UseMultipleSprocResultSets { get; set; }
     }
 }

@@ -1,0 +1,88 @@
+{
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
+  "ContextClassName": "NorthwindContext",
+  "ContextNamespace": null,
+  "CustomReplacers": [
+    {
+      "SchemaName": "dbo",
+      "Tables": [
+        {
+          "Columns": [
+            {
+              "Name": "Picture",
+              "NewName": "Image"
+            }
+          ],
+          "Name": "Categories",
+          "NewName": "Categories"
+        },
+        {
+          "Columns": [],
+          "Name": "CustOrdersDetail",
+          "NewName": "CustomerOrdersDetail"
+        },
+        {
+          "Columns": [],
+          "Navigations": [
+            {
+              "Name": "ShipVia",
+              "NewName": "ShipBy"
+            }
+          ],
+          "Name": "Orders",
+          "NewName": "Orders"
+        }
+      ],
+      "UseSchemaName": false
+    },
+    {
+      "SchemaName": "dev",
+      "UseSchemaName": true
+    },
+    {
+      "SchemaName": "test",
+      "UseSchemaName": true
+    },
+    {
+      "SchemaName": "prod",
+      "UseSchemaName": true
+    }
+  ],
+  "Dacpac": null,
+  "DatabaseType": 3,
+  "DefaultDacpacSchema": null,
+  "FilterSchemas": false,
+  "IncludeConnectionString": true,
+  "ModelNamespace": null,
+  "OutputContextPath": null,
+  "OutputPath": "Models",
+  "ProjectPath": "C:\\Temp\\Test\\",
+  "ProjectRootNamespace": "ScaffoldingTester",
+  "Schemas": null,
+  "SelectedHandlebarsLanguage": 0,
+  "SelectedToBeGenerated": 0,
+  "Tables": [
+    {
+      "Name": "[dbo].[Customers]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[MultiSet]",
+      "ObjectType": 1
+    }
+  ],
+  "UseNoObjectFilter": false,
+  "UseBoolPropertiesWithoutDefaultSql": true,
+  "UseDatabaseNames": false,
+  "UseDbContextSplitting": false,
+  "UseFluentApiOnly": true,
+  "UseHandleBars": false,
+  "UseInflector": true,
+  "UseLegacyPluralizer": false,
+  "UseNoConstructor": false,
+  "UseNoNavigations": false,
+  "UseNodaTime": true,
+  "UseNullableReferences": false,
+  "UseSpatial": false,
+  "UseMultipleSprocResultSets":  true
+}

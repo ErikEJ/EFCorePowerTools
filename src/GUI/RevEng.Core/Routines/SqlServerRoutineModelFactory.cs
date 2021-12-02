@@ -103,7 +103,7 @@ AND ROUTINE_TYPE = N'{routineType}'");
                             {
                                 try
                                 {
-                                    module.Results.Add(GetResultElements(connection, module.Schema, module.Name));
+                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets));
                                 }
                                 catch (Exception ex)
                                 {
@@ -183,6 +183,6 @@ SELECT
             return result;
         }
 
-        protected abstract List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name);
+        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection,  Routine module, bool multipleResults = false);
     }
 }

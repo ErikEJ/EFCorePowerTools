@@ -6,5 +6,6 @@ namespace RevEng.Core.Abstractions
     {
         public IEnumerable<string> Modules { get; set; }
         public bool FullModel { get; set; }
+        public bool DiscoverMultipleResultSets { get; set; }
     }
 }

@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace RevEng.Core.Procedures
 {
@@ -38,10 +40,62 @@ namespace RevEng.Core.Procedures
             return moduleParameters;
         }
 
-        protected override List<ModuleResultElement> GetResultElements(SqlConnection connection, string schema, string name)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResultSets)
+        {
+            if (multipleResultSets)
+            {
+                return GetAllResultSets(connection, module);        
+            }
+
+            return GetFirstResultSet(connection, module.Schema, module.Name);
+        }
+
+
+        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module)
+        {
+            var result = new List<List<ModuleResultElement>>();
+            using var sqlCommand = connection.CreateCommand();
+
+            sqlCommand.CommandText = "[dbo].[MultiSet]";
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            var parameters = module.Parameters.Take(module.Parameters.Count - 1);
+
+            foreach (var parameter in parameters)
+            {
+                var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
+                sqlCommand.Parameters.Add(param);
+            }
+
+            using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
+            
+            do
+            {
+                // http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqldatareader.getschematable.aspx
+                var schemaTable = schemaReader.GetSchemaTable();
+                var list = new List<ModuleResultElement>();
+
+                foreach (DataRow row in schemaTable.Rows)
+                {
+                    list.Add(new ModuleResultElement
+                    {
+                        Name = row["ColumnName"].ToString(),
+                        Nullable = (bool?)row["AllowDBNull"] ?? true,
+                        Ordinal = (int)row["ColumnOrdinal"],
+                        StoreType = row["DataTypeName"].ToString(),
+                    });
+                }
+
+                result.Add(list);
+            } while (schemaReader.NextResult());
+
+            return result;
+        }
+
+        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string name)
         {
             var dtResult = new DataTable();
-            var result = new List<ModuleResultElement>();
+            var list = new List<ModuleResultElement>();
 
             var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{name}]';";
 
@@ -64,10 +118,15 @@ namespace RevEng.Core.Procedures
                     Nullable = (bool)res["is_nullable"],
                 };
 
-                result.Add(parameter);
+                list.Add(parameter);
 
                 rCounter++;
             }
+
+            var result = new List<List<ModuleResultElement>>
+            {
+                list
+            };
 
             return result;
         }
