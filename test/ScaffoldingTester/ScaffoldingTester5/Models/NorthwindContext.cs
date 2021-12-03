@@ -59,7 +59,7 @@ namespace ScaffoldingTester.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "Danish_Norwegian_CI_AS");
 
             modelBuilder.Entity<AlphabeticalListOfProduct>(entity =>
             {

@@ -77,9 +77,16 @@ namespace RevEng.Core.Procedures
 
                 foreach (DataRow row in schemaTable.Rows)
                 {
+                    var name = row["ColumnName"].ToString();
+
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        name = "Col" + row["ColumnOrdinal"].ToString();
+                    }
+
                     list.Add(new ModuleResultElement
                     {
-                        Name = row["ColumnName"].ToString(),
+                        Name = name,
                         Nullable = (bool?)row["AllowDBNull"] ?? true,
                         Ordinal = (int)row["ColumnOrdinal"],
                         StoreType = row["DataTypeName"].ToString(),

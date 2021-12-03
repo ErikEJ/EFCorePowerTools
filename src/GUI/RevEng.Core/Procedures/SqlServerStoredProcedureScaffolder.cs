@@ -19,7 +19,6 @@ namespace RevEng.Core.Procedures
     public class SqlServerStoredProcedureScaffolder : SqlServerRoutineScaffolder, IProcedureScaffolder
     {
         private const string parameterPrefix = "parameter";
-        private bool supportsMultipleResultSets = false;
 
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
             : base(code)
@@ -65,7 +64,7 @@ namespace RevEng.Core.Procedures
                 $"using {procedureScaffolderOptions.ModelNamespace}",
             };
 
-            if (supportsMultipleResultSets)
+            if (model.Routines.Any(r => r.SupportsMultipleResultSet))
             {
                 usings.AddRange(new List<string>()
                 {
@@ -149,16 +148,17 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    supportsMultipleResultSets = procedure.Results.Count > 0;
-
                     GenerateProcedure(procedure, model);
                 }
 
-                if (model.Routines.Any(r => r.Results.Count > 0))
+                if (model.Routines.Any(r => r.SupportsMultipleResultSet))
                 {
                     GenerateDapperSupport();
                 }
+
+                _sb.AppendLine("}");
             }
+
             _sb.AppendLine("}");
 
             return _sb.ToString();
@@ -212,8 +212,6 @@ namespace RevEng.Core.Procedures
                 }
                 _sb.AppendLine("}");
             }
-
-            _sb.AppendLine("}");
         }
 
         private void GenerateProcedure(Routine procedure, RoutineModel model)
@@ -251,7 +249,7 @@ namespace RevEng.Core.Procedures
                 {
                     foreach (var parameter in allOutParams)
                     {
-                        GenerateParameterVar(parameter);
+                        GenerateParameterVar(parameter, procedure);
                     }
 
                     _sb.AppendLine();
@@ -268,7 +266,7 @@ namespace RevEng.Core.Procedures
                             }
                             else
                             {
-                                GenerateParameter(parameter);
+                                GenerateParameter(parameter, procedure);
                             }
                             _sb.AppendLine(",");
                         }
@@ -281,7 +279,7 @@ namespace RevEng.Core.Procedures
                     }
                     else
                     {
-                        if (supportsMultipleResultSets)
+                        if (procedure.SupportsMultipleResultSet)
                         {
                             _sb.AppendLine();
                             _sb.AppendLine("var dynamic = CreateDynamic(sqlParameters);");
@@ -311,7 +309,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine($"{parameter.Name}.SetValue({parameterPrefix}{parameter.Name}.Value);");
                     }
 
-                    if (supportsMultipleResultSets)
+                    if (procedure.SupportsMultipleResultSet)
                     {
                         _sb.AppendLine($"{retValueName}?.SetValue(dynamic.Get<int>(\"{retValueName}\"));");
                     }
@@ -330,7 +328,7 @@ namespace RevEng.Core.Procedures
 
         private string GenerateMultiResultId(Routine procedure, RoutineModel model)
         {
-            if (!supportsMultipleResultSets)
+            if (procedure.Results.Count == 1)
             {
                 return null;
             }
@@ -350,7 +348,7 @@ namespace RevEng.Core.Procedures
 
         private string GenerateMultiResultStatement(Routine procedure, RoutineModel model)
         {
-            if (!supportsMultipleResultSets)
+            if (procedure.Results.Count == 1)
             {
                 return null;
             }
@@ -392,9 +390,9 @@ namespace RevEng.Core.Procedures
             }
             else
             {
-                if (supportsMultipleResultSets)
+                if (procedure.SupportsMultipleResultSet)
                 {
-                    returnType = $"(Task<{multiResultId}>";
+                    returnType = $"Task<{multiResultId}>";
                 }
                 else
                 {
@@ -426,14 +424,14 @@ namespace RevEng.Core.Procedures
             return line;
         }
 
-        private void GenerateParameterVar(ModuleParameter parameter)
+        private void GenerateParameterVar(ModuleParameter parameter, Routine procedure)
         {
             _sb.Append($"var {parameterPrefix}{parameter.Name} = ");
-            GenerateParameter(parameter);
+            GenerateParameter(parameter, procedure);
             _sb.AppendLine(";");
         }
 
-        private void GenerateParameter(ModuleParameter parameter)
+        private void GenerateParameter(ModuleParameter parameter, Routine procedure)
         {
             _sb.AppendLine("new SqlParameter");
             _sb.AppendLine("{");
@@ -483,7 +481,7 @@ namespace RevEng.Core.Procedures
                 }
                 else
                 {
-                    if (supportsMultipleResultSets)
+                    if (procedure.SupportsMultipleResultSet)
                     {
                         _sb.AppendLine("Direction = System.Data.ParameterDirection.ReturnValue,");
                     }

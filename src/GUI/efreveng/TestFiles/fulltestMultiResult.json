@@ -71,7 +71,7 @@
       "ObjectType": 1
     },
     {
-      "Name": "[dbo].[CustOrderHist]",
+      "Name": "[dbo].[OutputScenarios]",
       "ObjectType": 1
     }
   ],
@@ -88,5 +88,5 @@
   "UseNodaTime": true,
   "UseNullableReferences": false,
   "UseSpatial": false,
-  "UseMultipleSprocResultSets": true
+  "UseMultipleSprocResultSets": false
 }

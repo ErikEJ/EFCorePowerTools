@@ -11,5 +11,13 @@ namespace RevEng.Core.Abstractions.Metadata
 
         public List<ModuleParameter> Parameters = new List<ModuleParameter>();
         public List<List<ModuleResultElement>> Results = new List<List<ModuleResultElement>>();
+
+        public bool SupportsMultipleResultSet
+        {
+            get
+            { 
+                return Results.Count > 1; 
+            }
+        }
     }
 }
