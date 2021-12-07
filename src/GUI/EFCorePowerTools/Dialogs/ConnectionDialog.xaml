@@ -42,8 +42,9 @@
                 <ComboBoxItem Tag="5" >PostgreSQL</ComboBoxItem>
                 <ComboBoxItem Tag="4" >SQLite</ComboBoxItem>
                 <ComboBoxItem Tag="3" >Azure SQL DB</ComboBoxItem>
-                <ComboBoxItem Tag="10" >Firebird</ComboBoxItem>
+                <ComboBoxItem Tag="10">Firebird</ComboBoxItem>
                 <ComboBoxItem Tag="6" >MySQL</ComboBoxItem>
+                <ComboBoxItem Tag="7" >Oracle</ComboBoxItem>
             </ComboBox>
 
         </Grid>

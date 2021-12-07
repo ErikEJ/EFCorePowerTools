@@ -64,6 +64,10 @@ namespace EFCorePowerTools.Dialogs
             {
                 txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
             }
+            if (cmdDatabaseType.SelectedIndex == 5)
+            {
+                txtSample.Text = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=MyHost)(PORT=MyPort)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MyOracleSID)));User Id=myUsername;Password=myPassword;";
+            }
         }
     }
 }
