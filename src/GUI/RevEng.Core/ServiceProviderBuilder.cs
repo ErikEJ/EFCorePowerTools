@@ -92,7 +92,7 @@ namespace RevEng.Core
                     hbOptions.EnableNullableReferenceTypes = options.UseNullableReferences;
 #endif
                 });
-                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.ProjectPath));
+                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.OptionsPath));
             }
 
             if (options.UseInflector || options.UseLegacyPluralizer)

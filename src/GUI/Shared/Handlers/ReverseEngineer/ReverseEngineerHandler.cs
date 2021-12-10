@@ -107,6 +107,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
+                options.OptionsPath = Path.GetDirectoryName(optionsPath);
 
                 bool forceEdit = false;
 
@@ -461,7 +462,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.UseHandleBars)
             {
-                DropTemplates(options.ProjectPath, options.CodeGenerationMode);
+                DropTemplates(options.OptionsPath, options.CodeGenerationMode);
             }
 
             options.UseNullableReferences = await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
@@ -568,7 +569,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private void DropTemplates(string projectPath, CodeGenerationMode codeGenerationMode)
+        private void DropTemplates(string path, CodeGenerationMode codeGenerationMode)
         {
             string zipName;
             switch (codeGenerationMode)
@@ -588,9 +589,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var defaultZip = "CodeTemplates.zip";
 
-            var toDir = Path.Combine(projectPath, "CodeTemplates");
+            var toDir = Path.Combine(path, "CodeTemplates");
             
-            var userTemplateZip = Path.Combine(projectPath, defaultZip);
+            var userTemplateZip = Path.Combine(path, defaultZip);
             var templateZip = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), zipName);
 
             if (File.Exists(userTemplateZip))

@@ -8,6 +8,7 @@ namespace RevEng.Shared
         public string ConnectionString { get; set; }
         public string ProjectPath { get; set; }
         public string OutputPath { get; set; }
+        public string OptionsPath { get; set; }
         public string OutputContextPath { get; set; }
         public bool UseSchemaFolders { get; set; }
         public string ModelNamespace { get; set; }

@@ -13,6 +13,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         [IgnoreDataMember]
         public string ProjectPath { get; set; }
         public string OutputPath { get; set; }
+        [IgnoreDataMember]
+        public string OptionsPath { get; set; }
         public string OutputContextPath { get; set; }
         public bool UseSchemaFolders { get; set; }
         public string ProjectRootNamespace { get; set; }

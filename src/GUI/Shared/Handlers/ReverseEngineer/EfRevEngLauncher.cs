@@ -64,6 +64,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 RunCleanup = Properties.Settings.Default.RunCleanup,
                 UseMultipleSprocResultSets = Properties.Settings.Default.DiscoverMultipleResultSets,
+                OptionsPath = options.OptionsPath,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

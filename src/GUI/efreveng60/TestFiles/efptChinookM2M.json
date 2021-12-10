@@ -2,6 +2,7 @@
   "DatabaseType": 3,
   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Chinook;Integrated Security=True",
   "ProjectPath": "C:\\Temp\\Test\\",
+  "OptionsPath": "C:\\Code\\Github\\EFCorePowerTools\\src\\GUI\\efreveng60\\TestFiles\\",
 
   "CodeGenerationMode": 2,
   "ContextClassName": "ChinookContext",
