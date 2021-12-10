@@ -85,17 +85,6 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 _sb.AppendLine($"using {ns};");
             }
 
-            if (_nullableReferences)
-            {
-                _sb.AppendLine();
-                _sb.AppendLine("#nullable enable");
-            }
-            else
-            {
-                _sb.AppendLine();
-                _sb.AppendLine("#nullable disable");
-            }
-
             _sb.AppendLine();
             _sb.AppendLine($"namespace {@namespace}");
             _sb.AppendLine("{");
