@@ -26,6 +26,7 @@ namespace RevEng.Core.Functions
 
             _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
             _sb.AppendLine("using System;");
+            _sb.AppendLine("using System.Data;");
             _sb.AppendLine("using System.Linq;");
             _sb.AppendLine($"using {scaffolderOptions.ModelNamespace};");
 
