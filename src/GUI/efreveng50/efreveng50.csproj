@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+	<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <Version>2.5.0</Version>
   </PropertyGroup>
 

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+	<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>	  
 	<Version>2.5.0</Version>
   </PropertyGroup>
 	

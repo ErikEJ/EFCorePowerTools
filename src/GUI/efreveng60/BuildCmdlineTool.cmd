@@ -3,29 +3,6 @@ dotnet publish -o bin\Release\net6.0\publish -f net6.0 -r win-x64 -c Release --n
 
 if %errorlevel% equ 1 goto notbuilt
 
-rmdir bin\Release\net6.0\publish\cs /S /Q
-rmdir bin\Release\net6.0\publish\de /S /Q
-rmdir bin\Release\net6.0\publish\es /S /Q
-rmdir bin\Release\net6.0\publish\fr /S /Q
-rmdir bin\Release\net6.0\publish\it /S /Q
-rmdir bin\Release\net6.0\publish\ja /S /Q
-rmdir bin\Release\net6.0\publish\ko /S /Q
-rmdir bin\Release\net6.0\publish\pl /S /Q
-rmdir bin\Release\net6.0\publish\ru /S /Q
-rmdir bin\Release\net6.0\publish\tr /S /Q
-rmdir bin\Release\net6.0\publish\zh-Hans /S /Q
-rmdir bin\Release\net6.0\publish\zh-Hant /S /Q
-rmdir bin\Release\net6.0\publish\de-DE /S /Q
-rmdir bin\Release\net6.0\publish\es-ES /S /Q
-rmdir bin\Release\net6.0\publish\fr-FR /S /Q
-rmdir bin\Release\net6.0\publish\it-IT /S /Q
-rmdir bin\Release\net6.0\publish\ja-JP /S /Q
-rmdir bin\Release\net6.0\publish\ko-KR /S /Q
-rmdir bin\Release\net6.0\publish\pt-BR /S /Q
-rmdir bin\Release\net6.0\publish\ru-RU /S /Q
-rmdir bin\Release\net6.0\publish\zh-CN /S /Q
-rmdir bin\Release\net6.0\publish\zh-TW /S /Q
-
 del bin\Release\net6.0\publish\Azure.Core.dll
 del bin\Release\net6.0\publish\Azure.Identity.dll 
 del bin\Release\net6.0\publish\Ben.Demystifier.dll
