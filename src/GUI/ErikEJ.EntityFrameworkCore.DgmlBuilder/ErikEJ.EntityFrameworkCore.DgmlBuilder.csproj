@@ -30,7 +30,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-  	  <None Include="readme.md" Pack="true" PackagePath="\"/>	  
+  	  <None Include="readme.md" Pack="true" PackagePath="\" />	  
     </ItemGroup>
 	
     <ItemGroup>
@@ -43,7 +43,7 @@
 
     <ItemGroup>
 	    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     </ItemGroup>
 
 </Project>
