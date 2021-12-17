@@ -91,6 +91,9 @@
       "ObjectType": 0
     },
     {
+      "ExcludedColumns": [
+        "ShippedDate"
+      ],
       "Name": "[dbo].[Orders]",
       "ObjectType": 0
     },

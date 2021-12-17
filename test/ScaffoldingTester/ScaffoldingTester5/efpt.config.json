@@ -42,6 +42,9 @@
          "ObjectType": 0
       },
       {
+         "ExcludedColumns": [
+            "ShippedDate"
+         ],
          "Name": "[dbo].[Orders]",
          "ObjectType": 0
       },
@@ -174,7 +177,6 @@
    "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
-   "UseManyToManyEntity": false,
    "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,

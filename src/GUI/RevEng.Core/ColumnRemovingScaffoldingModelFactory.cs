@@ -53,6 +53,7 @@ namespace RevEng.Core
                     : $"{table.Schema}.{table.Name}";
             }
 
+            var excludedColumns = new List<DatabaseColumn>();
             var tableDefinition = _tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
             {
@@ -61,8 +62,29 @@ namespace RevEng.Core
                     var columnToRemove = table.Columns.FirstOrDefault(c => c.Name.Equals(column, StringComparison.OrdinalIgnoreCase));
                     if (columnToRemove != null)
                     {
+                        excludedColumns.Add(columnToRemove);
                         table.Columns.Remove(columnToRemove);
                     }
+                }
+            }
+
+            if (excludedColumns.Count > 0)
+            {
+                var indexesToBeRemoved = new List<DatabaseIndex>();
+                foreach (var index in table.Indexes)
+                {
+                    foreach (var column in index.Columns)
+                    {
+                        if (excludedColumns.Contains(column))
+                        {
+                            indexesToBeRemoved.Add(index);
+                        }
+                    }
+                }
+
+                foreach (var index in indexesToBeRemoved)
+                {
+                    table.Indexes.Remove(index);
                 }
             }
 
