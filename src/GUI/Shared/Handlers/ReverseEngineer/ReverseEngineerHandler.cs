@@ -164,12 +164,19 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 await GenerateFilesAsync(project, options, containsEfCoreReference);
 
+                var nuGetHelper = new NuGetHelper();
+
                 if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && await project.IsNetCore31OrHigherAsync())
                 {
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
-                    var nuGetHelper = new NuGetHelper();
                        
                     await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
+                }
+
+                if (options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Any()
+                    && Properties.Settings.Default.DiscoverMultipleResultSets)
+                {
+                    await nuGetHelper.InstallPackageAsync("Dapper", project);
                 }
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
