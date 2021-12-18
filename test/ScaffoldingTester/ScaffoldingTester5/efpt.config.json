@@ -149,6 +149,14 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[MultiSet]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[OutputScenarios]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[Sales by Year]",
          "ObjectType": 1
       },
@@ -161,7 +169,7 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "(localdb)\\mssqllocaldb.Northwind",
+   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
