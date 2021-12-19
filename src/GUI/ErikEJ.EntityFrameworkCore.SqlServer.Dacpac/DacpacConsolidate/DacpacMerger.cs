@@ -11,10 +11,10 @@ namespace GOEddie.Dacpac.References
 {
     public class DacpacMerger
     {
-        private string[] _sources;
-        private TSqlModel _first;
-        private string _targetPath;
-        private TSqlModel _target;
+        private readonly string[] _sources;
+        private readonly TSqlModel _first;
+        private readonly string _targetPath;
+        private readonly TSqlModel _target;
 
         /// <summary>
         /// Merges the specified .dacpac files into the target .dacpac (which is created)
@@ -65,11 +65,13 @@ namespace GOEddie.Dacpac.References
                 {
                     if (!(package.PreDeploymentScript is null))
                     {
+#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
                         pre += new StreamReader(package.PreDeploymentScript).ReadToEnd();
                     }
                     if (!(package.PostDeploymentScript is null))
                     {
                         post += new StreamReader(package.PostDeploymentScript).ReadToEnd();
+#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
                     }
                 }
             }

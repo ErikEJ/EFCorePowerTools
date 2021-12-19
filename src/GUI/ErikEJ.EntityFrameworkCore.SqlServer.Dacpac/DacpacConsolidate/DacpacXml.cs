@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GOEddie.Dacpac.References
 {
-    public class DacHacXml : IDisposable
+    public sealed class DacHacXml : IDisposable
     {
         private readonly string _dacPath;
         private Package _package;

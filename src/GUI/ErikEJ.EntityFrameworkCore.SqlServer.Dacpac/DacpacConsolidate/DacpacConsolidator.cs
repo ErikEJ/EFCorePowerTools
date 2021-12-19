@@ -61,7 +61,7 @@ namespace GOEddie.Dacpac.References
                 fileNames = fileNames.Where(File.Exists).ToList();
             }
 
-            if (fileNames.Count() == 0)
+            if (fileNames.Count == 0)
             {
                 return Enumerable.Empty<string>().ToList();
             }

@@ -15,8 +15,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Design
 {
     public class SqlServerDacpacDesignTimeServices : IDesignTimeServices
     {
-        public virtual void ConfigureDesignTimeServices(IServiceCollection services)
-            => services
+        public virtual void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
+            => serviceCollection
                 .AddSingleton<LoggingDefinitions, SqlServerLoggingDefinitions>()
                 .AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>()
                 .AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()

@@ -23,18 +23,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             _logger = logger;
         }
 
-        public RoutineModel Create(string dacpacPath, ModuleModelFactoryOptions options)
+        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
-            if (string.IsNullOrEmpty(dacpacPath))
+            if (string.IsNullOrEmpty(connectionString))
             {
-                throw new ArgumentException(@"invalid path", nameof(dacpacPath));
+                throw new ArgumentException(@"invalid path", nameof(connectionString));
             }
-            if (!File.Exists(dacpacPath))
+            if (!File.Exists(connectionString))
             {
-                throw new ArgumentException($"Dacpac file not found: {dacpacPath}");
+                throw new ArgumentException($"Dacpac file not found: {connectionString}");
             }
 
-            return GetStoredProcedures(dacpacPath, options);
+            return GetStoredProcedures(connectionString, options);
         }
 
         private RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
@@ -126,7 +126,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var result = new List<ModuleResultElement>();
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
 
-            if (metaProc.Selects == null || metaProc.Selects.Count() == 0)
+            if (metaProc.Selects == null || !metaProc.Selects.Any())
             {
                 return result;
             }
