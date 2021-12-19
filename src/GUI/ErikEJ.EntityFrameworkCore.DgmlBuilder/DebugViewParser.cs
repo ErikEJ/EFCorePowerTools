@@ -24,7 +24,7 @@ namespace DgmlBuilder
                     var props = line.Trim().Split(' ').ToList();
                     if (props.Count > 0)
                     {
-                        changeTrackingStrategy = props.Where(p => p.StartsWith("ChangeTrackingStrategy.")).FirstOrDefault();
+                        changeTrackingStrategy = props.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy."));
                         if (string.IsNullOrEmpty(changeTrackingStrategy))
                             changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
 
@@ -195,7 +195,7 @@ namespace DgmlBuilder
                     {
                         baseClass = parts[parts.IndexOf("Base:") + 1];
                     }
-                    changeTrackingStrategy = parts.Where(p => p.StartsWith("ChangeTrackingStrategy.")).FirstOrDefault();
+                    changeTrackingStrategy = parts.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy."));
                 }
                 if (string.IsNullOrEmpty(changeTrackingStrategy))
                     changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
@@ -340,9 +340,8 @@ namespace DgmlBuilder
                         }
                     }
 
-                    var source = System.Security.SecurityElement.Escape(parts[0]); // + "." + parts[1];
-                    var target = System.Security.SecurityElement.Escape(parts[3]); // + "." + parts[4];
-                    //TblFavoriteDoctor {'DoctorIdFk', 'LocationIdFk'} -> TblDoctorLocation {'DoctorId', 'LocationId'} ToDependent: TblFavoriteDoctor ToPrincipal: TblDoctorLocation
+                    var source = System.Security.SecurityElement.Escape(parts[0]);
+                    var target = System.Security.SecurityElement.Escape(parts[3]);
 
                     var fromColumns = System.Security.SecurityElement.Escape(parts[1]);
                     var toColumns = System.Security.SecurityElement.Escape(parts[4]);

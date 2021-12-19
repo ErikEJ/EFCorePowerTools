@@ -180,8 +180,6 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = IsConfigFile(item.Text) && project.IsCSharpProject();
-
-            return;
         }
 
         private static bool IsConfigFile(string itemName)
@@ -208,8 +206,6 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = project.IsCSharpProject();
-
-            return;
         }
 
         private async void OnReverseEngineerConfigFileMenuInvokeHandler(object sender, EventArgs e)

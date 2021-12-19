@@ -11,18 +11,7 @@
 
     public class EnumToLabelConverter : IValueConverter
     {
-        private ResourceDictionary _resourceDictionary;
-        public ResourceDictionary ResourceDictionary
-        {
-            get
-            {
-                return _resourceDictionary;
-            }
-            set
-            {
-                _resourceDictionary = value;
-            }
-        }
+        public ResourceDictionary ResourceDictionary { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

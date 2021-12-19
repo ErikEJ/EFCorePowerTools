@@ -111,7 +111,7 @@
             else if (e.Key == Key.Space)
             {
                 var vm = (IObjectTreeSelectableViewModel)tree.SelectedItem;
-                vm.SetSelectedCommand.Execute(vm.IsSelected == null ? false : !vm.IsSelected);;
+                vm.SetSelectedCommand.Execute(vm.IsSelected == null ? false : !vm.IsSelected);
                 e.Handled = true;
             }
         }

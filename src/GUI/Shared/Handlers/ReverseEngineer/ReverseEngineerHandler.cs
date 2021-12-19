@@ -210,7 +210,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            var dacpacList = await EnvDTEExtensions.GetDacpacFilesInActiveSolutionAsync();
+            var dacpacList = await EnvDteExtensions.GetDacpacFilesInActiveSolutionAsync();
             if (dacpacList != null && dacpacList.Any())
             { 
                 if (!string.IsNullOrEmpty(options.UiHint) 
@@ -234,7 +234,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options)
         {
             var databaseList = vsDataHelper.GetDataConnections(_package);
-            var dacpacList = await EnvDTEExtensions.GetDacpacFilesInActiveSolutionAsync();
+            var dacpacList = await EnvDteExtensions.GetDacpacFilesInActiveSolutionAsync();
 
             var psd = _package.GetView<IPickServerDatabaseDialog>();
 
@@ -307,7 +307,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await EnvDTEExtensions.BuildSqlProjAsync(options.Dacpac);
+                options.Dacpac = await EnvDteExtensions.BuildSqlProjAsync(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);

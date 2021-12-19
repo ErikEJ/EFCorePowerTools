@@ -118,8 +118,8 @@ namespace RevEng.Core
                 entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
             }
             else if (options.SelectedToBeGenerated == 2
-                && (options.Tables.Count(t => t.ObjectType == ObjectType.Procedure) > 0
-                || options.Tables.Count(t => t.ObjectType == ObjectType.ScalarFunction) > 0))
+                && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                || options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)))
             {
                 warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
             }

@@ -8,21 +8,13 @@
 
     public class ObjectTypeIconToImageStyleConverter : IValueConverter
     {
-        private ResourceDictionary _resourceDictionary;
-        public ResourceDictionary ResourceDictionary
-        {
-            get { return _resourceDictionary; }
-            set
-            {
-                _resourceDictionary = value;
-            }
-        }
+        public ResourceDictionary ResourceDictionary { get; set; }
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var objectType = (ObjectTypeIcon)value;
             var key = $"{objectType}ImageStyle";
-            return _resourceDictionary[key];
+            return ResourceDictionary[key];
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

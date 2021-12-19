@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EFCorePowerTools.Extensions
 {
-    public class CustomNameOptionsExtensions
+    public static class CustomNameOptionsExtensions
     {
         public static Tuple<List<Schema>, string> TryRead(string optionsCustomNamePath, string optionsPath)
         {

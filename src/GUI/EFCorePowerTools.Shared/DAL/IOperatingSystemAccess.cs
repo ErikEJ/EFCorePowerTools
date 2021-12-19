@@ -2,7 +2,7 @@
 {
     public interface IOperatingSystemAccess
     {
-        void StartProcess(string exec);
+        void StartProcess(string fileName);
 
         void SetClipboardText(string text);
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Extensions
 {
-    internal static class EnvDTEExtensions
+    internal static class EnvDteExtensions
     {
         public static async Task<string> GetStartupProjectOutputPathAsync()
         {
