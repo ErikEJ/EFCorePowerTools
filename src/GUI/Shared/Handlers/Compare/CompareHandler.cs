@@ -165,12 +165,12 @@ namespace EFCorePowerTools.Handlers.Compare
 
             if (string.IsNullOrEmpty(processResult))
             {
-                throw new ArgumentException(CompareLocale.UnableToCollectDbContextInformation, nameof(processResult));
+                throw new InvalidOperationException(CompareLocale.UnableToCollectDbContextInformation);
             }
 
             if (processResult.Contains("Error:"))
             {
-                throw new ArgumentException(processResult, nameof(processResult));
+                throw new InvalidOperationException(processResult);
             }
 
             var modelResults = processLauncher.BuildModelResult(processResult);
@@ -195,12 +195,12 @@ namespace EFCorePowerTools.Handlers.Compare
 
             if (string.IsNullOrEmpty(processResult))
             {
-                throw new ArgumentException(CompareLocale.UnableToCollectSchemaCompareInformation, nameof(processResult));
+                throw new InvalidOperationException(CompareLocale.UnableToCollectSchemaCompareInformation);
             }
 
             if (processResult.Contains("Error:"))
             {
-                throw new ArgumentException(processResult, nameof(processResult));
+                throw new InvalidOperationException(processResult);
             }
 
             var modelResults = processLauncher.BuildModelResult(processResult);

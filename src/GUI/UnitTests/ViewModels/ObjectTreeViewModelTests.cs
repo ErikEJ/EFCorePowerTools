@@ -66,12 +66,12 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            var objects = GetDatabaseObjects().OrderBy(c => c.Schema).OrderBy(c => c.Name).ToArray();
+            var objects = GetDatabaseObjects().OrderBy(c => c.Schema).ThenBy(c => c.Name).ToArray();
             var replacers = GetReplacers();
 
             // Act
             vm.AddObjects(objects, replacers);
-            var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).OrderBy(c => c.Schema).OrderBy(c => c.Name).ToArray();
+            var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).OrderBy(c => c.Schema).ThenBy(c => c.Name).ToArray();
 
             // Assert
             Assert.IsNotEmpty(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects));
@@ -338,11 +338,6 @@ namespace UnitTests.ViewModels
             {
                 Assert.IsTrue(result.Any(c => c.Name == item.Objects.First().ModelDisplayName));
             }
-            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Table).DisplayName, result[0].Name);
-            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.View).DisplayName, result[1].Name);
-            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[2].Name);
-            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[3].Name);
-            //Assert.AreEqual(databaseObjects.First(c => c.ObjectType == ObjectType.Procedure).DisplayName, result[4].Name);
         }
 
         [Test]
@@ -412,9 +407,9 @@ namespace UnitTests.ViewModels
 
             //Assert
             if (selected)
-                Assert.AreEqual(vm.GetSelectedObjects().Count(), databaseObjects.Length);
+                Assert.AreEqual(databaseObjects.Length, vm.GetSelectedObjects().Count());
             else
-                Assert.AreEqual(vm.GetSelectedObjects().Count(), 0);
+                Assert.AreEqual(0, vm.GetSelectedObjects().Count());
         }
 
         [Test]
@@ -439,11 +434,11 @@ namespace UnitTests.ViewModels
             //Assert
             var renamedObjects = vm.GetRenamedObjects();
             Assert.IsNotNull(renamedObjects);
-            Assert.AreSame(renamedObjects.First().Tables[0].NewName, "NewTableName");
-            Assert.AreSame(renamedObjects.First().Tables[0].Columns[0].NewName, "NewColumnName");
+            Assert.AreSame("NewTableName", renamedObjects.First().Tables[0].NewName);
+            Assert.AreSame("NewColumnName", renamedObjects.First().Tables[0].Columns[0].NewName);
 
-            Assert.AreSame(renamedObjects.Last().Tables[0].NewName, "DepartmentDetail");
-            Assert.AreSame(renamedObjects.Last().Tables[0].Columns[0].NewName, "DepartmentName");
+            Assert.AreSame("DepartmentDetail", renamedObjects.Last().Tables[0].NewName);
+            Assert.AreSame("DepartmentName", renamedObjects.Last().Tables[0].Columns[0].NewName);
         }
 
         private static TableModel[] GetDatabaseObjects()

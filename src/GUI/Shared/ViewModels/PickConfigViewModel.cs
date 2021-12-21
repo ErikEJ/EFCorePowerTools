@@ -52,7 +52,6 @@
             if (Configurations.Any())
             {
                 SelectedConfiguration = Configurations.First();
-                return;
             }
         }
 

@@ -115,8 +115,7 @@
             set
             {
                 var databaseConnectionCandidate = DatabaseConnections
-                    .Where(c => c.ConnectionName.ToLowerInvariant() == value.ToLowerInvariant())
-                    .FirstOrDefault();
+                    .FirstOrDefault(c => c.ConnectionName.ToLowerInvariant() == value.ToLowerInvariant());
 
                 if (databaseConnectionCandidate != null)
                 {
@@ -170,10 +169,9 @@
                 )
                 {
                     var candidate = DatabaseDefinitions
-                        .Where(m => !string.IsNullOrWhiteSpace(m.FilePath)
+                        .FirstOrDefault(m => !string.IsNullOrWhiteSpace(m.FilePath)
                             && m.FilePath.EndsWith(".sqlproj")
-                            && m.FilePath.Equals(UiHint))
-                        .FirstOrDefault();
+                            && m.FilePath.Equals(UiHint));
 
                     if (candidate != null)
                     {

@@ -166,14 +166,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var nuGetHelper = new NuGetHelper();
 
-                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) && await project.IsNetCore31OrHigherAsync())
+                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) 
+                    && await project.IsNetCore31OrHigherAsync()
+                    && containsEfCoreReference != null)
                 {
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
                        
                     await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
                 }
 
-                if (options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Any()
+                if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
                     && Properties.Settings.Default.DiscoverMultipleResultSets)
                 {
                     await nuGetHelper.InstallPackageAsync("Dapper", project);
@@ -449,7 +451,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var rightsAndVersion = reverseEngineerHelper.HasSqlServerViewDefinitionRightsAndVersion(options.ConnectionString);
 
-                if (rightsAndVersion.Item1 == false)
+                if (!rightsAndVersion.Item1)
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
                 }
@@ -472,8 +474,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 DropTemplates(options.OptionsPath, options.CodeGenerationMode);
             }
 
-            options.UseNullableReferences = await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
-            //TODO Disable for now - see #1164  await SetNullableAsync(options, project);
+            options.UseNullableReferences = !await project.IsNetFrameworkAsync() && options.UseNullableReferences;
 
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
@@ -485,14 +486,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var tfm = await project.GetAttributeAsync("TargetFrameworkMoniker");
             bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
 
-            if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
+            if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
+                && !await project.IsNetCore31OrHigherAsync() && !isNetStandard)
             {
-                if (!await project.IsNetCore31OrHigherAsync() && !isNetStandard)
+                foreach (var filePath in revEngResult.EntityTypeFilePaths)
                 {
-                    foreach (var filePath in revEngResult.EntityTypeFilePaths)
-                    {
-                        await project.AddExistingFilesAsync(new List<string> { filePath }.ToArray());
-                    }
+                    await project.AddExistingFilesAsync(new List<string> { filePath }.ToArray());
                 }
             }
 
@@ -545,7 +544,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
             {
-                //TODO Localize
                 VSHelper.ShowError($"Unable to save options, the file is readonly: {optionsPath}");
                 return;
             }
@@ -562,11 +560,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());
             }
 
-            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count() > 0)
+            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count > 0)
             {
                 if (File.Exists(renamingOptions.Item2) && File.GetAttributes(renamingOptions.Item2).HasFlag(FileAttributes.ReadOnly))
                 {
-                    //TODO Localize
                     VSHelper.ShowError($"Unable to save renaming options, the file is readonly: {renamingOptions.Item2}");
                     return;
                 }
@@ -635,18 +632,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
-        }
-
-        private async Task<bool> SetNullableAsync(ReverseEngineerOptions options, Project project)
-        {
-            var nullable = await project.GetAttributeAsync("Nullable");
-            if (string.Equals(nullable, "enable", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(nullable, "annotations", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-            
-            return await project.IsNetFrameworkAsync() ? false : options.UseNullableReferences;
         }
     }
 }

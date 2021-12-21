@@ -174,7 +174,7 @@
                     SetInformationForProjectWithPending();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(selectedStatusValue), selectedStatusValue);
+                    throw new InvalidOperationException(selectedStatusValue);
             }
         }
 
@@ -374,7 +374,7 @@
                 await _visualStudioAccess.StartStatusBarAnimationAsync();
 
                 if (!StatusList.TryGetValue(SelectedStatusKey, out var selectedStatusValue))
-                    throw new ArgumentOutOfRangeException(nameof(SelectedStatusKey));
+                    throw new InvalidOperationException(SelectedStatusKey);
 
                 bool success;
                 switch (selectedStatusValue)
@@ -390,7 +390,7 @@
                         success = await ScriptMigrationAsync();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(selectedStatusValue));
+                        throw new InvalidOperationException(selectedStatusValue);
                 }
 
                 if (success)

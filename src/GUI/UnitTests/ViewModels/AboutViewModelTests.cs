@@ -2,12 +2,10 @@
 
 namespace UnitTests.ViewModels
 {
-    using EFCorePowerTools.Messages;
     using EFCorePowerTools.Shared.BLL;
     using EFCorePowerTools.Shared.DAL;
     using EFCorePowerTools.Shared.Models;
     using EFCorePowerTools.ViewModels;
-    using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using System;
 
@@ -103,7 +101,6 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var extensionVersion = new Version(10, 14, 15, 0);
-            var sqLiteAdoNetProviderVersion = new Version(15, 0, 1, 2);
             var aem = new AboutExtensionModel();
             var evsMock = new Mock<IExtensionVersionService>();
             evsMock.Setup(m => m.SetExtensionVersion(aem)).Callback<AboutExtensionModel>(m => m.ExtensionVersion = extensionVersion);
@@ -123,7 +120,6 @@ namespace UnitTests.ViewModels
         {
             // Arrange
             var extensionVersion = new Version(10, 14, 15, 0);
-            var sqLiteAdoNetProviderVersion = new Version(15, 0, 1, 2);
             var aem = new AboutExtensionModel
             {
                 ExtensionVersion = extensionVersion,

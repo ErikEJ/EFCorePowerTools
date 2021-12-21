@@ -165,8 +165,7 @@ namespace EFCorePowerTools.Extensions
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             return (await VS.Solutions.GetAllProjectsAsync())
-                .Where(p => p.FullPath == projectItemPath)
-                .SingleOrDefault();
+                .SingleOrDefault(p => p.FullPath == projectItemPath);
         }
     }
 }

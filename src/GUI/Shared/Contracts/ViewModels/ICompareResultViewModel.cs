@@ -12,7 +12,7 @@ namespace EFCorePowerTools.Contracts.ViewModels
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        void AddComparisonResult(IEnumerable<CompareLogModel> connections);
+        void AddComparisonResult(IEnumerable<CompareLogModel> logs);
 
         ObservableCollection<CompareLogItemViewModel> Logs { get; }
 

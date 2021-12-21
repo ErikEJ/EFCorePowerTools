@@ -31,7 +31,7 @@ namespace EFCorePowerTools.Helpers
         public Tuple<bool, Version> HasSqlServerViewDefinitionRightsAndVersion(string connectionString)
         {
             var hasRights = false;
-            var version = new Version(12, 0);
+            Version version;
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();

@@ -70,12 +70,12 @@ namespace EFCorePowerTools.Handlers
 
                 if (string.IsNullOrEmpty(processResult))
                 {
-                    throw new ArgumentException(ModelAnalyzerLocale.UnableToCollectModelInformation, nameof(processResult));
+                    throw new InvalidOperationException(ModelAnalyzerLocale.UnableToCollectModelInformation);
                 }
 
                 if (processResult.Contains("Error:"))
                 {
-                    throw new ArgumentException(processResult, nameof(processResult));
+                    throw new InvalidOperationException(processResult);
                 }
 
                 var modelResult = processLauncher.BuildModelResult(processResult);

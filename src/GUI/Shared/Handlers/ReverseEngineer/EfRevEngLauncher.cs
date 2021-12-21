@@ -1,4 +1,5 @@
-﻿using RevEng.Shared;
+﻿using EFCorePowerTools.Extensions;
+using RevEng.Shared;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -141,7 +142,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<ReverseEngineerResult> GetOutputAsync()
         {
-            var path = Path.GetTempFileName() + ".json";
+            var path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()) + ".json";
             File.WriteAllText(path, options.Write());
 
             var launchPath = DropNetCoreFiles();

@@ -17,7 +17,7 @@
         bool? GetSelectionState();
         IEnumerable<SerializationTableModel> GetSelectedObjects();
         IEnumerable<Schema> GetRenamedObjects();
-        void AddObjects(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers);
-        void SelectObjects(IEnumerable<SerializationTableModel> tables);
+        void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers);
+        void SelectObjects(IEnumerable<SerializationTableModel> objects);
     }
 }

@@ -63,7 +63,7 @@ namespace EFCorePowerTools.Extensions
             result.AddRange(files
                 .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\")));
                 
-            if (result.Count() == 0)
+            if (result.Count == 0)
             {
                 result.Add(Path.Combine(projectPath, "efpt.config.json"));
             }

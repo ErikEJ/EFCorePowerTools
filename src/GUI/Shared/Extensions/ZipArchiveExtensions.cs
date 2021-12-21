@@ -2,34 +2,37 @@
 using System.IO;
 using System.IO.Compression;
 
-public static class ZipArchiveExtensions
+namespace EFCorePowerTools.Extensions
 {
-    public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
+    public static class ZipArchiveExtensions
     {
-        if (!overwrite)
+        public static void ExtractToDirectory(this ZipArchive archive, string destinationDirectoryName, bool overwrite)
         {
-            archive.ExtractToDirectory(destinationDirectoryName);
-            return;
-        }
-
-        DirectoryInfo di = Directory.CreateDirectory(destinationDirectoryName);
-        string destinationDirectoryFullPath = di.FullName;
-
-        foreach (ZipArchiveEntry file in archive.Entries)
-        {
-            string completeFileName = Path.GetFullPath(Path.Combine(destinationDirectoryFullPath, file.FullName));
-
-            if (!completeFileName.StartsWith(destinationDirectoryFullPath, StringComparison.OrdinalIgnoreCase))
+            if (!overwrite)
             {
-                throw new IOException("Trying to extract file outside of destination directory. See this link for more info: https://snyk.io/research/zip-slip-vulnerability");
+                archive.ExtractToDirectory(destinationDirectoryName);
+                return;
             }
 
-            if (file.Name == "")
-            {// Assuming Empty for Directory
-                Directory.CreateDirectory(Path.GetDirectoryName(completeFileName));
-                continue;
+            DirectoryInfo di = Directory.CreateDirectory(destinationDirectoryName);
+            string destinationDirectoryFullPath = di.FullName;
+
+            foreach (ZipArchiveEntry file in archive.Entries)
+            {
+                string completeFileName = Path.GetFullPath(Path.Combine(destinationDirectoryFullPath, file.FullName));
+
+                if (!completeFileName.StartsWith(destinationDirectoryFullPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new IOException("Trying to extract file outside of destination directory. See this link for more info: https://snyk.io/research/zip-slip-vulnerability");
+                }
+
+                if (file.Name == "")
+                {// Assuming Empty for Directory
+                    Directory.CreateDirectory(Path.GetDirectoryName(completeFileName));
+                    continue;
+                }
+                file.ExtractToFile(completeFileName, true);
             }
-            file.ExtractToFile(completeFileName, true);
         }
     }
 }
