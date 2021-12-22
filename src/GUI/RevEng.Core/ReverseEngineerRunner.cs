@@ -12,7 +12,7 @@ using System.Text;
 
 namespace RevEng.Core
 {
-    public class ReverseEngineerRunner
+    public static class ReverseEngineerRunner
     {
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
@@ -23,7 +23,6 @@ namespace RevEng.Core
                     m => errors.Add(m),
                     m => warnings.Add(m)));
             var serviceProvider = ServiceProviderBuilder.Build(options);
-            var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
             var schemas = new List<string>();
 
             options.ConnectionString = SqlServerHelper.SetConnectionString(options.DatabaseType, options.ConnectionString);
@@ -112,7 +111,7 @@ namespace RevEng.Core
                 RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
                 if (!options.UseHandleBars)
                 {
-                    PostProcess(filePaths.ContextFile, options.UseNullableReferences);
+                    PostProcess(filePaths.ContextFile, options.UseNullableReferences, !options.LegacyLangVersion);
                 }
 
                 entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
@@ -128,7 +127,7 @@ namespace RevEng.Core
             {
                 foreach (var file in filePaths.AdditionalFiles)
                 {
-                    PostProcess(file, options.UseNullableReferences);
+                    PostProcess(file, options.UseNullableReferences, !options.LegacyLangVersion);
                 }
             }
 
@@ -252,7 +251,7 @@ namespace RevEng.Core
             File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
         }
 
-        private static void PostProcess(string file, bool useNullable)
+        private static void PostProcess(string file, bool useNullable, bool supportsNullable)
         {
             if (string.IsNullOrEmpty(file))
             {
@@ -261,13 +260,16 @@ namespace RevEng.Core
 
             var header = PathHelper.Header;
 
-            if (useNullable)
+            if (supportsNullable)
             {
-                header = $"{header}{Environment.NewLine}#nullable enable";
-            }
-            else
-            {
-                header = $"{header}{Environment.NewLine}#nullable disable";
+                if (useNullable)
+                {
+                    header = $"{header}{Environment.NewLine}#nullable enable";
+                }
+                else
+                {
+                    header = $"{header}{Environment.NewLine}#nullable disable";
+                }
             }
 
             var text = File.ReadAllText(file, Encoding.UTF8);

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace EFCorePowerTools.Extensions
 {
-    class PathExtensions
+    public static class PathExtensions
     {
         /// <summary>
         /// Creates a relative path from one file or folder to another.

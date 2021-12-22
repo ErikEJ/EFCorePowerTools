@@ -166,6 +166,7 @@
    "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
    "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
    "UseNoNavigations": false,

@@ -41,5 +41,6 @@ namespace RevEng.Shared
         public bool RunCleanup { get; set; }
         public bool UseManyToManyEntity { get; set; }
         public bool UseMultipleSprocResultSets { get; set; }
+        public bool LegacyLangVersion { get; set; }
     }
 }

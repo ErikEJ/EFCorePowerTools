@@ -1,5 +1,4 @@
 ﻿using Community.VisualStudio.Toolkit;
-using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 // ReSharper disable once CheckNamespace
 namespace EFCorePowerTools.Helpers
 {
-    internal class VSHelper
+    internal static class VSHelper
     {
         public static async Task<bool> IsDebugModeAsync()
         {

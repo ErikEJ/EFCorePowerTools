@@ -177,16 +177,28 @@ namespace EFCorePowerTools.Extensions
             // bool isCSharpAndNetCore = hierarchy.IsCapabilityMatch("CSharp & CPS");
         }
 
-        public static async Task<bool> IsNetFrameworkAsync(this Project project)
+        public static async Task<bool> IsLegacyAsync(this Project project)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            return await IsNetFrameworkAsync(project) || await IsNetStandard20Async(project);
+        }
+        
+        public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
+        {
+            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
+        }
+
+        private static async Task<bool> IsNetFrameworkAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETFramework,") ?? false;
         }
 
-        public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
+        private static async Task<bool> IsNetStandard20Async(this Project project)
         {
-            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.0") ?? false;
         }
 
         private static async Task<bool> IsNetCore31Async(this Project project)

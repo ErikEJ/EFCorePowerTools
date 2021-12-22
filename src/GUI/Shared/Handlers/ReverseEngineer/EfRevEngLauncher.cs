@@ -1,4 +1,5 @@
-﻿using EFCorePowerTools.Extensions;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Extensions;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly string revengRoot;
         private readonly ResultDeserializer resultDeserializer;
 
-        public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode)
+        public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode, Project project)
         {
             var databaseObjects = options.Tables;
-            if (databaseObjects.Where(t => t.ObjectType == ObjectType.Table).Count() == 0)
+            if (!databaseObjects.Any(t => t.ObjectType == ObjectType.Table))
             {
+                // TODO is this still neeeded?
                 // No tables selected, so add a dummy table in order to generate an empty DbContext
                 databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null));
             }
@@ -66,6 +68,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 RunCleanup = Properties.Settings.Default.RunCleanup,
                 UseMultipleSprocResultSets = Properties.Settings.Default.DiscoverMultipleResultSets,
                 OptionsPath = options.OptionsPath,
+                LegacyLangVersion = await project.IsLegacyAsync(),
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
@@ -159,7 +162,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 File.Delete(path);
             }
-            catch { }
+            catch 
+            {
+                //Ignore
+            }
 
             return resultDeserializer.BuildResult(standardOutput);
         }

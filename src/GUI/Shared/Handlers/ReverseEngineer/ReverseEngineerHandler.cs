@@ -474,12 +474,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 DropTemplates(options.OptionsPath, options.CodeGenerationMode);
             }
 
-            options.UseNullableReferences = !await project.IsNetFrameworkAsync() && options.UseNullableReferences;
+            options.UseNullableReferences = !await project.IsLegacyAsync() && options.UseNullableReferences;
 
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
             
-            var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
+            var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode, project);
 
             await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
 
