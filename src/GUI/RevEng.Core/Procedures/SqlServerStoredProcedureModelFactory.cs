@@ -78,10 +78,9 @@ namespace RevEng.Core.Procedures
                 foreach (DataRow row in schemaTable.Rows)
                 {
                     var name = row["ColumnName"].ToString();
-
                     if (string.IsNullOrEmpty(name))
                     {
-                        name = "Col" + row["ColumnOrdinal"].ToString();
+                        continue;
                     }
 
                     list.Add(new ModuleResultElement
@@ -99,12 +98,12 @@ namespace RevEng.Core.Procedures
             return result;
         }
 
-        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string name)
+        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string moduleName)
         {
             var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
 
-            var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{name}]';";
+            var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{moduleName}]';";
 
             var adapter = new SqlDataAdapter
             {
@@ -115,14 +114,20 @@ namespace RevEng.Core.Procedures
 
             int rCounter = 0;
 
-            foreach (DataRow res in dtResult.Rows)
+            foreach (DataRow row in dtResult.Rows)
             {
+                var name = row["name"].ToString();
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+
                 var parameter = new ModuleResultElement()
                 {
-                    Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
-                    StoreType = string.IsNullOrEmpty(res["system_type_name"].ToString()) ? res["user_type_name"].ToString() : res["system_type_name"].ToString(),
-                    Ordinal = int.Parse(res["column_ordinal"].ToString()),
-                    Nullable = (bool)res["is_nullable"],
+                    Name = name,
+                    StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
+                    Ordinal = int.Parse(row["column_ordinal"].ToString()),
+                    Nullable = (bool)row["is_nullable"],
                 };
 
                 list.Add(parameter);
