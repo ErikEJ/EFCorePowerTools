@@ -108,6 +108,10 @@ AND ROUTINE_TYPE = N'{routineType}'");
                                 catch (Exception ex)
                                 {
                                     module.HasValidResultSet = false;
+                                    module.Results = new List<List<ModuleResultElement>>
+                                    {
+                                        new List<ModuleResultElement>()
+                                    };
                                     errors.Add($"Unable to get result set shape for {routineType} '{module.Schema}.{module.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
                                     _logger?.Logger.LogWarning(ex, $"Unable to scaffold {module.Schema}.{module.Name}");
                                 }
