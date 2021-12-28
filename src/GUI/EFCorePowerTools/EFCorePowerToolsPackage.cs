@@ -165,6 +165,8 @@ namespace EFCorePowerTools
                 return; 
             }
 
+            menuCommand.Visible = false;
+
             var project = await VS.Solutions.GetActiveProjectAsync();
 
             if (project == null)
@@ -197,6 +199,8 @@ namespace EFCorePowerTools
             {
                 return;
             }
+
+            menuCommand.Visible = false;
 
             var project = await VS.Solutions.GetActiveProjectAsync();
 
