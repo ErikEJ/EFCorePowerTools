@@ -59,6 +59,8 @@ namespace NUnitTestCore
                     System.Diagnostics.Debug.WriteLine("problem type: " + typeName);
                 }
             }
+
+            Assert.Pass();
         }
     }
 }

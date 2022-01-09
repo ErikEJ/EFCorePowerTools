@@ -67,14 +67,14 @@ namespace RevEng.Core
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
         }
 
-        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
-        {
-            return GetSqlDbType(storedProcedureParameter.StoreType);
-        }
-
         public static Type ClrType(this ModuleResultElement moduleResultElement)
         {
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
+        }
+
+        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
+        {
+            return GetSqlDbType(storedProcedureParameter.StoreType);
         }
 
         private static SqlDbType GetSqlDbType(string storeType)
@@ -92,7 +92,7 @@ namespace RevEng.Core
 
             if (!Enum.TryParse(cleanedTypeName, true, out SqlDbType result))
             {
-                throw new ArgumentOutOfRangeException(nameof(cleanedTypeName), $"cleanedTypeName: {cleanedTypeName}");
+                throw new ArgumentOutOfRangeException(nameof(storeType), $"cleanedTypeName: {cleanedTypeName}");
             }
 
             return result;

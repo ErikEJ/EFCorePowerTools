@@ -46,7 +46,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        protected override string WriteDbContext(ModuleScaffolderOptions procedureScaffolderOptions, RoutineModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
         {
             _sb = new IndentedStringBuilder();
 
@@ -61,7 +61,7 @@ namespace RevEng.Core.Procedures
                 "using System.Data",
                 "using System.Threading",
                 "using System.Threading.Tasks",
-                $"using {procedureScaffolderOptions.ModelNamespace}",
+                $"using {scaffolderOptions.ModelNamespace}",
             };
 
             if (model.Routines.Any(r => r.SupportsMultipleResultSet))
@@ -82,18 +82,18 @@ namespace RevEng.Core.Procedures
             }
 
             _sb.AppendLine();
-            _sb.AppendLine($"namespace {procedureScaffolderOptions.ContextNamespace}");
+            _sb.AppendLine($"namespace {scaffolderOptions.ContextNamespace}");
             _sb.AppendLine("{");
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}");
+                _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}");
                 _sb.AppendLine("{");
                 using (_sb.Indent())
                 {
-                    _sb.AppendLine($"private {procedureScaffolderOptions.ContextName}Procedures _procedures;");
+                    _sb.AppendLine($"private {scaffolderOptions.ContextName}Procedures _procedures;");
                     _sb.AppendLine();
-                    _sb.AppendLine($"public virtual {procedureScaffolderOptions.ContextName}Procedures Procedures");
+                    _sb.AppendLine($"public virtual {scaffolderOptions.ContextName}Procedures Procedures");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
                     {
@@ -101,7 +101,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("{");
                         using (_sb.Indent())
                         {
-                            _sb.AppendLine($"if (_procedures is null) _procedures = new {procedureScaffolderOptions.ContextName}Procedures(this);");
+                            _sb.AppendLine($"if (_procedures is null) _procedures = new {scaffolderOptions.ContextName}Procedures(this);");
                             _sb.AppendLine("return _procedures;");
 
                         }
@@ -117,7 +117,7 @@ namespace RevEng.Core.Procedures
                     }
                     _sb.AppendLine("}");
                     _sb.AppendLine("");
-                    _sb.AppendLine($"public {procedureScaffolderOptions.ContextName}Procedures GetProcedures()");
+                    _sb.AppendLine($"public {scaffolderOptions.ContextName}Procedures GetProcedures()");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
                     {
@@ -128,14 +128,14 @@ namespace RevEng.Core.Procedures
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
-                _sb.AppendLine($"public partial class {procedureScaffolderOptions.ContextName}Procedures");
+                _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
 
                 using (_sb.Indent())
                 {
-                    _sb.AppendLine($"private readonly {procedureScaffolderOptions.ContextName} _context;");
+                    _sb.AppendLine($"private readonly {scaffolderOptions.ContextName} _context;");
                     _sb.AppendLine();
-                    _sb.AppendLine($"public {procedureScaffolderOptions.ContextName}Procedures({procedureScaffolderOptions.ContextName} context)");
+                    _sb.AppendLine($"public {scaffolderOptions.ContextName}Procedures({scaffolderOptions.ContextName} context)");
                     _sb.AppendLine("{");
 
                     using (_sb.Indent())

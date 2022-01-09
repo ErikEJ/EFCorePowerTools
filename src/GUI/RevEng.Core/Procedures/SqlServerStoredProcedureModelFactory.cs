@@ -40,9 +40,9 @@ namespace RevEng.Core.Procedures
             return moduleParameters;
         }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResultSets = false)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults = false)
         {
-            if (multipleResultSets)
+            if (multipleResults)
             {
                 return GetAllResultSets(connection, module);        
             }

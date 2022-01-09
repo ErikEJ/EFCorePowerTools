@@ -12,7 +12,7 @@
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
 
-    public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel, INotifyPropertyChanged
+    public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel
     {
         private string _connectionString;
         private string _name;
@@ -77,7 +77,7 @@
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public new event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

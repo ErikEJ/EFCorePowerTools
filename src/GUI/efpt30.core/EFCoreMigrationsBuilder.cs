@@ -94,8 +94,9 @@ namespace Modelling
             var databaseExists = relationalDatabaseCreator.Exists();
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
-            var modelDiffer = context.GetService<IMigrationsModelDiffer>();
 #if CORE50
+            var modelDiffer = context.GetService<IMigrationsModelDiffer>();
+
             var hasDifferences = false;
             var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
             var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
@@ -135,6 +136,8 @@ namespace Modelling
             }
             var pendingModelChanges = (!databaseExists || hasDifferences);
 #else
+            var modelDiffer = context.GetService<IMigrationsModelDiffer>();
+
             var pendingModelChanges
                 = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
                     && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
@@ -143,7 +146,10 @@ namespace Modelling
 
             var migrations = context.Database.GetMigrations().ToArray();
 
-            if (!migrations.Any()) return "NoMigrations";
+            if (!migrations.Any())
+            {
+                return "NoMigrations";
+            }
 
             var pendingMigrations
                 = (databaseExists
@@ -151,7 +157,10 @@ namespace Modelling
                     : migrations)
                 .ToArray();
 
-            if (pendingMigrations.Any()) return "Pending";
+            if (pendingMigrations.Any())
+            {
+                return "Pending";
+            }
 
             return "InSync";
         }

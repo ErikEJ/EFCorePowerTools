@@ -215,7 +215,6 @@ namespace RevEng.Core
                         continue;
                     }
                     section.AppendLine(line);
-                    continue;
                 }
             }
 

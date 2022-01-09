@@ -5,14 +5,14 @@ namespace RevEng.Core
 {
     public class LegacyPluralizer : IPluralizer
     {
-        public string Pluralize(string name)
+        public string Pluralize(string identifier)
         {
-            return new Pluralizer().Pluralize(name) ?? name;
+            return new Pluralizer().Pluralize(identifier) ?? identifier;
         }
 
-        public string Singularize(string name)
+        public string Singularize(string identifier)
         {
-            return new Pluralizer().Singularize(name) ?? name;
+            return new Pluralizer().Singularize(identifier) ?? identifier;
         }
     }
 }

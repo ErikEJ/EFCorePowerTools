@@ -45,13 +45,13 @@ namespace EFCorePowerTools.Helpers
             return CredentialManager.RemoveCredentials(target);
         }
 
-        public bool SaveCredential(DatabaseConnectionModel databaseConnection)
+        public bool SaveCredential(DatabaseConnectionModel connectionModel)
         {
-            var cred = (new NetworkCredential(databaseConnection.ConnectionName, databaseConnection.ConnectionString)).ToICredential();
-            cred.TargetName = Root + databaseConnection.ConnectionName;
+            var cred = (new NetworkCredential(connectionModel.ConnectionName, connectionModel.ConnectionString)).ToICredential();
+            cred.TargetName = Root + connectionModel.ConnectionName;
             cred.Attributes = new Dictionary<string, object>
             {
-                { nameof(DatabaseType), (int)databaseConnection.DatabaseType }
+                { nameof(DatabaseType), (int)connectionModel.DatabaseType }
             };
             cred.Persistance = Persistance.LocalMachine;
             cred.Type = CredentialType.Generic;

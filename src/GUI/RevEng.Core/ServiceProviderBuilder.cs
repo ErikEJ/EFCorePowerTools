@@ -194,7 +194,7 @@ namespace RevEng.Core
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(options), $"unsupported database type: {options.DatabaseType}");
             }
 
             return serviceCollection.BuildServiceProvider();

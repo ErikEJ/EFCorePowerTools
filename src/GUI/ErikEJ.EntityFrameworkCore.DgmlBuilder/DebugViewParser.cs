@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace DgmlBuilder
 {
@@ -12,7 +13,7 @@ namespace DgmlBuilder
 
             var modelAnnotated = false;
             var productVersion = string.Empty;
-            var modelAnnotations = string.Empty;
+            var modelAnnotations = new StringBuilder();
             var modelPropertyAccessMode = "PropertyAccessMode.Default";
             var changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
 
@@ -20,7 +21,6 @@ namespace DgmlBuilder
             {
                 if (line.StartsWith("Model:"))
                 {
-           
                     var props = line.Trim().Split(' ').ToList();
                     if (props.Count > 0)
                     {
@@ -44,12 +44,12 @@ namespace DgmlBuilder
                     if (!line.TrimStart().StartsWith("ProductVersion: " ) &&
                         !line.TrimStart().StartsWith("Annotations:"))
                     {
-                        modelAnnotations += line.Trim() + Environment.NewLine;
+                        modelAnnotations.AppendLine(line.Trim());
                     }
                 }
             }
             result.Nodes.Add(
-                $"<Node Id=\"IModel\" Label=\"{dbContextName}\" ChangeTrackingStrategy=\"{changeTrackingStrategy}\" PropertyAccessMode=\"{modelPropertyAccessMode}\" ProductVersion=\"{productVersion}\" Annotations=\"{modelAnnotations.Trim()}\" Category=\"Model\" Group=\"Expanded\" />");
+                $"<Node Id=\"IModel\" Label=\"{dbContextName}\" ChangeTrackingStrategy=\"{changeTrackingStrategy}\" PropertyAccessMode=\"{modelPropertyAccessMode}\" ProductVersion=\"{productVersion}\" Annotations=\"{modelAnnotations.ToString().Trim()}\" Category=\"Model\" Group=\"Expanded\" />");
 
             var entityName = string.Empty;
             var properties = new List<string>();

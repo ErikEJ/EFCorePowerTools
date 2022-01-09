@@ -126,7 +126,9 @@ namespace EFCorePowerTools.Handlers
             var projectAssetsFile = await _project.GetAttributeAsync("ProjectAssetsFile");
             var runtimeFrameworkVersion = await _project.GetAttributeAsync("RuntimeFrameworkVersion");
 
-            var dotNetParams = $"exec --depsfile \"{depsFile}\" ";
+            var dotNetParams = new StringBuilder();
+
+            dotNetParams.Append($"exec --depsfile \"{depsFile}\" ");
 
             if (projectAssetsFile != null && File.Exists(projectAssetsFile))
             {
@@ -137,25 +139,25 @@ namespace EFCorePowerTools.Handlers
                     foreach (var packageFolder in lockFile.PackageFolders)
                     {
                         var path = packageFolder.Path.TrimEnd('\\');
-                        dotNetParams += $"--additionalprobingpath \"{path}\" ";
+                        dotNetParams.Append($"--additionalprobingpath \"{path}\" ");
                     }
                 }
             }
 
             if (File.Exists(runtimeConfig))
             {
-                dotNetParams += $"--runtimeconfig \"{runtimeConfig}\" ";
+                dotNetParams.Append($"--runtimeconfig \"{runtimeConfig}\" ");
             }
             else if (!string.IsNullOrEmpty(runtimeFrameworkVersion))
             {
-                dotNetParams += $"--fx-version {runtimeFrameworkVersion} ";
+                dotNetParams.Append($"--fx-version {runtimeFrameworkVersion} ");
             }
 
-            dotNetParams += $"\"{efptPath}\" ";
+            dotNetParams.Append($"\"{efptPath}\" ");
 
             startInfo.WorkingDirectory = Path.GetDirectoryName(outputPath);
             startInfo.FileName = "dotnet";
-            startInfo.Arguments = dotNetParams + " " + startInfo.Arguments;
+            startInfo.Arguments = dotNetParams.ToString() + " " + startInfo.Arguments;
 
             try
             {

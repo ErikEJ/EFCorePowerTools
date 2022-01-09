@@ -21,7 +21,7 @@ namespace RevEng.Shared
             {
                 return outputPath;
             }
-            else if (outputPath.Length >= 2 && outputPath.ToCharArray()[0] == Path.VolumeSeparatorChar)
+            else if (outputPath.Length >= 2 && outputPath[0] == Path.VolumeSeparatorChar)
             {
                 return outputPath;
             }

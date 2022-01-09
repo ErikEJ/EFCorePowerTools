@@ -27,7 +27,7 @@ namespace RevEng.Core.Modules
         protected readonly ICSharpHelper code;
         protected IndentedStringBuilder _sb;
 
-        public SqlServerRoutineScaffolder([NotNull] ICSharpHelper code)
+        protected SqlServerRoutineScaffolder([NotNull] ICSharpHelper code)
         {
             if (code == null) throw new ArgumentNullException(nameof(code));
             this.code = code;

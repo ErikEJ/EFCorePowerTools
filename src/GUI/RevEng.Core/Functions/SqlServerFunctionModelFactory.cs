@@ -21,7 +21,7 @@ namespace RevEng.Core.Procedures
             return GetRoutines(connectionString, options);
         }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResultSets = false)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults = false)
         {
             var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();

@@ -19,6 +19,7 @@
 	<ItemGroup>
 		<Compile Include="..\efpt30.core\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
 		<Compile Include="..\efpt30.core\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
+		<Compile Include="..\efpt30.core\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
 		<Compile Include="..\efpt30.core\Program.cs" Link="Program.cs" />
 	</ItemGroup>
 

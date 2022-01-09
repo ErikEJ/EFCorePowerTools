@@ -21,7 +21,7 @@ namespace RevEng.Core
         {
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new ArgumentNullException(@"invalid connection string", nameof(connectionString));
+                throw new ArgumentNullException(nameof(connectionString), @"invalid connection string");
             }
             _connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
             _schemas = schemas;

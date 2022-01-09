@@ -12,9 +12,6 @@
 
     public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemViewModel
     {
-        private string text1;
-        private bool? isSelected1 = false;
-        private ObjectType objectType1;
         public ObjectTreeRootItemViewModel()
         {
             SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
@@ -80,9 +77,9 @@
         public ObservableCollection<ISchemaInformationViewModel> Schemas { get; } = new ObservableCollection<ISchemaInformationViewModel>();
 
         public ICommand SetSelectedCommand { get; }
-        public ObjectType ObjectType1 { get => objectType1; set => objectType1 = value; }
-        public bool? IsSelected1 { get => isSelected1; set => isSelected1 = value; }
-        public string Text1 { get => text1; set => text1 = value; }
+        public ObjectType ObjectType1 { get; set; }
+        public bool? IsSelected1 { get; set; } = false;
+        public string Text1 { get; set; }
 
         private void ObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
         {

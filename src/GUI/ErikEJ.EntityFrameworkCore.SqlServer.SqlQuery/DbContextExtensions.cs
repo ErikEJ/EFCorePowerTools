@@ -82,7 +82,7 @@ namespace Microsoft.EntityFrameworkCore
             }
         }
 
-        private class ContextForQueryType<T> : DbContext where T : class
+        private sealed class ContextForQueryType<T> : DbContext where T : class
         {
             private readonly DbConnection connection;
             private readonly IDbContextTransaction transaction;
