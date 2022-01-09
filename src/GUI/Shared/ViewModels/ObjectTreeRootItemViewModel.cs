@@ -12,9 +12,9 @@
 
     public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemViewModel
     {
-        public string _text;
-        public bool? _isSelected = false;
-        public ObjectType _objectType;
+        private string text1;
+        private bool? isSelected1 = false;
+        private ObjectType objectType1;
         public ObjectTreeRootItemViewModel()
         {
             SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
@@ -32,15 +32,15 @@
 
         public bool? IsSelected
         {
-            get => _isSelected;
+            get => IsSelected1;
             private set
             {
-                if (Equals(value, _isSelected)) return;
-                _isSelected = value;
+                if (Equals(value, IsSelected1)) return;
+                IsSelected1 = value;
                 RaisePropertyChanged();
-                if (_isSelected != null)
+                if (IsSelected1 != null)
                 {
-                    var selected = _isSelected.Value;
+                    var selected = IsSelected1.Value;
                     foreach (var item in Schemas)
                     {
                         item.SetSelectedCommand.Execute(selected);
@@ -51,22 +51,22 @@
 
         public string Text
         {
-            get => _text;
+            get => Text1;
             set
             {
-                if (Equals(value, _text)) return;
-                _text = value;
+                if (Equals(value, Text1)) return;
+                Text1 = value;
                 RaisePropertyChanged();
             }
         }
 
         public ObjectType ObjectType
         {
-            get => _objectType;
+            get => ObjectType1;
             set
             {
-                if (Equals(value, _objectType)) return;
-                _objectType = value;
+                if (Equals(value, ObjectType1)) return;
+                ObjectType1 = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(ObjectTypeIcon));
             }
@@ -80,6 +80,9 @@
         public ObservableCollection<ISchemaInformationViewModel> Schemas { get; } = new ObservableCollection<ISchemaInformationViewModel>();
 
         public ICommand SetSelectedCommand { get; }
+        public ObjectType ObjectType1 { get => objectType1; set => objectType1 = value; }
+        public bool? IsSelected1 { get => isSelected1; set => isSelected1 = value; }
+        public string Text1 { get => text1; set => text1 = value; }
 
         private void ObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -87,17 +90,17 @@
             {
                 if (Schemas.All(m => m.IsSelected.GetValueOrDefault()))
                 {
-                    _isSelected = true;
+                    IsSelected1 = true;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
                 else if (Schemas.All(m => m.IsSelected.HasValue && !m.IsSelected.Value))
                 {
-                    _isSelected = false;
+                    IsSelected1 = false;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
                 else
                 {
-                    _isSelected = null;
+                    IsSelected1 = null;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
             }

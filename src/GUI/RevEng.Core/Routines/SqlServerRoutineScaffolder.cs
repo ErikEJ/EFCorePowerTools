@@ -317,7 +317,7 @@ namespace RevEng.Core.Modules
             if (!string.IsNullOrEmpty(routine.NewName))
                 return routine.NewName;
 
-            var numberOfNames = model.Routines.Where(p => p.Name == routine.Name).Count();
+            var numberOfNames = model.Routines.Count(p => p.Name == routine.Name);
 
             if (numberOfNames > 1)
                 return routine.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(routine.Schema);

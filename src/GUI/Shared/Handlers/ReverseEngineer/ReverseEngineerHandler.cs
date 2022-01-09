@@ -213,20 +213,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var dacpacList = await EnvDteExtensions.GetDacpacFilesInActiveSolutionAsync();
-            if (dacpacList != null && dacpacList.Any())
-            { 
-                if (!string.IsNullOrEmpty(options.UiHint) 
+            if (dacpacList != null && dacpacList.Any() && !string.IsNullOrEmpty(options.UiHint)
                     && options.UiHint.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
-                {
-                    var candidate = dacpacList
-                        .Where(m => !string.IsNullOrWhiteSpace(m) && m.EndsWith(".sqlproj"))
-                        .FirstOrDefault(m => m.Equals(options.UiHint, StringComparison.OrdinalIgnoreCase));
+            {
+                var candidate = dacpacList
+                    .Where(m => !string.IsNullOrWhiteSpace(m) && m.EndsWith(".sqlproj"))
+                    .FirstOrDefault(m => m.Equals(options.UiHint, StringComparison.OrdinalIgnoreCase));
 
-                    if (candidate != null)
-                    {
-                        options.Dacpac = candidate;
-                        return true;
-                    }
+                if (candidate != null)
+                {
+                    options.Dacpac = candidate;
+                    return true;
                 }
             }
 

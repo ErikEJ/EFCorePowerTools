@@ -127,8 +127,7 @@ namespace UnitTests
             // Assert
             Assert.AreEqual(1, dbModel.Tables.Count());
             Assert.AreEqual(1, dbModel.Tables
-                .Where(t => t.Columns.Any(c => c.DefaultValueSql != null))
-                .Count());
+                .Count(t => t.Columns.Any(c => c.DefaultValueSql != null)));
         }
 
         [Test]

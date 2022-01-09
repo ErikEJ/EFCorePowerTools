@@ -91,7 +91,7 @@ namespace EFCorePowerTools.Extensions
 
                 if (!ok)
                 {
-                    throw new Exception("Dacpac build failed");
+                    throw new InvalidOperationException("Dacpac build failed");
                 }
             }
 
@@ -100,7 +100,7 @@ namespace EFCorePowerTools.Extensions
                 return files[0];
             }
 
-            throw new Exception("Dacpac build failed, please pick the file manually");
+            throw new InvalidOperationException("Dacpac build failed, please pick the file manually");
         }
 
         private static void AddFiles(HashSet<string> result, string path)
@@ -126,7 +126,7 @@ namespace EFCorePowerTools.Extensions
 
             foreach (var item in projectItems)
             {
-                if (item.Children.Count() > 0)
+                if (item.Children.Any())
                 {
                     await LinkedFilesSearchAsync(item.Children, files);
                 }

@@ -243,12 +243,9 @@ namespace EFCorePowerTools.Helpers
             var builder = new SqlConnectionStringBuilder(connectionString);
 
             var database = builder.InitialCatalog;
-            if (string.IsNullOrEmpty(database))
+            if (string.IsNullOrEmpty(database) && !string.IsNullOrEmpty(builder.AttachDBFilename))
             {
-                if (!string.IsNullOrEmpty(builder.AttachDBFilename))
-                {
-                    database = Path.GetFileName(builder.AttachDBFilename);
-                }
+                database = Path.GetFileName(builder.AttachDBFilename);
             }
 
             string server;

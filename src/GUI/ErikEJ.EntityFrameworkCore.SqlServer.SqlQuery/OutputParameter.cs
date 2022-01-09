@@ -6,7 +6,9 @@ namespace Microsoft.EntityFrameworkCore
     {
         private bool _valueSet = false;
 
+#pragma warning disable S1104 // Fields should not have public accessibility
         public TValue _value;
+#pragma warning restore S1104 // Fields should not have public accessibility
 
         public TValue Value
         {

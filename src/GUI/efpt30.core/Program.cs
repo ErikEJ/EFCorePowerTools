@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Modelling
 {
-    public class Program
+    static class Program
     {
         static int Main(string[] args)
         {

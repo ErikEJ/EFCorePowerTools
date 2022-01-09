@@ -173,9 +173,9 @@ SELECT
                 {
                     Name = parameterName,
                     StoreType = par["Type"].ToString(),
-                    Length = par["Length"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Length"].ToString()),
-                    Precision = par["Precision"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()),
-                    Scale = par["Scale"].GetType() == typeof(DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()),
+                    Length = par["Length"].GetType() is null ? (int?)null : int.Parse(par["Length"].ToString()),
+                    Precision = par["Precision"].GetType() is null ? (int?)null : int.Parse(par["Precision"].ToString()),
+                    Scale = par["Scale"].GetType() is null ? (int?)null : int.Parse(par["Scale"].ToString()),
                     Output = (bool)par["output"],
                     Nullable = true,
                     TypeName = par["TypeName"].ToString(),

@@ -335,7 +335,10 @@ namespace RevEng.Core
                 {
                     File.Delete(codeFile);
                 }
-                catch { }
+                catch 
+                { 
+                    // Ignore
+                }
             }
         }
     }

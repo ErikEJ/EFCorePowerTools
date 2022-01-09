@@ -101,7 +101,7 @@ namespace Microsoft.EntityFrameworkCore.Utilities
         {
             if (!condition)
             {
-                throw new Exception($"Check.DebugAssert failed: {message}");
+                throw new InvalidOperationException($"Check.DebugAssert failed: {message}");
             }
         }
     }

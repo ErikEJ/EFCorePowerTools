@@ -44,7 +44,7 @@ namespace UnitTests
             var result = ReadAllText("ErrorResult.txt");
 
             // Act
-            var parsed = _parser.BuildResult(result);
+            _parser.BuildResult(result);
 
             // Assert
         }

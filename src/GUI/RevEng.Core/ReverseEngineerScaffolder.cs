@@ -19,7 +19,7 @@ using System.Text.RegularExpressions;
 
 namespace RevEng.Core
 {
-    class ReverseEngineerScaffolder
+    static class ReverseEngineerScaffolder
     {
         public static SavedModelFiles GenerateDbContext(
             ReverseEngineerCommandOptions options,
@@ -249,7 +249,7 @@ namespace RevEng.Core
             {
                 var entityTypeName = Path.GetFileNameWithoutExtension(entityType.Path);
                 var entityTypeExtension = Path.GetExtension(entityType.Path);
-                var entityMatch = databaseModel.GetEntityTypes().Where(x => x.Name == entityTypeName).FirstOrDefault();
+                var entityMatch = databaseModel.GetEntityTypes().FirstOrDefault(x => x.Name == entityTypeName);
                 var entityTypeSchema = entityMatch?.GetSchema();
 #if CORE50 || CORE60
                 if (entityMatch?.GetViewName() != null)

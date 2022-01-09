@@ -368,9 +368,6 @@ namespace RevEng.Core.Procedures
 
         private static string GenerateProcedureStatement(Routine procedure, string retValueName)
         {
-            var paramNames = procedure.Parameters
-                .Select(p => $"{parameterPrefix}{p.Name}");
-
             var paramList = procedure.Parameters
                 .Select(p => p.Output ? $"@{p.Name} OUTPUT" : $"@{p.Name}").ToList();
 
@@ -402,9 +399,9 @@ namespace RevEng.Core.Procedures
 
             var line = $"public virtual async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
 
-            if (outParams.Count() > 0)
+            if (outParams.Any())
             {
-                if (paramStrings.Count() > 0)
+                if (paramStrings.Any())
                 {
                     line += ", ";
                 }
@@ -412,7 +409,7 @@ namespace RevEng.Core.Procedures
                 line += $"{string.Join(", ", outParamStrings)}";
             }
 
-            if (paramStrings.Count() > 0 || outParams.Count > 0)
+            if (paramStrings.Any() || outParams.Count > 0)
             {
                 line += ", ";
             }
@@ -454,12 +451,9 @@ namespace RevEng.Core.Procedures
                     }
                 }
 
-                if (sqlDbType.IsVarTimeType())
+                if (sqlDbType.IsVarTimeType() && parameter.Scale > 0)
                 {
-                    if (parameter.Scale > 0)
-                    {
-                        _sb.AppendLine($"Scale = {parameter.Scale},");
-                    }
+                    _sb.AppendLine($"Scale = {parameter.Scale},");
                 }
 
                 if (sqlDbType.IsLengthRequiredType())

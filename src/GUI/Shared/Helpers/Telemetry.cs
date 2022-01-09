@@ -37,22 +37,7 @@ namespace EFCorePowerTools.Helpers
         /// <summary>Tracks an event to ApplicationInsights.</summary>
         public static void TrackEvent(string key)
         {
-#if !DEBUG
-            if (Enabled)
-            {
-                //_telemetry.TrackEvent(key);
-            }
-#endif
-        }
-
-        public static void TrackPageView(string key)
-        {
-#if !DEBUG
-            if (Enabled)
-            {
-                //_telemetry.TrackPageView(key);
-            }
-#endif
+            // Ignore
         }
 
         /// <summary>Tracks any exception.</summary>

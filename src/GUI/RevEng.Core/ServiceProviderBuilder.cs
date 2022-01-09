@@ -95,19 +95,9 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.OptionsPath));
             }
 
-            if (options.UseInflector || options.UseLegacyPluralizer)
+            if ((options.UseInflector || options.UseLegacyPluralizer) && options.UseLegacyPluralizer)
             {
-                if (options.UseLegacyPluralizer)
-                {
-                    serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
-                }
-#if CORE50 || CORE60
-#else
-                else
-                {
-                    serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
-                }
-#endif
+                serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
             }
 
             // Add database provider services

@@ -68,7 +68,6 @@ namespace RevEng.Core
 
         public override string GenerateCandidateIdentifier(DatabaseColumn originalColumn)
         {
-            string temp = string.Empty;
             var candidateStringBuilder = new StringBuilder();
 
             var schema = GetSchema(originalColumn.Table.Schema);

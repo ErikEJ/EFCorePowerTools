@@ -18,8 +18,6 @@ namespace EFCorePowerTools.Helpers
         public static SolidColorBrush GetWindowBackground()
         {
             return new SolidColorBrush(Color.FromArgb(0xFF, 0xF0, 0xF0, 0xF0));
-            //int color = (int)__VSSYSCOLOREX3.VSCOLOR_WINDOW;
-            //return SolidColorBrushFromWin32Color(GetWin32Color(color));
         }
 
         public static SolidColorBrush GetWindowText()
@@ -49,12 +47,6 @@ namespace EFCorePowerTools.Helpers
             }
             return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
-
-        //public static SolidColorBrush GetDialogBackground()
-        //{
-        //    int color = (int)__VSSYSCOLOREX.VSCOLOR_PROJECTDESIGNER_TAB_BACKGROUND_GRADIENTBEGIN;
-        //    return SolidColorBrushFromWin32Color(GetWin32Color(color));
-        //}
 
         public static SolidColorBrush GetToolbarSeparatorBackground()
         {

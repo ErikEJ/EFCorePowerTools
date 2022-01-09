@@ -234,7 +234,7 @@ namespace UnitTests.ViewModels
             var vm = new PickTablesViewModel(otvm.Object);
 
             // Act
-            var selectedObjects = vm.GetSelectedObjects();
+            vm.GetSelectedObjects();
 
             // Assert
             otvm.Verify(s => s.GetSelectedObjects(), Times.Once);

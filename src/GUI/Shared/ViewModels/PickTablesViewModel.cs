@@ -104,7 +104,7 @@
             if (text != SearchText)
                 return;
 
-            ObjectTree.Search(SearchText, SearchMode);
+            ObjectTree.Search(SearchText, searchMode);
         }
 
         private void UpdateTableSelectionThreeState()

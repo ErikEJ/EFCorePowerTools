@@ -12,41 +12,35 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public ReverseEngineerResult BuildResult(string output)
         {
             var resultParts = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.None);
-            if (resultParts.Length == 2)
+            if (resultParts.Length == 2 && TryRead(resultParts[1], out ReverseEngineerResult deserialized))
             {
-                if (TryRead(resultParts[1], out ReverseEngineerResult deserialized))
-                {
-                    return deserialized;
-                }
+                return deserialized;
             }
 
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
             if (errorParts.Length == 2)
             {
-                throw new Exception("Reverse engineer error: " + Environment.NewLine + errorParts[1]);
+                throw new  InvalidOperationException("Reverse engineer error: " + Environment.NewLine + errorParts[1]);
             }
 
-            throw new Exception($"Reverse engineer error: Unable to launch external process: {Environment.NewLine + output}");
+            throw new InvalidOperationException($"Reverse engineer error: Unable to launch external process: {Environment.NewLine + output}");
         }
 
         public List<TableModel> BuildTableResult(string output)
         {
             var resultParts = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.None);
-            if (resultParts.Length == 2)
+            if (resultParts.Length == 2 && TryRead(resultParts[1], out List<TableModel> deserialized))
             {
-                if (TryRead(resultParts[1], out List<TableModel> deserialized))
-                {
-                    return deserialized;
-                }
+                return deserialized;
             }
 
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
             if (errorParts.Length == 2)
             { 
-                throw new Exception("Table list error: " + Environment.NewLine + errorParts[1]);
+                throw new InvalidOperationException("Table list error: " + Environment.NewLine + errorParts[1]);
             }
 
-            throw new Exception($"Table list error: Unable to launch external process: {Environment.NewLine + output}");
+            throw new InvalidOperationException($"Table list error: Unable to launch external process: {Environment.NewLine + output}");
         }
 
         private static bool TryRead<T>(string options, out T deserialized) where T : class, new()

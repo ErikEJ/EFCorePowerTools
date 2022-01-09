@@ -174,7 +174,7 @@ namespace EFCorePowerTools.Extensions
 
             return hierarchy.IsCapabilityMatch("CSharp");
 
-            // bool isCSharpAndNetCore = hierarchy.IsCapabilityMatch("CSharp & CPS");
+            //TODO bool isCSharpAndNetCore = hierarchy.IsCapabilityMatch("CSharp & CPS");
         }
 
         public static async Task<bool> IsLegacyAsync(this Project project)

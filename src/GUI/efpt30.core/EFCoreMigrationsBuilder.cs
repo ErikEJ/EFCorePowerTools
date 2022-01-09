@@ -89,7 +89,7 @@ namespace Modelling
             var relationalDatabaseCreator = context.GetService<IDatabaseCreator>() as IRelationalDatabaseCreator;
             if (relationalDatabaseCreator == null)
             {
-                throw new Exception("Not a relational database, migrations are not supported");
+                throw new InvalidOperationException("Not a relational database, migrations are not supported");
             }
             var databaseExists = relationalDatabaseCreator.Exists();
 

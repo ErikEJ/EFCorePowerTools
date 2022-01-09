@@ -9,9 +9,6 @@ namespace RevEng.Core.Abstractions.Metadata
     {
         public bool HasValidResultSet { get; set; }
 
-        public List<ModuleParameter> Parameters = new List<ModuleParameter>();
-        public List<List<ModuleResultElement>> Results = new List<List<ModuleResultElement>>();
-
         public bool SupportsMultipleResultSet
         {
             get
@@ -19,5 +16,8 @@ namespace RevEng.Core.Abstractions.Metadata
                 return Results.Count > 1; 
             }
         }
+
+        public List<ModuleParameter> Parameters { get; set; } = new List<ModuleParameter>();
+        public List<List<ModuleResultElement>> Results { get; set; } = new List<List<ModuleResultElement>>();
     }
 }

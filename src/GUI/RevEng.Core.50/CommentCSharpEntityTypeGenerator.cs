@@ -449,25 +449,22 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
         private void GenerateForeignKeyAttribute(INavigation navigation)
         {
-            if (navigation.IsOnDependent)
+            if (navigation.IsOnDependent && navigation.ForeignKey.PrincipalKey.IsPrimaryKey())
             {
-                if (navigation.ForeignKey.PrincipalKey.IsPrimaryKey())
+                var foreignKeyAttribute = new AttributeWriter(nameof(ForeignKeyAttribute));
+
+                if (navigation.ForeignKey.Properties.Count > 1)
                 {
-                    var foreignKeyAttribute = new AttributeWriter(nameof(ForeignKeyAttribute));
-
-                    if (navigation.ForeignKey.Properties.Count > 1)
-                    {
-                        foreignKeyAttribute.AddParameter(
-                            _code.Literal(
-                                string.Join(",", navigation.ForeignKey.Properties.Select(p => p.Name))));
-                    }
-                    else
-                    {
-                        foreignKeyAttribute.AddParameter($"nameof({navigation.ForeignKey.Properties.First().Name})");
-                    }
-
-                    _sb.AppendLine(foreignKeyAttribute.ToString());
+                    foreignKeyAttribute.AddParameter(
+                        _code.Literal(
+                            string.Join(",", navigation.ForeignKey.Properties.Select(p => p.Name))));
                 }
+                else
+                {
+                    foreignKeyAttribute.AddParameter($"nameof({navigation.ForeignKey.Properties.First().Name})");
+                }
+
+                _sb.AppendLine(foreignKeyAttribute.ToString());
             }
         }
 

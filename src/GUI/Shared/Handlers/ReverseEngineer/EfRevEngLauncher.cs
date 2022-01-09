@@ -26,7 +26,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var databaseObjects = options.Tables;
             if (!databaseObjects.Any(t => t.ObjectType == ObjectType.Table))
             {
-                // TODO is this still neeeded?
                 // No tables selected, so add a dummy table in order to generate an empty DbContext
                 databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null));
             }
@@ -125,9 +124,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 version = "6.0";
             }
 
-            if (await IsDotnetInstalledAsync(version) == false)
+            if (!await IsDotnetInstalledAsync(version))
             {
-                throw new Exception($"Reverse engineer error: Unable to launch 'dotnet' version {version}. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
+                throw new InvalidOperationException($"Reverse engineer error: Unable to launch 'dotnet' version {version}. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
             }
 
             var launchPath = DropNetCoreFiles();
@@ -277,8 +276,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            //var extractor = new NupkgExtractor();
-            //await extractor.ExtractNupgkAsync("Microsoft.SqlServer.DacFx", "150.5084.2", new DirectoryInfo(toDir));
+            //TODO var extractor = new NupkgExtractor();
+            //TODO await extractor.ExtractNupgkAsync("Microsoft.SqlServer.DacFx", "150.5084.2", new DirectoryInfo(toDir));
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
 
