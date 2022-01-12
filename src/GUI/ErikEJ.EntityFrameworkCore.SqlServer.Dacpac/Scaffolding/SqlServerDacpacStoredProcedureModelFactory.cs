@@ -42,8 +42,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
 
-            var consolidator = new DacpacConsolidator();
-            dacpacPath = consolidator.Consolidate(dacpacPath);
+            //var consolidator = new DacpacConsolidator();
+            //dacpacPath = consolidator.Consolidate(dacpacPath);
 
             var model = new TSqlTypedModel(dacpacPath);
 
