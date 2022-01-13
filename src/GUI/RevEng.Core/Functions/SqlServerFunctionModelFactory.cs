@@ -14,6 +14,7 @@ namespace RevEng.Core.Procedures
         public SqlServerFunctionModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
             : base(logger)
         {
+            RoutineType = "FUNCTION";
         }
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)

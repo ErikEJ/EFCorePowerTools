@@ -63,6 +63,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery", "ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery.csproj", "{8F75978E-966D-47BF-8948-42B886ED1BD9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{ACD63354-5031-4116-AEE9-B38E9F687E2E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.Props = Directory.Build.Props
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\Shared.projitems*{9774f070-c59a-4fc2-93a5-90b7e7435fe8}*SharedItemsImports = 13

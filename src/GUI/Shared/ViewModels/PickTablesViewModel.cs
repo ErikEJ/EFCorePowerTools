@@ -8,6 +8,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Input;
 
@@ -56,7 +57,7 @@
                 if (Equals(value, _searchText)) return;
                 _searchText = value;
                 RaisePropertyChanged();
-                var _ = HandleSearchTextChangeAsync(_searchText, _searchMode);
+                HandleSearchTextChange(_searchText, _searchMode);
             }
         }
 
@@ -68,7 +69,7 @@
                 if (Equals(value, _searchMode)) return;
                 _searchMode = value;
                 RaisePropertyChanged();
-                var _ = HandleSearchTextChangeAsync(_searchText, _searchMode);
+                HandleSearchTextChange(_searchText, _searchMode);
             }
         }
 
@@ -98,9 +99,9 @@
             SearchText = string.Empty;
         }
 
-        private async Task HandleSearchTextChangeAsync(string text, SearchMode searchMode)
+        private void HandleSearchTextChange(string text, SearchMode searchMode)
         {
-            await Task.Delay(500); // Add a delay (like a debounce) so that not every character change triggers a search
+            Thread.Sleep(300);
             if (text != SearchText)
                 return;
 

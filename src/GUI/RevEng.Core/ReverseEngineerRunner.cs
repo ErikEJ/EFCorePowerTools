@@ -18,10 +18,6 @@ namespace RevEng.Core
         {
             var errors = new List<string>();
             var warnings = new List<string>();
-            var reporter = new OperationReporter(
-                new OperationReportHandler(
-                    m => errors.Add(m),
-                    m => warnings.Add(m)));
             var serviceProvider = ServiceProviderBuilder.Build(options);
             var schemas = new List<string>();
 

@@ -16,6 +16,8 @@ namespace RevEng.Core.Procedures
     {
         protected readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
+        public string RoutineType { get; set; }
+
         protected SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
         {
             _logger = logger;
@@ -23,13 +25,6 @@ namespace RevEng.Core.Procedures
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
-            var routineType = this switch
-            {
-                SqlServerStoredProcedureModelFactory _ => "PROCEDURE",
-                SqlServerFunctionModelFactory _ => "FUNCTION",
-                _ => throw new InvalidOperationException($"Unknown type '{GetType().Name}'"),
-            };
-
             var result = new List<Routine>();
             var found = new List<Tuple<string, string, string, bool>>();
             var errors = new List<string>();
@@ -59,7 +54,7 @@ AND (
                 class = 1 and 
                 name = N'microsoft_database_tools_support'
         ) IS NULL 
-AND ROUTINE_TYPE = N'{routineType}'");
+AND ROUTINE_TYPE = N'{RoutineType}'");
 
 #if !CORE50 && !CORE60
                 // Filters out table-valued functions without filtering out stored procedures
@@ -87,7 +82,7 @@ AND ROUTINE_TYPE = N'{routineType}'");
                     {
                         var isScalar = foundModule.Item4;
 
-                        var module = routineType == "procedure"
+                        var module = RoutineType == "PROCEDURE"
                             ? (Routine)new Procedure()
                             : new Function { IsScalar = isScalar };
 
@@ -112,7 +107,7 @@ AND ROUTINE_TYPE = N'{routineType}'");
                                     {
                                         new List<ModuleResultElement>()
                                     };
-                                    errors.Add($"Unable to get result set shape for {routineType} '{module.Schema}.{module.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                                    errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
                                     _logger?.Logger.LogWarning(ex, $"Unable to scaffold {module.Schema}.{module.Name}");
                                 }
                             }

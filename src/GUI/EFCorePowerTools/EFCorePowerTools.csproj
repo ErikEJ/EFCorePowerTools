@@ -453,7 +453,7 @@
     <PackageReference Include="AdysTech.CredentialManager" Version="2.3.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Community.VisualStudio.Toolkit.16">
-      <Version>16.0.325</Version>
+      <Version>16.0.355</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.7.0</Version>
@@ -464,7 +464,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework">
       <Version>16.9.31025.104</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.206" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
       <Version>17.0.5232</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
