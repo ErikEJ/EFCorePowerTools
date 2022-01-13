@@ -1,2 +1,0 @@
-
-For license, see https://github.com/ErikEJ/EFCorePowerTools/blob/master/LICENSE
