@@ -68,6 +68,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseMultipleSprocResultSets = Properties.Settings.Default.DiscoverMultipleResultSets,
                 OptionsPath = options.OptionsPath,
                 LegacyLangVersion = await project.IsLegacyAsync(),
+                MergeDacpacs = Properties.Settings.Default.MergeDacpacs,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

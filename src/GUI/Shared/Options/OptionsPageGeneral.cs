@@ -15,6 +15,7 @@ namespace EFCorePowerTools
             RunCleanup = Properties.Settings.Default.RunCleanup;
             DiscoverMultipleResultSets = Properties.Settings.Default.DiscoverMultipleResultSets;
             IncludeUiHintInConfig = Properties.Settings.Default.IncludeUiHintInConfig;
+            MergeDacpacs = Properties.Settings.Default.MergeDacpacs;
             base.OnActivate(e);
         }
 
@@ -42,6 +43,12 @@ namespace EFCorePowerTools
         DefaultValue(true)]
         public bool IncludeUiHintInConfig { get; set; }
 
+        [Category("Reverse Engineering"),
+        DisplayName(@"Merge .dacpac files"),
+        Description("Merge dependent .dacpac files"),
+        DefaultValue(false)]
+        public bool MergeDacpacs { get; set; }
+
         [Category("Other"),
         DisplayName(@"Participate in Telemetry"),
         Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports"),
@@ -55,6 +62,7 @@ namespace EFCorePowerTools
             Properties.Settings.Default.RunCleanup = RunCleanup;
             Properties.Settings.Default.DiscoverMultipleResultSets = DiscoverMultipleResultSets;
             Properties.Settings.Default.IncludeUiHintInConfig = IncludeUiHintInConfig;
+            Properties.Settings.Default.MergeDacpacs = MergeDacpacs;
             Properties.Settings.Default.Save();
             base.OnApply(e);
         }
