@@ -16,11 +16,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacStoredProcedureModelFactory : IProcedureModelFactory
     {
-        private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
+        private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
-        public SqlServerDacpacStoredProcedureModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        public SqlServerDacpacStoredProcedureModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
         {
-            _logger = logger;
+            dacpacOptions = options;
         }
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
@@ -34,16 +34,19 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 throw new ArgumentException($"Dacpac file not found: {connectionString}");
             }
 
-            return GetStoredProcedures(connectionString, options);
+            return GetStoredProcedures(connectionString, options, dacpacOptions.MergeDacpacs);
         }
 
-        private RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
+        private RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
         {
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
 
-            //var consolidator = new DacpacConsolidator();
-            //dacpacPath = consolidator.Consolidate(dacpacPath);
+            if (mergeDacpacs && dacpacPath != null)
+            {
+                var consolidator = new DacpacConsolidator();
+                dacpacPath = consolidator.Consolidate(dacpacPath);
+            }
 
             var model = new TSqlTypedModel(dacpacPath);
 
@@ -73,7 +76,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         catch (Exception ex)
                         {
                             errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
-                            _logger?.Logger.LogWarning(ex, $"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
                         }
                     }
 

@@ -41,6 +41,7 @@ namespace RevEng.Core.Procedures
 
         public static IServiceCollection AddSqlServerDacpacStoredProcedureDesignTimeServices(
             this IServiceCollection services,
+            SqlServerDacpacDatabaseModelFactoryOptions factoryOptions,
             IOperationReporter reporter = null)
         {
             if (reporter == null)
@@ -49,7 +50,8 @@ namespace RevEng.Core.Procedures
             }
 
             return services
-                .AddSingleton<IProcedureModelFactory, SqlServerDacpacStoredProcedureModelFactory>()
+                .AddSingleton<IProcedureModelFactory, SqlServerDacpacStoredProcedureModelFactory>(
+                    provider => new SqlServerDacpacStoredProcedureModelFactory(factoryOptions))
                 .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }

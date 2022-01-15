@@ -27,7 +27,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var launcher = new EfRevEngLauncher(null, codeGenerationMode);
 
-            return await launcher.GetTablesAsync(_connectionString, _databaseType, _schemas);
+            return await launcher.GetTablesAsync(_connectionString, _databaseType, _schemas, Properties.Settings.Default.MergeDacpacs);
         }
     }
 }

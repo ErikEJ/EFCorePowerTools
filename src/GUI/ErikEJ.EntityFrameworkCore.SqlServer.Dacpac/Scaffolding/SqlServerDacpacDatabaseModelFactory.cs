@@ -22,11 +22,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private static readonly ISet<string> MaxLengthRequiredTypes
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
-        private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
+        private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
-        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
         {
-            _logger = logger;
+            dacpacOptions = options;
         }
 
         public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
@@ -56,8 +56,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             dbModel["Scaffolding:ConnectionString"] = $"Data Source=(local);Initial Catalog={dbModel.DatabaseName};Integrated Security=true";
 
-            // var consolidator = new DacpacConsolidator();
-            // connectionString = consolidator.Consolidate(connectionString);
+            if (dacpacOptions.MergeDacpacs)
+            {
+                var consolidator = new DacpacConsolidator();
+                connectionString = consolidator.Consolidate(connectionString);
+            }
 
             var model = new TSqlTypedModel(connectionString);
 
