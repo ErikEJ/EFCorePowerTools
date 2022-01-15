@@ -92,7 +92,8 @@ namespace RevEng.Core
                     hbOptions.EnableNullableReferenceTypes = options.UseNullableReferences;
 #endif
                 });
-                serviceCollection.AddSingleton<ITemplateFileService>(provider => new CustomTemplateFileService(options.OptionsPath));
+                serviceCollection.AddSingleton<ITemplateFileService>(provider 
+                    => new CustomTemplateFileService(options.OptionsPath));
             }
 
             if ((options.UseInflector || options.UseLegacyPluralizer) && options.UseLegacyPluralizer)
@@ -128,8 +129,16 @@ namespace RevEng.Core
                     var dacProvider = new SqlServerDesignTimeServices();
                     dacProvider.ConfigureDesignTimeServices(serviceCollection);
 
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>();
-                    serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices();
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
+                        provider => new SqlServerDacpacDatabaseModelFactory(new SqlServerDacpacDatabaseModelFactoryOptions
+                        {
+                            MergeDacpacs = options.MergeDacpacs,
+                        }));
+
+                    serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
+                    {
+                        MergeDacpacs = options.MergeDacpacs,
+                    });
 
                     if (options.UseSpatial)
                     {

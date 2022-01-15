@@ -18,14 +18,16 @@ namespace efreveng
 
                 if (args.Length > 0)
                 {
-                    if ((args.Count() == 2 || args.Count() == 3) && int.TryParse(args[0], out int dbTypeInt))
+                    if ((args.Count() == 3 || args.Count() == 4)
+                        && int.TryParse(args[1], out int dbTypeInt)
+                        && bool.TryParse(args[0], out bool mergeDacpacs))
                     {
                         SchemaInfo[] schemas = null;
-                        if (args.Length == 3)
+                        if (args.Length == 4)
                         {
-                            schemas = args[2].Split(',').Select(s => new SchemaInfo {Name = s}).ToArray();
+                            schemas = args[3].Split(',').Select(s => new SchemaInfo {Name = s}).ToArray();
                         }
-                        var builder = new TableListBuilder(dbTypeInt, args[1], schemas);
+                        var builder = new TableListBuilder(dbTypeInt, args[2], schemas, mergeDacpacs);
 
                         var buildResult = builder.GetTableModels();
 

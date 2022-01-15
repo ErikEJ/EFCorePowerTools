@@ -17,7 +17,7 @@ namespace RevEng.Core
         private readonly DatabaseType _databaseType;
         private readonly ServiceProvider _serviceProvider;
 
-        public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas)
+        public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas, bool mergeDacpacs)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -30,6 +30,7 @@ namespace RevEng.Core
             var options = new ReverseEngineerCommandOptions
             {
                 DatabaseType = _databaseType,
+                MergeDacpacs = mergeDacpacs,
             };
 
             _serviceProvider = ServiceProviderBuilder.Build(options);
