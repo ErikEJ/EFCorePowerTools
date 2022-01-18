@@ -168,12 +168,12 @@ SELECT
                 {
                     Name = parameterName,
                     StoreType = par["Type"].ToString(),
-                    Length = par["Length"].GetType() is null ? (int?)null : int.Parse(par["Length"].ToString()),
-                    Precision = par["Precision"].GetType() is null ? (int?)null : int.Parse(par["Precision"].ToString()),
-                    Scale = par["Scale"].GetType() is null ? (int?)null : int.Parse(par["Scale"].ToString()),
+                    Length = (par["Length"]is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()),
+                    Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()),
+                    Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()),
                     Output = (bool)par["output"],
                     Nullable = true,
-                    TypeName = par["TypeName"].ToString(),
+                    TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
                 };
 
                 result.Add(parameter);

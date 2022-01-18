@@ -1,5 +1,5 @@
 {
-  "ConnectionString": "Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Northwind;Integrated Security=True",
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
   "ContextClassName": "NorthwindContext",
   "ContextNamespace": null,
   "CustomReplacers": [
@@ -77,6 +77,10 @@
     {
       "Name": "[dbo].[ReturnDataTypes]",
       "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[TestGeo]",
+      "ObjectType": 1
     }
   ],
   "UseNoObjectFilter": false,
@@ -92,5 +96,5 @@
   "UseNodaTime": true,
   "UseNullableReferences": false,
   "UseSpatial": false,
-  "UseMultipleSprocResultSets": true
+  "UseMultipleSprocResultSets": false
 }

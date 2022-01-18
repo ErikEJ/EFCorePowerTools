@@ -487,7 +487,8 @@ namespace RevEng.Core.Procedures
 
                 _sb.AppendLine($"SqlDbType = System.Data.SqlDbType.{sqlDbType},");
 
-                if (sqlDbType == System.Data.SqlDbType.Structured)
+                if (sqlDbType == SqlDbType.Structured 
+                    || sqlDbType == SqlDbType.Udt)
                 {
                     _sb.AppendLine($"TypeName = \"{parameter.TypeName}\",");
                 }
