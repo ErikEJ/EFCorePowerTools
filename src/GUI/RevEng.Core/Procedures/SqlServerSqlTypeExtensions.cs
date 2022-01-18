@@ -41,8 +41,8 @@ namespace RevEng.Core
                 { "rowversion", "timestamp" },
                 { "table type", "structured" },
                 { "sql_variant", "variant" },
-                { "geography", "variant" },
-                { "geometry", "variant" },
+                { "geography", "udt" },
+                { "geometry", "udt" },
                 { "hierarchyid", "variant" },
                 { "sysname", "nvarchar" },
             });
@@ -157,8 +157,10 @@ namespace RevEng.Core
                     return isNullable ? typeof(byte?) : typeof(byte);
 
                 case SqlDbType.Variant:
-                case SqlDbType.Udt:
                     return typeof(object);
+
+                case SqlDbType.Udt:
+                    return typeof(byte[]);
 
                 case SqlDbType.Structured:
                     return typeof(DataTable);
