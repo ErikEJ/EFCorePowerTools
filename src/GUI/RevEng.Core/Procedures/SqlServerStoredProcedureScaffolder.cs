@@ -128,6 +128,18 @@ namespace RevEng.Core.Procedures
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
+                _sb.AppendLine($"public interface I{scaffolderOptions.ContextName}ProceduresContract");
+                _sb.AppendLine("{");
+                using (_sb.Indent())
+                {
+                    foreach (var procedure in model.Routines)
+                    {
+                        GenerateProcedureContract(procedure, model);
+                    }
+                }
+                _sb.AppendLine("}");
+                _sb.AppendLine();
+
                 _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
 
@@ -326,6 +338,19 @@ namespace RevEng.Core.Procedures
             }
         }
 
+        private void GenerateProcedureContract(Routine procedure, RoutineModel model)
+        {
+            var paramStrings = procedure.Parameters.Where(p => !p.Output)
+                .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
+                .ToList();
+
+            var identifier = GenerateIdentifierName(procedure, model);
+
+            var line = GenerateContractSignature(procedure, paramStrings, identifier);
+
+            _sb.AppendLine(line);
+        }
+
         private string GenerateMultiResultId(Routine procedure, RoutineModel model)
         {
             if (procedure.Results.Count == 1)
@@ -419,6 +444,22 @@ namespace RevEng.Core.Procedures
             line += ", CancellationToken cancellationToken = default)";
 
             return line;
+        }
+
+        private string GenerateContractSignature(Routine procedure, IEnumerable<string> paramStrings, string identifier)
+        {
+            string returnType;
+
+            if (procedure.HasValidResultSet && procedure.Results[0].Count == 0)
+            {
+                returnType = $"Task<int>";
+            }
+            else
+            {
+                returnType = $"Task<List<{identifier}Result>>";
+            }
+
+            return $"{returnType} {identifier}Async({string.Join(", ", paramStrings)}, CancellationToken cancellationToken = default);";
         }
 
         private void GenerateParameterVar(ModuleParameter parameter, Routine procedure)
