@@ -459,7 +459,14 @@ namespace RevEng.Core.Procedures
                 returnType = $"Task<List<{identifier}Result>>";
             }
 
-            return $"{returnType} {identifier}Async({string.Join(", ", paramStrings)}, CancellationToken cancellationToken = default);";
+            returnType += $" {identifier}Async({string.Join(", ", paramStrings)}";
+
+            if (paramStrings.Any())
+            {
+                returnType += $", ";
+            }
+
+            return returnType + "CancellationToken cancellationToken = default);";
         }
 
         private void GenerateParameterVar(ModuleParameter parameter, Routine procedure)
