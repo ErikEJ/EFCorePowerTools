@@ -253,7 +253,7 @@
     <value>Mapping</value>
   </data>
   <data name="MapSpatialTypes" xml:space="preserve">
-    <value>Map spatial types</value>
+    <value>Map spatial types &amp; hierarchyid</value>
   </data>
   <data name="ModelGeneratedSuccesfully" xml:space="preserve">
     <value>Model generated successfully.</value>

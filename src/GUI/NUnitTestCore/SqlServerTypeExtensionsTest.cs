@@ -57,6 +57,7 @@ namespace NUnitTestCore
                 catch
                 {
                     System.Diagnostics.Debug.WriteLine("problem type: " + typeName);
+                    Assert.Fail();
                 }
             }
 

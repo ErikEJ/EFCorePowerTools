@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
@@ -115,6 +116,9 @@ namespace RevEng.Core
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
+
+                        var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
+                        hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 #if CORE50 || CORE60
                     if (options.UseNodaTime)

@@ -47,17 +47,20 @@ del bin\Release\netcoreapp3.1\publish\System.Windows.Extensions.dll
 del bin\Release\netcoreapp3.1\publish\System.IO.Packaging.dll
 del bin\Release\netcoreapp3.1\publish\System.Resources.Extensions.dll
 
-del bin\Release\netcoreapp3.1\Azure.Core.dll 
-del bin\Release\netcoreapp3.1\Azure.Identity.dll 
-del bin\Release\netcoreapp3.1\Microsoft.Build.Utilities.Core.dll 
-del bin\Release\netcoreapp3.1\Microsoft.Data.Tools.Schema.Tasks.Sql.dll 
-del bin\Release\netcoreapp3.1\Microsoft.Data.Tools.Sql.DesignServices.dll 
-del bin\Release\netcoreapp3.1\Microsoft.Identity.Client.Extensions.Msal.dll 
-del bin\Release\netcoreapp3.1\RevEng.Core.Abstractions.dll 
-del bin\Release\netcoreapp3.1\RevEng.Core.Abstractions.pdb 
-del bin\Release\netcoreapp3.1\System.Collections.Immutable.dll 
-del bin\Release\netcoreapp3.1\System.Memory.Data.dll 
-del bin\Release\netcoreapp3.1\System.Reflection.Metadata.dll
+del bin\Release\netcoreapp3.1\publish\Azure.Core.dll 
+del bin\Release\netcoreapp3.1\publish\Azure.Identity.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.Build.Utilities.Core.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.Data.Tools.Schema.Tasks.Sql.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.Data.Tools.Sql.DesignServices.dll 
+del bin\Release\netcoreapp3.1\publish\Microsoft.Identity.Client.Extensions.Msal.dll 
+del bin\Release\netcoreapp3.1\publish\RevEng.Core.Abstractions.dll 
+del bin\Release\netcoreapp3.1\publish\RevEng.Core.Abstractions.pdb 
+del bin\Release\netcoreapp3.1\publish\System.Collections.Immutable.dll 
+del bin\Release\netcoreapp3.1\publish\System.Memory.Data.dll 
+del bin\Release\netcoreapp3.1\publish\System.Reflection.Metadata.dll
+
+del bin\Release\netcoreapp3.1\publish\sni.dll 
+del bin\Release\netcoreapp3.1\publish\System.Data.SqlClient.dll
 
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng50.exe.zip .\bin\Release\netcoreapp3.1\publish\*
 

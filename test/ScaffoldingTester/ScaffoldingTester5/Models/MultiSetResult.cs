@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScaffoldingTester.Models
 {
-    public partial class MultiSetResult1
+    public partial class MultiSetResult
     {
         public int ShipperID { get; set; }
         public string CompanyName { get; set; }

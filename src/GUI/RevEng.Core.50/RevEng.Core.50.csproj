@@ -31,6 +31,7 @@
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="5.0.5-preview1" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="5.1.0" />
+    <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="2.1.1" />
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.5.3" />
     <PackageReference Include="Humanizer.Core" Version="2.9.9" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.1" />

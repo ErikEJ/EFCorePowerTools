@@ -7,6 +7,5 @@ namespace ScaffoldingTester.Models
 {
     public partial class OutputScenariosResult
     {
-        public int Col0 { get; set; }
     }
 }

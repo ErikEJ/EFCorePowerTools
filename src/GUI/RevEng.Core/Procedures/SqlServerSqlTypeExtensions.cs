@@ -43,7 +43,7 @@ namespace RevEng.Core
                 { "sql_variant", "variant" },
                 { "geography", "udt" },
                 { "geometry", "udt" },
-                { "hierarchyid", "variant" },
+                { "hierarchyid", "udt" },
                 { "sysname", "nvarchar" },
             });
 

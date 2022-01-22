@@ -9,12 +9,11 @@
                  Title="{x:Static locale:ReverseEngineerLocale.Advanced}"
                  d:DataContext="{d:DesignInstance Type=viewModels:AdvancedModelingOptionsViewModel,
                                                   IsDesignTimeCreatable=False}"
-                 d:DesignHeight="350"
                  d:DesignWidth="337"
                  ResizeMode="NoResize"
                  SizeToContent="WidthAndHeight"
                  WindowStartupLocation="CenterOwner"
-                 mc:Ignorable="d">
+                 mc:Ignorable="d" Height="500">
 
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
@@ -68,8 +67,8 @@
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseManyToManyEntity }"
                       IsChecked="{Binding Model.UseManyToManyEntity}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="3" />                    
-                    
+                      TabIndex="3" />
+
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.AlwaysIncludeAllDatabaseObjects}"
                           IsChecked="{Binding Model.UseNoObjectFilter}"
                           Style="{StaticResource MarginCheckBlockStyle}"
