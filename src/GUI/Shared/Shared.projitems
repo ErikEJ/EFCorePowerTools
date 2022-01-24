@@ -9,6 +9,9 @@
     <Import_RootNamespace>EFCorePowerTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BaseClasses\DefaultConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseClasses\IRatingConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseClasses\RatingPrompt.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
@@ -95,7 +98,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsDataHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsTheming.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Options\OptionsPageGeneral.cs">
+    <Compile Include="$(MSBuildThisFileDirectory)Options\AdvancedOptions.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)PkgCmdID.cs" />

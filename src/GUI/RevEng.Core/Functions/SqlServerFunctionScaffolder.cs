@@ -16,6 +16,7 @@ namespace RevEng.Core.Functions
         public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code)
             : base(code)
         {
+            FileNameSuffix = ".Functions";
         }
 
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)

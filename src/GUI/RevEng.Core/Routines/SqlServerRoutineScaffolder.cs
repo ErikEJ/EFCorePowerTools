@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Functions;
-using RevEng.Core.Procedures;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -26,6 +24,8 @@ namespace RevEng.Core.Modules
     {
         protected readonly ICSharpHelper code;
         protected IndentedStringBuilder _sb;
+
+        public string FileNameSuffix { get; set; }
 
         protected SqlServerRoutineScaffolder([NotNull] ICSharpHelper code)
         {
@@ -90,17 +90,10 @@ namespace RevEng.Core.Modules
 
             var dbContext = WriteDbContext(scaffolderOptions, model);
 
-            var fileNameSuffix = this switch
-            {
-                SqlServerStoredProcedureScaffolder _ => "Procedures",
-                SqlServerFunctionScaffolder _ => ".Functions",
-                _ => throw new InvalidOperationException($"Unknown type '{GetType().Name}'"),
-            };
-
             result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{fileNameSuffix}.cs")),
+                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs")),
             };
 
             return result;

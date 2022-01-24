@@ -1,4 +1,5 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using BaseClasses;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
@@ -21,12 +22,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
     internal class ReverseEngineerHandler
     {
         private readonly EFCorePowerToolsPackage _package;
+        private readonly RatingPrompt ratingPrompt;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
         {
             _package = package;
+            ratingPrompt = new RatingPrompt("ErikEJ.EFCorePowerTools", "EF Core Power Tools", AdvancedOptions.Instance);
             reverseEngineerHelper = new ReverseEngineerHelper();
             vsDataHelper = new VsDataHelper();
 
