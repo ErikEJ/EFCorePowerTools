@@ -15,7 +15,7 @@ namespace BaseClasses
         private const int _minutesVisible = 2;
         private bool _hasChecked;
 
-        public RatingPrompt(string marketplaceId, string extensionName, IRatingConfig config = null, int requestsBeforePrompt = 3)
+        public RatingPrompt(string marketplaceId, string extensionName, IRatingConfig config = null, int requestsBeforePrompt = 4)
         {
             MarketplaceId = marketplaceId ?? throw new ArgumentNullException(nameof(marketplaceId));
             ExtensionName = extensionName ?? throw new ArgumentNullException(nameof(extensionName));
@@ -39,7 +39,7 @@ namespace BaseClasses
 
         public void RegisterSuccessfullUsage()
         {
-            if (!_hasChecked && Config.RatingRequests < RequestsBeforePrompt)
+            if (!_hasChecked && Config.RatingRequests <= RequestsBeforePrompt)
             {
                 _hasChecked = true;
                 IncrementAsync().FireAndForget();
@@ -64,7 +64,7 @@ namespace BaseClasses
             Config.RatingRequests += 1;
             await Config.SaveAsync();
 
-            if (Config.RatingRequests == RequestsBeforePrompt)
+            if (Config.RatingRequests >= RequestsBeforePrompt)
             {
                 PromptAsync().FireAndForget();
             }
@@ -83,8 +83,8 @@ namespace BaseClasses
                     new InfoBarHyperlink("Remind me later"),
                     new InfoBarHyperlink("Don't show again"),
                 },
-                KnownMonikers.Extension,
-                true);
+                image: KnownMonikers.Extension,
+                isCloseButtonVisible: true);
 
             InfoBar infoBar = await VS.InfoBar.CreateAsync(model);
             infoBar.ActionItemClicked += ActionItemClicked;

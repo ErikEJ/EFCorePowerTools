@@ -529,6 +529,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 VSHelper.ShowMessage(errors);
             }
+            else
+            {
+                ratingPrompt.RegisterSuccessfullUsage();
+            }
 
             if (revEngResult.EntityErrors.Count > 0)
             {
