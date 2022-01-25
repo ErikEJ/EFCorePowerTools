@@ -24,7 +24,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
-        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
+        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        {
+        }
+
+        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger, SqlServerDacpacDatabaseModelFactoryOptions options)
         {
             dacpacOptions = options;
         }
@@ -56,7 +60,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             dbModel["Scaffolding:ConnectionString"] = $"Data Source=(local);Initial Catalog={dbModel.DatabaseName};Integrated Security=true";
 
-            if (dacpacOptions.MergeDacpacs)
+            if (dacpacOptions?.MergeDacpacs ?? false)
             {
                 var consolidator = new DacpacConsolidator();
                 connectionString = consolidator.Consolidate(connectionString);
