@@ -11,6 +11,7 @@
     <None Remove="Aw2014Person.txt" />
     <None Remove="Chinook.dacpac" />
     <None Remove="ChinookContext.txt" />
+    <None Remove="Dacpac\Issue1262.dacpac" />
     <None Remove="Identity.txt" />
     <None Remove="Issue208.dacpac" />
     <None Remove="Issue210.dacpac" />
@@ -27,6 +28,9 @@
 
   <ItemGroup>
     <Content Include="Dacpac\AdventureWorks2014.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\Issue1262.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dgml\Aw2014Person.txt">

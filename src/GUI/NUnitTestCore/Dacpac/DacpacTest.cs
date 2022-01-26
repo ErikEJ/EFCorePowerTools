@@ -172,6 +172,35 @@ namespace UnitTests
             Assert.AreEqual(2, dbModel.Tables.Count());
         }
 
+        [Test]
+        public void Issue1262_ConsiderSchemaArgument()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var options = new DatabaseModelFactoryOptions(null, new List<string>() { "mat" });
+
+            // Act
+            var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
+
+            // Assert
+            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual("mat", dbModel.Tables.Single().Schema);
+        }
+
+        [Test]
+        public void Issue1262_BehaviourWithoutSchemaArgument()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            // Act
+            var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
+
+            // Assert
+            Assert.AreEqual(2, dbModel.Tables.Count());
+            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
+            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+        }
+
         private string TestPath(string file)
         {
             return Path.Combine(TestContext.CurrentContext.TestDirectory, "Dacpac", file);
