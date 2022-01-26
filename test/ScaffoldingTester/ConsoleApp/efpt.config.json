@@ -54,6 +54,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Specials]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Track]",
          "ObjectType": 0
       }
@@ -66,6 +70,7 @@
    "UseHandleBars": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
    "UseNoConstructor": false,
    "UseNoDefaultConstructor": true,
    "UseNoNavigations": false,
@@ -73,5 +78,5 @@
    "UseNodaTime": false,
    "UseNullableReferences": false,
    "UseSchemaFolders": false,
-   "UseSpatial": false
+   "UseSpatial": true
 }
