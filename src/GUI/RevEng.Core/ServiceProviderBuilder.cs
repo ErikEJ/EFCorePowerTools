@@ -134,7 +134,7 @@ namespace RevEng.Core
                     dacProvider.ConfigureDesignTimeServices(serviceCollection);
 
                     serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
-                        provider => new SqlServerDacpacDatabaseModelFactory(new SqlServerDacpacDatabaseModelFactoryOptions
+                        provider => new SqlServerDacpacDatabaseModelFactory(null, new SqlServerDacpacDatabaseModelFactoryOptions
                         {
                             MergeDacpacs = options.MergeDacpacs,
                         }));

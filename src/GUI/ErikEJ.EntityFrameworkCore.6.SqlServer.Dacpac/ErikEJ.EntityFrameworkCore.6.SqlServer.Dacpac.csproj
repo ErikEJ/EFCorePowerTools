@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>6.0.1-preview1</PackageVersion>	  
+    <PackageVersion>6.0.1</PackageVersion>	  
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
     <!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.md</DocumentationFile>-->
-    <PackageReleaseNotes>For EF Core 6.0</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 6.0 with DacFX 160</PackageReleaseNotes>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
@@ -36,7 +36,6 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Design\SqlServerDacpacDesignTimeServices.cs" Link="Design\SqlServerDacpacDesignTimeServices.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
@@ -53,7 +52,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.5332.1-preview" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.5400.1" />
 	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />	  
   </ItemGroup>
 
