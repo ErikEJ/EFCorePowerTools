@@ -44,6 +44,7 @@ namespace ScaffoldingTester.Models
         public virtual DbSet<SalesByCategory> SalesByCategories { get; set; }
         public virtual DbSet<SalesTotalsByAmount> SalesTotalsByAmounts { get; set; }
         public virtual DbSet<Shipper> Shippers { get; set; }
+        public virtual DbSet<Special> Specials { get; set; }
         public virtual DbSet<SummaryOfSalesByQuarter> SummaryOfSalesByQuarters { get; set; }
         public virtual DbSet<SummaryOfSalesByYear> SummaryOfSalesByYears { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
@@ -722,6 +723,11 @@ namespace ScaffoldingTester.Models
                     .HasMaxLength(40);
 
                 entity.Property(e => e.Phone).HasMaxLength(24);
+            });
+
+            modelBuilder.Entity<Special>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<SummaryOfSalesByQuarter>(entity =>

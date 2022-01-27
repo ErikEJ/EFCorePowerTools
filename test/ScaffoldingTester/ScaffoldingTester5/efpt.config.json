@@ -61,6 +61,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Specials]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Suppliers]",
          "ObjectType": 0
       },

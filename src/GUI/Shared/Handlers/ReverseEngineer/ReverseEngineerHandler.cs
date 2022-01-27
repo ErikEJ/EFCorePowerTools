@@ -1,5 +1,4 @@
-﻿using BaseClasses;
-using Community.VisualStudio.Toolkit;
+﻿using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
@@ -531,7 +530,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
             else
             {
-                ratingPrompt.RegisterSuccessfullUsage();
+                ratingPrompt.RegisterSuccessfulUsage();
             }
 
             if (revEngResult.EntityErrors.Count > 0)

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Community.VisualStudio.Toolkit;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Settings;
