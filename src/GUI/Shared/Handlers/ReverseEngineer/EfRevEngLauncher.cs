@@ -55,6 +55,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UseSpatial = options.UseSpatial,
+                UseHierarchyId = options.UseHierarchyId,
                 UseDbContextSplitting = options.UseDbContextSplitting,
                 UseNodaTime = options.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,

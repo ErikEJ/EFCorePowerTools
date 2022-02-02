@@ -246,6 +246,9 @@
   <data name="LoadingOptions" xml:space="preserve">
     <value />
   </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value />
+  </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value />
   </data>

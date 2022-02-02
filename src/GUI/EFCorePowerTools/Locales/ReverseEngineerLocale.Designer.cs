@@ -450,6 +450,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string MapHierarchyId {
+            get {
+                return ResourceManager.GetString("MapHierarchyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MapNodaTimeTypes {
             get {
                 return ResourceManager.GetString("MapNodaTimeTypes", resourceCulture);

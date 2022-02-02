@@ -36,6 +36,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
         public bool UseSpatial { get; set; }
+        public bool UseHierarchyId { get; set; }
         public bool UseDbContextSplitting { get; set; }
         public bool UseNodaTime { get; set; }
         public bool FilterSchemas { get; set; }

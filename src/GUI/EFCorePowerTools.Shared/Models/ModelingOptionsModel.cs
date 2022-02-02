@@ -28,6 +28,7 @@
         private string _dacpacPath;
         private bool _useDbContextSplitting;
         private bool _mapSpatialTypes;
+        private bool _mapHierarchyId;
         private bool _mapNodaTimeTypes;
         private bool _useEf6Pluralizer;
         private bool _useBoolPropertiesWithoutDefaultSql;
@@ -243,6 +244,17 @@
             {
                 if (value == _mapSpatialTypes) return;
                 _mapSpatialTypes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool MapHierarchyId
+        {
+            get => _mapHierarchyId;
+            set
+            {
+                if (value == _mapHierarchyId) return;
+                _mapHierarchyId = value;
                 OnPropertyChanged();
             }
         }

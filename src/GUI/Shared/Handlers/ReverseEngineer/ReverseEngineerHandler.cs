@@ -384,6 +384,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 SelectedToBeGenerated = options.SelectedToBeGenerated,
                 UseEf6Pluralizer = options.UseLegacyPluralizer,
                 MapSpatialTypes = options.UseSpatial,
+                MapHierarchyId = options.UseHierarchyId,
                 MapNodaTimeTypes = options.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNoConstructor = options.UseNoConstructor,
@@ -417,6 +418,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseInflector = modelingOptionsResult.Payload.UsePluralizer;
             options.UseLegacyPluralizer = modelingOptionsResult.Payload.UseEf6Pluralizer;
             options.UseSpatial = modelingOptionsResult.Payload.MapSpatialTypes;
+            options.UseHierarchyId = modelingOptionsResult.Payload.MapHierarchyId;
             options.UseNodaTime = modelingOptionsResult.Payload.MapNodaTimeTypes;
             options.UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting;
             options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars;

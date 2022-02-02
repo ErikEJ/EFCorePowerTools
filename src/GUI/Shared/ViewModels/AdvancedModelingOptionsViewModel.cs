@@ -39,6 +39,7 @@
         {
             Model.UseDbContextSplitting = presets.UseDbContextSplitting;
             Model.MapSpatialTypes = presets.MapSpatialTypes;
+            Model.MapHierarchyId = presets.MapHierarchyId;
             Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;

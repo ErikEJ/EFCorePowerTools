@@ -246,6 +246,9 @@
   <data name="LoadingOptions" xml:space="preserve">
     <value>Loading options...</value>
   </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>Map hierarchyid</value>
+  </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>Map Noda Time types</value>
   </data>
@@ -253,7 +256,7 @@
     <value>Mapping</value>
   </data>
   <data name="MapSpatialTypes" xml:space="preserve">
-    <value>Map spatial types &amp; hierarchyid</value>
+    <value>Map spatial types</value>
   </data>
   <data name="ModelGeneratedSuccesfully" xml:space="preserve">
     <value>Model generated successfully.</value>

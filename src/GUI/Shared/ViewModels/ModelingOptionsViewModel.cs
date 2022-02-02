@@ -142,6 +142,7 @@ namespace EFCorePowerTools.ViewModels
 
             Model.UseDbContextSplitting = advancedModelingOptionsResult.Payload.UseDbContextSplitting;
             Model.MapSpatialTypes = advancedModelingOptionsResult.Payload.MapSpatialTypes;
+            Model.MapHierarchyId = advancedModelingOptionsResult.Payload.MapHierarchyId;
             Model.MapNodaTimeTypes = advancedModelingOptionsResult.Payload.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = advancedModelingOptionsResult.Payload.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = advancedModelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
@@ -175,6 +176,7 @@ namespace EFCorePowerTools.ViewModels
             Model.ProjectName = presets.ProjectName;
             Model.DacpacPath = presets.DacpacPath;
             Model.MapSpatialTypes = presets.MapSpatialTypes;
+            Model.MapHierarchyId = presets.MapHierarchyId;
             Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;

@@ -116,7 +116,10 @@ namespace RevEng.Core
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
 
+                    if (options.UseHierarchyId)
+                    {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
@@ -148,6 +151,12 @@ namespace RevEng.Core
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
+                    if (options.UseHierarchyId)
+                    {
+                        var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
+                        hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
                     break;

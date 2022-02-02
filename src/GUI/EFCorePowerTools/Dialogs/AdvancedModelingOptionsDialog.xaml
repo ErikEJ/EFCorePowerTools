@@ -96,15 +96,20 @@
                           Style="{StaticResource MarginCheckBlockStyle}"
                           TabIndex="20" />
 
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapHierarchyId}"
+                          IsChecked="{Binding Model.MapHierarchyId}"
+                          Style="{StaticResource MarginCheckBlockStyle}"
+                          TabIndex="21" />
+                    
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
                       IsChecked="{Binding Model.MapNodaTimeTypes}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="21" />
+                      TabIndex="22" />
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseEF6Pluralizer}"
                       IsChecked="{Binding Model.UseEf6Pluralizer}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="22" />
+                      TabIndex="23" />
 
                 </StackPanel>
             </GroupBox>
