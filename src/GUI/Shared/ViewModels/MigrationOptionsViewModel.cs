@@ -5,8 +5,9 @@
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
     using Extensions;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using Handlers;
     using Microsoft.VisualStudio.Shell;
     using Shared.DAL;
@@ -18,7 +19,7 @@
     using System.Windows;
     using System.Windows.Input;
 
-    public class MigrationOptionsViewModel : ViewModelBase, IMigrationOptionsViewModel
+    public class MigrationOptionsViewModel : ObservableObject, IMigrationOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly RelayCommand _applyCommand;
@@ -46,7 +47,7 @@
             {
                 if (value == _title) return;
                 _title = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -57,7 +58,7 @@
             {
                 if (value == _applyButtonContent) return;
                 _applyButtonContent = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -68,7 +69,7 @@
             {
                 if (value == _statusList) return;
                 _statusList = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -80,7 +81,7 @@
                 if (value == _selectedStatusKey) return;
                 _selectedStatusKey = value;
                 HandleSelectedStatusKeyChange();
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -91,7 +92,7 @@
             {
                 if (value == _statusMessage) return;
                 _statusMessage = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -102,7 +103,7 @@
             {
                 if (value == _migrationName) return;
                 _migrationName = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -119,7 +120,7 @@
             {
                 if (Math.Abs(value - _backgroundOpacity) < double.Epsilon) return;
                 _backgroundOpacity = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -130,7 +131,7 @@
             {
                 if (value == _migrationNameVisibility) return;
                 _migrationNameVisibility = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -370,7 +371,7 @@
             try
             {
                 _applying = true;
-                _applyCommand.RaiseCanExecuteChanged();
+                _applyCommand.NotifyCanExecuteChanged();
                 await _visualStudioAccess.StartStatusBarAnimationAsync();
 
                 if (!StatusList.TryGetValue(SelectedStatusKey, out var selectedStatusValue))
@@ -405,7 +406,7 @@
                 await _visualStudioAccess.StopStatusBarAnimationAsync();
                 await _visualStudioAccess.SetStatusBarTextAsync(string.Empty);
                 _applying = false;
-                _applyCommand.RaiseCanExecuteChanged();
+                _applyCommand.NotifyCanExecuteChanged();
             }
         }
 

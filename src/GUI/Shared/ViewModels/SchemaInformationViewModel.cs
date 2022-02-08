@@ -1,15 +1,16 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using RevEng.Shared;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
     using System.Windows.Input;
 
-    public class SchemaInformationViewModel : ViewModelBase, ISchemaInformationViewModel
+    public class SchemaInformationViewModel : ObservableObject, ISchemaInformationViewModel
     {
         private string _name;
         private bool? _isSelected = false;
@@ -31,7 +32,7 @@
             {
                 if (Equals(value, _name)) return;
                 _name = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -44,7 +45,7 @@
             {
                 if (Equals(value, _isSelected)) return;
                 _isSelected = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 if (_isSelected != null)
                 {
                     var selected = _isSelected.Value;
@@ -73,23 +74,23 @@
                 if (Objects.All(m => m.IsSelected.Value))
                 {
                     _isSelected = true;
-                    RaisePropertyChanged(nameof(IsSelected));
+                    OnPropertyChanged(nameof(IsSelected));
                 }
                 else if (Objects.All(m => !m.IsSelected.Value))
                 {
                     _isSelected = false;
-                    RaisePropertyChanged(nameof(IsSelected));
+                    OnPropertyChanged(nameof(IsSelected));
                 }
                 else
                 {
                     _isSelected = null;
-                    RaisePropertyChanged(nameof(IsSelected));
+                    OnPropertyChanged(nameof(IsSelected));
                 }
             }
 
             if (e.PropertyName == nameof(ISchemaInformationViewModel.IsVisible))
             {
-                RaisePropertyChanged(nameof(IsVisible));
+                OnPropertyChanged(nameof(IsVisible));
             }
 
         }

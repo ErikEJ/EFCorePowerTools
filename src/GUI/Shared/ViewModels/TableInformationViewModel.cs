@@ -3,9 +3,9 @@
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
     using EFCorePowerTools.Messages;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using RevEng.Shared;
     using System;
     using System.Collections.ObjectModel;
@@ -13,7 +13,7 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class TableInformationViewModel : ViewModelBase, ITableInformationViewModel
+    public class TableInformationViewModel : ObservableObject, ITableInformationViewModel
     {
         private string _name;
         private string _newName;
@@ -44,7 +44,7 @@
             {
                 if (Equals(value, _schema)) return;
                 _schema = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -55,8 +55,8 @@
             {
                 if (Equals(value, _name)) return;
                 _name = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(DisplayName));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -67,8 +67,8 @@
             {
                 if (Equals(value, _newName)) return;
                 _newName = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(DisplayName));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -93,8 +93,8 @@
             {
                 if (Equals(value, _objectType)) return;
                 _objectType = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(ObjectTypeIcon));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ObjectTypeIcon));
             }
         }
 
@@ -122,7 +122,7 @@
             {
                 if (Equals(value, _isSelected)) return;
                 _isSelected = value.Value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 foreach (var column in Columns)
                 {
                     column.IsTableSelected = _isSelected;
@@ -138,7 +138,7 @@
             {
                 if (Equals(value, _isVisible)) return;
                 _isVisible = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -149,7 +149,7 @@
             {
                 if (Equals(value, _isEditing)) return;
                 _isEditing = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -191,7 +191,7 @@
         {
             foreach (var item in e.NewItems)
             {
-                RaisePropertyChanged(nameof(HasPrimaryKey));
+                OnPropertyChanged(nameof(HasPrimaryKey));
             }
         }
 

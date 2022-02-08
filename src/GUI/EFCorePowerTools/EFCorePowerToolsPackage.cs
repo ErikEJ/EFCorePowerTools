@@ -15,7 +15,7 @@ using EFCorePowerTools.Shared.BLL;
 using EFCorePowerTools.Shared.DAL;
 using EFCorePowerTools.Shared.Models;
 using EFCorePowerTools.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -408,7 +408,7 @@ namespace EFCorePowerTools
                     .AddTransient<ICompareResultViewModel, CompareResultViewModel>();
 
             // Register BLL
-            var messenger = new Messenger();
+            var messenger = new WeakReferenceMessenger();
             messenger.Register<ShowMessageBoxMessage>(this, HandleShowMessageBoxMessage);
 
             services.AddSingleton<IExtensionVersionService, ExtensionVersionService>()
@@ -424,7 +424,7 @@ namespace EFCorePowerTools
             return services.BuildServiceProvider();
         }
 
-        private void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)
+        private void HandleShowMessageBoxMessage(object sender, ShowMessageBoxMessage msg)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 

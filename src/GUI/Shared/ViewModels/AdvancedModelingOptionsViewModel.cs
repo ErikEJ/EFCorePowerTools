@@ -2,13 +2,14 @@
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using Shared.Models;
     using System;
     using System.Windows.Input;
 
-    public class AdvancedModelingOptionsViewModel : ViewModelBase, IAdvancedModelingOptionsViewModel
+    public class AdvancedModelingOptionsViewModel : ObservableObject, IAdvancedModelingOptionsViewModel
     {
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
