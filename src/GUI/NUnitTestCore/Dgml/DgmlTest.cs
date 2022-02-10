@@ -89,7 +89,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Chinook.dgml"), result, Encoding.UTF8);
         }
@@ -102,7 +102,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Aw2014Person.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Aw2014Person.dgml"), result, Encoding.UTF8);
         }
@@ -115,7 +115,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Northwind.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"northwind.dgml"), result, Encoding.UTF8);
         }
@@ -128,7 +128,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Pfizer.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"pfizer.dgml"), result, Encoding.UTF8);
         }
@@ -141,7 +141,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("NoFk.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "nofk.dgml"), result, Encoding.UTF8);
         }
@@ -154,7 +154,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("SingleNav.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"singlenav.dgml"), result, Encoding.UTF8);
         }
@@ -167,7 +167,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Samurai.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Samurai.dgml"), result, Encoding.UTF8);
         }
@@ -180,7 +180,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Issue604.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
         }
@@ -193,7 +193,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Issue687.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
         }
@@ -206,7 +206,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("Identity.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Identity.dgml"), result, Encoding.UTF8);
         }
@@ -219,7 +219,7 @@ namespace UnitTests
             var result = builder.Build(ReadAllText("longview50.txt"), "test", _template);
 
             // Assert
-            Assert.AreNotEqual(result, null);
+            Assert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"LongView50.dgml"), result, Encoding.UTF8);
         }
