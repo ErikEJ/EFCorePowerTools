@@ -57,6 +57,8 @@ namespace RevEng.Core
 
             var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline)
                 .Cast<Match>()
+                .Where(m => !m.Value.StartsWith(@"
+                            "))
                 .ToList();
 
             if (!statementsBlockMatches.Any())

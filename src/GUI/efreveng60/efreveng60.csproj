@@ -21,6 +21,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestFiles\DbProject.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>	
 
 </Project>
