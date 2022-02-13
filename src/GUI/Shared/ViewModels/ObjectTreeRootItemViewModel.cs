@@ -1,8 +1,9 @@
 ﻿namespace EFCorePowerTools.ViewModels
 {
     using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using RevEng.Shared;
     using System;
     using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemViewModel
+    public class ObjectTreeRootItemViewModel : ObservableObject, IObjectTreeRootItemViewModel
     {
         public ObjectTreeRootItemViewModel()
         {
@@ -34,7 +35,7 @@
             {
                 if (Equals(value, IsSelected1)) return;
                 IsSelected1 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
                 if (IsSelected1 != null)
                 {
                     var selected = IsSelected1.Value;
@@ -53,7 +54,7 @@
             {
                 if (Equals(value, Text1)) return;
                 Text1 = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -64,8 +65,8 @@
             {
                 if (Equals(value, ObjectType1)) return;
                 ObjectType1 = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(ObjectTypeIcon));
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ObjectTypeIcon));
             }
         }
 
@@ -88,23 +89,23 @@
                 if (Schemas.All(m => m.IsSelected.GetValueOrDefault()))
                 {
                     IsSelected1 = true;
-                    RaisePropertyChanged(nameof(IsSelected));
+                    OnPropertyChanged(nameof(IsSelected));
                 }
                 else if (Schemas.All(m => m.IsSelected.HasValue && !m.IsSelected.Value))
                 {
                     IsSelected1 = false;
-                    RaisePropertyChanged(nameof(IsSelected));
+                    OnPropertyChanged(nameof(IsSelected));
                 }
                 else
                 {
                     IsSelected1 = null;
-                    RaisePropertyChanged(nameof(IsSelected));
+                    OnPropertyChanged(nameof(IsSelected));
                 }
             }
 
             if (e.PropertyName == nameof(ISchemaInformationViewModel.IsVisible))
             {
-                RaisePropertyChanged(nameof(IsVisible));
+                OnPropertyChanged(nameof(IsVisible));
             }
 
         }

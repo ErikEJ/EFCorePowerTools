@@ -3,8 +3,9 @@
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using Contracts.Views;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using Shared.DAL;
     using Shared.Models;
     using System;
@@ -12,7 +13,7 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class PickConfigViewModel : ViewModelBase, IPickConfigViewModel
+    public class PickConfigViewModel : ObservableObject, IPickConfigViewModel
     {
         private ConfigModel _selectedConfiguration;
 
@@ -31,7 +32,7 @@
             {
                 if (Equals(value, _selectedConfiguration)) return;
                 _selectedConfiguration = value;
-                RaisePropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -43,7 +44,7 @@
 
             Configurations = new ObservableCollection<ConfigModel>();
 
-            Configurations.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(Configurations));
+            Configurations.CollectionChanged += (sender, args) => OnPropertyChanged(nameof(Configurations));
         }
 
         private void Loaded_Executed()

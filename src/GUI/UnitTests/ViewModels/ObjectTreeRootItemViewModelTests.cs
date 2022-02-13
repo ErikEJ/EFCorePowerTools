@@ -4,7 +4,7 @@ namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
-    using GalaSoft.MvvmLight.Messaging;
+    using CommunityToolkit.Mvvm.Messaging;
     using Moq;
     using System.Linq;
 

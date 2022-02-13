@@ -1,16 +1,18 @@
 ﻿using EFCorePowerTools.Handlers.Compare;
-using GalaSoft.MvvmLight;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Input;
 
 namespace EFCorePowerTools.ViewModels
 {
-    public class CompareLogItemViewModel : ViewModelBase
+    public class CompareLogItemViewModel : ObservableObject
     {
         private bool _visible;
         private bool _checked;
 
         public bool Visible
         {
-            get => _visible; set => Set(ref _visible, value);
+            get => _visible; set => SetProperty(ref _visible, value);
         }
         public int Level
         {
@@ -46,7 +48,7 @@ namespace EFCorePowerTools.ViewModels
         }
         public bool Checked
         {
-            get => _checked; set => Set(ref _checked, value);
+            get => _checked; set => SetProperty(ref _checked, value);
         }
     }
 }

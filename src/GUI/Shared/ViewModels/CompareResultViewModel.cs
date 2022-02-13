@@ -3,8 +3,9 @@
     using Contracts.EventArgs;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Handlers.Compare;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
+    using CommunityToolkit.Mvvm.ComponentModel;
+    using CommunityToolkit.Mvvm.Messaging;
+    using CommunityToolkit.Mvvm.Input;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
@@ -12,7 +13,7 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class CompareResultViewModel : ViewModelBase, ICompareResultViewModel
+    public class CompareResultViewModel : ObservableObject, ICompareResultViewModel
     {
         private bool _showDifferencesOnly = true;
         private List<CompareLogItemViewModel> _completeLogs { get; } = new List<CompareLogItemViewModel>();
@@ -33,7 +34,7 @@
             get => _showDifferencesOnly;
             set
             {
-                Set(ref _showDifferencesOnly, value);
+                SetProperty(ref _showDifferencesOnly, value);
                 Logs.Clear();
                 var l = value ? _filteredLogs : _completeLogs;
                 foreach (var item in l)
