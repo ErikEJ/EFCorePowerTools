@@ -132,7 +132,7 @@ namespace RevEng.Core.Procedures
                         foreach (var procedure in model.Routines)
                         {
                             var identifier = GenerateIdentifierName(procedure, model);
-                            _sb.AppendLine($"modelBuilder.Entity<{identifier}>().HasNoKey().ToTable(null);");
+                            _sb.AppendLine($"modelBuilder.Entity<{identifier}Result>().HasNoKey().ToView(null);");
                         }
                     }
                     _sb.AppendLine("}");
