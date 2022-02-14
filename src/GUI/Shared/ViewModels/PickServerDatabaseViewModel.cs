@@ -5,9 +5,8 @@
     using Contracts.Views;
     using EFCorePowerTools.DAL;
     using EFCorePowerTools.Locales;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
     using Shared.DAL;
     using Shared.Models;
@@ -18,7 +17,7 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class PickServerDatabaseViewModel : ObservableObject, IPickServerDatabaseViewModel
+    public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly ICredentialStore _credentialStore;
@@ -55,7 +54,7 @@
             {
                 if (value == _codeGenerationMode) return;
                 _codeGenerationMode = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -66,7 +65,7 @@
             {
                 if (value == _filterSchemas) return;
                 _filterSchemas = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -77,7 +76,7 @@
             {
                 if (Equals(value, _selectedDatabaseConnection)) return;
                 _selectedDatabaseConnection = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
 
                 if (_selectedDatabaseConnection != null)
                     SelectedDatabaseDefinition = null;
@@ -91,7 +90,7 @@
             {
                 if (Equals(value, _selectedDatabaseDefinition)) return;
                 _selectedDatabaseDefinition = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
 
                 if (_selectedDatabaseDefinition != null)
                     SelectedDatabaseConnection = null;
@@ -156,7 +155,7 @@
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
             DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
             Schemas = new List<SchemaInfo>();
-            DatabaseDefinitions.CollectionChanged += (sender, args) => OnPropertyChanged(nameof(DatabaseDefinitions));
+            DatabaseDefinitions.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseDefinitions));
         }
 
         private void Loaded_Executed()

@@ -4,16 +4,15 @@ namespace EFCorePowerTools.ViewModels
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
 
-    public class PickSchemasViewModel : ObservableObject, IPickSchemasViewModel
+    public class PickSchemasViewModel : ViewModelBase, IPickSchemasViewModel
     {
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -33,7 +32,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 if (value == _selectedSchema) return;
                 _selectedSchema = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 

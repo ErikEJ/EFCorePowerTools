@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using GalaSoft.MvvmLight.Messaging;
 using Moq;
 using NUnit.Framework;
 

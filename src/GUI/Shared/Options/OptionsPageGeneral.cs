@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 namespace EFCorePowerTools
 {
     [Guid(GuidList.guidOptionsPageGeneral)]
-    [ComVisible(true)]
     public class OptionsPageGeneral : DialogPage
     {
         protected override void OnActivate(CancelEventArgs e)

@@ -2,9 +2,7 @@
 {
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
     using RevEng.Shared;
     using System;
     using System.Collections.Generic;
@@ -13,7 +11,7 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    public class ObjectTreeViewModel : ObservableObject, IObjectTreeViewModel
+    public class ObjectTreeViewModel : ViewModelBase, IObjectTreeViewModel
     {
         public event EventHandler ObjectSelectionChanged;
 

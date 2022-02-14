@@ -3,9 +3,8 @@
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
     using Shared.Models;
     using System;
@@ -14,7 +13,7 @@
     using System.Linq;
     using System.Windows.Input;
 
-    public class CompareOptionsViewModel : ObservableObject, ICompareOptionsViewModel
+    public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private DatabaseConnectionModel _selectedDatabaseConnection;
@@ -44,7 +43,7 @@
         public DatabaseConnectionModel SelectedDatabaseConnection
         {
             get => _selectedDatabaseConnection;
-            set => SetProperty(ref _selectedDatabaseConnection, value);
+            set => Set(ref _selectedDatabaseConnection, value);
         }
 
         public CompareOptionsViewModel(IVisualStudioAccess visualStudioAccess)
@@ -134,7 +133,7 @@
         }
     }
 
-    public class ContextTypeItemViewModel : ObservableObject
+    public class ContextTypeItemViewModel : ViewModelBase
     {
         private bool _selected;
 
@@ -152,7 +151,7 @@
         public bool Selected
         {
             get => _selected;
-            set => SetProperty(ref _selected, value);
+            set => Set(ref _selected, value);
         }
     }
 }

@@ -2,9 +2,8 @@
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using JetBrains.Annotations;
     using RevEng.Shared;
     using Shared.Models;
@@ -13,7 +12,7 @@
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
 
-    public class PickConnectionViewModel : ObservableObject, IPickConnectionViewModel
+    public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel
     {
         private string _connectionString;
         private string _name;

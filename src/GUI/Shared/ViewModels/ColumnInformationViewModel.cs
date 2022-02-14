@@ -3,13 +3,13 @@
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
     using EFCorePowerTools.Messages;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
+    using GalaSoft.MvvmLight.Messaging;
     using System;
     using System.Windows.Input;
 
-    public class ColumnInformationViewModel : ObservableObject, IColumnInformationViewModel
+    public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewModel
     {
         private string _name;
         private string _newName;
@@ -39,7 +39,7 @@
             {
                 if (Equals(value, _name)) return;
                 _name = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -50,8 +50,8 @@
             {
                 if (Equals(value, _newName)) return;
                 _newName = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(DisplayName));
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -70,8 +70,8 @@
             {
                 if (Equals(value, _isPrimaryKey)) return;
                 _isPrimaryKey = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsEnabled));
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsEnabled));
             }
         }
 
@@ -82,8 +82,8 @@
             {
                 if (Equals(value, _isForeignKey)) return;
                 _isForeignKey = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsEnabled));
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsEnabled));
             }
         }
 
@@ -99,7 +99,7 @@
             {
                 if (Equals(value, _isSelected)) return;
                 _isSelected = value.Value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -110,7 +110,7 @@
             {
                 if (Equals(value, _isEditing)) return;
                 _isEditing = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -121,8 +121,8 @@
             {
                 if (Equals(value, _isTableSelected)) return;
                 _isTableSelected = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsEnabled));
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsEnabled));
             }
         }
 

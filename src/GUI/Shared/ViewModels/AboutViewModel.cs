@@ -2,9 +2,8 @@
 {
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using Shared.BLL;
     using Shared.DAL;
     using Shared.Models;
@@ -12,7 +11,7 @@
     using System.ComponentModel;
     using System.Windows.Input;
 
-    public class AboutViewModel : ObservableObject, IAboutViewModel
+    public class AboutViewModel : ViewModelBase, IAboutViewModel
     {
         private readonly AboutExtensionModel _aboutExtensionModel;
         private readonly IExtensionVersionService _extensionVersionService;
@@ -34,7 +33,7 @@
             {
                 if (Equals(value, _version)) return;
                 _version = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 

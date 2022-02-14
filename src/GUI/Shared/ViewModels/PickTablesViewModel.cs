@@ -2,9 +2,8 @@
 {
     using Contracts.EventArgs;
     using Contracts.ViewModels;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using RevEng.Shared;
     using System;
     using System.Collections.Generic;
@@ -13,7 +12,7 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
 
-    public class PickTablesViewModel : ObservableObject, IPickTablesViewModel
+    public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {
 
         private bool? _tableSelectionThreeState;
@@ -45,7 +44,7 @@
             {
                 if (Equals(value, _tableSelectionThreeState)) return;
                 _tableSelectionThreeState = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
                 HandleTableSelectionThreeStateChange(value);
             }
         }
@@ -57,7 +56,7 @@
             {
                 if (Equals(value, _searchText)) return;
                 _searchText = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
                 HandleSearchTextChange(_searchText, _searchMode);
             }
         }
@@ -69,7 +68,7 @@
             {
                 if (Equals(value, _searchMode)) return;
                 _searchMode = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
                 HandleSearchTextChange(_searchText, _searchMode);
             }
         }

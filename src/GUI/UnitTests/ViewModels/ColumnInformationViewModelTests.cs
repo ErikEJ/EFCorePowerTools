@@ -3,7 +3,7 @@
 namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.ViewModels;
-    using CommunityToolkit.Mvvm.Messaging;
+    using GalaSoft.MvvmLight.Messaging;
     using Moq;
 
     [TestFixture]

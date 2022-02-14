@@ -5,16 +5,15 @@ namespace EFCorePowerTools.ViewModels
     using Contracts.EventArgs;
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
-    using CommunityToolkit.Mvvm.ComponentModel;
-    using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.Mvvm.Input;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.CommandWpf;
     using Shared.DAL;
     using Shared.Models;
     using System;
     using System.Collections.Generic;
     using System.Windows.Input;
 
-    public class ModelingOptionsViewModel : ObservableObject, IModelingOptionsViewModel
+    public class ModelingOptionsViewModel : ViewModelBase, IModelingOptionsViewModel
     {
         private readonly IVisualStudioAccess _visualStudioAccess;
         private readonly Func<IAdvancedModelingOptionsDialog> _advancedModelingOptionsDialogFactory;
@@ -39,7 +38,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 if (value == _title) return;
                 _title = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -50,7 +49,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 if (value == _mayIncludeConnectionString) return;
                 _mayIncludeConnectionString = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
