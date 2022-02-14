@@ -90,6 +90,17 @@ namespace RevEng.Core
             if (options.SelectedToBeGenerated != 2)
             {
                 procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
+                if (procedurePaths != null)
+                {
+                    var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
+                    var index = dbContextLines.IndexOf("            OnModelCreatingPartial(modelBuilder);");
+                    if (index != -1)
+                    {
+                        dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
+                        File.WriteAllLines(filePaths.ContextFile, dbContextLines);
+                    }
+                }
+
 
                 functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 #if CORE50 || CORE60
