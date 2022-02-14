@@ -116,7 +116,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("}");
                     }
                     _sb.AppendLine("}");
-                    _sb.AppendLine("");
+                    _sb.AppendLine();
                     _sb.AppendLine($"public {scaffolderOptions.ContextName}Procedures GetProcedures()");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
@@ -124,7 +124,20 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("return Procedures;");
                     }
                     _sb.AppendLine("}");
+                    _sb.AppendLine();
+                    _sb.AppendLine("partial void OnModelCreatingPartial(ModelBuilder modelBuilder)");
+                    _sb.AppendLine("{");
+                    using (_sb.Indent())
+                    {
+                        foreach (var procedure in model.Routines)
+                        {
+                            var identifier = GenerateIdentifierName(procedure, model);
+                            _sb.AppendLine($"modelBuilder.Entity<{identifier}>().HasNoKey().ToTable(null);");
+                        }
+                    }
+                    _sb.AppendLine("}");
                 }
+
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
