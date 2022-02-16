@@ -31,6 +31,19 @@ namespace ScaffoldingTester.Models
         {
             return Procedures;
         }
+
+        protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CustOrderHistResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<CustOrdersDetailResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<CustOrdersOrdersResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<EmployeeSalesbyCountryResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<MultiSetResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<OutputScenariosResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<SalesbyYearResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<SalesByCategoryResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<TenMostExpensiveProductsResult>().HasNoKey().ToView(null);
+        }
     }
 
     public interface INorthwindContextProceduresContract
@@ -43,7 +56,6 @@ namespace ScaffoldingTester.Models
         Task<int> OutputScenariosAsync(short? Year, CancellationToken cancellationToken = default);
         Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default);
         Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string CategoryName, string OrdYear, CancellationToken cancellationToken = default);
-        Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[] Parents, byte[] geo, byte[] geom, CancellationToken cancellationToken = default);
         Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(CancellationToken cancellationToken = default);
     }
 
@@ -308,47 +320,6 @@ namespace ScaffoldingTester.Models
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<SalesByCategoryResult>("EXEC @returnValue = [dbo].[SalesByCategory] @CategoryName, @OrdYear", sqlParameters, cancellationToken);
-
-            returnValue?.SetValue(parameterreturnValue.Value);
-
-            return _;
-        }
-
-        public virtual async Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[] Parents, byte[] geo, byte[] geom, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
-        {
-            var parameterreturnValue = new SqlParameter
-            {
-                ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.Output,
-                SqlDbType = System.Data.SqlDbType.Int,
-            };
-
-            var sqlParameters = new []
-            {
-                new SqlParameter
-                {
-                    ParameterName = "Parents",
-                    Value = Parents ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "hierarchyid",
-                },
-                new SqlParameter
-                {
-                    ParameterName = "geo",
-                    Value = geo ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "geography",
-                },
-                new SqlParameter
-                {
-                    ParameterName = "geom",
-                    Value = geom ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "geometry",
-                },
-                parameterreturnValue,
-            };
-            var _ = await _context.SqlQueryAsync<SpecialTypesResult>("EXEC @returnValue = [dbo].[SpecialTypes] @Parents, @geo, @geom", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

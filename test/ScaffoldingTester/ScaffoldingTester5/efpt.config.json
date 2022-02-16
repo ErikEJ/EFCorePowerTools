@@ -165,20 +165,17 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[SpecialTypes]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[Ten Most Expensive Products]",
          "ObjectType": 1
       }
    ],
-   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",
+   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
+   "UseHierarchyId": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
