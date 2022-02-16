@@ -34,7 +34,8 @@ namespace EFCorePowerTools
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "2.5", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(GuidList.guidDbContextPackagePkgString)]
-    [ProvideOptionPage(typeof(OptionsPageGeneral), "EF Core Power Tools", "General", 100, 101, true)]
+    [ProvideOptionPage(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
+    [ProvideProfile(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // ReSharper disable once InconsistentNaming
@@ -72,6 +73,7 @@ namespace EFCorePowerTools
                 {
                     var menuCommandId3 = new CommandID(GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDgmlBuild);
+
                     var menuItem3 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
                         OnProjectMenuBeforeQueryStatus, menuCommandId3);
                     oleMenuCommandService.AddCommand(menuItem3);
@@ -157,7 +159,9 @@ namespace EFCorePowerTools
             return await VS.Shell.GetVsVersionAsync();
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
             var menuCommand = sender as MenuCommand;
             if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
@@ -191,7 +195,9 @@ namespace EFCorePowerTools
                 itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
             var menuCommand = sender as MenuCommand;
 
@@ -212,7 +218,9 @@ namespace EFCorePowerTools
             menuCommand.Visible = project.IsCSharpProject();
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnReverseEngineerConfigFileMenuInvokeHandler(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
             try
             {
@@ -270,7 +278,9 @@ namespace EFCorePowerTools
             return parent as Project;
         }
 
+#pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnProjectContextMenuInvokeHandler(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
         {
             try
             {

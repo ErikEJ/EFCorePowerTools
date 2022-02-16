@@ -138,8 +138,10 @@
         {
             _visualStudioAccess = visualStudioAccess;
 
+#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
             LoadedCommand = new RelayCommand(async () => await Loaded_ExecutedAsync());
             _applyCommand = new RelayCommand(async () => await Apply_ExecutedAsync(), () => !_applying);
+#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
             CancelCommand = new RelayCommand(Cancel_Executed);
         }
 

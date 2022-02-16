@@ -23,6 +23,7 @@ namespace RevEng.Core.Procedures
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
             : base(code)
         {
+            FileNameSuffix = "Procedures";
         }
 
         public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
