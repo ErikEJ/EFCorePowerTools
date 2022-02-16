@@ -116,7 +116,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("}");
                     }
                     _sb.AppendLine("}");
-                    _sb.AppendLine("");
+                    _sb.AppendLine();
                     _sb.AppendLine($"public {scaffolderOptions.ContextName}Procedures GetProcedures()");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
@@ -124,7 +124,9 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("return Procedures;");
                     }
                     _sb.AppendLine("}");
+                    GenerateModelCreation(model);
                 }
+
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
@@ -349,6 +351,25 @@ namespace RevEng.Core.Procedures
             var line = GenerateContractSignature(procedure, paramStrings, identifier);
 
             _sb.AppendLine(line);
+        }
+
+        private void GenerateModelCreation(RoutineModel model)
+        {
+            _sb.AppendLine();
+            _sb.AppendLine("protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)");
+            _sb.AppendLine("{");
+
+            using (_sb.Indent())
+            {
+                foreach (var procedure in model.Routines.Cast<Procedure>())
+                {
+                    var typeName = GenerateIdentifierName(procedure, model) + "Result";
+
+                    _sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey().ToView(null);");
+                }
+            }
+
+            _sb.AppendLine("}");
         }
 
         private string GenerateMultiResultId(Routine procedure, RoutineModel model)
