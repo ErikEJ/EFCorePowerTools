@@ -545,7 +545,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 _package.LogError(revEngResult.EntityWarnings, null);
             }
 
-            Telemetry.TrackFrameworkUse(options.CodeGenerationMode);
+            Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
         }
 
         private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)

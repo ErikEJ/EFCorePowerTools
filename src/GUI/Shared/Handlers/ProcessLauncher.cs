@@ -227,17 +227,17 @@ namespace EFCorePowerTools.Handlers
             if (versionInfo.Item2.StartsWith("5.", StringComparison.OrdinalIgnoreCase))
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt50.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(RevEng.Shared.CodeGenerationMode.EFCore5);                
+                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Shared.CodeGenerationMode.EFCore5);                
             }
             else if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt60.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(RevEng.Shared.CodeGenerationMode.EFCore6);
+                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Shared.CodeGenerationMode.EFCore6);
             }
             else
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(RevEng.Shared.CodeGenerationMode.EFCore3);
+                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Shared.CodeGenerationMode.EFCore3);
             }
 
             return toDir;

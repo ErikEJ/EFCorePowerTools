@@ -41,12 +41,12 @@ namespace EFCorePowerTools.Helpers
             // Ignore
         }
 
-        public static void TrackFrameworkUse(CodeGenerationMode codeGenerationMode)
+        public static void TrackFrameworkUse(string prefix, CodeGenerationMode codeGenerationMode)
         {
 #if !DEBUG
             if (Enabled && _telemetry != null)
             {
-                _telemetry.TrackEvent($"EFCore:{codeGenerationMode}");
+                _telemetry.TrackEvent($"{prefix}:{codeGenerationMode}");
                 _telemetry.Flush();
             }
 #endif
