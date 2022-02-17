@@ -1,5 +1,6 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
+using RevEng.Shared;
 using System;
 
 namespace EFCorePowerTools.Helpers
@@ -38,6 +39,17 @@ namespace EFCorePowerTools.Helpers
         public static void TrackEvent(string key)
         {
             // Ignore
+        }
+
+        public static void TrackFrameworkUse(CodeGenerationMode codeGenerationMode)
+        {
+#if !DEBUG
+            if (Enabled && _telemetry != null)
+            {
+                _telemetry.TrackEvent($"EFCore:{codeGenerationMode}");
+                _telemetry.Flush();
+            }
+#endif
         }
 
         /// <summary>Tracks any exception.</summary>
