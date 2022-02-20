@@ -8,7 +8,7 @@
     public class AboutExtensionModel : INotifyPropertyChanged
     {
         public string SourceCodeUrl => "https://github.com/ErikEJ/EFCorePowerTools";
-        public string MarketplaceUrl => "https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools#review-details";
+        public string MarketplaceUrl => "https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details";
 
         private Version _extensionVersion;
 

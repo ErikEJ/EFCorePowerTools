@@ -533,7 +533,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             else
             {
                 // TODO Must wait for update for 16 - 17 incompat, see https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/281
-                // TODO ratingPrompt.RegisterSuccessfulUsage();
+                // ratingPrompt.RegisterSuccessfulUsage();
             }
 
             if (revEngResult.EntityErrors.Count > 0)
