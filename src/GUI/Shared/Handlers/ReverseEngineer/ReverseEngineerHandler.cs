@@ -21,14 +21,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
     internal class ReverseEngineerHandler
     {
         private readonly EFCorePowerToolsPackage _package;
-        private readonly RatingPrompt ratingPrompt;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
         {
             _package = package;
-            ratingPrompt = new RatingPrompt("ErikEJ.EFCorePowerTools", "EF Core Power Tools", AdvancedOptions.Instance);
             reverseEngineerHelper = new ReverseEngineerHelper();
             vsDataHelper = new VsDataHelper();
 
@@ -529,11 +527,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
                 VSHelper.ShowMessage(errors);
-            }
-            else
-            {
-                // TODO Must wait for update for 16 - 17 incompat, see https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/281
-                // ratingPrompt.RegisterSuccessfulUsage();
             }
 
             if (revEngResult.EntityErrors.Count > 0)

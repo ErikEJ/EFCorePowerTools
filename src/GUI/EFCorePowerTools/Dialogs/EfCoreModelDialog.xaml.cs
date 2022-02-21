@@ -5,7 +5,9 @@
     using Shared.DAL;
     using Shared.Models;
     using System;
+    using System.Diagnostics;
     using System.Windows;
+    using System.Windows.Documents;
 
     public partial class EfCoreModelDialog : IModelingOptionsDialog
     {
@@ -56,6 +58,16 @@
         {
             _applyPresets(presets);
             return this;
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            var hyperlink = sender as Hyperlink;
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri),
+            };
+            process.Start();
         }
     }
 }
