@@ -46,20 +46,20 @@ namespace ScaffoldingTester.Models
         }
     }
 
-    public interface INorthwindContextProceduresContract
+    public interface INorthwindContextProcedures
     {
-        Task<List<CustOrderHistResult>> CustOrderHistAsync(string CustomerID, CancellationToken cancellationToken = default);
-        Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? OrderID, CancellationToken cancellationToken = default);
-        Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string CustomerID, CancellationToken cancellationToken = default);
-        Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default);
-        Task<List<MultiSetResult>> MultiSetAsync(DateTime? Year, decimal? ProductValue, CancellationToken cancellationToken = default);
-        Task<int> OutputScenariosAsync(short? Year, CancellationToken cancellationToken = default);
-        Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default);
-        Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string CategoryName, string OrdYear, CancellationToken cancellationToken = default);
-        Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(CancellationToken cancellationToken = default);
+        Task<List<CustOrderHistResult>> CustOrderHistAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? OrderID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<MultiSetResult>> MultiSetAsync(DateTime? Year, decimal? ProductValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<int> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string CategoryName, string OrdYear, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 
-    public partial class NorthwindContextProcedures
+    public partial class NorthwindContextProcedures : INorthwindContextProcedures
     {
         private readonly NorthwindContext _context;
 

@@ -131,19 +131,20 @@ namespace RevEng.Core.Procedures
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
-                _sb.AppendLine($"public interface I{scaffolderOptions.ContextName}ProceduresContract");
+                _sb.AppendLine($"public interface I{scaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
                 using (_sb.Indent())
                 {
                     foreach (var procedure in model.Routines)
                     {
-                        GenerateProcedureContract(procedure, model);
+                        GenerateProcedure(procedure, model, true);
+                        _sb.AppendLine(";");
                     }
                 }
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
-                _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}Procedures");
+                _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}Procedures : I{scaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
 
                 using (_sb.Indent())
@@ -163,7 +164,7 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    GenerateProcedure(procedure, model);
+                    GenerateProcedure(procedure, model, false);
                 }
 
                 if (model.Routines.Any(r => r.SupportsMultipleResultSet))
@@ -229,7 +230,7 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private void GenerateProcedure(Routine procedure, RoutineModel model)
+        private void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
@@ -251,7 +252,13 @@ namespace RevEng.Core.Procedures
 
             var identifier = GenerateIdentifierName(procedure, model);
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly);
+
+            if (signatureOnly)
+            {
+                _sb.Append(line);
+                return;
+            }
 
             using (_sb.Indent())
             {
@@ -341,18 +348,20 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private void GenerateProcedureContract(Routine procedure, RoutineModel model)
-        {
-            var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
-                .ToList();
+        //private void GenerateProcedureContract(Routine procedure, RoutineModel model)
+        //{
+        //    var paramStrings = procedure.Parameters.Where(p => !p.Output)
+        //        .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
+        //        .ToList();
 
-            var identifier = GenerateIdentifierName(procedure, model);
+        //    var identifier = GenerateIdentifierName(procedure, model);
 
-            var line = GenerateContractSignature(procedure, paramStrings, identifier);
 
-            _sb.AppendLine(line);
-        }
+
+        //    var line = GenerateMethodSignature(procedure, , paramStrings,  GenerateContractSignature(procedure, paramStrings, identifier);
+
+        //    _sb.AppendLine(line);
+        //}
 
         private void GenerateModelCreation(RoutineModel model)
         {
@@ -424,7 +433,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId)
+        private string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly)
         {
             string returnType;
 
@@ -445,6 +454,11 @@ namespace RevEng.Core.Procedures
             }
 
             var line = $"public virtual async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
+
+            if (signatureOnly)
+            {
+                line = $"{returnType} {identifier}Async({string.Join(", ", paramStrings)}";
+            }
 
             if (outParams.Any())
             {
