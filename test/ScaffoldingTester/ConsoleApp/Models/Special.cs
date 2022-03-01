@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
 namespace ConsoleApp.Models
@@ -10,7 +9,6 @@ namespace ConsoleApp.Models
     public partial class Special
     {
         public int Id { get; set; }
-        public HierarchyId Test1 { get; set; }
         public Geometry Test2 { get; set; }
         public Geometry Test3 { get; set; }
     }

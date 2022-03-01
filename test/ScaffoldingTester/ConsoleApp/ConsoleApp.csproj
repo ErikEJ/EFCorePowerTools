@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-	 <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.Dacpac" Version="6.0.1-preview2" />
-	 <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+	 <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="3.0.1" />
+	 <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.Dacpac" Version="6.0.1" />
+	 <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.2" />
+	 <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
 	   <PrivateAssets>all</PrivateAssets>
 	   <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	 </PackageReference>     

@@ -14,8 +14,6 @@ namespace ConsoleApp.Models.Configurations
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.Property(e => e.Test1).IsRequired();
-
             entity.Property(e => e.Test2)
                 .IsRequired()
                 .HasColumnType("geometry");
