@@ -97,20 +97,24 @@ namespace RevEng.Core
                     => new CustomTemplateFileService(options.OptionsPath));
             }
 
+#if CORE50 || CORE60
+            if (options.UseLegacyPluralizer)
+            {
+                serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
+            }
+#else
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)
                 {
                     serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
                 }
-#if CORE50 || CORE60
-#else
                 else
                 {
                     serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
                 }
-#endif
             }
+#endif
 
             // Add database provider services
             switch (options.DatabaseType)
