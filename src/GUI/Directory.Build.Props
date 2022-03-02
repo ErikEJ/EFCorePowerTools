@@ -2,7 +2,7 @@
 <Project>
 
   <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.35.0.42613">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.36.0.43782">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

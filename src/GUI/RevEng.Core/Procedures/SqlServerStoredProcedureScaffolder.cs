@@ -348,21 +348,6 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        //private void GenerateProcedureContract(Routine procedure, RoutineModel model)
-        //{
-        //    var paramStrings = procedure.Parameters.Where(p => !p.Output)
-        //        .Select(p => $"{code.Reference(p.ClrType())} {p.Name}")
-        //        .ToList();
-
-        //    var identifier = GenerateIdentifierName(procedure, model);
-
-
-
-        //    var line = GenerateMethodSignature(procedure, , paramStrings,  GenerateContractSignature(procedure, paramStrings, identifier);
-
-        //    _sb.AppendLine(line);
-        //}
-
         private void GenerateModelCreation(RoutineModel model)
         {
             _sb.AppendLine();
