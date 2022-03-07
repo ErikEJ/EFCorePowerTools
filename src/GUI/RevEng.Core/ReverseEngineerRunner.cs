@@ -340,7 +340,12 @@ namespace RevEng.Core
             {
                 try
                 {
-                    File.Delete(codeFile);
+                    if (File.Exists(codeFile))
+                    {
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(codeFile,
+                            Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                            Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+                    }
                 }
                 catch 
                 { 
