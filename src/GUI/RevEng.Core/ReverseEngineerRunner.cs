@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Design.Internal;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
