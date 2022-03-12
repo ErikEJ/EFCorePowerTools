@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery</PackageId>
 		<PackageVersion>5.0.0-preview2</PackageVersion>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.EntityFrameworkCore
 {
+    /// <summary>
+    /// Useful extensions for DbContext.
+    /// </summary>
     public static class DbContextExtensions
     {
         /// <summary>
@@ -20,11 +23,13 @@ namespace Microsoft.EntityFrameworkCore
         /// Alternatively, you can also construct a DbParameter and supply it to SqlQuery. This allows you to use named parameters in the SQL query string.
         /// context.Database.SqlQuery&lt;Post&gt;("SELECT Name AS Value FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));
         /// </summary>
-        /// <typeparam name="TElement"> The type of object returned by the query. </typeparam>
+        /// <typeparam name="T"> The type of object returned by the query. </typeparam>
+        /// <param name="db"> The DbContext. </param>
         /// <param name="sql"> The SQL query string. </param>
         /// <param name="parameters"> 
         /// The parameters to apply to the SQL query string.
         /// </param>
+        /// <param name="cancellationToken"> Cancellation token. </param>
         /// <returns>
         /// A <see cref="List{T}" /> object that will contain the result of the query.
         /// </returns>
@@ -60,11 +65,13 @@ namespace Microsoft.EntityFrameworkCore
         /// Alternatively, you can also construct a DbParameter and supply it to SqlQuery. This allows you to use named parameters in the SQL query string.
         /// context.Database.SqlQuery&lt;Post&gt;("SELECT * FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));
         /// </summary>
-        /// <typeparam name="TElement"> The type of object returned by the query. </typeparam>
+        /// <typeparam name="T"> The type of object returned by the query. </typeparam>
+        /// <param name="db"></param>
         /// <param name="sql"> The SQL query string. </param>
-        /// <param name="parameters"> 
+        /// <param name="parameters">
         /// The parameters to apply to the SQL query string.
         /// </param>
+        /// <param name="cancellationToken"> Cancellation token. </param>
         /// <returns>
         /// A <see cref="List{T}" /> object that will contain the result of the query.
         /// </returns>

@@ -2,14 +2,18 @@
 
 namespace Microsoft.EntityFrameworkCore
 {
+    /// <summary>
+    /// Output paramter.
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
     public class OutputParameter<TValue>
     {
         private bool _valueSet = false;
+        private TValue _value;
 
-#pragma warning disable S1104 // Fields should not have public accessibility
-        public TValue _value;
-#pragma warning restore S1104 // Fields should not have public accessibility
-
+        /// <summary>
+        /// The resulting value of the parameter.
+        /// </summary>
         public TValue Value
         {
             get
