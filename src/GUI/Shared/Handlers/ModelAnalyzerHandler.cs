@@ -114,12 +114,11 @@ namespace EFCorePowerTools.Handlers
 
         private async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
         {
-            var dgmlBuilder = new Dgml.Builder();
             string target = null;
 
             foreach (var info in modelResult)
             {
-                var dgmlText = dgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
+                var dgmlText = Dgml.Builder.Build(info.Item2, info.Item1, GetTemplate());
 
                 if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
                     || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)

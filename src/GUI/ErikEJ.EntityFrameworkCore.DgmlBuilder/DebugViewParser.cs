@@ -29,7 +29,7 @@ namespace Dgml
                     var props = line.Trim().Split(' ').ToList();
                     if (props.Count > 0)
                     {
-                        changeTrackingStrategy = props.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy."));
+                        changeTrackingStrategy = props.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
                         if (string.IsNullOrEmpty(changeTrackingStrategy))
                             changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
 
