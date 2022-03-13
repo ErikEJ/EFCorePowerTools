@@ -18,7 +18,7 @@ namespace efreveng
 
                 if (args.Length > 0)
                 {
-                    if ((args.Count() == 3 || args.Count() == 4)
+                    if ((args.Length == 3 || args.Length == 4)
                         && int.TryParse(args[1], out int dbTypeInt)
                         && bool.TryParse(args[0], out bool mergeDacpacs))
                     {

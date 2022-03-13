@@ -370,7 +370,7 @@ namespace Dgml
         {
             var i = asField ? 0 : 1;
             var result = type.Replace("(", string.Empty).Replace(")", string.Empty);
-            if (result.Contains(","))
+            if (result.Contains(','))
             {
                 return System.Security.SecurityElement.Escape(result.Split(',')[i]);
             }

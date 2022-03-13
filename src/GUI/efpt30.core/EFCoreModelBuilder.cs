@@ -16,19 +16,21 @@ using System.Text;
 
 namespace Modelling
 {
-    public class EfCoreModelBuilder
+    public static class EfCoreModelBuilder
     {
-        public List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath)
+#pragma warning disable CA1002 // Do not expose generic lists
+        public static List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath)
         {
             return BuildResult(outputPath, startupOutputPath ?? outputPath, false);
         }
 
-        public List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath, string startupOutputPath)
+        public static List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath, string startupOutputPath)
         {
             return BuildResult(outputPath, startupOutputPath ?? outputPath, true);
         }
+#pragma warning restore CA1002 // Do not expose generic lists
 
-        private List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath,  bool generateDdl)
+        private static List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath,  bool generateDdl)
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath, startupOutputPath);
@@ -81,7 +83,7 @@ namespace Modelling
             return builder.ToString();
         }
 
-        private List<Type> GetDbContextTypes(DbContextOperations operations)
+        private static List<Type> GetDbContextTypes(DbContextOperations operations)
         {
             var types = operations.GetContextTypes().ToList();
             if (types.Count == 0)
@@ -91,7 +93,7 @@ namespace Modelling
             return types;
         }
 
-        private DbContextOperations GetOperations(string outputPath, string startupOutputPath)
+        private static DbContextOperations GetOperations(string outputPath, string startupOutputPath)
         {
             var assembly = Load(outputPath);
             if (assembly == null)
@@ -115,7 +117,7 @@ namespace Modelling
 #endif
         }
 
-        private Assembly Load(string assemblyPath)
+        private static Assembly Load(string assemblyPath)
         {
             return File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : null;
         }

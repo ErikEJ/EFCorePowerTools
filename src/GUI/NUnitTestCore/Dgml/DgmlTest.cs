@@ -11,7 +11,6 @@ namespace UnitTests
     [TestFixture]
     public class DgmlTest
     {
-        private readonly DebugViewParser _parser = new DebugViewParser();
         private string _template;
 
         [SetUp]
@@ -28,7 +27,7 @@ namespace UnitTests
             var debugView = ReadAllLines("Aw2014Person.txt");
 
             // Act
-            var result = _parser.Parse(debugView, "Test");
+            var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
             Assert.AreEqual(110, result.Nodes.Count);
@@ -44,7 +43,7 @@ namespace UnitTests
             var debugView = ReadAllLines("Northwind.txt");
 
             // Act
-            var result = _parser.Parse(debugView, "Test");
+            var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
             Assert.AreEqual(129, result.Nodes.Count);
@@ -60,7 +59,7 @@ namespace UnitTests
             var debugView = ReadAllLines("Pfizer.txt");
 
             // Act
-            var result = _parser.Parse(debugView, "Test");
+            var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
             Assert.AreEqual(160, result.Nodes.Count);
@@ -74,7 +73,7 @@ namespace UnitTests
             var debugView = ReadAllLines("Issue604.txt");
 
             // Act
-            var result = _parser.Parse(debugView, "Test");
+            var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
             Assert.AreEqual(124, result.Nodes.Count);
@@ -85,8 +84,7 @@ namespace UnitTests
         public void BuildChinook()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -98,8 +96,7 @@ namespace UnitTests
         public void BuildSample1()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Aw2014Person.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Aw2014Person.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -111,8 +108,7 @@ namespace UnitTests
         public void BuildNorthwind()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Northwind.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Northwind.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -124,8 +120,7 @@ namespace UnitTests
         public void BuildPfizer()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Pfizer.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Pfizer.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -137,8 +132,7 @@ namespace UnitTests
         public void BuildBNoFk()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("NoFk.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("NoFk.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -150,8 +144,7 @@ namespace UnitTests
         public void BuildSingleNav()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("SingleNav.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("SingleNav.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -163,8 +156,7 @@ namespace UnitTests
         public void BuildSamurai()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Samurai.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Samurai.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -176,8 +168,7 @@ namespace UnitTests
         public void BuildIssue604()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Issue604.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Issue604.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -189,8 +180,7 @@ namespace UnitTests
         public void BuildIssue687()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Issue687.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Issue687.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -202,8 +192,7 @@ namespace UnitTests
         public void BuildIdentity()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("Identity.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("Identity.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -215,8 +204,7 @@ namespace UnitTests
         public void BuildLongView50()
         {
             // Act
-            var builder = new Dgml.Builder();
-            var result = builder.Build(ReadAllText("longview50.txt"), "test", _template);
+            var result = Builder.Build(ReadAllText("longview50.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);

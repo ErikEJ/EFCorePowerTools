@@ -12,6 +12,11 @@ namespace Microsoft.EntityFrameworkCore
     {
         public static string AsDgml(this DbContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             Type type = context.GetType();
 
             var debugView = CreateDebugView(context);
@@ -22,6 +27,11 @@ namespace Microsoft.EntityFrameworkCore
 
         public static string AsSqlScript(this DbContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             return context.Database.GenerateCreateScript();
         }
 

@@ -3,58 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+[assembly: CLSCompliant(true)]
+
 namespace Modelling
 {
+    
     static class Program
     {
         static int Main(string[] args)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 Console.OutputEncoding = Encoding.UTF8;
 
                 if (args.Length > 0)
                 {
-                    var builder = new EfCoreModelBuilder();
-                    var migrationsBuilder = new EfCoreMigrationsBuilder();
-#if CORE50 
-                    var compareBuilder = new EfCoreCompareBuilder();
-#endif
                     List<Tuple<string, string>> result;
 
-                    if (args.Contains("ddl") && args.Count() >= 3)
+                    if (args.Contains("ddl") && args.Length >= 3)
                     {
-                        result = builder.GenerateDatabaseCreateScript(args[1], args[2]);
+                        result = EfCoreModelBuilder.GenerateDatabaseCreateScript(args[1], args[2]);
                     }
 #if CORE50
-                    else if (args.Contains("contextlist") && args.Count() >= 3)
+                    else if (args.Contains("contextlist") && args.Length >= 3)
                     {
-                        result = compareBuilder.GenerateDbContextList(args[1], args[2]);
+                        result = EfCoreCompareBuilder.GenerateDbContextList(args[1], args[2]);
                     }
-                    else if (args.Contains("schemacompare") && args.Count() >= 5)
+                    else if (args.Contains("schemacompare") && args.Length >= 5)
                     {
-                        result = compareBuilder.GenerateSchemaCompareResult(args[1], args[2], args[3], args[4]);
+                        result = EfCoreCompareBuilder.GenerateSchemaCompareResult(args[1], args[2], args[3], args[4]);
                     }
 #endif
-                    else if (args.Contains("migrationstatus") && args.Count() >= 3)
+                    else if (args.Contains("migrationstatus") && args.Length >= 3)
                     {
-                        result = migrationsBuilder.GenerateMigrationStatusList(args[1], args[2]);
+                        result = EfCoreMigrationsBuilder.GenerateMigrationStatusList(args[1], args[2]);
                     }
-                    else if (args.Contains("migrate") && args.Count() >= 4)
+                    else if (args.Contains("migrate") && args.Length >= 4)
                     {
-                        result = migrationsBuilder.Migrate(args[1], args[2], args[3]);
+                        result = EfCoreMigrationsBuilder.Migrate(args[1], args[2], args[3]);
                     }
-                    else if (args.Contains("scriptmigration") && args.Count() >= 4)
+                    else if (args.Contains("scriptmigration") && args.Length >= 4)
                     {
-                        result = migrationsBuilder.ScriptMigration(args[1], args[2], args[3]);
+                        result = EfCoreMigrationsBuilder.ScriptMigration(args[1], args[2], args[3]);
                     }
-                    else if (args.Contains("addmigration") && args.Count() >= 7)
+                    else if (args.Contains("addmigration") && args.Length >= 7)
                     {
-                        result = migrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5], args[6]);
+                        result = EfCoreMigrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5], args[6]);
                     }
                     else
                     {
-                        result = builder.GenerateDebugView(args[0], args[1]);
+                        result = EfCoreModelBuilder.GenerateDebugView(args[0], args[1]);
                     }
                     foreach (var tuple in result)
                     {
@@ -78,6 +77,7 @@ namespace Modelling
                 Console.Out.WriteLine(ex);
                 return 1;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }

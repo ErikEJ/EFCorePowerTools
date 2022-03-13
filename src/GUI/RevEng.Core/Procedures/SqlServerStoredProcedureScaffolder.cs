@@ -39,7 +39,7 @@ namespace RevEng.Core.Procedures
             return files;
         }
 
-        private string GetDbContextExtensionsText()
+        private static string GetDbContextExtensionsText()
         {
             var assembly = typeof(SqlServerStoredProcedureScaffolder).GetTypeInfo().Assembly;
             using Stream stream = assembly.GetManifestResourceStream("RevEng.Core.DbContextExtensions");
@@ -465,29 +465,6 @@ namespace RevEng.Core.Procedures
             line += ", CancellationToken cancellationToken = default)";
 
             return line;
-        }
-
-        private string GenerateContractSignature(Routine procedure, IEnumerable<string> paramStrings, string identifier)
-        {
-            string returnType;
-
-            if (procedure.HasValidResultSet && procedure.Results[0].Count == 0)
-            {
-                returnType = $"Task<int>";
-            }
-            else
-            {
-                returnType = $"Task<List<{identifier}Result>>";
-            }
-
-            returnType += $" {identifier}Async({string.Join(", ", paramStrings)}";
-
-            if (paramStrings.Any())
-            {
-                returnType += $", ";
-            }
-
-            return returnType + "CancellationToken cancellationToken = default);";
         }
 
         private void GenerateParameterVar(ModuleParameter parameter, Routine procedure)

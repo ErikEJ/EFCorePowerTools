@@ -20,29 +20,31 @@ using System.Reflection;
 
 namespace Modelling
 {
-    public class EfCoreMigrationsBuilder
+    public static class EfCoreMigrationsBuilder
     {
-        public List<Tuple<string, string>> GenerateMigrationStatusList(string outputPath, string startupOutputPath)
+#pragma warning disable CA1002 // Do not expose generic lists
+        public static List<Tuple<string, string>> GenerateMigrationStatusList(string outputPath, string startupOutputPath)
         {
             return GetMigrationStatus(outputPath, startupOutputPath ?? outputPath);
         }
 
-        public List<Tuple<string, string>> Migrate(string outputPath, string startupOutputPath, string contextName)
+        public static List<Tuple<string, string>> Migrate(string outputPath, string startupOutputPath, string contextName)
         {
             return BuildMigrationResult(outputPath, startupOutputPath ?? outputPath, null, contextName, false, false, null, null);
         }
 
-        public List<Tuple<string, string>> AddMigration(string outputPath, string startupOutputPath, string projectPath, string contextName, string migrationIdentifier, string nameSpace)
+        public static List<Tuple<string, string>> AddMigration(string outputPath, string startupOutputPath, string projectPath, string contextName, string migrationIdentifier, string nameSpace)
         {
             return BuildMigrationResult(outputPath, startupOutputPath ?? outputPath, projectPath, contextName, true, false, migrationIdentifier, nameSpace);
         }
 
-        public List<Tuple<string, string>> ScriptMigration(string outputPath, string startupOutputPath, string contextName)
+        public static List<Tuple<string, string>> ScriptMigration(string outputPath, string startupOutputPath, string contextName)
         {
             return BuildMigrationResult(outputPath, startupOutputPath ?? outputPath, null, contextName, false, true, null, null);
         }
+#pragma warning restore CA1002 // Do not expose generic lists
 
-        private List<Tuple<string, string>> BuildMigrationResult(string outputPath, string startupOutputPath, string projectPath, string contextName, bool addMigration, bool scriptMigration, string migrationIdentifier, string nameSpace)
+        private static List<Tuple<string, string>> BuildMigrationResult(string outputPath, string startupOutputPath, string projectPath, string contextName, bool addMigration, bool scriptMigration, string migrationIdentifier, string nameSpace)
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath, startupOutputPath);
@@ -70,7 +72,7 @@ namespace Modelling
             return result;
         }
 
-        private List<Tuple<string, string>> GetMigrationStatus(string outputPath, string startupOutputPath)
+        private static List<Tuple<string, string>> GetMigrationStatus(string outputPath, string startupOutputPath)
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath, startupOutputPath);
@@ -84,7 +86,7 @@ namespace Modelling
             return result;
         }
 
-        private string GetMigrationStatus(DbContext context)
+        private static string GetMigrationStatus(DbContext context)
         {
             var relationalDatabaseCreator = context.GetService<IDatabaseCreator>() as IRelationalDatabaseCreator;
             if (relationalDatabaseCreator == null)
@@ -117,9 +119,9 @@ namespace Modelling
             var pendingModelChanges = (!databaseExists || hasDifferences);
 #elif CORE60
             var hasDifferences = false;
-            if (migrationsAssembly.ModelSnapshot != null)
+            if (migrationsAssembly?.ModelSnapshot != null)
             {
-                var snapshotModel = migrationsAssembly.ModelSnapshot?.Model;
+                var snapshotModel = migrationsAssembly.ModelSnapshot.Model;
 
                 if (snapshotModel is IMutableModel mutableModel)
                 {
@@ -165,7 +167,7 @@ namespace Modelling
             return "InSync";
         }
 
-        private string ScriptMigration(DbContext context, string outputPath, string startupOutputPath)
+        private static string ScriptMigration(DbContext context, string outputPath, string startupOutputPath)
         {
             var servicesBuilder = GetDesignTimeServicesBuilder(outputPath, startupOutputPath);
 
@@ -181,14 +183,14 @@ namespace Modelling
 #endif
         }
 
-        private string ApplyMigrations(DbContext context)
+        private static string ApplyMigrations(DbContext context)
         {
             context.Database.Migrate();
 
             return "Done";
         }
 
-        private string AddMigration(DbContext context, string outputPath, string startupOutputPath, string projectPath, string name, string nameSpace)
+        private static string AddMigration(DbContext context, string outputPath, string startupOutputPath, string projectPath, string name, string nameSpace)
         {
             var result = AddMigration(name, outputPath, startupOutputPath, projectPath, nameSpace, context);
             string status = result.MetadataFile + Environment.NewLine;
@@ -197,7 +199,7 @@ namespace Modelling
             return status;
         }
 
-        private MigrationFiles AddMigration(
+        private static MigrationFiles AddMigration(
             string name,
             string outputPath,
             string startupOutputPath,
@@ -224,7 +226,7 @@ namespace Modelling
             return scaffolder.Save(projectPath, migration, null);
         }
 
-        private List<Type> GetDbContextTypes(DbContextOperations operations)
+        private static List<Type> GetDbContextTypes(DbContextOperations operations)
         {
             var types = operations.GetContextTypes().ToList();
             if (types.Count == 0)
@@ -234,7 +236,7 @@ namespace Modelling
             return types;
         }
 
-        private DbContextOperations GetOperations(string outputPath, string startupOutputPath)
+        private static DbContextOperations GetOperations(string outputPath, string startupOutputPath)
         {
             var assembly = Load(outputPath);
             if (assembly == null)
@@ -258,7 +260,7 @@ namespace Modelling
 #endif
         }
 
-        private DesignTimeServicesBuilder GetDesignTimeServicesBuilder(string outputPath, string startupOutputPath)
+        private static DesignTimeServicesBuilder GetDesignTimeServicesBuilder(string outputPath, string startupOutputPath)
         {
             var assembly = Load(outputPath);
             if (assembly == null)
@@ -279,7 +281,7 @@ namespace Modelling
             return new DesignTimeServicesBuilder(assembly, startupAssembly ?? assembly, reporter, Array.Empty<string>());
         }
 
-        private Assembly Load(string assemblyPath)
+        private static Assembly Load(string assemblyPath)
         {
             return File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : null;
         }
@@ -294,7 +296,7 @@ namespace Modelling
             }
         }
 
-        private void EnsureMigrationsAssembly(IServiceProvider services, Assembly assembly)
+        private static void EnsureMigrationsAssembly(IServiceProvider services, Assembly assembly)
         {
             var assemblyName = assembly.GetName();
             var options = services.GetRequiredService<IDbContextOptions>();
