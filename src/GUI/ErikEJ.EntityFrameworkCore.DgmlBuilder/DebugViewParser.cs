@@ -5,10 +5,15 @@ using System.Text;
 
 namespace Dgml
 {
-    public class DebugViewParser
+    public static class DebugViewParser
     {
-        public DebugViewParserResult Parse(string[] debugViewLines, string dbContextName)
+        public static DebugViewParserResult Parse(string[] debugViewLines, string dbContextName)
         {
+            if (debugViewLines == null)
+            { 
+                throw new ArgumentNullException(nameof(debugViewLines));
+            }
+
             var result = new DebugViewParserResult();
 
             var modelAnnotated = false;
@@ -31,18 +36,18 @@ namespace Dgml
                         modelPropertyAccessMode = GetPropertyAccessMode(props);
                     }
                 }
-                if (line.StartsWith("Annotations:"))
+                if (line.StartsWith("Annotations:", StringComparison.Ordinal))
                 {
                     modelAnnotated = true;
                 }
                 if (modelAnnotated)
                 {
-                    if (line.TrimStart().StartsWith("ProductVersion: "))
+                    if (line.TrimStart().StartsWith("ProductVersion: ", StringComparison.Ordinal))
                     {
                         productVersion = line.Trim().Split(' ')[1];
                     }
-                    if (!line.TrimStart().StartsWith("ProductVersion: " ) &&
-                        !line.TrimStart().StartsWith("Annotations:"))
+                    if (!line.TrimStart().StartsWith("ProductVersion: ", StringComparison.Ordinal) &&
+                        !line.TrimStart().StartsWith("Annotations:", StringComparison.Ordinal))
                     {
                         modelAnnotations.AppendLine(line.Trim());
                     }
@@ -60,12 +65,12 @@ namespace Dgml
             foreach (var line in debugViewLines)
             {
                 i++;
-                if (line.TrimStart().StartsWith("EntityType:"))
+                if (line.TrimStart().StartsWith("EntityType:", StringComparison.Ordinal))
                 {
                     entityName = System.Security.SecurityElement.Escape(line.Trim().Split(' ')[1]);
                     BuildEntity(debugViewLines, entityName, i, result, properties, propertyLinks, line, ref inProperties);
                 }
-                if (line.TrimStart().StartsWith("Properties:"))
+                if (line.TrimStart().StartsWith("Properties:", StringComparison.Ordinal))
                 {
                     inProperties = true;
                     inOtherProperties = false;
@@ -73,15 +78,15 @@ namespace Dgml
 
                 if (!string.IsNullOrEmpty(entityName) && inProperties)
                 {
-                    if (line.StartsWith("    Keys:")
-                    ||  line.StartsWith("    Navigations:")
-                    ||  line.StartsWith("    Annotations:")
-                    ||  line.StartsWith("    Foreign keys:"))
+                    if (line.StartsWith("    Keys:", StringComparison.Ordinal)
+                    ||  line.StartsWith("    Navigations:", StringComparison.Ordinal)
+                    ||  line.StartsWith("    Annotations:", StringComparison.Ordinal)
+                    ||  line.StartsWith("    Foreign keys:", StringComparison.Ordinal))
                     {
                         inOtherProperties = true;
                         continue;
                     }
-                    if (line.StartsWith("      ") && !inOtherProperties)
+                    if (line.StartsWith("      ", StringComparison.Ordinal) && !inOtherProperties)
                     {
                         var annotations = GetAnnotations(i, debugViewLines);
 
@@ -89,8 +94,8 @@ namespace Dgml
 
                         var foreignKeysFragment = GetForeignKeys(i, debugViewLines);
 
-                        if (line.StartsWith("        Annotations:")
-                         || line.StartsWith("          "))
+                        if (line.StartsWith("        Annotations:", StringComparison.Ordinal)
+                         || line.StartsWith("          ", StringComparison.Ordinal))
                         {
                             continue;
                         }
@@ -131,7 +136,7 @@ namespace Dgml
 
                         string propertyAccesMode = GetPropertyAccessMode(props);
 
-                        var maxLength = props.FirstOrDefault(p => p.StartsWith("MaxLength"));
+                        var maxLength = props.FirstOrDefault(p => p.StartsWith("MaxLength", StringComparison.Ordinal));
                         if (string.IsNullOrEmpty(maxLength))
                         {
                             maxLength = "None";
@@ -141,7 +146,7 @@ namespace Dgml
                             maxLength = maxLength.Replace("MaxLength", string.Empty);
                         }
 
-                        var valueGenerated = props.FirstOrDefault(p => p.StartsWith("ValueGenerated.")) ?? "None";
+                        var valueGenerated = props.FirstOrDefault(p => p.StartsWith("ValueGenerated.", StringComparison.Ordinal)) ?? "None";
                         var category = "Property Required";
                         if (!isRequired) category = "Property Optional";
                         if (isForeignKey) category = "Property Foreign";
@@ -179,7 +184,7 @@ namespace Dgml
             return propertyAccesMode;
         }
 
-        private void BuildEntity(string[] debugViewLines, string entityName, int i, DebugViewParserResult result, List<string> properties, List<string> propertyLinks, string line, ref bool inProperties)
+        private static void BuildEntity(string[] debugViewLines, string entityName, int i, DebugViewParserResult result, List<string> properties, List<string> propertyLinks, string line, ref bool inProperties)
         {
             if (!string.IsNullOrEmpty(entityName))
             {
@@ -195,7 +200,7 @@ namespace Dgml
                     {
                         baseClass = parts[parts.IndexOf("Base:") + 1];
                     }
-                    changeTrackingStrategy = parts.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy."));
+                    changeTrackingStrategy = parts.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
                 }
                 if (string.IsNullOrEmpty(changeTrackingStrategy))
                     changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
@@ -215,7 +220,7 @@ namespace Dgml
             inProperties = false;
         }
 
-        private Tuple<IEnumerable<string>, IEnumerable<string>> ParseNavigations(List<string> navigations, string entityName)
+        private static Tuple<IEnumerable<string>, IEnumerable<string>> ParseNavigations(List<string> navigations, string entityName)
         {
             // <Name> (<field>, <type>) <flags> <indexes>
             //Quotes (<Quotes>k__BackingField, List<Quote>) Collection ToDependent Quote Inverse: Samurai 0 - 1 1 - 1 - 1
@@ -240,12 +245,12 @@ namespace Dgml
                 
                 var name = parts[0];
 
-                var noField = !parts[2].EndsWith(")");
+                var noField = !parts[2].EndsWith(")", StringComparison.Ordinal);
 
-                var fieldStripped = parts[1].StartsWith("(")
+                var fieldStripped = parts[1].StartsWith("(", StringComparison.Ordinal)
                     ? parts[1].Remove(parts[1].Length - 1, 1).Remove(0, 1)
                     : parts[1];
-                var typeStripped = parts[2].EndsWith(")")
+                var typeStripped = parts[2].EndsWith(")", StringComparison.Ordinal)
                     ? parts[2].Remove(parts[2].Length - 1)
                     : parts[1];
                 
@@ -299,7 +304,7 @@ namespace Dgml
             return new Tuple<IEnumerable<string>, IEnumerable<string>>(properties, links);
         }
 
-        private IEnumerable<string> ParseForeignKeys(List<string> foreignKeysFragments)
+        private static IEnumerable<string> ParseForeignKeys(List<string> foreignKeysFragments)
         {
             var links = new List<string>();
             int i = 0;
@@ -317,7 +322,7 @@ namespace Dgml
                         continue;
                     }
 
-                    if (trim.StartsWith("Relational:")) continue;
+                    if (trim.StartsWith("Relational:", StringComparison.Ordinal)) continue;
 
                     var annotation = GetFkAnnotations(i, foreignKeysFragments.ToArray());
 
@@ -330,11 +335,11 @@ namespace Dgml
 
                     for (int x = 0; x < parts.Count; x++)
                     {
-                        if (parts[x].StartsWith("{'"))
+                        if (parts[x].StartsWith("{'", StringComparison.Ordinal))
                         {
                             parts[x] = parts[x].Substring(2);
                         }
-                        if (parts[x].EndsWith("'}"))
+                        if (parts[x].EndsWith("'}", StringComparison.Ordinal))
                         {
                             parts[x] = parts[x].Substring(0, parts[x].LastIndexOf("'}", StringComparison.Ordinal));
                         }
@@ -361,7 +366,7 @@ namespace Dgml
             return links;
         }
 
-        private string GetTypeValue(string type, bool asField)
+        private static string GetTypeValue(string type, bool asField)
         {
             var i = asField ? 0 : 1;
             var result = type.Replace("(", string.Empty).Replace(")", string.Empty);
@@ -372,7 +377,7 @@ namespace Dgml
             return asField ? string.Empty : System.Security.SecurityElement.Escape(result);
         }
 
-        private List<string> GetForeignKeys(int i, string[] debugViewLines)
+        private static List<string> GetForeignKeys(int i, string[] debugViewLines)
         {
             var x = i;
             var navigations = new List<string>();
@@ -383,10 +388,10 @@ namespace Dgml
                 var trim = debugViewLines[x].Trim();
                 if (!inNavigations) inNavigations = trim == "Foreign keys:";
 
-                if (debugViewLines[x].StartsWith("    Annotations:")
-                    || debugViewLines[x].StartsWith("Annotations:")
-                    || trim.StartsWith("Indexes:")
-                    || trim.StartsWith("EntityType:"))
+                if (debugViewLines[x].StartsWith("    Annotations:", StringComparison.Ordinal)
+                    || debugViewLines[x].StartsWith("Annotations:", StringComparison.Ordinal)
+                    || trim.StartsWith("Indexes:", StringComparison.Ordinal)
+                    || trim.StartsWith("EntityType:", StringComparison.Ordinal))
                 {
                     break;
                 }
@@ -396,7 +401,7 @@ namespace Dgml
             return navigations;
         }
 
-        private List<string> GetNavigations(int i, string[] debugViewLines)
+        private static List<string> GetNavigations(int i, string[] debugViewLines)
         {
             var x = i;
             var navigations = new List<string>();
@@ -407,10 +412,10 @@ namespace Dgml
                 var trim = debugViewLines[x].Trim();
                 if (!inNavigations) inNavigations = trim == "Navigations:";
 
-                if (debugViewLines[x].StartsWith("    Annotations:")
-                    || debugViewLines[x].StartsWith("Annotations:")
-                    || trim.StartsWith("Keys:")
-                    || trim.StartsWith("EntityType:"))
+                if (debugViewLines[x].StartsWith("    Annotations:", StringComparison.Ordinal)
+                    || debugViewLines[x].StartsWith("Annotations:", StringComparison.Ordinal)
+                    || trim.StartsWith("Keys:", StringComparison.Ordinal)
+                    || trim.StartsWith("EntityType:", StringComparison.Ordinal))
                 {
                     break;
                 }
@@ -424,7 +429,7 @@ namespace Dgml
             return navigations;
         }
 
-        private List<string> GetEntityAnnotations(int i, string[] debugViewLines)
+        private static List<string> GetEntityAnnotations(int i, string[] debugViewLines)
         {
             var x = i;
             var values = new List<string>();
@@ -435,25 +440,26 @@ namespace Dgml
                 var trim = debugViewLines[x].Trim();
                 if (!inTheMix) inTheMix = debugViewLines[x] == "    Annotations: ";
 
-                if (debugViewLines[x].StartsWith("Annotations:")
-                    || trim.StartsWith("EntityType:"))
+                if (debugViewLines[x].StartsWith("Annotations:", StringComparison.Ordinal)
+                    || trim.StartsWith("EntityType:", StringComparison.Ordinal))
                 {
                     break;
                 }
-                if (inTheMix && !trim.StartsWith("Annotations:")) values.Add(System.Security.SecurityElement.Escape(trim));
+                if (inTheMix && !trim.StartsWith("Annotations:", StringComparison.Ordinal)) 
+                    values.Add(System.Security.SecurityElement.Escape(trim));
             }
 
             return values;
         }
 
-        private List<string> GetAnnotations(int i, string[] debugViewLines)
+        private static List<string> GetAnnotations(int i, string[] debugViewLines)
         {
             var x = i;
             var annotations = new List<string>();
             var maxLength = debugViewLines.Length - 1;
             if (x++ < maxLength && debugViewLines[x] == "        Annotations: ")
             {
-                while (x++ < maxLength && debugViewLines[x].StartsWith("        "))
+                while (x++ < maxLength && debugViewLines[x].StartsWith("        ", StringComparison.Ordinal))
                 {
                     annotations.Add(System.Security.SecurityElement.Escape(debugViewLines[x].Trim()));
                 }
@@ -462,14 +468,14 @@ namespace Dgml
             return annotations;
         }
 
-        private List<string> GetFkAnnotations(int i, string[] debugViewLines)
+        private static List<string> GetFkAnnotations(int i, string[] debugViewLines)
         {
             var x = i;
             var annotations = new List<string>();
             var maxLength = debugViewLines.Length - 1;
             while (x++ < maxLength)
             {
-                if (debugViewLines[x].StartsWith("          "))
+                if (debugViewLines[x].StartsWith("          ", StringComparison.Ordinal))
                 {
                     annotations.Add(System.Security.SecurityElement.Escape(debugViewLines[x].Trim()));
                 }
@@ -479,7 +485,7 @@ namespace Dgml
                     break;
                 }
 
-                if (debugViewLines[x].StartsWith("    Foreign Keys:"))
+                if (debugViewLines[x].StartsWith("    Foreign Keys:", StringComparison.Ordinal))
                     break;
             }
 
