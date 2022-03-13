@@ -97,7 +97,6 @@ namespace RevEng.Core
                     }
                 }
 
-
                 functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
 #if CORE50 || CORE60
                 if (functionPaths != null)

@@ -1,18 +1,32 @@
 ﻿using System;
 
-namespace DgmlBuilder
+namespace Dgml
 {
-    public class DgmlBuilder
+    public class Builder
     {
         public string Build(string debugView, string contextName, string template)
         {
+            if (debugView == null)
+            { 
+                throw new ArgumentNullException(nameof(debugView));
+            }
+
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+
             var parser = new DebugViewParser();
             var result = parser.Parse(debugView.Split(new [] { Environment.NewLine }, StringSplitOptions.None), contextName);
 
             var nodes = string.Join(Environment.NewLine, result.Nodes);
             var links = string.Join(Environment.NewLine, result.Links);
 
+#if NET5_0_OR_GREATER
+return template.Replace("{Links}", links, StringComparison.OrdinalIgnoreCase).Replace("{Nodes}", nodes, StringComparison.OrdinalIgnoreCase);
+#else
             return template.Replace("{Links}", links).Replace("{Nodes}", nodes);
+#endif
         }
 
     }

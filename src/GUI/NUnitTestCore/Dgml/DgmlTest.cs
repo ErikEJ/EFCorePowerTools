@@ -1,4 +1,4 @@
-﻿using DgmlBuilder;
+﻿using Dgml;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -85,7 +85,7 @@ namespace UnitTests
         public void BuildChinook()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
 
             // Assert
@@ -98,7 +98,7 @@ namespace UnitTests
         public void BuildSample1()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Aw2014Person.txt"), "test", _template);
 
             // Assert
@@ -111,7 +111,7 @@ namespace UnitTests
         public void BuildNorthwind()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Northwind.txt"), "test", _template);
 
             // Assert
@@ -124,7 +124,7 @@ namespace UnitTests
         public void BuildPfizer()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Pfizer.txt"), "test", _template);
 
             // Assert
@@ -137,7 +137,7 @@ namespace UnitTests
         public void BuildBNoFk()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("NoFk.txt"), "test", _template);
 
             // Assert
@@ -150,7 +150,7 @@ namespace UnitTests
         public void BuildSingleNav()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("SingleNav.txt"), "test", _template);
 
             // Assert
@@ -163,7 +163,7 @@ namespace UnitTests
         public void BuildSamurai()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Samurai.txt"), "test", _template);
 
             // Assert
@@ -176,7 +176,7 @@ namespace UnitTests
         public void BuildIssue604()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Issue604.txt"), "test", _template);
 
             // Assert
@@ -189,7 +189,7 @@ namespace UnitTests
         public void BuildIssue687()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Issue687.txt"), "test", _template);
 
             // Assert
@@ -202,7 +202,7 @@ namespace UnitTests
         public void BuildIdentity()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("Identity.txt"), "test", _template);
 
             // Assert
@@ -215,7 +215,7 @@ namespace UnitTests
         public void BuildLongView50()
         {
             // Act
-            var builder = new DgmlBuilder.DgmlBuilder();
+            var builder = new Dgml.Builder();
             var result = builder.Build(ReadAllText("longview50.txt"), "test", _template);
 
             // Assert

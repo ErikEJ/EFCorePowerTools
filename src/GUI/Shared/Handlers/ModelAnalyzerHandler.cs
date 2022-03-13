@@ -114,7 +114,7 @@ namespace EFCorePowerTools.Handlers
 
         private async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
         {
-            var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
+            var dgmlBuilder = new Dgml.Builder();
             string target = null;
 
             foreach (var info in modelResult)

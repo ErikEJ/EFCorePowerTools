@@ -13,7 +13,7 @@ namespace Microsoft.EntityFrameworkCore
         public static string AsDgml(this DbContext context)
         {
             Type type = context.GetType();
-            var dgmlBuilder = new DgmlBuilder.DgmlBuilder();
+            var dgmlBuilder = new Dgml.Builder();
 
             var debugView = CreateDebugView(context);
             var dgml = dgmlBuilder.Build(debugView, type.Name, GetTemplate());

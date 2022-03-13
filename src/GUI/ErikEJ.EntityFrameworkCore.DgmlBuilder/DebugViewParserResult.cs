@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DgmlBuilder
+namespace Dgml
 {
     public class DebugViewParserResult
     {

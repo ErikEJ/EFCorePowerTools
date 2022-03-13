@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DgmlBuilder
+namespace Dgml
 {
     public class DebugViewParser
     {
@@ -19,7 +19,7 @@ namespace DgmlBuilder
 
             foreach (var line in debugViewLines)
             {
-                if (line.StartsWith("Model:"))
+                if (line.StartsWith("Model:", StringComparison.Ordinal))
                 {
                     var props = line.Trim().Split(' ').ToList();
                     if (props.Count > 0)

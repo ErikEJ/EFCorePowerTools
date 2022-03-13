@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
 
+  <PropertyGroup Label="Analyzer settings">
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>  
+
   <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.36.0.43782">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.35.0.42613">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
