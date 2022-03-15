@@ -176,7 +176,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                    && Properties.Settings.Default.DiscoverMultipleResultSets)
+                    && AdvancedOptions.Instance.DiscoverMultipleResultSets)
                 {
                     await nuGetHelper.InstallPackageAsync("Dapper", project);
                 }
@@ -505,7 +505,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await project.AddExistingFilesAsync(new List<string> { revEngResult.ContextFilePath }.ToArray());
                 }
 
-                if (Properties.Settings.Default.OpenGeneratedDbContext)
+                if (AdvancedOptions.Instance.OpenGeneratedDbContext)
                 {
                     await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                 }
@@ -551,7 +551,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(optionsPath + ".ignore"))
             {
-                if (!Properties.Settings.Default.IncludeUiHintInConfig)
+                if (! AdvancedOptions.Instance.IncludeUiHintInConfig)
                 {
                     options.UiHint = null;
                 }

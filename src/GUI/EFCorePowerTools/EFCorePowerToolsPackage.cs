@@ -138,7 +138,7 @@ namespace EFCorePowerTools
 
                 _extensionServices = CreateServiceProvider();
 
-                Telemetry.Enabled = Properties.Settings.Default.ParticipateInTelemetry;
+                Telemetry.Enabled =  AdvancedOptions.Instance.ParticipateInTelemetry;
                 if (Telemetry.Enabled)
                 {
                     Telemetry.Initialize(
