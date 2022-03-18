@@ -125,7 +125,7 @@ namespace RevEng.Core.Procedures
                         _sb.AppendLine("return Procedures;");
                     }
                     _sb.AppendLine("}");
-                    GenerateModelCreation(model);
+                    GenerateOnModelCreating(model);
                 }
 
                 _sb.AppendLine("}");
@@ -348,7 +348,7 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private void GenerateModelCreation(RoutineModel model)
+        private void GenerateOnModelCreating(RoutineModel model)
         {
             _sb.AppendLine();
             _sb.AppendLine("protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)");
@@ -358,9 +358,20 @@ namespace RevEng.Core.Procedures
             {
                 foreach (var procedure in model.Routines.Cast<Procedure>())
                 {
-                    var typeName = GenerateIdentifierName(procedure, model) + "Result";
+                    int i = 1;
+                    foreach (var resultSet in procedure.Results)
+                    {
+                        var suffix = $"{i++}";
 
-                    _sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey().ToView(null);");
+                        if (!procedure.SupportsMultipleResultSet)
+                        {
+                            suffix = string.Empty;
+                        }
+
+                        var typeName = GenerateIdentifierName(procedure, model) + "Result" + suffix;
+
+                        _sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey().ToView(null);");
+                    }
                 }
             }
 

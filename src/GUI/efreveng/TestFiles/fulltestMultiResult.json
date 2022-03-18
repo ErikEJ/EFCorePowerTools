@@ -96,5 +96,5 @@
   "UseNodaTime": true,
   "UseNullableReferences": false,
   "UseSpatial": false,
-  "UseMultipleSprocResultSets": false
+  "UseMultipleSprocResultSets": true
 }
