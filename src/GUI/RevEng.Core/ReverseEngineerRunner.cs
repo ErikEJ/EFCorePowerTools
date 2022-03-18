@@ -12,6 +12,11 @@ namespace RevEng.Core
     {
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
+            if (options == null)
+            { 
+                throw new ArgumentNullException(nameof(options));
+            }
+
             var errors = new List<string>();
             var warnings = new List<string>();
             var serviceProvider = ServiceProviderBuilder.Build(options);
@@ -118,9 +123,8 @@ namespace RevEng.Core
 
                 entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
             }
-            else if (options.SelectedToBeGenerated == 2
-                && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                || options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)))
+            else if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                || options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction))
             {
                 warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
             }
@@ -228,7 +232,7 @@ namespace RevEng.Core
             {
                 if (!includeConnectionString)
                 {
-                    if (line.Trim().Contains("protected override void OnConfiguring"))
+                    if (line.Trim().Contains("protected override void OnConfiguring", StringComparison.OrdinalIgnoreCase))
                     {
                         inConfiguring = true;
                         continue;

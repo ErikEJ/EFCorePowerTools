@@ -33,11 +33,15 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 throw new ArgumentException($"Dacpac file not found: {connectionString}");
             }
+            if (options is null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
 
             return GetStoredProcedures(connectionString, options, dacpacOptions.MergeDacpacs);
         }
 
-        private RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+        private static RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
         {
             var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
             var errors = new List<string>();
@@ -48,7 +52,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 dacpacPath = consolidator.Consolidate(dacpacPath);
             }
 
-            var model = new TSqlTypedModel(dacpacPath);
+            using var model = new TSqlTypedModel(dacpacPath);
 
             var procedures = model.GetObjects<TSqlProcedure>(DacQueryScopes.UserDefined)
                .ToList();
@@ -90,7 +94,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             };
         }
 
-        private List<ModuleParameter> GetStoredProcedureParameters(TSqlProcedure proc)
+        private static List<ModuleParameter> GetStoredProcedureParameters(TSqlProcedure proc)
         {
             var result = new List<ModuleParameter>();
 
@@ -123,7 +127,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return result;
         }
 
-        private List<ModuleResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
+        private static List<ModuleResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
             var result = new List<ModuleResultElement>();
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);

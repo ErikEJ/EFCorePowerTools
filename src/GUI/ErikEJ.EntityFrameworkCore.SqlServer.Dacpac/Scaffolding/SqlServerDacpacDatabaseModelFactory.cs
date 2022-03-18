@@ -40,6 +40,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         public DatabaseModel Create(string connectionString, DatabaseModelFactoryOptions options)
         {
+            if (options == null)
+            { 
+                throw new ArgumentNullException(nameof(options));
+            }
+
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentException(@"invalid path", nameof(connectionString));
@@ -66,7 +71,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 connectionString = consolidator.Consolidate(connectionString);
             }
 
-            var model = new TSqlTypedModel(connectionString);
+            using var model = new TSqlTypedModel(connectionString);
 
             var typeAliases = GetTypeAliases(model);
 
@@ -135,7 +140,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas) 
             => throw new NotImplementedException();
 
-        private IReadOnlyDictionary<string, (string, string)> GetTypeAliases(TSqlTypedModel model)
+        private static IReadOnlyDictionary<string, (string, string)> GetTypeAliases(TSqlTypedModel model)
         {
             var items = model.GetObjects<TSqlDataType>(DacQueryScopes.UserDefined)
                 .ToList();
@@ -152,7 +157,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return typeAliasMap;
         }
 
-        private void GetPrimaryKey(TSqlTable table, DatabaseTable dbTable)
+        private static void GetPrimaryKey(TSqlTable table, DatabaseTable dbTable)
         {
             if (!table.PrimaryKeyConstraints.Any()) return;
             
@@ -180,7 +185,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         }
 
-        private void GetForeignKeys(TSqlTable table, DatabaseModel dbModel)
+        private static void GetForeignKeys(TSqlTable table, DatabaseModel dbModel)
         {
             var dbTable = dbModel.Tables
                 .Single(t => t.Name == table.Name.Parts[1]
@@ -229,7 +234,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private void GetUniqueConstraints(TSqlTable table, DatabaseModel dbModel)
+        private static void GetUniqueConstraints(TSqlTable table, DatabaseModel dbModel)
         {
             var dbTable = dbModel.Tables
                 .Single(t => t.Name == table.Name.Parts[1]
@@ -269,7 +274,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private void GetIndexes(TSqlTable table, DatabaseModel dbModel)
+        private static void GetIndexes(TSqlTable table, DatabaseModel dbModel)
         {
             var dbTable = dbModel.Tables
                 .Single(t => t.Name == table.Name.Parts[1]
@@ -312,7 +317,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+        private static void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
                 .Where(i => !i.GetProperty<bool>(Column.IsHidden)
@@ -379,7 +384,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases)
+        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
@@ -524,7 +529,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private static string StripParentheses(string defaultValue)
         {
-            if (defaultValue.StartsWith("(") && defaultValue.EndsWith(")"))
+            if (defaultValue.StartsWith("(", StringComparison.OrdinalIgnoreCase) && defaultValue.EndsWith(")", StringComparison.OrdinalIgnoreCase))
             {
                 defaultValue = defaultValue.Substring(1, defaultValue.Length - 2);
                 return StripParentheses(defaultValue);
@@ -553,7 +558,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private string FixExtendedPropertyValue(string value)
+        private static string FixExtendedPropertyValue(string value)
         {
             if (value == null)
             {

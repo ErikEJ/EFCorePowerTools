@@ -22,8 +22,8 @@ namespace RevEng.Core.Modules
 {
     public abstract class SqlServerRoutineScaffolder : IRoutineScaffolder
     {
-        protected readonly ICSharpHelper code;
-        protected IndentedStringBuilder _sb;
+        internal readonly ICSharpHelper code;
+        internal IndentedStringBuilder _sb;
 
         public string FileNameSuffix { get; set; }
 
@@ -35,6 +35,8 @@ namespace RevEng.Core.Modules
 
         public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
         {
+            if (scaffoldedModel == null) throw new ArgumentNullException(nameof(scaffoldedModel));
+
             Directory.CreateDirectory(outputDir);
 
             var contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
@@ -57,6 +59,8 @@ namespace RevEng.Core.Modules
         public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
+
+            if (scaffolderOptions == null) throw new ArgumentNullException(nameof(scaffolderOptions));
 
             var result = new ScaffoldedModel();
 
@@ -176,7 +180,7 @@ namespace RevEng.Core.Modules
             }
         }
 
-        private Tuple<string, string> GeneratePropertyName(string propertyName)
+        private static Tuple<string, string> GeneratePropertyName(string propertyName)
         {
             if (propertyName == null)
             {
@@ -186,17 +190,22 @@ namespace RevEng.Core.Modules
             return CreateIdentifier(propertyName);
         }
 
-        protected string GenerateIdentifierName(Routine routine, RoutineModel model)
+        protected static string GenerateIdentifierName(Routine routine, RoutineModel model)
         {
             if (routine == null)
             {
                 throw new ArgumentNullException(nameof(routine));
             }
 
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
         }
 
-        private Tuple<string, string> CreateIdentifier(string name)
+        private static Tuple<string, string> CreateIdentifier(string name)
         {
             var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
 
@@ -221,7 +230,7 @@ namespace RevEng.Core.Modules
                 name = "@" + name;
             }
 
-            return new Tuple<string, string>(name.Replace(" ", string.Empty), columAttribute);
+            return new Tuple<string, string>(name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase), columAttribute);
         }
 
         private static readonly HashSet<string> _keyWords = new HashSet<string> 
@@ -305,7 +314,7 @@ namespace RevEng.Core.Modules
 "while",
         };
 
-        private string GenerateUniqueName(Routine routine, RoutineModel model)
+        private static string GenerateUniqueName(Routine routine, RoutineModel model)
         {
             if (!string.IsNullOrEmpty(routine.NewName))
                 return routine.NewName;

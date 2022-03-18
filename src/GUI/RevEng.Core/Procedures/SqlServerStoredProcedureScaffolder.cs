@@ -6,6 +6,7 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
 using RevEng.Shared;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
@@ -28,12 +29,16 @@ namespace RevEng.Core.Procedures
 
         public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
         {
+            if (scaffoldedModel == null)
+            { 
+                throw new ArgumentNullException(nameof(scaffoldedModel));
+            }
             var files = base.Save(scaffoldedModel, outputDir, nameSpace);
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = GetDbContextExtensionsText();
             var dbContextExtensionsPath = Path.Combine(contextDir, "DbContextExtensions.cs");
-            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpace), Encoding.UTF8);
+            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpace, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;
@@ -49,6 +54,16 @@ namespace RevEng.Core.Procedures
 
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
         {
+            if (scaffolderOptions is null)
+            {
+                throw new ArgumentNullException(nameof(scaffolderOptions));
+            }
+
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);
@@ -425,11 +440,11 @@ namespace RevEng.Core.Procedures
 
             paramList.RemoveAt(paramList.Count - 1);
 
-            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", sqlParameters, cancellationToken".Replace(" \"", "\"");
+            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", sqlParameters, cancellationToken".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
             return fullExec;
         }
 
-        private string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly)
+        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly)
         {
             string returnType;
 
