@@ -201,8 +201,16 @@
         
         <StackPanel Grid.Row="18"
                     Style="{StaticResource ButtonRowStyle}">
-            <Label Padding="10, 0" ToolTip="Rate" >
-                <Hyperlink FontSize="16" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">✨</Hyperlink>
+            <Label Padding="16, 2" ToolTip="Rate" Height="30" Width="120" >
+                <Hyperlink FontSize="24" ToolTip="Let me know if you like this free tool" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
+                    <Hyperlink.Style>
+                        <Style TargetType="Hyperlink"
+                            BasedOn="{StaticResource {x:Type Hyperlink}}">
+                            <Setter Property="Foreground" Value="Goldenrod"/>
+                        </Style>
+                    </Hyperlink.Style>
+                    ⭐ Rate
+                </Hyperlink>
             </Label>
             <dw:DialogButton TabIndex="20"
                              Content="{x:Static locale:ReverseEngineerLocale.Advanced}"
