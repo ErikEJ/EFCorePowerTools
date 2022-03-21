@@ -25,7 +25,7 @@ namespace Modelling
                     {
                         result = EfCoreModelBuilder.GenerateDatabaseCreateScript(args[1], args[2]);
                     }
-#if CORE50
+#if CORE50 || CORE60
                     else if (args.Contains("contextlist") && args.Length >= 3)
                     {
                         result = EfCoreCompareBuilder.GenerateDbContextList(args[1], args[2]);

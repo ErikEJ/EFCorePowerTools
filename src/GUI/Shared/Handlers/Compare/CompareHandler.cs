@@ -64,14 +64,21 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    if (version.Major != 5)
+                    if (version.Major != 5 || version.Major != 6)
                     {
                         VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
                     }
 
                     var nugetHelper = new NuGetHelper();
-                    await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(5, 1, 3));
+                    if (version.Major == 6)
+                    {
+                        await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(6, 0, 0));
+                    }
+                    else if (version.Major == 5)
+                    {
+                        await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(5, 1, 3));
+                    }
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }

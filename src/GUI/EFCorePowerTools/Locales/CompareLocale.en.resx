@@ -193,6 +193,6 @@
     <value>Unable to remove connection</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>Only EF Core 5 is supported.</value>
+    <value>Only EF Core 5 or later is supported.</value>
   </data>
 </root>
