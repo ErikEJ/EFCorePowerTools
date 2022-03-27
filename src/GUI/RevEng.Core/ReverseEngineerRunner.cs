@@ -43,7 +43,7 @@ namespace RevEng.Core
 
             foreach (var table in options.Tables)
             {
-                table.Name = table.Name.Replace("'", "''");
+                table.Name = table.Name.Replace("'", "''", StringComparison.OrdinalIgnoreCase);
             }
 #endif
             var outputDir = !string.IsNullOrEmpty(options.OutputPath)
@@ -238,12 +238,12 @@ namespace RevEng.Core
                         continue;
                     }
 
-                    if (inConfiguring && line.Trim() != string.Empty)
+                    if (string.IsNullOrEmpty(line.Trim()))
                     {
                         continue;
                     }
 
-                    if (inConfiguring && line.Trim() == string.Empty)
+                    if (inConfiguring && string.IsNullOrEmpty(line.Trim()))
                     {
                         inConfiguring = false;
                         continue;
@@ -337,6 +337,7 @@ namespace RevEng.Core
 
             if (firstLine == PathHelper.Header)
             {
+#pragma warning disable CA1031 // Do not catch general exception types
                 try
                 {
                     if (File.Exists(codeFile))
@@ -350,6 +351,7 @@ namespace RevEng.Core
                 { 
                     // Ignore
                 }
+#pragma warning restore CA1031 // Do not catch general exception types
             }
         }
     }

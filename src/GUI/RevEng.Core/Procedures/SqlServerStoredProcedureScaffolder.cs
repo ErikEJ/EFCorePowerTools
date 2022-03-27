@@ -27,18 +27,18 @@ namespace RevEng.Core.Procedures
             FileNameSuffix = "Procedures";
         }
 
-        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue)
         {
             if (scaffoldedModel == null)
             { 
                 throw new ArgumentNullException(nameof(scaffoldedModel));
             }
-            var files = base.Save(scaffoldedModel, outputDir, nameSpace);
+            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue);
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = GetDbContextExtensionsText();
             var dbContextExtensionsPath = Path.Combine(contextDir, "DbContextExtensions.cs");
-            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpace, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
+            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;
@@ -393,7 +393,7 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("}");
         }
 
-        private string GenerateMultiResultId(Routine procedure, RoutineModel model)
+        private static string GenerateMultiResultId(Routine procedure, RoutineModel model)
         {
             if (procedure.Results.Count == 1)
             {
@@ -413,7 +413,7 @@ namespace RevEng.Core.Procedures
             return $"({string.Join(", ", ids)})";
         }
 
-        private string GenerateMultiResultStatement(Routine procedure, RoutineModel model)
+        private static string GenerateMultiResultStatement(Routine procedure, RoutineModel model)
         {
             if (procedure.Results.Count == 1)
             {

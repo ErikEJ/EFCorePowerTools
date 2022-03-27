@@ -41,6 +41,11 @@ namespace RevEng.Core
 
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)
         {
+            if (table is null)
+            { 
+                throw new ArgumentNullException(nameof(table));
+            }
+
             string name;
             if (_databaseType == DatabaseType.SQLServer || _databaseType == DatabaseType.SQLServerDacpac)
             {
@@ -94,6 +99,10 @@ namespace RevEng.Core
 #if CORE60
         protected override ModelBuilder VisitForeignKeys(ModelBuilder modelBuilder, IList<DatabaseForeignKey> foreignKeys)
         {
+            ArgumentNullException.ThrowIfNull(foreignKeys);
+
+            ArgumentNullException.ThrowIfNull(modelBuilder);
+
             if (_ignoreManyToMany)
             {
                 foreach (var fk in foreignKeys)

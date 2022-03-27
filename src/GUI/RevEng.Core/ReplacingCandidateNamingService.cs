@@ -68,6 +68,11 @@ namespace RevEng.Core
 
         public override string GenerateCandidateIdentifier(DatabaseColumn originalColumn)
         {
+            if (originalColumn is null)
+            {
+                throw new ArgumentNullException(nameof(originalColumn));
+            }
+
             var candidateStringBuilder = new StringBuilder();
 
             var schema = GetSchema(originalColumn.Table.Schema);

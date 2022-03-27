@@ -7,6 +7,7 @@ using RevEng.Core.Abstractions.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 
 namespace RevEng.Core.Procedures
@@ -43,6 +44,16 @@ namespace RevEng.Core.Procedures
 
         protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults = false)
         {
+            if (connection is null)
+            { 
+                throw new ArgumentNullException(nameof(connection));
+            }
+
+            if (module is null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
             if (multipleResults)
             {
                 return GetAllResultSets(connection, module);        
@@ -57,7 +68,9 @@ namespace RevEng.Core.Procedures
             var result = new List<List<ModuleResultElement>>();
             using var sqlCommand = connection.CreateCommand();
 
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             var parameters = module.Parameters.Take(module.Parameters.Count - 1);
@@ -101,15 +114,17 @@ namespace RevEng.Core.Procedures
 
         private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string moduleName)
         {
-            var dtResult = new DataTable();
+            using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
 
             var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{moduleName}]';";
 
-            var adapter = new SqlDataAdapter
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            using var adapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(sql, connection)
             };
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 
@@ -127,7 +142,7 @@ namespace RevEng.Core.Procedures
                 {
                     Name = name,
                     StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
-                    Ordinal = int.Parse(row["column_ordinal"].ToString()),
+                    Ordinal = int.Parse(row["column_ordinal"].ToString(), CultureInfo.InvariantCulture),
                     Nullable = (bool)row["is_nullable"],
                 };
 

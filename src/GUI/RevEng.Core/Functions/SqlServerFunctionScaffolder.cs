@@ -5,6 +5,7 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
 using RevEng.Shared;
+using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -21,6 +22,16 @@ namespace RevEng.Core.Functions
 
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
         {
+            if (scaffolderOptions is null)
+            {
+                throw new ArgumentNullException(nameof(scaffolderOptions));
+            }
+
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);

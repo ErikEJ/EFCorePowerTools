@@ -64,16 +64,31 @@ namespace RevEng.Core
 
         public static Type ClrType(this ModuleParameter storedProcedureParameter)
         {
+            if (storedProcedureParameter is null)
+            {
+                throw new ArgumentNullException(nameof(storedProcedureParameter));
+            }
+
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
         }
 
         public static Type ClrType(this ModuleResultElement moduleResultElement)
         {
+            if (moduleResultElement is null)
+            {
+                throw new ArgumentNullException(nameof(moduleResultElement));
+            }
+
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
         public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
         {
+            if (storedProcedureParameter is null)
+            {
+                throw new ArgumentNullException(nameof(storedProcedureParameter));
+            }
+
             return GetSqlDbType(storedProcedureParameter.StoreType);
         }
 
@@ -85,10 +100,17 @@ namespace RevEng.Core
             }
             var cleanedTypeName = RemoveMatchingBraces(storeType);
 
+            if (cleanedTypeName == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(storeType), $"Unable to remove braces: {storeType}");
+            }
+
+#pragma warning disable CA1308 // Normalize strings to uppercase
             if (SqlTypeAliases.TryGetValue(cleanedTypeName.ToLowerInvariant(), out string alias))
             {
                 cleanedTypeName = alias;
             }
+#pragma warning restore CA1308 // Normalize strings to uppercase
 
             if (!Enum.TryParse(cleanedTypeName, true, out SqlDbType result))
             {

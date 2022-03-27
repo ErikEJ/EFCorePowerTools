@@ -1,4 +1,6 @@
-﻿// ReSharper disable InconsistentNaming
+﻿[assembly: System.CLSCompliant(true)]
+
+// ReSharper disable InconsistentNaming
 namespace RevEng.Shared
 {
     public enum CodeGenerationMode
