@@ -33,6 +33,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
         public string WriteCode(IEntityType entityType, string @namespace, bool useDataAnnotations)
         {
+            if (entityType is null)
+            { 
+                throw new ArgumentNullException(nameof(entityType));
+            }
+
             _sb = new IndentedStringBuilder();
             _useDataAnnotations = useDataAnnotations;
 
@@ -77,6 +82,12 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         protected void GenerateClass(
             [NotNull] IEntityType entityType)
         {
+
+            if (entityType is null)
+            {
+                throw new ArgumentNullException(nameof(entityType));
+            }
+
             WriteComment(entityType.GetComment());
 
             if (_useDataAnnotations)
@@ -105,6 +116,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         protected void GenerateEntityTypeDataAnnotations(
             [NotNull] IEntityType entityType)
         {
+            if (entityType is null)
+            {
+                throw new ArgumentNullException(nameof(entityType));
+            }
+
             GenerateTableAttribute(entityType);
         }
 
@@ -136,6 +152,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         protected void GenerateConstructor(
             [NotNull] IEntityType entityType)
         {
+            if (entityType is null)
+            {
+                throw new ArgumentNullException(nameof(entityType));
+            }
+
             var collectionNavigations = entityType.GetNavigations().Where(n => n.IsCollection()).ToList();
 
             if (collectionNavigations.Count > 0)
@@ -159,6 +180,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         protected void GenerateProperties(
             [NotNull] IEntityType entityType)
         {
+            if (entityType is null)
+            {
+                throw new ArgumentNullException(nameof(entityType));
+            }
+
             foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrdinal()))
             {
                 WriteComment(property.GetComment());
@@ -190,6 +216,11 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         protected void GeneratePropertyDataAnnotations(
             [NotNull] IProperty property)
         {
+            if (property is null)
+            {
+                throw new ArgumentNullException(nameof(property));
+            }
+
             GenerateKeyAttribute(property);
             GenerateRequiredAttribute(property);
             GenerateColumnAttribute(property);

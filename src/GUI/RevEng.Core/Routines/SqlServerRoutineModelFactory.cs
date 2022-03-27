@@ -7,6 +7,7 @@ using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace RevEng.Core.Procedures
 {
     public abstract class SqlServerRoutineModelFactory
     {
-        protected readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
+        private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
         public string RoutineType { get; set; }
 
@@ -25,6 +26,11 @@ namespace RevEng.Core.Procedures
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
+            if (options is null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             var result = new List<Routine>();
             var found = new List<Tuple<string, string, string, bool>>();
             var errors = new List<string>();
@@ -63,6 +69,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                 sql.AppendLine("ORDER BY ROUTINE_NAME;");
 
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                 using (var command = new SqlCommand(sql.ToString(), connection))
                 {
                     connection.Open();
@@ -75,6 +82,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                         }
                     }
                 }
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
                 foreach (var foundModule in found)
                 {
@@ -127,7 +135,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
         protected virtual List<ModuleParameter> GetParameters(SqlConnection connection, string schema, string name)
         {
-            var dtResult = new DataTable();
+            using var dtResult = new DataTable();
             var result = new List<ModuleParameter>();
 
             // Validate this - based on https://stackoverflow.com/questions/20115881/how-to-get-stored-procedure-parameters-details/41330791
@@ -149,10 +157,12 @@ SELECT
     where object_id = object_id('{schema}.{name}')
     ORDER BY parameter_id;";
 
-            var adapter = new SqlDataAdapter
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            using var adapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(sql, connection)
             };
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 
@@ -168,9 +178,9 @@ SELECT
                 {
                     Name = parameterName,
                     StoreType = par["Type"].ToString(),
-                    Length = (par["Length"]is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()),
-                    Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()),
-                    Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()),
+                    Length = (par["Length"]is DBNull) ? (int?)null : int.Parse(par["Length"].ToString(), CultureInfo.InvariantCulture),
+                    Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString(), CultureInfo.InvariantCulture),
+                    Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString(), CultureInfo.InvariantCulture),
                     Output = (bool)par["output"],
                     Nullable = true,
                     TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
