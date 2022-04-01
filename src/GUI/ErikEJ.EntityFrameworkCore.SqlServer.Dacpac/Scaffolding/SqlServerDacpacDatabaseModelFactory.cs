@@ -13,6 +13,8 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 
+[assembly: CLSCompliant(false)]
+
 namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
@@ -24,11 +26,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
-        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _)
         {
         }
 
-        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger, SqlServerDacpacDatabaseModelFactoryOptions options)
+        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _, SqlServerDacpacDatabaseModelFactoryOptions options)
         {
             dacpacOptions = options;
         }
@@ -349,7 +351,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     systemTypeName = dataTypeName;
                 }
 
+#pragma warning disable CA1308 // Normalize strings to uppercase
                 string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression.ToLowerInvariant()) : null;
+#pragma warning restore CA1308 // Normalize strings to uppercase
 
                 var dbColumn = new DatabaseColumn
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Text;
@@ -23,22 +24,24 @@ namespace GOEddie.Dacpac.References
 
         public string GetXml(string fileName)
         {
-            var part = _package.GetPart(new Uri(string.Format("/{0}", fileName), UriKind.Relative));
+            var part = _package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
             var stream = part.GetStream();
 
-            return new StreamReader(stream).ReadToEnd();
+            using var reader = new StreamReader(stream);
+
+            return reader.ReadToEnd();
         }
 
         public Stream GetStream(string fileName)
         {
-            var part = _package.GetPart(new Uri(string.Format("/{0}", fileName), UriKind.Relative));
+            var part = _package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
             var stream = part.GetStream();
             return stream;
         }
 
         public void SetXml(string fileName, string xml)
         {
-            var part = _package.GetPart(new Uri(string.Format("/{0}", fileName), UriKind.Relative));
+            var part = _package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
             var stream = part.GetStream();
 
             var bytes = Encoding.ASCII.GetBytes(xml);

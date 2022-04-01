@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 
 namespace RevEng.Core.Procedures
 {
@@ -24,7 +26,12 @@ namespace RevEng.Core.Procedures
 
         protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults = false)
         {
-            var dtResult = new DataTable();
+            if (module is null)
+            {
+                throw new ArgumentNullException(nameof(module));
+            }
+
+            using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
 
             var sql = $@"
@@ -36,10 +43,12 @@ SELECT
 FROM sys.columns c
 WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
 
-            var adapter = new SqlDataAdapter
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            using var adapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(sql, connection)
             };
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 
@@ -51,7 +60,7 @@ WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
                 {
                     Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
                     StoreType = res["type_name"].ToString(),
-                    Ordinal = int.Parse(res["column_ordinal"].ToString()),
+                    Ordinal = int.Parse(res["column_ordinal"].ToString(), CultureInfo.InvariantCulture),
                     Nullable = (bool)res["is_nullable"],
                 };
 

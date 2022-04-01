@@ -41,7 +41,7 @@ namespace GOEddie.Dacpac.References
                     continue;
                 }
 
-                var model = getModel(source);
+                using var model = getModel(source);
                 foreach (var obj in model.GetObjects(DacQueryScopes.UserDefined))
                 {
                     TSqlScript ast;
@@ -54,7 +54,7 @@ namespace GOEddie.Dacpac.References
                             name = info.SourceName;
                         }
 
-                        if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith(".xsd"))
+                        if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase))
                         {
                             _target.AddOrUpdateObjects(ast, name, new TSqlObjectOptions());    //WARNING throwing away ansi nulls and quoted identifiers!
                         }
@@ -99,7 +99,7 @@ namespace GOEddie.Dacpac.References
             {
                 return new TSqlModel(source);
             }
-            catch (DacModelException e) when (e.Message.Contains("Required references are missing."))
+            catch (DacModelException e) when (e.Message.Contains("Required references are missing.", StringComparison.OrdinalIgnoreCase))
             {
                 throw new DacModelException("Failed to load model from DACPAC. "
                     + "A reason might be that the \"SuppressMissingDependenciesErrors\" isn't set to 'true' consistently. ",
@@ -107,7 +107,7 @@ namespace GOEddie.Dacpac.References
             }
         }
 
-        private void AddScripts(string pre, string post, string dacpacPath)
+        private static void AddScripts(string pre, string post, string dacpacPath)
         {
             using (var package = Package.Open(dacpacPath, FileMode.Open, FileAccess.ReadWrite))
             {

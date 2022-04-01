@@ -11,13 +11,18 @@ namespace RevEng.Shared
 
         public static string GetAbsPath(string outputPath, string fullName)
         {
+            if (outputPath is null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
             //   ' The output folder can have these patterns:
             //   ' 1) "\\server\folder"
             //   ' 2) "drive:\folder"
             //   ' 3) "..\..\folder"
             //   ' 4) "folder"
 
-            if (outputPath.StartsWith(string.Empty + Path.DirectorySeparatorChar + Path.DirectorySeparatorChar))
+            if (outputPath.StartsWith(string.Empty + Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
             {
                 return outputPath;
             }
@@ -25,10 +30,10 @@ namespace RevEng.Shared
             {
                 return outputPath;
             }
-            else if (outputPath.IndexOf("..\\") != -1)
+            else if (outputPath.IndexOf("..\\", StringComparison.OrdinalIgnoreCase) != -1)
             {
                 var projectFolder = Path.GetDirectoryName(fullName);
-                while (outputPath.StartsWith("..\\"))
+                while (outputPath.StartsWith("..\\", StringComparison.OrdinalIgnoreCase))
                 {
                     outputPath = outputPath.Substring(3);
                     projectFolder = Path.GetDirectoryName(projectFolder);
@@ -44,6 +49,16 @@ namespace RevEng.Shared
 
         public static string GetNamespaceFromOutputPath(string directoryPath, string projectDir, string rootNamespace)
         {
+            if (directoryPath is null)
+            {
+                throw new ArgumentNullException(directoryPath);
+            }
+
+            if (projectDir is null)
+            {
+                throw new ArgumentNullException(projectDir);
+            }
+
             var subNamespace = SubnamespaceFromOutputPath(projectDir, directoryPath);
             return string.IsNullOrEmpty(subNamespace)
                 ? rootNamespace

@@ -1,4 +1,6 @@
-﻿namespace RevEng.Core.Abstractions
+﻿[assembly: System.CLSCompliant(true)]
+
+namespace RevEng.Core.Abstractions
 {
     public class ModuleScaffolderOptions
     {

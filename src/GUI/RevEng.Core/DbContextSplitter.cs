@@ -58,7 +58,7 @@ namespace RevEng.Core
             var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline)
                 .Cast<Match>()
                 .Where(m => !m.Value.StartsWith(@"
-                            "))
+                            ", StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             if (!statementsBlockMatches.Any())
@@ -79,7 +79,7 @@ namespace RevEng.Core
             {
                 var entityName = blockMatch.Groups["EntityName"].Value;
                 var entityParameterName = blockMatch.Groups["EntityParameterName"].Value;
-                var statements = configBlocks[index].Replace(new string(' ', 16), new string(' ', 12));
+                var statements = configBlocks[index].Replace(new string(' ', 16), new string(' ', 12), StringComparison.OrdinalIgnoreCase);
 
                 var _sb = new StringBuilder();
                 _sb.AppendLine(PathHelper.Header);
@@ -134,14 +134,14 @@ namespace RevEng.Core
 
             foreach (var line in sourceLines)
             {
-                if (prevLine != null && prevLine == string.Empty && line.Trim() == string.Empty)
+                if (prevLine != null && string.IsNullOrEmpty(prevLine) && string.IsNullOrEmpty(line.Trim()))
                 {
                     continue;
                 }
 
                 if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
                 {
-                    spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<"));
+                    spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<", StringComparison.OrdinalIgnoreCase));
                     inEntityBuilder = true;
                     if (!configLinesWritten)
                     {
@@ -157,7 +157,7 @@ namespace RevEng.Core
                     continue;
                 }
 
-                if (line.StartsWith(spaces + "});") && inEntityBuilder)
+                if (line.StartsWith(spaces + "});", StringComparison.OrdinalIgnoreCase) && inEntityBuilder)
                 {
                     inEntityBuilder = false;
                     continue;
@@ -192,12 +192,12 @@ namespace RevEng.Core
             {
                 if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
                 {
-                    spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<"));
+                    spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<", StringComparison.OrdinalIgnoreCase));
                     inEntityBuilder = true;
                     continue;
                 }
 
-                if (line.StartsWith(spaces + "});") && inEntityBuilder)
+                if (line.StartsWith(spaces + "});", StringComparison.OrdinalIgnoreCase) && inEntityBuilder)
                 {
                     if (!string.IsNullOrWhiteSpace(section.ToString()))
                     {
@@ -211,7 +211,7 @@ namespace RevEng.Core
 
                 if (inEntityBuilder)
                 {
-                    if (line.StartsWith(spaces + "{"))
+                    if (line.StartsWith(spaces + "{", StringComparison.OrdinalIgnoreCase))
                     {
                         section.AppendLine();
                         continue;
