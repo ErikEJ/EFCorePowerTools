@@ -268,10 +268,12 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                     columnAttribute.AddParameter(delimitedColumnName);
                 }
 
+#pragma warning disable CA1508 // Avoid dead conditional code
                 if (delimitedColumnType != null)
                 {
                     columnAttribute.AddParameter($"{nameof(ColumnAttribute.TypeName)} = {delimitedColumnType}");
                 }
+#pragma warning restore CA1508 // Avoid dead conditional code
                 _sb.AppendLine(columnAttribute);
             }
         }
@@ -365,7 +367,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 }
                 else
                 {
+#pragma warning disable CA1826 // Do not use Enumerable methods on indexable collections
                     foreignKeyAttribute.AddParameter($"nameof({navigation.ForeignKey.Properties.First().Name})");
+#pragma warning restore CA1826 // Do not use Enumerable methods on indexable collections
                 }
 
                 _sb.AppendLine(foreignKeyAttribute.ToString());

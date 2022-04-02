@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Logging;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using System;
@@ -15,13 +14,10 @@ namespace RevEng.Core.Procedures
 {
     public abstract class SqlServerRoutineModelFactory
     {
-        private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
-
         public string RoutineType { get; set; }
 
-        protected SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+        protected SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _)
         {
-            _logger = logger;
         }
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
@@ -40,6 +36,7 @@ namespace RevEng.Core.Procedures
             using (var connection = new SqlConnection(connectionString))
             {
                 var sql = new StringBuilder();
+#pragma warning disable CA1305 // Specify IFormatProvider
                 sql.AppendLine($@"
 SELECT
     ROUTINE_SCHEMA,
@@ -61,6 +58,7 @@ AND (
                 name = N'microsoft_database_tools_support'
         ) IS NULL 
 AND ROUTINE_TYPE = N'{RoutineType}'");
+#pragma warning restore CA1305 // Specify IFormatProvider
 
 #if !CORE50 && !CORE60
                 // Filters out table-valued functions without filtering out stored procedures
@@ -104,6 +102,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                             if (!isScalar)
                             {
+#pragma warning disable CA1031 // Do not catch general exception types
                                 try
                                 {
                                     module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets));
@@ -116,8 +115,8 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                         new List<ModuleResultElement>()
                                     };
                                     errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name}'{Environment.NewLine}{ex}{Environment.NewLine}");
-                                    _logger?.Logger.LogWarning(ex, $"Unable to scaffold {module.Schema}.{module.Name}");
                                 }
+#pragma warning restore CA1031 // Do not catch general exception types
                             }
                         }
 
@@ -192,6 +191,8 @@ SELECT
             return result;
         }
 
+#pragma warning disable CA1716 // Identifiers should not match keywords
         protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection,  Routine module, bool multipleResults = false);
+#pragma warning restore CA1716 // Identifiers should not match keywords
     }
 }

@@ -30,6 +30,8 @@ namespace SqlSharpener.Model
         /// <param name="foreignKeys">The foreign keys.</param>
         public Table(dac.TSqlObject tSqlObject)
         {
+            if (tSqlObject == null) throw new ArgumentNullException(nameof(tSqlObject));
+
             // Get the name.
             this.Name = tSqlObject.Name.Parts.Last();
 

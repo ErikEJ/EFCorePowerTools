@@ -27,6 +27,11 @@ namespace RevEng.Core
     {
         public static ServiceProvider Build(ReverseEngineerCommandOptions options)
         {
+            if (options == null)
+            { 
+                throw new ArgumentNullException(nameof(options));
+            }
+
             // Add base services for scaffolding
             var serviceCollection = new ServiceCollection();
 

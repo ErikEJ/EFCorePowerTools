@@ -1,5 +1,7 @@
 ﻿using System;
 
+[assembly: CLSCompliant(false)]
+
 namespace Dgml
 {
     public static class Builder
@@ -21,7 +23,7 @@ namespace Dgml
             var nodes = string.Join(Environment.NewLine, result.Nodes);
             var links = string.Join(Environment.NewLine, result.Links);
 
-#if NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
 return template.Replace("{Links}", links, StringComparison.OrdinalIgnoreCase).Replace("{Nodes}", nodes, StringComparison.OrdinalIgnoreCase);
 #else
             return template.Replace("{Links}", links).Replace("{Nodes}", nodes);

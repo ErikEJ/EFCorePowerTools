@@ -2,6 +2,7 @@
 
 namespace RevEng.Shared
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "DTO")]
     public class ReverseEngineerCommandOptions
     {
         public DatabaseType DatabaseType { get; set; }

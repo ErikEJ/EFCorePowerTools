@@ -5,6 +5,7 @@ namespace RevEng.Core.Abstractions.Metadata
     /// <summary>
     /// Base object for functions and stored procedures
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "DTO")]
     public class Routine : SqlObjectBase
     {
         public bool HasValidResultSet { get; set; }

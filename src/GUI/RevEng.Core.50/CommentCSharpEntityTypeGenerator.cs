@@ -58,7 +58,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         ///     any release. You should only use it directly in your code with extreme caution and knowing that
         ///     doing so can result in application failures when updating to a new Entity Framework Core release.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         public virtual string WriteCode(IEntityType entityType, string @namespace, bool useDataAnnotations)
+#pragma warning restore CA1716 // Identifiers should not match keywords
         {
             Check.NotNull(entityType, nameof(entityType));
             Check.NotNull(@namespace, nameof(@namespace));
@@ -330,7 +332,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
         ///     any release. You should only use it directly in your code with extreme caution and knowing that
         ///     doing so can result in application failures when updating to a new Entity Framework Core release.
         /// </summary>
+#pragma warning disable CA1716 // Identifiers should not match keywords
         protected virtual void GeneratePropertyDataAnnotations([NotNull] IProperty property)
+#pragma warning restore CA1716 // Identifiers should not match keywords
         {
             Check.NotNull(property, nameof(property));
 
@@ -385,10 +389,12 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                     columnAttribute.AddParameter(delimitedColumnName);
                 }
 
+#pragma warning disable CA1508 // Avoid dead conditional code
                 if (delimitedColumnType != null)
                 {
                     columnAttribute.AddParameter($"{nameof(ColumnAttribute.TypeName)} = {delimitedColumnType}");
                 }
+#pragma warning restore CA1508 // Avoid dead conditional code
 
                 _sb.AppendLine(columnAttribute.ToString());
             }
@@ -490,7 +496,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 }
                 else
                 {
+#pragma warning disable CA1826 // Do not use Enumerable methods on indexable collections
                     foreignKeyAttribute.AddParameter($"nameof({navigation.ForeignKey.Properties.First().Name})");
+#pragma warning restore CA1826 // Do not use Enumerable methods on indexable collections
                 }
 
                 _sb.AppendLine(foreignKeyAttribute.ToString());

@@ -88,7 +88,7 @@ namespace GOEddie.Dacpac.References
             AddScripts(preScript, postScript, _targetPath);
         }
 
-        TSqlModel getModel(string source)
+        private TSqlModel getModel(string source)
         {
             if (source == _sources.FirstOrDefault<string>())
             {

@@ -73,14 +73,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     {
                         procedure.Parameters = GetStoredProcedureParameters(proc);
 
+#pragma warning disable CA1031 // Do not catch general exception types
                         try
                         {
                             procedure.Results.Add(GetStoredProcedureResultElements(proc));
                         }
                         catch (Exception ex)
                         {
-                            errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.Message);
+                            errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.ToString());
                         }
+#pragma warning restore CA1031 // Do not catch general exception types
                     }
 
                     result.Add(procedure);

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+[assembly: CLSCompliant(false)]
+
 namespace RevEng.Core
 {
     public static class DbContextSplitter
@@ -90,7 +92,9 @@ namespace RevEng.Core
                     _sb.AppendLine("#nullable disable");
                 }
                 _sb.AppendLine();
+#pragma warning disable CA1305 // Specify IFormatProvider
                 _sb.AppendLine($"namespace {configurationNamespace}");
+#pragma warning restore CA1305 // Specify IFormatProvider
                 _sb.AppendLine("{");
                 _sb.AppendLine(new string(' ', 4) + $"public partial class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
                 _sb.AppendLine(new string(' ', 4) + "{");

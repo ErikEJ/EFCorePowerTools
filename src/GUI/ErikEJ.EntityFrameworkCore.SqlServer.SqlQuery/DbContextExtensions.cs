@@ -7,11 +7,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: CLSCompliant(false)]
+
 namespace Microsoft.EntityFrameworkCore
 {
     /// <summary>
     /// Useful extensions for DbContext.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4457:Parameter validation in \"async\"/\"await\" methods should be wrapped", Justification = "Broken analyzer?")]
     public static class DbContextExtensions
     {
         /// <summary>
@@ -35,24 +38,30 @@ namespace Microsoft.EntityFrameworkCore
         /// </returns>
         public static async Task<List<T>> SqlQueryValueAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
         {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+
             if (parameters is null)
             {
-                parameters = new object[] { };
+                parameters = Array.Empty<object>();
             }
 
             if (typeof(T).IsValueType || typeof(T) == typeof(string))
             {
-                using (var db2 = new ContextForQueryType<ValueReturn<T>>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
-                {
-                    db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
-                    
-                    var result  = await db2.Set<ValueReturn<T>>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken);
-
-                    return result.Select(v => v.Value).ToList();
-                }
+                return await SqlQueryValueInternalAsync<T>(db, sql, parameters, cancellationToken).ConfigureAwait(false);
             }
-                
-            throw new NotSupportedException("Invalid operation, supplied type is not a value type");
+
+            throw new NotSupportedException("Invalid operation, supplied type is not a value type");            
+        }
+
+        private static async Task<List<T>> SqlQueryValueInternalAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
+        {
+            using var db2 = new ContextForQueryType<ValueReturn<T>>(db.Database.GetDbConnection(), db.Database.CurrentTransaction);
+            
+            db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
+
+            var result = await db2.Set<ValueReturn<T>>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return result.Select(v => v.Value).ToList();
         }
 
         /// <summary>
@@ -77,17 +86,25 @@ namespace Microsoft.EntityFrameworkCore
         /// </returns>
         public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
         {
+            if (db is null) throw new ArgumentNullException(nameof(db));
+
+            return await SqlQueryInternalAsync<T>(db, sql, parameters, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task<List<T>> SqlQueryInternalAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
+        {
             if (parameters is null)
             {
-                parameters = new object[] { };
+                parameters = Array.Empty<object>();
             }
 
-            using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
-            {
-                db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
-                return await db2.Set<T>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken);
-            }
+            using var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction);
+            
+            db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
+            
+            return await db2.Set<T>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
+
 
         private sealed class ContextForQueryType<T> : DbContext where T : class
         {
@@ -134,8 +151,9 @@ namespace Microsoft.EntityFrameworkCore
                 modelBuilder.Entity<T>().HasNoKey().ToView(null);
             }
         }
-
+#pragma warning disable CA1812
         internal class ValueReturn<T>
+#pragma warning restore CA1812
         {
             public T Value { get; private set; }
         }

@@ -1,4 +1,5 @@
 ﻿using RevEng.Shared;
+using System;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -27,7 +28,7 @@ namespace RevEng.Core
                 ms.Close();
                 return true;
             }
-            catch
+            catch (Exception ex) when (ex is ArgumentNullException || ex is EncoderFallbackException)
             {
                 deserialized = null;
                 return false;

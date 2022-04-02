@@ -33,7 +33,7 @@ namespace RevEng.Core.Modules
             this.code = code;
         }
 
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpace)
+        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue)
         {
             if (scaffoldedModel == null) throw new ArgumentNullException(nameof(scaffoldedModel));
 

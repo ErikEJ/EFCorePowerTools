@@ -8,7 +8,7 @@ namespace Microsoft.EntityFrameworkCore
     /// <typeparam name="TValue"></typeparam>
     public class OutputParameter<TValue>
     {
-        private bool _valueSet = false;
+        private bool _valueSet;
         private TValue _value;
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Dgml
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity", Justification = "Used by old runtimes")]
     public static class DebugViewParser
     {
         public static DebugViewParserResult Parse(string[] debugViewLines, string dbContextName)
@@ -104,7 +105,6 @@ namespace Dgml
 
                         var foundLine = line.Replace("(no field, ", "(nofield,");
                         foundLine = foundLine.Replace(", ", ",");
-
                         var props = foundLine.Trim().Split(' ').ToList();
 
                         var name = props[0];
