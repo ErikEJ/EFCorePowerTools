@@ -115,7 +115,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                     {
                                         new List<ModuleResultElement>()
                                     };
-                                    errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name}'{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                                    errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name}'{Environment.NewLine}{ex}{Environment.NewLine}");
                                     _logger?.Logger.LogWarning(ex, $"Unable to scaffold {module.Schema}.{module.Name}");
                                 }
                             }

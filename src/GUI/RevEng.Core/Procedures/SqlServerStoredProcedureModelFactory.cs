@@ -89,6 +89,11 @@ namespace RevEng.Core.Procedures
                 var schemaTable = schemaReader.GetSchemaTable();
                 var list = new List<ModuleResultElement>();
 
+                if (schemaTable == null)
+                {
+                    break;
+                }
+                
                 foreach (DataRow row in schemaTable.Rows)
                 {
                     var name = row["ColumnName"].ToString();

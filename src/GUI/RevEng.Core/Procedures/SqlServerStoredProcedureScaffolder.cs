@@ -310,7 +310,7 @@ namespace RevEng.Core.Procedures
                     }
                     _sb.AppendLine("};");
 
-                    if (procedure.HasValidResultSet && procedure.Results[0].Count == 0)
+                    if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
                     {
                         _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
                     }
@@ -373,9 +373,15 @@ namespace RevEng.Core.Procedures
             {
                 foreach (var procedure in model.Routines.Cast<Procedure>())
                 {
+                    if (procedure.NoResultSet)
+                    {
+                        continue;
+                    }
+
                     int i = 1;
                     foreach (var resultSet in procedure.Results)
                     {
+
                         var suffix = $"{i++}";
 
                         if (!procedure.SupportsMultipleResultSet)
@@ -448,7 +454,7 @@ namespace RevEng.Core.Procedures
         {
             string returnType;
 
-            if (procedure.HasValidResultSet && procedure.Results[0].Count == 0)
+            if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
             {
                 returnType = $"Task<int>";
             }

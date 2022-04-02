@@ -72,6 +72,11 @@ namespace RevEng.Core.Modules
 
                 foreach (var resultSet in routine.Results)
                 {
+                    if (routine.NoResultSet)
+                    {
+                        continue;
+                    }
+
                     var suffix = string.Empty;
                     if (routine.Results.Count > 1)
                     {
