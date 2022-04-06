@@ -238,12 +238,12 @@ namespace RevEng.Core
                         continue;
                     }
 
-                    if (string.IsNullOrEmpty(line.Trim()))
+                    if (inConfiguring && !string.IsNullOrEmpty(line))
                     {
                         continue;
                     }
 
-                    if (inConfiguring && string.IsNullOrEmpty(line.Trim()))
+                    if (inConfiguring)
                     {
                         inConfiguring = false;
                         continue;
