@@ -150,7 +150,9 @@ SELECT
     'Scale'   = CAST(OdbcScale(p.system_type_id, p.scale) AS INT),  
     'Order'  = CAST(parameter_id AS INT),  
     p.is_output AS output,
-    'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id))
+    'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id)),
+	'TypeSchema' = t.schema_id,
+	'TypeId' = p.user_type_id
     from sys.parameters p
 	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
     where object_id = object_id('{schema}.{name}')
@@ -183,7 +185,9 @@ SELECT
                     Output = (bool)par["output"],
                     Nullable = true,
                     TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
-                };
+                    TypeId = (par["TypeId"] is DBNull) ? (int?)null : int.Parse(par["TypeId"].ToString(), CultureInfo.InvariantCulture),
+                    TypeSchema = (par["TypeSchema"] is DBNull) ? (int?)null : int.Parse(par["TypeSchema"].ToString(), CultureInfo.InvariantCulture),
+                };  
 
                 result.Add(parameter);
             }

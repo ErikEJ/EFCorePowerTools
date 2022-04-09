@@ -10,6 +10,8 @@
         public bool Output { get; set; }
         public bool Nullable { get; set; }
         public string TypeName { get; set; }
+        public int? TypeId { get; set; }
+        public int? TypeSchema { get; set; }
         public bool IsReturnValue { get; set; }
     }
 }

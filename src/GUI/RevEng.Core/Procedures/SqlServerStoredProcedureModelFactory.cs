@@ -78,6 +78,13 @@ namespace RevEng.Core.Procedures
             foreach (var parameter in parameters)
             {
                 var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
+
+                if (parameter.ClrType() == typeof(DataTable))
+                {
+                    param.Value = GetDataTableFromSchema(parameter.TypeName, connection);
+                    param.SqlDbType = SqlDbType.Structured;
+                }
+
                 sqlCommand.Parameters.Add(param);
             }
 
@@ -115,6 +122,40 @@ namespace RevEng.Core.Procedures
             } while (schemaReader.NextResult());
 
             return result;
+        }
+
+        private static DataTable GetDataTableFromSchema(string userDefinedTableTypeName, SqlConnection connection)
+        {
+            var name = new SqlParameter
+            {
+                Value = userDefinedTableTypeName,
+                ParameterName = "@name",
+            };
+
+            //TODO fix name search ([dbo].[ChecksAdd]
+            var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
+                        "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
+                        "WHERE SC.object_id = " +
+                        "(SELECT type_table_object_id FROM sys.table_types WHERE name = @name);";
+
+            var dataTable = new DataTable();
+
+            using (var command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add(name);
+                using (var sqlDataReader = command.ExecuteReader())
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        var columnName = sqlDataReader["name"].ToString();
+                        var clrType = SqlServerSqlTypeExtensions.GetClrType(sqlDataReader["datatype"].ToString(), false);
+                        dataTable.Columns.Add(columnName, clrType);
+                    }
+                }
+            }
+
+
+            return dataTable;
         }
 
         private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string moduleName)
