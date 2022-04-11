@@ -13,7 +13,7 @@ namespace EFCorePowerTools.Helpers
             var args = $"add {project.FullPath} package {packageId} ";
             if (version != null)
             {
-                args += "-v" + version.ToString(3);
+                args += "-v " + version.ToString(3);
             }
 
             var startInfo = new ProcessStartInfo
