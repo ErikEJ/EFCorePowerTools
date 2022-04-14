@@ -184,7 +184,7 @@ namespace EFCorePowerTools.Extensions
         
         public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
         {
-            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
+            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project) || await IsNet70Async(project);
         }
 
         private static async Task<bool> IsNetFrameworkAsync(this Project project)
@@ -214,6 +214,11 @@ namespace EFCorePowerTools.Extensions
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ?? false;
         }
 
+        private static async Task<bool> IsNet70Async(this Project project)
+        {
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+        }
+        
         private async static Task<string> GetOutputPathAsync(Project project)
         {
             var outputPath = await project.GetAttributeAsync("OutputPath");
