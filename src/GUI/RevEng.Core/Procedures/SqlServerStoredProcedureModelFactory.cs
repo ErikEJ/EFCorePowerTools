@@ -78,11 +78,17 @@ namespace RevEng.Core.Procedures
             foreach (var parameter in parameters)
             {
                 var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
+
+                if (parameter.ClrType() == typeof(DataTable))
+                {
+                    param.Value = GetDataTableFromSchema(parameter, connection);
+                    param.SqlDbType = SqlDbType.Structured;
+                }
+
                 sqlCommand.Parameters.Add(param);
             }
 
             using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
-            
             do
             {
                 // http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqldatareader.getschematable.aspx
@@ -115,6 +121,45 @@ namespace RevEng.Core.Procedures
             } while (schemaReader.NextResult());
 
             return result;
+        }
+
+        private static DataTable GetDataTableFromSchema(ModuleParameter parameter, SqlConnection connection)
+        {
+            var userType = new SqlParameter
+            {
+                Value = parameter.TypeId,
+                ParameterName = "@userTypeId",
+            };
+
+            var userSchema = new SqlParameter
+            {
+                Value = parameter.TypeSchema,
+                ParameterName = "@schemaId",
+            };
+            
+            var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
+                        "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
+                        "WHERE SC.object_id = " +
+                        "(SELECT type_table_object_id FROM sys.table_types WHERE schema_id = @schemaId AND user_type_id =  @userTypeId);";
+
+            var dataTable = new DataTable();
+
+            using (var command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add(userType);
+                command.Parameters.Add(userSchema);
+                using (var sqlDataReader = command.ExecuteReader())
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        var columnName = sqlDataReader["name"].ToString();
+                        var clrType = SqlServerSqlTypeExtensions.GetClrType(sqlDataReader["datatype"].ToString(), false);
+                        dataTable.Columns.Add(columnName, clrType);
+                    }
+                }
+            }
+
+            return dataTable;
         }
 
         private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string moduleName)
