@@ -81,7 +81,7 @@ namespace RevEng.Core.Procedures
 
                 if (parameter.ClrType() == typeof(DataTable))
                 {
-                    param.Value = GetDataTableFromSchema(parameter.TypeName, connection);
+                    param.Value = GetDataTableFromSchema(parameter, connection);
                     param.SqlDbType = SqlDbType.Structured;
                 }
 
@@ -89,7 +89,6 @@ namespace RevEng.Core.Procedures
             }
 
             using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
-            
             do
             {
                 // http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqldatareader.getschematable.aspx
@@ -124,25 +123,31 @@ namespace RevEng.Core.Procedures
             return result;
         }
 
-        private static DataTable GetDataTableFromSchema(string userDefinedTableTypeName, SqlConnection connection)
+        private static DataTable GetDataTableFromSchema(ModuleParameter parameter, SqlConnection connection)
         {
-            var name = new SqlParameter
+            var userType = new SqlParameter
             {
-                Value = userDefinedTableTypeName,
-                ParameterName = "@name",
+                Value = parameter.TypeId,
+                ParameterName = "@userTypeId",
             };
 
-            //TODO fix name search ([dbo].[ChecksAdd]
+            var userSchema = new SqlParameter
+            {
+                Value = parameter.TypeSchema,
+                ParameterName = "@schemaId",
+            };
+            
             var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
                         "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
                         "WHERE SC.object_id = " +
-                        "(SELECT type_table_object_id FROM sys.table_types WHERE name = @name);";
+                        "(SELECT type_table_object_id FROM sys.table_types WHERE schema_id = @schemaId AND user_type_id =  @userTypeId);";
 
             var dataTable = new DataTable();
 
             using (var command = new SqlCommand(query, connection))
             {
-                command.Parameters.Add(name);
+                command.Parameters.Add(userType);
+                command.Parameters.Add(userSchema);
                 using (var sqlDataReader = command.ExecuteReader())
                 {
                     while (sqlDataReader.Read())
@@ -153,7 +158,6 @@ namespace RevEng.Core.Procedures
                     }
                 }
             }
-
 
             return dataTable;
         }
