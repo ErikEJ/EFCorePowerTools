@@ -91,7 +91,7 @@ namespace RevEng.Core.Functions
         private void GenerateFunctionStub(Routine function, RoutineModel model)
         {
             var paramStrings = function.Parameters
-                .Select(p => $"{code.Reference(p.ClrType())} {p.Name}");
+                .Select(p => $"{code.Reference(p.ClrType())} {code.Identifier(p.Name)}");
 
             var identifier = GenerateIdentifierName(function, model);
 

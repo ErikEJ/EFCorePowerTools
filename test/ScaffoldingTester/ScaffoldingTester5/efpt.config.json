@@ -169,7 +169,7 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Northwind",
+   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

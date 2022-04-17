@@ -39,7 +39,6 @@ namespace ScaffoldingTester.Models
             modelBuilder.Entity<CustOrdersOrdersResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<EmployeeSalesbyCountryResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<MultiSetResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<OutputScenariosResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SalesbyYearResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SalesByCategoryResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<TenMostExpensiveProductsResult>().HasNoKey().ToView(null);
@@ -53,7 +52,7 @@ namespace ScaffoldingTester.Models
         Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<MultiSetResult>> MultiSetAsync(DateTime? Year, decimal? ProductValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<int> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<int> OutputScenariosAsync(short? @override, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string CategoryName, string OrdYear, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
@@ -215,7 +214,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<int> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> OutputScenariosAsync(short? @override, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterProductCount = new SqlParameter
             {
@@ -243,15 +242,15 @@ namespace ScaffoldingTester.Models
             {
                 new SqlParameter
                 {
-                    ParameterName = "Year",
-                    Value = Year ?? Convert.DBNull,
+                    ParameterName = "@override",
+                    Value = @override ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.SmallInt,
                 },
                 parameterProductCount,
                 parameterDescription,
                 parameterreturnValue,
             };
-            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[OutputScenarios] @Year, @ProductCount OUTPUT, @Description OUTPUT", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[OutputScenarios] @override, @ProductCount OUTPUT, @Description OUTPUT", sqlParameters, cancellationToken);
 
             ProductCount.SetValue(parameterProductCount.Value);
             Description.SetValue(parameterDescription.Value);
