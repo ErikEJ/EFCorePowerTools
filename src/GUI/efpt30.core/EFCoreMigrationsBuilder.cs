@@ -153,11 +153,7 @@ namespace Modelling
                 return "NoMigrations";
             }
 
-            var pendingMigrations
-                = (databaseExists
-                    ? context.Database.GetPendingMigrations()
-                    : migrations)
-                .ToArray();
+            var pendingMigrations = context.Database.GetPendingMigrations().ToArray();
 
             if (pendingMigrations.Any())
             {
