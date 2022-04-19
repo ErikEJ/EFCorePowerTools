@@ -42,7 +42,7 @@ namespace RevEng.Core.Procedures
             return moduleParameters;
         }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults = false)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
         {
             if (connection is null)
             { 
@@ -54,16 +54,15 @@ namespace RevEng.Core.Procedures
                 throw new ArgumentNullException(nameof(module));
             }
 
-            if (multipleResults)
+            if (useLegacyResultSetDiscovery)
             {
-                return GetAllResultSets(connection, module);        
+                return GetFirstResultSet(connection, module.Schema, module.Name);
             }
 
-            return GetFirstResultSet(connection, module.Schema, module.Name);
+            return GetAllResultSets(connection, module, !multipleResults);
         }
 
-
-        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module)
+        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
         {
             var result = new List<List<ModuleResultElement>>();
             using var sqlCommand = connection.CreateCommand();
@@ -118,7 +117,7 @@ namespace RevEng.Core.Procedures
                 }
 
                 result.Add(list);
-            } while (schemaReader.NextResult());
+            } while (schemaReader.NextResult() && !singleResult);
 
             return result;
         }

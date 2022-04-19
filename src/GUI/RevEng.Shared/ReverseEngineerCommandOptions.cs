@@ -45,5 +45,6 @@ namespace RevEng.Shared
         public bool UseMultipleSprocResultSets { get; set; }
         public bool LegacyLangVersion { get; set; }
         public bool MergeDacpacs { get; set; }
+        public bool UseLegacyResultSetDiscovery { get; set; }
     }
 }

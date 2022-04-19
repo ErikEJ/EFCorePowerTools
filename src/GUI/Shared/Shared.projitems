@@ -9,7 +9,6 @@
     <Import_RootNamespace>EFCorePowerTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Options\DefaultConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />

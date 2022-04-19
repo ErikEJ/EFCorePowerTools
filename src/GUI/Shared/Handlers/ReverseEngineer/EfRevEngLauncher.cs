@@ -65,11 +65,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
-                RunCleanup =  AdvancedOptions.Instance.RunCleanup,
-                UseMultipleSprocResultSets =  AdvancedOptions.Instance.DiscoverMultipleResultSets,
+                RunCleanup = AdvancedOptions.Instance.RunCleanup,
+                UseMultipleSprocResultSets = AdvancedOptions.Instance.DiscoverMultipleResultSets,
                 OptionsPath = options.OptionsPath,
                 LegacyLangVersion = await project.IsLegacyAsync(),
                 MergeDacpacs =  AdvancedOptions.Instance.MergeDacpacs,
+                UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

@@ -105,7 +105,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 #pragma warning disable CA1031 // Do not catch general exception types
                                 try
                                 {
-                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets));
+                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, options.UseLegacyResultSetDiscovery));
                                 }
                                 catch (Exception ex)
                                 {
@@ -196,7 +196,7 @@ SELECT
         }
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection,  Routine module, bool multipleResults = false);
+        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection,  Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
 #pragma warning restore CA1716 // Identifiers should not match keywords
     }
 }

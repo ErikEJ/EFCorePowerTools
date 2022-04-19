@@ -1,5 +1,4 @@
-﻿using BaseClasses;
-using Community.VisualStudio.Toolkit;
+﻿using Community.VisualStudio.Toolkit;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -12,7 +11,7 @@ namespace EFCorePowerTools
         public class AdvancedOptions : BaseOptionPage<EFCorePowerTools.AdvancedOptions> { }
     }
 
-    public class AdvancedOptions : BaseOptionModel<AdvancedOptions>, IRatingConfig
+    public class AdvancedOptions : BaseOptionModel<AdvancedOptions>
     {
         [Category("Preview Features"),
         DisplayName(@"Discover multiple result sets from SQL stored procedures"),
@@ -44,13 +43,16 @@ namespace EFCorePowerTools
         DefaultValue(false)]
         public bool MergeDacpacs { get; set; }
 
+        [Category("Reverse Engineering"),
+        DisplayName(@"Use sp_describe_first_result_set only"),
+        Description("Use sp_describe_first_result_set only for stored procedure result sets"),
+        DefaultValue(false)]
+        public bool UseLegacyResultSetDiscovery { get; set; }
+
         [Category("Other"),
         DisplayName(@"Participate in Telemetry"),
         Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports"),
         DefaultValue(true)]
         public bool ParticipateInTelemetry { get; set; } = true;
-
-        [Browsable(false)]
-        public int RatingRequests { get; set; }
     }
 }
