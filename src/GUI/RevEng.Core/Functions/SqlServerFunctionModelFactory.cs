@@ -24,7 +24,7 @@ namespace RevEng.Core.Procedures
             return GetRoutines(connectionString, options);
         }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults = false)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
         {
             if (module is null)
             {
