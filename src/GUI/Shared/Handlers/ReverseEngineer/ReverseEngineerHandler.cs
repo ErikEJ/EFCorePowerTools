@@ -23,6 +23,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly EFCorePowerToolsPackage _package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
+        private List<string> legacyDiscoveryObjects = new List<string>();
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
         {
@@ -105,6 +106,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
                     };
                 }
+
+                legacyDiscoveryObjects = options.Tables.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
@@ -554,6 +557,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 if (! AdvancedOptions.Instance.IncludeUiHintInConfig)
                 {
                     options.UiHint = null;
+                }
+
+                foreach (var table in options.Tables)
+                {
+                    if (legacyDiscoveryObjects.Contains(table.Name))
+                    {
+                        table.UseLegacyResultSetDiscovery = true;
+                    }
                 }
 
                 File.WriteAllText(optionsPath, options.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);

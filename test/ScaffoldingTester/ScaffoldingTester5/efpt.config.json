@@ -150,7 +150,8 @@
       },
       {
          "Name": "[dbo].[MultiSet]",
-         "ObjectType": 1
+         "ObjectType": 1,
+         "UseLegacyResultSetDiscovery": true
       },
       {
          "Name": "[dbo].[OutputScenarios]",
