@@ -105,7 +105,13 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 #pragma warning disable CA1031 // Do not catch general exception types
                                 try
                                 {
-                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, options.UseLegacyResultSetDiscovery));
+                                    var forceLegacy = options.UseLegacyResultSetDiscovery;
+                                    if (!forceLegacy)
+                                    {
+                                        forceLegacy = options.ModulesUsingLegacyDiscovery.Contains($"[{module.Schema}].[{module.Name}]");
+                                    }
+                                    
+                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy));
                                 }
                                 catch (Exception ex)
                                 {

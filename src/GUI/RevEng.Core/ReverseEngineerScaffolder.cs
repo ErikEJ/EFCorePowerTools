@@ -146,6 +146,9 @@ namespace RevEng.Core
                     UseLegacyResultSetDiscovery = options.UseLegacyResultSetDiscovery && !options.UseMultipleSprocResultSets,
                     FullModel = true,
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
+                    ModulesUsingLegacyDiscovery = options.Tables
+                        .Where(t => t.ObjectType == ObjectType.Procedure && t.UseLegacyResultSetDiscovery)
+                        .Select(m => m.Name),
                 };
 
                 var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);

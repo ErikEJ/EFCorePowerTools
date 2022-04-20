@@ -29,6 +29,12 @@ namespace RevEng.Shared
         public IEnumerable<string> ExcludedColumns { get; set; }
 
         /// <summary>
+        /// exclude table from default result set discovery
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public bool UseLegacyResultSetDiscovery { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SerializationTableModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>
