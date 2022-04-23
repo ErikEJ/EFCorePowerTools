@@ -70,12 +70,12 @@
 
         private void OpenSources_Executed()
         {
-            _operatingSystemAccess.StartProcess(_aboutExtensionModel.SourceCodeUrl);
+            _operatingSystemAccess.StartProcess(AboutExtensionModel.SourceCodeUrl);
         }
 
         private void OpenMarketplace_Executed()
         {
-            _operatingSystemAccess.StartProcess(_aboutExtensionModel.MarketplaceUrl);
+            _operatingSystemAccess.StartProcess(AboutExtensionModel.MarketplaceUrl);
         }
 
         private void FormatVersion()

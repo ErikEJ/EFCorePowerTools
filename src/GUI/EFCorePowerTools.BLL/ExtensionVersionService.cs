@@ -1,11 +1,13 @@
-﻿namespace EFCorePowerTools.BLL
-{
-    using Shared.BLL;
-    using Shared.DAL;
-    using Shared.Models;
-    using System;
+﻿using EFCorePowerTools.Shared.BLL;
+using EFCorePowerTools.Shared.DAL;
+using EFCorePowerTools.Shared.Models;
+using System;
 
-    public class ExtensionVersionService : IExtensionVersionService
+[assembly: CLSCompliant(false)]
+
+namespace EFCorePowerTools.BLL
+{
+    public sealed class ExtensionVersionService : IExtensionVersionService
     {
         private readonly IDotNetAccess _dotNetAccess;
 

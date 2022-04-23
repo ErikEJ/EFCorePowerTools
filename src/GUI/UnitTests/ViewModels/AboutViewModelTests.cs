@@ -215,7 +215,7 @@ namespace UnitTests.ViewModels
             avm.OpenMarketplaceCommand.Execute(null);
 
             // Assert
-            osaMock.Verify(m => m.StartProcess(aem.MarketplaceUrl), Times.Once);
+            osaMock.Verify(m => m.StartProcess(AboutExtensionModel.MarketplaceUrl), Times.Once);
         }
     }
 }

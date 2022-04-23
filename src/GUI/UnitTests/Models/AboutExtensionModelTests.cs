@@ -11,10 +11,8 @@ namespace UnitTests.Models
         public void SourceCodeUrl_NotEmpty()
         {
             // Arrange
-            var aem = new AboutExtensionModel();
-
             // Act
-            var sourceCodeUrl = aem.SourceCodeUrl;
+            var sourceCodeUrl = AboutExtensionModel.SourceCodeUrl;
 
             // Assert
             Assert.IsFalse(string.IsNullOrWhiteSpace(sourceCodeUrl));
@@ -24,10 +22,8 @@ namespace UnitTests.Models
         public void MarketplaceUrl_NotEmpty()
         {
             // Arrange
-            var aem = new AboutExtensionModel();
-
             // Act
-            var marketplaceUrl = aem.MarketplaceUrl;
+            var marketplaceUrl = AboutExtensionModel.MarketplaceUrl;
 
             // Assert
             Assert.IsFalse(string.IsNullOrWhiteSpace(marketplaceUrl));
