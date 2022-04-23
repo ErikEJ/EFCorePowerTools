@@ -9,12 +9,13 @@ using System.Text;
 
 namespace GOEddie.Dacpac.References
 {
-    public class DacpacMerger
+    public class DacpacMerger : IDisposable
     {
         private readonly string[] _sources;
         private readonly TSqlModel _first;
         private readonly string _targetPath;
         private readonly TSqlModel _target;
+        private bool disposedValue;
 
         /// <summary>
         /// Merges the specified .dacpac files into the target .dacpac (which is created)
@@ -31,8 +32,8 @@ namespace GOEddie.Dacpac.References
 
         public void Merge()
         {
-            var pre = string.Empty;
-            var post = string.Empty;
+            var pre = new StringBuilder();
+            var post = new StringBuilder();
 
             foreach (var source in _sources)
             {
@@ -41,22 +42,24 @@ namespace GOEddie.Dacpac.References
                     continue;
                 }
 
-                using var model = getModel(source);
-                foreach (var obj in model.GetObjects(DacQueryScopes.UserDefined))
+                using (var model = getModel(source))
                 {
-                    TSqlScript ast;
-                    if (obj.TryGetAst(out ast))
+                    foreach (var obj in model.GetObjects(DacQueryScopes.UserDefined))
                     {
-                        var name = obj.Name.ToString();
-                        var info = obj.GetSourceInformation();
-                        if (info != null && !string.IsNullOrWhiteSpace(info.SourceName))
+                        TSqlScript ast;
+                        if (obj.TryGetAst(out ast))
                         {
-                            name = info.SourceName;
-                        }
+                            var name = obj.Name.ToString();
+                            var info = obj.GetSourceInformation();
+                            if (info != null && !string.IsNullOrWhiteSpace(info.SourceName))
+                            {
+                                name = info.SourceName;
+                            }
 
-                        if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase))
-                        {
-                            _target.AddOrUpdateObjects(ast, name, new TSqlObjectOptions());    //WARNING throwing away ansi nulls and quoted identifiers!
+                            if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase))
+                            {
+                                _target.AddOrUpdateObjects(ast, name, new TSqlObjectOptions());    //WARNING throwing away ansi nulls and quoted identifiers!
+                            }
                         }
                     }
                 }
@@ -65,18 +68,22 @@ namespace GOEddie.Dacpac.References
                 {
                     if (!(package.PreDeploymentScript is null))
                     {
-#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
-                        pre += new StreamReader(package.PreDeploymentScript).ReadToEnd();
+                        using (var stream = new StreamReader(package.PreDeploymentScript))
+                        {
+                            pre.Append(stream.ReadToEnd());
+                        }
                     }
                     if (!(package.PostDeploymentScript is null))
                     {
-                        post += new StreamReader(package.PostDeploymentScript).ReadToEnd();
-#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
+                        using (var stream = new StreamReader(package.PostDeploymentScript))
+                        {
+                            post.Append(stream.ReadToEnd());
+                        }
                     }
                 }
             }
 
-            WriteFinalDacpac(_target, pre, post);
+            WriteFinalDacpac(_target, pre.ToString(), post.ToString());
         }
 
         private void WriteFinalDacpac(TSqlModel model, string preScript, string postScript)
@@ -132,6 +139,26 @@ namespace GOEddie.Dacpac.References
                 }
                 package.Close();
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _first?.Dispose();
+                    _target.Dispose();
+                }
+                
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

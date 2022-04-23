@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <None Update="TestFiles\DbProject.dacpac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>	
 

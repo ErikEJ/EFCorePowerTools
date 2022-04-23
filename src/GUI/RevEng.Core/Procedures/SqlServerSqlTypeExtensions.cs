@@ -1,4 +1,5 @@
-﻿using RevEng.Core.Abstractions.Metadata;
+﻿using NetTopologySuite.Geometries;
+using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -152,6 +153,7 @@ namespace RevEng.Core
                 case SqlDbType.Date:
                 case SqlDbType.DateTime2:
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
+
                 case SqlDbType.Time:
                     return isNullable ? typeof(TimeSpan?) : typeof(TimeSpan);
 
@@ -182,7 +184,15 @@ namespace RevEng.Core
                     return typeof(object);
 
                 case SqlDbType.Udt:
-                    return typeof(byte[]);
+                    switch (storeType)
+                    {
+                        case "geometry":
+                        case "geography":
+                            return typeof(Geometry);
+
+                        default:
+                            return typeof(byte[]);
+                    }
 
                 case SqlDbType.Structured:
                     return typeof(DataTable);

@@ -90,7 +90,7 @@ namespace RevEng.Core.Procedures
             using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
             do
             {
-                // http://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqldatareader.getschematable.aspx
+                // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatablereader.getschematable
                 var schemaTable = schemaReader.GetSchemaTable();
                 var list = new List<ModuleResultElement>();
 
