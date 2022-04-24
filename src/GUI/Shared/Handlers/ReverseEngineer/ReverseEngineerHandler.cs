@@ -107,7 +107,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     };
                 }
 
-                legacyDiscoveryObjects = options.Tables.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList();
+                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
