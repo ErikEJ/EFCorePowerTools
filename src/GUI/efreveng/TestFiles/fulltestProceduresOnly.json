@@ -129,6 +129,10 @@
     {
       "Name": "[dupe].[CustOrderHist]",
       "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[ISOweek]",
+      "ObjectType": 2
     }
   ],
   "UseNoObjectFilter": false,

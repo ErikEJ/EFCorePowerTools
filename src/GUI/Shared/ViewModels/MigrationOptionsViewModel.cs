@@ -9,6 +9,7 @@
     using GalaSoft.MvvmLight.CommandWpf;
     using Handlers;
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Threading;
     using Shared.DAL;
     using System;
     using System.Collections.Generic;
@@ -339,6 +340,8 @@
 
         private async Task<bool> ScriptMigrationAsync()
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             await _visualStudioAccess.SetStatusBarTextAsync(String.Format(MigrationsLocale.ScriptingMigrationsInDbContext, SelectedStatusKey));
             var processResult = await _processLauncher.GetOutputAsync(_outputPath, GenerationType.MigrationScript, SelectedStatusKey);
             if (processResult.Contains("Error:"))
