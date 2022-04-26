@@ -177,6 +177,10 @@
       {
          "Name": "[dbo].[ISOweek]",
          "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[tvp]",
+         "ObjectType": 2
       }
    ],
    "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using NetTopologySuite.Geometries;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
@@ -88,6 +89,15 @@ namespace RevEng.Core.Procedures
                     "using Microsoft.EntityFrameworkCore.Storage",
                     "using System.Linq",
                 });    
+            }
+
+            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))
+            {
+                usings.AddRange(new List<string>()
+                {
+                    "using NetTopologySuite.Geometries",
+                });
+
             }
 
             usings.Sort();

@@ -108,7 +108,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                     var forceLegacy = options.UseLegacyResultSetDiscovery;
                                     if (!forceLegacy)
                                     {
-                                        forceLegacy = options.ModulesUsingLegacyDiscovery.Contains($"[{module.Schema}].[{module.Name}]");
+                                        forceLegacy = options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
                                     }
                                     
                                     module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy));

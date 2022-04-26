@@ -133,6 +133,14 @@
     {
       "Name": "[dbo].[ISOweek]",
       "ObjectType": 2
+    },
+    {
+      "Name": "[dbo].[SpecialTypes]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[tvp]",
+      "ObjectType": 2
     }
   ],
   "UseNoObjectFilter": false,
