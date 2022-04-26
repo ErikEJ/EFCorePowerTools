@@ -44,6 +44,7 @@ namespace ScaffoldingTester.Models
         public virtual DbSet<SalesByCategory> SalesByCategories { get; set; }
         public virtual DbSet<SalesTotalsByAmount> SalesTotalsByAmounts { get; set; }
         public virtual DbSet<Shipper> Shippers { get; set; }
+        public virtual DbSet<Special> Specials { get; set; }
         public virtual DbSet<SummaryOfSalesByQuarter> SummaryOfSalesByQuarters { get; set; }
         public virtual DbSet<SummaryOfSalesByYear> SummaryOfSalesByYears { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
@@ -387,6 +388,8 @@ namespace ScaffoldingTester.Models
 
                 entity.HasIndex(e => e.ShipPostalCode, "ShipPostalCode");
 
+                entity.HasIndex(e => e.ShippedDate, "ShippedDate");
+
                 entity.HasIndex(e => e.ShipVia, "ShippersOrders");
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
@@ -417,6 +420,8 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
 
                 entity.Property(e => e.ShipRegion).HasMaxLength(15);
+
+                entity.Property(e => e.ShippedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
@@ -724,6 +729,11 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.Phone).HasMaxLength(24);
             });
 
+            modelBuilder.Entity<Special>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
             modelBuilder.Entity<SummaryOfSalesByQuarter>(entity =>
             {
                 entity.HasNoKey();
@@ -807,6 +817,7 @@ namespace ScaffoldingTester.Models
             });
 
             OnModelCreatingGeneratedProcedures(modelBuilder);
+            OnModelCreatingGeneratedFunctions(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 

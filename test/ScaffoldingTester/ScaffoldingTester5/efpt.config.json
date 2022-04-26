@@ -42,9 +42,6 @@
          "ObjectType": 0
       },
       {
-         "ExcludedColumns": [
-            "ShippedDate"
-         ],
          "Name": "[dbo].[Orders]",
          "ObjectType": 0
       },
@@ -58,6 +55,10 @@
       },
       {
          "Name": "[dbo].[Shippers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Specials]",
          "ObjectType": 0
       },
       {
@@ -166,8 +167,16 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[SpecialTypes]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[Ten Most Expensive Products]",
          "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[ISOweek]",
+         "ObjectType": 2
       }
    ],
    "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",
