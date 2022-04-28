@@ -1,4 +1,5 @@
-﻿using EFCorePowerTools.Locales;
+﻿using EFCorePowerTools.Handlers.ReverseEngineer;
+using EFCorePowerTools.Locales;
 using RevEng.Shared;
 using System;
 using System.Collections.Generic;
@@ -113,5 +114,36 @@ namespace EFCorePowerTools.Helpers
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
+        public string GetReadMeText(ReverseEngineerOptions options, string content)
+        {
+            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
+                .Replace("[ConnectionString]", options.ConnectionString)
+                .Replace("[ContextName]", options.ContextClassName);
+        }
+
+        private string GetProviderName(DatabaseType databaseType)
+        {
+            switch (databaseType)
+            {
+                case DatabaseType.Undefined:
+                    return "[ProviderName]";
+                case DatabaseType.SQLServer:
+                    return "SqlServer";
+                case DatabaseType.SQLite:
+                    return "Sqlite";
+                case DatabaseType.Npgsql:
+                    return "Npgsql";
+                case DatabaseType.Mysql:
+                    return "Mysql";
+                case DatabaseType.Oracle:
+                    return "Oracle";
+                case DatabaseType.SQLServerDacpac:
+                    return "SqlServer";
+                case DatabaseType.Firebird:
+                    return "Firebird";
+                default:
+                    return "[ProviderName]";
+            }
+        }
     }
 }

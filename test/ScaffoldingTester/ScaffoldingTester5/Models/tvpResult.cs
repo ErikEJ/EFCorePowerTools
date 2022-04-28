@@ -7,5 +7,9 @@ namespace ScaffoldingTester.Models
 {
     public partial class tvpResult
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Total { get; set; }
+        public string ColumnName { get; set; }
     }
 }
