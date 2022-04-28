@@ -138,7 +138,7 @@ namespace RevEng.Core.Procedures
             
             var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
                         "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
-                        "WHERE SC.object_id = " +
+                        "WHERE ST.name <> 'sysname' AND SC.object_id = " +
                         "(SELECT type_table_object_id FROM sys.table_types WHERE schema_id = @schemaId AND user_type_id =  @userTypeId);";
 
             var dataTable = new DataTable();
