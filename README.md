@@ -65,3 +65,8 @@ If you encounter a bug or have a feature request, please use the [Issue Tracker]
 # Building and debugging
 
 To build and debug, run latest version of Visual Studio as Administrator with the "Visual Studio extension development workload" installed. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, AnyCPU.
+
+# Smoke testing changes to reverse engineering
+You can smoke test changes to reverse engineering. Launch one of the efreveng console apps in the debugger using the name of a file in the TestFiles folder as parameter.
+
+In the ScaffoldingTester solution there are scripts to populate Northwind and Chinook databases with the required objects.

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RevEng.Shared
+namespace RevEng.Common
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1724:")]
     [DataContract]

@@ -15,7 +15,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Core.Procedures;
-using RevEng.Shared;
+using RevEng.Common;
 #if CORE50 || CORE60
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif

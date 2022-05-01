@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using Shared.Models;
+    using Common.Models;
 
     public interface IModelingOptionsDialog : IDialog<ModelingOptionsModel>
     {

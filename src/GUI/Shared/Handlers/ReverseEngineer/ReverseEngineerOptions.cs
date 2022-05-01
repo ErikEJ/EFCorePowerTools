@@ -1,4 +1,4 @@
-﻿using RevEng.Shared;
+﻿using RevEng.Common;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 

@@ -7,9 +7,9 @@
     using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Shared;
-    using Shared.DAL;
-    using Shared.Models;
+    using RevEng.Common;
+    using Common.DAL;
+    using Common.Models;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

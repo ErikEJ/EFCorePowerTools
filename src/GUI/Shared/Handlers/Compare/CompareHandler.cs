@@ -3,7 +3,7 @@ using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EFCorePowerTools.Shared.Models;
+using EFCorePowerTools.Common.Models;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using System;

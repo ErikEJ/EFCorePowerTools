@@ -6,7 +6,7 @@ using NetTopologySuite.Geometries;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;

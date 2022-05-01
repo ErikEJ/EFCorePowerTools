@@ -2,8 +2,8 @@
 {
     using Contracts.ViewModels;
     using Contracts.Views;
-    using Shared.DAL;
-    using Shared.Models;
+    using Common.DAL;
+    using Common.Models;
     using System;
     using System.Collections.Generic;
     using System.Windows;

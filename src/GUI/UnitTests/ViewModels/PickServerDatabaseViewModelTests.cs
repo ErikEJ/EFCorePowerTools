@@ -5,8 +5,8 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.Contracts.Views;
     using EFCorePowerTools.DAL;
-    using EFCorePowerTools.Shared.DAL;
-    using EFCorePowerTools.Shared.Models;
+    using EFCorePowerTools.Common.DAL;
+    using EFCorePowerTools.Common.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
     using System;

@@ -1,4 +1,4 @@
-﻿using EFCorePowerTools.Shared.Models;
+﻿using EFCorePowerTools.Common.Models;
 
 namespace EFCorePowerTools.Contracts.Views
 {

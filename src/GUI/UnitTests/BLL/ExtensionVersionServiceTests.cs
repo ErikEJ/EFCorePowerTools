@@ -3,9 +3,9 @@
 namespace UnitTests.BLL
 {
     using EFCorePowerTools.BLL;
-    using EFCorePowerTools.Shared.BLL;
-    using EFCorePowerTools.Shared.DAL;
-    using EFCorePowerTools.Shared.Models;
+    using EFCorePowerTools.Common.BLL;
+    using EFCorePowerTools.Common.DAL;
+    using EFCorePowerTools.Common.Models;
     using Moq;
     using System;
 

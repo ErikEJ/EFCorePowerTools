@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using Shared.Models;
+    using Common.Models;
     using System.Collections.Generic;
 
     public interface ICompareOptionsDialog : IDialog<(DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes)>

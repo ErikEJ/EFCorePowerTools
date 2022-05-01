@@ -1,8 +1,8 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     using EventArgs;
-    using RevEng.Shared;
-    using Shared.Models;
+    using RevEng.Common;
+    using Common.Models;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

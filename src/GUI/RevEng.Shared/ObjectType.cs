@@ -1,4 +1,4 @@
-﻿namespace RevEng.Shared
+﻿namespace RevEng.Common
 {
     public enum ObjectType
     {

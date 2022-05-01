@@ -1,6 +1,6 @@
-﻿using EFCorePowerTools.Shared.BLL;
-using EFCorePowerTools.Shared.DAL;
-using EFCorePowerTools.Shared.Models;
+﻿using EFCorePowerTools.Common.BLL;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
 using System;
 
 [assembly: CLSCompliant(false)]

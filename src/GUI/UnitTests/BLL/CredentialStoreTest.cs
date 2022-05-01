@@ -1,7 +1,7 @@
 ﻿using EFCorePowerTools.Helpers;
-using EFCorePowerTools.Shared.Models;
+using EFCorePowerTools.Common.Models;
 using NUnit.Framework;
-using RevEng.Shared;
+using RevEng.Common;
 
 namespace UnitTests.BLL
 {

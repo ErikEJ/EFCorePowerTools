@@ -1,4 +1,4 @@
-﻿using RevEng.Shared;
+﻿using RevEng.Common;
 using System.Collections.ObjectModel;
 
 namespace EFCorePowerTools.Contracts.ViewModels

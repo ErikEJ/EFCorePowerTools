@@ -2,8 +2,8 @@
 {
     using Contracts.ViewModels;
     using Contracts.Views;
-    using EFCorePowerTools.Shared.Models;
-    using Shared.DAL;
+    using EFCorePowerTools.Common.Models;
+    using Common.DAL;
     using System;
     using System.Collections.Generic;
 

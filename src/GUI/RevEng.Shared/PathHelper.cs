@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace RevEng.Shared
+namespace RevEng.Common
 {
     public static class PathHelper
     {

@@ -1,7 +1,7 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
     using EventArgs;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;

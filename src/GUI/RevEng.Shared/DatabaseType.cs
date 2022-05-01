@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace RevEng.Shared
+namespace RevEng.Common
 {
     public enum DatabaseType
     {

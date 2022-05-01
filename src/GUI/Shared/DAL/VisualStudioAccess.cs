@@ -4,9 +4,9 @@
     using EFCorePowerTools.Helpers;
     using Microsoft.VisualStudio.Data.Services;
     using Microsoft.VisualStudio.Shell;
-    using RevEng.Shared;
-    using Shared.DAL;
-    using Shared.Models;
+    using RevEng.Common;
+    using Common.DAL;
+    using Common.Models;
 
     public class VisualStudioAccess : IVisualStudioAccess
     {

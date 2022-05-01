@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.Contracts.Views
 {
-    using RevEng.Shared;
+    using RevEng.Common;
 
     public class PickTablesDialogResult
     {

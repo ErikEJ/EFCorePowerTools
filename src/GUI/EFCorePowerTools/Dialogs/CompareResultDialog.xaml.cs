@@ -3,7 +3,7 @@
     using Contracts.ViewModels;
     using Contracts.Views;
     using EFCorePowerTools.Handlers.Compare;
-    using Shared.DAL;
+    using Common.DAL;
     using System;
     using System.Collections.Generic;
 

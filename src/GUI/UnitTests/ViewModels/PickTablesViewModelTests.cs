@@ -5,7 +5,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using Moq;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System.Collections.Generic;
 
     [TestFixture]

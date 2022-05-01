@@ -1,5 +1,5 @@
 ﻿using EFCorePowerTools.Contracts.EventArgs;
-using EFCorePowerTools.Shared.Models;
+using EFCorePowerTools.Common.Models;
 using System;
 using System.Collections.Generic;
 

@@ -10,7 +10,7 @@
     using Handlers;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Threading;
-    using Shared.DAL;
+    using Common.DAL;
     using System;
     using System.Collections.Generic;
     using System.IO;

@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.DAL
+﻿namespace EFCorePowerTools.Common.DAL
 {
     public interface ITelemetryAccess
     {

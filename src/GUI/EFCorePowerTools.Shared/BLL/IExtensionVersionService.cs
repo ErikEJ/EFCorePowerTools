@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.BLL
+﻿namespace EFCorePowerTools.Common.BLL
 {
     using Models;
     using System;

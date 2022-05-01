@@ -5,8 +5,8 @@
     using Contracts.Views;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using Shared.DAL;
-    using Shared.Models;
+    using Common.DAL;
+    using Common.Models;
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;

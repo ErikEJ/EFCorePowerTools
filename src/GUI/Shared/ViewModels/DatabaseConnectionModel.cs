@@ -1,8 +1,8 @@
-﻿namespace EFCorePowerTools.Shared.Models
+﻿namespace EFCorePowerTools.Common.Models
 {
     using JetBrains.Annotations;
     using Microsoft.VisualStudio.Data.Services;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 

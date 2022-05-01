@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using RevEng.Shared;
+using RevEng.Common;
 
 namespace RevEng.Core
 {

@@ -13,13 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modelling", "Modelling", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RevEng", "RevEng", "{F33E4994-452C-4C09-9FB5-C2E17D0884B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCorePowerTools.Shared", "EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj", "{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCorePowerTools.Common", "EFCorePowerTools.Shared\EFCorePowerTools.Common.csproj", "{2BD0C616-7126-4E12-A37D-A08B04BBF5E9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCorePowerTools.BLL", "EFCorePowerTools.BLL\EFCorePowerTools.BLL.csproj", "{F7BBF46C-7EA9-44FE-9DF0-43FA60B7CB3C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efpt30.core", "efpt30.core\efpt30.core.csproj", "{4562597A-EBAA-4CD4-9F89-AD45AB08FF56}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Shared", "RevEng.Shared\RevEng.Shared.csproj", "{D4594A0C-B02F-469D-9521-F0BDD5A30FC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Common", "RevEng.Shared\RevEng.Common.csproj", "{D4594A0C-B02F-469D-9521-F0BDD5A30FC0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efreveng", "efreveng\efreveng.csproj", "{EBD761ED-96D2-44F6-9099-9D376CE7181F}"
 EndProject

@@ -4,7 +4,7 @@
     using Contracts.ViewModels;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using Shared.Models;
+    using Common.Models;
     using System;
     using System.Windows.Input;
 

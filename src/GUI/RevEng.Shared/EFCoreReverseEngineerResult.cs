@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RevEng.Shared
+namespace RevEng.Common
 {
     public class ReverseEngineerResult
     {

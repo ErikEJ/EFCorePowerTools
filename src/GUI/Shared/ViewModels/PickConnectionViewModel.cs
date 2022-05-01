@@ -5,8 +5,8 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using JetBrains.Annotations;
-    using RevEng.Shared;
-    using Shared.Models;
+    using RevEng.Common;
+    using Common.Models;
     using System;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;

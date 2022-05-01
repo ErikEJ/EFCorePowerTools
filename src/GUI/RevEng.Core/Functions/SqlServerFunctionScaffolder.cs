@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;

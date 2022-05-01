@@ -2,9 +2,9 @@
 
 namespace UnitTests.ViewModels
 {
-    using EFCorePowerTools.Shared.BLL;
-    using EFCorePowerTools.Shared.DAL;
-    using EFCorePowerTools.Shared.Models;
+    using EFCorePowerTools.Common.BLL;
+    using EFCorePowerTools.Common.DAL;
+    using EFCorePowerTools.Common.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
     using System;

@@ -4,7 +4,7 @@ using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -219,7 +219,7 @@ namespace EFCorePowerTools.Extensions
             var outputPath = await project.GetAttributeAsync("OutputPath");
             var fullName = project.FullPath;
 
-            var absoluteOutputPath = RevEng.Shared.PathHelper.GetAbsPath(outputPath, fullName);
+            var absoluteOutputPath = RevEng.Common.PathHelper.GetAbsPath(outputPath, fullName);
 
             return absoluteOutputPath;
         }

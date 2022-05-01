@@ -1,7 +1,7 @@
 ﻿namespace UnitTests.Models
 {
     using NUnit.Framework;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System;
 
     [TestFixture]

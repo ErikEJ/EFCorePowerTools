@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RevEng.Shared
+namespace RevEng.Common
 {
     /// <summary>
     /// A class holding information about database objects.

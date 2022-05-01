@@ -1,7 +1,7 @@
 ﻿using AdysTech.CredentialManager;
 using EFCorePowerTools.DAL;
-using EFCorePowerTools.Shared.Models;
-using RevEng.Shared;
+using EFCorePowerTools.Common.Models;
+using RevEng.Common;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;

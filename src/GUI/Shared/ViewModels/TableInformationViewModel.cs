@@ -6,7 +6,7 @@
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
     using GalaSoft.MvvmLight.Messaging;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System;
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;

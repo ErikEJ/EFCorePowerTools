@@ -49,7 +49,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.5.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
-    <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+    <ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
   </ItemGroup>
 
 </Project>

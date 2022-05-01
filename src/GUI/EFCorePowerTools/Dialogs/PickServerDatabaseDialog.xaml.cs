@@ -2,9 +2,9 @@
 {
     using Contracts.ViewModels;
     using Contracts.Views;
-    using RevEng.Shared;
-    using Shared.DAL;
-    using Shared.Models;
+    using RevEng.Common;
+    using Common.DAL;
+    using Common.Models;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;

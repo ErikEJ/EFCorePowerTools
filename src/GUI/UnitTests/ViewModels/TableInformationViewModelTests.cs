@@ -6,7 +6,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System.Linq;
 
     [TestFixture]

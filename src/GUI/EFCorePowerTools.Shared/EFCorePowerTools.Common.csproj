@@ -5,20 +5,15 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <Platforms>AnyCPU</Platforms>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Contracts\**" />
-    <EmbeddedResource Remove="Contracts\**" />
-    <None Remove="Contracts\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RevEng.Shared\RevEng.Shared.csproj" />
+    <ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

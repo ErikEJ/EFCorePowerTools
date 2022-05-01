@@ -1,5 +1,5 @@
 ﻿using RevEng.Core;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Diagnostics;
 using System.IO;

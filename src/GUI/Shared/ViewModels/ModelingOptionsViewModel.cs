@@ -7,8 +7,8 @@ namespace EFCorePowerTools.ViewModels
     using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.CommandWpf;
-    using Shared.DAL;
-    using Shared.Models;
+    using Common.DAL;
+    using Common.Models;
     using System;
     using System.Collections.Generic;
     using System.Windows.Input;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 
 namespace EFCorePowerTools.Helpers

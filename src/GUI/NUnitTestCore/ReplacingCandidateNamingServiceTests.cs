@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 using RevEng.Core;
-using RevEng.Shared;
+using RevEng.Common;
 using System.Collections.Generic;
 using System.Reflection;
 

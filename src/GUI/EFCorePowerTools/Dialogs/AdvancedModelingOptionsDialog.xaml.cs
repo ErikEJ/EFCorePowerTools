@@ -1,7 +1,7 @@
 ﻿using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
-using EFCorePowerTools.Shared.DAL;
-using EFCorePowerTools.Shared.Models;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
 using System;
 
 namespace EFCorePowerTools.Dialogs

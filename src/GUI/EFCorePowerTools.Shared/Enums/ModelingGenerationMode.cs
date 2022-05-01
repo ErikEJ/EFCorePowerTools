@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.Enums
+﻿namespace EFCorePowerTools.Common.Enums
 {
     using System;
 

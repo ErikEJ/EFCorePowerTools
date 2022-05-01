@@ -3,7 +3,7 @@
     using Community.VisualStudio.Toolkit;
     using Contracts.ViewModels;
     using Contracts.Views;
-    using Shared.DAL;
+    using Common.DAL;
     using System;
 
     public partial class EfCoreMigrationsDialog : IMigrationOptionsDialog

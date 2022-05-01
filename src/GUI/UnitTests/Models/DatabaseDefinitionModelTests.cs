@@ -2,7 +2,7 @@
 
 namespace UnitTests.Models
 {
-    using EFCorePowerTools.Shared.Models;
+    using EFCorePowerTools.Common.Models;
 
     [TestFixture]
     public class DatabaseDefinitionModelTests

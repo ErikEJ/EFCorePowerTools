@@ -2,7 +2,7 @@
 {
     using Contracts.ViewModels;
     using Contracts.Views;
-    using Shared.DAL;
+    using Common.DAL;
 
     public partial class AboutDialog : IAboutDialog
     {

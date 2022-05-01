@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.DAL
 {
-    using Shared.DAL;
+    using Common.DAL;
 
     public class TelemetryAccess : ITelemetryAccess
     {

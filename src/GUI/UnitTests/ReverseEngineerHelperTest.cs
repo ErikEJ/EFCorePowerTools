@@ -1,6 +1,6 @@
 ﻿using EFCorePowerTools.Helpers;
 using NUnit.Framework;
-using RevEng.Shared;
+using RevEng.Common;
 using System.Collections.Generic;
 
 namespace UnitTests

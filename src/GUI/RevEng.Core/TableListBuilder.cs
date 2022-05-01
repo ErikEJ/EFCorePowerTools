@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

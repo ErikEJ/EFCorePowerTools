@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Shared.csproj" />
+    <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Common.csproj" />
   </ItemGroup>
 
 </Project>

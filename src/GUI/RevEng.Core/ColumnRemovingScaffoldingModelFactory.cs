@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

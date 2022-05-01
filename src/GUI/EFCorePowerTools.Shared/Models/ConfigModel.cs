@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.Models
+﻿namespace EFCorePowerTools.Common.Models
 {
     using JetBrains.Annotations;
     using System.ComponentModel;

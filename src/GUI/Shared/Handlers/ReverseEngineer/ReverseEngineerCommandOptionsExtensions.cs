@@ -1,4 +1,4 @@
-﻿using RevEng.Shared;
+﻿using RevEng.Common;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;

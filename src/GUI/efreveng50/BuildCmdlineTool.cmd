@@ -33,8 +33,8 @@ del bin\Release\netcoreapp3.1\publish\Microsoft.Win32.SystemEvents.dll
 del bin\Release\netcoreapp3.1\publish\NetTopologySuite.dll 
 del bin\Release\netcoreapp3.1\publish\NetTopologySuite.IO.PostGis.dll 
 del bin\Release\netcoreapp3.1\publish\NetTopologySuite.IO.SqlServerBytes.dll 
-del bin\Release\netcoreapp3.1\publish\RevEng.Shared.dll 
-del bin\Release\netcoreapp3.1\publish\RevEng.Shared.pdb 
+del bin\Release\netcoreapp3.1\publish\RevEng.Common.dll 
+del bin\Release\netcoreapp3.1\publish\RevEng.Common.pdb 
 del bin\Release\netcoreapp3.1\publish\System.ComponentModel.Composition.dll
 del bin\Release\netcoreapp3.1\publish\System.CodeDom.dll
 del bin\Release\netcoreapp3.1\publish\System.Configuration.ConfigurationManager.dll 

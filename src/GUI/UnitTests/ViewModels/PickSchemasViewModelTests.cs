@@ -2,7 +2,7 @@
 {
     using EFCorePowerTools.ViewModels;
     using NUnit.Framework;
-    using RevEng.Shared;
+    using RevEng.Common;
 
     [TestFixture]
     public class PickSchemasViewModelTests

@@ -3,7 +3,7 @@
     using Contracts.ViewModels;
     using EFCorePowerTools.Locales;
     using GalaSoft.MvvmLight;
-    using RevEng.Shared;
+    using RevEng.Common;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

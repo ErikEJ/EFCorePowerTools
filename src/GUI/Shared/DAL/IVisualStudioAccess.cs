@@ -1,4 +1,4 @@
-﻿namespace EFCorePowerTools.Shared.DAL
+﻿namespace EFCorePowerTools.Common.DAL
 {
     using Microsoft.VisualStudio.Data.Services;
     using Models;

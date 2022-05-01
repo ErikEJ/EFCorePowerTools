@@ -1,6 +1,6 @@
 ﻿namespace EFCorePowerTools.Contracts.ViewModels
 {
-    using RevEng.Shared;
+    using RevEng.Common;
     using System.Collections.ObjectModel;
 
     public interface ITableInformationViewModel : IObjectTreeEditableViewModel, IObjectTreeSelectableViewModel, IViewModel

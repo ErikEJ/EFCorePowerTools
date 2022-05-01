@@ -1,7 +1,7 @@
-﻿using EFCorePowerTools.Shared.Models;
+﻿using EFCorePowerTools.Common.Models;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
-using RevEng.Shared;
+using RevEng.Common;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -21,8 +21,8 @@ namespace EFCorePowerTools.Helpers
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
             Dictionary<string, DatabaseConnectionModel> databaseList = new Dictionary<string, DatabaseConnectionModel>();
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-            Guid providerSqLite = new Guid(EFCorePowerTools.Shared.Resources.SQLiteProvider);
-            Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Shared.Resources.SQLitePrivateProvider);
+            Guid providerSqLite = new Guid(EFCorePowerTools.Common.Resources.SQLiteProvider);
+            Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Common.Resources.SQLitePrivateProvider);
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
@@ -172,7 +172,7 @@ namespace EFCorePowerTools.Helpers
                 if (providerInvariant == "System.Data.SQLite.EF6")
                 {
                     dbType = DatabaseType.SQLite;
-                    providerGuid = EFCorePowerTools.Shared.Resources.SQLitePrivateProvider;
+                    providerGuid = EFCorePowerTools.Common.Resources.SQLitePrivateProvider;
                 }
 
                 if (providerInvariant == "System.Data.SqlClient")
