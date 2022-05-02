@@ -510,7 +510,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (AdvancedOptions.Instance.OpenGeneratedDbContext)
                 {
-                    var readmeName = "PowerToolsReadMe.md";
+                    var readmeName = "PowerToolsReadMe.txt";
                     var finalText = reverseEngineerHelper.GetReadMeText(options, File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8));
                     var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
 
