@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NetTopologySuite.Geometries;
 
 #if CORE50 || CORE60
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -117,6 +118,12 @@ namespace RevEng.Core.Modules
             _sb = new IndentedStringBuilder();
 
             _sb.AppendLine(PathHelper.Header);
+
+            if (resultElements.Any(p => p.ClrType() == typeof(Geometry)))
+            {
+                _sb.AppendLine("using NetTopologySuite.Geometries;");
+            }
+
             _sb.AppendLine("using System;");
             _sb.AppendLine("using System.Collections.Generic;");
             _sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
