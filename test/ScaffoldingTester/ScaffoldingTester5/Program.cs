@@ -11,9 +11,11 @@ namespace ScaffoldingTester
         {
             using (var db = new NorthwindContext())
             {
+                var orders = await db.GetProcedures().CustOrderHistAsync("ALFKI");
+
                 var retVal = new OutputParameter<int>();
                 var multi = await db.GetProcedures().MultiSetAsync(new DateTime(2021, 12, 24), 7.6m, retVal);
-
+                
                 //var list = new[] { "ALFKI", "BERGS", "VAFFE" };
 
                 var list = new[] { 10253L, 10255L, 10260L };
@@ -34,7 +36,7 @@ namespace ScaffoldingTester
 
                 var productCount = new OutputParameter<int?>();
                 var description = new OutputParameter<string>();
-                var outputRes = db.GetProcedures()
+                var outputRes = await db.GetProcedures()
                     .OutputScenariosAsync(2021, productCount, description);
             }
         }

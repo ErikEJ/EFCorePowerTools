@@ -107,12 +107,21 @@ namespace RevEng.Core.Procedures
                         continue;
                     }
 
+                    var storeType = row["DataTypeName"].ToString();
+
+                    if (row["ProviderSpecificDataType"]?.ToString().StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
+                    {
+#pragma warning disable CA1308 // Normalize strings to uppercase
+                        storeType = row["ProviderSpecificDataType"].ToString().Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
+                    }
+
                     list.Add(new ModuleResultElement
                     {
                         Name = name,
                         Nullable = (bool?)row["AllowDBNull"] ?? true,
                         Ordinal = (int)row["ColumnOrdinal"],
-                        StoreType = row["DataTypeName"].ToString(),
+                        StoreType = storeType,
                     });
                 }
 

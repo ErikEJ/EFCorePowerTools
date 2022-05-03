@@ -80,7 +80,7 @@
       "ObjectType": 1
     },
     {
-      "Name": "[dbo].[TestGeo]",
+      "Name": "[dbo].[SpecialTypes]",
       "ObjectType": 1
     }
   ],
