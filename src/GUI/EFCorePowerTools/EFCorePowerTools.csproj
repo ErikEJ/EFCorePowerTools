@@ -198,7 +198,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
-    <Content Include="PowerToolsReadMe.md">
+    <Content Include="PowerToolsReadMe.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="source.extension.vsixmanifest">
