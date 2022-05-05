@@ -238,6 +238,8 @@ namespace RevEng.Core
                     throw new ArgumentOutOfRangeException(nameof(options), $"unsupported database type: {options.DatabaseType}");
             }
 
+            serviceCollection.AddSingleton<IReverseEngineerScaffolder, ReverseEngineerScaffolder>();
+
             return serviceCollection.BuildServiceProvider();
         }
     }

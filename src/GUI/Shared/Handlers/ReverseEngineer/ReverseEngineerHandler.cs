@@ -360,10 +360,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName)
         {
             var classBasis = VsDataHelper.GetDatabaseName(options.ConnectionString, options.DatabaseType);
-            var model = reverseEngineerHelper.GenerateClassName(classBasis) + "Context";
 
             if (string.IsNullOrEmpty(options.ContextClassName))
-                options.ContextClassName = model;
+                options.ContextClassName = classBasis + "Context";
 
             var presets = new ModelingOptionsModel
             {
