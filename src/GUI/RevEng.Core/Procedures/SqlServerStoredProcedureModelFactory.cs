@@ -84,6 +84,11 @@ namespace RevEng.Core.Procedures
                     param.SqlDbType = SqlDbType.Structured;
                 }
 
+                if (parameter.ClrType() == typeof(byte[]))
+                {
+                    param.SqlDbType = SqlDbType.VarBinary;
+                }
+
                 sqlCommand.Parameters.Add(param);
             }
 
