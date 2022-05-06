@@ -1,5 +1,5 @@
 {
-  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=NorthWind;Integrated Security=True",
   "ContextClassName": "NorthwindContext",
   "ContextNamespace": null,
   "CustomReplacers": [

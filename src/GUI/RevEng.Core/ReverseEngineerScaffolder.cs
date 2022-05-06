@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -16,14 +15,45 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace RevEng.Core
 {
-    static class ReverseEngineerScaffolder
+    public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
     {
-        public static SavedModelFiles GenerateDbContext(
+        private readonly IDatabaseModelFactory _databaseModelFactory;
+        private readonly IScaffoldingModelFactory _factory;
+        private readonly ICSharpHelper _code;
+        private readonly IFunctionScaffolder _functionScaffolder;
+        private readonly IFunctionModelFactory _functionModelFactory;
+        private readonly IProcedureScaffolder _procedureScaffolder;
+        private readonly IProcedureModelFactory _procedureModelFactory;
+
+        public ReverseEngineerScaffolder(
+            IDatabaseModelFactory databaseModelFactory,
+            IScaffoldingModelFactory scaffoldingModelFactory,
+            IFunctionScaffolder functionScaffolder,
+            IFunctionModelFactory functionModelFactory,
+            IProcedureScaffolder procedureScaffolder,
+            IProcedureModelFactory procedureModelFactory,
+            IModelCodeGeneratorSelector modelCodeGeneratorSelector,
+            ICSharpUtilities cSharpUtilities,
+            ICSharpHelper cSharpHelper)
+        {
+            _databaseModelFactory = databaseModelFactory;
+            _factory = scaffoldingModelFactory;
+            _code = cSharpHelper;
+            _functionScaffolder = functionScaffolder;
+            _functionModelFactory = functionModelFactory;
+            _procedureScaffolder = procedureScaffolder;
+            _procedureModelFactory = procedureModelFactory;
+            ModelCodeGeneratorSelector = modelCodeGeneratorSelector;
+        }
+
+        private IModelCodeGeneratorSelector ModelCodeGeneratorSelector { get; }
+
+        public SavedModelFiles GenerateDbContext(
             ReverseEngineerCommandOptions options,
-            ServiceProvider serviceProvider,
             List<string> schemas,
             string outputContextDir,
             string modelNamespace,
@@ -42,7 +72,7 @@ namespace RevEng.Core
             {
                 UseDataAnnotations = !options.UseFluentApiOnly,
                 Language = "C#",
-                ContextName = options.ContextClassName,
+                ContextName = _code.Identifier(options.ContextClassName),
                 ContextDir = outputContextDir,
                 RootNamespace = null,
                 ContextNamespace = contextNamespace,
@@ -68,8 +98,7 @@ namespace RevEng.Core
                     options.UseNoNavigations,
                     options.SelectedToBeGenerated == 1, //DbContext only
                     options.SelectedToBeGenerated == 2, //Entities only
-                    options.UseSchemaFolders,
-                    serviceProvider);
+                    options.UseSchemaFolders);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -77,28 +106,25 @@ namespace RevEng.Core
             return filePaths;
         }
 
-        public static SavedModelFiles GenerateFunctions(
+        public SavedModelFiles GenerateFunctions(
             ReverseEngineerCommandOptions options,
             ref List<string> errors,
-            ServiceProvider serviceProvider,
             string outputContextDir,
             string modelNamespace,
             string contextNamespace)
         {
-            var functionModelScaffolder = serviceProvider.GetService<IFunctionScaffolder>();
+            var functionModelScaffolder = _functionScaffolder;
             if (functionModelScaffolder != null
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
                     || !options.Tables.Any()))
             {
-                var functionModelFactory = serviceProvider.GetService<IFunctionModelFactory>();
-
                 var modelFactoryOptions = new ModuleModelFactoryOptions
                 {
                     FullModel = true,
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.ScalarFunction).Select(m => m.Name),
                 };
 
-                var functionModel = functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
+                var functionModel = _functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
 
                 ApplyRenamers(functionModel.Routines, options.CustomReplacers);
 
@@ -125,21 +151,18 @@ namespace RevEng.Core
             return null;
         }
 
-        public static SavedModelFiles GenerateStoredProcedures(
+        public SavedModelFiles GenerateStoredProcedures(
             ReverseEngineerCommandOptions options,
             ref List<string> errors,
-            ServiceProvider serviceProvider,
             string outputContextDir,
             string modelNamespace,
             string contextNamespace)
         {
-            var procedureModelScaffolder = serviceProvider.GetService<IProcedureScaffolder>();
+            var procedureModelScaffolder = _procedureModelFactory;
             if (procedureModelScaffolder != null
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
                     || !options.Tables.Any()))
             {
-                var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
-
                 var procedureModelFactoryOptions = new ModuleModelFactoryOptions
                 {
                     DiscoverMultipleResultSets = options.UseMultipleSprocResultSets,
@@ -151,7 +174,7 @@ namespace RevEng.Core
                         .Select(m => m.Name),
                 };
 
-                var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
+                var procedureModel = _procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
 
                 ApplyRenamers(procedureModel.Routines, options.CustomReplacers);
 
@@ -165,11 +188,11 @@ namespace RevEng.Core
                     UseSchemaFolders = options.UseSchemaFolders,
                 };
 
-                var procedureScaffoldedModel = procedureModelScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
+                var procedureScaffoldedModel = _procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
 
                 if (procedureScaffoldedModel != null)
                 {
-                    return procedureModelScaffolder.Save(
+                    return _procedureScaffolder.Save(
                         procedureScaffoldedModel,
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
                         contextNamespace);
@@ -179,7 +202,7 @@ namespace RevEng.Core
             return null;
         }
 
-        private static ScaffoldedModel ScaffoldModel(
+        private ScaffoldedModel ScaffoldModel(
             string connectionString,
             DatabaseModelFactoryOptions databaseOptions,
             ModelReverseEngineerOptions modelOptions,
@@ -188,13 +211,8 @@ namespace RevEng.Core
             bool excludeNavigations,
             bool dbContextOnly,
             bool entitiesOnly,
-            bool useSchemaFolders,
-            ServiceProvider serviceProvider)
+            bool useSchemaFolders)
         {
-            var _databaseModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
-            var _factory = serviceProvider.GetService<IScaffoldingModelFactory>();
-            var _selector = serviceProvider.GetService<IModelCodeGeneratorSelector>();
-
             var databaseModel = _databaseModelFactory.Create(connectionString, databaseOptions);
 
             if (removeNullableBoolDefaults)
@@ -227,7 +245,7 @@ namespace RevEng.Core
                 throw new InvalidOperationException($"No model from provider {_factory.GetType().ShortDisplayName()}");
             }
 
-            var codeGenerator = _selector.Select(codeOptions.Language);
+            var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);
 
             var codeModel = codeGenerator.GenerateModel(model, codeOptions);
             if (entitiesOnly)

@@ -31,17 +31,17 @@
 		<PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="6.0.3" />
 		<PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0" />
 		<PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="3.0.1" />
-		<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.0.0-alpha3" />
+		<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.0.1" />
 		<PackageReference Include="Humanizer.Core" Version="2.9.9" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.3" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.3" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.3" />
-		<PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.4" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.4" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.4" />
+		<PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.61" />
 		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="6.0.1" />
-		<PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="6.0.0" />
+		<PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="6.0.1" />
 		<PackageReference Include="System.CodeDom" Version="5.0.0" />
 	</ItemGroup>
 

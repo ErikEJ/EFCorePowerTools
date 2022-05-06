@@ -79,31 +79,6 @@ namespace EFCorePowerTools.Helpers
             return errors.ToString();
         }
 
-        public string GenerateClassName(string classBasis)
-        {
-            if (string.IsNullOrWhiteSpace(classBasis))
-            {
-                throw new ArgumentNullException(nameof(classBasis));
-            }
-            var className = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(classBasis);
-            var isValid = System.CodeDom.Compiler.CodeDomProvider.CreateProvider("C#").IsValidIdentifier(className);
-
-            if (!isValid)
-            {
-                // File name contains invalid chars, remove them
-                var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
-                className = regex.Replace(className, "");
-
-                // Class name doesn't begin with a letter, insert an underscore
-                if (!char.IsLetter(className, 0))
-                {
-                    className = className.Insert(0, "_");
-                }
-            }
-
-            return className.Replace(" ", string.Empty);
-        }
-
         private string ReplaceFirst(string text, string search, string replace)
         {
             int pos = text.IndexOf(search);

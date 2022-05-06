@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using System;
 using System.Collections.Generic;
@@ -86,11 +87,13 @@ namespace RevEng.Core
             SavedModelFiles procedurePaths = null;
             SavedModelFiles functionPaths = null;
 
-            SavedModelFiles filePaths = ReverseEngineerScaffolder.GenerateDbContext(options, serviceProvider, schemas, outputContextDir, modelNamespace, contextNamespace);
+            var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
+
+            SavedModelFiles filePaths = scaffolder.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace);
 
             if (options.SelectedToBeGenerated != 2)
             {
-                procedurePaths = ReverseEngineerScaffolder.GenerateStoredProcedures(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
+                procedurePaths = scaffolder.GenerateStoredProcedures(options, ref errors, outputContextDir, modelNamespace, contextNamespace);
                 if (procedurePaths != null)
                 {
                     var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
@@ -102,7 +105,7 @@ namespace RevEng.Core
                     }
                 }
 
-                functionPaths = ReverseEngineerScaffolder.GenerateFunctions(options, ref errors, serviceProvider, outputContextDir, modelNamespace, contextNamespace);
+                functionPaths = scaffolder.GenerateFunctions(options, ref errors, outputContextDir, modelNamespace, contextNamespace);
 #if CORE50 || CORE60
                 if (functionPaths != null)
                 {
