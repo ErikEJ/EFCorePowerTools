@@ -59,6 +59,11 @@ namespace RevEng.Core
             string modelNamespace,
             string contextNamespace)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             SavedModelFiles filePaths;
             var modelOptions = new ModelReverseEngineerOptions
             {
@@ -98,7 +103,8 @@ namespace RevEng.Core
                     options.UseNoNavigations,
                     options.SelectedToBeGenerated == 1, //DbContext only
                     options.SelectedToBeGenerated == 2, //Entities only
-                    options.UseSchemaFolders);
+                    options.UseSchemaFolders,
+                    options.DatabaseType == DatabaseType.SQLServer || options.DatabaseType == DatabaseType.SQLServerDacpac);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -113,6 +119,11 @@ namespace RevEng.Core
             string modelNamespace,
             string contextNamespace)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             var functionModelScaffolder = _functionScaffolder;
             if (functionModelScaffolder != null
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
@@ -158,6 +169,11 @@ namespace RevEng.Core
             string modelNamespace,
             string contextNamespace)
         {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             var procedureModelScaffolder = _procedureModelFactory;
             if (procedureModelScaffolder != null
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
@@ -211,7 +227,8 @@ namespace RevEng.Core
             bool excludeNavigations,
             bool dbContextOnly,
             bool entitiesOnly,
-            bool useSchemaFolders)
+            bool useSchemaFolders,
+            bool isSqlServer)
         {
             var databaseModel = _databaseModelFactory.Create(connectionString, databaseOptions);
 
@@ -233,6 +250,11 @@ namespace RevEng.Core
                 {
                     table.ForeignKeys.Clear();
                 }
+            }
+
+            if (isSqlServer)
+            {
+                databaseModel.DefaultSchema = null;
             }
 
 #if CORE50 || CORE60
