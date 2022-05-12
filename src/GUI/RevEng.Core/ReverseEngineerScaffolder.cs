@@ -116,7 +116,8 @@ namespace RevEng.Core
             ref List<string> errors,
             string outputContextDir,
             string modelNamespace,
-            string contextNamespace)
+            string contextNamespace,
+            bool supportsFunctions)
         {
             if (options == null)
             {
@@ -125,6 +126,7 @@ namespace RevEng.Core
 
             var functionModelScaffolder = _functionScaffolder;
             if (functionModelScaffolder != null
+                && supportsFunctions
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
                     || !options.Tables.Any()))
             {
@@ -166,7 +168,8 @@ namespace RevEng.Core
             ref List<string> errors,
             string outputContextDir,
             string modelNamespace,
-            string contextNamespace)
+            string contextNamespace,
+            bool supportsProcedures)
         {
             if (options == null)
             {
@@ -175,6 +178,7 @@ namespace RevEng.Core
 
             var procedureModelScaffolder = _procedureModelFactory;
             if (procedureModelScaffolder != null
+                && supportsProcedures
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
                     || !options.Tables.Any()))
             {

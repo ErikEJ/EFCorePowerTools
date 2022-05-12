@@ -93,7 +93,9 @@ namespace RevEng.Core
 
             if (options.SelectedToBeGenerated != 2)
             {
-                procedurePaths = scaffolder.GenerateStoredProcedures(options, ref errors, outputContextDir, modelNamespace, contextNamespace);
+                bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
+
+                procedurePaths = scaffolder.GenerateStoredProcedures(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
                 if (procedurePaths != null)
                 {
                     var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
@@ -105,7 +107,7 @@ namespace RevEng.Core
                     }
                 }
 
-                functionPaths = scaffolder.GenerateFunctions(options, ref errors, outputContextDir, modelNamespace, contextNamespace);
+                functionPaths = scaffolder.GenerateFunctions(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 #if CORE50 || CORE60
                 if (functionPaths != null)
                 {

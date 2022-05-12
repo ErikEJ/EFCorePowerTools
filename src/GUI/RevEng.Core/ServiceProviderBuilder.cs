@@ -121,6 +121,8 @@ namespace RevEng.Core
             }
 #endif
 
+            serviceCollection.AddNotImplementedDesignTimeServices();
+
             // Add database provider services
             switch (options.DatabaseType)
             {
