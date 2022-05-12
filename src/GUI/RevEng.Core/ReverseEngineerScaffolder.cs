@@ -103,8 +103,7 @@ namespace RevEng.Core
                     options.UseNoNavigations,
                     options.SelectedToBeGenerated == 1, //DbContext only
                     options.SelectedToBeGenerated == 2, //Entities only
-                    options.UseSchemaFolders,
-                    options.DatabaseType == DatabaseType.SQLServer || options.DatabaseType == DatabaseType.SQLServerDacpac);
+                    options.UseSchemaFolders);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -227,8 +226,7 @@ namespace RevEng.Core
             bool excludeNavigations,
             bool dbContextOnly,
             bool entitiesOnly,
-            bool useSchemaFolders,
-            bool isSqlServer)
+            bool useSchemaFolders)
         {
             var databaseModel = _databaseModelFactory.Create(connectionString, databaseOptions);
 
@@ -250,11 +248,6 @@ namespace RevEng.Core
                 {
                     table.ForeignKeys.Clear();
                 }
-            }
-
-            if (isSqlServer)
-            {
-                databaseModel.DefaultSchema = null;
             }
 
 #if CORE50 || CORE60
