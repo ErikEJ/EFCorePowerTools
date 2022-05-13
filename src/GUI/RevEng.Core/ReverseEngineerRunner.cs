@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace RevEng.Core
 {
@@ -103,7 +104,7 @@ namespace RevEng.Core
                     if (index != -1)
                     {
                         dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
-                        File.WriteAllLines(filePaths.ContextFile, dbContextLines);
+                        RetryFileWrite(filePaths.ContextFile, dbContextLines);
                     }
                 }
 
@@ -116,7 +117,7 @@ namespace RevEng.Core
                     if (index != -1)
                     {
                         dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
-                        File.WriteAllLines(filePaths.ContextFile, dbContextLines);
+                        RetryFileWrite(filePaths.ContextFile, dbContextLines);
                     }
                 }
 #endif
@@ -259,7 +260,7 @@ namespace RevEng.Core
                 i++;
             }
 
-            File.WriteAllLines(contextFile, finalLines, Encoding.UTF8);
+            RetryFileWrite(contextFile, finalLines);
         }
 
         private static void PostProcess(string file, bool useNullable, bool supportsNullable)
@@ -357,6 +358,22 @@ namespace RevEng.Core
                     // Ignore
                 }
 #pragma warning restore CA1031 // Do not catch general exception types
+            }
+        }
+
+        public static void RetryFileWrite(string path, List<string> finalLines)
+        {
+            for (int i = 1; i <= 3; ++i)
+            {
+                try
+                {
+                    File.WriteAllLines(path, finalLines, Encoding.UTF8);
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
             }
         }
     }

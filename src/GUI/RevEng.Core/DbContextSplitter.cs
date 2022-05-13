@@ -122,7 +122,7 @@ namespace RevEng.Core
 
             var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
 
-            File.WriteAllLines(dbContextFilePath, finalSource, Encoding.UTF8);
+            ReverseEngineerRunner.RetryFileWrite(dbContextFilePath, finalSource);
 
             return result;
         }
