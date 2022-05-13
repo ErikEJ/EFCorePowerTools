@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -60,7 +61,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 {
                     if (!Version.TryParse(result.Item2, out Version version))
                     {
-                        VSHelper.ShowError(String.Format(CompareLocale.CannotSupportVersion, result.Item2));
+                        VSHelper.ShowError(string.Format(CultureInfo.InvariantCulture, CompareLocale.CannotSupportVersion, result.Item2));
                         return;
                     }
 

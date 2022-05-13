@@ -26,7 +26,7 @@ namespace EFCorePowerTools.Extensions
                     throw new IOException("Trying to extract file outside of destination directory. See this link for more info: https://snyk.io/research/zip-slip-vulnerability");
                 }
 
-                if (file.Name == "")
+                if (string.IsNullOrEmpty(file.Name))
                 {// Assuming Empty for Directory
                     Directory.CreateDirectory(Path.GetDirectoryName(completeFileName));
                     continue;

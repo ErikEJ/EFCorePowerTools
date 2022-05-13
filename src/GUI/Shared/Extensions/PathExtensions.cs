@@ -18,12 +18,12 @@ namespace EFCorePowerTools.Extensions
         {
             if (string.IsNullOrEmpty(fromPath))
             {
-                throw new ArgumentNullException("fromPath");
+                throw new ArgumentNullException(nameof(fromPath));
             }
 
             if (string.IsNullOrEmpty(toPath))
             {
-                throw new ArgumentNullException("toPath");
+                throw new ArgumentNullException(nameof(toPath));
             }
 
             Uri fromUri = new Uri(AppendDirectorySeparatorChar(fromPath));

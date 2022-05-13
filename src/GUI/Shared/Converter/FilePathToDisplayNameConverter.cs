@@ -18,10 +18,10 @@
             if (string.IsNullOrWhiteSpace(s))
                 return "<null>";
 
-            if (s.EndsWith(".sqlproj"))
+            if (s.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase))
                 return Path.GetFileNameWithoutExtension(s);
 
-            if (s.EndsWith(".dacpac"))
+            if (s.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
             {
                 return s.Length > 55
                            ? "..." + s.Substring(s.Length - 55)
