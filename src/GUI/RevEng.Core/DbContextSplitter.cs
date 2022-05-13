@@ -112,7 +112,7 @@ namespace RevEng.Core
 
                 var configurationFilePath = Path.Combine(configurationsDirectoryPath, $"{entityName}Configuration.cs");
 
-                File.WriteAllText(configurationFilePath, configurationContents, Encoding.UTF8);
+                ReverseEngineerRunner.RetryFileWrite(configurationFilePath, configurationContents);
 
                 result.Add(configurationFilePath);
 

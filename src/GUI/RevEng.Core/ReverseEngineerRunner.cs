@@ -285,12 +285,12 @@ namespace RevEng.Core
             }
 
             var text = File.ReadAllText(file, Encoding.UTF8);
-            File.WriteAllText(file, header
+            
+            RetryFileWrite(file, header
                 + Environment.NewLine
                 + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase)
                 .Replace(";Trust Server Certificate=True", string.Empty, StringComparison.OrdinalIgnoreCase)
-                .TrimEnd(), Encoding.UTF8)
-                ;
+                .TrimEnd());
         }
 
         private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
@@ -368,6 +368,22 @@ namespace RevEng.Core
                 try
                 {
                     File.WriteAllLines(path, finalLines, Encoding.UTF8);
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+        }
+
+        public static void RetryFileWrite(string path, string finalText)
+        {
+            for (int i = 1; i <= 3; ++i)
+            {
+                try
+                {
+                    File.WriteAllText(path, finalText, Encoding.UTF8);
                     break;
                 }
                 catch (IOException) when (i <= 3)
