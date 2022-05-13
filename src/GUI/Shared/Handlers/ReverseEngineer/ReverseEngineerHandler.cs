@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -167,21 +168,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 await GenerateFilesAsync(project, options, containsEfCoreReference);
 
-                var nuGetHelper = new NuGetHelper();
+                await InstallNuGetPackagesAsync(project, onlyGenerate, containsEfCoreReference, options, forceEdit);
 
-                if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit) 
-                    && await project.IsNetCore31OrHigherAsync()
-                    && containsEfCoreReference != null)
+                var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
+                if (File.Exists(postRunFile))
                 {
-                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
-                       
-                    await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
-                }
-
-                if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                    && AdvancedOptions.Instance.DiscoverMultipleResultSets)
-                {
-                    await nuGetHelper.InstallPackageAsync("Dapper", project);
+                    Process.Start($"\"{postRunFile}\"");
                 }
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
@@ -196,6 +188,26 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             catch (Exception exception)
             {
                 _package.LogError(new List<string>(), exception);
+            }
+        }
+
+        private static async System.Threading.Tasks.Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, Tuple<bool, string> containsEfCoreReference, ReverseEngineerOptions options, bool forceEdit)
+        {
+            var nuGetHelper = new NuGetHelper();
+
+            if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit)
+                && await project.IsNetCore31OrHigherAsync()
+                && containsEfCoreReference != null)
+            {
+                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
+
+                await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
+            }
+
+            if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                && AdvancedOptions.Instance.DiscoverMultipleResultSets)
+            {
+                await nuGetHelper.InstallPackageAsync("Dapper", project);
             }
         }
 

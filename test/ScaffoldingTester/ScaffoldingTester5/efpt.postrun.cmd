@@ -1,0 +1,3 @@
+﻿echo running test
+
+pause
