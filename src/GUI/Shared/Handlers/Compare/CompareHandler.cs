@@ -65,7 +65,7 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    if (version.Major != 5 || version.Major != 6)
+                    if (version.Major != 5 && version.Major != 6)
                     {
                         VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
