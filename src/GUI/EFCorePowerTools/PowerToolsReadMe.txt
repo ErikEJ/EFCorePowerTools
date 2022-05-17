@@ -8,7 +8,7 @@ Here are some hints:
 
     builder.Services.Add[ProviderName]<[ContextName]>(builder.Configuration.GetConnectionString("DefaultConnection"));
 
-2. Add "ConnectionStrings" to your configuration file.
+2. Add "ConnectionStrings" to your configuration file (secrets.json, appsettings.Development.json or appsettings.json).
 
     {
         "ConnectionStrings": {
