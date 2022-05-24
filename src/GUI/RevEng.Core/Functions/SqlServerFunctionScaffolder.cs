@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Modules;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
+using NetTopologySuite.Geometries;
+using RevEng.Common;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Modules;
 
 namespace RevEng.Core.Functions
 {
@@ -41,6 +42,10 @@ namespace RevEng.Core.Functions
             _sb.AppendLine("using System.Data;");
             _sb.AppendLine("using System.Linq;");
             _sb.AppendLine($"using {scaffolderOptions.ModelNamespace};");
+            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))
+            {
+                _sb.AppendLine("using NetTopologySuite.Geometries;");
+            }
 
             _sb.AppendLine();
             _sb.AppendLine($"namespace {scaffolderOptions.ContextNamespace}");
