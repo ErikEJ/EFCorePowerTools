@@ -63,14 +63,14 @@ namespace RevEng.Core
             return _lengthRequiredTypes.Contains(sqlDbType);
         }
 
-        public static Type ClrType(this ModuleParameter storedProcedureParameter)
+        public static Type ClrType(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
         {
             if (storedProcedureParameter is null)
             {
                 throw new ArgumentNullException(nameof(storedProcedureParameter));
             }
 
-            return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable);
+            return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
         }
 
         public static Type ClrType(this ModuleResultElement moduleResultElement)
@@ -121,7 +121,7 @@ namespace RevEng.Core
             return result;
         }
 
-        public static Type GetClrType(string storeType, bool isNullable)
+        public static Type GetClrType(string storeType, bool isNullable, bool asParameter = false)
         {
             var sqlType = GetSqlDbType(storeType);
 
@@ -188,6 +188,10 @@ namespace RevEng.Core
                     {
                         case "geometry":
                         case "geography":
+                            if (asParameter)
+                            { 
+                                return typeof(byte[]);
+                            }
                             return typeof(Geometry);
 
                         default:

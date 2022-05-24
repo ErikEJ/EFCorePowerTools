@@ -258,7 +258,7 @@ namespace RevEng.Core.Procedures
         private void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{code.Reference(p.ClrType())} {code.Identifier(p.Name)}")
+                .Select(p => $"{code.Reference(p.ClrType(asMethodParameter: true))} {code.Identifier(p.Name)}")
                 .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
