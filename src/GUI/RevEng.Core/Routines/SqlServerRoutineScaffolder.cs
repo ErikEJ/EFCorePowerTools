@@ -97,6 +97,17 @@ namespace RevEng.Core.Modules
                     });
                 }
             }
+            
+            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model);
+
+            if (!string.IsNullOrEmpty(dbContextInterface))
+            {
+                result.AdditionalFiles.Add(new ScaffoldedFile
+                {
+                    Code = dbContextInterface,
+                    Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, $"I{scaffolderOptions.ContextName}Procedures.cs")),
+                });
+            }
 
             var dbContext = WriteDbContext(scaffolderOptions, model);
 
@@ -110,6 +121,8 @@ namespace RevEng.Core.Modules
         }
 
         protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
+
+        protected abstract string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
 
         private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name)
         {

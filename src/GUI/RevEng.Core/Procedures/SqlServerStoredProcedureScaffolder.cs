@@ -69,38 +69,7 @@ namespace RevEng.Core.Procedures
 
             _sb.AppendLine(PathHelper.Header);
 
-            var usings = new List<string>()
-            {
-                "using Microsoft.EntityFrameworkCore",
-                "using Microsoft.Data.SqlClient",
-                "using System",
-                "using System.Collections.Generic",
-                "using System.Data",
-                "using System.Threading",
-                "using System.Threading.Tasks",
-                $"using {scaffolderOptions.ModelNamespace}",
-            };
-
-            if (model.Routines.Any(r => r.SupportsMultipleResultSet))
-            {
-                usings.AddRange(new List<string>()
-                {
-                    "using Dapper",
-                    "using Microsoft.EntityFrameworkCore.Storage",
-                    "using System.Linq",
-                });    
-            }
-
-            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))
-            {
-                usings.AddRange(new List<string>()
-                {
-                    "using NetTopologySuite.Geometries",
-                });
-
-            }
-
-            usings.Sort();
+            var usings = CreateUsings(scaffolderOptions, model);
 
             foreach (var statement in usings)
             {
@@ -156,19 +125,6 @@ namespace RevEng.Core.Procedures
                 _sb.AppendLine("}");
                 _sb.AppendLine();
 
-                _sb.AppendLine($"public interface I{scaffolderOptions.ContextName}Procedures");
-                _sb.AppendLine("{");
-                using (_sb.Indent())
-                {
-                    foreach (var procedure in model.Routines)
-                    {
-                        GenerateProcedure(procedure, model, true);
-                        _sb.AppendLine(";");
-                    }
-                }
-                _sb.AppendLine("}");
-                _sb.AppendLine();
-
                 _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}Procedures : I{scaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
 
@@ -203,6 +159,90 @@ namespace RevEng.Core.Procedures
             _sb.AppendLine("}");
 
             return _sb.ToString();
+        }
+
+        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        {
+            if (scaffolderOptions is null)
+            {
+                throw new ArgumentNullException(nameof(scaffolderOptions));
+            }
+
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            _sb = new IndentedStringBuilder();
+
+            _sb.AppendLine(PathHelper.Header);
+
+            var usings = CreateUsings(scaffolderOptions, model);
+
+            foreach (var statement in usings)
+            {
+                _sb.AppendLine($"{statement};");
+            }
+
+            _sb.AppendLine();
+            _sb.AppendLine($"namespace {scaffolderOptions.ContextNamespace}");
+            _sb.AppendLine("{");
+
+            using (_sb.Indent())
+            {
+                _sb.AppendLine($"public interface I{scaffolderOptions.ContextName}Procedures");
+                _sb.AppendLine("{");
+                using (_sb.Indent())
+                {
+                    foreach (var procedure in model.Routines)
+                    {
+                        GenerateProcedure(procedure, model, true);
+                        _sb.AppendLine(";");
+                    }
+                }
+                _sb.AppendLine("}");
+            }
+
+            _sb.AppendLine("}");
+
+            return _sb.ToString();
+        }
+
+        private static List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        {
+            var usings = new List<string>()
+            {
+                "using Microsoft.EntityFrameworkCore",
+                "using Microsoft.Data.SqlClient",
+                "using System",
+                "using System.Collections.Generic",
+                "using System.Data",
+                "using System.Threading",
+                "using System.Threading.Tasks",
+                $"using {scaffolderOptions.ModelNamespace}",
+            };
+
+            if (model.Routines.Any(r => r.SupportsMultipleResultSet))
+            {
+                usings.AddRange(new List<string>()
+                {
+                    "using Dapper",
+                    "using Microsoft.EntityFrameworkCore.Storage",
+                    "using System.Linq",
+                });
+            }
+
+            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))
+            {
+                usings.AddRange(new List<string>()
+                {
+                    "using NetTopologySuite.Geometries",
+                });
+
+            }
+
+            usings.Sort();
+            return usings;
         }
 
         private void GenerateDapperSupport()

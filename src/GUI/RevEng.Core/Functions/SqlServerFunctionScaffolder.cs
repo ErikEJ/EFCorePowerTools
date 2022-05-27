@@ -148,5 +148,10 @@ namespace RevEng.Core.Functions
                 _sb.AppendLine("}");
             }
         }
+
+        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        {
+            return null;
+        }
     }
 }
