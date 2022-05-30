@@ -86,9 +86,9 @@ namespace RevEng.Core.Procedures
                 _sb.AppendLine("{");
                 using (_sb.Indent())
                 {
-                    _sb.AppendLine($"private {scaffolderOptions.ContextName}Procedures _procedures;");
+                    _sb.AppendLine($"private I{scaffolderOptions.ContextName}Procedures _procedures;");
                     _sb.AppendLine();
-                    _sb.AppendLine($"public virtual {scaffolderOptions.ContextName}Procedures Procedures");
+                    _sb.AppendLine($"public virtual I{scaffolderOptions.ContextName}Procedures Procedures");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
                     {
@@ -112,7 +112,7 @@ namespace RevEng.Core.Procedures
                     }
                     _sb.AppendLine("}");
                     _sb.AppendLine();
-                    _sb.AppendLine($"public {scaffolderOptions.ContextName}Procedures GetProcedures()");
+                    _sb.AppendLine($"public I{scaffolderOptions.ContextName}Procedures GetProcedures()");
                     _sb.AppendLine("{");
                     using (_sb.Indent())
                     {
