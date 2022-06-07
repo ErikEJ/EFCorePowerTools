@@ -155,5 +155,6 @@
   "UseNoNavigations": false,
   "UseNodaTime": true,
   "UseNullableReferences": false,
-  "UseSpatial": false
+  "UseSpatial": false,
+  "UseAsyncCalls": true
 }

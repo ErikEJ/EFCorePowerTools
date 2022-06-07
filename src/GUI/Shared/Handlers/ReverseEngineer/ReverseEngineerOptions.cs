@@ -50,7 +50,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore6;
         public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
-
         [IgnoreDataMember]
         public bool InstallNuGetPackage { get; set; }
     }

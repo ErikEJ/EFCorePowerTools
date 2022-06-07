@@ -63,25 +63,84 @@
   "SelectedToBeGenerated": 0,
   "Tables": [
     {
-      "Name": "[dbo].[Customers]",
+      "Name": "[dbo].[Dummy-PlaceHolder-{6F4904AA-3438-4D17-9D7B-40289E998B37}]",
       "ObjectType": 0
     },
     {
-      "Name": "[dbo].[MultiSet]",
-      "ObjectType": 1,
-      "UseLegacyResultSetDiscovery":  true
-    },
-    {
-      "Name": "[dbo].[OutputScenarios]",
+      "Name": "[dbo].[CategoryUpdate]",
       "ObjectType": 1
     },
     {
-      "Name": "[dbo].[ReturnDataTypes]",
+      "Name": "[dbo].[CustOrderHist]",
       "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[CustOrdersDetail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[CustOrdersOrders]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[Employee Sales by Country]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[OutputFail]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[ReturnValue]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[Sales by Year]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[SalesByCategory]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[Spaces]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[TempObjects]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[Ten Most Expensive Products]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[Test]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[TestMethodOutputNoParams]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[TestMethodOutputNoResult]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dupe].[CustOrderHist]",
+      "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[ISOweek]",
+      "ObjectType": 2
     },
     {
       "Name": "[dbo].[SpecialTypes]",
       "ObjectType": 1
+    },
+    {
+      "Name": "[dbo].[tvp]",
+      "ObjectType": 2
     }
   ],
   "UseNoObjectFilter": false,
@@ -97,6 +156,5 @@
   "UseNodaTime": true,
   "UseNullableReferences": false,
   "UseSpatial": false,
-  "UseMultipleSprocResultSets": true,
-  "UseAsyncCalls": true
+  "UseAsyncCalls": false
 }

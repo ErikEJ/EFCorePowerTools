@@ -71,6 +71,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 LegacyLangVersion = await project.IsLegacyAsync(),
                 MergeDacpacs =  AdvancedOptions.Instance.MergeDacpacs,
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
+                UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

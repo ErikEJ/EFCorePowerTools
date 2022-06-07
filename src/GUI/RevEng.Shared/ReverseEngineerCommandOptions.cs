@@ -46,5 +46,6 @@ namespace RevEng.Common
         public bool LegacyLangVersion { get; set; }
         public bool MergeDacpacs { get; set; }
         public bool UseLegacyResultSetDiscovery { get; set; }
+        public bool UseAsyncCalls { get; set; }
     }
 }

@@ -7,11 +7,13 @@
 
   <ItemGroup>
     <None Remove="DbContextExtensions" />
+    <None Remove="DbContextExtensions.Sync" />
     <None Remove="Procedures\DbContextExtensions.cs.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="DbContextExtensions" />
+    <EmbeddedResource Include="DbContextExtensions.Sync" />
   </ItemGroup>
   
   <ItemGroup>

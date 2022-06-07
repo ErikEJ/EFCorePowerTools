@@ -98,5 +98,5 @@
   "UseNullableReferences": false,
   "UseSpatial": false,
   "UseMultipleSprocResultSets": true,
-  "UseAsyncCalls": true
+  "UseAsyncCalls": false
 }
