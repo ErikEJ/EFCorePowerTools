@@ -9,7 +9,7 @@ namespace RevEng.Core.Procedures
 {
     public class NotImplementedProcedureScaffolder : IProcedureScaffolder
     {
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue)
+        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
             throw new NotSupportedException();
         }

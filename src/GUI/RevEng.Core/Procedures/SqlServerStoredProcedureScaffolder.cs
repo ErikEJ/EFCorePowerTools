@@ -28,27 +28,29 @@ namespace RevEng.Core.Procedures
             FileNameSuffix = "Procedures";
         }
 
-        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
             if (scaffoldedModel == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(scaffoldedModel));
             }
-            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue);
+            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls);
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
-            var dbContextExtensionsText = GetDbContextExtensionsText();
-            var dbContextExtensionsPath = Path.Combine(contextDir, "DbContextExtensions.cs");
+            var dbContextExtensionsText = GetDbContextExtensionsText(useAsyncCalls);
+            var dbContextExtensionsName = useAsyncCalls ? "DbContextExtensions.cs": "DbContextExtensions.Sync.cs";
+            var dbContextExtensionsPath = Path.Combine(contextDir, dbContextExtensionsName);
             File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;
         }
 
-        private static string GetDbContextExtensionsText()
+        private static string GetDbContextExtensionsText(bool useAsyncCalls)
         {
+            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
             var assembly = typeof(SqlServerStoredProcedureScaffolder).GetTypeInfo().Assembly;
-            using Stream stream = assembly.GetManifestResourceStream("RevEng.Core.DbContextExtensions");
+            using Stream stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
             using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
             return reader.ReadToEnd();
         }
@@ -145,12 +147,12 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    GenerateProcedure(procedure, model, false);
+                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls);
                 }
 
                 if (model.Routines.Any(r => r.SupportsMultipleResultSet))
                 {
-                    GenerateDapperSupport();
+                    GenerateDapperSupport(scaffolderOptions.UseAsyncCalls);
                 }
 
                 _sb.AppendLine("}");
@@ -196,7 +198,7 @@ namespace RevEng.Core.Procedures
                 {
                     foreach (var procedure in model.Routines)
                     {
-                        GenerateProcedure(procedure, model, true);
+                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls);
                         _sb.AppendLine(";");
                     }
                 }
@@ -245,7 +247,7 @@ namespace RevEng.Core.Procedures
             return usings;
         }
 
-        private void GenerateDapperSupport()
+        private void GenerateDapperSupport(bool useAsyncCalls)
         {
             _sb.AppendLine();
             using (_sb.Indent())
@@ -272,7 +274,14 @@ namespace RevEng.Core.Procedures
 
             using (_sb.Indent())
             {
-                _sb.AppendLine("private async Task<SqlMapper.GridReader> GetMultiReaderAsync(DbContext db, DynamicParameters dynamic, string sql)");
+                if (useAsyncCalls)
+                {
+                    _sb.AppendLine("private async Task<SqlMapper.GridReader> GetMultiReaderAsync(DbContext db, DynamicParameters dynamic, string sql)");
+                }
+                else
+                {
+                    _sb.AppendLine("private SqlMapper.GridReader GetMultiReader(DbContext db, DynamicParameters dynamic, string sql)");
+                }
                 _sb.AppendLine("{");
                 using (_sb.Indent())
                 {
@@ -285,17 +294,17 @@ namespace RevEng.Core.Procedures
                     }
                     _sb.AppendLine("}");
                     _sb.AppendLine();
-                    _sb.AppendLine("return await ((IDbConnection)db.Database.GetDbConnection())");
+                    _sb.AppendLine($"return {(useAsyncCalls ? "await " : "")}((IDbConnection)db.Database.GetDbConnection())");
                     using (_sb.Indent())
                     {
-                        _sb.AppendLine(".QueryMultipleAsync(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure);");
+                        _sb.AppendLine($".QueryMultiple{(useAsyncCalls ? "Async" : "")}(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure);");
                     }
                 }
                 _sb.AppendLine("}");
             }
         }
 
-        private void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly)
+        private void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls)
         {
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p => $"{code.Reference(p.ClrType(asMethodParameter: true))} {code.Identifier(p.Name)}")
@@ -311,13 +320,13 @@ namespace RevEng.Core.Procedures
                 .Select(p => $"OutputParameter<{code.Reference(p.ClrType())}> {code.Identifier(p.Name)}")
                 .ToList();
 
-            string fullExec = GenerateProcedureStatement(procedure, retValueName);
+            string fullExec = GenerateProcedureStatement(procedure, retValueName, useAsyncCalls);
 
             var multiResultId = GenerateMultiResultId(procedure, model);
 
             var identifier = GenerateIdentifierName(procedure, model);
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls);
 
             if (signatureOnly)
             {
@@ -362,7 +371,9 @@ namespace RevEng.Core.Procedures
 
                     if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
                     {
-                        _sb.AppendLine($"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});");
+                        _sb.AppendLine(useAsyncCalls
+                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});"
+                            : $"var _ = _context.Database.ExecuteSqlRaw({fullExec});");
                     }
                     else
                     {
@@ -385,7 +396,9 @@ namespace RevEng.Core.Procedures
                         }
                         else
                         {
-                            _sb.AppendLine($"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});");
+                            _sb.AppendLine(useAsyncCalls 
+                                ? $"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});"
+                                : $"var _ = _context.SqlQuery<{identifier}Result>({fullExec});");
                         }
                     }
 
@@ -489,43 +502,40 @@ namespace RevEng.Core.Procedures
             return $"({string.Join(", ", ids)})";
         }
 
-        private static string GenerateProcedureStatement(Routine procedure, string retValueName)
+        private static string GenerateProcedureStatement(Routine procedure, string retValueName, bool useAsyncCalls)
         {
             var paramList = procedure.Parameters
                 .Select(p => p.Output ? $"@{p.Name} OUTPUT" : $"@{p.Name}").ToList();
 
             paramList.RemoveAt(paramList.Count - 1);
 
-            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", sqlParameters, cancellationToken".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
+            var fullExec = $"\"EXEC @{retValueName} = [{procedure.Schema}].[{procedure.Name}] {string.Join(", ", paramList)}\", sqlParameters{(useAsyncCalls ? ", cancellationToken" : "")}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly)
+        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly, bool useAsyncCalls)
         {
             string returnType;
-
             if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
             {
-                returnType = $"Task<int>";
+                returnType = $"int";
             }
             else
             {
                 if (procedure.SupportsMultipleResultSet)
                 {
-                    returnType = $"Task<{multiResultId}>";
+                    returnType = multiResultId;
                 }
                 else
                 {
-                    returnType = $"Task<List<{identifier}Result>>";
+                    returnType = $"List<{identifier}Result>";
                 }
             }
 
-            var line = $"public virtual async {returnType} {identifier}Async({string.Join(", ", paramStrings)}";
+            returnType = useAsyncCalls ? $"Task<{returnType}>" : returnType;
 
-            if (signatureOnly)
-            {
-                line = $"{returnType} {identifier}Async({string.Join(", ", paramStrings)}";
-            }
+            var lineStart = signatureOnly ? "" : $"public virtual {(useAsyncCalls ? "async " : "")}";
+            var line = $"{lineStart}{returnType} {identifier}{(useAsyncCalls ? "Async" : "")}({string.Join(", ", paramStrings)}";
 
             if (outParams.Any())
             {
@@ -544,7 +554,7 @@ namespace RevEng.Core.Procedures
 
             line += $"OutputParameter<int> {retValueName} = null";
 
-            line += ", CancellationToken cancellationToken = default)";
+            line += useAsyncCalls ? ", CancellationToken cancellationToken = default)" : ")";
 
             return line;
         }

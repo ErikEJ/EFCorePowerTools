@@ -147,6 +147,7 @@ namespace RevEng.Core
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
+                    UseAsyncCalls = options.UseAsyncCalls
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, ref errors);
@@ -156,7 +157,8 @@ namespace RevEng.Core
                     return functionModelScaffolder.Save(
                         functionScaffoldedModel,
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
-                        contextNamespace);
+                        contextNamespace,
+                        options.UseAsyncCalls);
                 }
             }
 
@@ -205,6 +207,7 @@ namespace RevEng.Core
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
                     UseSchemaFolders = options.UseSchemaFolders,
+                    UseAsyncCalls = options.UseAsyncCalls
                 };
 
                 var procedureScaffoldedModel = _procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
@@ -214,7 +217,8 @@ namespace RevEng.Core
                     return _procedureScaffolder.Save(
                         procedureScaffoldedModel,
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
-                        contextNamespace);
+                        contextNamespace,
+                        options.UseAsyncCalls);
                 }
             }
 

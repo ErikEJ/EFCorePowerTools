@@ -7,7 +7,7 @@ namespace RevEng.Core.Modules
 {
     public interface IRoutineScaffolder
     {
-        SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue);
+        SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls);
         ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors);
     }
 }

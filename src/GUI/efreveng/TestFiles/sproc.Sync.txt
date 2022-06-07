@@ -68,5 +68,5 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseStoredProcedures": true,
-   "UseAsyncCalls": true
+   "UseAsyncCalls": false
 }

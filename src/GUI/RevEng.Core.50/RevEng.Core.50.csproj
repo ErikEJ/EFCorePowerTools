@@ -25,6 +25,7 @@
 
 	<ItemGroup>
     <EmbeddedResource Include="..\RevEng.Core\DbContextExtensions" Link="DbContextExtensions" />
+    <EmbeddedResource Include="..\RevEng.Core\DbContextExtensions.Sync" Link="DbContextExtensions.Sync" />
   </ItemGroup>
   
   <ItemGroup>
