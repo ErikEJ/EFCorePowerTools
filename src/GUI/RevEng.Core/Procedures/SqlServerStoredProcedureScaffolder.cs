@@ -192,7 +192,7 @@ namespace RevEng.Core.Procedures
 
             using (_sb.Indent())
             {
-                _sb.AppendLine($"public interface I{scaffolderOptions.ContextName}Procedures");
+                _sb.AppendLine($"public partial interface I{scaffolderOptions.ContextName}Procedures");
                 _sb.AppendLine("{");
                 using (_sb.Indent())
                 {
