@@ -383,12 +383,12 @@ namespace RevEng.Core.Procedures
                             _sb.AppendLine("var dynamic = CreateDynamic(sqlParameters);");
                             _sb.AppendLine($"{multiResultId}  _;");
                             _sb.AppendLine();
-                            _sb.AppendLine($"using (var reader = await GetMultiReaderAsync(_context, dynamic, \"[{procedure.Schema}].[{procedure.Name}]\"))");
+                            _sb.AppendLine($"using (var reader = {(useAsyncCalls ? "await GetMultiReaderAsync" : "GetMultiReader")}(_context, dynamic, \"[{procedure.Schema}].[{procedure.Name}]\"))");
                             _sb.AppendLine("{");
 
                             using (_sb.Indent())
                             {
-                                var statements = GenerateMultiResultStatement(procedure, model);
+                                var statements = GenerateMultiResultStatement(procedure, model, useAsyncCalls);
                                 _sb.AppendLine($"_ = {statements};");
                             }
 
@@ -482,7 +482,7 @@ namespace RevEng.Core.Procedures
             return $"({string.Join(", ", ids)})";
         }
 
-        private static string GenerateMultiResultStatement(Routine procedure, RoutineModel model)
+        private static string GenerateMultiResultStatement(Routine procedure, RoutineModel model, bool useAsyncCalls)
         {
             if (procedure.Results.Count == 1)
             {
@@ -496,7 +496,15 @@ namespace RevEng.Core.Procedures
                 var suffix = $"{i++}";
 
                 var typeName = GenerateIdentifierName(procedure, model) + "Result" + suffix;
-                ids.Add($"(await reader.ReadAsync<{typeName}>()).ToList()");
+                
+                if (useAsyncCalls)
+                {
+                    ids.Add($"(await reader.ReadAsync<{typeName}>()).ToList()");
+                }
+                else
+                {
+                    ids.Add($"(reader.Read<{typeName}>()).ToList()");
+                }
             }
 
             return $"({string.Join(", ", ids)})";
