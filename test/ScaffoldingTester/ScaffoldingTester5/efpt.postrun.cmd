@@ -1,3 +1,3 @@
-﻿echo running test
+echo running test
 
 pause

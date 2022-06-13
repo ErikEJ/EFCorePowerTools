@@ -13,9 +13,9 @@ namespace ScaffoldingTester.Models
 {
     public partial class NorthwindContext
     {
-        private NorthwindContextProcedures _procedures;
+        private INorthwindContextProcedures _procedures;
 
-        public virtual NorthwindContextProcedures Procedures
+        public virtual INorthwindContextProcedures Procedures
         {
             get
             {
@@ -28,7 +28,7 @@ namespace ScaffoldingTester.Models
             }
         }
 
-        public NorthwindContextProcedures GetProcedures()
+        public INorthwindContextProcedures GetProcedures()
         {
             return Procedures;
         }
@@ -45,20 +45,6 @@ namespace ScaffoldingTester.Models
             modelBuilder.Entity<SpecialTypesResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<TenMostExpensiveProductsResult>().HasNoKey().ToView(null);
         }
-    }
-
-    public interface INorthwindContextProcedures
-    {
-        Task<List<CustOrderHistResult>> CustOrderHistAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? OrderID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string CustomerID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<MultiSetResult>> MultiSetAsync(DateTime? Year, decimal? ProductValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<int> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string CategoryName, string OrdYear, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[] Parents, Geometry geo, Geometry geom, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 
     public partial class NorthwindContextProcedures : INorthwindContextProcedures
@@ -328,7 +314,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[] Parents, Geometry geo, Geometry geom, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[] Parents, byte[] geo, byte[] geom, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
