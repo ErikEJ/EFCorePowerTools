@@ -35,6 +35,12 @@ namespace RevEng.Common
         public bool UseLegacyResultSetDiscovery { get; set; }
 
         /// <summary>
+        /// Map type to an existing DbSet
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public string MappedType { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SerializationTableModel"/> class for a specific table.
         /// </summary>
         /// <param name="name">The table name.</param>

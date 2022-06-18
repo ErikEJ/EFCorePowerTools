@@ -231,7 +231,8 @@
     },
     {
       "Name": "[dbo].[Ten Most Expensive Products]",
-      "ObjectType": 1
+      "ObjectType": 1,
+      "MappedType": "Product"
     },
     {
       "Name": "[dbo].[Test]",

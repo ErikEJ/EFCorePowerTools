@@ -25,6 +25,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
+        private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
         {
@@ -109,6 +110,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
+                mappedTypes = options.Tables?
+                    .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
+                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
@@ -583,6 +587,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (legacyDiscoveryObjects.Contains(table.Name))
                     {
                         table.UseLegacyResultSetDiscovery = true;
+                    }
+                    if (mappedTypes.ContainsKey(table.Name))
+                    { 
+                        table.MappedType = mappedTypes[table.Name];
                     }
                 }
 
