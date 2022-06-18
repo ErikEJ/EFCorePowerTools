@@ -67,11 +67,19 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Name = proc.Name.Parts[1],
                 };
 
-                if (filter.Count == 0 || filter.Contains($"[{procedure.Schema}].[{procedure.Name}]"))
+                var key = $"[{procedure.Schema}].[{procedure.Name}]";
+
+                if (filter.Count == 0 || filter.Contains(key))
                 {
                     if (options.FullModel)
                     {
                         procedure.Parameters = GetStoredProcedureParameters(proc);
+
+
+                        if (options.MappedModules?.ContainsKey(key) ?? false)
+                        {
+                            procedure.MappedType = options.MappedModules[key];
+                        }
 
 #pragma warning disable CA1031 // Do not catch general exception types
                         try

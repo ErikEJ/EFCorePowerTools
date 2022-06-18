@@ -193,6 +193,10 @@ namespace RevEng.Core
                     ModulesUsingLegacyDiscovery = options.Tables
                         .Where(t => t.ObjectType == ObjectType.Procedure && t.UseLegacyResultSetDiscovery)
                         .Select(m => m.Name),
+                    MappedModules = options.Tables
+                        .Where(t => t.ObjectType == ObjectType.Procedure && !string.IsNullOrEmpty(t.MappedType))
+                        .Select(m => new { m.Name, m.MappedType })
+                        .ToDictionary(m => m.Name, m => m.MappedType)
                 };
 
                 var procedureModel = _procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);

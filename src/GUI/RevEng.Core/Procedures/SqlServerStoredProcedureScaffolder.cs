@@ -326,7 +326,14 @@ namespace RevEng.Core.Procedures
 
             var identifier = GenerateIdentifierName(procedure, model);
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls);
+            var returnClass = identifier + "Result";
+
+            if (!string.IsNullOrEmpty(procedure.MappedType))
+            {
+                returnClass = procedure.MappedType;
+            }
+
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass);
 
             if (signatureOnly)
             {
@@ -397,8 +404,8 @@ namespace RevEng.Core.Procedures
                         else
                         {
                             _sb.AppendLine(useAsyncCalls 
-                                ? $"var _ = await _context.SqlQueryAsync<{identifier}Result>({fullExec});"
-                                : $"var _ = _context.SqlQuery<{identifier}Result>({fullExec});");
+                                ? $"var _ = await _context.SqlQueryAsync<{returnClass}>({fullExec});"
+                                : $"var _ = _context.SqlQuery<{returnClass}>({fullExec});");
                         }
                     }
 
@@ -521,7 +528,7 @@ namespace RevEng.Core.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly, bool useAsyncCalls)
+        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IEnumerable<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly, bool useAsyncCalls, string returnClass)
         {
             string returnType;
             if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
@@ -536,7 +543,7 @@ namespace RevEng.Core.Procedures
                 }
                 else
                 {
-                    returnType = $"List<{identifier}Result>";
+                    returnType = $"List<{returnClass}>";
                 }
             }
 

@@ -84,7 +84,9 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                 foreach (var foundModule in found)
                 {
-                    if (filter.Count == 0 || filter.Contains($"[{foundModule.Item1}].[{foundModule.Item2}]"))
+                    var key = $"[{foundModule.Item1}].[{foundModule.Item2}]";
+
+                    if (filter.Count == 0 || filter.Contains(key))
                     {
                         var isScalar = foundModule.Item4;
 
@@ -95,6 +97,11 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                         module.Schema = foundModule.Item1;
                         module.Name = foundModule.Item2;
                         module.HasValidResultSet = true;
+
+                        if (options.MappedModules?.ContainsKey(key) ?? false)
+                        {
+                            module.MappedType = options.MappedModules[key];
+                        }
 
                         if (options.FullModel)
                         {
