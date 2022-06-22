@@ -257,6 +257,18 @@
     {
       "Name": "[dbo].[GetCustInfo]",
       "ObjectType": 2
+    },
+    {
+      "Name": "[dbo].[FuncWithTvpParameter]",
+      "ObjectType": 2
+    },
+    {
+      "Name": "[dbo].[ISOweek]",
+      "ObjectType": 2
+    },
+    {
+      "Name": "[dbo].[tvp]",
+      "ObjectType": 2
     }
   ],
   "UseNoObjectFilter": false,

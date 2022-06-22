@@ -175,6 +175,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[FuncWithTvpParameter]",
+         "ObjectType": 2
+      },
+      {
          "Name": "[dbo].[ISOweek]",
          "ObjectType": 2
       },
@@ -183,7 +187,7 @@
          "ObjectType": 2
       }
    ],
-   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Northwind",
+   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Northwind",
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

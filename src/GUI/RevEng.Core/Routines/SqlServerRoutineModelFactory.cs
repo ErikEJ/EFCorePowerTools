@@ -133,6 +133,15 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                             }
                         }
 
+                        if (module is Function func 
+                            && func.IsScalar
+                            && func.Parameters.Count > 0
+                            && func.Parameters.Any(p => p.StoreType == "table type"))
+                        {
+                            errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name} as it has TVP parameters.'{Environment.NewLine}");
+                            continue;
+                        }
+
                         result.Add(module);
                     }
                 }
