@@ -82,6 +82,8 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                 }
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
+                var allParameters = GetParameters(connection);
+
                 foreach (var foundModule in found)
                 {
                     var key = $"[{foundModule.Item1}].[{foundModule.Item2}]";
@@ -105,7 +107,12 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                         if (options.FullModel)
                         {
-                            module.Parameters = GetParameters(connection, module.Schema, module.Name);
+                            module.Parameters = allParameters.Where(p => p.RoutineName ==  module.Name && p.RoutineSchema == module.Schema).ToList();
+
+                            if (RoutineType == "PROCEDURE")
+                            {
+                                module.Parameters.Add(GetReturnParameter());
+                            }
 
                             if (!isScalar)
                             {
@@ -154,7 +161,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
             };
         }
 
-        protected virtual List<ModuleParameter> GetParameters(SqlConnection connection, string schema, string name)
+        protected virtual List<ModuleParameter> GetParameters(SqlConnection connection)
         {
             using var dtResult = new DataTable();
             var result = new List<ModuleParameter>();
@@ -174,18 +181,17 @@ SELECT
     p.is_output AS output,
     'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id)),
 	'TypeSchema' = t.schema_id,
-	'TypeId' = p.user_type_id
+	'TypeId' = p.user_type_id,
+    'RoutineName' = OBJECT_NAME(p.object_id),
+    'RoutineSchema' = OBJECT_SCHEMA_NAME(p.object_id)
     from sys.parameters p
 	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
-    where object_id = object_id('{schema}.{name}')
-    ORDER BY parameter_id;";
+    ORDER BY p.object_id, p.parameter_id;";
 
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var adapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(sql, connection)
             };
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 
@@ -200,6 +206,8 @@ SELECT
                 var parameter = new ModuleParameter()
                 {
                     Name = parameterName,
+                    RoutineName = par["RoutineName"].ToString(),
+                    RoutineSchema = par["RoutineSchema"].ToString(),
                     StoreType = par["Type"].ToString(),
                     Length = (par["Length"]is DBNull) ? (int?)null : int.Parse(par["Length"].ToString(), CultureInfo.InvariantCulture),
                     Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString(), CultureInfo.InvariantCulture),
@@ -216,6 +224,20 @@ SELECT
 
             return result;
         }
+
+        private static ModuleParameter GetReturnParameter()
+        {
+            // Add parameter to hold the standard return value
+            return new ModuleParameter()
+            {
+                Name = "returnValue",
+                StoreType = "int",
+                Output = true,
+                Nullable = false,
+                IsReturnValue = true,
+            };
+        }
+
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
         protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection,  Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
