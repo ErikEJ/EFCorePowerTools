@@ -13,5 +13,7 @@
         public int? TypeId { get; set; }
         public int? TypeSchema { get; set; }
         public bool IsReturnValue { get; set; }
+        public string RoutineName { get; set; }
+        public string RoutineSchema { get; set; }
     }
 }

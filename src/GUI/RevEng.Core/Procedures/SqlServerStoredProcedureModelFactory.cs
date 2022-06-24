@@ -25,22 +25,6 @@ namespace RevEng.Core.Procedures
             return GetRoutines(connectionString, options);
         }
 
-        protected override List<ModuleParameter> GetParameters(SqlConnection connection, string schema, string name)
-        {
-            var moduleParameters = base.GetParameters(connection, schema, name);
-
-            // Add parameter to hold the standard return value
-            moduleParameters.Add(new ModuleParameter()
-            {
-                Name = "returnValue",
-                StoreType = "int",
-                Output = true,
-                Nullable = false,
-                IsReturnValue = true,
-            });
-
-            return moduleParameters;
-        }
 
         protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
         {
