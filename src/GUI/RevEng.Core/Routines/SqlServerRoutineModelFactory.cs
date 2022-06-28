@@ -145,9 +145,25 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                             && func.Parameters.Count > 0
                             && func.Parameters.Any(p => p.StoreType == "table type"))
                         {
-                            errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name} as it has TVP parameters.'{Environment.NewLine}");
+                            errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.{Environment.NewLine}");
                             continue;
                         }
+
+                        bool dupesFound = false;
+                        foreach (var resultElement in module.Results)
+                        {
+                            var duplicates = resultElement.GroupBy(x => x.Name)
+                                .Where(g => g.Count() > 1)
+                                .Select(y => y.Key)
+                                .ToList();
+
+                            if (duplicates.Any())
+                            {
+                                dupesFound = true;
+                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.{Environment.NewLine}");
+                            }
+                        }
+                        if (dupesFound) continue;
 
                         result.Add(module);
                     }

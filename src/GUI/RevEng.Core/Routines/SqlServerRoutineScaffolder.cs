@@ -61,11 +61,13 @@ namespace RevEng.Core.Modules
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
+            if (errors == null) throw new ArgumentNullException(nameof(errors));
+
             if (scaffolderOptions == null) throw new ArgumentNullException(nameof(scaffolderOptions));
 
             var result = new ScaffoldedModel();
 
-            errors = model.Errors;
+            errors.AddRange( model.Errors);
 
             foreach (var routine in model.Routines.Where(r => !(r is Function f) || !f.IsScalar))
             {
