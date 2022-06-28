@@ -131,6 +131,19 @@ dotnet_diagnostic.S3358.severity=silent
 dotnet_diagnostic.S3885.severity=silent
 dotnet_diagnostic.S3267.severity=silent
 
+dotnet_diagnostic.SA1200.severity = silent
+# A C# code element is missing a documentation header.
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md
+dotnet_diagnostic.SA1600.severity = silent
+dotnet_diagnostic.SA1602.severity = silent
+dotnet_diagnostic.SA1518.severity = silent
+dotnet_diagnostic.SA1101.severity = silent
+dotnet_diagnostic.SA1580.severity = silent
+dotnet_diagnostic.SA1516.severity = silent
+# A C# code file is missing a standard file header.
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1633.md
+dotnet_diagnostic.SA1633.severity = silent
+
 ###############################
 # VB Coding Conventions       #
 ###############################

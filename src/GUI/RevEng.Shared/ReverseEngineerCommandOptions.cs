@@ -6,11 +6,17 @@ namespace RevEng.Common
     public class ReverseEngineerCommandOptions
     {
         public DatabaseType DatabaseType { get; set; }
+
         public string ConnectionString { get; set; }
+
         public string ProjectPath { get; set; }
+
         public string OutputPath { get; set; }
+
         public string OptionsPath { get; set; }
+
         public string OutputContextPath { get; set; }
+
         public bool UseSchemaFolders { get; set; }
         public string ModelNamespace { get; set; }
         public string ContextNamespace { get; set; }

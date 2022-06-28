@@ -10,6 +10,21 @@ namespace RevEng.Common
     [DataContract]
     public class SerializationTableModel
     {
+        public SerializationTableModel(
+            string name,
+            ObjectType objectType,
+            IList<string> excludedColumns)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
+            }
+
+            Name = name;
+            ExcludedColumns = excludedColumns?.Count > 0 ? excludedColumns : null;
+            ObjectType = objectType;
+        }
+
         /// <summary>
         /// Gets or sets the table name.
         /// </summary>
@@ -29,32 +44,15 @@ namespace RevEng.Common
         public IEnumerable<string> ExcludedColumns { get; set; }
 
         /// <summary>
-        /// exclude table from default result set discovery
+        /// Gets or sets a value indicating whether to exclude table from default result set discovery
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public bool UseLegacyResultSetDiscovery { get; set; }
 
         /// <summary>
-        /// Map type to an existing DbSet
+        /// Gets or sets a map type to an existing DbSet.
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public string MappedType { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SerializationTableModel"/> class for a specific table.
-        /// </summary>
-        /// <param name="name">The table name.</param>
-        /// <exception cref="ArgumentException"><paramref name="schema"/> or <paramref name="name"/> are null or only white spaces.</exception>
-        public SerializationTableModel(string name,
-                            ObjectType objectType,
-                            IList<string> excludedColumns)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
-
-            Name = name;
-            ExcludedColumns = excludedColumns?.Count > 0 ? excludedColumns : null;
-            ObjectType = objectType;
-        }
     }
 }

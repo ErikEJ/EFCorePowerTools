@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace RevEng.Common
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1724:")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1724:", Justification = "Reviewed.")]
     [DataContract]
     public class Schema
     {

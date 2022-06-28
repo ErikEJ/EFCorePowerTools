@@ -16,12 +16,11 @@ namespace RevEng.Common
                 throw new ArgumentNullException(nameof(outputPath));
             }
 
-            //   ' The output folder can have these patterns:
-            //   ' 1) "\\server\folder"
-            //   ' 2) "drive:\folder"
-            //   ' 3) "..\..\folder"
-            //   ' 4) "folder"
-
+            // ' The output folder can have these patterns:
+            // ' 1) "\\server\folder"
+            // ' 2) "drive:\folder"
+            // ' 3) "..\..\folder"
+            // ' 4) "folder"
             if (outputPath.StartsWith(string.Empty + Path.DirectorySeparatorChar + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
             {
                 return outputPath;
@@ -38,6 +37,7 @@ namespace RevEng.Common
                     outputPath = outputPath.Substring(3);
                     projectFolder = Path.GetDirectoryName(projectFolder);
                 }
+
                 return Path.Combine(projectFolder, outputPath);
             }
             else
@@ -83,27 +83,6 @@ namespace RevEng.Common
                     subPath.Split(
                         new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries))
                 : null;
-        }
-
-        public static string MakeDirRelative(string root, string path)
-        {
-            var relativeUri = new Uri(NormalizeDir(root)).MakeRelativeUri(new Uri(NormalizeDir(path)));
-
-            return Uri.UnescapeDataString(relativeUri.ToString()).Replace('/', Path.DirectorySeparatorChar);
-        }
-
-        private static string NormalizeDir(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                return path;
-            }
-
-            var last = path[path.Length - 1];
-            return last == Path.DirectorySeparatorChar
-                   || last == Path.AltDirectorySeparatorChar
-                ? path
-                : path + Path.DirectorySeparatorChar;
         }
     }
 }
