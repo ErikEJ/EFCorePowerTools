@@ -107,7 +107,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                         if (options.FullModel)
                         {
-                            module.Parameters = allParameters.Where(p => p.RoutineName ==  module.Name && p.RoutineSchema == module.Schema).ToList();
+                            module.Parameters = allParameters.Where(p => p.RoutineName == module.Name && p.RoutineSchema == module.Schema).ToList();
 
                             if (RoutineType == "PROCEDURE")
                             {
