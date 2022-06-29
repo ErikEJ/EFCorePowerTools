@@ -107,7 +107,10 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                         if (options.FullModel)
                         {
-                            module.Parameters = allParameters.Where(p => p.RoutineName == module.Name && p.RoutineSchema == module.Schema).ToList();
+                            if (allParameters.TryGetValue($"[{module.Schema}].[{module.Name}]", out var moduleParameters))
+                            {
+                                module.Parameters = moduleParameters;
+                            }
 
                             if (RoutineType == "PROCEDURE")
                             {
@@ -177,7 +180,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
             };
         }
 
-        protected virtual List<ModuleParameter> GetParameters(SqlConnection connection)
+        private static Dictionary<string, List<ModuleParameter>> GetParameters(SqlConnection connection)
         {
             using var dtResult = new DataTable();
             var result = new List<ModuleParameter>();
@@ -238,7 +241,7 @@ SELECT
                 result.Add(parameter);
             }
 
-            return result;
+            return result.GroupBy(x => $"[{x.RoutineSchema}].[{x.RoutineName}]").ToDictionary(g => g.Key, g => g.ToList(), StringComparer.InvariantCulture);
         }
 
         private static ModuleParameter GetReturnParameter()
