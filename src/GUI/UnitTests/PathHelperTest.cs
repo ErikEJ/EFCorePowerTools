@@ -6,7 +6,6 @@ namespace UnitTests
     [TestFixture]
     public class PathHelperTest
     {
-
         [Test]
         public void ParsePathType1()
         {

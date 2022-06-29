@@ -90,6 +90,7 @@ namespace Modelling
             {
                 throw new ArgumentException("No EF Core DbContext types found in the project");
             }
+
             return types;
         }
 

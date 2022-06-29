@@ -9,7 +9,8 @@ namespace UnitTests
     {
         private readonly ResultDeserializer _parser = new ResultDeserializer();
 
-        [Test, Ignore("Investigate build fail")]
+        [Test]
+        [Ignore("Investigate build fail")]
         public void ParseTableResult()
         {
             // Arrange
@@ -23,7 +24,8 @@ namespace UnitTests
             Assert.AreEqual(29, parsed.Count);
         }
 
-        [Test, Ignore("Investigate build fail")]
+        [Test]
+        [Ignore("Investigate build fail")]
         public void ParseTableResultWithWarning()
         {
             // Arrange
@@ -37,7 +39,8 @@ namespace UnitTests
             Assert.AreEqual(29, parsed.Count);
         }
 
-        [Test, Ignore("Investigate build issue")]
+        [Test]
+        [Ignore("Investigate build issue")]
         public void ParseResultWithError()
         {
             // Arrange

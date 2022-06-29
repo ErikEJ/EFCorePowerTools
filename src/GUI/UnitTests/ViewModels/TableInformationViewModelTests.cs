@@ -187,6 +187,7 @@ namespace UnitTests.ViewModels
             vm.Columns.Add(CreateColumnViewModel("column1"));
             vm.Columns.Add(CreateColumnViewModel("column2"));
             vm.Columns.Add(CreateColumnViewModel("column3"));
+
             // Act
             vm.SetSelectedCommand.Execute(isSelected);
 
@@ -272,7 +273,6 @@ namespace UnitTests.ViewModels
 
         private TableInformationViewModel CreateViewModel()
         {
-
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();
             return new TableInformationViewModel(messenger.Object);

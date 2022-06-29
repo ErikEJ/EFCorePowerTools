@@ -248,9 +248,10 @@ namespace UnitTests.ViewModels
             {
                 mock.Setup(c => c.GetSelectedObjects()).Returns(() => new List<SerializationTableModel>()
                 {
-                    new SerializationTableModel("obj1", ObjectType.Table, new string[0])
+                    new SerializationTableModel("obj1", ObjectType.Table, new string[0]),
                 });
             }
+
             return mock;
         }
     }

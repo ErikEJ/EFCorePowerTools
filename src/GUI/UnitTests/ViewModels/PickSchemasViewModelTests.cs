@@ -51,7 +51,7 @@
             var vm = new PickSchemasViewModel();
 
             // Act
-            vm.Schemas.Add(new SchemaInfo {Name = "TestSchema"});
+            vm.Schemas.Add(new SchemaInfo { Name = "TestSchema" });
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
@@ -118,7 +118,10 @@
         {
             // Arrange
             var vm = new PickSchemasViewModel();
-            var testSchema = new SchemaInfo {Name = "TestSchema"};
+            var testSchema = new SchemaInfo
+            {
+                Name = "TestSchema",
+            };
 
             // Act
             vm.SelectedSchema = testSchema;

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using NUnit.Framework;
-using RevEng.Core;
-using RevEng.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using NUnit.Framework;
+using RevEng.Common;
+using RevEng.Core;
 
 namespace UnitTests.Services
 {
@@ -13,15 +13,15 @@ namespace UnitTests.Services
         [Test]
         public void GeneratePascalCaseTableNameWithSchemaName()
         {
-            //Arrange
+            // Arrange
             var expected = "MachineAlertUi";
             var exampleOption = new List<Schema>
               {
                   new Schema
                   {
                        SchemaName = "machine",
-                       UseSchemaName = true
-                  }
+                       UseSchemaName = true,
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
@@ -29,20 +29,20 @@ namespace UnitTests.Services
             var exampleDbTable = new DatabaseTable
             {
                 Name = "alert_ui",
-                Schema = "machine"
+                Schema = "machine",
             };
 
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result);
         }
 
         [Test]
         public void GeneratePascalCaseTableNameWithSchemaName_Issue988()
         {
-            //Arrange
+            // Arrange
             var expected = "PetGuineaPig";
             var exampleOption = new List<Schema>
               {
@@ -51,9 +51,9 @@ namespace UnitTests.Services
                        SchemaName = "pet",
                        UseSchemaName = true,
                        Tables = new List<TableRenamer>
-                       { 
+                       {
                             new TableRenamer
-                            { 
+                            {
                                 Name = "GUINEAPig",
                                 NewName = "GuineaPig",
                             },
@@ -66,33 +66,33 @@ namespace UnitTests.Services
             var exampleDbTable = new DatabaseTable
             {
                 Name = "GUINEAPig",
-                Schema = "pet"
+                Schema = "pet",
             };
 
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result);
         }
 
         [Test]
         public void GeneratePascalCaseTableNameWithSchemaNameWithMoreThanTwoSchemas()
         {
-            //Arrange
+            // Arrange
             var expected = "MachineAlertUi";
             var exampleOption = new List<Schema>
               {
                   new Schema
                   {
                        SchemaName = "machine",
-                       UseSchemaName = true
+                       UseSchemaName = true,
                   },
                   new Schema
                   {
                        SchemaName = "master",
-                       UseSchemaName = true
-                  }
+                       UseSchemaName = true,
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
@@ -100,21 +100,20 @@ namespace UnitTests.Services
             var exampleDbTable = new DatabaseTable
             {
                 Name = "alert_ui",
-                Schema = "machine"
+                Schema = "machine",
             };
 
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result);
         }
 
         [Test]
         public void GeneratePascalCaseTableNameWithSchemaNameWithMoreThanTwoSchemasForTableCollection()
         {
-            //Arrange
+            // Arrange
             var expected = "MachineAlertUi";
             var expected2 = "MachineMeasure";
             var expected3 = "MasterMeasure";
@@ -124,52 +123,55 @@ namespace UnitTests.Services
                   new Schema
                   {
                        SchemaName = "machine",
-                       UseSchemaName = true
+                       UseSchemaName = true,
                   },
                   new Schema
                   {
                        SchemaName = "master",
-                       UseSchemaName = true
+                       UseSchemaName = true,
                   },
                   new Schema
                   {
                        SchemaName = "dbo",
                        UseSchemaName = true,
-                       Tables = new List<TableRenamer>{ new TableRenamer {  Name = "work_type"} }
-                  }
+                       Tables = new List<TableRenamer> { new TableRenamer { Name = "work_type" } },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
             var exampleDbTables = new List<DatabaseTable>
             {
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "alert_ui",
-                    Schema = "machine"
+                    Schema = "machine",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "measure",
-                    Schema = "machine"
+                    Schema = "machine",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "measure",
-                    Schema = "master"
+                    Schema = "master",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "work_type",
-                    Schema = "dbo"
-                }
+                    Schema = "dbo",
+                },
             };
 
             // Act
-
             List<string> results = new List<string>();
             foreach (var table in exampleDbTables)
             {
                 results.Add(sut.GenerateCandidateIdentifier(table));
             }
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, results[0]);
             StringAssert.Contains(expected2, results[1]);
             StringAssert.Contains(expected3, results[2]);
@@ -179,7 +181,7 @@ namespace UnitTests.Services
         [Test]
         public void Issue_354()
         {
-            //Arrange
+            // Arrange
             var exampleOption = new List<Schema>
               {
                   new Schema
@@ -198,11 +200,11 @@ namespace UnitTests.Services
                                    {
                                      Name = "JobName",
                                      NewName = "JobRename",
-                                   }
-                               }
+                                   },
+                               },
                            },
-                           new TableRenamer {  Name = "DeliveryAddress", NewName = "stg_DeliveryAddress" }
-                       }
+                           new TableRenamer { Name = "DeliveryAddress", NewName = "stg_DeliveryAddress" },
+                       },
                   },
               };
 
@@ -210,13 +212,15 @@ namespace UnitTests.Services
 
             var exampleDbTables = new List<DatabaseTable>
             {
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "DeliveryAddress",
-                    Schema = "stg"
+                    Schema = "stg",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "Jobs",
-                    Schema = "stg"
+                    Schema = "stg",
                 },
             };
 
@@ -227,7 +231,7 @@ namespace UnitTests.Services
                 results.Add(sut.GenerateCandidateIdentifier(table));
             }
 
-            //Assert    
+            // Assert
             StringAssert.AreEqualIgnoringCase("stg_Jobs", results[1]);
             StringAssert.AreEqualIgnoringCase("stg_DeliveryAddress", results[0]);
         }
@@ -235,7 +239,7 @@ namespace UnitTests.Services
         [Test]
         public void GeneratePascalCaseTableNameWithMoreThanTwoSchemasForTableCollection()
         {
-            //Arrange
+            // Arrange
             var expected = "MachineAlertUi";
             var expected2 = "MachineMeasure";
             var expected3 = "MasterMeasure";
@@ -246,44 +250,49 @@ namespace UnitTests.Services
                   new Schema
                   {
                        SchemaName = "machine",
-                       UseSchemaName = true
+                       UseSchemaName = true,
                   },
                   new Schema
                   {
                        SchemaName = "master",
-                       UseSchemaName = true
+                       UseSchemaName = true,
                   },
                   new Schema
                   {
                        SchemaName = "dbo",
-                       UseSchemaName = false
-                  }
+                       UseSchemaName = false,
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
             var exampleDbTables = new List<DatabaseTable>
             {
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "alert_ui",
-                    Schema = "machine"
+                    Schema = "machine",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "measure",
-                    Schema = "machine"
+                    Schema = "machine",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "measure",
-                    Schema = "master"
+                    Schema = "master",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "work_cell",
-                    Schema = "dbo"
+                    Schema = "dbo",
                 },
-                new DatabaseTable {
+                new DatabaseTable
+                {
                     Name = "different_table",
-                    Schema = "other"
-                }
+                    Schema = "other",
+                },
             };
 
             // Act
@@ -293,7 +302,7 @@ namespace UnitTests.Services
                 results.Add(sut.GenerateCandidateIdentifier(table));
             }
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, results[0]);
             StringAssert.Contains(expected2, results[1]);
             StringAssert.Contains(expected3, results[2]);
@@ -304,22 +313,22 @@ namespace UnitTests.Services
         [Test]
         public void GenerateCustomTableNameFromJson()
         {
-            //Arrange
+            // Arrange
             var expected = "new_name_of_the_table";
             var exampleOption = new List<Schema>
               {
                   new Schema
                   {
-                       SchemaName = "machine",
-                       Tables = new List<TableRenamer>
+                     SchemaName = "machine",
+                     Tables = new List<TableRenamer>
+                     {
+                        new TableRenamer
                         {
-                         new TableRenamer{
-                             NewName = "new_name_of_the_table",
-                             Name = "OldTableName",
-                         }
-                        }
-
-                  }
+                            NewName = "new_name_of_the_table",
+                            Name = "OldTableName",
+                        },
+                     },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
@@ -327,39 +336,39 @@ namespace UnitTests.Services
             var exampleDbTable = new DatabaseTable
             {
                 Name = "OldTableName",
-                Schema = "machine"
+                Schema = "machine",
             };
 
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result);
         }
 
         [Test]
         public void GenerateCustomTableNameFromJsonWithTableCollection()
         {
-            //Arrange
+            // Arrange
             var expected = "new_name_of_the_table";
             var expected1 = "AlertUi";
             var expected2 = "WorkType";
 
             var exampleOption = new List<Schema>
-              {
-                  new Schema
-                  {
-                       SchemaName = "machine",
-                       Tables = new List<TableRenamer>
+            {
+                new Schema
+                {
+                    SchemaName = "machine",
+                    Tables = new List<TableRenamer>
+                    {
+                        new TableRenamer
                         {
-                         new TableRenamer{
-                             NewName = "new_name_of_the_table",
-                             Name = "OldTableName"
-                         }
-                        }
-
-                  }
-              };
+                            NewName = "new_name_of_the_table",
+                            Name = "OldTableName",
+                        },
+                    },
+                },
+            };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
@@ -368,17 +377,18 @@ namespace UnitTests.Services
                 new DatabaseTable
                 {
                     Name = "OldTableName",
-                    Schema = "machine"
+                    Schema = "machine",
                 },
-                new DatabaseTable{
+                new DatabaseTable
+                {
                     Name = "alert_ui",
-                    Schema = "machine"
+                    Schema = "machine",
                 },
-                new DatabaseTable{
+                new DatabaseTable
+                {
                     Name = "WorkType",
-                    Schema = "dbo"
-                }
-
+                    Schema = "dbo",
+                },
             };
 
             var result = new List<string>();
@@ -389,7 +399,7 @@ namespace UnitTests.Services
                 result.Add(sut.GenerateCandidateIdentifier(exmapleTable));
             }
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result[0]);
             StringAssert.Contains(expected1, result[1]);
             StringAssert.Contains(expected2, result[2]);
@@ -398,16 +408,15 @@ namespace UnitTests.Services
         [Test]
         public void GenerateColumnNameFromJson()
         {
-            //Arrange
+            // Arrange
             var exampleColumn = new DatabaseColumn
             {
                 Name = "OldDummyColumnName",
                 Table = new DatabaseTable
                 {
                     Name = "table_name",
-                    Schema = "machine"
-
-                }
+                    Schema = "machine",
+                },
             };
 
             var expected = "NewDummyColumnName";
@@ -428,36 +437,35 @@ namespace UnitTests.Services
                                    new ColumnNamer
                                    {
                                         Name = "OldDummyColumnName",
-                                        NewName = "NewDummyColumnName"
-                                   }
-                               }
-                          }
-                       }
-                  }
+                                        NewName = "NewDummyColumnName",
+                                   },
+                               },
+                          },
+                       },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            //Act
+            // Act
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, actResult);
         }
 
         [Test]
         public void GenerateColumnNameInStandarNamingConvention()
         {
-            //Arrange
+            // Arrange
             var exampleColumn = new DatabaseColumn
             {
                 Name = "column_name_to_rename",
                 Table = new DatabaseTable
                 {
                     Name = "table_name",
-                    Schema = "dbo"
-
-                }
+                    Schema = "dbo",
+                },
             };
 
             var expected = "ColumnNameToRename";
@@ -478,45 +486,47 @@ namespace UnitTests.Services
                                    new ColumnNamer
                                    {
                                         Name = "OldDummyColumnName",
-                                        NewName = "NewDummyColumnName"
-                                   }
-                               }
-                          }
-                       }
-                  }
+                                        NewName = "NewDummyColumnName",
+                                   },
+                               },
+                          },
+                       },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            //Act
+            // Act
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, actResult);
         }
 
         [Test]
         public void ChangeColumnNameToCustom()
         {
-            //Arrange
+            // Arrange
             var exampleColumns = new List<DatabaseColumn>
             {
-                new DatabaseColumn{
+                new DatabaseColumn
+                {
                     Name = "column_name_to_rename",
                     Table = new DatabaseTable
                     {
                         Name = "table_name",
-                        Schema = "dbo"
-                    }
+                        Schema = "dbo",
+                    },
                 },
-                new DatabaseColumn{
+                new DatabaseColumn
+                {
                     Name = "measure",
                     Table = new DatabaseTable
                     {
                         Name = "table_name",
-                        Schema = "machine"
-                    }
-                }
+                        Schema = "machine",
+                    },
+                },
             };
 
             var expected = "SomethingCustom";
@@ -538,11 +548,11 @@ namespace UnitTests.Services
                                    new ColumnNamer
                                    {
                                         Name = "OldDummyColumnName",
-                                        NewName = "NewDummyColumnName"
-                                   }
-                               }
-                          }
-                       }
+                                        NewName = "NewDummyColumnName",
+                                   },
+                               },
+                          },
+                       },
                   },
                   new Schema
                   {
@@ -558,17 +568,17 @@ namespace UnitTests.Services
                                    new ColumnNamer
                                    {
                                         Name = "column_name_to_rename",
-                                        NewName = "SomethingCustom"
-                                   }
-                               }
-                          }
-                       }
-                  }
+                                        NewName = "SomethingCustom",
+                                   },
+                               },
+                          },
+                       },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            //Act
+            // Act
             var actResult = new List<string>();
 
             foreach (var column in exampleColumns)
@@ -576,18 +586,18 @@ namespace UnitTests.Services
                 actResult.Add(sut.GenerateCandidateIdentifier(column));
             }
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, actResult[0]);
             StringAssert.Contains(expected1, actResult[1]);
         }
 
         /// <summary>
-        /// Testing the table renaming method using Regex
+        /// Testing the table renaming method using Regex.
         /// </summary>
         [Test]
         public void GenerateCustomTableNameFromJsonUsingRegexRenaming()
         {
-            //Arrange
+            // Arrange
             var expected = "NewTableName";
 
             var exampleOption = new List<Schema>
@@ -596,8 +606,8 @@ namespace UnitTests.Services
                   {
                       SchemaName = "dbo",
                       TableRegexPattern = "^Old",
-                      TablePatternReplaceWith = "New"
-                  }
+                      TablePatternReplaceWith = "New",
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
@@ -605,23 +615,23 @@ namespace UnitTests.Services
             var exampleDbTable = new DatabaseTable
             {
                 Name = "OldTableName",
-                Schema = "dbo"
+                Schema = "dbo",
             };
 
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result);
         }
 
         /// <summary>
-        /// This is to guarantee that the renaming using regex does not overwrite the current table renaming method
+        /// This is to guarantee that the renaming using regex does not overwrite the current table renaming method.
         /// </summary>
         [Test]
         public void GenerateCustomTableNameFromJsonUsingRegexRenamingOverwritten()
         {
-            //Arrange
+            // Arrange
             var expected = "TableNameNotOverwritten";
 
             var exampleOption = new List<Schema>
@@ -632,13 +642,14 @@ namespace UnitTests.Services
                       TableRegexPattern = "^Old",
                       TablePatternReplaceWith = "New",
                       Tables = new List<TableRenamer>
-                        {
-                         new TableRenamer{
-                             NewName = "TableNameNotOverwritten",
-                             Name = "OldTableName",
-                         }
-                        }
-                  }
+                       {
+                           new TableRenamer
+                           {
+                               NewName = "TableNameNotOverwritten",
+                               Name = "OldTableName",
+                           },
+                       },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
@@ -646,33 +657,31 @@ namespace UnitTests.Services
             var exampleDbTable = new DatabaseTable
             {
                 Name = "OldTableName",
-                Schema = "dbo"
+                Schema = "dbo",
             };
 
             // Act
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, result);
-
         }
 
         /// <summary>
-        /// Testing the column renaming method using Regex
+        /// Testing the column renaming method using Regex.
         /// </summary>
         [Test]
         public void GenerateCustomColumnNameFromJsonUsingRegexRenaming()
         {
-            //Arrange
+            // Arrange
             var exampleColumn = new DatabaseColumn
             {
                 Name = "OldColumnName",
                 Table = new DatabaseTable
                 {
                     Name = "table_name",
-                    Schema = "dbo"
-
-                }
+                    Schema = "dbo",
+                },
             };
 
             var expected = "NewColumnName";
@@ -684,36 +693,34 @@ namespace UnitTests.Services
                        SchemaName = "dbo",
                        UseSchemaName = true,
                        ColumnRegexPattern = "^Old",
-                       ColumnPatternReplaceWith = "New"
-                  }
+                       ColumnPatternReplaceWith = "New",
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            //Act
+            // Act
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, actResult);
-
         }
 
         /// <summary>
-        /// This is to guarantee that the renaming using regex does not overwrite the current column renaming method
+        /// This is to guarantee that the renaming using regex does not overwrite the current column renaming method.
         /// </summary>
         [Test]
         public void GenerateCustomColumnNameFromJsonUsingRegexRenamingOverwritten()
         {
-            //Arrange
+            // Arrange
             var exampleColumn = new DatabaseColumn
             {
                 Name = "OldColumnName",
                 Table = new DatabaseTable
                 {
                     Name = "table_name",
-                    Schema = "dbo"
-
-                }
+                    Schema = "dbo",
+                },
             };
 
             var expected = "ColumnNameNotOverwritten";
@@ -736,22 +743,21 @@ namespace UnitTests.Services
                                    new ColumnNamer
                                    {
                                         Name = "OldColumnName",
-                                        NewName = "ColumnNameNotOverwritten"
-                                   }
-                               }
-                          }
-                       }
-                  }
+                                        NewName = "ColumnNameNotOverwritten",
+                                   },
+                               },
+                          },
+                       },
+                  },
               };
 
             var sut = new ReplacingCandidateNamingService(exampleOption);
 
-            //Act
+            // Act
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
-            //Assert
+            // Assert
             StringAssert.Contains(expected, actResult);
-
         }
 
         public abstract class NavigationBase

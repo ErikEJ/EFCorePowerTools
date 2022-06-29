@@ -205,7 +205,6 @@ namespace UnitTests.ViewModels
 
         private ColumnInformationViewModel CreateViewModel()
         {
-
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();
             return new ColumnInformationViewModel(messenger.Object);

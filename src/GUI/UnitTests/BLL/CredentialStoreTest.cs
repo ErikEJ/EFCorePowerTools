@@ -1,5 +1,5 @@
-﻿using EFCorePowerTools.Helpers;
-using EFCorePowerTools.Common.Models;
+﻿using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Helpers;
 using NUnit.Framework;
 using RevEng.Common;
 

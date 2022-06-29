@@ -70,6 +70,7 @@ namespace Modelling
                             ? new Tuple<string, string>(type.Name + "Add", AddMigration(dbContext, outputPath, startupOutputPath, projectPath, migrationIdentifier, nameSpace))
                             : new Tuple<string, string>(type.Name + "Apply", ApplyMigrations(dbContext)));
                     }
+
                     break;
                 }
             }
@@ -109,6 +110,7 @@ namespace Modelling
                 var dbContext = operations.CreateContext(type.Name);
                 result.Add(new Tuple<string, string>(type.Name, GetMigrationStatus(dbContext)));
             }
+
             return result;
         }
 
@@ -119,6 +121,7 @@ namespace Modelling
             {
                 throw new InvalidOperationException("Not a relational database, migrations are not supported");
             }
+
             var databaseExists = relationalDatabaseCreator.Exists();
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
@@ -167,11 +170,17 @@ namespace Modelling
                 = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
                     && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
 #endif
-            if (pendingModelChanges) return "Changes";
+            if (pendingModelChanges)
+            {
+                return "Changes";
+            }
 
             var migrations = context.Database.GetMigrations().ToArray();
 
-            if (!migrations.Any()) return "NoMigrations";
+            if (!migrations.Any())
+            {
+                return "NoMigrations";
+            }
 
             var pendingMigrations
                 = (databaseExists
@@ -179,7 +188,10 @@ namespace Modelling
                     : migrations)
                 .ToArray();
 
-            if (pendingMigrations.Any()) return "Pending";
+            if (pendingMigrations.Any())
+            {
+                return "Pending";
+            }
 
             return "InSync";
         }
@@ -235,6 +247,7 @@ namespace Modelling
             {
                 throw new ArgumentException("Unable to load project assembly");
             }
+
             EnsureMigrationsAssembly(services, assembly);
 
             var scaffolder = services.GetRequiredService<IMigrationsScaffolder>();
@@ -288,6 +301,7 @@ namespace Modelling
             {
                 throw new ArgumentException("No EF Core DbContext types found in the project");
             }
+
             return types;
         }
 

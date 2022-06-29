@@ -102,7 +102,7 @@ namespace UnitTests.ViewModels
 
             foreach (var replacerSchema in replacers)
             {
-                foreach(var table in replacerSchema.Tables)
+                foreach (var table in replacerSchema.Tables)
                 {
                     var vmobject = vmobjects.First(o => o.Schema == replacerSchema.SchemaName && o.Name.Equals(table.Name, StringComparison.OrdinalIgnoreCase));
                     Assert.AreEqual(vmobject.NewName, table.NewName);
@@ -148,7 +148,6 @@ namespace UnitTests.ViewModels
                         Columns = new List<ColumnNamer>
                         {
                             new ColumnNamer { Name = "EMPCode", NewName = "EMPCode" },
-
                         },
                     },
                     new TableRenamer
@@ -177,7 +176,7 @@ namespace UnitTests.ViewModels
             // Arrange
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
-            //Act and assert
+            // Act and assert
             Assert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
         }
 
@@ -252,11 +251,13 @@ namespace UnitTests.ViewModels
             vm.Search("ref", SearchMode.Text);
 
             // Assert
-            Assert.That(() =>
-            {
-                var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
-                return postFilter.Count() < databaseObjects.Length && postFilter.All(m => m.Name.ToUpper().Contains("REF"));
-            }, Is.True.After(1500, 200));
+            Assert.That(
+                () =>
+                {
+                    var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
+                    return postFilter.Count() < databaseObjects.Length && postFilter.All(m => m.Name.ToUpper().Contains("REF"));
+                },
+                Is.True.After(1500, 200));
         }
 
         [Test]
@@ -348,13 +349,13 @@ namespace UnitTests.ViewModels
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects, null);
 
-            //Act
+            // Act
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects))
             {
                 item.SetSelectedCommand.Execute(true);
             }
 
-            //Assert
+            // Assert
             Assert.IsTrue(vm.GetSelectionState());
         }
 
@@ -366,13 +367,13 @@ namespace UnitTests.ViewModels
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects, null);
 
-            //Act
+            // Act
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects))
             {
                 item.SetSelectedCommand.Execute(false);
             }
 
-            //Assert
+            // Assert
             Assert.IsFalse(vm.GetSelectionState());
         }
 
@@ -384,13 +385,13 @@ namespace UnitTests.ViewModels
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects, null);
 
-            //Act
+            // Act
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Take(1))
             {
                 item.SetSelectedCommand.Execute(true);
             }
 
-            //Assert
+            // Assert
             Assert.IsNull(vm.GetSelectionState());
         }
 
@@ -402,14 +403,18 @@ namespace UnitTests.ViewModels
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects, null);
 
-            //Act
+            // Act
             vm.SetSelectionState(selected);
 
-            //Assert
+            // Assert
             if (selected)
+            {
                 Assert.AreEqual(databaseObjects.Length, vm.GetSelectedObjects().Count());
+            }
             else
+            {
                 Assert.AreEqual(0, vm.GetSelectedObjects().Count());
+            }
         }
 
         [Test]
@@ -420,7 +425,7 @@ namespace UnitTests.ViewModels
             var databaseObjects = GetDatabaseObjects();
             vm.AddObjects(databaseObjects, null);
 
-            //Act
+            // Act
             vm.Types[0].Schemas[0].Objects[0].SetSelectedCommand.Execute(true);
             vm.Types[0].Schemas[0].Objects[0].NewName = "NewTableName";
             vm.Types[0].Schemas[0].Objects[0].Columns[0].NewName = "NewColumnName";
@@ -431,7 +436,7 @@ namespace UnitTests.ViewModels
             vm.Types[0].Schemas[3].Objects[0].Columns[0].SetSelectedCommand.Execute(true);
             vm.Types[0].Schemas[3].Objects[0].Columns[0].NewName = "DepartmentName";
 
-            //Assert
+            // Assert
             var renamedObjects = vm.GetRenamedObjects();
             Assert.IsNotNull(renamedObjects);
             Assert.AreSame("NewTableName", renamedObjects.First().Tables[0].NewName);
@@ -449,7 +454,7 @@ namespace UnitTests.ViewModels
                 {
                     new ColumnModel("Id", true, false),
                     new ColumnModel("column1", false, false),
-                    new ColumnModel("column2", false, false)
+                    new ColumnModel("column2", false, false),
                 };
             }
 
@@ -459,7 +464,7 @@ namespace UnitTests.ViewModels
                 {
                     new ColumnModel("Id", false, false),
                     new ColumnModel("column1", false, false),
-                    new ColumnModel("column2", false, false)
+                    new ColumnModel("column2", false, false),
                 };
             }
 
@@ -504,16 +509,16 @@ namespace UnitTests.ViewModels
                 TableRegexPattern = "TableRegexPattern",
                 Tables = new List<TableRenamer>
                 {
-                    new TableRenamer 
-                    { 
+                    new TableRenamer
+                    {
                         Name = "atlas",
                         NewName = "newatlas",
                         Columns = new List<ColumnNamer>
                         {
-                            new ColumnNamer { Name = "column1", NewName = "newcolumn1" }
+                            new ColumnNamer { Name = "column1", NewName = "newcolumn1" },
                         },
-                    }
-                }
+                    },
+                },
             };
 
             r[1] = new Schema()
@@ -528,7 +533,7 @@ namespace UnitTests.ViewModels
                 UseSchemaName = false,
                 Tables = new List<TableRenamer>
                 {
-                    new TableRenamer 
+                    new TableRenamer
                     {
                         Name = "departmentdetail",
                         NewName = "DepartmentDetail",
@@ -536,8 +541,8 @@ namespace UnitTests.ViewModels
                         {
                             new ColumnNamer { Name = "departmentname", NewName = "DepartmentName" },
                             new ColumnNamer { Name = "DEPTCode", NewName = "DEPTCode" },
-                        }
-                    }
+                        },
+                    },
                 },
             };
 

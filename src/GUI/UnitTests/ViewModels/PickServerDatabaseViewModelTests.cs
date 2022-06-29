@@ -1,16 +1,15 @@
-﻿using NUnit.Framework;
+﻿using System;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.DAL;
+using EFCorePowerTools.ViewModels;
+using Moq;
+using NUnit.Framework;
 
 namespace UnitTests.ViewModels
 {
-    using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Contracts.Views;
-    using EFCorePowerTools.DAL;
-    using EFCorePowerTools.Common.DAL;
-    using EFCorePowerTools.Common.Models;
-    using EFCorePowerTools.ViewModels;
-    using Moq;
-    using System;
-
     [TestFixture]
     public class PickServerDatabaseViewModelTests
     {
@@ -22,6 +21,7 @@ namespace UnitTests.ViewModels
             var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
             var creds = Mock.Of<ICredentialStore>();
+
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
         }
@@ -195,11 +195,11 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
             var dbDefinition1 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseB.sqlproj"
+                FilePath = "ExampleDatabaseB.sqlproj",
             };
             var dbDefinition2 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseA.sqlproj"
+                FilePath = "ExampleDatabaseA.sqlproj",
             };
             vm.DatabaseDefinitions.Add(dbDefinition1);
             vm.DatabaseDefinitions.Add(dbDefinition2);
@@ -223,15 +223,15 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
             var dbDefinition1 = new DatabaseDefinitionModel
             {
-                FilePath = "TestExampleDatabaseA.sqlproj"
+                FilePath = "TestExampleDatabaseA.sqlproj",
             };
             var dbDefinition2 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseB.sqlproj"
+                FilePath = "ExampleDatabaseB.sqlproj",
             };
             var dbDefinition3 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseCtest.sqlproj"
+                FilePath = "ExampleDatabaseCtest.sqlproj",
             };
             vm.DatabaseDefinitions.Add(dbDefinition1);
             vm.DatabaseDefinitions.Add(dbDefinition2);
@@ -256,7 +256,7 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
             var dbDefinition = new DatabaseDefinitionModel
             {
-                FilePath = null
+                FilePath = null,
             };
             vm.DatabaseDefinitions.Add(dbDefinition);
 
@@ -279,15 +279,15 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
             var dbDefinition1 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseA.dacpac"
+                FilePath = "ExampleDatabaseA.dacpac",
             };
             var dbDefinition2 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseB.sqlproj"
+                FilePath = "ExampleDatabaseB.sqlproj",
             };
             var dbDefinition3 = new DatabaseDefinitionModel
             {
-                FilePath = "ExampleDatabaseC.txt"
+                FilePath = "ExampleDatabaseC.txt",
             };
             vm.DatabaseDefinitions.Add(dbDefinition1);
             vm.DatabaseDefinitions.Add(dbDefinition2);
@@ -468,7 +468,7 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseConnection = dbConnection
+                SelectedDatabaseConnection = dbConnection,
             };
 
             // Act
@@ -489,7 +489,7 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseDefinition = dbDefinition
+                SelectedDatabaseDefinition = dbDefinition,
             };
 
             // Act
@@ -512,7 +512,7 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseConnection = dbConnection
+                SelectedDatabaseConnection = dbConnection,
             };
             vm.CloseRequested += (sender, args) =>
             {
@@ -543,7 +543,7 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseDefinition = dbDefinition
+                SelectedDatabaseDefinition = dbDefinition,
             };
             vm.CloseRequested += (sender, args) =>
             {
@@ -591,7 +591,7 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseConnection = dbConnection
+                SelectedDatabaseConnection = dbConnection,
             };
             vm.CloseRequested += (sender, args) =>
             {
@@ -622,7 +622,7 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseDefinition = dbDefinition
+                SelectedDatabaseDefinition = dbDefinition,
             };
             vm.CloseRequested += (sender, args) =>
             {
@@ -685,10 +685,9 @@ namespace UnitTests.ViewModels
             var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
             var creds = Mock.Of<ICredentialStore>();
-            // ReSharper disable once UseObjectOrCollectionInitializer
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseDefinition = dbDefinition
+                SelectedDatabaseDefinition = dbDefinition,
             };
 
             // Act
@@ -709,10 +708,9 @@ namespace UnitTests.ViewModels
             var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
             var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
             var creds = Mock.Of<ICredentialStore>();
-            // ReSharper disable once UseObjectOrCollectionInitializer
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
             {
-                SelectedDatabaseConnection = dbConnection
+                SelectedDatabaseConnection = dbConnection,
             };
 
             // Act

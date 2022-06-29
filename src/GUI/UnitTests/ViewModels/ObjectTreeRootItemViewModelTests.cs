@@ -145,10 +145,11 @@ namespace UnitTests.ViewModels
                 var result = new TableInformationViewModel(messenger.Object);
                 result.Name = name;
                 result.Schema = tableSchema;
-                if  (selected)
+                if (selected)
                 {
                     result.SetSelectedCommand.Execute(true);
                 }
+
                 return result;
             }
 
@@ -164,6 +165,7 @@ namespace UnitTests.ViewModels
                 {
                     result.SetSelectedCommand.Execute(true);
                 }
+
                 return result;
             }
 
@@ -195,7 +197,7 @@ namespace UnitTests.ViewModels
             schema1.Objects[0].Columns.Add(CreateColumn("id", true, false, false));
             schema1.Objects[0].Columns.Add(CreateColumn("column1", false, false, false));
             schema1.Objects[0].Columns.Add(CreateColumn("column2", false, false, false));
-                  
+
             schema1.Objects.Add(CreateTable("unit", "foo", true));
             schema1.Objects[1].Columns.Add(CreateColumn("id", true, false, false));
             schema1.Objects[1].Columns.Add(CreateColumn("column1", false, false, false));

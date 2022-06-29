@@ -58,6 +58,7 @@ namespace UnitTests.ViewModels
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
@@ -72,7 +73,7 @@ namespace UnitTests.ViewModels
 
             // Act
             var avm = new AboutViewModel(aem, evs, osa);
-             
+
             // Assert
             Assert.IsNotNull(avm.LoadedCommand);
             Assert.IsNotNull(avm.OkCommand);
@@ -88,7 +89,7 @@ namespace UnitTests.ViewModels
             var evs = Mock.Of<IExtensionVersionService>();
             var osa = Mock.Of<IOperatingSystemAccess>();
             var avm = new AboutViewModel(aem, evs, osa);
-            
+
             // Act
             var canExecute = avm.LoadedCommand.CanExecute(null);
 

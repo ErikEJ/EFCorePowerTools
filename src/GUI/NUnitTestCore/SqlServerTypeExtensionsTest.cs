@@ -44,7 +44,7 @@ namespace NUnitTestCore
                 "uniqueidentifier",
                 "varbinary",
                 "varchar",
-                "xml"
+                "xml",
             };
 
             foreach (var typeName in typeNames)

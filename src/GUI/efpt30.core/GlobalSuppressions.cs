@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Major Code Smell", "S3885:\"Assembly.Load\" should be used", Justification = "<Pending>", Scope = "member", Target = "~M:Modelling.EfCoreMigrationsBuilder.Load(System.String)~System.Reflection.Assembly")]
+[assembly: SuppressMessage("Major Code Smell", "S3885:\"Assembly.Load\" should be used", Justification = "Reviewed")]

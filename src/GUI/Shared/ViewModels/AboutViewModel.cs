@@ -1,16 +1,16 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.ViewModels;
-    using EFCorePowerTools.Locales;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Common.BLL;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.ComponentModel;
-    using System.Windows.Input;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Input;
+using EFCorePowerTools.Common.BLL;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Locales;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class AboutViewModel : ViewModelBase, IAboutViewModel
     {
         private readonly AboutExtensionModel _aboutExtensionModel;
@@ -18,6 +18,23 @@
         private readonly IOperatingSystemAccess _operatingSystemAccess;
 
         private string _version;
+
+        public AboutViewModel(
+            AboutExtensionModel aboutExtensionModel,
+            IExtensionVersionService extensionVersionService,
+            IOperatingSystemAccess operatingSystemAccess)
+        {
+            _aboutExtensionModel = aboutExtensionModel ?? throw new ArgumentNullException(nameof(aboutExtensionModel));
+            _extensionVersionService = extensionVersionService ?? throw new ArgumentNullException(nameof(extensionVersionService));
+            _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
+
+            _aboutExtensionModel.PropertyChanged += AboutExtensionModelOnPropertyChanged;
+
+            LoadedCommand = new RelayCommand(Loaded_Executed);
+            OkCommand = new RelayCommand(Ok_Executed);
+            OpenSourcesCommand = new RelayCommand(OpenSources_Executed);
+            OpenMarketplaceCommand = new RelayCommand(OpenMarketplace_Executed);
+        }
 
         public event EventHandler CloseRequested;
 
@@ -31,32 +48,23 @@
             get => _version;
             private set
             {
-                if (Equals(value, _version)) return;
+                if (Equals(value, _version))
+                {
+                    return;
+                }
+
                 _version = value;
                 RaisePropertyChanged();
             }
         }
 
-        public AboutViewModel(AboutExtensionModel aboutExtensionModel,
-                              IExtensionVersionService extensionVersionService,
-                              IOperatingSystemAccess operatingSystemAccess)
-        {
-            _aboutExtensionModel = aboutExtensionModel ?? throw new ArgumentNullException(nameof(aboutExtensionModel));
-            _extensionVersionService = extensionVersionService ?? throw new ArgumentNullException(nameof(extensionVersionService));
-            _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
 
-            _aboutExtensionModel.PropertyChanged += AboutExtensionModelOnPropertyChanged;
-
-            LoadedCommand = new RelayCommand(Loaded_Executed);
-            OkCommand = new RelayCommand(Ok_Executed);
-            OpenSourcesCommand = new RelayCommand(OpenSources_Executed);
-            OpenMarketplaceCommand = new RelayCommand(OpenMarketplace_Executed);
-        }
-        
         private void Loaded_Executed()
         {
             if (_aboutExtensionModel.ExtensionVersion == null)
+            {
                 _extensionVersionService.SetExtensionVersion(_aboutExtensionModel);
+            }
             else
             {
                 FormatVersion();
@@ -85,11 +93,14 @@
                           : $"{AboutLocale.Version} {_aboutExtensionModel.ExtensionVersion.ToString(4)}";
         }
 
-        private void AboutExtensionModelOnPropertyChanged(object sender,
-                                                          PropertyChangedEventArgs e)
+        private void AboutExtensionModelOnPropertyChanged(
+            object sender,
+            PropertyChangedEventArgs e)
         {
             if (sender != _aboutExtensionModel)
+            {
                 return;
+            }
 
             switch (e.PropertyName)
             {

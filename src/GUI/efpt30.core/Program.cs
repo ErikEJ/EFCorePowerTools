@@ -7,15 +7,19 @@ using System.Text;
 
 namespace Modelling
 {
-    
-    static class Program
+    public static class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
 #pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 Console.OutputEncoding = Encoding.UTF8;
+
+                if (args == null)
+                {
+                    throw new ArgumentNullException(nameof(args));
+                }
 
                 if (args.Length > 0)
                 {
@@ -55,6 +59,7 @@ namespace Modelling
                     {
                         result = EfCoreModelBuilder.GenerateDebugView(args[0], args[1]);
                     }
+
                     foreach (var tuple in result)
                     {
                         Console.Out.WriteLine("DbContext:");
@@ -69,6 +74,7 @@ namespace Modelling
                     Console.Out.WriteLine("Invalid command line");
                     return 1;
                 }
+
                 return 0;
             }
             catch (Exception ex)

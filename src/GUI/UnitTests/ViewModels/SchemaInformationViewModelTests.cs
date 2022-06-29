@@ -17,7 +17,7 @@ namespace UnitTests.ViewModels
             var propertyChangedInvoked = false;
             var vm = new SchemaInformationViewModel
             {
-                Name = "dbo"
+                Name = "dbo",
             };
             vm.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
 
@@ -53,7 +53,7 @@ namespace UnitTests.ViewModels
             var propertyChangedInvoked = false;
             var vm = new SchemaInformationViewModel
             {
-                Name = "dbo"
+                Name = "dbo",
             };
             vm.PropertyChanged += (sender, args) => propertyChangedInvoked = true;
 
@@ -70,7 +70,7 @@ namespace UnitTests.ViewModels
             // Arrange
             var vm = new SchemaInformationViewModel
             {
-                Name = "dbo"
+                Name = "dbo",
             };
             vm.Objects.Add(CreateTable("Table1"));
             vm.Objects.Add(CreateTable("Table2"));
@@ -89,7 +89,7 @@ namespace UnitTests.ViewModels
             // Arrange
             var vm = new SchemaInformationViewModel
             {
-                Name = "dbo"
+                Name = "dbo",
             };
             vm.Objects.Add(CreateTable("Table1"));
             vm.Objects.Add(CreateTable("Table2"));
