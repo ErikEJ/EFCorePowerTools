@@ -1,8 +1,8 @@
-﻿namespace EFCorePowerTools.Common.BLL
-{
-    using Models;
-    using System;
+﻿using EFCorePowerTools.Common.Models;
+using System;
 
+namespace EFCorePowerTools.Common.BLL
+{
     public interface IExtensionVersionService
     {
         /// <summary>

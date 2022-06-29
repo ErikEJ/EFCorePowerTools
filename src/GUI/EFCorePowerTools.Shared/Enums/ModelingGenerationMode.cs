@@ -8,6 +8,6 @@
         None = 0,
         DbContext = 1,
         EntityTypes = 2,
-        All = 3
+        All = 3,
     }
 }

@@ -1,364 +1,480 @@
-﻿namespace EFCorePowerTools.Common.Models
-{
-    using JetBrains.Annotations;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
+﻿using JetBrains.Annotations;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
+namespace EFCorePowerTools.Common.Models
+{
     /// <summary>
     /// A model holding the data of EF Core modeling options.
     /// </summary>
     public class ModelingOptionsModel : INotifyPropertyChanged
     {
-        private bool _installNuGetPackage;
-        private int _selectedToBeGenerated;
-        private bool _includeConnectionString;
-        private bool _useHandlebars;
-        private int _selectedHandlebarsLanguage;
-        private bool _usePluralizer;
-        private bool _useDatabaseNames;
-        private string _ns;
-        private string _outputPath;
-        private string _outputContextPath;
-        private bool _useSchemaFolders;
-        private string _modelNamespace;
-        private string _contextNamespace;
-        private string _modelName;
-        private bool _useDataAnnotations;
-        private string _projectName;
-        private string _dacpacPath;
-        private bool _useDbContextSplitting;
-        private bool _mapSpatialTypes;
-        private bool _mapHierarchyId;
-        private bool _mapNodaTimeTypes;
-        private bool _useEf6Pluralizer;
-        private bool _useBoolPropertiesWithoutDefaultSql;
-        private bool _useNullableReferences;
-        private bool _useNoConstructor;
-        private bool _useNoDefaultConstructor;
-        private bool _useNoNavigations;
-        private bool _useNoObjectFilter;
-        private bool _useManyToManyEntity;
+        private bool installNuGetPackage;
+        private int selectedToBeGenerated;
+        private bool includeConnectionString;
+        private bool useHandlebars;
+        private int selectedHandlebarsLanguage;
+        private bool usePluralizer;
+        private bool useDatabaseNames;
+        private string ns;
+        private string outputPath;
+        private string outputContextPath;
+        private bool useSchemaFolders;
+        private string modelNamespace;
+        private string contextNamespace;
+        private string modelName;
+        private bool useDataAnnotations;
+        private string projectName;
+        private string dacpacPath;
+        private bool useDbContextSplitting;
+        private bool mapSpatialTypes;
+        private bool mapHierarchyId;
+        private bool mapNodaTimeTypes;
+        private bool useEf6Pluralizer;
+        private bool useBoolPropertiesWithoutDefaultSql;
+        private bool useNullableReferences;
+        private bool useNoConstructor;
+        private bool useNoDefaultConstructor;
+        private bool useNoNavigations;
+        private bool useNoObjectFilter;
+        private bool useManyToManyEntity;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public bool UseDataAnnotations
         {
-            get => _useDataAnnotations;
+            get => useDataAnnotations;
             set
             {
-                if (value == _useDataAnnotations) return;
-                _useDataAnnotations = value;
+                if (value == useDataAnnotations)
+                {
+                    return;
+                }
+
+                useDataAnnotations = value;
                 OnPropertyChanged();
             }
         }
 
         public string ModelName
         {
-            get => _modelName;
+            get => modelName;
             set
             {
-                if (value == _modelName) return;
-                _modelName = value;
+                if (value == modelName)
+                {
+                    return;
+                }
+
+                modelName = value;
                 OnPropertyChanged();
             }
         }
 
         public string OutputPath
         {
-            get => _outputPath;
+            get => outputPath;
             set
             {
-                if (value == _outputPath) return;
-                _outputPath = value;
+                if (value == outputPath)
+                {
+                    return;
+                }
+
+                outputPath = value;
                 OnPropertyChanged();
             }
         }
 
         public string OutputContextPath
         {
-            get => _outputContextPath;
+            get => outputContextPath;
             set
             {
-                if (value == _outputContextPath) return;
-                _outputContextPath = value;
+                if (value == outputContextPath)
+                {
+                    return;
+                }
+
+                outputContextPath = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseSchemaFolders
         {
-            get => _useSchemaFolders;
+            get => useSchemaFolders;
             set
             {
-                if (value == _useSchemaFolders) return;
-                _useSchemaFolders = value;
+                if (value == useSchemaFolders)
+                {
+                    return;
+                }
+
+                useSchemaFolders = value;
                 OnPropertyChanged();
             }
         }
 
         public string ModelNamespace
         {
-            get => _modelNamespace;
+            get => modelNamespace;
             set
             {
-                if (value == _modelNamespace) return;
-                _modelNamespace = value;
+                if (value == modelNamespace)
+                {
+                    return;
+                }
+
+                modelNamespace = value;
                 OnPropertyChanged();
             }
         }
 
         public string ContextNamespace
         {
-            get => _contextNamespace;
+            get => contextNamespace;
             set
             {
-                if (value == _contextNamespace) return;
-                _contextNamespace = value;
+                if (value == contextNamespace)
+                {
+                    return;
+                }
+
+                contextNamespace = value;
                 OnPropertyChanged();
             }
         }
 
         public string Namespace
         {
-            get => _ns;
+            get => ns;
             set
             {
-                if (value == _ns) return;
-                _ns = value;
+                if (value == ns)
+                {
+                    return;
+                }
+
+                ns = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseDatabaseNames
         {
-            get => _useDatabaseNames;
+            get => useDatabaseNames;
             set
             {
-                if (value == _useDatabaseNames) return;
-                _useDatabaseNames = value;
+                if (value == useDatabaseNames)
+                {
+                    return;
+                }
+
+                useDatabaseNames = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UsePluralizer
         {
-            get => _usePluralizer;
+            get => usePluralizer;
             set
             {
-                if (value == _usePluralizer) return;
-                _usePluralizer = value;
+                if (value == usePluralizer)
+                {
+                    return;
+                }
+
+                usePluralizer = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseDbContextSplitting
         {
-            get => _useDbContextSplitting;
+            get => useDbContextSplitting;
             set
             {
-                if (value == _useDbContextSplitting) return;
-                _useDbContextSplitting = value;
+                if (value == useDbContextSplitting)
+                {
+                    return;
+                }
+
+                useDbContextSplitting = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseHandlebars
         {
-            get => _useHandlebars;
+            get => useHandlebars;
             set
             {
-                if (value == _useHandlebars) return;
-                _useHandlebars = value;
+                if (value == useHandlebars)
+                {
+                    return;
+                }
+
+                useHandlebars = value;
                 OnPropertyChanged();
             }
         }
 
         public int SelectedHandlebarsLanguage
         {
-            get => _selectedHandlebarsLanguage;
+            get => selectedHandlebarsLanguage;
             set
             {
-                if (value == _selectedHandlebarsLanguage) return;
-                _selectedHandlebarsLanguage = value;
+                if (value == selectedHandlebarsLanguage)
+                {
+                    return;
+                }
+
+                selectedHandlebarsLanguage = value;
                 OnPropertyChanged();
             }
         }
 
         public bool IncludeConnectionString
         {
-            get => _includeConnectionString;
+            get => includeConnectionString;
             set
             {
-                if (value == _includeConnectionString) return;
-                _includeConnectionString = value;
+                if (value == includeConnectionString)
+                {
+                    return;
+                }
+
+                includeConnectionString = value;
                 OnPropertyChanged();
             }
         }
 
         public int SelectedToBeGenerated
         {
-            get => _selectedToBeGenerated;
+            get => selectedToBeGenerated;
             set
             {
-                if (value == _selectedToBeGenerated) return;
-                _selectedToBeGenerated = value;
+                if (value == selectedToBeGenerated)
+                {
+                    return;
+                }
+
+                selectedToBeGenerated = value;
                 OnPropertyChanged();
             }
         }
 
         public bool InstallNuGetPackage
         {
-            get => _installNuGetPackage;
+            get => installNuGetPackage;
             set
             {
-                if (value == _installNuGetPackage) return;
-                _installNuGetPackage = value;
+                if (value == installNuGetPackage)
+                {
+                    return;
+                }
+
+                installNuGetPackage = value;
                 OnPropertyChanged();
             }
         }
 
         public string ProjectName
         {
-            get => _projectName;
+            get => projectName;
             set
             {
-                if (value == _projectName) return;
-                _projectName = value;
+                if (value == projectName)
+                {
+                    return;
+                }
+
+                projectName = value;
                 OnPropertyChanged();
             }
         }
 
         public string DacpacPath
         {
-            get => _dacpacPath;
+            get => dacpacPath;
             set
             {
-                if (value == _dacpacPath) return;
-                _dacpacPath = value;
+                if (value == dacpacPath)
+                {
+                    return;
+                }
+
+                dacpacPath = value;
                 OnPropertyChanged();
             }
         }
 
         public bool MapSpatialTypes
         {
-            get => _mapSpatialTypes;
+            get => mapSpatialTypes;
             set
             {
-                if (value == _mapSpatialTypes) return;
-                _mapSpatialTypes = value;
+                if (value == mapSpatialTypes)
+                {
+                    return;
+                }
+
+                mapSpatialTypes = value;
                 OnPropertyChanged();
             }
         }
 
         public bool MapHierarchyId
         {
-            get => _mapHierarchyId;
+            get => mapHierarchyId;
             set
             {
-                if (value == _mapHierarchyId) return;
-                _mapHierarchyId = value;
+                if (value == mapHierarchyId)
+                {
+                    return;
+                }
+
+                mapHierarchyId = value;
                 OnPropertyChanged();
             }
         }
 
         public bool MapNodaTimeTypes
         {
-            get => _mapNodaTimeTypes;
+            get => mapNodaTimeTypes;
             set
             {
-                if (value == _mapNodaTimeTypes) return;
-                _mapNodaTimeTypes = value;
+                if (value == mapNodaTimeTypes)
+                {
+                    return;
+                }
+
+                mapNodaTimeTypes = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseEf6Pluralizer
         {
-            get => _useEf6Pluralizer;
+            get => useEf6Pluralizer;
             set
             {
-                if (value == _useEf6Pluralizer) return;
-                _useEf6Pluralizer = value;
+                if (value == useEf6Pluralizer)
+                {
+                    return;
+                }
+
+                useEf6Pluralizer = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseBoolPropertiesWithoutDefaultSql
         {
-            get => _useBoolPropertiesWithoutDefaultSql;
+            get => useBoolPropertiesWithoutDefaultSql;
             set
             {
-                if (value == _useBoolPropertiesWithoutDefaultSql) return;
-                _useBoolPropertiesWithoutDefaultSql = value;
+                if (value == useBoolPropertiesWithoutDefaultSql)
+                {
+                    return;
+                }
+
+                useBoolPropertiesWithoutDefaultSql = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseNullableReferences
         {
-            get => _useNullableReferences;
+            get => useNullableReferences;
             set
             {
-                if (value == _useNullableReferences) return;
-                _useNullableReferences = value;
+                if (value == useNullableReferences)
+                {
+                    return;
+                }
+
+                useNullableReferences = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseNoConstructor
         {
-            get => _useNoConstructor;
+            get => useNoConstructor;
             set
             {
-                if (value == _useNoConstructor) return;
-                _useNoConstructor = value;
+                if (value == useNoConstructor)
+                {
+                    return;
+                }
+
+                useNoConstructor = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseNoNavigations
         {
-            get => _useNoNavigations;
+            get => useNoNavigations;
             set
             {
-                if (value == _useNoNavigations) return;
-                _useNoNavigations = value;
+                if (value == useNoNavigations)
+                {
+                    return;
+                }
+
+                useNoNavigations = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseNoObjectFilter
         {
-            get => _useNoObjectFilter;
+            get => useNoObjectFilter;
             set
             {
-                if (value == _useNoObjectFilter) return;
-                _useNoObjectFilter = value;
+                if (value == useNoObjectFilter)
+                {
+                    return;
+                }
+
+                useNoObjectFilter = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseNoDefaultConstructor
         {
-            get => _useNoDefaultConstructor;
+            get => useNoDefaultConstructor;
             set
             {
-                if (value == _useNoDefaultConstructor) return;
-                _useNoDefaultConstructor = value;
+                if (value == useNoDefaultConstructor)
+                {
+                    return;
+                }
+
+                useNoDefaultConstructor = value;
                 OnPropertyChanged();
             }
         }
 
         public bool UseManyToManyEntity
         {
-            get => _useManyToManyEntity;
+            get => useManyToManyEntity;
             set
             {
-                if (value == _useManyToManyEntity) return;
-                _useManyToManyEntity = value;
+                if (value == useManyToManyEntity)
+                {
+                    return;
+                }
+
+                useManyToManyEntity = value;
                 OnPropertyChanged();
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

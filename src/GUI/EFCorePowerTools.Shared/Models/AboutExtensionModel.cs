@@ -1,29 +1,33 @@
-﻿namespace EFCorePowerTools.Common.Models
-{
-    using JetBrains.Annotations;
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
+﻿using JetBrains.Annotations;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
+namespace EFCorePowerTools.Common.Models
+{
     public class AboutExtensionModel : INotifyPropertyChanged
     {
+        private Version extensionVersion;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public static string SourceCodeUrl => "https://github.com/ErikEJ/EFCorePowerTools";
         public static string MarketplaceUrl => "https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details";
 
-        private Version _extensionVersion;
-
         public Version ExtensionVersion
         {
-            get => _extensionVersion;
+            get => extensionVersion;
             set
             {
-                if (Equals(value, _extensionVersion)) return;
-                _extensionVersion = value;
+                if (Equals(value, extensionVersion))
+                {
+                    return;
+                }
+
+                extensionVersion = value;
                 OnPropertyChanged();
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
