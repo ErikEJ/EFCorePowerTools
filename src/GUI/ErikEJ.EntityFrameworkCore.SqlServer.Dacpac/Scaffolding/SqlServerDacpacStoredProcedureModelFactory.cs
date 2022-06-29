@@ -29,10 +29,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 throw new ArgumentException(@"invalid path", nameof(connectionString));
             }
+
             if (!File.Exists(connectionString))
             {
                 throw new ArgumentException($"Dacpac file not found: {connectionString}");
             }
+
             if (options is null)
             {
                 throw new ArgumentNullException(nameof(options));
@@ -74,7 +76,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     if (options.FullModel)
                     {
                         procedure.Parameters = GetStoredProcedureParameters(proc);
-
 
                         if (options.MappedModules?.ContainsKey(key) ?? false)
                         {
@@ -119,7 +120,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                      Scale = parameter.Scale,
                      StoreType = parameter.DataType.First().Name.Parts[0],
                      Nullable = true,
-                     //TypeName = parameter.ObjectType.Name,
                 };
 
                 result.Add(newParameter);
@@ -151,7 +151,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             foreach (var column in metaProc.Selects.FirstOrDefault()?.Columns)
             {
                 result.Add(new ModuleResultElement
-                { 
+                {
                     Name = column.Name,
                     Nullable = column.IsNullable,
                     StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],

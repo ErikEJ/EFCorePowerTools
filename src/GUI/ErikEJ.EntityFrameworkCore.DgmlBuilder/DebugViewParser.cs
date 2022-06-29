@@ -5,13 +5,12 @@ using System.Text;
 
 namespace Dgml
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity", Justification = "Used by old runtimes")]
     public static class DebugViewParser
     {
         public static DebugViewParserResult Parse(string[] debugViewLines, string dbContextName)
         {
             if (debugViewLines == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(debugViewLines));
             }
 
@@ -32,21 +31,26 @@ namespace Dgml
                     {
                         changeTrackingStrategy = props.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
                         if (string.IsNullOrEmpty(changeTrackingStrategy))
+                        {
                             changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
+                        }
 
                         modelPropertyAccessMode = GetPropertyAccessMode(props);
                     }
                 }
+
                 if (line.StartsWith("Annotations:", StringComparison.Ordinal))
                 {
                     modelAnnotated = true;
                 }
+
                 if (modelAnnotated)
                 {
                     if (line.TrimStart().StartsWith("ProductVersion: ", StringComparison.Ordinal))
                     {
                         productVersion = line.Trim().Split(' ')[1];
                     }
+
                     if (!line.TrimStart().StartsWith("ProductVersion: ", StringComparison.Ordinal) &&
                         !line.TrimStart().StartsWith("Annotations:", StringComparison.Ordinal))
                     {
@@ -54,6 +58,7 @@ namespace Dgml
                     }
                 }
             }
+
             result.Nodes.Add(
                 $"<Node Id=\"IModel\" Label=\"{dbContextName}\" ChangeTrackingStrategy=\"{changeTrackingStrategy}\" PropertyAccessMode=\"{modelPropertyAccessMode}\" ProductVersion=\"{productVersion}\" Annotations=\"{modelAnnotations.ToString().Trim()}\" Category=\"Model\" Group=\"Expanded\" />");
 
@@ -71,6 +76,7 @@ namespace Dgml
                     entityName = System.Security.SecurityElement.Escape(line.Trim().Split(' ')[1]);
                     BuildEntity(debugViewLines, entityName, i, result, properties, propertyLinks, line, ref inProperties);
                 }
+
                 if (line.TrimStart().StartsWith("Properties:", StringComparison.Ordinal))
                 {
                     inProperties = true;
@@ -80,13 +86,14 @@ namespace Dgml
                 if (!string.IsNullOrEmpty(entityName) && inProperties)
                 {
                     if (line.StartsWith("    Keys:", StringComparison.Ordinal)
-                    ||  line.StartsWith("    Navigations:", StringComparison.Ordinal)
-                    ||  line.StartsWith("    Annotations:", StringComparison.Ordinal)
-                    ||  line.StartsWith("    Foreign keys:", StringComparison.Ordinal))
+                    || line.StartsWith("    Navigations:", StringComparison.Ordinal)
+                    || line.StartsWith("    Annotations:", StringComparison.Ordinal)
+                    || line.StartsWith("    Foreign keys:", StringComparison.Ordinal))
                     {
                         inOtherProperties = true;
                         continue;
                     }
+
                     if (line.StartsWith("      ", StringComparison.Ordinal) && !inOtherProperties)
                     {
                         var annotations = GetAnnotations(i, debugViewLines);
@@ -124,15 +131,25 @@ namespace Dgml
 
                         var beforeSaveBehavior = "PropertySaveBehavior.Save";
                         if (props.Contains("BeforeSave:PropertySaveBehavior.Ignore"))
+                        {
                             beforeSaveBehavior = "PropertySaveBehavior.Ignore";
+                        }
+
                         if (props.Contains("BeforeSave:PropertySaveBehavior.Throw"))
+                        {
                             beforeSaveBehavior = "PropertySaveBehavior.Throw";
+                        }
 
                         var afterSaveBehavior = "PropertySaveBehavior.Save";
                         if (props.Contains("AfterSave:PropertySaveBehavior.Ignore"))
+                        {
                             afterSaveBehavior = "PropertySaveBehavior.Ignore";
+                        }
+
                         if (props.Contains("AfterSave:PropertySaveBehavior.Throw"))
+                        {
                             afterSaveBehavior = "PropertySaveBehavior.Throw";
+                        }
 
                         string propertyAccesMode = GetPropertyAccessMode(props);
 
@@ -148,9 +165,20 @@ namespace Dgml
 
                         var valueGenerated = props.FirstOrDefault(p => p.StartsWith("ValueGenerated.", StringComparison.Ordinal)) ?? "None";
                         var category = "Property Required";
-                        if (!isRequired) category = "Property Optional";
-                        if (isForeignKey) category = "Property Foreign";
-                        if (isPrimaryKey) category = "Property Primary";
+                        if (!isRequired)
+                        {
+                            category = "Property Optional";
+                        }
+
+                        if (isForeignKey)
+                        {
+                            category = "Property Foreign";
+                        }
+
+                        if (isPrimaryKey)
+                        {
+                            category = "Property Primary";
+                        }
 
                         properties.Add(
                             $"<Node Id = \"{entityName}.{name}\" Label=\"{name}\" Name=\"{name}\" Category=\"{category}\" Type=\"{type}\" MaxLength=\"{maxLength}\" Field=\"{field}\" PropertyAccessMode=\"{propertyAccesMode}\" BeforeSaveBehavior=\"{beforeSaveBehavior}\" AfterSaveBehavior=\"{afterSaveBehavior}\" Annotations=\"{annotation}\" IsPrimaryKey=\"{isPrimaryKey}\" IsForeignKey=\"{isForeignKey}\" IsRequired=\"{isRequired}\" IsIndexed=\"{isIndexed}\" IsShadow=\"{isShadow}\" IsAlternateKey=\"{isAlternateKey}\" IsConcurrencyToken=\"{isConcurrency}\" IsUnicode=\"{isUnicode}\" ValueGenerated=\"{valueGenerated}\" />");
@@ -167,20 +195,29 @@ namespace Dgml
                     }
                 }
             }
+
             BuildEntity(debugViewLines, entityName, i, result, properties, propertyLinks, null, ref inProperties);
             return result;
         }
-
 
         private static string GetPropertyAccessMode(List<string> props)
         {
             var propertyAccesMode = "PropertyAccessMode.Default";
             if (props.Contains("PropertyAccessMode.Field"))
+            {
                 propertyAccesMode = "PropertyAccessMode.Field";
+            }
+
             if (props.Contains("PropertyAccessMode.FieldDuringConstruction"))
+            {
                 propertyAccesMode = "PropertyAccessMode.FieldDuringConstruction";
+            }
+
             if (props.Contains("PropertyAccessMode.Property"))
+            {
                 propertyAccesMode = "PropertyAccessMode.Property";
+            }
+
             return propertyAccesMode;
         }
 
@@ -200,10 +237,14 @@ namespace Dgml
                     {
                         baseClass = parts[parts.IndexOf("Base:") + 1];
                     }
+
                     changeTrackingStrategy = parts.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
                 }
+
                 if (string.IsNullOrEmpty(changeTrackingStrategy))
+                {
                     changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
+                }
 
                 var annotations = GetEntityAnnotations(i, debugViewLines);
                 var annotation = string.Join(Environment.NewLine, annotations);
@@ -217,19 +258,19 @@ namespace Dgml
                 properties.Clear();
                 propertyLinks.Clear();
             }
+
             inProperties = false;
         }
 
         private static Tuple<IEnumerable<string>, IEnumerable<string>> ParseNavigations(List<string> navigations, string entityName)
         {
             // <Name> (<field>, <type>) <flags> <indexes>
-            //Quotes (<Quotes>k__BackingField, List<Quote>) Collection ToDependent Quote Inverse: Samurai 0 - 1 1 - 1 - 1
-            //SecretIdentity (<SecretIdentity>k__BackingField, Identity) ToDependent Identity Inverse: Samurai 2 - 1 3 - 1 - 1
-            //Registrations(registrations, IReadOnlyCollection<Registration>) Collection ToDependent Registration Inverse: Project PropertyAccessMode.Field 5 - 1 10 - 1 - 1
+            // Quotes (<Quotes>k__BackingField, List<Quote>) Collection ToDependent Quote Inverse: Samurai 0 - 1 1 - 1 - 1
+            // SecretIdentity (<SecretIdentity>k__BackingField, Identity) ToDependent Identity Inverse: Samurai 2 - 1 3 - 1 - 1
+            // Registrations(registrations, IReadOnlyCollection<Registration>) Collection ToDependent Registration Inverse: Project PropertyAccessMode.Field 5 - 1 10 - 1 - 1
             //   Annotations:
-                   //PropertyAccessMode: Field
-
-              var properties = new List<string>();
+            // PropertyAccessMode: Field
+            var properties = new List<string>();
             var links = new List<string>();
             int i = 0;
 
@@ -241,8 +282,10 @@ namespace Dgml
                 var parts = trim.Split(' ').ToList();
 
                 if (parts.Count < 3)
+                {
                     continue;
-                
+                }
+
                 var name = parts[0];
 
                 var noField = !parts[2].EndsWith(")", StringComparison.Ordinal);
@@ -253,7 +296,7 @@ namespace Dgml
                 var typeStripped = parts[2].EndsWith(")", StringComparison.Ordinal)
                     ? parts[2].Remove(parts[2].Length - 1)
                     : parts[1];
-                
+
                 var field = System.Security.SecurityElement.Escape(fieldStripped);
                 var type = System.Security.SecurityElement.Escape(typeStripped);
 
@@ -298,7 +341,6 @@ namespace Dgml
                     $"<Node Id = \"{entityName}.{name}\" Label=\"{displayName}\" Name=\"{name}\" Category=\"{category}\" Type=\"{type}\"  Field=\"{field}\" Dependent=\"{dependent}\" Principal=\"{principal}\" Inverse=\"{inverse}\" PropertyAccessMode=\"{propertyAccessMode}\" />");
 
                 links.Add($"<Link Source = \"{entityName}\" Target=\"{entityName}.{name}\" Category=\"Contains\" />");
-
             }
 
             return new Tuple<IEnumerable<string>, IEnumerable<string>>(properties, links);
@@ -315,18 +357,24 @@ namespace Dgml
                     i++;
                     var trim = foreignKeysFragment.Trim();
 
-                    if (trim == "Foreign keys:") continue;
+                    if (trim == "Foreign keys:")
+                    {
+                        continue;
+                    }
 
                     if (trim == "Annotations:")
                     {
                         continue;
                     }
 
-                    if (trim.StartsWith("Relational:", StringComparison.Ordinal)) continue;
+                    if (trim.StartsWith("Relational:", StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
 
                     var annotation = GetFkAnnotations(i, foreignKeysFragments.ToArray());
 
-                    //Multi key FKs!
+                    // Multi key FKs!
                     trim = trim.Replace("', '", ",");
 
                     trim = trim.Replace(" (Dictionary<string, object>)", string.Empty);
@@ -339,6 +387,7 @@ namespace Dgml
                         {
                             parts[x] = parts[x].Substring(2);
                         }
+
                         if (parts[x].EndsWith("'}", StringComparison.Ordinal))
                         {
                             parts[x] = parts[x].Substring(0, parts[x].LastIndexOf("'}", StringComparison.Ordinal));
@@ -359,7 +408,8 @@ namespace Dgml
 
                     links.Add($"<Link Source=\"{source}\" Target=\"{target}\" From=\"{source}.{fromColumns}\" To=\"{target}.{toColumns}\" Name=\"{source + " -> " + target}\" Annotations=\"{string.Join(Environment.NewLine, annotation)}\" IsUnique=\"{isUnique}\" Label=\"{label}\" Category=\"Foreign Key\" />");
                     annotation.Clear();
-                    //OrderNdc {'NdcId'} -> Ndc {'NdcId'} ToDependent: OrderNdc ToPrincipal: Ndc
+
+                    // OrderNdc {'NdcId'} -> Ndc {'NdcId'} ToDependent: OrderNdc ToPrincipal: Ndc
                 }
             }
 
@@ -374,6 +424,7 @@ namespace Dgml
             {
                 return System.Security.SecurityElement.Escape(result.Split(',')[i]);
             }
+
             return asField ? string.Empty : System.Security.SecurityElement.Escape(result);
         }
 
@@ -386,7 +437,10 @@ namespace Dgml
             while (x++ < maxLength)
             {
                 var trim = debugViewLines[x].Trim();
-                if (!inNavigations) inNavigations = trim == "Foreign keys:";
+                if (!inNavigations)
+                {
+                    inNavigations = trim == "Foreign keys:";
+                }
 
                 if (debugViewLines[x].StartsWith("    Annotations:", StringComparison.Ordinal)
                     || debugViewLines[x].StartsWith("Annotations:", StringComparison.Ordinal)
@@ -395,7 +449,11 @@ namespace Dgml
                 {
                     break;
                 }
-                if (inNavigations) navigations.Add(debugViewLines[x]);
+
+                if (inNavigations)
+                {
+                    navigations.Add(debugViewLines[x]);
+                }
             }
 
             return navigations;
@@ -410,7 +468,10 @@ namespace Dgml
             while (x++ < maxLength)
             {
                 var trim = debugViewLines[x].Trim();
-                if (!inNavigations) inNavigations = trim == "Navigations:";
+                if (!inNavigations)
+                {
+                    inNavigations = trim == "Navigations:";
+                }
 
                 if (debugViewLines[x].StartsWith("    Annotations:", StringComparison.Ordinal)
                     || debugViewLines[x].StartsWith("Annotations:", StringComparison.Ordinal)
@@ -419,8 +480,13 @@ namespace Dgml
                 {
                     break;
                 }
-                if (inNavigations) navigations.Add(debugViewLines[x]);
+
+                if (inNavigations)
+                {
+                    navigations.Add(debugViewLines[x]);
+                }
             }
+
             if (navigations.Count > 1)
             {
                 navigations.RemoveAt(0);
@@ -438,15 +504,21 @@ namespace Dgml
             while (x++ < maxLength)
             {
                 var trim = debugViewLines[x].Trim();
-                if (!inTheMix) inTheMix = debugViewLines[x] == "    Annotations: ";
+                if (!inTheMix)
+                {
+                    inTheMix = debugViewLines[x] == "    Annotations: ";
+                }
 
                 if (debugViewLines[x].StartsWith("Annotations:", StringComparison.Ordinal)
                     || trim.StartsWith("EntityType:", StringComparison.Ordinal))
                 {
                     break;
                 }
-                if (inTheMix && !trim.StartsWith("Annotations:", StringComparison.Ordinal)) 
+
+                if (inTheMix && !trim.StartsWith("Annotations:", StringComparison.Ordinal))
+                {
                     values.Add(System.Security.SecurityElement.Escape(trim));
+                }
             }
 
             return values;
@@ -486,7 +558,9 @@ namespace Dgml
                 }
 
                 if (debugViewLines[x].StartsWith("    Foreign Keys:", StringComparison.Ordinal))
+                {
                     break;
+                }
             }
 
             return annotations;

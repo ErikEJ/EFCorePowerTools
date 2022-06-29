@@ -26,11 +26,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
-        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _)
-        {
-        }
-
-        public SqlServerDacpacDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _, SqlServerDacpacDatabaseModelFactoryOptions options)
+        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
         {
             dacpacOptions = options;
         }
@@ -43,7 +39,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         public DatabaseModel Create(string connectionString, DatabaseModelFactoryOptions options)
         {
             if (options == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -51,6 +47,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 throw new ArgumentException(@"invalid path", nameof(connectionString));
             }
+
             if (!File.Exists(connectionString))
             {
                 throw new ArgumentException($"Dacpac file not found: {connectionString}");
@@ -62,7 +59,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var dbModel = new DatabaseModel
             {
                 DatabaseName = Path.GetFileNameWithoutExtension(connectionString),
-                DefaultSchema = schemas.Any() ? schemas.First() : "dbo"                
+                DefaultSchema = schemas.Any() ? schemas.First() : "dbo",
             };
 
             dbModel["Scaffolding:ConnectionString"] = $"Data Source=(local);Initial Catalog={dbModel.DatabaseName};Integrated Security=true";
@@ -139,10 +136,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return dbModel;
         }
 
-        public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas) 
+        public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas)
             => throw new NotImplementedException();
 
-        private static IReadOnlyDictionary<string, (string, string)> GetTypeAliases(TSqlTypedModel model)
+        private static IReadOnlyDictionary<string, (string A, string B)> GetTypeAliases(TSqlTypedModel model)
         {
             var items = model.GetObjects<TSqlDataType>(DacQueryScopes.UserDefined)
                 .ToList();
@@ -161,13 +158,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private static void GetPrimaryKey(TSqlTable table, DatabaseTable dbTable)
         {
-            if (!table.PrimaryKeyConstraints.Any()) return;
-            
+            if (!table.PrimaryKeyConstraints.Any())
+            {
+                return;
+            }
+
             var pk = table.PrimaryKeyConstraints.First();
             var primaryKey = new DatabasePrimaryKey
             {
                 Name = pk.Name.HasName ? pk.Name.Parts[1] : null,
-                Table = dbTable
+                Table = dbTable,
             };
 
             if (!pk.Clustered)
@@ -184,7 +184,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             dbTable.PrimaryKey = primaryKey;
-
         }
 
         private static void GetForeignKeys(TSqlTable table, DatabaseModel dbModel)
@@ -200,14 +199,17 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     .SingleOrDefault(t => t.Name == fk.ForeignTable.First().Name.Parts[1]
                     && t.Schema == fk.ForeignTable.First().Name.Parts[0]);
 
-                if (foreignTable == null) continue;
+                if (foreignTable == null)
+                {
+                    continue;
+                }
 
                 var foreignKey = new DatabaseForeignKey
                 {
                     Name = fk.Name.HasName ? fk.Name.Parts[1] : null,
                     Table = dbTable,
                     PrincipalTable = foreignTable,
-                    OnDelete = ConvertToReferentialAction(fk.DeleteAction)
+                    OnDelete = ConvertToReferentialAction(fk.DeleteAction),
                 };
 
                 foreach (var fkCol in fk.Columns)
@@ -248,7 +250,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 var uniqueConstraint = new DatabaseUniqueConstraint
                 {
                     Name = uq.Name.HasName ? uq.Name.Parts[1] : null,
-                    Table = dbTable
+                    Table = dbTable,
                 };
 
                 if (uq.Clustered)
@@ -287,20 +289,24 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 var ix = sqlIx as TSqlIndex;
 
-                if (sqlIx == null) continue;
+                if (sqlIx == null)
+                {
+                    continue;
+                }
 
                 var index = new DatabaseIndex
                 {
                     Name = ix.Name.Parts[2],
                     Table = dbTable,
                     IsUnique = ix.Unique,
-                    Filter = ix.FilterPredicate
+                    Filter = ix.FilterPredicate,
                 };
 
                 if (ix.Clustered)
                 {
                     index["SqlServer:Clustered"] = true;
                 }
+
                 foreach (var column in ix.Columns)
                 {
                     var dbCol = dbTable.Columns
@@ -319,15 +325,15 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+        private static void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
                 .Where(i => !i.GetProperty<bool>(Column.IsHidden)
                 && i.ColumnType != ColumnType.ColumnSet
+
                 // Computed columns not supported for now
                 // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                && i.ColumnType != ColumnType.ComputedColumn 
-                );
+                && i.ColumnType != ColumnType.ComputedColumn);
 
             foreach (var col in tableColumns)
             {
@@ -339,8 +345,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
                     {
-                        storeType = value.storeType;
-                        systemTypeName = value.typeName;
+                        storeType = value.StoreType;
+                        systemTypeName = value.TypeName;
                     }
                 }
                 else
@@ -367,7 +373,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         ? ValueGenerated.OnAdd
                         : storeType == "rowversion"
                             ? ValueGenerated.OnAddOrUpdate
-                            : default(ValueGenerated?)
+                            : default(ValueGenerated?),
                 };
                 if (storeType == "rowversion")
                 {
@@ -388,7 +394,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases)
+        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
@@ -419,7 +425,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
                     {
-                        storeType = value.storeType;
+                        storeType = value.StoreType;
                     }
                 }
                 else
@@ -482,6 +488,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 return null;
             }
+
             if (nullable)
             {
                 return defaultValue;
@@ -538,6 +545,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 defaultValue = defaultValue.Substring(1, defaultValue.Length - 2);
                 return StripParentheses(defaultValue);
             }
+
             return defaultValue;
         }
 
@@ -575,7 +583,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             if (value.EndsWith("'", StringComparison.OrdinalIgnoreCase))
-            { 
+            {
                 value = value.Remove(value.Length - 1, 1);
             }
 

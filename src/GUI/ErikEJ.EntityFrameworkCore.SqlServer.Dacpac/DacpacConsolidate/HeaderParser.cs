@@ -17,7 +17,7 @@ namespace GOEddie.Dacpac.References
 
         public List<CustomData> GetCustomData()
         {
-            var dac = new DacHacXml(_dacPacPath);
+            using var dac = new DacpacXml(_dacPacPath);
             var xml = dac.GetXml("Model.xml");
 
             var reader = XmlReader.Create(new StringReader(xml));

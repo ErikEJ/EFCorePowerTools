@@ -35,6 +35,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[3.1.0, 5.0.0)" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.6161.0" />
 	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

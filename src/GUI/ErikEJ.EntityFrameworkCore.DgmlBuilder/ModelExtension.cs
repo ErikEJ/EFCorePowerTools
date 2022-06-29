@@ -20,7 +20,7 @@ namespace Microsoft.EntityFrameworkCore
             Type type = context.GetType();
 
             var debugView = CreateDebugView(context);
-            var dgml = Dgml.Builder.Build(debugView, type.Name, GetTemplate());
+            var dgml = Dgml.DgmlBuilder.Build(debugView, type.Name, GetTemplate());
 
             return dgml;
         }

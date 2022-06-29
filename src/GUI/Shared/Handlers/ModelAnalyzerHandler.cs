@@ -118,7 +118,7 @@ namespace EFCorePowerTools.Handlers
 
             foreach (var info in modelResult)
             {
-                var dgmlText = Dgml.Builder.Build(info.Item2, info.Item1, GetTemplate());
+                var dgmlText = Dgml.DgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
 
                 if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
                     || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)

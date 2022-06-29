@@ -4,12 +4,12 @@
 
 namespace Dgml
 {
-    public static class Builder
+    public static class DgmlBuilder
     {
         public static string Build(string debugView, string contextName, string template)
         {
             if (debugView == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(debugView));
             }
 
@@ -18,7 +18,7 @@ namespace Dgml
                 throw new ArgumentNullException(nameof(template));
             }
 
-            var result = DebugViewParser.Parse(debugView.Split(new [] { Environment.NewLine }, StringSplitOptions.None), contextName);
+            var result = DebugViewParser.Parse(debugView.Split(new[] { Environment.NewLine }, StringSplitOptions.None), contextName);
 
             var nodes = string.Join(Environment.NewLine, result.Nodes);
             var links = string.Join(Environment.NewLine, result.Links);
@@ -29,6 +29,5 @@ return template.Replace("{Links}", links, StringComparison.OrdinalIgnoreCase).Re
             return template.Replace("{Links}", links).Replace("{Nodes}", nodes);
 #endif
         }
-
     }
 }

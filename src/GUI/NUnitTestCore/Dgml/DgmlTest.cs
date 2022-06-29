@@ -84,7 +84,7 @@ namespace UnitTests
         public void BuildChinook()
         {
             // Act
-            var result = Builder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("ChinookContext.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -96,7 +96,7 @@ namespace UnitTests
         public void BuildSample1()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Aw2014Person.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Aw2014Person.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -108,7 +108,7 @@ namespace UnitTests
         public void BuildNorthwind()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Northwind.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Northwind.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -120,7 +120,7 @@ namespace UnitTests
         public void BuildPfizer()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Pfizer.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Pfizer.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -132,7 +132,7 @@ namespace UnitTests
         public void BuildBNoFk()
         {
             // Act
-            var result = Builder.Build(ReadAllText("NoFk.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("NoFk.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -144,7 +144,7 @@ namespace UnitTests
         public void BuildSingleNav()
         {
             // Act
-            var result = Builder.Build(ReadAllText("SingleNav.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("SingleNav.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -156,7 +156,7 @@ namespace UnitTests
         public void BuildSamurai()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Samurai.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Samurai.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -168,7 +168,7 @@ namespace UnitTests
         public void BuildIssue604()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Issue604.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Issue604.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -180,7 +180,7 @@ namespace UnitTests
         public void BuildIssue687()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Issue687.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Issue687.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -192,7 +192,7 @@ namespace UnitTests
         public void BuildIdentity()
         {
             // Act
-            var result = Builder.Build(ReadAllText("Identity.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("Identity.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);
@@ -204,7 +204,7 @@ namespace UnitTests
         public void BuildLongView50()
         {
             // Act
-            var result = Builder.Build(ReadAllText("longview50.txt"), "test", _template);
+            var result = DgmlBuilder.Build(ReadAllText("longview50.txt"), "test", _template);
 
             // Assert
             Assert.AreNotEqual(null, result);

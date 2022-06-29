@@ -6,15 +6,13 @@ using System.Text;
 
 namespace GOEddie.Dacpac.References
 {
-    public sealed class DacHacXml : IDisposable
+    public sealed class DacpacXml : IDisposable
     {
-        private readonly string _dacPath;
-        private Package _package;
+        private readonly Package package;
 
-        public DacHacXml(string dacPath)
+        public DacpacXml(string dacPath)
         {
-            _dacPath = dacPath;
-            _package = Package.Open(dacPath, FileMode.Open, FileAccess.ReadWrite);
+            package = Package.Open(dacPath, FileMode.Open, FileAccess.ReadWrite);
         }
 
         public void Dispose()
@@ -24,7 +22,7 @@ namespace GOEddie.Dacpac.References
 
         public string GetXml(string fileName)
         {
-            var part = _package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
+            var part = package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
             var stream = part.GetStream();
 
             using var reader = new StreamReader(stream);
@@ -32,29 +30,9 @@ namespace GOEddie.Dacpac.References
             return reader.ReadToEnd();
         }
 
-        public Stream GetStream(string fileName)
-        {
-            var part = _package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
-            var stream = part.GetStream();
-            return stream;
-        }
-
-        public void SetXml(string fileName, string xml)
-        {
-            var part = _package.GetPart(new Uri(string.Format(CultureInfo.InvariantCulture, "/{0}", fileName), UriKind.Relative));
-            var stream = part.GetStream();
-
-            var bytes = Encoding.ASCII.GetBytes(xml);
-            stream.SetLength(bytes.Length);
-            stream.Write(bytes, 0, bytes.Length);
-
-            _package.Close();
-            _package = Package.Open(_dacPath, FileMode.Open, FileAccess.ReadWrite);
-        }
-
         public void Close()
         {
-            _package.Close();
+            package.Close();
         }
     }
 }

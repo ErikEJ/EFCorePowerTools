@@ -9,25 +9,21 @@ using System.Text;
 
 namespace GOEddie.Dacpac.References
 {
-    public class DacpacMerger : IDisposable
+    public sealed class DacpacMerger : IDisposable
     {
-        private readonly string[] _sources;
-        private readonly TSqlModel _first;
-        private readonly string _targetPath;
-        private readonly TSqlModel _target;
-        private bool disposedValue;
+        private readonly string[] sources;
+        private readonly TSqlModel first;
+        private readonly string targetPath;
+        private readonly TSqlModel target;
 
-        /// <summary>
-        /// Merges the specified .dacpac files into the target .dacpac (which is created)
-        /// </summary>
         public DacpacMerger(string target, string[] sources)
         {
-            _sources = sources;
-            _first = new TSqlModel(sources.First());
-            var options = _first.CopyModelOptions();
+            this.sources = sources;
+            first = new TSqlModel(sources.First());
+            var options = first.CopyModelOptions();
 
-            _target = new TSqlModel(_first.Version, options);
-            _targetPath = target;
+            this.target = new TSqlModel(first.Version, options);
+            targetPath = target;
         }
 
         public void Merge()
@@ -35,14 +31,14 @@ namespace GOEddie.Dacpac.References
             var pre = new StringBuilder();
             var post = new StringBuilder();
 
-            foreach (var source in _sources)
+            foreach (var source in sources)
             {
                 if (!File.Exists(source))
                 {
                     continue;
                 }
 
-                using (var model = getModel(source))
+                using (var model = GetModel(source))
                 {
                     foreach (var obj in model.GetObjects(DacQueryScopes.UserDefined))
                     {
@@ -58,7 +54,7 @@ namespace GOEddie.Dacpac.References
 
                             if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase))
                             {
-                                _target.AddOrUpdateObjects(ast, name, new TSqlObjectOptions());    //WARNING throwing away ansi nulls and quoted identifiers!
+                                target.AddOrUpdateObjects(ast, name, new TSqlObjectOptions()); // WARNING throwing away ansi nulls and quoted identifiers!
                             }
                         }
                     }
@@ -73,6 +69,7 @@ namespace GOEddie.Dacpac.References
                             pre.Append(stream.ReadToEnd());
                         }
                     }
+
                     if (!(package.PostDeploymentScript is null))
                     {
                         using (var stream = new StreamReader(package.PostDeploymentScript))
@@ -83,35 +80,13 @@ namespace GOEddie.Dacpac.References
                 }
             }
 
-            WriteFinalDacpac(_target, pre.ToString(), post.ToString());
+            WriteFinalDacpac(target, pre.ToString(), post.ToString());
         }
 
-        private void WriteFinalDacpac(TSqlModel model, string preScript, string postScript)
+        public void Dispose()
         {
-            var metadata = new PackageMetadata();
-            metadata.Name = "dacpac";
-
-            DacPackageExtensions.BuildPackage(_targetPath, model, metadata);
-            AddScripts(preScript, postScript, _targetPath);
-        }
-
-        private TSqlModel getModel(string source)
-        {
-            if (source == _sources.FirstOrDefault<string>())
-            {
-                return _first;
-            }
-
-            try
-            {
-                return new TSqlModel(source);
-            }
-            catch (DacModelException e) when (e.Message.Contains("Required references are missing.", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new DacModelException("Failed to load model from DACPAC. "
-                    + "A reason might be that the \"SuppressMissingDependenciesErrors\" isn't set to 'true' consistently. ",
-                    e);
-            }
+            first?.Dispose();
+            target?.Dispose();
         }
 
         private static void AddScripts(string pre, string post, string dacpacPath)
@@ -137,28 +112,38 @@ namespace GOEddie.Dacpac.References
                         stream.Write(Encoding.UTF8.GetBytes(post), 0, post.Length);
                     }
                 }
+
                 package.Close();
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void WriteFinalDacpac(TSqlModel model, string preScript, string postScript)
         {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _first?.Dispose();
-                    _target.Dispose();
-                }
-                
-                disposedValue = true;
-            }
+            var metadata = new PackageMetadata();
+            metadata.Name = "dacpac";
+
+            DacPackageExtensions.BuildPackage(targetPath, model, metadata);
+            AddScripts(preScript, postScript, targetPath);
         }
 
-        public void Dispose()
+        private TSqlModel GetModel(string source)
         {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            if (source == sources.FirstOrDefault<string>())
+            {
+                return first;
+            }
+
+            try
+            {
+                return new TSqlModel(source);
+            }
+            catch (DacModelException e) when (e.Message.Contains("Required references are missing.", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new DacModelException(
+                    "Failed to load model from DACPAC. "
+                    + "A reason might be that the \"SuppressMissingDependenciesErrors\" isn't set to 'true' consistently. ",
+                    e);
+            }
         }
     }
 }
