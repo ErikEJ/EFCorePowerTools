@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Functions
 {

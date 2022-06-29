@@ -1,33 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Functions;
-using RevEng.Core.Procedures;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
+using RevEng.Common;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Functions;
+using RevEng.Core.Procedures;
 
 namespace RevEng.Core
 {
     public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
     {
-        private readonly IDatabaseModelFactory _databaseModelFactory;
-        private readonly IScaffoldingModelFactory _factory;
-        private readonly ICSharpHelper _code;
-        private readonly IFunctionScaffolder _functionScaffolder;
-        private readonly IFunctionModelFactory _functionModelFactory;
-        private readonly IProcedureScaffolder _procedureScaffolder;
-        private readonly IProcedureModelFactory _procedureModelFactory;
+        private readonly IDatabaseModelFactory databaseModelFactory;
+        private readonly IScaffoldingModelFactory factory;
+        private readonly ICSharpHelper code;
+        private readonly IFunctionScaffolder functionScaffolder;
+        private readonly IFunctionModelFactory functionModelFactory;
+        private readonly IProcedureScaffolder procedureScaffolder;
+        private readonly IProcedureModelFactory procedureModelFactory;
 
         public ReverseEngineerScaffolder(
             IDatabaseModelFactory databaseModelFactory,
@@ -37,16 +37,15 @@ namespace RevEng.Core
             IProcedureScaffolder procedureScaffolder,
             IProcedureModelFactory procedureModelFactory,
             IModelCodeGeneratorSelector modelCodeGeneratorSelector,
-            ICSharpUtilities cSharpUtilities,
             ICSharpHelper cSharpHelper)
         {
-            _databaseModelFactory = databaseModelFactory;
-            _factory = scaffoldingModelFactory;
-            _code = cSharpHelper;
-            _functionScaffolder = functionScaffolder;
-            _functionModelFactory = functionModelFactory;
-            _procedureScaffolder = procedureScaffolder;
-            _procedureModelFactory = procedureModelFactory;
+            this.databaseModelFactory = databaseModelFactory;
+            factory = scaffoldingModelFactory;
+            code = cSharpHelper;
+            this.functionScaffolder = functionScaffolder;
+            this.functionModelFactory = functionModelFactory;
+            this.procedureScaffolder = procedureScaffolder;
+            this.procedureModelFactory = procedureModelFactory;
             ModelCodeGeneratorSelector = modelCodeGeneratorSelector;
         }
 
@@ -77,14 +76,14 @@ namespace RevEng.Core
             {
                 UseDataAnnotations = !options.UseFluentApiOnly,
                 Language = "C#",
-                ContextName = _code.Identifier(options.ContextClassName),
+                ContextName = code.Identifier(options.ContextClassName),
                 ContextDir = outputContextDir,
                 RootNamespace = null,
                 ContextNamespace = contextNamespace,
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = options.ConnectionString,
-#if CORE50 ||CORE60
+#if CORE50 || CORE60
                 SuppressOnConfiguring = !options.IncludeConnectionString,
 #endif
 #if CORE60
@@ -101,8 +100,8 @@ namespace RevEng.Core
                     codeOptions,
                     options.UseBoolPropertiesWithoutDefaultSql,
                     options.UseNoNavigations,
-                    options.SelectedToBeGenerated == 1, //DbContext only
-                    options.SelectedToBeGenerated == 2, //Entities only
+                    options.SelectedToBeGenerated == 1, // DbContext only
+                    options.SelectedToBeGenerated == 2, // Entities only
                     options.UseSchemaFolders);
 
             filePaths = Save(
@@ -124,7 +123,7 @@ namespace RevEng.Core
                 throw new ArgumentNullException(nameof(options));
             }
 
-            var functionModelScaffolder = _functionScaffolder;
+            var functionModelScaffolder = functionScaffolder;
             if (functionModelScaffolder != null
                 && supportsFunctions
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
@@ -136,7 +135,7 @@ namespace RevEng.Core
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.ScalarFunction).Select(m => m.Name),
                 };
 
-                var functionModel = _functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
+                var functionModel = functionModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
 
                 ApplyRenamers(functionModel.Routines, options.CustomReplacers);
 
@@ -147,7 +146,7 @@ namespace RevEng.Core
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
-                    UseAsyncCalls = options.UseAsyncCalls
+                    UseAsyncCalls = options.UseAsyncCalls,
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, ref errors);
@@ -178,7 +177,7 @@ namespace RevEng.Core
                 throw new ArgumentNullException(nameof(options));
             }
 
-            var procedureModelScaffolder = _procedureModelFactory;
+            var procedureModelScaffolder = procedureModelFactory;
             if (procedureModelScaffolder != null
                 && supportsProcedures
                 && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
@@ -196,10 +195,10 @@ namespace RevEng.Core
                     MappedModules = options.Tables
                         .Where(t => t.ObjectType == ObjectType.Procedure && !string.IsNullOrEmpty(t.MappedType))
                         .Select(m => new { m.Name, m.MappedType })
-                        .ToDictionary(m => m.Name, m => m.MappedType)
+                        .ToDictionary(m => m.Name, m => m.MappedType),
                 };
 
-                var procedureModel = _procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
+                var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
 
                 ApplyRenamers(procedureModel.Routines, options.CustomReplacers);
 
@@ -211,14 +210,14 @@ namespace RevEng.Core
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
                     UseSchemaFolders = options.UseSchemaFolders,
-                    UseAsyncCalls = options.UseAsyncCalls
+                    UseAsyncCalls = options.UseAsyncCalls,
                 };
 
-                var procedureScaffoldedModel = _procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
+                var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
 
                 if (procedureScaffoldedModel != null)
                 {
-                    return _procedureScaffolder.Save(
+                    return procedureScaffolder.Save(
                         procedureScaffoldedModel,
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
                         contextNamespace,
@@ -227,90 +226,6 @@ namespace RevEng.Core
             }
 
             return null;
-        }
-
-        private ScaffoldedModel ScaffoldModel(
-            string connectionString,
-            DatabaseModelFactoryOptions databaseOptions,
-            ModelReverseEngineerOptions modelOptions,
-            ModelCodeGenerationOptions codeOptions,
-            bool removeNullableBoolDefaults,
-            bool excludeNavigations,
-            bool dbContextOnly,
-            bool entitiesOnly,
-            bool useSchemaFolders)
-        {
-            var databaseModel = _databaseModelFactory.Create(connectionString, databaseOptions);
-
-            if (removeNullableBoolDefaults)
-            {
-                foreach (var column in databaseModel.Tables
-                    .SelectMany(table => table.Columns
-                        .Where(column => (column.StoreType == "bit" || column.StoreType == "boolean")
-                            && !column.IsNullable
-                            && !string.IsNullOrEmpty(column.DefaultValueSql))))
-                {
-                    column.DefaultValueSql = null;
-                }
-            }
-
-            if (excludeNavigations)
-            {
-                foreach (var table in databaseModel.Tables)
-                {
-                    table.ForeignKeys.Clear();
-                }
-            }
-
-#if CORE50 || CORE60
-            var model = _factory.Create(databaseModel, modelOptions);
-#else
-            var model = _factory.Create(databaseModel, modelOptions.UseDatabaseNames);
-#endif
-            if (model == null)
-            {
-                throw new InvalidOperationException($"No model from provider {_factory.GetType().ShortDisplayName()}");
-            }
-
-            var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);
-
-            var codeModel = codeGenerator.GenerateModel(model, codeOptions);
-            if (entitiesOnly)
-            {
-                codeModel.ContextFile = null;
-            }
-            if (dbContextOnly)
-            {
-                codeModel.AdditionalFiles.Clear();
-            }
-            AppendSchemaFolders(model, codeModel, useSchemaFolders);
-
-            return codeModel;
-        }
-
-        private static void AppendSchemaFolders(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders)
-        {
-            // Tables and views only
-            if (!useSchemaFolders)
-                return;
-
-            foreach (var entityType in scaffoldedModel.AdditionalFiles)
-            {
-                var entityTypeName = Path.GetFileNameWithoutExtension(entityType.Path);
-                var entityTypeExtension = Path.GetExtension(entityType.Path);
-                var entityMatch = databaseModel.GetEntityTypes().FirstOrDefault(x => x.Name == entityTypeName);
-                var entityTypeSchema = entityMatch?.GetSchema();
-#if CORE50 || CORE60
-                if (entityMatch?.GetViewName() != null)
-                {
-                    entityTypeSchema = entityMatch?.GetViewSchema();
-                }
-#endif
-                if (!string.IsNullOrEmpty(entityTypeSchema))
-                {
-                    entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
-                }
-            }
         }
 
         private static SavedModelFiles Save(
@@ -327,6 +242,7 @@ namespace RevEng.Core
                 Directory.CreateDirectory(Path.GetDirectoryName(contextPath)!);
                 File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
             }
+
             var additionalFiles = new List<string>();
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
             {
@@ -379,6 +295,94 @@ namespace RevEng.Core
             }
 
             return newName;
+        }
+
+        private static void AppendSchemaFolders(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders)
+        {
+            // Tables and views only
+            if (!useSchemaFolders)
+            {
+                return;
+            }
+
+            foreach (var entityType in scaffoldedModel.AdditionalFiles)
+            {
+                var entityTypeName = Path.GetFileNameWithoutExtension(entityType.Path);
+                var entityTypeExtension = Path.GetExtension(entityType.Path);
+                var entityMatch = databaseModel.GetEntityTypes().FirstOrDefault(x => x.Name == entityTypeName);
+                var entityTypeSchema = entityMatch?.GetSchema();
+#if CORE50 || CORE60
+                if (entityMatch?.GetViewName() != null)
+                {
+                    entityTypeSchema = entityMatch?.GetViewSchema();
+                }
+#endif
+                if (!string.IsNullOrEmpty(entityTypeSchema))
+                {
+                    entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
+                }
+            }
+        }
+
+        private ScaffoldedModel ScaffoldModel(
+            string connectionString,
+            DatabaseModelFactoryOptions databaseOptions,
+            ModelReverseEngineerOptions modelOptions,
+            ModelCodeGenerationOptions codeOptions,
+            bool removeNullableBoolDefaults,
+            bool excludeNavigations,
+            bool dbContextOnly,
+            bool entitiesOnly,
+            bool useSchemaFolders)
+        {
+            var databaseModel = databaseModelFactory.Create(connectionString, databaseOptions);
+
+            if (removeNullableBoolDefaults)
+            {
+                foreach (var column in databaseModel.Tables
+                    .SelectMany(table => table.Columns
+                        .Where(column => (column.StoreType == "bit" || column.StoreType == "boolean")
+                            && !column.IsNullable
+                            && !string.IsNullOrEmpty(column.DefaultValueSql))))
+                {
+                    column.DefaultValueSql = null;
+                }
+            }
+
+            if (excludeNavigations)
+            {
+                foreach (var table in databaseModel.Tables)
+                {
+                    table.ForeignKeys.Clear();
+                }
+            }
+
+#if CORE50 || CORE60
+            var model = factory.Create(databaseModel, modelOptions);
+#else
+            var model = factory.Create(databaseModel, modelOptions.UseDatabaseNames);
+#endif
+            if (model == null)
+            {
+                throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
+            }
+
+            var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);
+
+            var codeModel = codeGenerator.GenerateModel(model, codeOptions);
+            if (entitiesOnly)
+            {
+                codeModel.ContextFile = null;
+            }
+
+            if (dbContextOnly)
+            {
+                codeModel.AdditionalFiles.Clear();
+            }
+
+            AppendSchemaFolders(model, codeModel, useSchemaFolders);
+
+            return codeModel;
         }
     }
 }

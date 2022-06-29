@@ -24,12 +24,12 @@ namespace Microsoft.EntityFrameworkCore
         /// As with any API that accepts SQL it is important to parameterize any user input to protect against a SQL injection attack. You can include parameter place holders in the SQL query string and then supply parameter values as additional arguments. Any parameter values you supply will automatically be converted to a DbParameter.
         /// context.Database.SqlQuery&lt;Post&gt;("SELECT Id as Value FROM dbo.Posts WHERE Author = @p0", userSuppliedAuthor);
         /// Alternatively, you can also construct a DbParameter and supply it to SqlQuery. This allows you to use named parameters in the SQL query string.
-        /// context.Database.SqlQuery&lt;Post&gt;("SELECT Name AS Value FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));
+        /// context.Database.SqlQuery&lt;Post&gt;("SELECT Name AS Value FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));.
         /// </summary>
         /// <typeparam name="T"> The type of object returned by the query. </typeparam>
         /// <param name="db"> The DbContext. </param>
         /// <param name="sql"> The SQL query string. </param>
-        /// <param name="parameters"> 
+        /// <param name="parameters">
         /// The parameters to apply to the SQL query string.
         /// </param>
         /// <param name="cancellationToken"> Cancellation token. </param>
@@ -38,7 +38,10 @@ namespace Microsoft.EntityFrameworkCore
         /// </returns>
         public static async Task<List<T>> SqlQueryValueAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
         {
-            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (db is null)
+            {
+                throw new ArgumentNullException(nameof(db));
+            }
 
             if (parameters is null)
             {
@@ -50,18 +53,7 @@ namespace Microsoft.EntityFrameworkCore
                 return await SqlQueryValueInternalAsync<T>(db, sql, parameters, cancellationToken).ConfigureAwait(false);
             }
 
-            throw new NotSupportedException("Invalid operation, supplied type is not a value type");            
-        }
-
-        private static async Task<List<T>> SqlQueryValueInternalAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
-        {
-            using var db2 = new ContextForQueryType<ValueReturn<T>>(db.Database.GetDbConnection(), db.Database.CurrentTransaction);
-            
-            db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
-
-            var result = await db2.Set<ValueReturn<T>>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken).ConfigureAwait(false);
-
-            return result.Select(v => v.Value).ToList();
+            throw new NotSupportedException("Invalid operation, supplied type is not a value type");
         }
 
         /// <summary>
@@ -72,10 +64,10 @@ namespace Microsoft.EntityFrameworkCore
         /// As with any API that accepts SQL it is important to parameterize any user input to protect against a SQL injection attack. You can include parameter place holders in the SQL query string and then supply parameter values as additional arguments. Any parameter values you supply will automatically be converted to a DbParameter.
         /// context.Database.SqlQuery&lt;Post&gt;("SELECT * FROM dbo.Posts WHERE Author = @p0", userSuppliedAuthor);
         /// Alternatively, you can also construct a DbParameter and supply it to SqlQuery. This allows you to use named parameters in the SQL query string.
-        /// context.Database.SqlQuery&lt;Post&gt;("SELECT * FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));
+        /// context.Database.SqlQuery&lt;Post&gt;("SELECT * FROM dbo.Posts WHERE Author = @author", new SqlParameter("@author", userSuppliedAuthor));.
         /// </summary>
         /// <typeparam name="T"> The type of object returned by the query. </typeparam>
-        /// <param name="db"></param>
+        /// <param name="db"> The DbContext.</param>
         /// <param name="sql"> The SQL query string. </param>
         /// <param name="parameters">
         /// The parameters to apply to the SQL query string.
@@ -84,14 +76,19 @@ namespace Microsoft.EntityFrameworkCore
         /// <returns>
         /// A <see cref="List{T}" /> object that will contain the result of the query.
         /// </returns>
-        public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
+        public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default)
+            where T : class
         {
-            if (db is null) throw new ArgumentNullException(nameof(db));
+            if (db is null)
+            {
+                throw new ArgumentNullException(nameof(db));
+            }
 
             return await SqlQueryInternalAsync<T>(db, sql, parameters, cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<List<T>> SqlQueryInternalAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) where T : class
+        private static async Task<List<T>> SqlQueryInternalAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default)
+            where T : class
         {
             if (parameters is null)
             {
@@ -99,14 +96,32 @@ namespace Microsoft.EntityFrameworkCore
             }
 
             using var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction);
-            
+
             db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
-            
+
             return await db2.Set<T>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        private static async Task<List<T>> SqlQueryValueInternalAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
+        {
+            using var db2 = new ContextForQueryType<ValueReturn<T>>(db.Database.GetDbConnection(), db.Database.CurrentTransaction);
 
-        private sealed class ContextForQueryType<T> : DbContext where T : class
+            db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
+
+            var result = await db2.Set<ValueReturn<T>>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return result.Select(v => v.Value).ToList();
+        }
+
+#pragma warning disable CA1812
+        internal class ValueReturn<T>
+#pragma warning restore CA1812
+        {
+            public T Value { get; private set; }
+        }
+
+        private sealed class ContextForQueryType<T> : DbContext
+            where T : class
         {
             private readonly DbConnection connection;
             private readonly IDbContextTransaction transaction;
@@ -150,12 +165,6 @@ namespace Microsoft.EntityFrameworkCore
                 modelBuilder.Entity<ValueReturn<double>>().HasNoKey().ToView(null);
                 modelBuilder.Entity<T>().HasNoKey().ToView(null);
             }
-        }
-#pragma warning disable CA1812
-        internal class ValueReturn<T>
-#pragma warning restore CA1812
-        {
-            public T Value { get; private set; }
         }
     }
 }

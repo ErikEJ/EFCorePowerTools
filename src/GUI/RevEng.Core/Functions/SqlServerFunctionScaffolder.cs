@@ -21,6 +21,11 @@ namespace RevEng.Core.Functions
             FileNameSuffix = ".Functions";
         }
 
+        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        {
+            return null;
+        }
+
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
         {
             if (scaffolderOptions is null)
@@ -33,31 +38,31 @@ namespace RevEng.Core.Functions
                 throw new ArgumentNullException(nameof(model));
             }
 
-            _sb = new IndentedStringBuilder();
+            Sb = new IndentedStringBuilder();
 
-            _sb.AppendLine(PathHelper.Header);
+            Sb.AppendLine(PathHelper.Header);
 
-            _sb.AppendLine("using Microsoft.EntityFrameworkCore;");
-            _sb.AppendLine("using System;");
-            _sb.AppendLine("using System.Data;");
-            _sb.AppendLine("using System.Linq;");
-            _sb.AppendLine($"using {scaffolderOptions.ModelNamespace};");
+            Sb.AppendLine("using Microsoft.EntityFrameworkCore;");
+            Sb.AppendLine("using System;");
+            Sb.AppendLine("using System.Data;");
+            Sb.AppendLine("using System.Linq;");
+            Sb.AppendLine($"using {scaffolderOptions.ModelNamespace};");
             if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))
             {
-                _sb.AppendLine("using NetTopologySuite.Geometries;");
+                Sb.AppendLine("using NetTopologySuite.Geometries;");
             }
 
-            _sb.AppendLine();
-            _sb.AppendLine($"namespace {scaffolderOptions.ContextNamespace}");
-            _sb.AppendLine("{");
+            Sb.AppendLine();
+            Sb.AppendLine($"namespace {scaffolderOptions.ContextNamespace}");
+            Sb.AppendLine("{");
 
-            using (_sb.Indent())
+            using (Sb.Indent())
             {
-                _sb.AppendLine($"public partial class {scaffolderOptions.ContextName}");
+                Sb.AppendLine($"public partial class {scaffolderOptions.ContextName}");
 
-                _sb.AppendLine("{");
+                Sb.AppendLine("{");
 
-                using (_sb.Indent())
+                using (Sb.Indent())
                 {
                     foreach (var function in model.Routines)
                     {
@@ -66,43 +71,44 @@ namespace RevEng.Core.Functions
 
                     GenerateModelCreation(model);
                 }
-                _sb.AppendLine("}");
+
+                Sb.AppendLine("}");
             }
 
-            _sb.AppendLine("}");
+            Sb.AppendLine("}");
 
-            return _sb.ToString();
+            return Sb.ToString();
         }
 
         private void GenerateModelCreation(RoutineModel model)
         {
-            _sb.AppendLine();
-            _sb.AppendLine("protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)");
-            _sb.AppendLine("{");
+            Sb.AppendLine();
+            Sb.AppendLine("protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)");
+            Sb.AppendLine("{");
 
-            using (_sb.Indent())
+            using (Sb.Indent())
             {
                 foreach (var function in model.Routines.Cast<Function>().Where(f => !f.IsScalar))
                 {
                     var typeName = GenerateIdentifierName(function, model) + "Result";
 
-                    _sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey();");
+                    Sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey();");
                 }
             }
 
-            _sb.AppendLine("}");
+            Sb.AppendLine("}");
         }
 
         private void GenerateFunctionStub(Routine function, RoutineModel model)
         {
             var paramStrings = function.Parameters
-                .Select(p => $"{code.Reference(p.ClrType())} {(string.IsNullOrEmpty(p.Name) ? p.Name : code.Identifier(p.Name))}");
+                .Select(p => $"{Code.Reference(p.ClrType())} {(string.IsNullOrEmpty(p.Name) ? p.Name : Code.Identifier(p.Name))}");
 
             var identifier = GenerateIdentifierName(function, model);
 
-            _sb.AppendLine();
+            Sb.AppendLine();
 
-            _sb.AppendLine($"[DbFunction(\"{function.Name}\", \"{function.Schema}\")]");
+            Sb.AppendLine($"[DbFunction(\"{function.Name}\", \"{function.Schema}\")]");
 
             if ((function as Function)!.IsScalar)
             {
@@ -114,14 +120,15 @@ namespace RevEng.Core.Functions
                     parameters = string.Join(", ", paramStrings.Skip(1));
                 }
 
-                _sb.AppendLine($"public static {returnType}{identifier}({parameters})");
+                Sb.AppendLine($"public static {returnType}{identifier}({parameters})");
 
-                _sb.AppendLine("{");
-                using (_sb.Indent())
+                Sb.AppendLine("{");
+                using (Sb.Indent())
                 {
-                    _sb.AppendLine("throw new NotSupportedException(\"This method can only be called from Entity Framework Core queries\");");
+                    Sb.AppendLine("throw new NotSupportedException(\"This method can only be called from Entity Framework Core queries\");");
                 }
-                _sb.AppendLine("}");
+
+                Sb.AppendLine("}");
             }
             else
             {
@@ -135,23 +142,19 @@ namespace RevEng.Core.Functions
                     parameters = string.Join(", ", paramStrings);
                 }
 
-                _sb.AppendLine($"public {returnType} {identifier}({parameters})");
+                Sb.AppendLine($"public {returnType} {identifier}({parameters})");
 
-                _sb.AppendLine("{");
-                using (_sb.Indent())
+                Sb.AppendLine("{");
+                using (Sb.Indent())
                 {
                     var argumentStrings = function.Parameters
                         .Select(p => p.Name);
                     var arguments = string.Join(", ", argumentStrings);
-                    _sb.AppendLine($"return FromExpression(() => {identifier}({arguments}));");
+                    Sb.AppendLine($"return FromExpression(() => {identifier}({arguments}));");
                 }
-                _sb.AppendLine("}");
-            }
-        }
 
-        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
-        {
-            return null;
+                Sb.AppendLine("}");
+            }
         }
     }
 }

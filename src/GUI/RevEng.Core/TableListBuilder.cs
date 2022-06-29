@@ -1,21 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using Microsoft.Extensions.DependencyInjection;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Abstractions.Model;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.Extensions.DependencyInjection;
+using RevEng.Common;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Model;
 
 namespace RevEng.Core
 {
     public class TableListBuilder
     {
-        private readonly string _connectionString;
-        private readonly SchemaInfo[] _schemas;
-        private readonly DatabaseType _databaseType;
-        private readonly ServiceProvider _serviceProvider;
+        private readonly string connectionString;
+        private readonly SchemaInfo[] schemas;
+        private readonly DatabaseType databaseType;
+        private readonly ServiceProvider serviceProvider;
 
         public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas, bool mergeDacpacs)
         {
@@ -23,17 +23,18 @@ namespace RevEng.Core
             {
                 throw new ArgumentNullException(nameof(connectionString), @"invalid connection string");
             }
-            _connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
-            _schemas = schemas;
-            _databaseType = (DatabaseType)databaseType;
+
+            this.connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
+            this.schemas = schemas;
+            this.databaseType = (DatabaseType)databaseType;
 
             var options = new ReverseEngineerCommandOptions
             {
-                DatabaseType = _databaseType,
+                DatabaseType = this.databaseType,
                 MergeDacpacs = mergeDacpacs,
             };
 
-            _serviceProvider = ServiceProviderBuilder.Build(options);
+            serviceProvider = ServiceProviderBuilder.Build(options);
         }
 
         public List<TableModel> GetTableModels()
@@ -49,34 +50,26 @@ namespace RevEng.Core
                 var primaryKeyColumnNames = databaseTable.PrimaryKey?.Columns.Select(c => c.Name).ToHashSet();
                 var foreignKeyColumnNames = databaseTable.ForeignKeys?.SelectMany(c => c.Columns).Select(c => c.Name).ToHashSet();
                 columns.AddRange(from colum in databaseTable.Columns.Where(c => !string.IsNullOrWhiteSpace(c.Name))
-                                 select new ColumnModel(colum.Name, primaryKeyColumnNames?.Contains(colum.Name) ?? false, 
-                                 foreignKeyColumnNames?.Contains(colum.Name) ?? false));
-                buildResult.Add(new TableModel(databaseTable.Name, databaseTable.Schema, _databaseType, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
+                                 select new ColumnModel(
+                                     colum.Name,
+                                     primaryKeyColumnNames?.Contains(colum.Name) ?? false,
+                                     foreignKeyColumnNames?.Contains(colum.Name) ?? false));
+                buildResult.Add(new TableModel(databaseTable.Name, databaseTable.Schema, databaseType, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
             }
 
             return buildResult;
-        }
-
-        private List<DatabaseTable> GetTableDefinitions()
-        {
-            var dbModelFactory = _serviceProvider.GetService<IDatabaseModelFactory>();
-
-            var dbModelOptions = new DatabaseModelFactoryOptions(schemas: _schemas?.Select(s => s.Name));
-            var dbModel = dbModelFactory.Create(_connectionString, dbModelOptions);
-
-            return dbModel.Tables.ToList();
         }
 
         public List<TableModel> GetProcedures()
         {
             var result = new List<TableModel>();
 
-            if (_databaseType != DatabaseType.SQLServer && _databaseType != DatabaseType.SQLServerDacpac)
+            if (databaseType != DatabaseType.SQLServer && databaseType != DatabaseType.SQLServerDacpac)
             {
-                return result;    
+                return result;
             }
 
-            var procedureModelFactory = _serviceProvider.GetService<IProcedureModelFactory>();
+            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
 
             var procedureModelOptions = new ModuleModelFactoryOptions
             {
@@ -84,11 +77,11 @@ namespace RevEng.Core
                 Modules = new List<string>(),
             };
 
-            var procedureModel = procedureModelFactory.Create(_connectionString, procedureModelOptions);
+            var procedureModel = procedureModelFactory.Create(connectionString, procedureModelOptions);
 
             foreach (var procedure in procedureModel.Routines)
             {
-                result.Add(new TableModel(procedure.Name, procedure.Schema, _databaseType, ObjectType.Procedure, null));
+                result.Add(new TableModel(procedure.Name, procedure.Schema, databaseType, ObjectType.Procedure, null));
             }
 
             return result.OrderBy(c => c.DisplayName).ToList();
@@ -98,12 +91,12 @@ namespace RevEng.Core
         {
             var result = new List<TableModel>();
 
-            if (_databaseType != DatabaseType.SQLServer)
+            if (databaseType != DatabaseType.SQLServer)
             {
                 return result;
             }
 
-            var functionModelFactory = _serviceProvider.GetService<IFunctionModelFactory>();
+            var functionModelFactory = serviceProvider.GetService<IFunctionModelFactory>();
 
             var functionModelOptions = new ModuleModelFactoryOptions
             {
@@ -111,14 +104,24 @@ namespace RevEng.Core
                 Modules = new List<string>(),
             };
 
-            var functionModel = functionModelFactory.Create(_connectionString, functionModelOptions);
+            var functionModel = functionModelFactory.Create(connectionString, functionModelOptions);
 
             foreach (var function in functionModel.Routines)
             {
-                result.Add(new TableModel(function.Name, function.Schema, _databaseType, ObjectType.ScalarFunction, null));
+                result.Add(new TableModel(function.Name, function.Schema, databaseType, ObjectType.ScalarFunction, null));
             }
 
             return result.OrderBy(c => c.DisplayName).ToList();
+        }
+
+        private List<DatabaseTable> GetTableDefinitions()
+        {
+            var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
+
+            var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
+            var dbModel = dbModelFactory.Create(connectionString, dbModelOptions);
+
+            return dbModel.Tables.ToList();
         }
     }
 }

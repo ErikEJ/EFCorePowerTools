@@ -11,11 +11,11 @@ namespace RevEng.Core
 {
     public class ReplacingCandidateNamingService : CandidateNamingService
     {
-        private readonly List<Schema> _customNameOptions;
+        private readonly List<Schema> customNameOptions;
 
         public ReplacingCandidateNamingService(List<Schema> customNameOptions)
         {
-            _customNameOptions = customNameOptions;
+            this.customNameOptions = customNameOptions;
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -114,10 +114,6 @@ namespace RevEng.Core
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
-        private Schema GetSchema(string originalSchema)
-            => _customNameOptions?
-                    .FirstOrDefault(x => x.SchemaName == originalSchema);
-
         private static string ToPascalCase(string value)
         {
             var candidateStringBuilder = new StringBuilder();
@@ -165,5 +161,9 @@ namespace RevEng.Core
 
             return newName;
         }
+
+        private Schema GetSchema(string originalSchema)
+            => customNameOptions?
+                    .FirstOrDefault(x => x.SchemaName == originalSchema);
     }
 }

@@ -14,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
-using RevEng.Core.Procedures;
 using RevEng.Common;
+using RevEng.Core.Procedures;
 #if CORE50 || CORE60
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
@@ -28,7 +28,7 @@ namespace RevEng.Core
         public static ServiceProvider Build(ReverseEngineerCommandOptions options)
         {
             if (options == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -79,8 +79,7 @@ namespace RevEng.Core
                     provider.GetService<IScaffoldingTypeMapper>(),
                     provider.GetService<LoggingDefinitions>(),
                     options.Tables,
-                    options.DatabaseType
-               ));
+                    options.DatabaseType));
 #endif
             if (options.CustomReplacers != null)
             {
@@ -98,7 +97,7 @@ namespace RevEng.Core
                     hbOptions.EnableNullableReferenceTypes = options.UseNullableReferences;
 #endif
                 });
-                serviceCollection.AddSingleton<ITemplateFileService>(provider 
+                serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
 

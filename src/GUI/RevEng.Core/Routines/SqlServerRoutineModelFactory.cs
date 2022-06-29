@@ -16,9 +16,9 @@ namespace RevEng.Core.Procedures
     {
         public string RoutineType { get; set; }
 
-        protected SqlServerRoutineModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _)
-        {
-        }
+#pragma warning disable CA1716 // Identifiers should not match keywords
+        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
+#pragma warning restore CA1716 // Identifiers should not match keywords
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
@@ -127,7 +127,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                     {
                                         forceLegacy = options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
                                     }
-                                    
+
                                     module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy));
                                 }
                                 catch (Exception ex)
@@ -135,7 +135,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                     module.HasValidResultSet = false;
                                     module.Results = new List<List<ModuleResultElement>>
                                     {
-                                        new List<ModuleResultElement>()
+                                        new List<ModuleResultElement>(),
                                     };
                                     errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name} - see the wiki for solutions.'{Environment.NewLine}{ex}{Environment.NewLine}");
                                 }
@@ -143,7 +143,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                             }
                         }
 
-                        if (module is Function func 
+                        if (module is Function func
                             && func.IsScalar
                             && func.Parameters.Count > 0
                             && func.Parameters.Any(p => p.StoreType == "table type"))
@@ -166,7 +166,11 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                 errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.{Environment.NewLine}");
                             }
                         }
-                        if (dupesFound) continue;
+
+                        if (dupesFound)
+                        {
+                            continue;
+                        }
 
                         result.Add(module);
                     }
@@ -186,7 +190,6 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
             var result = new List<ModuleParameter>();
 
             // Validate this - based on https://stackoverflow.com/questions/20115881/how-to-get-stored-procedure-parameters-details/41330791
-
             var sql = $@"
 SELECT  
     'Parameter' = p.name,  
@@ -209,7 +212,7 @@ SELECT
 
             using var adapter = new SqlDataAdapter
             {
-                SelectCommand = new SqlCommand(sql, connection)
+                SelectCommand = new SqlCommand(sql, connection),
             };
 
             adapter.Fill(dtResult);
@@ -228,7 +231,7 @@ SELECT
                     RoutineName = par["RoutineName"].ToString(),
                     RoutineSchema = par["RoutineSchema"].ToString(),
                     StoreType = par["Type"].ToString(),
-                    Length = (par["Length"]is DBNull) ? (int?)null : int.Parse(par["Length"].ToString(), CultureInfo.InvariantCulture),
+                    Length = (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString(), CultureInfo.InvariantCulture),
                     Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString(), CultureInfo.InvariantCulture),
                     Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString(), CultureInfo.InvariantCulture),
                     Output = (bool)par["output"],
@@ -236,7 +239,7 @@ SELECT
                     TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
                     TypeId = (par["TypeId"] is DBNull) ? (int?)null : int.Parse(par["TypeId"].ToString(), CultureInfo.InvariantCulture),
                     TypeSchema = (par["TypeSchema"] is DBNull) ? (int?)null : int.Parse(par["TypeSchema"].ToString(), CultureInfo.InvariantCulture),
-                };  
+                };
 
                 result.Add(parameter);
             }
@@ -256,10 +259,5 @@ SELECT
                 IsReturnValue = true,
             };
         }
-
-
-#pragma warning disable CA1716 // Identifiers should not match keywords
-        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection,  Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
-#pragma warning restore CA1716 // Identifiers should not match keywords
     }
 }

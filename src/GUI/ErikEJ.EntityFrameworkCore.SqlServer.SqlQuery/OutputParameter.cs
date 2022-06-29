@@ -5,31 +5,33 @@ namespace Microsoft.EntityFrameworkCore
     /// <summary>
     /// Output paramter.
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TValue"> The type.</typeparam>
     public class OutputParameter<TValue>
     {
-        private bool _valueSet;
-        private TValue _value;
+        private bool valueSet;
+        private TValue value;
 
         /// <summary>
-        /// The resulting value of the parameter.
+        /// Gets the resulting value of the parameter.
         /// </summary>
         public TValue Value
         {
             get
             {
-                if (!_valueSet)
+                if (!valueSet)
+                {
                     throw new InvalidOperationException("Value not set.");
+                }
 
-                return _value;
+                return value;
             }
         }
 
         internal void SetValue(object value)
         {
-            _valueSet = true;
+            valueSet = true;
 
-            _value = null == value || Convert.IsDBNull(value) ? default(TValue) : (TValue)value;
+            this.value = value == null || Convert.IsDBNull(value) ? default(TValue) : (TValue)value;
         }
     }
 }

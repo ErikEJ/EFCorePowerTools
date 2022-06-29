@@ -12,13 +12,16 @@ namespace RevEng.Core
         {
             var couldRead = TryRead(options, out ReverseEngineerCommandOptions deserialized);
             if (couldRead)
+            {
                 return deserialized;
+            }
 
             // Fallback
             return null;
         }
 
-        private static bool TryRead<T>(string options, out T deserialized) where T : class, new()
+        private static bool TryRead<T>(string options, out T deserialized)
+            where T : class, new()
         {
             try
             {

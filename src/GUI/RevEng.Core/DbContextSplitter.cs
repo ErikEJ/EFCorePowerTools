@@ -22,7 +22,7 @@ namespace RevEng.Core
             Directory.CreateDirectory(configurationsDirectoryPath);
 
             var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
-            
+
             var configBlocks = GetConfigurationBlocks(File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
 
             if (configBlocks.Count == 0)
@@ -59,8 +59,10 @@ namespace RevEng.Core
 
             var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline)
                 .Cast<Match>()
-                .Where(m => !m.Value.StartsWith(@"
-                            ", StringComparison.OrdinalIgnoreCase))
+                .Where(m => !m.Value.StartsWith(
+                    @"
+                            ",
+                    StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             if (!statementsBlockMatches.Any())
@@ -69,7 +71,7 @@ namespace RevEng.Core
             }
 
             if (statementsBlockMatches.Count != configBlocks.Count)
-            { 
+            {
                 return new List<string>();
             }
 
@@ -83,32 +85,33 @@ namespace RevEng.Core
                 var entityParameterName = blockMatch.Groups["EntityParameterName"].Value;
                 var statements = configBlocks[index].Replace(new string(' ', 16), new string(' ', 12), StringComparison.OrdinalIgnoreCase);
 
-                var _sb = new StringBuilder();
-                _sb.AppendLine(PathHelper.Header);
-                _sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
+                var sb = new StringBuilder();
+                sb.AppendLine(PathHelper.Header);
+                sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
                 if (supportNullable)
                 {
-                    _sb.AppendLine();
-                    _sb.AppendLine("#nullable disable");
+                    sb.AppendLine();
+                    sb.AppendLine("#nullable disable");
                 }
-                _sb.AppendLine();
-#pragma warning disable CA1305 // Specify IFormatProvider
-                _sb.AppendLine($"namespace {configurationNamespace}");
-#pragma warning restore CA1305 // Specify IFormatProvider
-                _sb.AppendLine("{");
-                _sb.AppendLine(new string(' ', 4) + $"public partial class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
-                _sb.AppendLine(new string(' ', 4) + "{");
-                _sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
-                _sb.AppendLine(new string(' ', 8) + "{");
-                _sb.AppendLine(new string(' ', 12) + statements);
-                _sb.AppendLine(new string(' ', 12) + "OnConfigurePartial(entity);");
-                _sb.AppendLine(new string(' ', 8) + "}");
-                _sb.AppendLine();
-                _sb.AppendLine(new string(' ', 8) + $"partial void OnConfigurePartial(EntityTypeBuilder<{entityName}> entity);");
-                _sb.AppendLine(new string(' ', 4) + "}");
-                _sb.AppendLine("}");
 
-                var configurationContents = _sb.ToString();
+                sb.AppendLine();
+#pragma warning disable CA1305 // Specify IFormatProvider
+                sb.AppendLine($"namespace {configurationNamespace}");
+#pragma warning restore CA1305 // Specify IFormatProvider
+                sb.AppendLine("{");
+                sb.AppendLine(new string(' ', 4) + $"public partial class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
+                sb.AppendLine(new string(' ', 4) + "{");
+                sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
+                sb.AppendLine(new string(' ', 8) + "{");
+                sb.AppendLine(new string(' ', 12) + statements);
+                sb.AppendLine(new string(' ', 12) + "OnConfigurePartial(entity);");
+                sb.AppendLine(new string(' ', 8) + "}");
+                sb.AppendLine();
+                sb.AppendLine(new string(' ', 8) + $"partial void OnConfigurePartial(EntityTypeBuilder<{entityName}> entity);");
+                sb.AppendLine(new string(' ', 4) + "}");
+                sb.AppendLine("}");
+
+                var configurationContents = sb.ToString();
 
                 var configurationFilePath = Path.Combine(configurationsDirectoryPath, $"{entityName}Configuration.cs");
 
@@ -152,6 +155,7 @@ namespace RevEng.Core
                         finalSource.AddRange(configurationLines);
                         configLinesWritten = true;
                     }
+
                     continue;
                 }
 
@@ -220,6 +224,7 @@ namespace RevEng.Core
                         section.AppendLine();
                         continue;
                     }
+
                     section.AppendLine(line);
                 }
             }

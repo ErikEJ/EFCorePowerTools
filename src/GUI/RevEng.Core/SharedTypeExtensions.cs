@@ -13,7 +13,7 @@ namespace System
     [DebuggerStepThrough]
     internal static class SharedTypeExtensions
     {
-        private static readonly Dictionary<Type, string> _builtInTypeNames = new Dictionary<Type, string>
+        private static readonly Dictionary<Type, string> BuiltInTypeNames = new Dictionary<Type, string>
         {
             { typeof(bool), "bool" },
             { typeof(byte), "byte" },
@@ -30,7 +30,7 @@ namespace System
             { typeof(uint), "uint" },
             { typeof(ulong), "ulong" },
             { typeof(ushort), "ushort" },
-            { typeof(void), "void" }
+            { typeof(void), "void" },
         };
 
         public static Type UnwrapNullableType(this Type type) => Nullable.GetUnderlyingType(type) ?? type;
@@ -126,7 +126,7 @@ namespace System
 
         public static IEnumerable<string> GetNamespacesEx(this Type type)
         {
-            if (_builtInTypeNames.ContainsKey(type))
+            if (BuiltInTypeNames.ContainsKey(type))
             {
                 yield break;
             }

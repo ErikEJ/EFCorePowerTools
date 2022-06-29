@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "<Pending>")]
+[assembly: SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "Reviewed.")]

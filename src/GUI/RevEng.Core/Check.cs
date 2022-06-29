@@ -95,7 +95,6 @@ namespace Microsoft.EntityFrameworkCore.Utilities
             return value;
         }
 
-
         [Conditional("DEBUG")]
         public static void DebugAssert([CA.DoesNotReturnIfAttribute(false)] bool condition, string message)
         {

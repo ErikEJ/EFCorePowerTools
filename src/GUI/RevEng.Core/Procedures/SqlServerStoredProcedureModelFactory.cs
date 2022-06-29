@@ -14,8 +14,7 @@ namespace RevEng.Core.Procedures
 {
     public class SqlServerStoredProcedureModelFactory : SqlServerRoutineModelFactory, IProcedureModelFactory
     {
-        public SqlServerStoredProcedureModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
-            : base(logger)
+        public SqlServerStoredProcedureModelFactory()
         {
             RoutineType = "PROCEDURE";
         }
@@ -25,11 +24,10 @@ namespace RevEng.Core.Procedures
             return GetRoutines(connectionString, options);
         }
 
-
         protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
         {
             if (connection is null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(connection));
             }
 
@@ -87,7 +85,7 @@ namespace RevEng.Core.Procedures
                 {
                     break;
                 }
-                
+
                 foreach (DataRow row in schemaTable.Rows)
                 {
                     var name = row["ColumnName"].ToString();
@@ -115,7 +113,8 @@ namespace RevEng.Core.Procedures
                 }
 
                 result.Add(list);
-            } while (schemaReader.NextResult() && !singleResult);
+            }
+            while (schemaReader.NextResult() && !singleResult);
 
             return result;
         }
@@ -133,7 +132,7 @@ namespace RevEng.Core.Procedures
                 Value = parameter.TypeSchema,
                 ParameterName = "@schemaId",
             };
-            
+
             var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
                         "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
                         "WHERE ST.name <> 'sysname' AND SC.object_id = " +
@@ -169,7 +168,7 @@ namespace RevEng.Core.Procedures
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var adapter = new SqlDataAdapter
             {
-                SelectCommand = new SqlCommand(sql, connection)
+                SelectCommand = new SqlCommand(sql, connection),
             };
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
@@ -200,7 +199,7 @@ namespace RevEng.Core.Procedures
 
             var result = new List<List<ModuleResultElement>>
             {
-                list
+                list,
             };
 
             return result;

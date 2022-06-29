@@ -15,7 +15,7 @@ namespace RevEng.Core
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
             if (options == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(options));
             }
 
@@ -156,6 +156,7 @@ namespace RevEng.Core
                 allfiles.AddRange(procedurePaths.AdditionalFiles);
                 allfiles.Add(procedurePaths.ContextFile);
             }
+
             if (functionPaths != null)
             {
                 allfiles.AddRange(functionPaths.AdditionalFiles);
@@ -172,6 +173,38 @@ namespace RevEng.Core
             };
 
             return result;
+        }
+
+        public static void RetryFileWrite(string path, List<string> finalLines)
+        {
+            for (int i = 1; i <= 3; ++i)
+            {
+                try
+                {
+                    File.WriteAllLines(path, finalLines, Encoding.UTF8);
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+        }
+
+        public static void RetryFileWrite(string path, string finalText)
+        {
+            for (int i = 1; i <= 3; ++i)
+            {
+                try
+                {
+                    File.WriteAllText(path, finalText, Encoding.UTF8);
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
+            }
         }
 
         private static SavedModelFiles CreateCleanupPaths(SavedModelFiles procedurePaths, SavedModelFiles functionPaths, SavedModelFiles filePaths)
@@ -285,12 +318,10 @@ namespace RevEng.Core
             }
 
             var text = File.ReadAllText(file, Encoding.UTF8);
-            
-            RetryFileWrite(file, header
-                + Environment.NewLine
-                + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase)
-                .Replace(";Trust Server Certificate=True", string.Empty, StringComparison.OrdinalIgnoreCase)
-                .TrimEnd());
+
+            RetryFileWrite(
+                file,
+                header + Environment.NewLine + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase).Replace(";Trust Server Certificate=True", string.Empty, StringComparison.OrdinalIgnoreCase).TrimEnd());
         }
 
         private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
@@ -315,7 +346,9 @@ namespace RevEng.Core
             }
 
             if (filePaths.AdditionalFiles.Count == 0)
+            {
                 return;
+            }
 
             var allowedFolders = allGeneratedFiles.Select(s => Path.GetDirectoryName(s)).Distinct().ToHashSet();
 
@@ -338,7 +371,7 @@ namespace RevEng.Core
             string firstLine;
             using (var reader = new StreamReader(codeFile, Encoding.UTF8))
             {
-                firstLine = reader.ReadLine() ?? "";
+                firstLine = reader.ReadLine() ?? string.Empty;
             }
 
             if (firstLine == PathHelper.Header)
@@ -348,48 +381,17 @@ namespace RevEng.Core
                 {
                     if (File.Exists(codeFile))
                     {
-                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(codeFile,
+                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                            codeFile,
                             Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
                             Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
                     }
                 }
-                catch 
-                { 
+                catch
+                {
                     // Ignore
                 }
 #pragma warning restore CA1031 // Do not catch general exception types
-            }
-        }
-
-        public static void RetryFileWrite(string path, List<string> finalLines)
-        {
-            for (int i = 1; i <= 3; ++i)
-            {
-                try
-                {
-                    File.WriteAllLines(path, finalLines, Encoding.UTF8);
-                    break;
-                }
-                catch (IOException) when (i <= 3)
-                {
-                    Thread.Sleep(500);
-                }
-            }
-        }
-
-        public static void RetryFileWrite(string path, string finalText)
-        {
-            for (int i = 1; i <= 3; ++i)
-            {
-                try
-                {
-                    File.WriteAllText(path, finalText, Encoding.UTF8);
-                    break;
-                }
-                catch (IOException) when (i <= 3)
-                {
-                    Thread.Sleep(500);
-                }
             }
         }
     }

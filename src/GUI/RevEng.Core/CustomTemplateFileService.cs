@@ -5,12 +5,12 @@ namespace RevEng.Core
 {
     public class CustomTemplateFileService : FileSystemTemplateFileService
     {
-        public string RootDirectory { get; }
-
         public CustomTemplateFileService(string rootDirectory)
         {
             RootDirectory = rootDirectory;
         }
+
+        public string RootDirectory { get; }
 
         public override string RetrieveTemplateFileContents(
             string relativeDirectory,

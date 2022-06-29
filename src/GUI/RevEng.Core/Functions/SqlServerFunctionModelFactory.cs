@@ -13,8 +13,7 @@ namespace RevEng.Core.Procedures
 {
     public class SqlServerFunctionModelFactory : SqlServerRoutineModelFactory, IFunctionModelFactory
     {
-        public SqlServerFunctionModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
-            : base(logger)
+        public SqlServerFunctionModelFactory()
         {
             RoutineType = "FUNCTION";
         }
@@ -46,7 +45,7 @@ WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var adapter = new SqlDataAdapter
             {
-                SelectCommand = new SqlCommand(sql, connection)
+                SelectCommand = new SqlCommand(sql, connection),
             };
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
@@ -71,7 +70,7 @@ WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
 
             var result = new List<List<ModuleResultElement>>
             {
-                list
+                list,
             };
 
             return result;

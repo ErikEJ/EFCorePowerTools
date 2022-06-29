@@ -139,6 +139,7 @@ dotnet_diagnostic.SA1602.severity = silent
 dotnet_diagnostic.SA1518.severity = silent
 dotnet_diagnostic.SA1101.severity = silent
 dotnet_diagnostic.SA1580.severity = silent
+dotnet_diagnostic.SA1208.severity = silent
 dotnet_diagnostic.SA1516.severity = silent
 # A C# code file is missing a standard file header.
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1633.md
