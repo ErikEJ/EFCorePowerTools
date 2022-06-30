@@ -13,8 +13,9 @@ namespace EFCorePowerTools.Dialogs
         private readonly Func<SchemaInfo[]> getDialogResult;
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
 
-        public PickSchemasDialog(ITelemetryAccess telemetryAccess,
-                                 IPickSchemasViewModel viewModel)
+        public PickSchemasDialog(
+            ITelemetryAccess telemetryAccess,
+            IPickSchemasViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(PickSchemasDialog));
 
@@ -24,7 +25,7 @@ namespace EFCorePowerTools.Dialogs
                 DialogResult = args.DialogResult;
                 Close();
             };
-            getDialogResult = () => (viewModel.Schemas.ToArray());
+            getDialogResult = () => viewModel.Schemas.ToArray();
             addSchemas = models =>
             {
                 foreach (var model in models)

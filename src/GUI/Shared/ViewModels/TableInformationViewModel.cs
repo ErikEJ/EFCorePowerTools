@@ -15,6 +15,8 @@ namespace EFCorePowerTools.ViewModels
 {
     public class TableInformationViewModel : ViewModelBase, ITableInformationViewModel
     {
+        private readonly IMessenger messenger;
+
         private string name;
         private string newName;
         private string schema;
@@ -24,8 +26,6 @@ namespace EFCorePowerTools.ViewModels
         private bool isEditing;
 
         private bool isVisible = true;
-
-        private readonly IMessenger messenger;
 
         public TableInformationViewModel(IMessenger messenger)
         {
@@ -197,7 +197,7 @@ namespace EFCorePowerTools.ViewModels
 
         private void ConfirmEdit_Execute()
         {
-            if (String.IsNullOrWhiteSpace(NewName))
+            if (string.IsNullOrWhiteSpace(NewName))
             {
                 messenger.Send(new ShowMessageBoxMessage
                 {

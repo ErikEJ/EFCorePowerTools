@@ -18,6 +18,16 @@ namespace EFCorePowerTools.ViewModels
         private readonly IVisualStudioAccess visualStudioAccess;
         private DatabaseConnectionModel selectedDatabaseConnection;
 
+        public CompareOptionsViewModel(IVisualStudioAccess visualStudioAccess)
+        {
+            this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+
+            AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
+            RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand AddDatabaseConnectionCommand
@@ -49,14 +59,25 @@ namespace EFCorePowerTools.ViewModels
             set => Set(ref selectedDatabaseConnection, value);
         }
 
-        public CompareOptionsViewModel(IVisualStudioAccess visualStudioAccess)
+        public (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) GetSelection()
         {
-            this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            return (SelectedDatabaseConnection, ContextTypes.Where(c => c.Selected).Select(c => c.Name).ToList());
+        }
 
-            AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
-            RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
+        public void AddDatabaseConnections(IEnumerable<DatabaseConnectionModel> connections)
+        {
+            foreach (var item in connections)
+            {
+                DatabaseConnections.Add(item);
+            }
+        }
+
+        public void AddContextTypes(IEnumerable<string> contextTypes)
+        {
+            foreach (var item in contextTypes)
+            {
+                ContextTypes.Add(new ContextTypeItemViewModel(true, item));
+            }
         }
 
         private void AddDatabaseConnection_Executed()
@@ -114,27 +135,6 @@ namespace EFCorePowerTools.ViewModels
         private void Cancel_Executed()
         {
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
-        }
-
-        public void AddDatabaseConnections(IEnumerable<DatabaseConnectionModel> connections)
-        {
-            foreach (var item in connections)
-            {
-                DatabaseConnections.Add(item);
-            }
-        }
-
-        public void AddContextTypes(IEnumerable<string> contextTypes)
-        {
-            foreach (var item in contextTypes)
-            {
-                ContextTypes.Add(new ContextTypeItemViewModel(true, item));
-            }
-        }
-
-        public (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) GetSelection()
-        {
-            return (SelectedDatabaseConnection, ContextTypes.Where(c => c.Selected).Select(c => c.Name).ToList());
         }
     }
 }

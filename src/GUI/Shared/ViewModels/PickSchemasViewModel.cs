@@ -13,9 +13,19 @@ namespace EFCorePowerTools.ViewModels
 {
     public class PickSchemasViewModel : ViewModelBase, IPickSchemasViewModel
     {
-        public event EventHandler<CloseRequestedEventArgs> CloseRequested;
-
         private SchemaInfo selectedSchema;
+
+        public PickSchemasViewModel()
+        {
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+            AddCommand = new RelayCommand(Add_Executed);
+            RemoveCommand = new RelayCommand(Remove_Executed, Remove_CanExecute);
+
+            Schemas = new ObservableCollection<SchemaInfo>();
+        }
+
+        public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -37,16 +47,6 @@ namespace EFCorePowerTools.ViewModels
                 selectedSchema = value;
                 RaisePropertyChanged();
             }
-        }
-
-        public PickSchemasViewModel()
-        {
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
-            AddCommand = new RelayCommand(Add_Executed);
-            RemoveCommand = new RelayCommand(Remove_Executed, Remove_CanExecute);
-
-            Schemas = new ObservableCollection<SchemaInfo>();
         }
 
         private void Ok_Executed()

@@ -9,12 +9,13 @@ namespace EFCorePowerTools.Dialogs
 {
     public partial class CompareOptionsDialog : ICompareOptionsDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, IEnumerable<string> contextTypes)> getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes)> getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
         private readonly Action<IEnumerable<string>> contextTypes;
 
-        public CompareOptionsDialog(ITelemetryAccess telemetryAccess,
-                                    ICompareOptionsViewModel viewModel)
+        public CompareOptionsDialog(
+            ITelemetryAccess telemetryAccess,
+            ICompareOptionsViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(CompareOptionsDialog));
 

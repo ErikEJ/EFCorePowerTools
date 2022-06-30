@@ -40,7 +40,7 @@ namespace EFCorePowerTools.Dialogs
             return (closedByOkay, getDialogResult());
         }
 
-        private void cmdDatabaseType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void CmdDatabaseType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             txtSample.Text = string.Empty;
 

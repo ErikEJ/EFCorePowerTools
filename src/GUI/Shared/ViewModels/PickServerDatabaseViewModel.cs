@@ -30,6 +30,39 @@ namespace EFCorePowerTools.ViewModels
         private string uiHint;
         private int codeGenerationMode;
 
+        public PickServerDatabaseViewModel(
+            IVisualStudioAccess visualStudioAccess,
+            ICredentialStore credentialStore,
+            Func<IPickSchemasDialog> pickSchemasDialogFactory,
+            Func<IPickConnectionDialog> pickConnectionDialogFactory)
+        {
+            this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            this.pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
+            this.pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
+            this.credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
+
+            LoadedCommand = new RelayCommand(Loaded_Executed);
+            AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
+            AddAdhocDatabaseConnectionCommand = new RelayCommand(AddAdhocDatabaseConnection_Executed);
+            AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
+            RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+            FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
+
+            CodeGenerationModeList = new[]
+            {
+                "EF Core 5",
+                "EF Core 3",
+                "EF Core 6",
+            };
+
+            DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
+            DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
+            Schemas = new List<SchemaInfo>();
+            DatabaseDefinitions.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseDefinitions));
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand LoadedCommand { get; }
@@ -146,39 +179,6 @@ namespace EFCorePowerTools.ViewModels
 
                 uiHint = value;
             }
-        }
-
-        public PickServerDatabaseViewModel(
-            IVisualStudioAccess visualStudioAccess,
-            ICredentialStore credentialStore,
-            Func<IPickSchemasDialog> pickSchemasDialogFactory,
-            Func<IPickConnectionDialog> pickConnectionDialogFactory)
-        {
-            this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
-            this.pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
-            this.pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
-            this.credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
-
-            LoadedCommand = new RelayCommand(Loaded_Executed);
-            AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
-            AddAdhocDatabaseConnectionCommand = new RelayCommand(AddAdhocDatabaseConnection_Executed);
-            AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
-            RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
-            FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
-
-            CodeGenerationModeList = new[]
-            {
-                "EF Core 5",
-                "EF Core 3",
-                "EF Core 6",
-            };
-
-            DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
-            DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
-            Schemas = new List<SchemaInfo>();
-            DatabaseDefinitions.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseDefinitions));
         }
 
         private void Loaded_Executed()

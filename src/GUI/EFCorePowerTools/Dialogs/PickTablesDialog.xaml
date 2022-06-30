@@ -155,7 +155,7 @@
                   Grid.Row="1"
                   x:Name="tree"
                   Focusable="True"
-                  KeyUp="tree_KeyUp">
+                  KeyUp="Tree_KeyUp">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="Padding" Value="1"></Setter>

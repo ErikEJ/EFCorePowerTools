@@ -11,6 +11,8 @@ namespace EFCorePowerTools.ViewModels
 {
     public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewModel
     {
+        private readonly IMessenger messenger;
+
         private string name;
         private string newName;
 
@@ -20,8 +22,6 @@ namespace EFCorePowerTools.ViewModels
         private bool isTableSelected;
         private bool isSelected;
         private bool isEditing;
-
-        private readonly IMessenger messenger;
 
         public ColumnInformationViewModel(IMessenger messenger)
         {
@@ -164,8 +164,6 @@ namespace EFCorePowerTools.ViewModels
 
         public ICommand SetSelectedCommand { get; }
 
-        //This method must be invoked only by parent view models because it skips enabled control. 
-        //UI must call command
         public void SetSelected(bool value)
         {
             IsSelected = value;
@@ -178,7 +176,7 @@ namespace EFCorePowerTools.ViewModels
 
         private void ConfirmEdit_Execute()
         {
-            if (String.IsNullOrWhiteSpace(NewName))
+            if (string.IsNullOrWhiteSpace(NewName))
             {
                 messenger.Send(new ShowMessageBoxMessage
                 {

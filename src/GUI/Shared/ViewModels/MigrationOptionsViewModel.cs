@@ -15,7 +15,6 @@ using EFCorePowerTools.Locales;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 
 namespace EFCorePowerTools.ViewModels
 {
@@ -37,6 +36,17 @@ namespace EFCorePowerTools.ViewModels
         private bool applying;
         private double backgroundOpacity;
         private Visibility migrationNameVisibility;
+
+        public MigrationOptionsViewModel(IVisualStudioAccess visualStudioAccess)
+        {
+            this.visualStudioAccess = visualStudioAccess;
+
+#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
+            LoadedCommand = new RelayCommand(async () => await Loaded_ExecutedAsync());
+            applyCommand = new RelayCommand(async () => await Apply_ExecutedAsync(), () => !applying);
+#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
+            CancelCommand = new RelayCommand(Cancel_Executed);
+        }
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -167,15 +177,18 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public MigrationOptionsViewModel(IVisualStudioAccess visualStudioAccess)
+        void IMigrationOptionsViewModel.UseProjectForMigration(Project project)
         {
-            this.visualStudioAccess = visualStudioAccess;
+            ThreadHelper.ThrowIfNotOnUIThread();
 
-#pragma warning disable VSTHRD101 // Avoid unsupported async delegates
-            LoadedCommand = new RelayCommand(async () => await Loaded_ExecutedAsync());
-            applyCommand = new RelayCommand(async () => await Apply_ExecutedAsync(), () => !applying);
-#pragma warning restore VSTHRD101 // Avoid unsupported async delegates
-            CancelCommand = new RelayCommand(Cancel_Executed);
+            Title = string.Format(MigrationsLocale.ManageMigrationsInProject, project.Name);
+            this.project = project;
+            processLauncher = new ProcessLauncher(project);
+        }
+
+        void IMigrationOptionsViewModel.UseOutputPath(string outputPath)
+        {
+            this.outputPath = outputPath;
         }
 
         private void UpdateStatusList(SortedDictionary<string, string> statusList)
@@ -357,8 +370,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 string[] lines = result.First().Value.Split(
                                                             new[] { Environment.NewLine },
-                                                            StringSplitOptions.None
-                                                           );
+                                                            StringSplitOptions.None);
                 if (lines.Length == 3)
                 {
                     await project.AddExistingFilesAsync(lines);
@@ -468,20 +480,6 @@ namespace EFCorePowerTools.ViewModels
         private void Cancel_Executed()
         {
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
-        }
-
-        void IMigrationOptionsViewModel.UseProjectForMigration(Project project)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            Title = string.Format(MigrationsLocale.ManageMigrationsInProject, project.Name);
-            this.project = project;
-            processLauncher = new ProcessLauncher(project);
-        }
-
-        void IMigrationOptionsViewModel.UseOutputPath(string outputPath)
-        {
-            this.outputPath = outputPath;
         }
     }
 }

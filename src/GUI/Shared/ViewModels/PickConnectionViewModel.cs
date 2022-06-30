@@ -17,7 +17,15 @@ namespace EFCorePowerTools.ViewModels
         private string connectionString;
         private string name;
 
+        public PickConnectionViewModel()
+        {
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
+
+        public new event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -67,10 +75,10 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public PickConnectionViewModel()
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void Ok_Executed()
@@ -83,14 +91,6 @@ namespace EFCorePowerTools.ViewModels
         private void Cancel_Executed()
         {
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
-        }
-
-        public new event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

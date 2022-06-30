@@ -35,13 +35,7 @@ namespace EFCorePowerTools.Dialogs
                 }
             };
 
-
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            DatabaseConnectionCombobox.Focus();
         }
 
         (bool ClosedByOK, ConfigModel Payload) IDialog<ConfigModel>.ShowAndAwaitUserResponse(bool modal)
@@ -63,6 +57,11 @@ namespace EFCorePowerTools.Dialogs
         public void PublishConfigurations(IEnumerable<ConfigModel> configurations)
         {
             addConfigurations(configurations);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DatabaseConnectionCombobox.Focus();
         }
     }
 }

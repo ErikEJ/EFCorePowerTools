@@ -34,7 +34,7 @@
                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
                 Margin="12,2"></TextBox>
             <ComboBox Grid.Column="2"
-            SelectionChanged="cmdDatabaseType_SelectionChanged"
+            SelectionChanged="CmdDatabaseType_SelectionChanged"
             TabIndex="1"
             x:Name="cmdDatabaseType"
             SelectedValue="{Binding DbType, Mode=TwoWay}" 

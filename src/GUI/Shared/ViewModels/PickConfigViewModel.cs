@@ -16,6 +16,17 @@ namespace EFCorePowerTools.ViewModels
     {
         private ConfigModel selectedConfiguration;
 
+        public PickConfigViewModel(IVisualStudioAccess visualStudioAccess, Func<IPickSchemasDialog> pickSchemasDialogFactory)
+        {
+            LoadedCommand = new RelayCommand(Loaded_Executed);
+            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+
+            Configurations = new ObservableCollection<ConfigModel>();
+
+            Configurations.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(Configurations));
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand LoadedCommand { get; }
@@ -37,17 +48,6 @@ namespace EFCorePowerTools.ViewModels
                 selectedConfiguration = value;
                 RaisePropertyChanged();
             }
-        }
-
-        public PickConfigViewModel(IVisualStudioAccess visualStudioAccess, Func<IPickSchemasDialog> pickSchemasDialogFactory)
-        {
-            LoadedCommand = new RelayCommand(Loaded_Executed);
-            OkCommand = new RelayCommand(Ok_Executed, Ok_CanExecute);
-            CancelCommand = new RelayCommand(Cancel_Executed);
-
-            Configurations = new ObservableCollection<ConfigModel>();
-
-            Configurations.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(Configurations));
         }
 
         private void Loaded_Executed()

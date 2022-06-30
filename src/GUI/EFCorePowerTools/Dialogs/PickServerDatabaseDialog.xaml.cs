@@ -21,8 +21,9 @@ namespace EFCorePowerTools.Dialogs
         private readonly Action<CodeGenerationMode> codeGeneration;
         private readonly Action<string> uiHint;
 
-        public PickServerDatabaseDialog(ITelemetryAccess telemetryAccess,
-                                        IPickServerDatabaseViewModel viewModel)
+        public PickServerDatabaseDialog(
+            ITelemetryAccess telemetryAccess,
+            IPickServerDatabaseViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(PickServerDatabaseDialog));
 
@@ -66,20 +67,6 @@ namespace EFCorePowerTools.Dialogs
             };
 
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ReleaseNotesLink.Inlines.Add(new Run(typeof(EFCorePowerToolsPackage).Assembly.GetName().Version.ToString(3)));
-            }
-            catch
-            {
-                // Ignore
-            }
-
-            DatabaseConnectionCombobox.Focus();
         }
 
         public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) Payload) ShowAndAwaitUserResponse(bool modal)
@@ -131,6 +118,20 @@ namespace EFCorePowerTools.Dialogs
                 StartInfo = new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri),
             };
             process.Start();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ReleaseNotesLink.Inlines.Add(new Run(typeof(EFCorePowerToolsPackage).Assembly.GetName().Version.ToString(3)));
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            DatabaseConnectionCombobox.Focus();
         }
     }
 }

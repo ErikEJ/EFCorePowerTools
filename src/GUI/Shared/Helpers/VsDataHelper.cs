@@ -146,8 +146,11 @@ namespace EFCorePowerTools.Helpers
             return ofd.FileName;
         }
 
-        internal static string SaveDataConnection(EFCorePowerToolsPackage package, string encryptedConnectionString,
-            DatabaseType dbType, Guid provider)
+        internal static string SaveDataConnection(
+            EFCorePowerToolsPackage package,
+            string encryptedConnectionString,
+            DatabaseType dbType,
+            Guid provider)
         {
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
             var savedName = GetSavedConnectionName(DataProtection.DecryptString(encryptedConnectionString), dbType);
@@ -172,6 +175,7 @@ namespace EFCorePowerTools.Helpers
         {
             var dbType = DatabaseType.Undefined;
             var providerGuid = Guid.Empty.ToString();
+
             // Find provider
             var providerManager = package.GetService<IVsDataProviderManager>();
             IVsDataProvider dp;

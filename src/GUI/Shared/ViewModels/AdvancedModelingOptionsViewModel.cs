@@ -10,13 +10,6 @@ namespace EFCorePowerTools.ViewModels
 {
     public class AdvancedModelingOptionsViewModel : ViewModelBase, IAdvancedModelingOptionsViewModel
     {
-        public event EventHandler<CloseRequestedEventArgs> CloseRequested;
-
-        public ICommand OkCommand { get; }
-        public ICommand CancelCommand { get; }
-
-        public ModelingOptionsModel Model { get; }
-
         public AdvancedModelingOptionsViewModel()
         {
             OkCommand = new RelayCommand(Ok_Executed);
@@ -25,15 +18,12 @@ namespace EFCorePowerTools.ViewModels
             Model = new ModelingOptionsModel();
         }
 
-        private void Ok_Executed()
-        {
-            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
-        }
+        public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        private void Cancel_Executed()
-        {
-            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
-        }
+        public ICommand OkCommand { get; }
+        public ICommand CancelCommand { get; }
+
+        public ModelingOptionsModel Model { get; }
 
         void IAdvancedModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
         {
@@ -50,6 +40,16 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseSchemaFolders = presets.UseSchemaFolders;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
+        }
+
+        private void Ok_Executed()
+        {
+            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
+        }
+
+        private void Cancel_Executed()
+        {
+            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
     }
 }

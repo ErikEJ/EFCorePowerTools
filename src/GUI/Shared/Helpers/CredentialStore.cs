@@ -37,7 +37,6 @@ namespace EFCorePowerTools.Helpers
             return result.OrderBy(c => c.ConnectionName).ToList();
         }
 
-
         public bool DeleteCredential(string name)
         {
             var target = Root + name;
@@ -47,7 +46,7 @@ namespace EFCorePowerTools.Helpers
 
         public bool SaveCredential(DatabaseConnectionModel connectionModel)
         {
-            var cred = (new NetworkCredential(connectionModel.ConnectionName, connectionModel.ConnectionString)).ToICredential();
+            var cred = new NetworkCredential(connectionModel.ConnectionName, connectionModel.ConnectionString).ToICredential();
             cred.TargetName = Root + connectionModel.ConnectionName;
             cred.Attributes = new Dictionary<string, object>
             {

@@ -6,8 +6,9 @@ namespace EFCorePowerTools.Dialogs
 {
     public partial class AboutDialog : IAboutDialog
     {
-        public AboutDialog(ITelemetryAccess telemetryAccess,
-                           IAboutViewModel viewModel)
+        public AboutDialog(
+            ITelemetryAccess telemetryAccess,
+            IAboutViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(AboutDialog));
 

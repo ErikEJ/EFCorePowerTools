@@ -15,8 +15,8 @@ namespace EFCorePowerTools.ViewModels
     public class CompareResultViewModel : ViewModelBase, ICompareResultViewModel
     {
         private bool showDifferencesOnly = true;
-        private List<CompareLogItemViewModel> _completeLogs { get; } = new List<CompareLogItemViewModel>();
-        private List<CompareLogItemViewModel> _filteredLogs { get; } = new List<CompareLogItemViewModel>();
+        private List<CompareLogItemViewModel> CompleteLogs { get; } = new List<CompareLogItemViewModel>();
+        private List<CompareLogItemViewModel> FilteredLogs { get; } = new List<CompareLogItemViewModel>();
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -36,7 +36,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 Set(ref showDifferencesOnly, value);
                 Logs.Clear();
-                var l = value ? _filteredLogs : _completeLogs;
+                var l = value ? FilteredLogs : CompleteLogs;
                 foreach (var item in l)
                 {
                     Logs.Add(item);
@@ -104,13 +104,13 @@ namespace EFCorePowerTools.ViewModels
 
             foreach (var ctx in logs)
             {
-                _completeLogs.Add(Create(ctx, 0));
+                CompleteLogs.Add(Create(ctx, 0));
                 foreach (var entity in ctx.SubLogs)
                 {
-                    _completeLogs.Add(Create(entity, 1));
+                    CompleteLogs.Add(Create(entity, 1));
                     foreach (var property in entity.SubLogs)
                     {
-                        _completeLogs.Add(Create(property, 2));
+                        CompleteLogs.Add(Create(property, 2));
                     }
                 }
             }
@@ -129,18 +129,18 @@ namespace EFCorePowerTools.ViewModels
             clonedLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.All(s => s.State == CompareState.Ok));
             foreach (var ctx in clonedLogs)
             {
-                _filteredLogs.Add(Create(ctx, 0));
+                FilteredLogs.Add(Create(ctx, 0));
                 foreach (var entity in ctx.SubLogs)
                 {
-                    _filteredLogs.Add(Create(entity, 1));
+                    FilteredLogs.Add(Create(entity, 1));
                     foreach (var property in entity.SubLogs)
                     {
-                        _filteredLogs.Add(Create(property, 2));
+                        FilteredLogs.Add(Create(property, 2));
                     }
                 }
             }
 
-            foreach (var item in _filteredLogs)
+            foreach (var item in FilteredLogs)
             {
                 Logs.Add(item);
             }

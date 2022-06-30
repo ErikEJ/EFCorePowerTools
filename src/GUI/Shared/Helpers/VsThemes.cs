@@ -26,7 +26,8 @@ namespace EFCorePowerTools.Helpers
 
             var colorval = (int)__VSSYSCOLOREX3.VSCOLOR_WINDOWTEXT;
             var brush = SolidColorBrushFromWin32Color(GetWin32Color(colorval));
-            //For dark theme Inactive item
+
+            // For dark theme Inactive item
             if (brush.Color.ToString() == "#FFF1F1F1")
             {
                 return new SolidColorBrush(Colors.Silver);
@@ -41,7 +42,8 @@ namespace EFCorePowerTools.Helpers
 
             var colorval = (int)__VSSYSCOLOREX3.VSCOLOR_WINDOWTEXT;
             var color = SolidColorBrushFromWin32Color(GetWin32Color(colorval)).Color;
-            //For dark theme Inactive item
+
+            // For dark theme Inactive item
             if (color.ToString() == "#FFF1F1F1")
             {
                 color = Colors.Silver;
@@ -71,8 +73,7 @@ namespace EFCorePowerTools.Helpers
             ThreadHelper.ThrowIfNotOnUIThread();
 
             uint win32Color;
-            var shell = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsUIShell)) as IVsUIShell2;
-            // ReSharper disable once PossibleNullReferenceException
+            var shell = Package.GetGlobalService(typeof(SVsUIShell)) as IVsUIShell2;
             shell.GetVSSysColorEx(color, out win32Color);
             return win32Color;
         }

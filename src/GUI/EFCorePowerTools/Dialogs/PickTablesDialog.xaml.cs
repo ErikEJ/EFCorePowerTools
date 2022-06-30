@@ -16,8 +16,9 @@ namespace EFCorePowerTools.Dialogs
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
         private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
 
-        public PickTablesDialog(ITelemetryAccess telemetryAccess,
-                                IPickTablesViewModel viewModel)
+        public PickTablesDialog(
+            ITelemetryAccess telemetryAccess,
+            IPickTablesViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(PickTablesDialog));
 
@@ -96,7 +97,7 @@ namespace EFCorePowerTools.Dialogs
             }
         }
 
-        private void tree_KeyUp(object sender, KeyEventArgs e)
+        private void Tree_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.F2)
             {

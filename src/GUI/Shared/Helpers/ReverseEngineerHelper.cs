@@ -73,7 +73,7 @@ namespace EFCorePowerTools.Helpers
             if (!string.IsNullOrEmpty(missingProviderPackage))
             {
                 errors.AppendLine();
-                errors.AppendFormat(String.Format(ReverseEngineerLocale.PackageNotFoundInProject, missingProviderPackage));
+                errors.AppendFormat(string.Format(ReverseEngineerLocale.PackageNotFoundInProject, missingProviderPackage));
             }
 
             return errors.ToString();

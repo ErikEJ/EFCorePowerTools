@@ -20,6 +20,35 @@ namespace EFCorePowerTools.ViewModels
         private string title;
         private bool mayIncludeConnectionString;
 
+        public ModelingOptionsViewModel(
+IVisualStudioAccess visualStudioAccess,
+Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
+        {
+            this.visualStudioAccess = visualStudioAccess;
+            this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
+
+            Title = string.Empty;
+            MayIncludeConnectionString = true;
+
+            OkCommand = new RelayCommand(Ok_Executed);
+            CancelCommand = new RelayCommand(Cancel_Executed);
+            AdvancedCommand = new RelayCommand(Advanced_Executed);
+
+            Model = new ModelingOptionsModel();
+            Model.PropertyChanged += Model_PropertyChanged;
+            GenerationModeList = new[]
+            {
+                ReverseEngineerLocale.EntityTypesAndContext,
+                ReverseEngineerLocale.DbContextOnly,
+                ReverseEngineerLocale.EntityTypesOnly,
+            };
+            HandlebarsLanguageList = new[]
+            {
+                "C#",
+                "TypeScript",
+            };
+        }
+
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand OkCommand { get; }
@@ -60,32 +89,39 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public ModelingOptionsViewModel(IVisualStudioAccess visualStudioAccess,
-            Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
+        void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
         {
-            this.visualStudioAccess = visualStudioAccess;
-            this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
+            Model.InstallNuGetPackage = presets.InstallNuGetPackage;
+            Model.SelectedToBeGenerated = presets.SelectedToBeGenerated;
+            Model.SelectedHandlebarsLanguage = presets.SelectedHandlebarsLanguage;
+            Model.IncludeConnectionString = presets.IncludeConnectionString;
+            Model.UseHandlebars = presets.UseHandlebars;
+            Model.UsePluralizer = presets.UsePluralizer;
+            Model.UseDatabaseNames = presets.UseDatabaseNames;
+            Model.Namespace = presets.Namespace;
+            Model.OutputPath = presets.OutputPath;
+            Model.OutputContextPath = presets.OutputContextPath;
+            Model.UseSchemaFolders = presets.UseSchemaFolders;
+            Model.ModelNamespace = presets.ModelNamespace;
+            Model.ContextNamespace = presets.ContextNamespace;
+            Model.ModelName = presets.ModelName;
+            Model.UseDataAnnotations = presets.UseDataAnnotations;
+            Model.UseDbContextSplitting = presets.UseDbContextSplitting;
+            Model.ProjectName = presets.ProjectName;
+            Model.DacpacPath = presets.DacpacPath;
+            Model.MapSpatialTypes = presets.MapSpatialTypes;
+            Model.MapHierarchyId = presets.MapHierarchyId;
+            Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
+            Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
+            Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
+            Model.UseNoConstructor = presets.UseNoConstructor;
+            Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
+            Model.UseNoNavigations = presets.UseNoNavigations;
+            Model.UseNullableReferences = presets.UseNullableReferences;
+            Model.UseNoObjectFilter = presets.UseNoObjectFilter;
+            Model.UseManyToManyEntity = presets.UseManyToManyEntity;
 
-            Title = string.Empty;
-            MayIncludeConnectionString = true;
-
-            OkCommand = new RelayCommand(Ok_Executed);
-            CancelCommand = new RelayCommand(Cancel_Executed);
-            AdvancedCommand = new RelayCommand(Advanced_Executed);
-
-            Model = new ModelingOptionsModel();
-            Model.PropertyChanged += Model_PropertyChanged;
-            GenerationModeList = new[]
-            {
-                ReverseEngineerLocale.EntityTypesAndContext,
-                ReverseEngineerLocale.DbContextOnly,
-                ReverseEngineerLocale.EntityTypesOnly,
-            };
-            HandlebarsLanguageList = new[]
-            {
-                "C#",
-                "TypeScript",
-            };
+            Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }
 
         private void Ok_Executed()
@@ -162,41 +198,6 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
             Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
             Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
-        }
-
-        void IModelingOptionsViewModel.ApplyPresets(ModelingOptionsModel presets)
-        {
-            Model.InstallNuGetPackage = presets.InstallNuGetPackage;
-            Model.SelectedToBeGenerated = presets.SelectedToBeGenerated;
-            Model.SelectedHandlebarsLanguage = presets.SelectedHandlebarsLanguage;
-            Model.IncludeConnectionString = presets.IncludeConnectionString;
-            Model.UseHandlebars = presets.UseHandlebars;
-            Model.UsePluralizer = presets.UsePluralizer;
-            Model.UseDatabaseNames = presets.UseDatabaseNames;
-            Model.Namespace = presets.Namespace;
-            Model.OutputPath = presets.OutputPath;
-            Model.OutputContextPath = presets.OutputContextPath;
-            Model.UseSchemaFolders = presets.UseSchemaFolders;
-            Model.ModelNamespace = presets.ModelNamespace;
-            Model.ContextNamespace = presets.ContextNamespace;
-            Model.ModelName = presets.ModelName;
-            Model.UseDataAnnotations = presets.UseDataAnnotations;
-            Model.UseDbContextSplitting = presets.UseDbContextSplitting;
-            Model.ProjectName = presets.ProjectName;
-            Model.DacpacPath = presets.DacpacPath;
-            Model.MapSpatialTypes = presets.MapSpatialTypes;
-            Model.MapHierarchyId = presets.MapHierarchyId;
-            Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
-            Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
-            Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
-            Model.UseNoConstructor = presets.UseNoConstructor;
-            Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
-            Model.UseNoNavigations = presets.UseNoNavigations;
-            Model.UseNullableReferences = presets.UseNullableReferences;
-            Model.UseNoObjectFilter = presets.UseNoObjectFilter;
-            Model.UseManyToManyEntity = presets.UseManyToManyEntity;
-
-            Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }
     }
 }

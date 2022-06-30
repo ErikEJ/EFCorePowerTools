@@ -14,8 +14,9 @@ namespace EFCorePowerTools.Dialogs
         private readonly Func<ModelingOptionsModel> getDialogResult;
         private readonly Action<ModelingOptionsModel> applyPresets;
 
-        public EfCoreModelDialog(ITelemetryAccess telemetryAccess,
-                                 IModelingOptionsViewModel viewModel)
+        public EfCoreModelDialog(
+            ITelemetryAccess telemetryAccess,
+            IModelingOptionsViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(EfCoreModelDialog));
 
@@ -31,11 +32,6 @@ namespace EFCorePowerTools.Dialogs
             Loaded += Window_Loaded;
 
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            FirstTextBox.Focus();
         }
 
         (bool ClosedByOK, ModelingOptionsModel Payload) IDialog<ModelingOptionsModel>.ShowAndAwaitUserResponse(bool modal)
@@ -58,6 +54,11 @@ namespace EFCorePowerTools.Dialogs
         {
             applyPresets(presets);
             return this;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            FirstTextBox.Focus();
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)

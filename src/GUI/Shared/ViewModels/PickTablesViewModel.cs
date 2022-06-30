@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -14,7 +13,6 @@ namespace EFCorePowerTools.ViewModels
 {
     public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {
-
         private bool? tableSelectionThreeState;
         private string searchText;
         private SearchMode searchMode = SearchMode.Text;
@@ -85,6 +83,40 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
+        public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
+        {
+            if (objects == null)
+            {
+                return;
+            }
+
+            ObjectTree.AddObjects(objects, customReplacers);
+        }
+
+        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
+        {
+            if (objects == null)
+            {
+                return;
+            }
+
+            ObjectTree.SelectObjects(objects);
+        }
+
+        public SerializationTableModel[] GetSelectedObjects()
+        {
+            return ObjectTree
+                .GetSelectedObjects()
+                .ToArray();
+        }
+
+        public Schema[] GetRenamedObjects()
+        {
+            return ObjectTree
+                .GetRenamedObjects()
+                .ToArray();
+        }
+
         private void Ok_Executed()
         {
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
@@ -127,40 +159,6 @@ namespace EFCorePowerTools.ViewModels
         private void UpdateTableSelectionThreeState()
         {
             TableSelectionThreeState = ObjectTree.GetSelectionState();
-        }
-
-        public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
-        {
-            if (objects == null)
-            {
-                return;
-            }
-
-            ObjectTree.AddObjects(objects, customReplacers);
-        }
-
-        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
-        {
-            if (objects == null)
-            {
-                return;
-            }
-
-            ObjectTree.SelectObjects(objects);
-        }
-
-        public SerializationTableModel[] GetSelectedObjects()
-        {
-            return ObjectTree
-                .GetSelectedObjects()
-                .ToArray();
-        }
-
-        public Schema[] GetRenamedObjects()
-        {
-            return ObjectTree
-                .GetRenamedObjects()
-                .ToArray();
         }
     }
 }

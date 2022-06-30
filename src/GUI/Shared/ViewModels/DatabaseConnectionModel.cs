@@ -16,6 +16,8 @@ namespace EFCorePowerTools.Common.Models
         private DatabaseType databaseType;
         private IVsDataConnection dataConnection;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string ConnectionName
         {
             get => connectionName;
@@ -88,8 +90,6 @@ namespace EFCorePowerTools.Common.Models
                 OnPropertyChanged();
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -58,7 +58,6 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-
         private void Loaded_Executed()
         {
             if (aboutExtensionModel.ExtensionVersion == null)

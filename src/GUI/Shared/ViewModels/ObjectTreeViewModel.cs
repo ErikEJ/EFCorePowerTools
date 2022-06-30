@@ -13,41 +13,43 @@ namespace EFCorePowerTools.ViewModels
 {
     public class ObjectTreeViewModel : ViewModelBase, IObjectTreeViewModel
     {
-        public event EventHandler ObjectSelectionChanged;
-
-        private IEnumerable<ITableInformationViewModel> _objects => Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects);
-        private IEnumerable<Schema> allSchemas = new List<Schema>();
         private readonly Func<ISchemaInformationViewModel> schemaInformationViewModelFactory;
         private readonly Func<ITableInformationViewModel> tableInformationViewModelFactory;
         private readonly Func<IColumnInformationViewModel> columnInformationViewModelFactory;
+        private IEnumerable<Schema> allSchemas = new List<Schema>();
 
-        public ObjectTreeViewModel(Func<ISchemaInformationViewModel> schemaInformationViewModelFactory,
-                                   Func<ITableInformationViewModel> tableInformationViewModelFactory,
-                                   Func<IColumnInformationViewModel> columnInformationViewModelFactory)
+        public ObjectTreeViewModel(
+            Func<ISchemaInformationViewModel> schemaInformationViewModelFactory,
+            Func<ITableInformationViewModel> tableInformationViewModelFactory,
+            Func<IColumnInformationViewModel> columnInformationViewModelFactory)
         {
             this.schemaInformationViewModelFactory = schemaInformationViewModelFactory ?? throw new ArgumentNullException(nameof(schemaInformationViewModelFactory));
             this.tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
             this.columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
         }
 
+        public event EventHandler ObjectSelectionChanged;
+
+        public bool IsInEditMode { get => Objects.Any(o => o.IsEditing) || Objects.SelectMany(c => c.Columns).Any(o => o.IsEditing); }
+
         public ObservableCollection<IObjectTreeRootItemViewModel> Types { get; } = new ObservableCollection<IObjectTreeRootItemViewModel>();
+
+        private IEnumerable<ITableInformationViewModel> Objects => Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects);
 
         public bool? GetSelectionState()
         {
-            return _objects.All(m => m.IsSelected.Value)
+            return Objects.All(m => m.IsSelected.Value)
                 ? true
-                : _objects.All(m => !m.IsSelected.Value)
+                : Objects.All(m => !m.IsSelected.Value)
                     ? (bool?)false
                     : null;
         }
-
-        public bool IsInEditMode { get => _objects.Any(o => o.IsEditing) || _objects.SelectMany(c => c.Columns).Any(o => o.IsEditing); }
 
         public void Search(string searchText, SearchMode searchMode)
         {
             var regex = new Regex(searchText, RegexOptions.None, new TimeSpan(0, 0, 3));
 
-            foreach (var obj in _objects)
+            foreach (var obj in Objects)
             {
                 if (searchMode == SearchMode.Text)
                 {
@@ -69,7 +71,7 @@ namespace EFCorePowerTools.ViewModels
 
         public void SetSelectionState(bool value)
         {
-            foreach (var t in _objects)
+            foreach (var t in Objects)
             {
                 t.SetSelectedCommand.Execute(value);
             }
@@ -77,7 +79,7 @@ namespace EFCorePowerTools.ViewModels
 
         public IEnumerable<SerializationTableModel> GetSelectedObjects()
         {
-            return _objects
+            return Objects
                 .Where(c => c.IsSelected.Value)
                 .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name).ToList()));
         }
@@ -163,7 +165,8 @@ namespace EFCorePowerTools.ViewModels
                 throw new ArgumentNullException(nameof(objects));
             }
 
-            var objectTypes = new List<(ObjectType ObjectType, string Text)> {
+            var objectTypes = new List<(ObjectType ObjectType, string Text)>
+            {
                 (ObjectType.Table, ReverseEngineerLocale.Tables),
                 (ObjectType.View, ReverseEngineerLocale.Views),
                 (ObjectType.Procedure, ReverseEngineerLocale.StoredProcedures),
@@ -234,6 +237,27 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
+        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
+        {
+            if (objects == null)
+            {
+                throw new ArgumentNullException(nameof(objects));
+            }
+
+            foreach (var obj in Objects)
+            {
+                var t = objects.FirstOrDefault(m => m.Name == obj.ModelDisplayName);
+                obj.SetSelectedCommand.Execute(t != null);
+                if (obj.ObjectType.HasColumns() && obj.IsSelected.Value)
+                {
+                    foreach (var column in obj.Columns)
+                    {
+                        column.SetSelected(!t?.ExcludedColumns?.Any(m => m == column.Name) ?? true);
+                    }
+                }
+            }
+        }
+
         private static void PredefineSelection(ITableInformationViewModel t)
         {
             var unSelect = t.Name.StartsWith("[__")
@@ -251,27 +275,6 @@ namespace EFCorePowerTools.ViewModels
             {
                 var handler = ObjectSelectionChanged;
                 handler?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
-        {
-            if (objects == null)
-            {
-                throw new ArgumentNullException(nameof(objects));
-            }
-
-            foreach (var obj in _objects)
-            {
-                var t = objects.FirstOrDefault(m => m.Name == obj.ModelDisplayName);
-                obj.SetSelectedCommand.Execute(t != null);
-                if (obj.ObjectType.HasColumns() && obj.IsSelected.Value)
-                {
-                    foreach (var column in obj.Columns)
-                    {
-                        column.SetSelected(!t?.ExcludedColumns?.Any(m => m == column.Name) ?? true);
-                    }
-                }
             }
         }
     }
