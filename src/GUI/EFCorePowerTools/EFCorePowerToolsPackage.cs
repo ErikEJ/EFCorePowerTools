@@ -23,6 +23,7 @@ using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
+using EFCorePowerTools.Options;
 using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
