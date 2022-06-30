@@ -54,7 +54,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converter\EnumToLabelConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\FilePathToDisplayNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\LevelToWidthConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converter\ObjectTypeToImageStyleConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\ObjectTypeIconToImageStyleConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\DotNetAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\ICredentialStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\IVisualStudioAccess.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ProjectExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ReverseEngineerOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ZipArchiveExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Guids.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GuidList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\AboutHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareAttributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareHandler.cs" />

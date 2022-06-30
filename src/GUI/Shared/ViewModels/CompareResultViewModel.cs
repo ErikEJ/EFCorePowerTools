@@ -15,8 +15,12 @@ namespace EFCorePowerTools.ViewModels
     public class CompareResultViewModel : ViewModelBase, ICompareResultViewModel
     {
         private bool showDifferencesOnly = true;
-        private List<CompareLogItemViewModel> CompleteLogs { get; } = new List<CompareLogItemViewModel>();
-        private List<CompareLogItemViewModel> FilteredLogs { get; } = new List<CompareLogItemViewModel>();
+
+        public CompareResultViewModel()
+        {
+            CloseCommand = new RelayCommand(Close_Executed);
+            SetVisibilityCommand = new RelayCommand<CompareLogItemViewModel>(SetVisibility);
+        }
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -46,43 +50,8 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public CompareResultViewModel()
-        {
-            CloseCommand = new RelayCommand(Close_Executed);
-            SetVisibilityCommand = new RelayCommand<CompareLogItemViewModel>(SetVisibility);
-        }
-
-        private void SetVisibility(CompareLogItemViewModel item)
-        {
-            var index = Logs.IndexOf(item);
-            if (item.Checked)
-            {
-                foreach (var l in Logs.Skip(index + 1).TakeWhile(c => c.Level > item.Level).Where(c => c.Level == item.Level + 1))
-                {
-                    l.Visible = true;
-                    if (l.Checked)
-                    {
-                        var index1 = Logs.IndexOf(l);
-                        foreach (var lo in Logs.Skip(index1 + 1).TakeWhile(c => c.Level > l.Level))
-                        {
-                            lo.Visible = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                foreach (var l in Logs.Skip(index + 1).TakeWhile(c => c.Level > item.Level))
-                {
-                    l.Visible = false;
-                }
-            }
-        }
-
-        private void Close_Executed()
-        {
-            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
-        }
+        private List<CompareLogItemViewModel> CompleteLogs { get; } = new List<CompareLogItemViewModel>();
+        private List<CompareLogItemViewModel> FilteredLogs { get; } = new List<CompareLogItemViewModel>();
 
         public void AddComparisonResult(IEnumerable<CompareLogModel> logs)
         {
@@ -144,6 +113,38 @@ namespace EFCorePowerTools.ViewModels
             {
                 Logs.Add(item);
             }
+        }
+
+        private void SetVisibility(CompareLogItemViewModel item)
+        {
+            var index = Logs.IndexOf(item);
+            if (item.Checked)
+            {
+                foreach (var l in Logs.Skip(index + 1).TakeWhile(c => c.Level > item.Level).Where(c => c.Level == item.Level + 1))
+                {
+                    l.Visible = true;
+                    if (l.Checked)
+                    {
+                        var index1 = Logs.IndexOf(l);
+                        foreach (var lo in Logs.Skip(index1 + 1).TakeWhile(c => c.Level > l.Level))
+                        {
+                            lo.Visible = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var l in Logs.Skip(index + 1).TakeWhile(c => c.Level > item.Level))
+                {
+                    l.Visible = false;
+                }
+            }
+        }
+
+        private void Close_Executed()
+        {
+            CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
     }
 }

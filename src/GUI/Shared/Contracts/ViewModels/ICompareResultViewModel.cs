@@ -12,14 +12,14 @@ namespace EFCorePowerTools.Contracts.ViewModels
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        void AddComparisonResult(IEnumerable<CompareLogModel> logs);
-
-        ObservableCollection<CompareLogItemViewModel> Logs { get; }
-
         bool ShowDifferencesOnly { get; set; }
 
         ICommand CloseCommand { get; }
 
         ICommand SetVisibilityCommand { get; }
+
+        ObservableCollection<CompareLogItemViewModel> Logs { get; }
+
+        void AddComparisonResult(IEnumerable<CompareLogModel> logs);
     }
 }

@@ -5,7 +5,6 @@ namespace EFCorePowerTools.Converter
 {
     public class ColumnEnabledConverter : IMultiValueConverter
     {
-
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var isTableSelected = (bool)values[0];
