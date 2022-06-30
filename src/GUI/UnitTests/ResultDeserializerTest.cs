@@ -7,7 +7,7 @@ namespace UnitTests
     [TestFixture]
     public class ResultDeserializerTest
     {
-        private readonly ResultDeserializer _parser = new ResultDeserializer();
+        private readonly ResultDeserializer parser = new ResultDeserializer();
 
         [Test]
         [Ignore("Investigate build fail")]
@@ -17,7 +17,7 @@ namespace UnitTests
             var result = ReadAllText("TableResult2.txt");
 
             // Act
-            var parsed = _parser.BuildTableResult(result);
+            var parsed = parser.BuildTableResult(result);
 
             // Assert
             Assert.IsNotNull(parsed);
@@ -32,7 +32,7 @@ namespace UnitTests
             var result = ReadAllText("TableResult1.txt");
 
             // Act
-            var parsed = _parser.BuildTableResult(result);
+            var parsed = parser.BuildTableResult(result);
 
             // Assert
             Assert.IsNotNull(parsed);
@@ -47,7 +47,7 @@ namespace UnitTests
             var result = ReadAllText("ErrorResult.txt");
 
             // Act
-            _parser.BuildResult(result);
+            parser.BuildResult(result);
 
             // Assert
         }

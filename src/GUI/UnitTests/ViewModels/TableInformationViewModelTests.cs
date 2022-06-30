@@ -161,9 +161,13 @@ namespace UnitTests.ViewModels
             // Act
             // Assert
             if (hasPrimaryKey)
+            {
                 Assert.AreEqual(ObjectTypeIcon.Table, vm.ObjectTypeIcon);
+            }
             else
+            {
                 Assert.AreEqual(ObjectTypeIcon.TableWithoutKey, vm.ObjectTypeIcon);
+            }
         }
 
         [Test]

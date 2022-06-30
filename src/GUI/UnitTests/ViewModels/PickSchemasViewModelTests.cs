@@ -66,8 +66,8 @@
 
             // Act
             vm.Schemas.Add(new SchemaInfo { Name = "TestSchema" });
-            vm.Schemas.Add(new SchemaInfo { Name = "" });
-            vm.Schemas.Add(new SchemaInfo { Name = "" });
+            vm.Schemas.Add(new SchemaInfo { Name = string.Empty });
+            vm.Schemas.Add(new SchemaInfo { Name = string.Empty });
             vm.OkCommand.Execute(null);
 
             // Assert

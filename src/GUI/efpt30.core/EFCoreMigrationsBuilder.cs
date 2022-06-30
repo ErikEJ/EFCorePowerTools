@@ -115,11 +115,11 @@ namespace Modelling
                 var sourceModel = relationalModelConvention.ProcessModelFinalized(migrationsAssembly.ModelSnapshot.Model);
 
                 hasDifferences = modelDiffer.HasDifferences(
-                     ((IMutableModel)sourceModel).FinalizeModel().GetRelationalModel(),
+                    ((IMutableModel)sourceModel).FinalizeModel().GetRelationalModel(),
                     context.Model.GetRelationalModel());
             }
 
-            var pendingModelChanges = (!databaseExists || hasDifferences);
+            var pendingModelChanges = !databaseExists || hasDifferences;
 #elif CORE60
             var hasDifferences = false;
             if (migrationsAssembly?.ModelSnapshot != null)
@@ -139,7 +139,8 @@ namespace Modelling
                         context.GetService<IDesignTimeModel>().Model.GetRelationalModel());
                 }
             }
-            var pendingModelChanges = (!databaseExists || hasDifferences);
+
+            var pendingModelChanges = !databaseExists || hasDifferences;
 #else
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
 

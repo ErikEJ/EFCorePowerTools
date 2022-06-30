@@ -1,23 +1,28 @@
-﻿using RevEng.Core;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using RevEng.Common;
+using RevEng.Core;
 
 [assembly: CLSCompliant(true)]
 
-namespace efreveng
+namespace EfReveng
 {
-    static class Program
+    public static class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
 #pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 Console.OutputEncoding = Encoding.UTF8;
+
+                if (args == null)
+                {
+                    throw new ArgumentNullException(nameof(args));
+                }
 
                 if (args.Length > 0)
                 {
@@ -28,8 +33,9 @@ namespace efreveng
                         SchemaInfo[] schemas = null;
                         if (args.Length == 4)
                         {
-                            schemas = args[3].Split(',').Select(s => new SchemaInfo {Name = s}).ToArray();
+                            schemas = args[3].Split(',').Select(s => new SchemaInfo { Name = s }).ToArray();
                         }
+
                         var builder = new TableListBuilder(dbTypeInt, args[2], schemas, mergeDacpacs);
 
                         var buildResult = builder.GetTableModels();
@@ -71,6 +77,7 @@ namespace efreveng
                     Console.Out.WriteLine("Invalid command line");
                     return 1;
                 }
+
                 return 0;
             }
             catch (Exception ex)

@@ -21,7 +21,7 @@ namespace Modelling
         public static List<Tuple<string, string>> GenerateSchemaCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContexts)
         {
             if (dbContexts == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(dbContexts));
             }
 
@@ -91,6 +91,7 @@ namespace Modelling
             {
                 throw new ArgumentException("No EF Core DbContext types found in the project");
             }
+
             return types;
         }
 
@@ -115,10 +116,10 @@ namespace Modelling
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
 #else
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
-#endif        
+#endif
         }
 
-            private static Assembly Load(string assemblyPath)
+        private static Assembly Load(string assemblyPath)
         {
             return File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : null;
         }

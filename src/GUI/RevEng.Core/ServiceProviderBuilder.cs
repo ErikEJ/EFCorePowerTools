@@ -39,7 +39,7 @@ namespace RevEng.Core
                 .AddEntityFrameworkDesignTimeServices()
 #if CORE50
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
-                 new CommentCSharpEntityTypeGenerator(                    
+                 new CommentCSharpEntityTypeGenerator(
                     provider.GetService<IAnnotationCodeGenerator>(),
                     provider.GetService<ICSharpHelper>(),
                     options.UseNullableReferences,
@@ -67,8 +67,7 @@ namespace RevEng.Core
                     provider.GetService<IModelRuntimeInitializer>(),
                     options.Tables,
                     options.DatabaseType,
-                    options.UseManyToManyEntity
-                ));
+                    options.UseManyToManyEntity));
 #else
                 .AddSingleton<IScaffoldingModelFactory>(provider =>
                 new ColumnRemovingScaffoldingModelFactory(

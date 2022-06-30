@@ -24,7 +24,7 @@ namespace Dgml
             var links = string.Join(Environment.NewLine, result.Links);
 
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
-return template.Replace("{Links}", links, StringComparison.OrdinalIgnoreCase).Replace("{Nodes}", nodes, StringComparison.OrdinalIgnoreCase);
+            return template.Replace("{Links}", links, StringComparison.OrdinalIgnoreCase).Replace("{Nodes}", nodes, StringComparison.OrdinalIgnoreCase);
 #else
             return template.Replace("{Links}", links).Replace("{Nodes}", nodes);
 #endif

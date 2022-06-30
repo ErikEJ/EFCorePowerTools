@@ -23,10 +23,10 @@ namespace RevEng.Core
         private readonly List<SerializationTableModel> tables;
         private readonly DatabaseType databaseType;
 #if CORE60
-        private readonly bool _ignoreManyToMany;
+        private readonly bool ignoreManyToMany;
 
-        public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany) :
-            base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions, modelRuntimeInitializer)
+        public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
+            : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions, modelRuntimeInitializer)
 #else
         public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, List<SerializationTableModel> tables, DatabaseType databaseType)
             : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions)
@@ -35,7 +35,7 @@ namespace RevEng.Core
             this.tables = tables;
             this.databaseType = databaseType;
 #if CORE60
-            _ignoreManyToMany = ignoreManyToMany;
+            this.ignoreManyToMany = ignoreManyToMany;
 #endif
         }
 
@@ -103,7 +103,7 @@ namespace RevEng.Core
 
             ArgumentNullException.ThrowIfNull(modelBuilder);
 
-            if (_ignoreManyToMany)
+            if (ignoreManyToMany)
             {
                 foreach (var fk in foreignKeys)
                 {

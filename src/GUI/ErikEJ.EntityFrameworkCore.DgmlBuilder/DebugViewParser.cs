@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Dgml
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity", Justification = ".NET FW does not support")]
     public static class DebugViewParser
     {
         public static DebugViewParserResult Parse(string[] debugViewLines, string dbContextName)

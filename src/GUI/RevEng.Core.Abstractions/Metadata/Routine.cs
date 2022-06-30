@@ -3,7 +3,7 @@
 namespace RevEng.Core.Abstractions.Metadata
 {
     /// <summary>
-    /// Base object for functions and stored procedures
+    /// Base object for functions and stored procedures.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "DTO")]
     public class Routine : SqlObjectBase
@@ -13,8 +13,8 @@ namespace RevEng.Core.Abstractions.Metadata
         public bool SupportsMultipleResultSet
         {
             get
-            { 
-                return Results.Count > 1; 
+            {
+                return Results.Count > 1;
             }
         }
 
