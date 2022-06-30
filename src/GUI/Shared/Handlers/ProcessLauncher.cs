@@ -75,6 +75,17 @@ namespace EFCorePowerTools.Handlers
             return result;
         }
 
+        private static string FixExtension(string startupOutputPath)
+        {
+            if (startupOutputPath.EndsWith(".exe"))
+            {
+                startupOutputPath = startupOutputPath.Remove(startupOutputPath.Length - 4, 4);
+                startupOutputPath += ".dll";
+            }
+
+            return startupOutputPath;
+        }
+
         private async Task<string> GetOutputInternalAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -211,17 +222,6 @@ namespace EFCorePowerTools.Handlers
             }
 
             return result;
-        }
-
-        private static string FixExtension(string startupOutputPath)
-        {
-            if (startupOutputPath.EndsWith(".exe"))
-            {
-                startupOutputPath = startupOutputPath.Remove(startupOutputPath.Length - 4, 4);
-                startupOutputPath += ".dll";
-            }
-
-            return startupOutputPath;
         }
 
         private async Task<string> DropNetCoreFilesAsync()

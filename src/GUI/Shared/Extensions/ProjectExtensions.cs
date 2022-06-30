@@ -140,6 +140,59 @@ namespace EFCorePowerTools.Extensions
             return await ContainsReferenceAsync(project, "Microsoft.EntityFrameworkCore.Design");
         }
 
+        public static bool IsCSharpProject(this Project project)
+        {
+            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160#issuecomment-960683498
+            project.GetItemInfo(out IVsHierarchy hierarchy, out _, out _);
+
+            return hierarchy.IsCapabilityMatch("CSharp");
+        }
+
+        public static async Task<bool> IsLegacyAsync(this Project project)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            return await IsNetFrameworkAsync(project) || await IsNetStandard20Async(project);
+        }
+
+        public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
+        {
+            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
+        }
+
+        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var list = new List<string>();
+
+            foreach (var item in result)
+            {
+                if (item.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+                    || item.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                {
+                    VSHelper.ShowError($"{SharedLocale.InvalidName}: {item.Item1}");
+                    return list;
+                }
+
+                var filePath = Path.Combine(
+                    Path.GetTempPath(),
+                    item.Item1 + extension);
+
+                if (File.Exists(filePath))
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                }
+
+                File.WriteAllText(filePath, item.Item2);
+                File.SetAttributes(filePath, FileAttributes.ReadOnly);
+
+                list.Add(filePath);
+            }
+
+            return list;
+        }
+
         private static async Task<Tuple<bool, string>> ContainsReferenceAsync(Project project, string designPackage)
         {
             var corePackage = "Microsoft.EntityFrameworkCore";
@@ -172,26 +225,6 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
-        public static bool IsCSharpProject(this Project project)
-        {
-            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160#issuecomment-960683498
-            project.GetItemInfo(out IVsHierarchy hierarchy, out _, out _);
-
-            return hierarchy.IsCapabilityMatch("CSharp");
-        }
-
-        public static async Task<bool> IsLegacyAsync(this Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            return await IsNetFrameworkAsync(project) || await IsNetStandard20Async(project);
-        }
-
-        public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
-        {
-            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
-        }
-
         private static async Task<bool> IsNetFrameworkAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -219,7 +252,7 @@ namespace EFCorePowerTools.Extensions
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ?? false;
         }
 
-        private async static Task<string> GetOutputPathAsync(Project project)
+        private static async Task<string> GetOutputPathAsync(Project project)
         {
             var outputPath = await project.GetAttributeAsync("OutputPath");
             var fullName = project.FullPath;
@@ -227,39 +260,6 @@ namespace EFCorePowerTools.Extensions
             var absoluteOutputPath = RevEng.Common.PathHelper.GetAbsPath(outputPath, fullName);
 
             return absoluteOutputPath;
-        }
-
-
-        public static List<string> GenerateFiles(this Project _, List<Tuple<string, string>> result, string extension)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var list = new List<string>();
-
-            foreach (var item in result)
-            {
-                if (item.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
-                    || item.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
-                {
-                    VSHelper.ShowError($"{SharedLocale.InvalidName}: {item.Item1}");
-                    return list;
-                }
-
-                var filePath = Path.Combine(Path.GetTempPath(),
-                    item.Item1 + extension);
-
-                if (File.Exists(filePath))
-                {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
-                }
-
-                File.WriteAllText(filePath, item.Item2);
-                File.SetAttributes(filePath, FileAttributes.ReadOnly);
-
-                list.Add(filePath);
-            }
-
-            return list;
         }
     }
 }

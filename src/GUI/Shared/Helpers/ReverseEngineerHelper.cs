@@ -79,6 +79,13 @@ namespace EFCorePowerTools.Helpers
             return errors.ToString();
         }
 
+        public string GetReadMeText(ReverseEngineerOptions options, string content)
+        {
+            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
+                .Replace("[ConnectionString]", options.ConnectionString)
+                .Replace("[ContextName]", options.ContextClassName);
+        }
+
         private string ReplaceFirst(string text, string search, string replace)
         {
             int pos = text.IndexOf(search);
@@ -88,13 +95,6 @@ namespace EFCorePowerTools.Helpers
             }
 
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
-        }
-
-        public string GetReadMeText(ReverseEngineerOptions options, string content)
-        {
-            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
-                .Replace("[ConnectionString]", options.ConnectionString)
-                .Replace("[ContextName]", options.ContextClassName);
         }
 
         private string GetProviderName(DatabaseType databaseType)

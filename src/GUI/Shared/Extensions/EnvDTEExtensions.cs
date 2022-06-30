@@ -125,11 +125,6 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        /// <summary>
-        /// Recursively walks over the project item tree and looks for *.dacpac linked files
-        /// </summary>
-        /// <param name="projectItems"></param>
-        /// <param name="files"></param>
         private static async System.Threading.Tasks.Task LinkedFilesSearchAsync(IEnumerable<SolutionItem> projectItems, HashSet<string> files)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -159,11 +154,6 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        /// <summary>
-        /// Looks for *.dacpac items which are added to the solution as links
-        /// </summary>
-        /// <param name="result">A collection with file paths. New unique paths will be added there</param>
-        /// <param name="project"></param>
         private static async System.Threading.Tasks.Task AddLinkedFilesAsync(HashSet<string> result, Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();

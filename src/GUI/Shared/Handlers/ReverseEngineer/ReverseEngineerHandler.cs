@@ -383,7 +383,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             options.Tables = pickTablesResult.Payload.Objects.ToList();
             options.CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList();
-            return (pickTablesResult.ClosedByOK);
+            return pickTablesResult.ClosedByOK;
         }
 
         private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName)

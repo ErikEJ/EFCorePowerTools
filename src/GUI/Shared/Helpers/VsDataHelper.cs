@@ -14,6 +14,133 @@ namespace EFCorePowerTools.Helpers
 {
     internal class VsDataHelper
     {
+        public static string GetDatabaseName(string connectionString, DatabaseType dbType)
+        {
+            var builder = new DbConnectionStringBuilder();
+            builder.ConnectionString = connectionString;
+
+            if (builder.TryGetValue("Initial Catalog", out object catalog))
+            {
+                return catalog.ToString();
+            }
+
+            if (builder.TryGetValue("Database", out object database))
+            {
+                return database.ToString();
+            }
+
+            if (builder.TryGetValue("Data Source", out object dataSource))
+            {
+                return dataSource.ToString();
+            }
+
+            if (builder.TryGetValue("DataSource", out object dataSource2))
+            {
+                return dataSource2.ToString();
+            }
+
+            return dbType.ToString();
+        }
+
+        public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
+        {
+            if (dbType == DatabaseType.SQLServer)
+            {
+                return PathFromConnectionString(connectionString);
+            }
+
+            var builder = new DbConnectionStringBuilder();
+            builder.ConnectionString = connectionString;
+
+            var result = string.Empty;
+
+            if (builder.TryGetValue("Data Source", out object dataSource))
+            {
+                result += dataSource.ToString();
+            }
+
+            if (builder.TryGetValue("DataSource", out object dataSource2))
+            {
+                result += dataSource2.ToString();
+            }
+
+            if (builder.TryGetValue("Database", out object database))
+            {
+                result += "." + database.ToString();
+            }
+
+            return result;
+        }
+
+        internal static DatabaseConnectionModel PromptForInfo(EFCorePowerToolsPackage package)
+        {
+            // Show dialog with SqlClient selected by default
+            var dialogFactory = package.GetService<IVsDataConnectionDialogFactory>();
+            var dialog = dialogFactory.CreateConnectionDialog();
+            dialog.AddAllSources();
+            dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
+            var dialogResult = dialog.ShowDialog(connect: true);
+
+            if (dialogResult == null)
+            {
+                return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
+            }
+
+            var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
+            if (info.ConnectionName == Guid.Empty.ToString())
+            {
+                return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
+            }
+
+            var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.ConnectionName));
+            info.ConnectionName = savedName;
+            info.DataConnection = dialogResult;
+            return info;
+        }
+
+        internal static string PromptForDacpac()
+        {
+            var ofd = new OpenFileDialog
+            {
+                Filter = "SQL Server Database Project|*.dacpac",
+                CheckFileExists = true,
+                Multiselect = false,
+                ValidateNames = true,
+                Title = "Select .dacpac File",
+            };
+            if (ofd.ShowDialog() != DialogResult.OK)
+            {
+                return null;
+            }
+
+            return ofd.FileName;
+        }
+
+        internal static string SaveDataConnection(
+            EFCorePowerToolsPackage package,
+            string encryptedConnectionString,
+            DatabaseType dbType,
+            Guid provider)
+        {
+            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
+            var savedName = GetSavedConnectionName(DataProtection.DecryptString(encryptedConnectionString), dbType);
+            dataExplorerConnectionManager.AddConnection(savedName, provider, encryptedConnectionString, true);
+            return savedName;
+        }
+
+        internal static void RemoveDataConnection(EFCorePowerToolsPackage package, IVsDataConnection dataConnection)
+        {
+            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
+
+            foreach (var connection in dataExplorerConnectionManager.Connections.Values)
+            {
+                if (connection.Connection == dataConnection)
+                {
+                    dataExplorerConnectionManager.RemoveConnection(connection);
+                }
+            }
+        }
+
         internal Dictionary<string, DatabaseConnectionModel> GetDataConnections(EFCorePowerToolsPackage package)
         {
             var credentialStore = new CredentialStore();
@@ -102,75 +229,6 @@ namespace EFCorePowerTools.Helpers
             return databaseList;
         }
 
-        internal static DatabaseConnectionModel PromptForInfo(EFCorePowerToolsPackage package)
-        {
-            // Show dialog with SqlClient selected by default
-            var dialogFactory = package.GetService<IVsDataConnectionDialogFactory>();
-            var dialog = dialogFactory.CreateConnectionDialog();
-            dialog.AddAllSources();
-            dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
-            var dialogResult = dialog.ShowDialog(connect: true);
-
-            if (dialogResult == null)
-            {
-                return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
-            }
-
-            var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
-            if (info.ConnectionName == Guid.Empty.ToString())
-            {
-                return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
-            }
-
-            var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.ConnectionName));
-            info.ConnectionName = savedName;
-            info.DataConnection = dialogResult;
-            return info;
-        }
-
-        internal static string PromptForDacpac()
-        {
-            var ofd = new OpenFileDialog
-            {
-                Filter = "SQL Server Database Project|*.dacpac",
-                CheckFileExists = true,
-                Multiselect = false,
-                ValidateNames = true,
-                Title = "Select .dacpac File",
-            };
-            if (ofd.ShowDialog() != DialogResult.OK)
-            {
-                return null;
-            }
-
-            return ofd.FileName;
-        }
-
-        internal static string SaveDataConnection(
-            EFCorePowerToolsPackage package,
-            string encryptedConnectionString,
-            DatabaseType dbType,
-            Guid provider)
-        {
-            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-            var savedName = GetSavedConnectionName(DataProtection.DecryptString(encryptedConnectionString), dbType);
-            dataExplorerConnectionManager.AddConnection(savedName, provider, encryptedConnectionString, true);
-            return savedName;
-        }
-
-        internal static void RemoveDataConnection(EFCorePowerToolsPackage package, IVsDataConnection dataConnection)
-        {
-            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-
-            foreach (var connection in dataExplorerConnectionManager.Connections.Values)
-            {
-                if (connection.Connection == dataConnection)
-                {
-                    dataExplorerConnectionManager.RemoveConnection(connection);
-                }
-            }
-        }
-
         private static DatabaseConnectionModel GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
         {
             var dbType = DatabaseType.Undefined;
@@ -224,36 +282,6 @@ namespace EFCorePowerTools.Helpers
             };
         }
 
-        public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
-        {
-            if (dbType == DatabaseType.SQLServer)
-            {
-                return PathFromConnectionString(connectionString);
-            }
-
-            var builder = new DbConnectionStringBuilder();
-            builder.ConnectionString = connectionString;
-
-            var result = string.Empty;
-
-            if (builder.TryGetValue("Data Source", out object dataSource))
-            {
-                result += dataSource.ToString();
-            }
-
-            if (builder.TryGetValue("DataSource", out object dataSource2))
-            {
-                result += dataSource2.ToString();
-            }
-
-            if (builder.TryGetValue("Database", out object database))
-            {
-                result += "." + database.ToString();
-            }
-
-            return result;
-        }
-
         private static string PathFromConnectionString(string connectionString)
         {
             var builder = new SqlConnectionStringBuilder(connectionString);
@@ -284,34 +312,6 @@ namespace EFCorePowerTools.Helpers
             }
 
             return server + "." + database;
-        }
-
-        public static string GetDatabaseName(string connectionString, DatabaseType dbType)
-        {
-            var builder = new DbConnectionStringBuilder();
-            builder.ConnectionString = connectionString;
-
-            if (builder.TryGetValue("Initial Catalog", out object catalog))
-            {
-                return catalog.ToString();
-            }
-
-            if (builder.TryGetValue("Database", out object database))
-            {
-                return database.ToString();
-            }
-
-            if (builder.TryGetValue("Data Source", out object dataSource))
-            {
-                return dataSource.ToString();
-            }
-
-            if (builder.TryGetValue("DataSource", out object dataSource2))
-            {
-                return dataSource2.ToString();
-            }
-
-            return dbType.ToString();
         }
     }
 }

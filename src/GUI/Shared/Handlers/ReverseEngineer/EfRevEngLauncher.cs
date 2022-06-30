@@ -21,6 +21,35 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly string revengRoot;
         private readonly ResultDeserializer resultDeserializer;
 
+        public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
+        {
+            this.options = options;
+            this.codeGenerationMode = codeGenerationMode;
+            var versionSuffix = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+            revengFolder = "efreveng3.";
+
+            switch (codeGenerationMode)
+            {
+                case CodeGenerationMode.EFCore5:
+                    revengFolder = "efreveng5.";
+                    break;
+                case CodeGenerationMode.EFCore3:
+                    revengFolder = "efreveng3.";
+                    break;
+                case CodeGenerationMode.EFCore6:
+                    revengFolder = "efreveng6.";
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            revengRoot = revengFolder;
+
+            revengFolder += versionSuffix;
+            resultDeserializer = new ResultDeserializer();
+        }
+
         public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode, Project project)
         {
             var databaseObjects = options.Tables;
@@ -78,35 +107,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await launcher.GetOutputAsync();
         }
 
-        public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
-        {
-            this.options = options;
-            this.codeGenerationMode = codeGenerationMode;
-            var versionSuffix = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-            revengFolder = "efreveng3.";
-
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore5:
-                    revengFolder = "efreveng5.";
-                    break;
-                case CodeGenerationMode.EFCore3:
-                    revengFolder = "efreveng3.";
-                    break;
-                case CodeGenerationMode.EFCore6:
-                    revengFolder = "efreveng6.";
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
-
-            revengRoot = revengFolder;
-
-            revengFolder += versionSuffix;
-            resultDeserializer = new ResultDeserializer();
-        }
-
         public async Task<List<TableModel>> GetTablesAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas, bool mergeDacpacs)
         {
             var arguments = mergeDacpacs.ToString() + " " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
@@ -117,6 +117,44 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             return await GetTablesInternalAsync(arguments);
+        }
+
+        private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
+        {
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            startInfo.CreateNoWindow = true;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
+            var standardOutput = new StringBuilder();
+            var error = string.Empty;
+
+            using (var process = Process.Start(startInfo))
+            {
+                while (process != null && !process.HasExited)
+                {
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                }
+
+                if (process != null)
+                {
+                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                }
+
+                if (process != null)
+                {
+                    error = await process.StandardError.ReadToEndAsync();
+                }
+            }
+
+            var result = standardOutput.ToString();
+
+            if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
+            {
+                result = "Error:" + Environment.NewLine + error;
+            }
+
+            return result;
         }
 
         private async Task<List<TableModel>> GetTablesInternalAsync(string arguments)
@@ -167,7 +205,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
             catch
             {
-                //Ignore
+                // Ignore
             }
 
             return resultDeserializer.BuildResult(standardOutput);
@@ -200,44 +238,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             return isInstalled;
-        }
-
-        private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
-        {
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
-            startInfo.CreateNoWindow = true;
-            startInfo.StandardOutputEncoding = Encoding.UTF8;
-            var standardOutput = new StringBuilder();
-            var error = string.Empty;
-
-            using (var process = Process.Start(startInfo))
-            {
-                while (process != null && !process.HasExited)
-                {
-                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
-                }
-
-                if (process != null)
-                {
-                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
-                }
-
-                if (process != null)
-                {
-                    error = await process.StandardError.ReadToEndAsync();
-                }
-            }
-
-            var result = standardOutput.ToString();
-
-            if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
-            {
-                result = "Error:" + Environment.NewLine + error;
-            }
-
-            return result;
         }
 
         private string DropNetCoreFiles()

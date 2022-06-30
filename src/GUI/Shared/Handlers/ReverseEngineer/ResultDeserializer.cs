@@ -43,7 +43,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             throw new InvalidOperationException($"Table list error: Unable to launch external process: {Environment.NewLine + output}");
         }
 
-        private static bool TryRead<T>(string options, out T deserialized) where T : class, new()
+        private static bool TryRead<T>(string options, out T deserialized)
+            where T : class, new()
         {
             try
             {

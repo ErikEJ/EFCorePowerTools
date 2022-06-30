@@ -85,7 +85,7 @@ namespace EFCorePowerTools.DAL
 
         void IVisualStudioAccess.OpenFile(string fileName)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async delegate
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();

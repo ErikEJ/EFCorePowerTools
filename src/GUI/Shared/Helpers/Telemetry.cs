@@ -6,7 +6,7 @@ using RevEng.Common;
 namespace EFCorePowerTools.Helpers
 {
     /// <summary>
-    /// Reports anonymous usage through ApplicationInsights
+    /// Reports anonymous usage through ApplicationInsights.
     /// </summary>
     public static class Telemetry
     {
@@ -50,7 +50,6 @@ namespace EFCorePowerTools.Helpers
 #endif
         }
 
-        /// <summary>Tracks any exception.</summary>
         public static void TrackException(Exception ex)
         {
 #if !DEBUG

@@ -2,8 +2,15 @@
 
 namespace EFCorePowerTools.Extensions
 {
-    public static class FocusExtension
+    public static class FocusExtensions
     {
+        public static readonly DependencyProperty IsFocusedProperty =
+           DependencyProperty.RegisterAttached(
+               "IsFocused",
+               typeof(bool),
+               typeof(FocusExtensions),
+               new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
+
         public static bool GetIsFocused(DependencyObject obj)
         {
             return (bool)obj.GetValue(IsFocusedProperty);
@@ -13,13 +20,6 @@ namespace EFCorePowerTools.Extensions
         {
             obj.SetValue(IsFocusedProperty, value);
         }
-
-        public static readonly DependencyProperty IsFocusedProperty =
-            DependencyProperty.RegisterAttached(
-                "IsFocused",
-                typeof(bool),
-                typeof(FocusExtension),
-                new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
 
         private static void OnIsFocusedPropertyChanged(
             DependencyObject d,
