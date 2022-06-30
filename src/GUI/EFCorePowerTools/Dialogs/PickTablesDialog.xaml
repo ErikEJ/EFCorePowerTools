@@ -258,7 +258,7 @@
                         <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
                                  Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"
                                  Style="{StaticResource RenameTextBoxStyle}"
-                                 ext:FocusExtension.IsFocused="{Binding IsEditing}"
+                                 ext:FocusExtensions.IsFocused="{Binding IsEditing}"
                                  KeyUp="TreeTextRenamer_KeyUp"
                                  Grid.Column="2">
                             <i:Interaction.Triggers>
@@ -301,7 +301,7 @@
                         <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
                                  Style="{StaticResource RenameTextBoxStyle}"
                                  Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"
-                                 ext:FocusExtension.IsFocused="{Binding IsEditing}"
+                                 ext:FocusExtensions.IsFocused="{Binding IsEditing}"
                                  KeyUp="TreeTextRenamer_KeyUp"
                                  Grid.Column="2">
                             <i:Interaction.Triggers>
