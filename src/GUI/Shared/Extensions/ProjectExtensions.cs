@@ -1,15 +1,15 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -20,7 +20,7 @@ namespace EFCorePowerTools.Extensions
         public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            
+
             var assemblyName = await project.GetAttributeAsync("AssemblyName");
 
             var assemblyNameExe = assemblyName + ".exe";
@@ -62,7 +62,7 @@ namespace EFCorePowerTools.Extensions
             var files = Directory.GetFiles(projectPath, "efpt.*config.json", SearchOption.AllDirectories);
             result.AddRange(files
                 .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\")));
-                
+
             if (result.Count == 0)
             {
                 result.Add(Path.Combine(projectPath, "efpt.config.json"));
@@ -101,18 +101,22 @@ namespace EFCorePowerTools.Extensions
             {
                 providerPackage = "Microsoft.EntityFrameworkCore.Sqlite";
             }
+
             if (dbType == DatabaseType.Npgsql)
             {
                 providerPackage = "Npgsql.EntityFrameworkCore.PostgreSQL";
             }
+
             if (dbType == DatabaseType.Mysql)
             {
                 providerPackage = "Pomelo.EntityFrameworkCore.MySql";
             }
+
             if (dbType == DatabaseType.Oracle)
             {
                 providerPackage = "Oracle.EntityFrameworkCore";
             }
+
             if (dbType == DatabaseType.Firebird)
             {
                 providerPackage = "FirebirdSql.EntityFrameworkCore.Firebird";
@@ -156,6 +160,7 @@ namespace EFCorePowerTools.Extensions
                         {
                             coreVersion = lib.Version.ToString();
                         }
+
                         if (lib.Name.Equals(designPackage))
                         {
                             hasDesign = true;
@@ -181,7 +186,7 @@ namespace EFCorePowerTools.Extensions
 
             return await IsNetFrameworkAsync(project) || await IsNetStandard20Async(project);
         }
-        
+
         public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
         {
             return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
@@ -247,11 +252,13 @@ namespace EFCorePowerTools.Extensions
                 {
                     File.SetAttributes(filePath, FileAttributes.Normal);
                 }
+
                 File.WriteAllText(filePath, item.Item2);
                 File.SetAttributes(filePath, FileAttributes.ReadOnly);
 
                 list.Add(filePath);
             }
+
             return list;
         }
     }

@@ -1,28 +1,28 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EFCorePowerTools.Common.Models;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Globalization;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
     internal class CompareHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
         private readonly VsDataHelper vsDataHelper;
 
         public CompareHandler(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
             vsDataHelper = new VsDataHelper();
         }
 
@@ -80,6 +80,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     {
                         await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(5, 1, 3));
                     }
+
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
                     return;
                 }
@@ -88,10 +89,10 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
 
-                var databaseList = vsDataHelper.GetDataConnections(_package);
+                var databaseList = vsDataHelper.GetDataConnections(package);
                 var contextTypes = await GetDbContextTypesAsync(outputPath, project);
 
-                var optionsDialog = _package.GetView<ICompareOptionsDialog>();
+                var optionsDialog = package.GetView<ICompareOptionsDialog>();
 
                 if (databaseList != null && databaseList.Any())
                 {
@@ -111,7 +112,9 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 var pickDataSourceResult = optionsDialog.ShowAndAwaitUserResponse(true);
                 if (!pickDataSourceResult.ClosedByOK)
+                {
                     return;
+                }
 
                 if (!pickDataSourceResult.Payload.ContextTypes.Any())
                 {
@@ -127,19 +130,19 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 var timer = new Stopwatch();
                 timer.Start();
-                var comparisonResult = await GetComparisonResultAsync( 
+                var comparisonResult = await GetComparisonResultAsync(
                     outputPath,
                     project,
-                    pickDataSourceResult.Payload.Connection, 
+                    pickDataSourceResult.Payload.Connection,
                     pickDataSourceResult.Payload.ContextTypes.ToArray());
                 timer.Stop();
 
                 await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
                 await VS.StatusBar.ShowMessageAsync(string.Format(CompareLocale.CompareCompletedIn, timer.Elapsed.ToString("h\\:mm\\:ss")));
-                
+
                 if (comparisonResult.Any())
                 {
-                    var resultDialog = _package.GetView<ICompareResultDialog>();
+                    var resultDialog = package.GetView<ICompareResultDialog>();
                     resultDialog.AddComparisonResult(comparisonResult);
                     resultDialog.ShowAndAwaitUserResponse(true);
                 }
@@ -156,12 +159,12 @@ namespace EFCorePowerTools.Handlers.Compare
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    _package.LogError(new List<string>(), innerException);
+                    package.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                _package.LogError(new List<string>(), exception);
+                package.LogError(new List<string>(), exception);
             }
         }
 
@@ -192,9 +195,10 @@ namespace EFCorePowerTools.Handlers.Compare
             return result;
         }
 
-        private async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(string outputPath, 
-            Project project, 
-            DatabaseConnectionModel connection, 
+        private async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(
+            string outputPath,
+            Project project,
+            DatabaseConnectionModel connection,
             string[] contextNames)
         {
             var processLauncher = new ProcessLauncher(project);

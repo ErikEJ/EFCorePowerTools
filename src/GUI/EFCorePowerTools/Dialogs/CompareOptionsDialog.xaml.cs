@@ -1,17 +1,17 @@
-﻿namespace EFCorePowerTools.Dialogs
-{
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using EFCorePowerTools.Common.Models;
-    using Common.DAL;
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
 
+namespace EFCorePowerTools.Dialogs
+{
     public partial class CompareOptionsDialog : ICompareOptionsDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, IEnumerable<string> contextTypes)> _getDialogResult;
-        private readonly Action<IEnumerable<DatabaseConnectionModel>> _addConnections;
-        private readonly Action<IEnumerable<string>> _contextTypes;
+        private readonly Func<(DatabaseConnectionModel Connection, IEnumerable<string> contextTypes)> getDialogResult;
+        private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
+        private readonly Action<IEnumerable<string>> contextTypes;
 
         public CompareOptionsDialog(ITelemetryAccess telemetryAccess,
                                     ICompareOptionsViewModel viewModel)
@@ -24,9 +24,9 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = viewModel.GetSelection;
-            _addConnections = viewModel.AddDatabaseConnections;
-            _contextTypes = viewModel.AddContextTypes;
+            getDialogResult = viewModel.GetSelection;
+            addConnections = viewModel.AddDatabaseConnections;
+            contextTypes = viewModel.AddContextTypes;
             InitializeComponent();
         }
 
@@ -43,17 +43,17 @@
                 closedByOkay = ShowDialog() == true;
             }
 
-            return (closedByOkay, _getDialogResult());
+            return (closedByOkay, getDialogResult());
         }
 
         public void AddConnections(IEnumerable<DatabaseConnectionModel> connections)
         {
-            _addConnections(connections);
+            addConnections(connections);
         }
 
         public void AddContextTypes(IEnumerable<string> contextTypes)
         {
-            _contextTypes(contextTypes);
+            this.contextTypes(contextTypes);
         }
     }
 }

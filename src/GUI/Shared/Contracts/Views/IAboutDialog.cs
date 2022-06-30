@@ -2,6 +2,5 @@
 {
     public interface IAboutDialog : IDialog<object>
     {
-        
     }
 }

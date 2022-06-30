@@ -1,10 +1,10 @@
-﻿using AdysTech.CredentialManager;
-using EFCorePowerTools.DAL;
-using EFCorePowerTools.Common.Models;
-using RevEng.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using AdysTech.CredentialManager;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.DAL;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Helpers
 {
@@ -22,7 +22,7 @@ namespace EFCorePowerTools.Helpers
             {
                 return result;
             }
-            
+
             var credentials = list.Where(c => c.TargetName.StartsWith($"{Root}", System.StringComparison.Ordinal)).ToList();
 
             foreach (var credential in credentials)
@@ -51,7 +51,7 @@ namespace EFCorePowerTools.Helpers
             cred.TargetName = Root + connectionModel.ConnectionName;
             cred.Attributes = new Dictionary<string, object>
             {
-                { nameof(DatabaseType), (int)connectionModel.DatabaseType }
+                { nameof(DatabaseType), (int)connectionModel.DatabaseType },
             };
             cred.Persistance = Persistance.LocalMachine;
             cred.Type = CredentialType.Generic;

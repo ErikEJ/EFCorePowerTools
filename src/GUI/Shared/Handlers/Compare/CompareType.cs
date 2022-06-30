@@ -1,5 +1,5 @@
-﻿using EFCorePowerTools.Locales;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using EFCorePowerTools.Locales;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -26,7 +26,6 @@ namespace EFCorePowerTools.Handlers.Compare
         [Display(Name = "Foreign key", ResourceType = typeof(CompareLocale))]
         ForeignKey,
         [Display(Name = "Index", ResourceType = typeof(CompareLocale))]
-        Index
+        Index,
     }
-
 }

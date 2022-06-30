@@ -1,7 +1,7 @@
-﻿using EFCorePowerTools.Handlers.ReverseEngineer;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -9,8 +9,15 @@ namespace EFCorePowerTools.Extensions
     {
         public static ReverseEngineerOptions TryRead(string optionsPath, string projectDirectory)
         {
-            if (!File.Exists(optionsPath)) return null;
-            if (File.Exists(optionsPath + ".ignore")) return null;
+            if (!File.Exists(optionsPath))
+            {
+                return null;
+            }
+
+            if (File.Exists(optionsPath + ".ignore"))
+            {
+                return null;
+            }
 
             var couldRead = TryRead(optionsPath, out ReverseEngineerOptions deserialized);
             if (couldRead)
@@ -22,6 +29,7 @@ namespace EFCorePowerTools.Extensions
 
                 return deserialized;
             }
+
             return null;
         }
 
@@ -87,7 +95,8 @@ namespace EFCorePowerTools.Extensions
             return uiHint;
         }
 
-        private static bool TryRead<T>(string optionsPath, out T deserialized) where T : class, new()
+        private static bool TryRead<T>(string optionsPath, out T deserialized)
+            where T : class, new()
         {
             try
             {

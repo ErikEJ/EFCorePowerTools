@@ -1,28 +1,32 @@
-﻿namespace EFCorePowerTools.Common.Models
-{
-    using JetBrains.Annotations;
-    using Microsoft.VisualStudio.Data.Services;
-    using RevEng.Common;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using Microsoft.VisualStudio.Data.Services;
+using RevEng.Common;
 
+namespace EFCorePowerTools.Common.Models
+{
     /// <summary>
     /// A model holding data about a database connection.
     /// </summary>
     public class DatabaseConnectionModel : INotifyPropertyChanged
     {
-        private string _connectionName;
-        private string _connectionString;
-        private DatabaseType _databaseType;
-        private IVsDataConnection _dataConnection;
+        private string connectionName;
+        private string connectionString;
+        private DatabaseType databaseType;
+        private IVsDataConnection dataConnection;
 
         public string ConnectionName
         {
-            get => _connectionName;
+            get => connectionName;
             set
             {
-                if (value == _connectionName) return;
-                _connectionName = value;
+                if (value == connectionName)
+                {
+                    return;
+                }
+
+                connectionName = value;
                 OnPropertyChanged();
             }
         }
@@ -42,33 +46,45 @@
 
         public string ConnectionString
         {
-            get => _connectionString;
+            get => connectionString;
             set
             {
-                if (value == _connectionString) return;
-                _connectionString = value;
+                if (value == connectionString)
+                {
+                    return;
+                }
+
+                connectionString = value;
                 OnPropertyChanged();
             }
         }
 
         public DatabaseType DatabaseType
         {
-            get => _databaseType;
+            get => databaseType;
             set
             {
-                if (value == _databaseType) return;
-                _databaseType = value;
+                if (value == databaseType)
+                {
+                    return;
+                }
+
+                databaseType = value;
                 OnPropertyChanged();
             }
         }
 
         public IVsDataConnection DataConnection
         {
-            get => _dataConnection;
+            get => dataConnection;
             set
             {
-                if (value == _dataConnection) return;
-                _dataConnection = value;
+                if (value == dataConnection)
+                {
+                    return;
+                }
+
+                dataConnection = value;
                 OnPropertyChanged();
             }
         }

@@ -1,8 +1,8 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using System;
-    using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IAboutViewModel : IViewModel
     {
         event EventHandler CloseRequested;

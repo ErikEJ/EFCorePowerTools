@@ -1,20 +1,20 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using EFCorePowerTools.Contracts.ViewModels;
-    using EFCorePowerTools.Handlers.Compare;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Handlers.Compare;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using Newtonsoft.Json;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class CompareResultViewModel : ViewModelBase, ICompareResultViewModel
     {
-        private bool _showDifferencesOnly = true;
+        private bool showDifferencesOnly = true;
         private List<CompareLogItemViewModel> _completeLogs { get; } = new List<CompareLogItemViewModel>();
         private List<CompareLogItemViewModel> _filteredLogs { get; } = new List<CompareLogItemViewModel>();
 
@@ -24,16 +24,17 @@
         {
             get;
         }
+
         public ICommand SetVisibilityCommand { get; }
 
         public ObservableCollection<CompareLogItemViewModel> Logs { get; set; } = new ObservableCollection<CompareLogItemViewModel>();
 
         public bool ShowDifferencesOnly
         {
-            get => _showDifferencesOnly;
+            get => showDifferencesOnly;
             set
             {
-                Set(ref _showDifferencesOnly, value);
+                Set(ref showDifferencesOnly, value);
                 Logs.Clear();
                 var l = value ? _filteredLogs : _completeLogs;
                 foreach (var item in l)
@@ -97,7 +98,7 @@
                     Name = log.Name,
                     State = log.State,
                     Type = log.Type,
-                    HasChildren = log.SubLogs.Any() ? (bool?)true : null
+                    HasChildren = log.SubLogs.Any() ? (bool?)true : null,
                 };
             }
 
@@ -121,8 +122,10 @@
                 {
                     entity.SubLogs.RemoveAll(c => c.State == CompareState.Ok);
                 }
+
                 ctx.SubLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.All(s => s.State == CompareState.Ok));
             }
+
             clonedLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.All(s => s.State == CompareState.Ok));
             foreach (var ctx in clonedLogs)
             {

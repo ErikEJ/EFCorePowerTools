@@ -1,31 +1,31 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.ViewModels;
-    using EFCorePowerTools.Locales;
-    using EFCorePowerTools.Messages;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using GalaSoft.MvvmLight.Messaging;
-    using System;
-    using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Locales;
+using EFCorePowerTools.Messages;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewModel
     {
-        private string _name;
-        private string _newName;
+        private string name;
+        private string newName;
 
-        private bool _isPrimaryKey;
-        private bool _isForeignKey;
+        private bool isPrimaryKey;
+        private bool isForeignKey;
 
-        private bool _isTableSelected;
-        private bool _isSelected;
-        private bool _isEditing;
+        private bool isTableSelected;
+        private bool isSelected;
+        private bool isEditing;
 
-        private readonly IMessenger _messenger;
+        private readonly IMessenger messenger;
 
         public ColumnInformationViewModel(IMessenger messenger)
         {
-            _messenger = messenger;
+            this.messenger = messenger;
             StartEditCommand = new RelayCommand(StartEdit_Execute);
             ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
             CancelEditCommand = new RelayCommand(CancelEdit_Execute);
@@ -34,22 +34,30 @@
 
         public string Name
         {
-            get => _name;
+            get => name;
             set
             {
-                if (Equals(value, _name)) return;
-                _name = value;
+                if (Equals(value, name))
+                {
+                    return;
+                }
+
+                name = value;
                 RaisePropertyChanged();
             }
         }
 
         public string NewName
         {
-            get => _newName;
+            get => newName;
             set
             {
-                if (Equals(value, _newName)) return;
-                _newName = value;
+                if (Equals(value, newName))
+                {
+                    return;
+                }
+
+                newName = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(DisplayName));
             }
@@ -59,17 +67,21 @@
         {
             get
             {
-                return _newName == _name ? _name : $"{_newName} - ({_name})";
+                return newName == name ? name : $"{newName} - ({name})";
             }
         }
 
         public bool IsPrimaryKey
         {
-            get => _isPrimaryKey;
+            get => isPrimaryKey;
             set
             {
-                if (Equals(value, _isPrimaryKey)) return;
-                _isPrimaryKey = value;
+                if (Equals(value, isPrimaryKey))
+                {
+                    return;
+                }
+
+                isPrimaryKey = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsEnabled));
             }
@@ -77,11 +89,15 @@
 
         public bool IsForeignKey
         {
-            get => _isForeignKey;
+            get => isForeignKey;
             set
             {
-                if (Equals(value, _isForeignKey)) return;
-                _isForeignKey = value;
+                if (Equals(value, isForeignKey))
+                {
+                    return;
+                }
+
+                isForeignKey = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsEnabled));
             }
@@ -89,38 +105,50 @@
 
         public bool IsColumn
         {
-            get => !_isPrimaryKey;
+            get => !isPrimaryKey;
         }
 
         public bool? IsSelected
         {
-            get => _isSelected;
+            get => isSelected;
             private set
             {
-                if (Equals(value, _isSelected)) return;
-                _isSelected = value.Value;
+                if (Equals(value, isSelected))
+                {
+                    return;
+                }
+
+                isSelected = value.Value;
                 RaisePropertyChanged();
             }
         }
 
         public bool IsEditing
         {
-            get => _isEditing;
+            get => isEditing;
             set
             {
-                if (Equals(value, _isEditing)) return;
-                _isEditing = value;
+                if (Equals(value, isEditing))
+                {
+                    return;
+                }
+
+                isEditing = value;
                 RaisePropertyChanged();
             }
         }
 
         public bool IsTableSelected
         {
-            get => _isTableSelected;
+            get => isTableSelected;
             set
             {
-                if (Equals(value, _isTableSelected)) return;
-                _isTableSelected = value;
+                if (Equals(value, isTableSelected))
+                {
+                    return;
+                }
+
+                isTableSelected = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(IsEnabled));
             }
@@ -152,9 +180,9 @@
         {
             if (String.IsNullOrWhiteSpace(NewName))
             {
-                _messenger.Send(new ShowMessageBoxMessage
+                messenger.Send(new ShowMessageBoxMessage
                 {
-                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty
+                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty,
                 });
             }
             else

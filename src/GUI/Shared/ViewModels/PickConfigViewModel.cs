@@ -1,20 +1,20 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class PickConfigViewModel : ViewModelBase, IPickConfigViewModel
     {
-        private ConfigModel _selectedConfiguration;
+        private ConfigModel selectedConfiguration;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -26,11 +26,15 @@
 
         public ConfigModel SelectedConfiguration
         {
-            get => _selectedConfiguration;
+            get => selectedConfiguration;
             set
             {
-                if (Equals(value, _selectedConfiguration)) return;
-                _selectedConfiguration = value;
+                if (Equals(value, selectedConfiguration))
+                {
+                    return;
+                }
+
+                selectedConfiguration = value;
                 RaisePropertyChanged();
             }
         }

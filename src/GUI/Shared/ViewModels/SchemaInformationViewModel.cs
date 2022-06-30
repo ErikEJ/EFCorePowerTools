@@ -1,18 +1,18 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Common;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.ViewModels;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class SchemaInformationViewModel : ViewModelBase, ISchemaInformationViewModel
     {
-        private string _name;
-        private bool? _isSelected = false;
+        private string name;
+        private bool? isSelected = false;
 
         public SchemaInformationViewModel()
         {
@@ -20,17 +20,23 @@
             Objects.CollectionChanged += (s, e) =>
             {
                 foreach (ITableInformationViewModel item in e.NewItems)
+                {
                     item.PropertyChanged += ObjectPropertyChanged;
+                }
             };
         }
 
         public string Name
         {
-            get => _name;
+            get => name;
             set
             {
-                if (Equals(value, _name)) return;
-                _name = value;
+                if (Equals(value, name))
+                {
+                    return;
+                }
+
+                name = value;
                 RaisePropertyChanged();
             }
         }
@@ -39,20 +45,23 @@
 
         public bool? IsSelected
         {
-            get => _isSelected;
+            get => isSelected;
             private set
             {
-                if (Equals(value, _isSelected)) return;
-                _isSelected = value;
-                RaisePropertyChanged();
-                if (_isSelected != null)
+                if (Equals(value, isSelected))
                 {
-                    var selected = _isSelected.Value;
+                    return;
+                }
+
+                isSelected = value;
+                RaisePropertyChanged();
+                if (isSelected != null)
+                {
+                    var selected = isSelected.Value;
                     foreach (var obj in Objects)
                     {
                         obj.SetSelectedCommand.Execute(selected);
                     }
-
                 }
             }
         }
@@ -72,17 +81,17 @@
             {
                 if (Objects.All(m => m.IsSelected.Value))
                 {
-                    _isSelected = true;
+                    isSelected = true;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
                 else if (Objects.All(m => !m.IsSelected.Value))
                 {
-                    _isSelected = false;
+                    isSelected = false;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
                 else
                 {
-                    _isSelected = null;
+                    isSelected = null;
                     RaisePropertyChanged(nameof(IsSelected));
                 }
             }
@@ -91,7 +100,6 @@
             {
                 RaisePropertyChanged(nameof(IsVisible));
             }
-
         }
 
         private void SetSelected_Execute(bool value)

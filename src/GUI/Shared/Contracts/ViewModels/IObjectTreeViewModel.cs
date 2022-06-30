@@ -1,10 +1,10 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using RevEng.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using RevEng.Common;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IObjectTreeViewModel : IViewModel
     {
         event EventHandler ObjectSelectionChanged;

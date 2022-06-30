@@ -1,12 +1,12 @@
-﻿using NuGet.Common;
+﻿using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {

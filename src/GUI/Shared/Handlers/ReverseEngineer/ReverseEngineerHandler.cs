@@ -1,27 +1,27 @@
-﻿using Community.VisualStudio.Toolkit;
-using EFCorePowerTools.Contracts.Views;
-using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Helpers;
-using EFCorePowerTools.Locales;
-using EFCorePowerTools.Common.Models;
-using Microsoft.VisualStudio.Data.Services;
-using Microsoft.VisualStudio.Shell;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Helpers;
+using EFCorePowerTools.Locales;
+using Microsoft.VisualStudio.Data.Services;
+using Microsoft.VisualStudio.Shell;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
     internal class ReverseEngineerHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
@@ -29,10 +29,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
             reverseEngineerHelper = new ReverseEngineerHelper();
             vsDataHelper = new VsDataHelper();
-
         }
 
         public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
@@ -53,16 +52,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 if (optionsPaths.Count > 1)
                 {
-                    var pcd = _package.GetView<IPickConfigDialog>();
+                    var pcd = package.GetView<IPickConfigDialog>();
                     pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
                     {
                         ConfigPath = m,
-                        ProjectPath = projectPath
+                        ProjectPath = projectPath,
                     }));
 
                     var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
                     if (!pickConfigResult.ClosedByOK)
+                    {
                         return;
+                    }
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
@@ -73,12 +74,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    _package.LogError(new List<string>(), innerException);
+                    package.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                _package.LogError(new List<string>(), exception);
+                package.LogError(new List<string>(), exception);
             }
         }
 
@@ -132,7 +133,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         var dbInfo = await GetDatabaseInfoAsync(options);
 
                         if (dbInfo == null)
+                        {
                             return;
+                        }
 
                         containsEfCoreReference = new Tuple<bool, string>(true, null);
                         options.CustomReplacers = namingOptionsAndPath.Item1;
@@ -143,21 +146,27 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 if (!onlyGenerate || forceEdit)
                 {
                     if (!await ChooseDataBaseConnectionAsync(options))
+                    {
                         return;
+                    }
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
 
                     var dbInfo = await GetDatabaseInfoAsync(options);
 
                     if (dbInfo == null)
+                    {
                         return;
+                    }
 
                     VerifySQLServerRightsAndVersion(options);
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
                     if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
+                    {
                         return;
+                    }
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
@@ -165,7 +174,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     options.InstallNuGetPackage = !containsEfCoreReference.Item1;
 
                     if (!await GetModelOptionsAsync(options, project.Name))
+                    {
                         return;
+                    }
 
                     await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
@@ -186,12 +197,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    _package.LogError(new List<string>(), innerException);
+                    package.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                _package.LogError(new List<string>(), exception);
+                package.LogError(new List<string>(), exception);
             }
         }
 
@@ -219,7 +230,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var databaseList = vsDataHelper.GetDataConnections(_package);
+            var databaseList = vsDataHelper.GetDataConnections(package);
             if (databaseList != null && databaseList.Any())
             {
                 var dataBaseInfo = databaseList.Values.FirstOrDefault(m => m.ConnectionName == options.UiHint);
@@ -251,10 +262,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options)
         {
-            var databaseList = vsDataHelper.GetDataConnections(_package);
+            var databaseList = vsDataHelper.GetDataConnections(package);
             var dacpacList = await EnvDteExtensions.GetDacpacFilesInActiveSolutionAsync();
 
-            var psd = _package.GetView<IPickServerDatabaseDialog>();
+            var psd = package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
             {
@@ -271,7 +282,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 psd.PublishDefinitions(dacpacList.Select(m => new DatabaseDefinitionModel
                 {
-                    FilePath = m
+                    FilePath = m,
                 }));
             }
 
@@ -289,7 +300,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
             if (!pickDataSourceResult.ClosedByOK)
+            {
                 return false;
+            }
 
             options.CodeGenerationMode = pickDataSourceResult.Payload.CodeGenerationMode;
             options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
@@ -362,7 +375,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ClearAsync();
 
-            var ptd = _package.GetView<IPickTablesDialog>()
+            var ptd = package.GetView<IPickTablesDialog>()
                               .AddTables(predefinedTables, namingOptionsAndPath.Item1)
                               .PreselectTables(preselectedTables);
 
@@ -378,7 +391,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var classBasis = VsDataHelper.GetDatabaseName(options.ConnectionString, options.DatabaseType);
 
             if (string.IsNullOrEmpty(options.ContextClassName))
+            {
                 options.ContextClassName = classBasis + "Context";
+            }
 
             var presets = new ModelingOptionsModel
             {
@@ -413,15 +428,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseManyToManyEntity = options.UseManyToManyEntity,
             };
 
-            var modelDialog = _package.GetView<IModelingOptionsDialog>()
+            var modelDialog = package.GetView<IModelingOptionsDialog>()
                                           .ApplyPresets(presets);
-            
+
             await VS.StatusBar.ClearAsync();
 
             var modelingOptionsResult = modelDialog.ShowAndAwaitUserResponse(true);
 
             if (!modelingOptionsResult.ClosedByOK)
+            {
                 return false;
+            }
 
             options.InstallNuGetPackage = modelingOptionsResult.Payload.InstallNuGetPackage;
             options.UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations;
@@ -495,7 +512,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
-            
+
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode, project);
 
             await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
@@ -520,6 +537,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     {
                         await project.AddExistingFilesAsync(new List<string> { filePath }.ToArray());
                     }
+
                     await project.AddExistingFilesAsync(new List<string> { revEngResult.ContextFilePath }.ToArray());
                 }
 
@@ -557,11 +575,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (revEngResult.EntityErrors.Count > 0)
             {
-                _package.LogError(revEngResult.EntityErrors, null);
+                package.LogError(revEngResult.EntityErrors, null);
             }
+
             if (revEngResult.EntityWarnings.Count > 0)
             {
-                _package.LogError(revEngResult.EntityWarnings, null);
+                package.LogError(revEngResult.EntityWarnings, null);
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
@@ -577,7 +596,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(optionsPath + ".ignore"))
             {
-                if (! AdvancedOptions.Instance.IncludeUiHintInConfig)
+                if (!AdvancedOptions.Instance.IncludeUiHintInConfig)
                 {
                     options.UiHint = null;
                 }
@@ -588,8 +607,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     {
                         table.UseLegacyResultSetDiscovery = true;
                     }
+
                     if (mappedTypes.ContainsKey(table.Name))
-                    { 
+                    {
                         table.MappedType = mappedTypes[table.Name];
                     }
                 }
@@ -633,7 +653,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var defaultZip = "CodeTemplates.zip";
 
             var toDir = Path.Combine(path, "CodeTemplates");
-            
+
             var userTemplateZip = Path.Combine(path, defaultZip);
             var templateZip = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), zipName);
 

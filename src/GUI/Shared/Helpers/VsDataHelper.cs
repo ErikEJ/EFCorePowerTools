@@ -1,15 +1,15 @@
-﻿using EFCorePowerTools.Common.Models;
-using Microsoft.VisualStudio.Data.Core;
-using Microsoft.VisualStudio.Data.Services;
-using RevEng.Common;
+﻿// ReSharper disable once CheckNamespace
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
+using EFCorePowerTools.Common.Models;
+using Microsoft.VisualStudio.Data.Core;
+using Microsoft.VisualStudio.Data.Services;
+using RevEng.Common;
 
-// ReSharper disable once CheckNamespace
 namespace EFCorePowerTools.Helpers
 {
     internal class VsDataHelper
@@ -51,6 +51,7 @@ namespace EFCorePowerTools.Helpers
                             {
                                 info.DatabaseType = DatabaseType.SQLite;
                             }
+
                             if (objProviderGuid == new Guid(Resources.SqlServerDotNetProvider)
                                 || objProviderGuid == providerNpgsql)
                             {
@@ -85,6 +86,7 @@ namespace EFCorePowerTools.Helpers
             {
                 package.LogError(new List<string> { ex.Message }, ex);
             }
+
             try
             {
                 foreach (var connection in credentialStore.GetStoredDatabaseConnections())
@@ -109,11 +111,17 @@ namespace EFCorePowerTools.Helpers
             dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
             var dialogResult = dialog.ShowDialog(connect: true);
 
-            if (dialogResult == null) return new DatabaseConnectionModel {DatabaseType = DatabaseType.Undefined};
+            if (dialogResult == null)
+            {
+                return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
+            }
 
             var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
-            if (info.ConnectionName == Guid.Empty.ToString()) return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
-            
+            if (info.ConnectionName == Guid.Empty.ToString())
+            {
+                return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
+            }
+
             var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.ConnectionName));
             info.ConnectionName = savedName;
             info.DataConnection = dialogResult;
@@ -128,9 +136,13 @@ namespace EFCorePowerTools.Helpers
                 CheckFileExists = true,
                 Multiselect = false,
                 ValidateNames = true,
-                Title = "Select .dacpac File"
+                Title = "Select .dacpac File",
             };
-            if (ofd.ShowDialog() != DialogResult.OK) return null;
+            if (ofd.ShowDialog() != DialogResult.OK)
+            {
+                return null;
+            }
+
             return ofd.FileName;
         }
 
@@ -227,12 +239,12 @@ namespace EFCorePowerTools.Helpers
 
             if (builder.TryGetValue("DataSource", out object dataSource2))
             {
-                result +=  dataSource2.ToString();
+                result += dataSource2.ToString();
             }
 
             if (builder.TryGetValue("Database", out object database))
             {
-                result+=  "." + database.ToString();
+                result += "." + database.ToString();
             }
 
             return result;
@@ -294,6 +306,7 @@ namespace EFCorePowerTools.Helpers
             {
                 return dataSource2.ToString();
             }
+
             return dbType.ToString();
         }
     }

@@ -1,11 +1,11 @@
-﻿namespace EFCorePowerTools.Converter
-{
-    using EFCorePowerTools.Contracts.ViewModels;
-    using System;
-    using System.Globalization;
-    using System.Windows;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using EFCorePowerTools.Contracts.ViewModels;
 
+namespace EFCorePowerTools.Converter
+{
     public class ObjectTypeIconToImageStyleConverter : IValueConverter
     {
         public ResourceDictionary ResourceDictionary { get; set; }

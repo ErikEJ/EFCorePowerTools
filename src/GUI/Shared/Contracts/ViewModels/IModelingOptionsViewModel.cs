@@ -1,11 +1,11 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using EventArgs;
-    using Common.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IModelingOptionsViewModel : IViewModel
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;

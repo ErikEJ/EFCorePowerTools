@@ -1,14 +1,14 @@
-﻿namespace EFCorePowerTools.Converter
-{
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.Globalization;
-    using System.Linq;
-    using System.Reflection;
-    using System.Resources;
-    using System.Windows;
-    using System.Windows.Data;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Windows;
+using System.Windows.Data;
 
+namespace EFCorePowerTools.Converter
+{
     public class EnumToLabelConverter : IValueConverter
     {
         public ResourceDictionary ResourceDictionary { get; set; }
@@ -28,7 +28,6 @@
                 {
                     return attribute.Name;
                 }
-                
             }
 
             return value.ToString();

@@ -1,9 +1,8 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using System.ComponentModel;
+﻿using System.ComponentModel;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IViewModel : INotifyPropertyChanged
     {
-        
     }
 }

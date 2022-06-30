@@ -1,7 +1,7 @@
-﻿namespace EFCorePowerTools.Contracts.Views
-{
-    using RevEng.Common;
+﻿using RevEng.Common;
 
+namespace EFCorePowerTools.Contracts.Views
+{
     public class PickTablesDialogResult
     {
         public SerializationTableModel[] Objects { get; set; }

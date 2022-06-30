@@ -1,18 +1,18 @@
-﻿namespace EFCorePowerTools.Dialogs
-{
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.Diagnostics;
-    using System.Windows;
-    using System.Windows.Documents;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Documents;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
 
+namespace EFCorePowerTools.Dialogs
+{
     public partial class EfCoreModelDialog : IModelingOptionsDialog
     {
-        private readonly Func<ModelingOptionsModel> _getDialogResult;
-        private readonly Action<ModelingOptionsModel> _applyPresets;
+        private readonly Func<ModelingOptionsModel> getDialogResult;
+        private readonly Action<ModelingOptionsModel> applyPresets;
 
         public EfCoreModelDialog(ITelemetryAccess telemetryAccess,
                                  IModelingOptionsViewModel viewModel)
@@ -25,8 +25,8 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = () => viewModel.Model;
-            _applyPresets = viewModel.ApplyPresets;
+            getDialogResult = () => viewModel.Model;
+            applyPresets = viewModel.ApplyPresets;
 
             Loaded += Window_Loaded;
 
@@ -51,12 +51,12 @@
                 closedByOkay = ShowDialog() == true;
             }
 
-            return (closedByOkay, _getDialogResult());
+            return (closedByOkay, getDialogResult());
         }
 
         IModelingOptionsDialog IModelingOptionsDialog.ApplyPresets(ModelingOptionsModel presets)
         {
-            _applyPresets(presets);
+            applyPresets(presets);
             return this;
         }
 

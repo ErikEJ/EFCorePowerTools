@@ -1,14 +1,12 @@
 ﻿namespace EFCorePowerTools.Contracts.EventArgs
 {
-    using System;
-
-    public class CloseRequestedEventArgs : EventArgs
+    public class CloseRequestedEventArgs : System.EventArgs
     {
-        public bool? DialogResult { get; }
-
         public CloseRequestedEventArgs(bool? dialogResult)
         {
             DialogResult = dialogResult;
         }
+
+        public bool? DialogResult { get; }
     }
 }

@@ -18,5 +18,4 @@ namespace EFCorePowerTools.Converter
             throw new NotImplementedException();
         }
     }
-
 }

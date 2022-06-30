@@ -1,7 +1,7 @@
-﻿using Microsoft.ApplicationInsights;
+﻿using System;
+using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
-using System;
 
 namespace EFCorePowerTools.Helpers
 {
@@ -10,32 +10,30 @@ namespace EFCorePowerTools.Helpers
     /// </summary>
     public static class Telemetry
     {
-        private static TelemetryClient _telemetry;
+        private static TelemetryClient telemetry;
 
-        /// <summary>
-        /// Initializes the telemetry client.
-        /// </summary>
+        public static bool Enabled { get; set; }
+
         public static void Initialize(string version, string vsVersion, string telemetryKey)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (_telemetry != null)
+            if (telemetry != null)
+            {
                 return;
+            }
 
-            _telemetry = new TelemetryClient();
-            _telemetry.Context.Session.Id = Guid.NewGuid().ToString();
-            _telemetry.Context.User.Id = (Environment.UserName + Environment.MachineName).GetHashCode().ToString();
-            _telemetry.Context.Device.Model = vsVersion;
-            _telemetry.Context.Device.OperatingSystem = Environment.OSVersion.Version.ToString();
-            _telemetry.InstrumentationKey = telemetryKey;
-            _telemetry.Context.Component.Version = version;
+            telemetry = new TelemetryClient();
+            telemetry.Context.Session.Id = Guid.NewGuid().ToString();
+            telemetry.Context.User.Id = (Environment.UserName + Environment.MachineName).GetHashCode().ToString();
+            telemetry.Context.Device.Model = vsVersion;
+            telemetry.Context.Device.OperatingSystem = Environment.OSVersion.Version.ToString();
+            telemetry.InstrumentationKey = telemetryKey;
+            telemetry.Context.Component.Version = version;
 
             Enabled = true;
         }
 
-        public static bool Enabled { get; set; }
-
-        /// <summary>Tracks an event to ApplicationInsights.</summary>
         public static void TrackEvent(string key)
         {
             // Ignore
@@ -44,10 +42,10 @@ namespace EFCorePowerTools.Helpers
         public static void TrackFrameworkUse(string prefix, CodeGenerationMode codeGenerationMode)
         {
 #if !DEBUG
-            if (Enabled && _telemetry != null)
+            if (Enabled && telemetry != null)
             {
-                _telemetry.TrackEvent($"{prefix}:{codeGenerationMode}");
-                _telemetry.Flush();
+                telemetry.TrackEvent($"{prefix}:{codeGenerationMode}");
+                telemetry.Flush();
             }
 #endif
         }
@@ -59,10 +57,10 @@ namespace EFCorePowerTools.Helpers
             if (Enabled)
             {
                 var telex = new Microsoft.ApplicationInsights.DataContracts.ExceptionTelemetry(ex);
-                if (_telemetry != null)
+                if (telemetry != null)
                 {
-                    _telemetry.TrackException(telex);
-                    _telemetry.Flush();
+                    telemetry.TrackException(telex);
+                    telemetry.Flush();
                 }
             }
 #endif

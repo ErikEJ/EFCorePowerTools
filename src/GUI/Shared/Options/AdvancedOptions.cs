@@ -1,8 +1,8 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿// ReSharper disable once CheckNamespace
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Community.VisualStudio.Toolkit;
 
-// ReSharper disable once CheckNamespace
 namespace EFCorePowerTools
 {
     internal class OptionsProvider

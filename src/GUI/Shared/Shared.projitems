@@ -98,13 +98,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Options\AdvancedOptions.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)PkgCmdID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PkgCmdIDList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AdvancedModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ColumnInformationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareLogItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareResultViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ContextTypeItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DatabaseConnectionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MigrationOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModelingOptionsViewModel.cs" />

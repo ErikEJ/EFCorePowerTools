@@ -1,20 +1,20 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using System.IO;
+using System.Reflection;
+using System.Text;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
-using System.IO;
-using System.Reflection;
-using System.Text;
 
 namespace EFCorePowerTools.Handlers
 {
     internal class DgmlNugetHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
 
         public DgmlNugetHandler(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
         }
 
         public async System.Threading.Tasks.Task InstallDgmlNugetAsync(Project project)
@@ -49,7 +49,9 @@ namespace EFCorePowerTools.Handlers
             finally
             {
                 if (stream != null)
+                {
                     stream.Dispose();
+                }
             }
         }
     }

@@ -1,25 +1,24 @@
-﻿using EFCorePowerTools.Contracts.Views;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Locales;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace EFCorePowerTools.ViewModels
 {
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using EFCorePowerTools.Locales;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Input;
-
     public class ModelingOptionsViewModel : ViewModelBase, IModelingOptionsViewModel
     {
-        private readonly IVisualStudioAccess _visualStudioAccess;
-        private readonly Func<IAdvancedModelingOptionsDialog> _advancedModelingOptionsDialogFactory;
+        private readonly IVisualStudioAccess visualStudioAccess;
+        private readonly Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory;
 
-        private string _title;
-        private bool _mayIncludeConnectionString;
+        private string title;
+        private bool mayIncludeConnectionString;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -33,22 +32,30 @@ namespace EFCorePowerTools.ViewModels
 
         public string Title
         {
-            get => _title;
+            get => title;
             private set
             {
-                if (value == _title) return;
-                _title = value;
+                if (value == title)
+                {
+                    return;
+                }
+
+                title = value;
                 RaisePropertyChanged();
             }
         }
 
         public bool MayIncludeConnectionString
         {
-            get => _mayIncludeConnectionString;
+            get => mayIncludeConnectionString;
             private set
             {
-                if (value == _mayIncludeConnectionString) return;
-                _mayIncludeConnectionString = value;
+                if (value == mayIncludeConnectionString)
+                {
+                    return;
+                }
+
+                mayIncludeConnectionString = value;
                 RaisePropertyChanged();
             }
         }
@@ -56,8 +63,8 @@ namespace EFCorePowerTools.ViewModels
         public ModelingOptionsViewModel(IVisualStudioAccess visualStudioAccess,
             Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
         {
-            _visualStudioAccess = visualStudioAccess;
-            _advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
+            this.visualStudioAccess = visualStudioAccess;
+            this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
 
             Title = string.Empty;
             MayIncludeConnectionString = true;
@@ -77,7 +84,7 @@ namespace EFCorePowerTools.ViewModels
             HandlebarsLanguageList = new[]
             {
                 "C#",
-                "TypeScript"
+                "TypeScript",
             };
         }
 
@@ -87,13 +94,13 @@ namespace EFCorePowerTools.ViewModels
 
             if (string.IsNullOrWhiteSpace(Model.Namespace) && !individualNamespacesSet)
             {
-                _visualStudioAccess.ShowMessage(ReverseEngineerLocale.NamespaceRequired);
+                visualStudioAccess.ShowMessage(ReverseEngineerLocale.NamespaceRequired);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(Model.ModelName))
             {
-                _visualStudioAccess.ShowMessage(ReverseEngineerLocale.ContextNameRequired);
+                visualStudioAccess.ShowMessage(ReverseEngineerLocale.ContextNameRequired);
                 return;
             }
 
@@ -134,11 +141,13 @@ namespace EFCorePowerTools.ViewModels
 
         private void Advanced_Executed()
         {
-            IAdvancedModelingOptionsDialog dialog = _advancedModelingOptionsDialogFactory();
+            IAdvancedModelingOptionsDialog dialog = advancedModelingOptionsDialogFactory();
             dialog.ApplyPresets(Model);
             var advancedModelingOptionsResult = dialog.ShowAndAwaitUserResponse(true);
             if (!advancedModelingOptionsResult.ClosedByOK)
+            {
                 return;
+            }
 
             Model.UseDbContextSplitting = advancedModelingOptionsResult.Payload.UseDbContextSplitting;
             Model.MapSpatialTypes = advancedModelingOptionsResult.Payload.MapSpatialTypes;

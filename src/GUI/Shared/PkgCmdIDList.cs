@@ -1,6 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace EFCorePowerTools
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1303:Const field names should begin with upper-case letter", Justification = "Reviewed")]
     internal static class PkgCmdIDList
     {
         public const uint cmdidReverseEngineerCodeFirst = 0x001;

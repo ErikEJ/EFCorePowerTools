@@ -1,17 +1,18 @@
-﻿using EFCorePowerTools.Contracts.ViewModels;
-using EFCorePowerTools.Contracts.Views;
+﻿using System;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
-using System;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
 
 namespace EFCorePowerTools.Dialogs
 {
     public partial class AdvancedModelingOptionsDialog : IAdvancedModelingOptionsDialog
     {
-        private readonly Func<ModelingOptionsModel> _getDialogResult;
-        private readonly Action<ModelingOptionsModel> _applyPresets;
+        private readonly Func<ModelingOptionsModel> getDialogResult;
+        private readonly Action<ModelingOptionsModel> applyPresets;
 
-        public AdvancedModelingOptionsDialog(ITelemetryAccess telemetryAccess,
+        public AdvancedModelingOptionsDialog(
+            ITelemetryAccess telemetryAccess,
             IAdvancedModelingOptionsViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(AdvancedModelingOptionsDialog));
@@ -22,8 +23,8 @@ namespace EFCorePowerTools.Dialogs
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = () => viewModel.Model;
-            _applyPresets = viewModel.ApplyPresets;
+            getDialogResult = () => viewModel.Model;
+            applyPresets = viewModel.ApplyPresets;
 
             InitializeComponent();
         }
@@ -41,12 +42,12 @@ namespace EFCorePowerTools.Dialogs
                 closedByOkay = ShowDialog() == true;
             }
 
-            return (closedByOkay, _getDialogResult());
+            return (closedByOkay, getDialogResult());
         }
 
         IAdvancedModelingOptionsDialog IAdvancedModelingOptionsDialog.ApplyPresets(ModelingOptionsModel presets)
         {
-            _applyPresets(presets);
+            applyPresets(presets);
             return this;
         }
     }

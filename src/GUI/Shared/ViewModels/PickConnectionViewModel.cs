@@ -1,21 +1,21 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using JetBrains.Annotations;
-    using RevEng.Common;
-    using Common.Models;
-    using System;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
-    using System.Windows.Input;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using JetBrains.Annotations;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel
     {
-        private string _connectionString;
-        private string _name;
+        private string connectionString;
+        private string name;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -24,22 +24,30 @@
 
         public string ConnectionString
         {
-            get => _connectionString;
+            get => connectionString;
             set
             {
-                if (Equals(value, _connectionString)) return;
-                _connectionString = value;
+                if (Equals(value, connectionString))
+                {
+                    return;
+                }
+
+                connectionString = value;
                 OnPropertyChanged();
             }
         }
 
         public string Name
         {
-            get => _name;
+            get => name;
             set
             {
-                if (Equals(value, _name)) return;
-                _name = value;
+                if (Equals(value, name))
+                {
+                    return;
+                }
+
+                name = value;
                 OnPropertyChanged();
             }
         }

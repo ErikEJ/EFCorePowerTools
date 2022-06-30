@@ -31,6 +31,7 @@ namespace EFCorePowerTools.Extensions
                     Directory.CreateDirectory(Path.GetDirectoryName(completeFileName));
                     continue;
                 }
+
                 file.ExtractToFile(completeFileName, true);
             }
         }

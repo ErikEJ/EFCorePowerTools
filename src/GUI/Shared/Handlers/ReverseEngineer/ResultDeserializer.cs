@@ -1,9 +1,9 @@
-﻿using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -20,7 +20,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
             if (errorParts.Length == 2)
             {
-                throw new  InvalidOperationException("Reverse engineer error: " + Environment.NewLine + errorParts[1]);
+                throw new InvalidOperationException("Reverse engineer error: " + Environment.NewLine + errorParts[1]);
             }
 
             throw new InvalidOperationException($"Reverse engineer error: Unable to launch external process: {Environment.NewLine + output}");
@@ -36,7 +36,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
             if (errorParts.Length == 2)
-            { 
+            {
                 throw new InvalidOperationException("Table list error: " + Environment.NewLine + errorParts[1]);
             }
 

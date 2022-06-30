@@ -1,12 +1,12 @@
-﻿using EFCorePowerTools.Handlers.ReverseEngineer;
-using EFCorePowerTools.Locales;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using EFCorePowerTools.Handlers.ReverseEngineer;
+using EFCorePowerTools.Locales;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Helpers
 {
@@ -36,7 +36,7 @@ namespace EFCorePowerTools.Helpers
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                
+
                 using (var command = new SqlCommand("SELECT HAS_PERMS_BY_NAME(DB_NAME(), 'DATABASE', 'VIEW DEFINITION');", connection))
                 {
                     var result = (int)command.ExecuteScalar();
@@ -86,6 +86,7 @@ namespace EFCorePowerTools.Helpers
             {
                 return text;
             }
+
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 

@@ -1,7 +1,7 @@
-﻿using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using System;
+﻿using System;
 using System.Windows.Media;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace EFCorePowerTools.Helpers
 {
@@ -31,6 +31,7 @@ namespace EFCorePowerTools.Helpers
             {
                 return new SolidColorBrush(Colors.Silver);
             }
+
             return brush;
         }
 
@@ -45,6 +46,7 @@ namespace EFCorePowerTools.Helpers
             {
                 color = Colors.Silver;
             }
+
             return System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
 
@@ -78,7 +80,7 @@ namespace EFCorePowerTools.Helpers
         private static SolidColorBrush SolidColorBrushFromWin32Color(uint win32Color)
         {
             byte[] bytes = BitConverter.GetBytes(win32Color);
-            return new SolidColorBrush(Color.FromArgb(0xFF, bytes[0], bytes[1], bytes[2]));            
+            return new SolidColorBrush(Color.FromArgb(0xFF, bytes[0], bytes[1], bytes[2]));
         }
     }
 }

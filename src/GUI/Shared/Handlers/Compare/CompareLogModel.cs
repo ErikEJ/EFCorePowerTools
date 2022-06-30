@@ -12,5 +12,4 @@ namespace EFCorePowerTools.Handlers.Compare
         public string Expected { get; set; }
         public string Found { get; set; }
     }
-
 }

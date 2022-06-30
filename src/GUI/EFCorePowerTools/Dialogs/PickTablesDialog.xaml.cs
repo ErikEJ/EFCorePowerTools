@@ -1,20 +1,20 @@
-﻿namespace EFCorePowerTools.Dialogs
-{
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using RevEng.Common;
-    using Common.DAL;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows.Controls;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using System.Windows.Input;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
+using RevEng.Common;
 
+namespace EFCorePowerTools.Dialogs
+{
     public partial class PickTablesDialog : IPickTablesDialog
     {
-        private readonly Func<SerializationTableModel[]> _getDialogResult;
-        private readonly Func<Schema[]> _getReplacerResult;
-        private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> _addTables;
-        private readonly Action<IEnumerable<SerializationTableModel>> _selectTables;
+        private readonly Func<SerializationTableModel[]> getDialogResult;
+        private readonly Func<Schema[]> getReplacerResult;
+        private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
+        private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
 
         public PickTablesDialog(ITelemetryAccess telemetryAccess,
                                 IPickTablesViewModel viewModel)
@@ -27,10 +27,10 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = viewModel.GetSelectedObjects;
-            _getReplacerResult = viewModel.GetRenamedObjects;
-            _addTables = viewModel.AddObjects;
-            _selectTables = viewModel.SelectObjects;
+            getDialogResult = viewModel.GetSelectedObjects;
+            getReplacerResult = viewModel.GetRenamedObjects;
+            addTables = viewModel.AddObjects;
+            selectTables = viewModel.SelectObjects;
 
             InitializeComponent();
         }
@@ -48,25 +48,25 @@
                 closedByOkay = ShowDialog() == true;
             }
 
-            return (closedByOkay, new PickTablesDialogResult { Objects = _getDialogResult(), CustomReplacers = _getReplacerResult() });
+            return (closedByOkay, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
         }
 
         IPickTablesDialog IPickTablesDialog.AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers)
         {
-            _addTables(tables, customReplacers);
+            addTables(tables, customReplacers);
             return this;
         }
 
         IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<SerializationTableModel> tables)
         {
-            _selectTables(tables);
+            selectTables(tables);
             return this;
         }
 
         private void CheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)
         {
             var checkBox = sender as CheckBox;
-            
+
             if (checkBox.IsChecked == false)
             {
                 statusBar.Visibility = System.Windows.Visibility.Visible;
@@ -83,6 +83,7 @@
             {
                 ((IObjectTreeEditableViewModel)((TextBox)sender).DataContext).ConfirmEditCommand.Execute(null);
             }
+
             e.Handled = true;
         }
 
@@ -97,7 +98,7 @@
 
         private void tree_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.F2)
+            if (e.Key == Key.F2)
             {
                 if (tree.SelectedItem is IColumnInformationViewModel cvm && cvm.IsTableSelected)
                 {

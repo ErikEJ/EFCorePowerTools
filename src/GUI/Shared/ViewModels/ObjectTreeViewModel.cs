@@ -1,33 +1,33 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.ViewModels;
-    using EFCorePowerTools.Locales;
-    using GalaSoft.MvvmLight;
-    using RevEng.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Locales;
+using GalaSoft.MvvmLight;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class ObjectTreeViewModel : ViewModelBase, IObjectTreeViewModel
     {
         public event EventHandler ObjectSelectionChanged;
 
         private IEnumerable<ITableInformationViewModel> _objects => Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects);
-        private IEnumerable<Schema> _allSchemas = new List<Schema>();
-        private readonly Func<ISchemaInformationViewModel> _schemaInformationViewModelFactory;
-        private readonly Func<ITableInformationViewModel> _tableInformationViewModelFactory;
-        private readonly Func<IColumnInformationViewModel> _columnInformationViewModelFactory;
+        private IEnumerable<Schema> allSchemas = new List<Schema>();
+        private readonly Func<ISchemaInformationViewModel> schemaInformationViewModelFactory;
+        private readonly Func<ITableInformationViewModel> tableInformationViewModelFactory;
+        private readonly Func<IColumnInformationViewModel> columnInformationViewModelFactory;
 
         public ObjectTreeViewModel(Func<ISchemaInformationViewModel> schemaInformationViewModelFactory,
                                    Func<ITableInformationViewModel> tableInformationViewModelFactory,
                                    Func<IColumnInformationViewModel> columnInformationViewModelFactory)
         {
-            _schemaInformationViewModelFactory = schemaInformationViewModelFactory ?? throw new ArgumentNullException(nameof(schemaInformationViewModelFactory));
-            _tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
-            _columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
+            this.schemaInformationViewModelFactory = schemaInformationViewModelFactory ?? throw new ArgumentNullException(nameof(schemaInformationViewModelFactory));
+            this.tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
+            this.columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
         }
 
         public ObservableCollection<IObjectTreeRootItemViewModel> Types { get; } = new ObservableCollection<IObjectTreeRootItemViewModel>();
@@ -45,7 +45,7 @@
 
         public void Search(string searchText, SearchMode searchMode)
         {
-            var regex = new Regex(searchText, RegexOptions.None, new TimeSpan(0,0,3));
+            var regex = new Regex(searchText, RegexOptions.None, new TimeSpan(0, 0, 3));
 
             foreach (var obj in _objects)
             {
@@ -70,7 +70,9 @@
         public void SetSelectionState(bool value)
         {
             foreach (var t in _objects)
+            {
                 t.SetSelectedCommand.Execute(value);
+            }
         }
 
         public IEnumerable<SerializationTableModel> GetSelectedObjects()
@@ -93,10 +95,10 @@
                     var objectIsRenamed = !obj.Name.Equals(obj.NewName);
                     var renamedColumns = obj.Columns.Where(c => !c.Name.Equals(c.NewName) && c.IsSelected.Value);
 
-                    var originalReplacers = _allSchemas.Where(s => s.SchemaName == schema.Name)
+                    var originalReplacers = allSchemas.Where(s => s.SchemaName == schema.Name)
                         .SelectMany(a => a.Tables.Where(t => t.Columns != null && t.Name == obj.Name))
                         .ToList();
-                    
+
                     var ignoredReplacers = originalReplacers
                         .SelectMany(o => o.Columns.Where(c => c.Name != null && c.Name.Equals(c.NewName)))
                         .ToList();
@@ -108,7 +110,9 @@
                             .Concat(ignoredReplacers);
 
                         if (replacingSchema.Tables == null)
+                        {
                             replacingSchema.Tables = new List<TableRenamer>();
+                        }
 
                         replacingSchema.Tables.Add(new TableRenamer
                         {
@@ -130,12 +134,12 @@
                 }
             }
 
-            if (!_allSchemas.Any())
+            if (!allSchemas.Any())
             {
                 return result;
             }
 
-            foreach (var schema in _allSchemas)
+            foreach (var schema in allSchemas)
             {
                 var existingSchema = result.FirstOrDefault(s => s.SchemaName == schema.SchemaName);
                 if (existingSchema == null)
@@ -154,22 +158,25 @@
 
         public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
         {
-            if (objects == null) throw new ArgumentNullException(nameof(objects));
+            if (objects == null)
+            {
+                throw new ArgumentNullException(nameof(objects));
+            }
 
             var objectTypes = new List<(ObjectType ObjectType, string Text)> {
                 (ObjectType.Table, ReverseEngineerLocale.Tables),
                 (ObjectType.View, ReverseEngineerLocale.Views),
                 (ObjectType.Procedure, ReverseEngineerLocale.StoredProcedures),
-                (ObjectType.ScalarFunction, ReverseEngineerLocale.Functions)
+                (ObjectType.ScalarFunction, ReverseEngineerLocale.Functions),
             };
 
             if (customReplacers != null)
             {
-                _allSchemas = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Schema>>(Newtonsoft.Json.JsonConvert.SerializeObject(customReplacers));
+                allSchemas = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Schema>>(Newtonsoft.Json.JsonConvert.SerializeObject(customReplacers));
             }
             else
             {
-                _allSchemas = new List<Schema>();
+                allSchemas = new List<Schema>();
             }
 
             foreach (var objectType in objectTypes)
@@ -177,7 +184,9 @@
                 var objectsBySchema = objects.Where(c => c.ObjectType == objectType.ObjectType).GroupBy(c => c.Schema);
 
                 if (!objectsBySchema.Any())
+                {
                     continue;
+                }
 
                 var type = new ObjectTreeRootItemViewModel() { Text = objectType.Text, ObjectType = objectType.ObjectType };
                 Types.Add(type);
@@ -187,7 +196,7 @@
                     var schemaReplacer = customReplacers?.FirstOrDefault(c => c.SchemaName == schema.Key);
                     var objectReplacers = schemaReplacer?.Tables;
 
-                    var svm = _schemaInformationViewModelFactory();
+                    var svm = schemaInformationViewModelFactory();
                     svm.Name = schema.Key;
                     svm.ReplacingSchema = schemaReplacer ?? new Schema();
                     type.Schemas.Add(svm);
@@ -195,7 +204,7 @@
                     foreach (var obj in schema)
                     {
                         var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
-                        var tvm = _tableInformationViewModelFactory();
+                        var tvm = tableInformationViewModelFactory();
                         tvm.Name = obj.Name;
                         tvm.ModelDisplayName = obj.DisplayName;
                         tvm.NewName = objectReplacer?.NewName ?? obj.Name;
@@ -207,7 +216,7 @@
                         {
                             foreach (var column in obj.Columns)
                             {
-                                var cvm = _columnInformationViewModelFactory();
+                                var cvm = columnInformationViewModelFactory();
                                 cvm.Name = column.Name;
                                 cvm.NewName = columnReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
                                 cvm.IsPrimaryKey = column.IsPrimaryKey;
@@ -215,6 +224,7 @@
                                 tvm.Columns.Add(cvm);
                             }
                         }
+
                         PredefineSelection(tvm);
 
                         svm.Objects.Add(tvm);
@@ -229,7 +239,10 @@
             var unSelect = t.Name.StartsWith("[__")
                         || t.Name.StartsWith("[dbo].[__")
                         || t.Name.EndsWith(".[sysdiagrams]");
-            if (unSelect) t.SetSelectedCommand.Execute(false);
+            if (unSelect)
+            {
+                t.SetSelectedCommand.Execute(false);
+            }
         }
 
         private void TableViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -243,7 +256,10 @@
 
         public void SelectObjects(IEnumerable<SerializationTableModel> objects)
         {
-            if (objects == null) throw new ArgumentNullException(nameof(objects));
+            if (objects == null)
+            {
+                throw new ArgumentNullException(nameof(objects));
+            }
 
             foreach (var obj in _objects)
             {

@@ -1,10 +1,10 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿// ReSharper disable once CheckNamespace
+using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using System.Threading.Tasks;
 
-// ReSharper disable once CheckNamespace
 namespace EFCorePowerTools.Helpers
 {
     internal static class VSHelper
@@ -25,6 +25,7 @@ namespace EFCorePowerTools.Helpers
 
             return false;
         }
+
         public static VSConstants.MessageBoxResult ShowError(string errorText)
         {
             return VS.MessageBox.ShowError("EF Core Power Tools", errorText);

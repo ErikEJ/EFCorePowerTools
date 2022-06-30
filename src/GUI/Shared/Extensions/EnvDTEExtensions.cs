@@ -1,12 +1,12 @@
-﻿using Community.VisualStudio.Toolkit;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -29,7 +29,6 @@ namespace EFCorePowerTools.Extensions
                 project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
 
                 return await project.GetOutPutAssemblyPathAsync();
-
             }
             catch
             {
@@ -64,7 +63,9 @@ namespace EFCorePowerTools.Extensions
             }
 
             if (result.Count == 0)
+            {
                 return null;
+            }
 
             return result
                 .Where(s => s.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
@@ -76,10 +77,16 @@ namespace EFCorePowerTools.Extensions
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)) return sqlprojPath;
+            if (sqlprojPath.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
+            {
+                return sqlprojPath;
+            }
 
             var project = await GetProjectAsync(sqlprojPath);
-            if (project == null) return null;
+            if (project == null)
+            {
+                return null;
+            }
 
             var searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
 
@@ -111,6 +118,7 @@ namespace EFCorePowerTools.Extensions
             {
                 result.Add(file);
             }
+
             foreach (var file in Directory.GetFiles(path, "*.dacpac", SearchOption.AllDirectories))
             {
                 result.Add(file);
@@ -143,7 +151,9 @@ namespace EFCorePowerTools.Extensions
                     {
                         var fullPath = item.FullPath;
                         if (!string.IsNullOrEmpty(fullPath))
+                        {
                             files.Add(fullPath);
+                        }
                     }
                 }
             }
@@ -157,7 +167,10 @@ namespace EFCorePowerTools.Extensions
         private static async System.Threading.Tasks.Task AddLinkedFilesAsync(HashSet<string> result, Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            if (project.Children == null) return;
+            if (project.Children == null)
+            {
+                return;
+            }
 
             await LinkedFilesSearchAsync(project.Children, result);
         }

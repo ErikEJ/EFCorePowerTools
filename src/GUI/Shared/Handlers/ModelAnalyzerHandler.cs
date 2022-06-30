@@ -1,24 +1,24 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
 
 namespace EFCorePowerTools.Handlers
 {
     internal class ModelAnalyzerHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
 
         public ModelAnalyzerHandler(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
         }
 
         public async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
@@ -92,6 +92,7 @@ namespace EFCorePowerTools.Handlers
                         {
                             await VS.Documents.OpenAsync(file);
                         }
+
                         Telemetry.TrackEvent("PowerTools.GenerateSqlCreate");
                         break;
                     case GenerationType.DebugView:
@@ -100,6 +101,7 @@ namespace EFCorePowerTools.Handlers
                         {
                             await VS.Documents.OpenAsync(file);
                         }
+
                         Telemetry.TrackEvent("PowerTools.GenerateDebugView");
                         break;
                     default:
@@ -108,7 +110,7 @@ namespace EFCorePowerTools.Handlers
             }
             catch (Exception exception)
             {
-                _package.LogError(new List<string>(), exception);
+                package.LogError(new List<string>(), exception);
             }
         }
 
@@ -135,6 +137,7 @@ namespace EFCorePowerTools.Handlers
 
                 File.Copy(path, target, true);
             }
+
             if (target != null)
             {
                 await VS.Documents.OpenAsync(target);
@@ -158,7 +161,9 @@ namespace EFCorePowerTools.Handlers
             finally
             {
                 if (stream != null)
+                {
                     stream.Dispose();
+                }
             }
         }
     }

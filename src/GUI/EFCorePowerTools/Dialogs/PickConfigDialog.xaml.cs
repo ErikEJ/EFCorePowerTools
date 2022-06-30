@@ -1,20 +1,21 @@
-﻿namespace EFCorePowerTools.Dialogs
-{
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
 
+namespace EFCorePowerTools.Dialogs
+{
     public partial class PickConfigDialog : IPickConfigDialog
     {
-        private readonly Func<ConfigModel> _getDialogResult;
-        private readonly Action<IEnumerable<ConfigModel>> _addConfigurations;
+        private readonly Func<ConfigModel> getDialogResult;
+        private readonly Action<IEnumerable<ConfigModel>> addConfigurations;
 
-        public PickConfigDialog(ITelemetryAccess telemetryAccess,
-                                        IPickConfigViewModel viewModel)
+        public PickConfigDialog(
+            ITelemetryAccess telemetryAccess,
+            IPickConfigViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(PickConfigDialog));
 
@@ -24,12 +25,14 @@
                 DialogResult = args.DialogResult;
                 Close();
             };
-            _getDialogResult = () => viewModel.SelectedConfiguration;
+            getDialogResult = () => viewModel.SelectedConfiguration;
 
-            _addConfigurations = models =>
+            addConfigurations = models =>
             {
                 foreach (var model in models)
+                {
                     viewModel.Configurations.Add(model);
+                }
             };
 
 
@@ -54,12 +57,12 @@
                 closedByOkay = ShowDialog() == true;
             }
 
-            return (closedByOkay, _getDialogResult());
+            return (closedByOkay, getDialogResult());
         }
 
         public void PublishConfigurations(IEnumerable<ConfigModel> configurations)
         {
-            _addConfigurations(configurations);
+            addConfigurations(configurations);
         }
     }
 }

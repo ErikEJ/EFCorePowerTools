@@ -1,10 +1,10 @@
-﻿using EFCorePowerTools.Contracts.EventArgs;
-using EFCorePowerTools.Handlers.Compare;
-using EFCorePowerTools.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Handlers.Compare;
+using EFCorePowerTools.ViewModels;
 
 namespace EFCorePowerTools.Contracts.ViewModels
 {

@@ -1,9 +1,9 @@
-﻿namespace EFCorePowerTools.Dialogs
-{
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using Common.DAL;
+﻿using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
 
+namespace EFCorePowerTools.Dialogs
+{
     public partial class AboutDialog : IAboutDialog
     {
         public AboutDialog(ITelemetryAccess telemetryAccess,

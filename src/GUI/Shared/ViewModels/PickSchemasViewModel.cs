@@ -1,22 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using RevEng.Common;
 
 namespace EFCorePowerTools.ViewModels
 {
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
-
     public class PickSchemasViewModel : ViewModelBase, IPickSchemasViewModel
     {
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        private SchemaInfo _selectedSchema;
+        private SchemaInfo selectedSchema;
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -27,11 +26,15 @@ namespace EFCorePowerTools.ViewModels
 
         public SchemaInfo SelectedSchema
         {
-            get => _selectedSchema;
+            get => selectedSchema;
             set
             {
-                if (value == _selectedSchema) return;
-                _selectedSchema = value;
+                if (value == selectedSchema)
+                {
+                    return;
+                }
+
+                selectedSchema = value;
                 RaisePropertyChanged();
             }
         }

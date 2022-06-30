@@ -1,15 +1,15 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.ViewModels;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemViewModel
     {
         public ObjectTreeRootItemViewModel()
@@ -18,7 +18,9 @@
             Schemas.CollectionChanged += (s, e) =>
             {
                 foreach (ISchemaInformationViewModel item in e.NewItems)
+                {
                     item.PropertyChanged += ObjectPropertyChanged;
+                }
             };
         }
 
@@ -32,7 +34,11 @@
             get => IsSelected1;
             private set
             {
-                if (Equals(value, IsSelected1)) return;
+                if (Equals(value, IsSelected1))
+                {
+                    return;
+                }
+
                 IsSelected1 = value;
                 RaisePropertyChanged();
                 if (IsSelected1 != null)
@@ -51,7 +57,11 @@
             get => Text1;
             set
             {
-                if (Equals(value, Text1)) return;
+                if (Equals(value, Text1))
+                {
+                    return;
+                }
+
                 Text1 = value;
                 RaisePropertyChanged();
             }
@@ -62,7 +72,11 @@
             get => ObjectType1;
             set
             {
-                if (Equals(value, ObjectType1)) return;
+                if (Equals(value, ObjectType1))
+                {
+                    return;
+                }
+
                 ObjectType1 = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(ObjectTypeIcon));
@@ -106,7 +120,6 @@
             {
                 RaisePropertyChanged(nameof(IsVisible));
             }
-
         }
 
         private void SetSelected_Execute(bool value)

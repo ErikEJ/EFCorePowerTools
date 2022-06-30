@@ -1,21 +1,21 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using System;
+using System.Collections.Generic;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
-using System;
-using System.Collections.Generic;
 
 namespace EFCorePowerTools.Handlers
 {
     internal class MigrationsHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
 
         public MigrationsHandler(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
         }
 
         public async System.Threading.Tasks.Task ManageMigrationsAsync(string outputPath, Project project)
@@ -68,7 +68,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                var migrationsDialog = _package.GetView<IMigrationOptionsDialog>();
+                var migrationsDialog = package.GetView<IMigrationOptionsDialog>();
                 migrationsDialog.UseProjectForMigration(project)
                                 .UseOutputPath(outputPath);
 
@@ -76,7 +76,7 @@ namespace EFCorePowerTools.Handlers
             }
             catch (Exception exception)
             {
-                _package.LogError(new List<string>(), exception);
+                package.LogError(new List<string>(), exception);
             }
         }
     }

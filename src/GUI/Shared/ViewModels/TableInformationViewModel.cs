@@ -1,35 +1,35 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.ViewModels;
-    using EFCorePowerTools.Locales;
-    using EFCorePowerTools.Messages;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using GalaSoft.MvvmLight.Messaging;
-    using RevEng.Common;
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Collections.Specialized;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Locales;
+using EFCorePowerTools.Messages;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class TableInformationViewModel : ViewModelBase, ITableInformationViewModel
     {
-        private string _name;
-        private string _newName;
-        private string _schema;
-        private ObjectType _objectType;
+        private string name;
+        private string newName;
+        private string schema;
+        private ObjectType objectType;
 
-        private bool _isSelected = false;
-        private bool _isEditing;
+        private bool isSelected = false;
+        private bool isEditing;
 
-        private bool _isVisible = true;
+        private bool isVisible = true;
 
-        private readonly IMessenger _messenger;
+        private readonly IMessenger messenger;
 
         public TableInformationViewModel(IMessenger messenger)
         {
-            _messenger = messenger;
+            this.messenger = messenger;
             StartEditCommand = new RelayCommand(StartEdit_Execute);
             ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
             CancelEditCommand = new RelayCommand(CancelEdit_Execute);
@@ -39,22 +39,30 @@
 
         public string Schema
         {
-            get => _schema;
+            get => schema;
             set
             {
-                if (Equals(value, _schema)) return;
-                _schema = value;
+                if (Equals(value, schema))
+                {
+                    return;
+                }
+
+                schema = value;
                 RaisePropertyChanged();
             }
         }
 
         public string Name
         {
-            get => _name;
+            get => name;
             set
             {
-                if (Equals(value, _name)) return;
-                _name = value;
+                if (Equals(value, name))
+                {
+                    return;
+                }
+
+                name = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(DisplayName));
             }
@@ -62,11 +70,15 @@
 
         public string NewName
         {
-            get => _newName;
+            get => newName;
             set
             {
-                if (Equals(value, _newName)) return;
-                _newName = value;
+                if (Equals(value, newName))
+                {
+                    return;
+                }
+
+                newName = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(DisplayName));
             }
@@ -74,8 +86,9 @@
 
         public string DisplayName
         {
-            get {
-                return _newName == _name ? _name : $"{_newName} - ({_name})";
+            get
+            {
+                return newName == name ? name : $"{newName} - ({name})";
             }
         }
 
@@ -88,11 +101,15 @@
 
         public ObjectType ObjectType
         {
-            get => _objectType;
+            get => objectType;
             set
             {
-                if (Equals(value, _objectType)) return;
-                _objectType = value;
+                if (Equals(value, objectType))
+                {
+                    return;
+                }
+
+                objectType = value;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(ObjectTypeIcon));
             }
@@ -106,7 +123,7 @@
                 {
                     return ObjectTypeIcon.TableWithoutKey;
                 }
-                else 
+                else
                 {
                     return (ObjectTypeIcon)Enum.Parse(typeof(ObjectTypeIcon), ObjectType.ToString());
                 }
@@ -117,38 +134,50 @@
 
         public bool? IsSelected
         {
-            get => _isSelected;
+            get => isSelected;
             private set
             {
-                if (Equals(value, _isSelected)) return;
-                _isSelected = value.Value;
+                if (Equals(value, isSelected))
+                {
+                    return;
+                }
+
+                isSelected = value.Value;
                 RaisePropertyChanged();
                 foreach (var column in Columns)
                 {
-                    column.IsTableSelected = _isSelected;
-                    column.SetSelected(_isSelected);
+                    column.IsTableSelected = isSelected;
+                    column.SetSelected(isSelected);
                 }
             }
         }
 
         public bool IsVisible
         {
-            get => _isVisible;
+            get => isVisible;
             set
             {
-                if (Equals(value, _isVisible)) return;
-                _isVisible = value;
+                if (Equals(value, isVisible))
+                {
+                    return;
+                }
+
+                isVisible = value;
                 RaisePropertyChanged();
             }
         }
 
         public bool IsEditing
         {
-            get => _isEditing;
+            get => isEditing;
             set
             {
-                if (Equals(value, _isEditing)) return;
-                _isEditing = value;
+                if (Equals(value, isEditing))
+                {
+                    return;
+                }
+
+                isEditing = value;
                 RaisePropertyChanged();
             }
         }
@@ -170,9 +199,9 @@
         {
             if (String.IsNullOrWhiteSpace(NewName))
             {
-                _messenger.Send(new ShowMessageBoxMessage
+                messenger.Send(new ShowMessageBoxMessage
                 {
-                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty
+                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty,
                 });
             }
             else

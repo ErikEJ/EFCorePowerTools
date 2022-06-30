@@ -1,9 +1,9 @@
-﻿namespace EFCorePowerTools.Common.DAL
-{
-    using Microsoft.VisualStudio.Data.Services;
-    using Models;
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using EFCorePowerTools.Common.Models;
+using Microsoft.VisualStudio.Data.Services;
 
+namespace EFCorePowerTools.Common.DAL
+{
     public interface IVisualStudioAccess
     {
         DatabaseConnectionModel PromptForNewDatabaseConnection();

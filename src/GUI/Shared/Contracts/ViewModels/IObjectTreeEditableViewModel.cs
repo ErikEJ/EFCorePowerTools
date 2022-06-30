@@ -1,7 +1,7 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using System.Windows.Input;
+﻿using System.Windows.Input;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IObjectTreeEditableViewModel
     {
         string Name { get; set; }
@@ -11,7 +11,7 @@
         string DisplayName { get; }
 
         bool IsEditing { get; set; }
-        
+
         ICommand StartEditCommand { get; }
 
         ICommand ConfirmEditCommand { get; }

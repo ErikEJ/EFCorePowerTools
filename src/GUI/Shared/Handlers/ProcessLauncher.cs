@@ -1,9 +1,4 @@
-﻿using Community.VisualStudio.Toolkit;
-using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Helpers;
-using Microsoft.VisualStudio.Shell;
-using NuGet.ProjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,18 +6,23 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Helpers;
+using Microsoft.VisualStudio.Shell;
+using NuGet.ProjectModel;
 
 namespace EFCorePowerTools.Handlers
 {
     public class ProcessLauncher
     {
-        private readonly Project _project;
+        private readonly Project project;
 
         public ProcessLauncher(Project project)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            _project = project;
+            this.project = project;
         }
 
         public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
@@ -48,10 +48,25 @@ namespace EFCorePowerTools.Handlers
 
             foreach (var context in contexts)
             {
-                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase)) continue;
-                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase)) continue;
-                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase)) continue;
-                if (!context.Contains("DebugView:")) continue;
+                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (!context.Contains("DebugView:"))
+                {
+                    continue;
+                }
 
                 var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
                 result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
@@ -124,8 +139,8 @@ namespace EFCorePowerTools.Handlers
             var depsFile = fileRoot + ".deps.json";
             var runtimeConfig = fileRoot + ".runtimeconfig.json";
 
-            var projectAssetsFile = await _project.GetAttributeAsync("ProjectAssetsFile");
-            var runtimeFrameworkVersion = await _project.GetAttributeAsync("RuntimeFrameworkVersion");
+            var projectAssetsFile = await project.GetAttributeAsync("ProjectAssetsFile");
+            var runtimeFrameworkVersion = await project.GetAttributeAsync("RuntimeFrameworkVersion");
 
             var dotNetParams = new StringBuilder();
 
@@ -165,7 +180,7 @@ namespace EFCorePowerTools.Handlers
                 File.WriteAllText(Path.Combine(Path.GetTempPath(), "efptparams.txt"), startInfo.Arguments);
             }
             catch
-            { 
+            {
                 // Ignore
             }
 
@@ -177,10 +192,12 @@ namespace EFCorePowerTools.Handlers
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
+
                 if (process != null)
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
+
                 if (process != null)
                 {
                     error = await process.StandardError.ReadToEndAsync();
@@ -222,12 +239,12 @@ namespace EFCorePowerTools.Handlers
 
             Directory.CreateDirectory(toDir);
 
-            var versionInfo = await _project.ContainsEfCoreDesignReferenceAsync();
+            var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
 
             if (versionInfo.Item2.StartsWith("5.", StringComparison.OrdinalIgnoreCase))
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt50.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Common.CodeGenerationMode.EFCore5);                
+                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Common.CodeGenerationMode.EFCore5);
             }
             else if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
             {

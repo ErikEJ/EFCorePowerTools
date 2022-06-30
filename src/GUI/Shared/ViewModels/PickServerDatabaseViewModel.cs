@@ -1,34 +1,34 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using EFCorePowerTools.DAL;
-    using EFCorePowerTools.Locales;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Common;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.IO;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.DAL;
+using EFCorePowerTools.Locales;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseViewModel
     {
-        private readonly IVisualStudioAccess _visualStudioAccess;
-        private readonly ICredentialStore _credentialStore;
-        private readonly Func<IPickSchemasDialog> _pickSchemasDialogFactory;
-        private readonly Func<IPickConnectionDialog> _pickConnectionDialogFactory;
+        private readonly IVisualStudioAccess visualStudioAccess;
+        private readonly ICredentialStore credentialStore;
+        private readonly Func<IPickSchemasDialog> pickSchemasDialogFactory;
+        private readonly Func<IPickConnectionDialog> pickConnectionDialogFactory;
 
-        private DatabaseConnectionModel _selectedDatabaseConnection;
-        private DatabaseDefinitionModel _selectedDatabaseDefinition;
-        private bool _filterSchemas = false;
-        private string _uiHint;
-        private int _codeGenerationMode;
+        private DatabaseConnectionModel selectedDatabaseConnection;
+        private DatabaseDefinitionModel selectedDatabaseDefinition;
+        private bool filterSchemas = false;
+        private string uiHint;
+        private int codeGenerationMode;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -49,51 +49,71 @@
 
         public int CodeGenerationMode
         {
-            get => _codeGenerationMode;
+            get => codeGenerationMode;
             set
             {
-                if (value == _codeGenerationMode) return;
-                _codeGenerationMode = value;
+                if (value == codeGenerationMode)
+                {
+                    return;
+                }
+
+                codeGenerationMode = value;
                 RaisePropertyChanged();
             }
         }
 
         public bool FilterSchemas
         {
-            get => _filterSchemas;
+            get => filterSchemas;
             set
             {
-                if (value == _filterSchemas) return;
-                _filterSchemas = value;
+                if (value == filterSchemas)
+                {
+                    return;
+                }
+
+                filterSchemas = value;
                 RaisePropertyChanged();
             }
         }
 
         public DatabaseConnectionModel SelectedDatabaseConnection
         {
-            get => _selectedDatabaseConnection;
+            get => selectedDatabaseConnection;
             set
             {
-                if (Equals(value, _selectedDatabaseConnection)) return;
-                _selectedDatabaseConnection = value;
+                if (Equals(value, selectedDatabaseConnection))
+                {
+                    return;
+                }
+
+                selectedDatabaseConnection = value;
                 RaisePropertyChanged();
 
-                if (_selectedDatabaseConnection != null)
+                if (selectedDatabaseConnection != null)
+                {
                     SelectedDatabaseDefinition = null;
+                }
             }
         }
 
         public DatabaseDefinitionModel SelectedDatabaseDefinition
         {
-            get => _selectedDatabaseDefinition;
+            get => selectedDatabaseDefinition;
             set
             {
-                if (Equals(value, _selectedDatabaseDefinition)) return;
-                _selectedDatabaseDefinition = value;
+                if (Equals(value, selectedDatabaseDefinition))
+                {
+                    return;
+                }
+
+                selectedDatabaseDefinition = value;
                 RaisePropertyChanged();
 
-                if (_selectedDatabaseDefinition != null)
+                if (selectedDatabaseDefinition != null)
+                {
                     SelectedDatabaseConnection = null;
+                }
             }
         }
 
@@ -105,13 +125,15 @@
                 {
                     return SelectedDatabaseConnection.ConnectionName;
                 }
+
                 if (SelectedDatabaseDefinition != null)
                 {
                     return SelectedDatabaseDefinition.FilePath;
                 }
 
-                return _uiHint;  
-            } 
+                return uiHint;
+            }
+
             set
             {
                 var databaseConnectionCandidate = DatabaseConnections
@@ -122,19 +144,20 @@
                     SelectedDatabaseConnection = databaseConnectionCandidate;
                 }
 
-                _uiHint = value;
+                uiHint = value;
             }
         }
 
-        public PickServerDatabaseViewModel(IVisualStudioAccess visualStudioAccess, 
+        public PickServerDatabaseViewModel(
+            IVisualStudioAccess visualStudioAccess,
             ICredentialStore credentialStore,
             Func<IPickSchemasDialog> pickSchemasDialogFactory,
             Func<IPickConnectionDialog> pickConnectionDialogFactory)
         {
-            _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
-            _pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
-            _pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
-            _credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
+            this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            this.pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
+            this.pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
+            this.credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
@@ -163,10 +186,9 @@
             // Database connection first
             if (DatabaseConnections.Any() && SelectedDatabaseConnection == null)
             {
-                if (DatabaseDefinitions.Any() 
+                if (DatabaseDefinitions.Any()
                     && !string.IsNullOrEmpty(UiHint)
-                    && UiHint.EndsWith(".sqlproj")
-                )
+                    && UiHint.EndsWith(".sqlproj"))
                 {
                     var candidate = DatabaseDefinitions
                         .FirstOrDefault(m => !string.IsNullOrWhiteSpace(m.FilePath)
@@ -196,16 +218,18 @@
             DatabaseConnectionModel newDatabaseConnection;
             try
             {
-                newDatabaseConnection = _visualStudioAccess.PromptForNewDatabaseConnection();
+                newDatabaseConnection = visualStudioAccess.PromptForNewDatabaseConnection();
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
+                visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
                 return;
             }
 
             if (newDatabaseConnection == null)
+            {
                 return;
+            }
 
             DatabaseConnections.Add(newDatabaseConnection);
             SelectedDatabaseConnection = newDatabaseConnection;
@@ -215,7 +239,7 @@
         {
             DatabaseConnectionModel newDatabaseConnection = null;
 
-            IPickConnectionDialog dialog = _pickConnectionDialogFactory();
+            IPickConnectionDialog dialog = pickConnectionDialogFactory();
             var dialogResult = dialog.ShowAndAwaitUserResponse(true);
             if (dialogResult.ClosedByOK)
             {
@@ -223,15 +247,17 @@
             }
 
             if (newDatabaseConnection == null)
+            {
                 return;
+            }
 
             try
             {
-                _credentialStore.SaveCredential(newDatabaseConnection);
+                credentialStore.SaveCredential(newDatabaseConnection);
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
+                visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddConnection}: {e.Message}");
                 return;
             }
 
@@ -250,18 +276,18 @@
             {
                 if (SelectedDatabaseConnection.DataConnection is null)
                 {
-                    _credentialStore.DeleteCredential(SelectedDatabaseConnection.ConnectionName);
+                    credentialStore.DeleteCredential(SelectedDatabaseConnection.ConnectionName);
                 }
                 else
                 {
-                    _visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                    visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
                 }
-                
+
                 DatabaseConnections.Remove(SelectedDatabaseConnection);
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToRemoveConnection}: {e.Message}");
+                visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToRemoveConnection}: {e.Message}");
                 return;
             }
 
@@ -273,16 +299,18 @@
             DatabaseDefinitionModel newDatabaseDefinition;
             try
             {
-                newDatabaseDefinition = _visualStudioAccess.PromptForNewDatabaseDefinition();
+                newDatabaseDefinition = visualStudioAccess.PromptForNewDatabaseDefinition();
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddToList}: {e.Message}");
+                visualStudioAccess.ShowMessage($"{ReverseEngineerLocale.UnableToAddToList}: {e.Message}");
                 return;
             }
 
             if (newDatabaseDefinition == null)
+            {
                 return;
+            }
 
             DatabaseDefinitions.Add(newDatabaseDefinition);
             SelectedDatabaseDefinition = newDatabaseDefinition;
@@ -306,11 +334,13 @@
 
         private void FilterSchemas_Executed()
         {
-            IPickSchemasDialog dialog = _pickSchemasDialogFactory();
+            IPickSchemasDialog dialog = pickSchemasDialogFactory();
             dialog.AddSchemas(Schemas);
             var dialogResult = dialog.ShowAndAwaitUserResponse(true);
-            if(dialogResult.ClosedByOK)
+            if (dialogResult.ClosedByOK)
+            {
                 Schemas = new List<SchemaInfo>(dialogResult.Payload);
+            }
         }
 
         private bool FilterSchemas_CanExecute() => FilterSchemas;

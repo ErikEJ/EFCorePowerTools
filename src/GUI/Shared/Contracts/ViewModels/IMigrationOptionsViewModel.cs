@@ -1,12 +1,12 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using Community.VisualStudio.Toolkit;
-    using EventArgs;
-    using System;
-    using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Input;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Contracts.EventArgs;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IMigrationOptionsViewModel : IViewModel
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;

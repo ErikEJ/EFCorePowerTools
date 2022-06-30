@@ -1,22 +1,22 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using EFCorePowerTools.Locales;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Common.DAL;
-    using Common.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Locales;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class CompareOptionsViewModel : ViewModelBase, ICompareOptionsViewModel
     {
-        private readonly IVisualStudioAccess _visualStudioAccess;
-        private DatabaseConnectionModel _selectedDatabaseConnection;
+        private readonly IVisualStudioAccess visualStudioAccess;
+        private DatabaseConnectionModel selectedDatabaseConnection;
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
@@ -24,14 +24,17 @@
         {
             get;
         }
+
         public ICommand RemoveDatabaseConnectionCommand
         {
             get;
         }
+
         public ICommand OkCommand
         {
             get;
         }
+
         public ICommand CancelCommand
         {
             get;
@@ -42,13 +45,13 @@
 
         public DatabaseConnectionModel SelectedDatabaseConnection
         {
-            get => _selectedDatabaseConnection;
-            set => Set(ref _selectedDatabaseConnection, value);
+            get => selectedDatabaseConnection;
+            set => Set(ref selectedDatabaseConnection, value);
         }
 
         public CompareOptionsViewModel(IVisualStudioAccess visualStudioAccess)
         {
-            _visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
+            this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
 
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
             RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
@@ -61,16 +64,18 @@
             DatabaseConnectionModel newDatabaseConnection;
             try
             {
-                newDatabaseConnection = _visualStudioAccess.PromptForNewDatabaseConnection();
+                newDatabaseConnection = visualStudioAccess.PromptForNewDatabaseConnection();
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage($"{CompareLocale.UnableToAddConnection}: {e.Message}");
+                visualStudioAccess.ShowMessage($"{CompareLocale.UnableToAddConnection}: {e.Message}");
                 return;
             }
 
             if (newDatabaseConnection == null)
+            {
                 return;
+            }
 
             DatabaseConnections.Add(newDatabaseConnection);
             SelectedDatabaseConnection = newDatabaseConnection;
@@ -85,12 +90,12 @@
 
             try
             {
-                _visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
                 DatabaseConnections.Remove(SelectedDatabaseConnection);
             }
             catch (Exception e)
             {
-                _visualStudioAccess.ShowMessage($"{CompareLocale.UnableToRemoveConnection}: {e.Message}");
+                visualStudioAccess.ShowMessage($"{CompareLocale.UnableToRemoveConnection}: {e.Message}");
                 return;
             }
 
@@ -130,28 +135,6 @@
         public (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) GetSelection()
         {
             return (SelectedDatabaseConnection, ContextTypes.Where(c => c.Selected).Select(c => c.Name).ToList());
-        }
-    }
-
-    public class ContextTypeItemViewModel : ViewModelBase
-    {
-        private bool _selected;
-
-        public ContextTypeItemViewModel(bool selected, string name)
-        {
-            Name = name;
-            Selected = selected;
-        }
-
-        public string Name
-        {
-            get; set;
-        }
-
-        public bool Selected
-        {
-            get => _selected;
-            set => Set(ref _selected, value);
         }
     }
 }

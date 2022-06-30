@@ -1,27 +1,29 @@
-﻿namespace EFCorePowerTools.DAL
-{
-    using Community.VisualStudio.Toolkit;
-    using EFCorePowerTools.Helpers;
-    using Microsoft.VisualStudio.Data.Services;
-    using Microsoft.VisualStudio.Shell;
-    using RevEng.Common;
-    using Common.DAL;
-    using Common.Models;
+﻿using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Helpers;
+using Microsoft.VisualStudio.Data.Services;
+using Microsoft.VisualStudio.Shell;
+using RevEng.Common;
 
+namespace EFCorePowerTools.DAL
+{
     public class VisualStudioAccess : IVisualStudioAccess
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
 
         public VisualStudioAccess(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
         }
 
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
         {
-            var info = VsDataHelper.PromptForInfo(_package);
+            var info = VsDataHelper.PromptForInfo(package);
             if (info.DatabaseType == DatabaseType.Undefined)
+            {
                 return null;
+            }
 
             return new DatabaseConnectionModel
             {
@@ -49,7 +51,7 @@
 
         void IVisualStudioAccess.RemoveDatabaseConnection(IVsDataConnection dataConnection)
         {
-            VsDataHelper.RemoveDataConnection(_package, dataConnection);
+            VsDataHelper.RemoveDataConnection(package, dataConnection);
         }
 
         void IVisualStudioAccess.ShowMessage(string message)
@@ -71,7 +73,7 @@
 
         async System.Threading.Tasks.Task IVisualStudioAccess.SetStatusBarTextAsync(string text)
         {
-            await VS.StatusBar.ShowMessageAsync(text);            
+            await VS.StatusBar.ShowMessageAsync(text);
         }
 
         void IVisualStudioAccess.ShowError(string error)
@@ -83,12 +85,12 @@
 
         void IVisualStudioAccess.OpenFile(string fileName)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async delegate {
+            ThreadHelper.JoinableTaskFactory.Run(async delegate
+            {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 await VS.Documents.OpenAsync(fileName);
             });
-            
         }
     }
 }

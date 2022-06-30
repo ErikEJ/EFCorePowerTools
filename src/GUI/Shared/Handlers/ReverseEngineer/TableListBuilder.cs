@@ -1,15 +1,15 @@
-﻿using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
     public class TableListBuilder
     {
-        private readonly string _connectionString;
-        private readonly DatabaseType _databaseType;
-        private readonly SchemaInfo[] _schemas;
+        private readonly string connectionString;
+        private readonly DatabaseType databaseType;
+        private readonly SchemaInfo[] schemas;
 
         public TableListBuilder(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
@@ -18,16 +18,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 throw new ArgumentNullException(nameof(connectionString));
             }
 
-            _connectionString = connectionString;
-            _databaseType = databaseType;
-            _schemas = schemas;
+            this.connectionString = connectionString;
+            this.databaseType = databaseType;
+            this.schemas = schemas;
         }
 
         public async Task<List<TableModel>> GetTableDefinitionsAsync(CodeGenerationMode codeGenerationMode)
         {
             var launcher = new EfRevEngLauncher(null, codeGenerationMode);
 
-            return await launcher.GetTablesAsync(_connectionString, _databaseType, _schemas, AdvancedOptions.Instance.MergeDacpacs);
+            return await launcher.GetTablesAsync(connectionString, databaseType, schemas, AdvancedOptions.Instance.MergeDacpacs);
         }
     }
 }

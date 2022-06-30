@@ -1,7 +1,4 @@
-﻿using Community.VisualStudio.Toolkit;
-using EFCorePowerTools.Extensions;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,6 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Extensions;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -69,7 +69,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseMultipleSprocResultSets = AdvancedOptions.Instance.DiscoverMultipleResultSets,
                 OptionsPath = options.OptionsPath,
                 LegacyLangVersion = await project.IsLegacyAsync(),
-                MergeDacpacs =  AdvancedOptions.Instance.MergeDacpacs,
+                MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs,
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
                 UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
             };
@@ -165,7 +165,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 File.Delete(path);
             }
-            catch 
+            catch
             {
                 //Ignore
             }
@@ -218,10 +218,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
+
                 if (process != null)
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
+
                 if (process != null)
                 {
                     error = await process.StandardError.ReadToEndAsync();

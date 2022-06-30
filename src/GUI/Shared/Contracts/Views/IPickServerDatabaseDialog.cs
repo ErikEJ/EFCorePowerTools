@@ -1,9 +1,9 @@
-﻿namespace EFCorePowerTools.Contracts.Views
-{
-    using RevEng.Common;
-    using Common.Models;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using EFCorePowerTools.Common.Models;
+using RevEng.Common;
 
+namespace EFCorePowerTools.Contracts.Views
+{
     public interface IPickServerDatabaseDialog : IDialog<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)>
     {
         void PublishConnections(IEnumerable<DatabaseConnectionModel> connections);

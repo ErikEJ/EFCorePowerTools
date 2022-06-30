@@ -1,5 +1,5 @@
-﻿using RevEng.Common;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Contracts.ViewModels
 {

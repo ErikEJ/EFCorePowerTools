@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Helpers;
+using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Handlers
 {
-    using Contracts.Views;
-    using EFCorePowerTools.Helpers;
-    using Microsoft.VisualStudio.Shell;
-
     internal class AboutHandler
     {
-        private readonly EFCorePowerToolsPackage _package;
+        private readonly EFCorePowerToolsPackage package;
 
         public AboutHandler(EFCorePowerToolsPackage package)
         {
-            _package = package;
+            this.package = package;
         }
 
         public void ShowDialog()
@@ -22,13 +21,13 @@ namespace EFCorePowerTools.Handlers
 
             try
             {
-                var dialog = _package.GetView<IAboutDialog>();
+                var dialog = package.GetView<IAboutDialog>();
                 dialog.ShowAndAwaitUserResponse(false);
                 Telemetry.TrackEvent("PowerTools.About");
             }
             catch (Exception exception)
             {
-                _package.LogError(new List<string>(), exception);
+                package.LogError(new List<string>(), exception);
             }
         }
     }

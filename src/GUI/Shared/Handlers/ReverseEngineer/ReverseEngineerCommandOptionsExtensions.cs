@@ -1,7 +1,7 @@
-﻿using RevEng.Common;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -25,16 +25,22 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         public static ReverseEngineerCommandOptions TryRead(string optionsPath)
         {
-            if (!File.Exists(optionsPath)) return null;
+            if (!File.Exists(optionsPath))
+            {
+                return null;
+            }
 
             var couldRead = TryRead(optionsPath, out ReverseEngineerCommandOptions deserialized);
             if (couldRead)
+            {
                 return deserialized;
+            }
 
             return null;
         }
 
-        private static bool TryRead<T>(string optionsPath, out T deserialized) where T : class, new()
+        private static bool TryRead<T>(string optionsPath, out T deserialized)
+            where T : class, new()
         {
             try
             {

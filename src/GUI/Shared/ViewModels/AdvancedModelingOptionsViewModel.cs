@@ -1,13 +1,13 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using Common.Models;
-    using System;
-    using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class AdvancedModelingOptionsViewModel : ViewModelBase, IAdvancedModelingOptionsViewModel
     {
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;

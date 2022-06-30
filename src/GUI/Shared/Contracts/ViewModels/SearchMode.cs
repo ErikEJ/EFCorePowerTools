@@ -3,6 +3,6 @@
     public enum SearchMode
     {
         Text,
-        RegularExpression
+        RegularExpression,
     }
 }

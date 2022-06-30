@@ -1,5 +1,17 @@
-﻿using Community.VisualStudio.Toolkit;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.BLL;
+using EFCorePowerTools.Common.BLL;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.DAL;
@@ -11,23 +23,11 @@ using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
-using EFCorePowerTools.Common.BLL;
-using EFCorePowerTools.Common.DAL;
-using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EFCorePowerTools
 {
@@ -38,25 +38,24 @@ namespace EFCorePowerTools
     [ProvideProfile(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    // ReSharper disable once InconsistentNaming
     public sealed class EFCorePowerToolsPackage : AsyncPackage
     {
-        private readonly ReverseEngineerHandler _reverseEngineerHandler;
-        private readonly ModelAnalyzerHandler _modelAnalyzerHandler;
-        private readonly AboutHandler _aboutHandler;
-        private readonly DgmlNugetHandler _dgmlNugetHandler;
-        private readonly MigrationsHandler _migrationsHandler;
-        private readonly CompareHandler _compareHandler;
-        private IServiceProvider _extensionServices;
+        private readonly ReverseEngineerHandler reverseEngineerHandler;
+        private readonly ModelAnalyzerHandler modelAnalyzerHandler;
+        private readonly AboutHandler aboutHandler;
+        private readonly DgmlNugetHandler dgmlNugetHandler;
+        private readonly MigrationsHandler migrationsHandler;
+        private readonly CompareHandler compareHandler;
+        private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
         {
-            _reverseEngineerHandler = new ReverseEngineerHandler(this);
-            _modelAnalyzerHandler = new ModelAnalyzerHandler(this);
-            _aboutHandler = new AboutHandler(this);
-            _dgmlNugetHandler = new DgmlNugetHandler(this);
-            _migrationsHandler = new MigrationsHandler(this);
-            _compareHandler = new CompareHandler(this);
+            reverseEngineerHandler = new ReverseEngineerHandler(this);
+            modelAnalyzerHandler = new ModelAnalyzerHandler(this);
+            aboutHandler = new AboutHandler(this);
+            dgmlNugetHandler = new DgmlNugetHandler(this);
+            migrationsHandler = new MigrationsHandler(this);
+            compareHandler = new CompareHandler(this);
         }
 
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
@@ -71,81 +70,121 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
-                    var menuCommandId3 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId3 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDgmlBuild);
 
-                    var menuItem3 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId3);
+                    var menuItem3 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId3);
                     oleMenuCommandService.AddCommand(menuItem3);
 
-                    var menuCommandId5 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId5 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
-                    var menuItem5 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId5);
+                    var menuItem5 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId5);
                     oleMenuCommandService.AddCommand(menuItem5);
 
-                    var menuCommandId7 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId7 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidAbout);
-                    var menuItem7 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId7);
+                    var menuItem7 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId7);
                     oleMenuCommandService.AddCommand(menuItem7);
 
-                    var menuCommandId8 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId8 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDgmlNuget);
-                    var menuItem8 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId8);
+                    var menuItem8 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId8);
                     oleMenuCommandService.AddCommand(menuItem8);
 
-                    var menuCommandId9 = new CommandID(GuidList.guidDbContextPackageCmdSet,
-                       (int)PkgCmdIDList.cmdidSqlBuild);
-                    var menuItem9 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId9);
+                    var menuCommandId9 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
+                        (int)PkgCmdIDList.cmdidSqlBuild);
+                    var menuItem9 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId9);
                     oleMenuCommandService.AddCommand(menuItem9);
 
-                    var menuCommandId10 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId10 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDebugViewBuild);
-                    var menuItem10 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId10);
+                    var menuItem10 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId10);
                     oleMenuCommandService.AddCommand(menuItem10);
 
-                    var menuCommandId11 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId11 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidMigrationStatus);
-                    var menuItem11 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId11);
+                    var menuItem11 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId11);
                     oleMenuCommandService.AddCommand(menuItem11);
 
-                    var menuCommandId12 = new CommandID(GuidList.guidDbContextPackageCmdSet,
+                    var menuCommandId12 = new CommandID(
+                        GuidList.guidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDbCompare);
-                    var menuItem12 = new OleMenuCommand(OnProjectContextMenuInvokeHandler, null,
-                        OnProjectMenuBeforeQueryStatus, menuCommandId12);
+                    var menuItem12 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId12);
                     oleMenuCommandService.AddCommand(menuItem12);
 
-                    var menuCommandId1101 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    var menuCommandId1101 = new CommandID(
+                        GuidList.guidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerEdit);
-                    var menuItem251 = new OleMenuCommand(OnReverseEngineerConfigFileMenuInvokeHandler, null,
-                        OnReverseEngineerConfigFileMenuBeforeQueryStatus, menuCommandId1101);
+                    var menuItem251 = new OleMenuCommand(
+                        OnReverseEngineerConfigFileMenuInvokeHandler,
+                        null,
+                        OnReverseEngineerConfigFileMenuBeforeQueryStatus,
+                        menuCommandId1101);
                     oleMenuCommandService.AddCommand(menuItem251);
 
-                    var menuCommandId1102 = new CommandID(GuidList.guidReverseEngineerMenu,
+                    var menuCommandId1102 = new CommandID(
+                        GuidList.guidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
-                    var menuItem252 = new OleMenuCommand(OnReverseEngineerConfigFileMenuInvokeHandler, null,
-                        OnReverseEngineerConfigFileMenuBeforeQueryStatus, menuCommandId1102);
+                    var menuItem252 = new OleMenuCommand(
+                        OnReverseEngineerConfigFileMenuInvokeHandler,
+                        null,
+                        OnReverseEngineerConfigFileMenuBeforeQueryStatus,
+                        menuCommandId1102);
                     oleMenuCommandService.AddCommand(menuItem252);
-
                 }
+
                 typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
                 typeof(Xceed.Wpf.Toolkit.SplitButton).ToString();
 
-                _extensionServices = CreateServiceProvider();
+                extensionServices = CreateServiceProvider();
 
-                Telemetry.Enabled =  AdvancedOptions.Instance.ParticipateInTelemetry;
-                if (Telemetry.Enabled)
+                if (AdvancedOptions.Instance.ParticipateInTelemetry)
                 {
                     Telemetry.Initialize(
                         System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                         (await VisualStudioVersionAsync()).ToString(),
                         "00dac4de-337c-4fed-a835-70db30078b2a");
                 }
+
                 Telemetry.TrackEvent("Platform: Visual Studio " + (await VisualStudioVersionAsync()).ToString(1));
             }
             catch (Exception ex)
@@ -155,7 +194,7 @@ namespace EFCorePowerTools
         }
 
         private async Task<Version> VisualStudioVersionAsync()
-        { 
+        {
             return await VS.Shell.GetVsVersionAsync();
         }
 
@@ -166,7 +205,7 @@ namespace EFCorePowerTools
             var menuCommand = sender as MenuCommand;
             if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
             {
-                return; 
+                return;
             }
 
             menuCommand.Visible = false;
@@ -254,15 +293,15 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
                 }
             }
             catch (Exception ex)
-            { 
+            {
                 LogError(new List<string>(), ex);
             }
         }
@@ -297,6 +336,7 @@ namespace EFCorePowerTools
                 {
                     return;
                 }
+
                 string path = null;
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
@@ -306,44 +346,47 @@ namespace EFCorePowerTools
                     menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {
                     path = await LocateProjectAssemblyPathAsync(project);
-                    if (path == null) return;
+                    if (path == null)
+                    {
+                        return;
+                    }
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
                 {
-                    await _reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
-                    await _dgmlNugetHandler.InstallDgmlNugetAsync(project);
+                    await dgmlNugetHandler.InstallDgmlNugetAsync(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
-                    await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
+                    await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild)
                 {
-                    await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Ddl);
+                    await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Ddl);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild)
                 {
-                    await _modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.DebugView);
+                    await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.DebugView);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
                 {
-                    await _migrationsHandler.ManageMigrationsAsync(path, project);
+                    await migrationsHandler.ManageMigrationsAsync(path, project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
                 {
-                    _aboutHandler.ShowDialog();
+                    aboutHandler.ShowDialog();
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {
-                    await _compareHandler.HandleComparisonAsync(path, project);
+                    await compareHandler.HandleComparisonAsync(path, project);
                 }
             }
             catch (Exception ex)
-            { 
+            {
                 LogError(new List<string>(), ex);
             }
         }
@@ -443,7 +486,7 @@ namespace EFCorePowerTools
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
-            ThreadHelper.JoinableTaskFactory.Run(async delegate
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
                 // Switch to main thread
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -482,7 +525,7 @@ namespace EFCorePowerTools
         internal TView GetView<TView>()
             where TView : IView
         {
-            return _extensionServices.GetService<TView>();
+            return extensionServices.GetService<TView>();
         }
     }
 }

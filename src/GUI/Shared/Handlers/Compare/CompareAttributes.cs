@@ -1,5 +1,5 @@
-﻿using EFCorePowerTools.Locales;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using EFCorePowerTools.Locales;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -36,6 +36,6 @@ namespace EFCorePowerTools.Handlers.Compare
         [Display(Name = "DeleteBehabior", ResourceType = typeof(CompareLocale))]
         DeleteBehavior,
         [Display(Name = "NotMappedToDatabase", ResourceType = typeof(CompareLocale))]
-        NotMappedToDatabase
+        NotMappedToDatabase,
     }
 }

@@ -1,7 +1,7 @@
-﻿using EFCorePowerTools.Contracts.EventArgs;
-using EFCorePowerTools.Common.Models;
-using System;
+﻿using System;
 using System.Windows.Input;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 
 namespace EFCorePowerTools.Contracts.ViewModels
 {

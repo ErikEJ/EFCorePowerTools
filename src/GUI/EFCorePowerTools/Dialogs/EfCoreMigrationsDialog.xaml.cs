@@ -1,18 +1,19 @@
-﻿namespace EFCorePowerTools.Dialogs
-{
-    using Community.VisualStudio.Toolkit;
-    using Contracts.ViewModels;
-    using Contracts.Views;
-    using Common.DAL;
-    using System;
+﻿using System;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Contracts.ViewModels;
+using EFCorePowerTools.Contracts.Views;
 
+namespace EFCorePowerTools.Dialogs
+{
     public partial class EfCoreMigrationsDialog : IMigrationOptionsDialog
     {
-        private readonly Action<Project> _useProjectForMigration;
-        private readonly Action<string> _useOutputPath;
+        private readonly Action<Project> useProjectForMigration;
+        private readonly Action<string> useOutputPath;
 
-        public EfCoreMigrationsDialog(ITelemetryAccess telemetryAccess,
-                                      IMigrationOptionsViewModel viewModel)
+        public EfCoreMigrationsDialog(
+            ITelemetryAccess telemetryAccess,
+            IMigrationOptionsViewModel viewModel)
         {
             telemetryAccess.TrackPageView(nameof(EfCoreMigrationsDialog));
 
@@ -23,8 +24,8 @@
                 Close();
             };
 
-            _useProjectForMigration = viewModel.UseProjectForMigration;
-            _useOutputPath = viewModel.UseOutputPath;
+            useProjectForMigration = viewModel.UseProjectForMigration;
+            useOutputPath = viewModel.UseOutputPath;
 
             InitializeComponent();
         }
@@ -47,13 +48,13 @@
 
         IMigrationOptionsDialog IMigrationOptionsDialog.UseProjectForMigration(Project project)
         {
-            _useProjectForMigration(project);
+            useProjectForMigration(project);
             return this;
         }
 
         IMigrationOptionsDialog IMigrationOptionsDialog.UseOutputPath(string outputPath)
         {
-            _useOutputPath(outputPath);
+            useOutputPath(outputPath);
             return this;
         }
     }

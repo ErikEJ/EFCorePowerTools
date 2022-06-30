@@ -1,23 +1,23 @@
-﻿namespace EFCorePowerTools.ViewModels
-{
-    using Contracts.EventArgs;
-    using Contracts.ViewModels;
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.CommandWpf;
-    using RevEng.Common;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using EFCorePowerTools.Contracts.EventArgs;
+using EFCorePowerTools.Contracts.ViewModels;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using RevEng.Common;
 
+namespace EFCorePowerTools.ViewModels
+{
     public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
     {
 
-        private bool? _tableSelectionThreeState;
-        private string _searchText;
-        private SearchMode _searchMode = SearchMode.Text;
+        private bool? tableSelectionThreeState;
+        private string searchText;
+        private SearchMode searchMode = SearchMode.Text;
 
         public PickTablesViewModel(IObjectTreeViewModel objectTreeViewModel)
         {
@@ -39,11 +39,15 @@
 
         public bool? TableSelectionThreeState
         {
-            get => _tableSelectionThreeState;
+            get => tableSelectionThreeState;
             set
             {
-                if (Equals(value, _tableSelectionThreeState)) return;
-                _tableSelectionThreeState = value;
+                if (Equals(value, tableSelectionThreeState))
+                {
+                    return;
+                }
+
+                tableSelectionThreeState = value;
                 RaisePropertyChanged();
                 HandleTableSelectionThreeStateChange(value);
             }
@@ -51,25 +55,33 @@
 
         public string SearchText
         {
-            get => _searchText;
+            get => searchText;
             set
             {
-                if (Equals(value, _searchText)) return;
-                _searchText = value;
+                if (Equals(value, searchText))
+                {
+                    return;
+                }
+
+                searchText = value;
                 RaisePropertyChanged();
-                HandleSearchTextChange(_searchText, _searchMode);
+                HandleSearchTextChange(searchText, searchMode);
             }
         }
 
         public SearchMode SearchMode
         {
-            get => _searchMode;
+            get => searchMode;
             set
             {
-                if (Equals(value, _searchMode)) return;
-                _searchMode = value;
+                if (Equals(value, searchMode))
+                {
+                    return;
+                }
+
+                searchMode = value;
                 RaisePropertyChanged();
-                HandleSearchTextChange(_searchText, _searchMode);
+                HandleSearchTextChange(searchText, searchMode);
             }
         }
 
@@ -81,7 +93,7 @@
         /// <summary>
         /// At least a single table or stored procedure must be selected.
         /// </summary>
-        private bool Ok_CanExecute() 
+        private bool Ok_CanExecute()
             => ObjectTree.GetSelectedObjects().Any(c => c.ObjectType.HasColumns())
               || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.Procedure);
 
@@ -93,7 +105,9 @@
         private void HandleTableSelectionThreeStateChange(bool? selectionMode)
         {
             if (selectionMode == null)
+            {
                 return;
+            }
 
             ObjectTree.SetSelectionState(selectionMode.Value);
             SearchText = string.Empty;
@@ -103,26 +117,35 @@
         {
             Thread.Sleep(300);
             if (text != SearchText)
+            {
                 return;
+            }
 
             ObjectTree.Search(SearchText, searchMode);
         }
 
         private void UpdateTableSelectionThreeState()
         {
-            TableSelectionThreeState = ObjectTree.GetSelectionState(); 
+            TableSelectionThreeState = ObjectTree.GetSelectionState();
         }
 
         public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
         {
-            if (objects == null) return;
+            if (objects == null)
+            {
+                return;
+            }
 
             ObjectTree.AddObjects(objects, customReplacers);
         }
 
         public void SelectObjects(IEnumerable<SerializationTableModel> objects)
         {
-            if (objects == null) return;
+            if (objects == null)
+            {
+                return;
+            }
+
             ObjectTree.SelectObjects(objects);
         }
 

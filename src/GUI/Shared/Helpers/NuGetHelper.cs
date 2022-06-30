@@ -1,8 +1,8 @@
-﻿using Community.VisualStudio.Toolkit;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
 
 namespace EFCorePowerTools.Helpers
 {
@@ -48,10 +48,12 @@ namespace EFCorePowerTools.Helpers
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
+
                 if (process != null)
                 {
                     standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
                 }
+
                 if (process != null)
                 {
                     error = await process.StandardError.ReadToEndAsync();

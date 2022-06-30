@@ -1,13 +1,13 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    using EventArgs;
-    using RevEng.Common;
-    using Common.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
+using RevEng.Common;
 
+namespace EFCorePowerTools.Contracts.ViewModels
+{
     public interface IPickServerDatabaseViewModel : IViewModel
     {
         event EventHandler<CloseRequestedEventArgs> CloseRequested;

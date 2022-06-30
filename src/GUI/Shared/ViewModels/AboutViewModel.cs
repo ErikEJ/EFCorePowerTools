@@ -13,22 +13,22 @@ namespace EFCorePowerTools.ViewModels
 {
     public class AboutViewModel : ViewModelBase, IAboutViewModel
     {
-        private readonly AboutExtensionModel _aboutExtensionModel;
-        private readonly IExtensionVersionService _extensionVersionService;
-        private readonly IOperatingSystemAccess _operatingSystemAccess;
+        private readonly AboutExtensionModel aboutExtensionModel;
+        private readonly IExtensionVersionService extensionVersionService;
+        private readonly IOperatingSystemAccess operatingSystemAccess;
 
-        private string _version;
+        private string version;
 
         public AboutViewModel(
             AboutExtensionModel aboutExtensionModel,
             IExtensionVersionService extensionVersionService,
             IOperatingSystemAccess operatingSystemAccess)
         {
-            _aboutExtensionModel = aboutExtensionModel ?? throw new ArgumentNullException(nameof(aboutExtensionModel));
-            _extensionVersionService = extensionVersionService ?? throw new ArgumentNullException(nameof(extensionVersionService));
-            _operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
+            this.aboutExtensionModel = aboutExtensionModel ?? throw new ArgumentNullException(nameof(aboutExtensionModel));
+            this.extensionVersionService = extensionVersionService ?? throw new ArgumentNullException(nameof(extensionVersionService));
+            this.operatingSystemAccess = operatingSystemAccess ?? throw new ArgumentNullException(nameof(operatingSystemAccess));
 
-            _aboutExtensionModel.PropertyChanged += AboutExtensionModelOnPropertyChanged;
+            this.aboutExtensionModel.PropertyChanged += AboutExtensionModelOnPropertyChanged;
 
             LoadedCommand = new RelayCommand(Loaded_Executed);
             OkCommand = new RelayCommand(Ok_Executed);
@@ -45,15 +45,15 @@ namespace EFCorePowerTools.ViewModels
 
         public string Version
         {
-            get => _version;
+            get => version;
             private set
             {
-                if (Equals(value, _version))
+                if (Equals(value, version))
                 {
                     return;
                 }
 
-                _version = value;
+                version = value;
                 RaisePropertyChanged();
             }
         }
@@ -61,9 +61,9 @@ namespace EFCorePowerTools.ViewModels
 
         private void Loaded_Executed()
         {
-            if (_aboutExtensionModel.ExtensionVersion == null)
+            if (aboutExtensionModel.ExtensionVersion == null)
             {
-                _extensionVersionService.SetExtensionVersion(_aboutExtensionModel);
+                extensionVersionService.SetExtensionVersion(aboutExtensionModel);
             }
             else
             {
@@ -78,26 +78,26 @@ namespace EFCorePowerTools.ViewModels
 
         private void OpenSources_Executed()
         {
-            _operatingSystemAccess.StartProcess(AboutExtensionModel.SourceCodeUrl);
+            operatingSystemAccess.StartProcess(AboutExtensionModel.SourceCodeUrl);
         }
 
         private void OpenMarketplace_Executed()
         {
-            _operatingSystemAccess.StartProcess(AboutExtensionModel.MarketplaceUrl);
+            operatingSystemAccess.StartProcess(AboutExtensionModel.MarketplaceUrl);
         }
 
         private void FormatVersion()
         {
-            Version = _aboutExtensionModel.ExtensionVersion == null
+            Version = aboutExtensionModel.ExtensionVersion == null
                           ? AboutLocale.VersionNotAvailable
-                          : $"{AboutLocale.Version} {_aboutExtensionModel.ExtensionVersion.ToString(4)}";
+                          : $"{AboutLocale.Version} {aboutExtensionModel.ExtensionVersion.ToString(4)}";
         }
 
         private void AboutExtensionModelOnPropertyChanged(
             object sender,
             PropertyChangedEventArgs e)
         {
-            if (sender != _aboutExtensionModel)
+            if (sender != aboutExtensionModel)
             {
                 return;
             }

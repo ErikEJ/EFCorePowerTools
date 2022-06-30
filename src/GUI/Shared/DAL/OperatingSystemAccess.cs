@@ -1,9 +1,9 @@
-﻿namespace EFCorePowerTools.DAL
-{
-    using Common.DAL;
-    using System.Diagnostics;
-    using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
+using EFCorePowerTools.Common.DAL;
 
+namespace EFCorePowerTools.DAL
+{
     public class OperatingSystemAccess : IOperatingSystemAccess
     {
         void IOperatingSystemAccess.SetClipboardText(string text)

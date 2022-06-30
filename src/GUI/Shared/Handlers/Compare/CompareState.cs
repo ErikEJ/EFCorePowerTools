@@ -1,5 +1,5 @@
-﻿using EFCorePowerTools.Locales;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using EFCorePowerTools.Locales;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -15,6 +15,6 @@ namespace EFCorePowerTools.Handlers.Compare
         [Display(Name = "NotInDatabase", ResourceType = typeof(CompareLocale))]
         NotInDatabase,
         [Display(Name = "NotInContext", ResourceType = typeof(CompareLocale))]
-        ExtraInDatabase
+        ExtraInDatabase,
     }
 }

@@ -1,9 +1,9 @@
-﻿namespace EFCorePowerTools.Converter
-{
-    using System;
-    using System.Globalization;
-    using System.Windows.Data;
+﻿using System;
+using System.Globalization;
+using System.Windows.Data;
 
+namespace EFCorePowerTools.Converter
+{
     public class LevelToWidthConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -16,5 +16,4 @@
             throw new NotImplementedException();
         }
     }
-
 }
