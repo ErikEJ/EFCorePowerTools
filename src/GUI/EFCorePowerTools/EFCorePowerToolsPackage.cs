@@ -59,6 +59,50 @@ namespace EFCorePowerTools
             compareHandler = new CompareHandler(this);
         }
 
+        internal void LogError(List<string> statusMessages, Exception exception)
+        {
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                // Switch to main thread
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                if (exception != null)
+                {
+                    Telemetry.TrackException(exception);
+                }
+
+                await VS.StatusBar.ShowMessageAsync(SharedLocale.AnErrorOccurred);
+
+                var messageBuilder = new StringBuilder();
+
+                foreach (var error in statusMessages)
+                {
+                    messageBuilder.AppendLine(error);
+                }
+
+                if (exception != null)
+                {
+                    await exception.Demystify().LogAsync(messageBuilder.ToString());
+                }
+                else
+                {
+                    await exception.LogAsync(messageBuilder.ToString());
+                }
+            });
+        }
+
+        internal T GetService<T>()
+            where T : class
+        {
+            return (T)GetService(typeof(T));
+        }
+
+        internal TView GetView<TView>()
+            where TView : IView
+        {
+            return extensionServices.GetService<TView>();
+        }
+
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
@@ -194,6 +238,13 @@ namespace EFCorePowerTools
             }
         }
 
+        private static bool IsConfigFile(string itemName)
+        {
+            return itemName != null &&
+                itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
+                itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
+        }
+
         private async Task<Version> VisualStudioVersionAsync()
         {
             return await VS.Shell.GetVsVersionAsync();
@@ -226,13 +277,6 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = IsConfigFile(item.Text) && project.IsCSharpProject();
-        }
-
-        private static bool IsConfigFile(string itemName)
-        {
-            return itemName != null &&
-                itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
-                itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -483,50 +527,6 @@ namespace EFCorePowerTools
             ThreadHelper.ThrowIfNotOnUIThread();
 
             VSHelper.ShowMessage(msg.Content);
-        }
-
-        internal void LogError(List<string> statusMessages, Exception exception)
-        {
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                // Switch to main thread
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-                if (exception != null)
-                {
-                    Telemetry.TrackException(exception);
-                }
-
-                await VS.StatusBar.ShowMessageAsync(SharedLocale.AnErrorOccurred);
-
-                var messageBuilder = new StringBuilder();
-
-                foreach (var error in statusMessages)
-                {
-                    messageBuilder.AppendLine(error);
-                }
-
-                if (exception != null)
-                {
-                    await exception.Demystify().LogAsync(messageBuilder.ToString());
-                }
-                else
-                {
-                    await exception.LogAsync(messageBuilder.ToString());
-                }
-            });
-        }
-
-        internal T GetService<T>()
-            where T : class
-        {
-            return (T)GetService(typeof(T));
-        }
-
-        internal TView GetView<TView>()
-            where TView : IView
-        {
-            return extensionServices.GetService<TView>();
         }
     }
 }
