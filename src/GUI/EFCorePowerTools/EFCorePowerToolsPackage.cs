@@ -116,7 +116,7 @@ namespace EFCorePowerTools
                 if (oleMenuCommandService != null)
                 {
                     var menuCommandId3 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDgmlBuild);
 
                     var menuItem3 = new OleMenuCommand(
@@ -127,7 +127,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem3);
 
                     var menuCommandId5 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
                     var menuItem5 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -137,7 +137,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem5);
 
                     var menuCommandId7 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidAbout);
                     var menuItem7 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -147,7 +147,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem7);
 
                     var menuCommandId8 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDgmlNuget);
                     var menuItem8 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -157,7 +157,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem8);
 
                     var menuCommandId9 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidSqlBuild);
                     var menuItem9 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -167,7 +167,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem9);
 
                     var menuCommandId10 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDebugViewBuild);
                     var menuItem10 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -177,7 +177,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem10);
 
                     var menuCommandId11 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidMigrationStatus);
                     var menuItem11 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -187,7 +187,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem11);
 
                     var menuCommandId12 = new CommandID(
-                        GuidList.guidDbContextPackageCmdSet,
+                        GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDbCompare);
                     var menuItem12 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
@@ -197,7 +197,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem12);
 
                     var menuCommandId1101 = new CommandID(
-                        GuidList.guidReverseEngineerMenu,
+                        GuidList.GuidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerEdit);
                     var menuItem251 = new OleMenuCommand(
                         OnReverseEngineerConfigFileMenuInvokeHandler,
@@ -207,7 +207,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem251);
 
                     var menuCommandId1102 = new CommandID(
-                        GuidList.guidReverseEngineerMenu,
+                        GuidList.GuidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
                     var menuItem252 = new OleMenuCommand(
                         OnReverseEngineerConfigFileMenuInvokeHandler,

@@ -27,10 +27,10 @@ namespace EFCorePowerTools.Contracts.ViewModels
         ICommand ApplyCommand { get; }
         ICommand CancelCommand { get; }
 
-        void UseProjectForMigration(Project project);
-        void UseOutputPath(string outputPath);
-
         double BackgroundOpacity { get; }
         Visibility MigrationNameVisibility { get; }
+
+        void UseProjectForMigration(Project project);
+        void UseOutputPath(string outputPath);
     }
 }
