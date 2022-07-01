@@ -28,7 +28,7 @@ namespace RevEng.Core.Procedures
             }
 
             var result = new List<Routine>();
-            var found = new List<Tuple<string, string, string, bool>>();
+            var found = new List<Tuple<string, string, bool>>();
             var errors = new List<string>();
 
             var filter = options.Modules.ToHashSet();
@@ -41,7 +41,6 @@ namespace RevEng.Core.Procedures
 SELECT
     ROUTINE_SCHEMA,
     ROUTINE_NAME,
-    ROUTINE_TYPE,
     CAST(CASE WHEN (ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
 FROM INFORMATION_SCHEMA.ROUTINES
 WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
@@ -75,14 +74,14 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                     {
                         while (reader.Read())
                         {
-                            // Schema, Name, Type, IsScalar
-                            found.Add(new Tuple<string, string, string, bool>(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetBoolean(3)));
+                            // Schema, Name, IsScalar
+                            found.Add(new Tuple<string, string, bool>(reader.GetString(0), reader.GetString(1), reader.GetBoolean(2)));
                         }
                     }
                 }
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
-                var allParameters = GetParameters(connection);
+                var allParameters = options.FullModel ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
 
                 foreach (var foundModule in found)
                 {
@@ -90,7 +89,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                     if (filter.Count == 0 || filter.Contains(key))
                     {
-                        var isScalar = foundModule.Item4;
+                        var isScalar = foundModule.Item3;
 
                         var module = RoutineType == "PROCEDURE"
                             ? (Routine)new Procedure()
@@ -98,15 +97,16 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
 
                         module.Schema = foundModule.Item1;
                         module.Name = foundModule.Item2;
-                        module.HasValidResultSet = true;
-
-                        if (options.MappedModules?.ContainsKey(key) ?? false)
-                        {
-                            module.MappedType = options.MappedModules[key];
-                        }
 
                         if (options.FullModel)
                         {
+                            module.HasValidResultSet = true;
+
+                            if (options.MappedModules?.ContainsKey(key) ?? false)
+                            {
+                                module.MappedType = options.MappedModules[key];
+                            }
+
                             if (allParameters.TryGetValue($"[{module.Schema}].[{module.Name}]", out var moduleParameters))
                             {
                                 module.Parameters = moduleParameters;
@@ -141,35 +141,35 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                 }
 #pragma warning restore CA1031 // Do not catch general exception types
                             }
-                        }
 
-                        if (module is Function func
-                            && func.IsScalar
-                            && func.Parameters.Count > 0
-                            && func.Parameters.Any(p => p.StoreType == "table type"))
-                        {
-                            errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.{Environment.NewLine}");
-                            continue;
-                        }
-
-                        bool dupesFound = false;
-                        foreach (var resultElement in module.Results)
-                        {
-                            var duplicates = resultElement.GroupBy(x => x.Name)
-                                .Where(g => g.Count() > 1)
-                                .Select(y => y.Key)
-                                .ToList();
-
-                            if (duplicates.Any())
+                            if (module is Function func
+                                && func.IsScalar
+                                && func.Parameters.Count > 0
+                                && func.Parameters.Any(p => p.StoreType == "table type"))
                             {
-                                dupesFound = true;
-                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.{Environment.NewLine}");
+                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.{Environment.NewLine}");
+                                continue;
                             }
-                        }
 
-                        if (dupesFound)
-                        {
-                            continue;
+                            bool dupesFound = false;
+                            foreach (var resultElement in module.Results)
+                            {
+                                var duplicates = resultElement.GroupBy(x => x.Name)
+                                    .Where(g => g.Count() > 1)
+                                    .Select(y => y.Key)
+                                    .ToList();
+
+                                if (duplicates.Any())
+                                {
+                                    dupesFound = true;
+                                    errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.{Environment.NewLine}");
+                                }
+                            }
+
+                            if (dupesFound)
+                            {
+                                continue;
+                            }
                         }
 
                         result.Add(module);
