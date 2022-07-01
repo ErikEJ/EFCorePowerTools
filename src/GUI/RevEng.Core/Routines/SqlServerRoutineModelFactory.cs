@@ -137,7 +137,7 @@ AND ROUTINE_TYPE = N'{RoutineType}'");
                                     {
                                         new List<ModuleResultElement>(),
                                     };
-                                    errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name} - see the wiki for solutions.'{Environment.NewLine}{ex}{Environment.NewLine}");
+                                    errors.Add($"Unable to get result set shape for {RoutineType} '{module.Schema}.{module.Name}'.{Environment.NewLine}{ex.Message}{Environment.NewLine}");
                                 }
 #pragma warning restore CA1031 // Do not catch general exception types
                             }
