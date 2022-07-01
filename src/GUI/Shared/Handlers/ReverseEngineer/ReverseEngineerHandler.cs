@@ -510,12 +510,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             options.UseNullableReferences = !await project.IsLegacyAsync() && options.UseNullableReferences;
 
-            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
-            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GeneratingCode);
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 3);
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode, project);
 
-            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
 
             var tfm = await project.GetAttributeAsync("TargetFrameworkMoniker");
             bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
@@ -555,6 +554,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
+
             var duration = DateTime.Now - startTime;
 
             var missingProviderPackage = containsEfCoreReference.Item1 ? null : containsEfCoreReference.Item2;
@@ -563,7 +564,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 missingProviderPackage = null;
             }
 
-            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.ReportingResult);
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
             await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
