@@ -36,7 +36,7 @@ namespace RevEng.Core
 
             if (schema.UseSchemaName)
             {
-                candidateStringBuilder.Append(ToPascalCase(originalTable.Schema));
+                candidateStringBuilder.Append(GenerateIdentifier(originalTable.Schema));
             }
 
             var newTableName = string.Empty;
@@ -56,12 +56,12 @@ namespace RevEng.Core
 
             if (string.IsNullOrWhiteSpace(newTableName))
             {
-                candidateStringBuilder.Append(ToPascalCase(originalTable.Name));
+                candidateStringBuilder.Append(GenerateIdentifier(originalTable.Name));
 
                 return candidateStringBuilder.ToString();
             }
 
-            candidateStringBuilder.Append(newTableName);
+            candidateStringBuilder.Append(GenerateIdentifier(newTableName));
 
             return candidateStringBuilder.ToString();
         }
@@ -114,7 +114,7 @@ namespace RevEng.Core
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
-        private static string ToPascalCase(string value)
+        private static string GenerateIdentifier(string value)
         {
             var candidateStringBuilder = new StringBuilder();
             var previousLetterCharInWordIsLowerCase = false;
