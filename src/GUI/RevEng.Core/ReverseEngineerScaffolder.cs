@@ -341,9 +341,15 @@ namespace RevEng.Core
             {
                 foreach (var column in databaseModel.Tables
                     .SelectMany(table => table.Columns
-                        .Where(column => (column.StoreType == "bit" || column.StoreType == "boolean")
+                        .Where(column => ((column.StoreType == "bit" || column.StoreType == "boolean")
                             && !column.IsNullable
-                            && !string.IsNullOrEmpty(column.DefaultValueSql))))
+                            && !string.IsNullOrEmpty(column.DefaultValueSql))
+                            ||
+
+                            // Oracle
+                            (column.StoreType == "NUMBER(1)" && !column.IsNullable
+                                && !string.IsNullOrEmpty(column.DefaultValueSql)
+                                && (column.DefaultValueSql?.Trim() == "1" || column.DefaultValueSql?.Trim() == "0")))))
                 {
                     column.DefaultValueSql = null;
                 }
