@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<NoWarn>$(NoWarn);EF1001</NoWarn>
+		<RootNamespace>RevEng.Core</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DefineConstants>TRACE;CORE60;CORE70</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="..\RevEng.Core\*.cs" Link="%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="..\RevEng.Core\Check.cs" />
+	  <Compile Remove="..\RevEng.Core\CommentCSharpEntityTypeGenerator.cs" />
+	  <Compile Remove="..\RevEng.Core\CustomTemplateFileService.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="..\RevEng.Core\DbContextExtensions" Link="DbContextExtensions" />
+    <EmbeddedResource Include="..\RevEng.Core\DbContextExtensions.Sync" Link="DbContextExtensions.Sync" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.6.22329.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-preview.6.22329.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.0-preview.6.22329.4" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="7.0.0-preview.6" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.0-preview.6" />
+		<PackageReference Include="System.CodeDom" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
+		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
+		<ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -6,10 +6,6 @@
 	<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>	  
 	<Version>2.5.0</Version>
   </PropertyGroup>
-	
- <PropertyGroup>
-    <DefineConstants>TRACE;CORE60</DefineConstants>
-  </PropertyGroup>
 
   <ItemGroup>
 	<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
