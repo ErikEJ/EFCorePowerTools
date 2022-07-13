@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>TRACE;DEBUG;CORE50</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CORE50;EFCOMPARE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
