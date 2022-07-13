@@ -14,7 +14,6 @@ namespace EfReveng
     {
         public static int Main(string[] args)
         {
-#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 Console.OutputEncoding = Encoding.UTF8;
@@ -86,7 +85,6 @@ namespace EfReveng
                 Console.Out.WriteLine(ex.Demystify());
                 return 1;
             }
-#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }

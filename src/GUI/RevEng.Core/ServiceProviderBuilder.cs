@@ -1,6 +1,10 @@
-﻿using EntityFrameworkCore.Scaffolding.Handlebars;
-using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+﻿#if !CORE70
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
+using Oracle.EntityFrameworkCore.Design.Internal;
+using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
+#endif
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -12,11 +16,9 @@ using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-using Oracle.EntityFrameworkCore.Design.Internal;
-using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
-#if CORE50 || CORE60
+#if (CORE50 || CORE60) && !CORE70
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
 using System;
@@ -85,6 +87,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers));
             }
 
+#if !CORE70
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -99,6 +102,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
+#endif
 
 #if CORE50 || CORE60
             if (options.UseLegacyPluralizer)
@@ -137,12 +141,15 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+#if !CORE70
                     if (options.UseHierarchyId)
                     {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
-#if CORE50 || CORE60
+#endif
+
+#if (CORE50 || CORE60) && !CORE70
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
@@ -171,13 +178,13 @@ namespace RevEng.Core
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if !CORE70
                     if (options.UseHierarchyId)
                     {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 case DatabaseType.Npgsql:
@@ -197,6 +204,8 @@ namespace RevEng.Core
                     }
 
                     break;
+
+#if !CORE70
 
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
@@ -219,12 +228,13 @@ namespace RevEng.Core
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
+#endif
 
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
-#if CORE50 || CORE60
+#if (CORE50 || CORE60) && !CORE70
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();

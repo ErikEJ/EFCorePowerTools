@@ -55,6 +55,7 @@ namespace EFCorePowerTools.ViewModels
                 "EF Core 5",
                 "EF Core 3",
                 "EF Core 6",
+                "EF Core 7 (preview)",
             };
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();

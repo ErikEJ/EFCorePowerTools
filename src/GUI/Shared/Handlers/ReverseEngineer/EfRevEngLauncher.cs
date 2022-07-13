@@ -40,6 +40,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 case CodeGenerationMode.EFCore6:
                     revengFolder = "efreveng6.";
                     break;
+                case CodeGenerationMode.EFCore7:
+                    revengFolder = "efreveng7.";
+                    break;
                 default:
                     throw new NotSupportedException();
             }
@@ -166,6 +169,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 version = "6.0";
             }
 
+            if (codeGenerationMode == CodeGenerationMode.EFCore7)
+            {
+                version = "7.0";
+            }
+
             if (!await IsDotnetInstalledAsync(version))
             {
                 throw new InvalidOperationException($"Reverse engineer error: Unable to launch 'dotnet' version {version}. Do you have the runtime installed? Check with 'dotnet --list-runtimes'");
@@ -226,18 +234,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 return false;
             }
 
-            var isInstalled = false;
             var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in sdks)
-            {
-                isInstalled = item.StartsWith($"Microsoft.NETCore.App {version}.", StringComparison.OrdinalIgnoreCase);
-                if (isInstalled)
-                {
-                    break;
-                }
-            }
 
-            return isInstalled;
+            return sdks.Any(s => s.StartsWith($"Microsoft.NETCore.App {version}.", StringComparison.OrdinalIgnoreCase));
         }
 
         private string DropNetCoreFiles()
@@ -264,10 +263,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             Directory.CreateDirectory(toDir);
 
-            ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+            if (codeGenerationMode == CodeGenerationMode.EFCore3)
+            {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+            }
 
             if (codeGenerationMode == CodeGenerationMode.EFCore5)
             {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+
                 using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng50.exe.zip"), ZipArchiveMode.Read))
                 {
                     archive.ExtractToDirectory(toDir, true);
@@ -276,7 +280,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (codeGenerationMode == CodeGenerationMode.EFCore6)
             {
+                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+
                 using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng60.exe.zip"), ZipArchiveMode.Read))
+                {
+                    archive.ExtractToDirectory(toDir, true);
+                }
+            }
+
+            if (codeGenerationMode == CodeGenerationMode.EFCore7)
+            {
+                using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng70.exe.zip"), ZipArchiveMode.Read))
                 {
                     archive.ExtractToDirectory(toDir, true);
                 }
@@ -312,6 +326,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return "efreveng.dll";
                 case CodeGenerationMode.EFCore6:
                     return "efreveng60.dll";
+                case CodeGenerationMode.EFCore7:
+                    return "efreveng70.dll";
                 default:
                     throw new NotSupportedException("Unsupported code generation mode");
             }

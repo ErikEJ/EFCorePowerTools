@@ -520,7 +520,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
 
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
-                && !await project.IsNetCore31OrHigherAsync() && !isNetStandard)
+                && !await project.IsNetCore31OrHigherIncluding70Async() && !isNetStandard)
             {
                 foreach (var filePath in revEngResult.EntityTypeFilePaths)
                 {
@@ -530,7 +530,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
             {
-                if (!await project.IsNetCore31OrHigherAsync() && !isNetStandard)
+                if (!await project.IsNetCore31OrHigherIncluding70Async() && !isNetStandard)
                 {
                     foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
                     {
