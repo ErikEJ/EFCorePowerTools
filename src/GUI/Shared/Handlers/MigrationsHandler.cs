@@ -40,28 +40,30 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!await project.IsNetCore31OrHigherAsync())
+                if (!await project.IsNetCore31OrHigherIncluding70Async())
                 {
                     VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
                 }
 
                 var result = await project.ContainsEfCoreDesignReferenceAsync();
-
                 if (string.IsNullOrEmpty(result.Item2))
                 {
                     VSHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
                     return;
                 }
 
-                if (!result.Item1)
+                if (!Version.TryParse(result.Item2, out Version version))
                 {
-                    if (!Version.TryParse(result.Item2, out Version version))
+                    VSHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
+                    if (!result.Item1)
                     {
-                        VSHelper.ShowError(string.Format(MigrationsLocale.CannotSupportVersion, version));
                         return;
                     }
+                }
 
+                if (!result.Item1)
+                {
                     var nugetHelper = new NuGetHelper();
                     await nugetHelper.InstallPackageAsync("Microsoft.EntityFrameworkCore.Design", project, version);
                     VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));

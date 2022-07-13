@@ -86,6 +86,12 @@ namespace EFCorePowerTools.Handlers
             return startupOutputPath;
         }
 
+        private static void ExtractTool(string toDir, string fromDir, string zipName, RevEng.Common.CodeGenerationMode codeGenerationMode)
+        {
+            ZipFile.ExtractToDirectory(Path.Combine(fromDir, zipName), toDir);
+            Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), codeGenerationMode);
+        }
+
         private async Task<string> GetOutputInternalAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -197,7 +203,7 @@ namespace EFCorePowerTools.Handlers
 
             var standardOutput = new StringBuilder();
             var error = string.Empty;
-            using (var process = System.Diagnostics.Process.Start(startInfo))
+            using (var process = Process.Start(startInfo))
             {
                 while (process != null && !process.HasExited)
                 {
@@ -243,18 +249,19 @@ namespace EFCorePowerTools.Handlers
 
             if (versionInfo.Item2.StartsWith("5.", StringComparison.OrdinalIgnoreCase))
             {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt50.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Common.CodeGenerationMode.EFCore5);
+                ExtractTool(toDir, fromDir, "efpt50.exe.zip", RevEng.Common.CodeGenerationMode.EFCore5);
             }
             else if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
             {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt60.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Common.CodeGenerationMode.EFCore6);
+                ExtractTool(toDir, fromDir, "efpt60.exe.zip", RevEng.Common.CodeGenerationMode.EFCore6);
+            }
+            else if (versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
+            {
+                ExtractTool(toDir, fromDir, "efpt70.exe.zip", RevEng.Common.CodeGenerationMode.EFCore7);
             }
             else
             {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efpt30.exe.zip"), toDir);
-                Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), RevEng.Common.CodeGenerationMode.EFCore3);
+                ExtractTool(toDir, fromDir, "efpt30.exe.zip", RevEng.Common.CodeGenerationMode.EFCore3);
             }
 
             return toDir;
