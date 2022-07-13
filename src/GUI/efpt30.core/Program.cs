@@ -24,7 +24,7 @@ namespace Modelling
                 if (args.Length > 0)
                 {
                     List<Tuple<string, string>> result;
-                                        if (args.Contains("ddl") && args.Length >= 3)
+                    if (args.Contains("ddl") && args.Length >= 3)
                     {
                         result = EfCoreModelBuilder.GenerateDatabaseCreateScript(args[1], args[2]);
                     }
