@@ -47,7 +47,7 @@ namespace RevEng.Core
             }
             else if (!string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null)
             {
-                newTableName = RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith);
+                newTableName = GenerateIdentifier(RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith));
             }
             else
             {
@@ -61,7 +61,7 @@ namespace RevEng.Core
                 return candidateStringBuilder.ToString();
             }
 
-            candidateStringBuilder.Append(GenerateIdentifier(newTableName));
+            candidateStringBuilder.Append(newTableName);
 
             return candidateStringBuilder.ToString();
         }

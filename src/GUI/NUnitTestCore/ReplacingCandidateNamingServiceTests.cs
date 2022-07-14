@@ -626,6 +626,40 @@ namespace UnitTests.Services
         }
 
         /// <summary>
+        /// Testing the table renaming method using Regex.
+        /// </summary>
+        [Test]
+        public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1440()
+        {
+            // Arrange
+            var expected = "PurposeSummary";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^PREFIX_",
+                      TablePatternReplaceWith = "",
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "PREFIX_PURPOSE_SUMMARY",
+                Schema = "dbo",
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+
+            // Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        /// <summary>
         /// This is to guarantee that the renaming using regex does not overwrite the current table renaming method.
         /// </summary>
         [Test]
