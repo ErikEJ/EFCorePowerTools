@@ -6,7 +6,7 @@ Aims to lower the bar for getting started with EF Core, by providing GUI based a
 
 [![Visual Studio Marketplace](http://vsmarketplacebadge.apphb.com/version/ErikEJ.EFCorePowerTools.svg)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
 [![Visual Studio Marketplace Rating](http://vsmarketplacebadge.apphb.com/rating-star/ErikEJ.EFCorePowerTools.svg)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools) 
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/downloads-short/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools) 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
