@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MicrosoftSQLiteProvider" xml:space="preserve">
+    <value>796A79E8-2579-4375-9E12-03A9E0D1FC02</value>
+  </data>
   <data name="SQLitePrivateProvider" xml:space="preserve">
     <value>687EA40E-7B91-472A-9A58-2A3D43DE1ACE</value>
   </data>

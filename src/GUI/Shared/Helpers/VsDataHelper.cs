@@ -148,8 +148,10 @@ namespace EFCorePowerTools.Helpers
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
             Dictionary<string, DatabaseConnectionModel> databaseList = new Dictionary<string, DatabaseConnectionModel>();
             var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
-            Guid providerSqLite = new Guid(EFCorePowerTools.Common.Resources.SQLiteProvider);
-            Guid providerSqlitePrivate = new Guid(EFCorePowerTools.Common.Resources.SQLitePrivateProvider);
+            Guid providerSQLite = new Guid(Common.Resources.SQLiteProvider);
+            Guid providerMicrosoftSQLite = new Guid(Common.Resources.MicrosoftSQLiteProvider);
+            Guid providerSQLitePrivate = new Guid(Common.Resources.SQLitePrivateProvider);
+
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
@@ -173,8 +175,9 @@ namespace EFCorePowerTools.Helpers
 
                             var objProviderGuid = connection.Provider;
 
-                            if (objProviderGuid == providerSqLite
-                                || objProviderGuid == providerSqlitePrivate)
+                            if (objProviderGuid == providerSQLite
+                                || objProviderGuid == providerMicrosoftSQLite
+                                || objProviderGuid == providerSQLitePrivate)
                             {
                                 info.DatabaseType = DatabaseType.SQLite;
                             }

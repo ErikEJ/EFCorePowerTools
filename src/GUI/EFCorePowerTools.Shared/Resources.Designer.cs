@@ -61,6 +61,15 @@ namespace EFCorePowerTools.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 796A79E8-2579-4375-9E12-03A9E0D1FC02.
+        /// </summary>
+        public static string MicrosoftSQLiteProvider {
+            get {
+                return ResourceManager.GetString("MicrosoftSQLiteProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 687EA40E-7B91-472A-9A58-2A3D43DE1ACE.
         /// </summary>
         public static string SQLitePrivateProvider {
