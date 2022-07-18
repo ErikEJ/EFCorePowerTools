@@ -15,11 +15,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Design
         public virtual void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddEntityFrameworkSqlServer();
-#pragma warning disable EF1001 // Internal EF Core API usage.
             new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
                 .TryAdd<IAnnotationCodeGenerator, SqlServerAnnotationCodeGenerator>()
                 .TryAdd<ICSharpRuntimeAnnotationCodeGenerator, SqlServerCSharpRuntimeAnnotationCodeGenerator>()
-#pragma warning restore EF1001 // Internal EF Core API usage.
                 .TryAdd<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()
                 .TryAdd<IProviderConfigurationCodeGenerator, SqlServerCodeGenerator>()
                 .TryAddCoreServices();
