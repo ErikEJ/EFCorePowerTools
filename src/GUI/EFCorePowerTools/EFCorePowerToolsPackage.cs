@@ -196,6 +196,16 @@ namespace EFCorePowerTools
                         menuCommandId12);
                     oleMenuCommandService.AddCommand(menuItem12);
 
+                    var menuCommandId13 = new CommandID(
+                        GuidList.GuidSqlprojCreate,
+                        (int)PkgCmdIDList.cmdidSqlprojCreate);
+                    var menuItem13 = new OleMenuCommand(
+                        OnSqlProjectContextMenuInvokeHandler,
+                        null,
+                        OnSqlProjectMenuBeforeQueryStatus,
+                        menuCommandId13);
+                    oleMenuCommandService.AddCommand(menuItem13);
+
                     var menuCommandId1101 = new CommandID(
                         GuidList.GuidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerEdit);
@@ -300,6 +310,29 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = project.IsCSharpProject();
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void OnSqlProjectMenuBeforeQueryStatus(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            var menuCommand = sender as MenuCommand;
+
+            if (menuCommand == null)
+            {
+                return;
+            }
+
+            menuCommand.Visible = false;
+
+            var project = await VS.Solutions.GetActiveProjectAsync();
+
+            if (project == null)
+            {
+                return;
+            }
+
+            menuCommand.Visible = project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -428,6 +461,62 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {
                     await compareHandler.HandleComparisonAsync(path, project);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(new List<string>(), ex);
+            }
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void OnSqlProjectContextMenuInvokeHandler(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            try
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var menuCommand = sender as MenuCommand;
+                if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                {
+                    return;
+                }
+
+                var sqlproject = await VS.Solutions.GetActiveProjectAsync();
+                if (sqlproject == null)
+                {
+                    return;
+                }
+
+                var projects = await VS.Solutions.GetAllProjectsAsync();
+
+                Project project = null;
+
+                foreach (var item in projects)
+                {
+                    //TODO Prompt for project
+                    if (item.IsCSharpProject())
+                    {
+                        project = item;
+                        break;
+                    }
+                }
+
+                if (project == null)
+                {
+                    return;
+                }
+
+                var optionsPath = await reverseEngineerHandler.DropSqlprojOptionsAsync(project, sqlproject.FullPath);
+
+                if (optionsPath != null)
+                {
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, optionsPath, false);
+                }
+                else
+                {
+                    LogError(new List<string>(), new Exception($"Project '{project.Name}' already contains an EF Core Power Tools config file (efpt.config.json)."));
                 }
             }
             catch (Exception ex)

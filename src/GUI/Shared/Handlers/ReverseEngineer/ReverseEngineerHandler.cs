@@ -34,6 +34,29 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             vsDataHelper = new VsDataHelper();
         }
 
+        public async System.Threading.Tasks.Task<string> DropSqlprojOptionsAsync(Project project, string sqlProjectPath)
+        {
+            var optionsPaths = project.GetConfigFiles();
+            var optionsPath = optionsPaths.First();
+
+            if (File.Exists(optionsPath))
+            {
+                return null;
+            }
+
+            var options = new ReverseEngineerOptions
+            {
+                Tables = new List<SerializationTableModel>(),
+                CodeGenerationMode = CodeGenerationMode.EFCore6,
+                DatabaseType = DatabaseType.SQLServerDacpac,
+                UiHint = sqlProjectPath,
+            };
+
+            await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(null, null));
+
+            return optionsPath;
+        }
+
         public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();

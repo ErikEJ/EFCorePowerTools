@@ -142,6 +142,11 @@ namespace EFCorePowerTools.Extensions
 
         public static bool IsCSharpProject(this Project project)
         {
+            if (project == null)
+            {
+                return false;
+            }
+
             // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160#issuecomment-960683498
             project.GetItemInfo(out IVsHierarchy hierarchy, out _, out _);
 

@@ -39,6 +39,8 @@
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" />
       </Group>
 
+      <Group guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands" />
+
     </Groups>
 
     <Menus>
@@ -171,6 +173,15 @@
         </Strings>
       </Button>
 
+      <Button guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command1Id" type="Button">
+        <Icon guid="guidImage1" id="bmpPic1" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Create EF Core DbContext...</ButtonText>
+        </Strings>
+      </Button>
+
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -196,6 +207,15 @@
 
     <CommandPlacement guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" priority="0x100">
       <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+    </CommandPlacement>
+
+    <CommandPlacement guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands" priority="0x0001">
+      <!-- The parent of the group will be the project context menu -->
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+    </CommandPlacement>
+
+    <CommandPlacement guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command1Id" priority="0x100" >
+      <Parent guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands"/>
     </CommandPlacement>
     
   </CommandPlacements>
@@ -275,6 +295,15 @@
     <GuidSymbol name="guidImage9" value="{146f17c2-c8e3-4cfd-9fe2-49cc07c6d4fb}">
         <IDSymbol name="bmpPic9" value="1" />
     </GuidSymbol>
+
+    <GuidSymbol name="guidVSPackageCommandProjectContextMenu" value="{069acb34-c12c-4e1c-ae69-1f9295046c84}" />
+
+    <GuidSymbol name="guidVSPackageCommandProjectContextMenuCmdSet" value="{9a55a2b4-3e29-4359-882b-fa5f51c09301}">
+      <IDSymbol name="MyGroupForCommands" value="0x1020" />
+      <!-- Warning!!: Keep the value in sync with the code in Command1.cs -->
+      <IDSymbol name="Command1Id" value="0x009" />
+    </GuidSymbol>
+    
   </Symbols>
 
 </CommandTable>

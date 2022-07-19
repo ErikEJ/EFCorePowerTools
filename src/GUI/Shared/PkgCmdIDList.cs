@@ -12,6 +12,7 @@ namespace EFCorePowerTools
         public const uint cmdidSqlBuild = 0x0400;
         public const uint cmdidDebugViewBuild = 0x0450;
         public const uint cmdidDbCompare = 0x008;
+        public const uint cmdidSqlprojCreate = 0x009;
         public const uint cmdidReverseEngineerEdit = 0x1101;
         public const uint cmdidReverseEngineerRefresh = 0x1102;
     }
