@@ -147,10 +147,7 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
-            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160#issuecomment-960683498
-            project.GetItemInfo(out IVsHierarchy hierarchy, out _, out _);
-
-            return hierarchy.IsCapabilityMatch("CSharp");
+            return project.IsCapabilityMatch("CSharp");
         }
 
         public static async Task<bool> IsLegacyAsync(this Project project)

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Models\ProjectModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAdvancedModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IColumnInformationViewModel.cs" />
@@ -21,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeRootItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeSelectableViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickProjectViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickConfigViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickConnectionViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IPickSchemasViewModel.cs" />
@@ -38,6 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IMigrationOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IModelingOptionsDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickProjectDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickConfigDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickConnectionDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickSchemasDialog.cs" />
@@ -112,6 +115,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeRootItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickProjectViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickConfigViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickConnectionViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickSchemasViewModel.cs" />

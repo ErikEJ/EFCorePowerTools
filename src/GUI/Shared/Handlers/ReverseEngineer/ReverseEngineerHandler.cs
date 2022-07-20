@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
@@ -34,14 +35,35 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             vsDataHelper = new VsDataHelper();
         }
 
-        public async System.Threading.Tasks.Task<string> DropSqlprojOptionsAsync(Project project, string sqlProjectPath)
+        public async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var project = candidateProjects.First();
+
+            if (candidateProjects.Count > 1)
+            {
+                var pcd = package.GetView<IPickProjectDialog>();
+                pcd.PublishProjects(candidateProjects.Select(m => new ProjectModel
+                {
+                    Project = m,
+                }));
+
+                var pickProjectResult = pcd.ShowAndAwaitUserResponse(true);
+                if (!pickProjectResult.ClosedByOK)
+                {
+                    return (null, null);
+                }
+
+                project = pickProjectResult.Payload.Project;
+            }
+
             var optionsPaths = project.GetConfigFiles();
             var optionsPath = optionsPaths.First();
 
             if (File.Exists(optionsPath))
             {
-                return null;
+                return (null, project);
             }
 
             var options = new ReverseEngineerOptions
@@ -54,7 +76,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(null, null));
 
-            return optionsPath;
+            return (optionsPath, project);
         }
 
         public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)

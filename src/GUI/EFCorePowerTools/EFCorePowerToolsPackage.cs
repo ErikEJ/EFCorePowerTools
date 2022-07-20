@@ -332,7 +332,11 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
+            var candidateProjects = new List<Project>();
+
+            candidateProjects.AddRange((await VS.Solutions.GetAllProjectsAsync()).Where(p => p.IsCSharpProject()));
+
+            menuCommand.Visible = candidateProjects.Count > 0 && project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -489,34 +493,24 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                var projects = await VS.Solutions.GetAllProjectsAsync();
+                var candidateProjects = new List<Project>();
 
-                Project project = null;
+                candidateProjects.AddRange((await VS.Solutions.GetAllProjectsAsync()).Where(p => p.IsCSharpProject()));
 
-                foreach (var item in projects)
-                {
-                    //TODO Prompt for project
-                    if (item.IsCSharpProject())
-                    {
-                        project = item;
-                        break;
-                    }
-                }
-
-                if (project == null)
+                if (candidateProjects.Count == 0)
                 {
                     return;
                 }
 
-                var optionsPath = await reverseEngineerHandler.DropSqlprojOptionsAsync(project, sqlproject.FullPath);
+                var result = await reverseEngineerHandler.DropSqlprojOptionsAsync(candidateProjects, sqlproject.FullPath);
 
-                if (optionsPath != null)
+                if (result.OptionsPath != null && result.Project != null)
                 {
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, optionsPath, false);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project,  result.OptionsPath, false);
                 }
-                else
+                else if (result.OptionsPath == null && result.Project != null)
                 {
-                    LogError(new List<string>(), new Exception($"Project '{project.Name}' already contains an EF Core Power Tools config file (efpt.config.json)."));
+                    LogError(new List<string>(), new Exception($"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json)."));
                 }
             }
             catch (Exception ex)
@@ -564,6 +558,7 @@ namespace EFCorePowerTools
             // Register views
             services.AddTransient<IAboutDialog, AboutDialog>()
                     .AddTransient<IPickConfigDialog, PickConfigDialog>()
+                    .AddTransient<IPickProjectDialog, PickProjectDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
                     .AddTransient<IPickTablesDialog, PickTablesDialog>()
                     .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>()
@@ -580,6 +575,7 @@ namespace EFCorePowerTools
             // Register view models
             services.AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickConfigViewModel, PickConfigViewModel>()
+                    .AddTransient<IPickProjectViewModel, PickProjectViewModel>()
                     .AddTransient<IPickConnectionViewModel, PickConnectionViewModel>()
                     .AddTransient<IPickServerDatabaseViewModel, PickServerDatabaseViewModel>()
                     .AddTransient<IPickTablesViewModel, PickTablesViewModel>()

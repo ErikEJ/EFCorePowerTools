@@ -73,6 +73,9 @@
     <Compile Include="Dialogs\EfCoreModelDialog.xaml.cs">
       <DependentUpon>EfCoreModelDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\PickProjectDialog.xaml.cs">
+      <DependentUpon>PickProjectDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\PickSchemasDialog.xaml.cs">
       <DependentUpon>PickSchemasDialog.xaml</DependentUpon>
     </Compile>
@@ -385,6 +388,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Dialogs\PickProjectDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\PickSchemasDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -455,7 +462,7 @@
     <PackageReference Include="AdysTech.CredentialManager" Version="2.6.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Community.VisualStudio.Toolkit.16">
-      <Version>16.0.445</Version>
+      <Version>16.0.451</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.7.0</Version>
