@@ -506,11 +506,11 @@ namespace EFCorePowerTools
 
                 if (result.OptionsPath != null && result.Project != null)
                 {
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project,  result.OptionsPath, false);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project,  result.OptionsPath, false, true);
                 }
                 else if (result.OptionsPath == null && result.Project != null)
                 {
-                    LogError(new List<string>(), new Exception($"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json)."));
+                    await VS.MessageBox.ShowErrorAsync($"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).");
                 }
             }
             catch (Exception ex)

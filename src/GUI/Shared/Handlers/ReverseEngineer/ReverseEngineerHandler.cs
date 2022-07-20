@@ -128,7 +128,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -165,7 +165,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 bool forceEdit = false;
 
-                if (onlyGenerate)
+                DatabaseConnectionModel dbInfo = null;
+
+                if (onlyGenerate || fromSqlProj)
                 {
                     forceEdit = !await ChooseDataBaseConnectionByUiHintAsync(options);
 
@@ -175,7 +177,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                     else
                     {
-                        var dbInfo = await GetDatabaseInfoAsync(options);
+                        dbInfo = await GetDatabaseInfoAsync(options);
 
                         if (dbInfo == null)
                         {
@@ -184,27 +186,30 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                         containsEfCoreReference = new Tuple<bool, string>(true, null);
                         options.CustomReplacers = namingOptionsAndPath.Item1;
-                        options.InstallNuGetPackage = false;
+                        options.InstallNuGetPackage = !onlyGenerate;
                     }
                 }
 
                 if (!onlyGenerate || forceEdit)
                 {
-                    if (!await ChooseDataBaseConnectionAsync(options))
+                    if (!fromSqlProj)
                     {
-                        return;
+                        if (!await ChooseDataBaseConnectionAsync(options))
+                        {
+                            return;
+                        }
+
+                        await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
+
+                        dbInfo = await GetDatabaseInfoAsync(options);
+
+                        if (dbInfo == null)
+                        {
+                            return;
+                        }
+
+                        VerifySQLServerRightsAndVersion(options);
                     }
-
-                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
-
-                    var dbInfo = await GetDatabaseInfoAsync(options);
-
-                    if (dbInfo == null)
-                    {
-                        return;
-                    }
-
-                    VerifySQLServerRightsAndVersion(options);
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
