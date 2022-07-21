@@ -413,6 +413,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
                                        ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
                                        : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
+
+            var isSqliteToolboxInstalled = options.DatabaseType != DatabaseType.SQLite;
+
             await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
 
             var preselectedTables = new List<SerializationTableModel>();
@@ -427,7 +430,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var ptd = package.GetView<IPickTablesDialog>()
                               .AddTables(predefinedTables, namingOptionsAndPath.Item1)
-                              .PreselectTables(preselectedTables);
+                              .PreselectTables(preselectedTables)
+                              .SqliteToolboxInstall(isSqliteToolboxInstalled);
 
             var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
 

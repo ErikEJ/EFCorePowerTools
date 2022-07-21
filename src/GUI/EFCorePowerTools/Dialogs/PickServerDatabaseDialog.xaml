@@ -175,7 +175,7 @@
                 Margin="12,5,12,0">
                 <Hyperlink                    
                     x:Name="ReleaseNotesLink"
-                    Click="Hyperlink_Click" 
+                    RequestNavigate="ReleaseNotesLink_RequestNavigate"
                     NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes"/>
             </TextBlock>
             <dw:DialogButton TabIndex="7"

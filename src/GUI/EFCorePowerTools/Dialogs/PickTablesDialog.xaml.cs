@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -15,6 +17,7 @@ namespace EFCorePowerTools.Dialogs
         private readonly Func<Schema[]> getReplacerResult;
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
         private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
+        private bool sqliteToolboxInstalled;
 
         public PickTablesDialog(
             ITelemetryAccess telemetryAccess,
@@ -61,6 +64,12 @@ namespace EFCorePowerTools.Dialogs
         IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<SerializationTableModel> tables)
         {
             selectTables(tables);
+            return this;
+        }
+
+        public IPickTablesDialog SqliteToolboxInstall(bool installed)
+        {
+            sqliteToolboxInstalled = installed;
             return this;
         }
 
@@ -115,6 +124,30 @@ namespace EFCorePowerTools.Dialogs
                 var vm = (IObjectTreeSelectableViewModel)tree.SelectedItem;
                 vm.SetSelectedCommand.Execute(vm.IsSelected == null ? false : !vm.IsSelected);
                 e.Handled = true;
+            }
+        }
+
+        private void SqliteToolboxLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
+            };
+            process.Start();
+        }
+
+        private void DialogWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (!sqliteToolboxInstalled)
+            {
+                try
+                {
+                    SqliteToolboxLink.Inlines.Add(new Run("Install SQLite Toolbox"));
+                }
+                catch
+                {
+                    // Ignore
+                }
             }
         }
     }

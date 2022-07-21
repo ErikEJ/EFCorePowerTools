@@ -110,16 +110,6 @@ namespace EFCorePowerTools.Dialogs
             this.uiHint(uiHint);
         }
 
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            var hyperlink = sender as Hyperlink;
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri),
-            };
-            process.Start();
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -132,6 +122,15 @@ namespace EFCorePowerTools.Dialogs
             }
 
             DatabaseConnectionCombobox.Focus();
+        }
+
+        private void ReleaseNotesLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
+            };
+            process.Start();
         }
     }
 }

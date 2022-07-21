@@ -18,6 +18,7 @@
                  Width="420"
                  ResizeMode="CanResize"
                  WindowStartupLocation="CenterOwner"
+                 Loaded="DialogWindow_Loaded"
                  d:DataContext="{d:DesignInstance Type=viewModels:PickTablesViewModel, IsDesignTimeCreatable=False}"
                  Closing="DialogWindow_Closing">
 
@@ -314,6 +315,15 @@
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
+
+        <TextBlock
+            Grid.Row="2" ToolTip="Improve your SQLite experience"
+                Margin="12,20,12,0">
+                <Hyperlink                   
+                    x:Name="SqliteToolboxLink"
+                    RequestNavigate="SqliteToolboxLink_RequestNavigate"
+                    NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox"></Hyperlink>
+        </TextBlock>
 
         <StackPanel Orientation="Horizontal" 
                     Grid.Row="2"
