@@ -332,11 +332,16 @@ namespace EFCorePowerTools
                 return;
             }
 
-            var candidateProjects = new List<Project>();
+            var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
+                .Where(p => p.IsCSharpProject())
+                .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
 
-            candidateProjects.AddRange((await VS.Solutions.GetAllProjectsAsync()).Where(p => p.IsCSharpProject()));
+            if (!candidateProjects.Any())
+            {
+                return;
+            }
 
-            menuCommand.Visible = candidateProjects.Count > 0 && project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
+            menuCommand.Visible = project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -493,11 +498,11 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                var candidateProjects = new List<Project>();
+                var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
+                    .Where(p => p.IsCSharpProject())
+                    .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
 
-                candidateProjects.AddRange((await VS.Solutions.GetAllProjectsAsync()).Where(p => p.IsCSharpProject()));
-
-                if (candidateProjects.Count == 0)
+                if (!candidateProjects.Any())
                 {
                     return;
                 }
@@ -506,7 +511,7 @@ namespace EFCorePowerTools
 
                 if (result.OptionsPath != null && result.Project != null)
                 {
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project,  result.OptionsPath, false, true);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project, result.OptionsPath, false, true);
                 }
                 else if (result.OptionsPath == null && result.Project != null)
                 {
