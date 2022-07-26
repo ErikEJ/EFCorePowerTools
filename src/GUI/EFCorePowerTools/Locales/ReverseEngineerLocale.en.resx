@@ -124,7 +124,7 @@
     <value>Add Custom Connection</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Custom Connection...</value>
+    <value>Add Custom Connection</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Add Database Connection</value>

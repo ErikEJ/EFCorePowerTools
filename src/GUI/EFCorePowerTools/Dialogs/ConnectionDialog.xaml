@@ -66,11 +66,21 @@
                      IsTabStop="False" />
         </Grid>
 
+        <TextBlock
+            Grid.Row="5" ToolTip="Install DDEX Provider for better experience"
+                Margin="12,12,12,12">
+                <Hyperlink                   
+                    x:Name="DDEXLink"                  
+                    RequestNavigate="DDEXLink_RequestNavigate"
+                    >
+                </Hyperlink>
+        </TextBlock>
+
         <dw:DialogButton Command="{Binding CancelCommand}"
                          IsCancel="True"
                          Grid.Row="5"
                          TabIndex="6"
-                         Margin="0,10,12,0"
+                         Margin="0,12,12,0"
                          Height="23" VerticalAlignment="Top"
                          HorizontalAlignment="Right"
                          Width="75"
@@ -79,7 +89,7 @@
                          IsDefault="True"
                          Grid.Row="5"
                          TabIndex="5"
-                         Margin="0,10,93,0"
+                         Margin="0,12,93,0"
                          Height="23"
                          VerticalAlignment="Top"
                          HorizontalAlignment="Right"

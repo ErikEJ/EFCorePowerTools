@@ -56,7 +56,7 @@
                     Margin="8,0,0,0"
                     ToolTip="{x:Static locale:CompareLocale.RemoveSelectedConnection}"
                     Command="{Binding RemoveDatabaseConnectionCommand}">
-                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
+                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel.png" />
             </Button>
 
             <dw:DialogButton Grid.Column="2"

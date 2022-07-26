@@ -140,6 +140,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Add.png" />
+    <Resource Include="Resources\Remove.png" />
     <Resource Include="Resources\ScalarFunction_16x.png" />
     <Resource Include="Resources\SchemaCompare_16x.png" />
     <Resource Include="Resources\ScrollbarArrowsDownRight_16x.png" />
@@ -148,8 +150,6 @@
     <Resource Include="Resources\View_16x.png" />
     <Resource Include="Resources\Column_16x.png" />
     <Resource Include="Resources\Table_16x.png" />
-    <Resource Include="Resources\Add_16x.png" />
-    <Resource Include="Resources\Remove_16x.png" />
     <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
@@ -428,7 +428,8 @@
     <EmbeddedResource Include="DgmlBuilder\readme.txt" />
     <Resource Include="Resources\Diagram_16x.png" />
     <Resource Include="Resources\DatabaseStoredProcedure_16x.png" />
-    <Resource Include="Resources\Cancel_16x.png" />
+    <Resource Include="Resources\ConnectToDatabase.png" />
+    <Resource Include="Resources\Cancel.png" />
     <Content Include="Resources\efcreveng2.png" />
     <Resource Include="Resources\ImportPackage_16x.png" />
     <Resource Include="Resources\GlyphRight_16x.png" />

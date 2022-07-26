@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
@@ -230,6 +231,22 @@ namespace EFCorePowerTools.Helpers
             }
 
             return databaseList;
+        }
+
+        internal static async System.Threading.Tasks.Task<bool> IsDdexProviderInstalledAsync(Guid id)
+        {
+            try
+            {
+                var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
+                return providerManager != null &&
+                    providerManager.Providers.TryGetValue(id, out IVsDataProvider provider);
+            }
+            catch
+            {
+                // Ignored
+            }
+
+            return false;
         }
 
         private static DatabaseConnectionModel GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)

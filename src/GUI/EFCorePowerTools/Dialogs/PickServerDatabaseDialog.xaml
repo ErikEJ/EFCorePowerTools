@@ -78,26 +78,48 @@
                     Margin="8,12,0,12"
                     ToolTip="{x:Static locale:ReverseEngineerLocale.RemoveSelectedConnection}"
                     Command="{Binding RemoveDatabaseConnectionCommand}">
-                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Cancel_16x.png" />
+                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png" />
             </Button>
 
-            <xctk:SplitButton Grid.Column="2"
+            <xctk:DropDownButton Grid.Column="2"
                               Width="72"
                               Margin="12,12,0,12"
-                              Content="{x:Static locale:ReverseEngineerLocale.Add}"
-                              ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
-                              TabIndex="2"
-                              Command="{Binding AddDatabaseConnectionCommand}"
+                              Content="{x:Static locale:ReverseEngineerLocale.Add}"                              
+                              TabIndex="2"                              
                               >
-                <xctk:SplitButton.DropDownContent>
-                    <dw:DialogButton Grid.Column="1"
-                             TabIndex="2"
+                <xctk:DropDownButton.DropDownContent>
+                    <StackPanel>
+                        <MenuItem 
+                            Header="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
+                            Command="{Binding AddDatabaseConnectionCommand}"
+                            ToolTip="Add Server Explorer (DDEX) connection"
+                            >
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem 
+                            Header="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
+                            Command="{Binding AddAdhocDatabaseConnectionCommand}"
+                            ToolTip="Add manually defined connection"
+                            >
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <!--<dw:DialogButton
+                             Style="{StaticResource SourceSelectionButtonStyle}"
+                             Content="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
+                             Command="{Binding AddDatabaseConnectionCommand}"
+                            />
+                        <dw:DialogButton
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
                              Command="{Binding AddAdhocDatabaseConnectionCommand}"
-                            />
-                </xctk:SplitButton.DropDownContent>
-            </xctk:SplitButton>
+                            />-->
+                    </StackPanel>
+                </xctk:DropDownButton.DropDownContent>
+            </xctk:DropDownButton>
 
         </Grid>
 
@@ -107,8 +129,11 @@
         <Grid Grid.Row="2"
               HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="110*"/>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="173*"/>
+                <ColumnDefinition Width="17.6"/>
+                <ColumnDefinition Width="62.4"/>
             </Grid.ColumnDefinitions>
 
             <ComboBox Grid.Column="0"
@@ -116,19 +141,19 @@
                       TabIndex="4"
                       Style="{StaticResource SourceSelectionComboBoxStyle}"
                       ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
-                      SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}">
+                      SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}" Grid.ColumnSpan="3" Margin="0,12,0,12">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <dw:DialogButton Grid.Column="1"
+            <dw:DialogButton Grid.Column="3"
                              TabIndex="2"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="{x:Static locale:ReverseEngineerLocale.Add}"
                              ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
-                             Command="{Binding AddDatabaseDefinitionCommand}"/>
+                             Command="{Binding AddDatabaseDefinitionCommand}" Margin="10,0,0,0" Grid.ColumnSpan="2"/>
         </Grid>
 
         <StackPanel Grid.Row="3" 
