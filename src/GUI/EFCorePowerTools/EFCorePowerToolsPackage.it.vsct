@@ -178,9 +178,9 @@
       <Bitmap guid="guidImage7" href="Resources\7.png" usedList="bmpPic7" />
       <Bitmap guid="guidImage6" href="Resources\ImportPackage_16x.png" usedList="bmpPic6" />
       <Bitmap guid="guidImage5" href="Resources\5.png" usedList="bmpPic5" />
-      <Bitmap guid="guidImage4" href="Resources\SQL_16x.png" usedList="bmpPic4" />
+      <Bitmap guid="guidImage4" href="Resources\TableScript.png" usedList="bmpPic4" />
       <Bitmap guid="guidImage3" href="Resources\3.png" usedList="bmpPic3" />
-      <Bitmap guid="guidImage2" href="Resources\Diagram_16x.png" usedList="bmpPic2" />
+      <Bitmap guid="guidImage2" href="Resources\Diagram.png" usedList="bmpPic2" />
       <Bitmap guid="guidImage1" href="Resources\1.png" usedList="bmpPic1" />
       <Bitmap guid="guidImage0" href="Resources\h.png" usedList="bmpPic0" />
       <Bitmap guid="guidImage9" href="Resources\SchemaCompare_16x.png" usedList="bmpPic9" />

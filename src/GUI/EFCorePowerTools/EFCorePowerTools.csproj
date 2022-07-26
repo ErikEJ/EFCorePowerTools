@@ -140,22 +140,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\TableScript.png" />
+    <Resource Include="Resources\TableWarning.png" />
+    <Resource Include="Resources\View.png" />
+    <Resource Include="Resources\Table.png" />
+    <Resource Include="Resources\Schema.png" />
+    <Resource Include="Resources\ScalarFunction.png" />
+    <Resource Include="Resources\ScrollbarArrowDownRight.png" />
     <Resource Include="Resources\Add.png" />
     <Resource Include="Resources\Remove.png" />
-    <Resource Include="Resources\ScalarFunction_16x.png" />
     <Resource Include="Resources\SchemaCompare_16x.png" />
-    <Resource Include="Resources\ScrollbarArrowsDownRight_16x.png" />
-    <Resource Include="Resources\Schema_16x.png" />
-    <Resource Include="Resources\KeyDown_16x.png" />
-    <Resource Include="Resources\View_16x.png" />
-    <Resource Include="Resources\Column_16x.png" />
-    <Resource Include="Resources\Table_16x.png" />
     <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <Content Include="Resources\7.png" />
-    <Resource Include="Resources\TableWarning_16x.png" />
-    <Resource Include="Resources\StatusInvalid_16x.png" />
+    <Resource Include="Resources\7.png" />
     <Resource Include="Resources\Unicorn.png" />
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
@@ -426,14 +424,16 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <EmbeddedResource Include="DgmlBuilder\readme.txt" />
-    <Resource Include="Resources\Diagram_16x.png" />
-    <Resource Include="Resources\DatabaseStoredProcedure_16x.png" />
     <Resource Include="Resources\ConnectToDatabase.png" />
     <Resource Include="Resources\Cancel.png" />
+    <Resource Include="Resources\Column.png" />
+    <Resource Include="Resources\Diagram.png" />
+    <Resource Include="Resources\DatabaseStoredProcedures.png" />
     <Content Include="Resources\efcreveng2.png" />
     <Resource Include="Resources\ImportPackage_16x.png" />
-    <Resource Include="Resources\GlyphRight_16x.png" />
-    <Resource Include="Resources\GlyphDown_16x.png" />
+    <Resource Include="Resources\GlyphDown.png" />
+    <Resource Include="Resources\GlyphRight.png" />
+    <Resource Include="Resources\KeyDown_16x.png" />
     <Content Include="Resources\license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -442,7 +442,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\SQL_16x.png" />
     <Resource Include="Resources\h.png" />
     <Resource Include="Resources\1.png" />
     <Resource Include="Resources\2.png" />

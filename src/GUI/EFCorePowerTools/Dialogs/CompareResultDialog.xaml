@@ -86,10 +86,10 @@
                                                   IsChecked="{Binding Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <Grid>
                                         <Image Width="16"
-                                                   Source="pack://application:,,,/EFCorePowerTools;component/Resources/GlyphRight_16x.png" 
+                                                   Source="pack://application:,,,/EFCorePowerTools;component/Resources/GlyphRight.png" 
                                                    Visibility="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=ToggleButton}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}" />
                                         <Image Width="16"
-                                                   Source="pack://application:,,,/EFCorePowerTools;component/Resources/ScrollbarArrowsDownRight_16x.png" 
+                                                   Source="pack://application:,,,/EFCorePowerTools;component/Resources/ScrollbarArrowsDownRight.png" 
                                                    Visibility="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=ToggleButton}, Converter={StaticResource BoolToVisibilityConverter}}" />
                                     </Grid>
                                     <ToggleButton.Style>

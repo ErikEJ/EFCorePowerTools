@@ -17,7 +17,7 @@
             <ResourceDictionary>
                 <Style x:Key="TableImageStyle"
                        TargetType="Image">
-                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table_16x.png" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table.png" />
                     <Setter Property="Width" Value="16" />
                     <Setter Property="Height" Value="16" />
                     <Setter Property="Margin" Value="0,0,0,0" />
@@ -25,21 +25,21 @@
                 <Style x:Key="ViewImageStyle"
                        TargetType="Image">
                     <Setter Property="ToolTip" Value="" />
-                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View_16x.png" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View.png" />
                     <Setter Property="Width" Value="16" />
                     <Setter Property="Height" Value="16" />
                     <Setter Property="Margin" Value="0,0,0,0" />
                 </Style>
                 <Style x:Key="ProcedureImageStyle"
                        TargetType="Image">
-                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedure_16x.png" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedures.png" />
                     <Setter Property="Width" Value="16" />
                     <Setter Property="Height" Value="16" />
                     <Setter Property="Margin" Value="0,0,0,0" />
                 </Style>
                 <Style x:Key="ScalarFunctionImageStyle"
                        TargetType="Image">
-                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/ScalarFunction_16x.png" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/ScalarFunction.png" />
                     <Setter Property="Width" Value="16" />
                     <Setter Property="Height" Value="16" />
                     <Setter Property="Margin" Value="0,0,0,0" />
@@ -47,7 +47,7 @@
                 <Style x:Key="TableWithoutKeyImageStyle"
                        TargetType="Image">
                     <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.NoPrimaryKey}" />
-                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning_16x.png" />
+                    <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning.png" />
                     <Setter Property="Width" Value="16" />
                     <Setter Property="Height" Value="16" />
                     <Setter Property="Margin" Value="0,0,0,0" />
