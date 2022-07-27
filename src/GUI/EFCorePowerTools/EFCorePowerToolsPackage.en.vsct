@@ -7,6 +7,8 @@
   <!--This header contains the command ids for the menus provided by the shell. -->
   <Extern href="vsshlids.h" />
 
+  <Include href="KnownImageIds.vsct"/>
+
   <!--The Commands section is where we the commands, menus and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
   <Commands package="guidDbContextPackagePkg">
@@ -40,7 +42,6 @@
       </Group>
 
       <Group guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands" />
-
     </Groups>
 
     <Menus>
@@ -75,7 +76,8 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0100" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
-        <Icon guid="guidImage5" id="bmpPic5" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
@@ -85,7 +87,8 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidMigrationStatus" priority="0x0100" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMigrationMenuItemsGroup" />
-        <Icon guid="guidImage7" id="bmpPic7" />
+        <Icon guid="ImageCatalogGuid" id="GenerateChangeScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidMigrationStatus</CommandName>
@@ -95,7 +98,8 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidAbout" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" />
-        <Icon guid="guidImage0" id="bmpPic0" />
+        <Icon guid="ImageCatalogGuid" id="StatusHelpOutline" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidAbout</CommandName>
@@ -105,7 +109,8 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDgmlBuild" priority="0x0200" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
-        <Icon guid="guidImage2" id="bmpPic2" />
+        <Icon guid="ImageCatalogGuid" id="NewDiagram" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
@@ -115,7 +120,8 @@
       
       <Button guid="guidDbContextPackageCmdSet" id="cmdidSqlBuild" priority="0x0300" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
-        <Icon guid="guidImage4" id="bmpPic4" />
+        <Icon guid="ImageCatalogGuid" id="SQLQueryChecked" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
@@ -125,7 +131,8 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDebugViewBuild" priority="0x0400" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
-        <Icon guid="guidImage3" id="bmpPic3" />
+        <Icon guid="ImageCatalogGuid" id="ExportScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
@@ -135,7 +142,8 @@
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDgmlNuget" priority="0x0500" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
-        <Icon guid="guidImage6" id="bmpPic6" />
+        <Icon guid="ImageCatalogGuid" id="PackageDeployment" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
@@ -145,7 +153,8 @@
       
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDbCompare" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
-        <Icon guid="guidImage9" id="bmpPic9" />
+        <Icon guid="ImageCatalogGuid" id="CompareSchemas" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
@@ -174,7 +183,8 @@
       </Button>
 
       <Button guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command1Id" type="Button">
-        <Icon guid="guidImage1" id="bmpPic1" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
@@ -187,14 +197,14 @@
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
       <Bitmap guid="guidImage7" href="Resources\7.png" usedList="bmpPic7" />
-      <Bitmap guid="guidImage6" href="Resources\ImportPackage_16x.png" usedList="bmpPic6" />
+      <Bitmap guid="guidImage6" href="Resources\PackageDeployment.png" usedList="bmpPic6" />
       <Bitmap guid="guidImage5" href="Resources\5.png" usedList="bmpPic5" />
       <Bitmap guid="guidImage4" href="Resources\TableScript.png" usedList="bmpPic4" />
       <Bitmap guid="guidImage3" href="Resources\3.png" usedList="bmpPic3" />
       <Bitmap guid="guidImage2" href="Resources\Diagram.png" usedList="bmpPic2" />
       <Bitmap guid="guidImage1" href="Resources\1.png" usedList="bmpPic1" />
-      <Bitmap guid="guidImage0" href="Resources\h.png" usedList="bmpPic0" />
-      <Bitmap guid="guidImage9" href="Resources\SchemaCompare_16x.png" usedList="bmpPic9" />
+      <Bitmap guid="guidImage0" href="Resources\HelpApplication.png" usedList="bmpPic0" />
+      <Bitmap guid="guidImage9" href="Resources\CompareSchemas.png" usedList="bmpPic9" />
     </Bitmaps>
 
   </Commands>
@@ -217,7 +227,6 @@
     <CommandPlacement guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command1Id" priority="0x100" >
       <Parent guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands"/>
     </CommandPlacement>
-    
   </CommandPlacements>
 
   <Symbols>
@@ -303,7 +312,7 @@
       <!-- Warning!!: Keep the value in sync with the code in Command1.cs -->
       <IDSymbol name="Command1Id" value="0x009" />
     </GuidSymbol>
-    
+
   </Symbols>
 
 </CommandTable>

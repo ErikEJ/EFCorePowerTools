@@ -140,6 +140,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\HelpApplication.png" />
     <Resource Include="Resources\TableScript.png" />
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
@@ -149,7 +150,6 @@
     <Resource Include="Resources\ScrollbarArrowDownRight.png" />
     <Resource Include="Resources\Add.png" />
     <Resource Include="Resources\Remove.png" />
-    <Resource Include="Resources\SchemaCompare_16x.png" />
     <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
@@ -429,24 +429,22 @@
     <Resource Include="Resources\Column.png" />
     <Resource Include="Resources\Diagram.png" />
     <Resource Include="Resources\DatabaseStoredProcedures.png" />
+    <Resource Include="Resources\CompareSchemas.png" />
     <Content Include="Resources\efcreveng2.png" />
-    <Resource Include="Resources\ImportPackage_16x.png" />
     <Resource Include="Resources\GlyphDown.png" />
     <Resource Include="Resources\GlyphRight.png" />
-    <Resource Include="Resources\KeyDown_16x.png" />
+    <Resource Include="Resources\KeyVertical.png" />
     <Content Include="Resources\license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Resource Include="Resources\PackageDeployment.png" />
     <Content Include="Resources\pt.png">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\h.png" />
     <Resource Include="Resources\1.png" />
-    <Resource Include="Resources\2.png" />
     <Resource Include="Resources\3.png" />
-    <Resource Include="Resources\4.png" />
     <Resource Include="Resources\5.png" />
     <VSCTCompile Include="EFCorePowerToolsPackage.en.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>

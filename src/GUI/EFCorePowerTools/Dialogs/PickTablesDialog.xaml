@@ -36,7 +36,7 @@
                     </Style>
                     <Style x:Key="PrimaryKeyImageStyle" TargetType="Image">
                         <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.CannotUncheckPrimaryKey}"/>
-                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/KeyDown_16x.png"/>
+                        <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/KeyVertical.png"/>
                         <Setter Property="Width" Value="16"/>
                         <Setter Property="Height" Value="16"/>
                         <Setter Property="Margin" Value="0, 0, 0, 0"/>
