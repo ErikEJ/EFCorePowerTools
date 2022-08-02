@@ -10,12 +10,6 @@ namespace ScaffoldingTester.Models
     public partial class NorthwindContext
     {
 
-        [DbFunction("FuncWithTvpParameter", "dbo")]
-        public static int? FuncWithTvpParameter(DataTable ID_BB_GLOBAL_COMPANY)
-        {
-            throw new NotSupportedException("This method can only be called from Entity Framework Core queries");
-        }
-
         [DbFunction("ISOweek", "dbo")]
         public static int? ISOweek(DateTime? DATE)
         {
