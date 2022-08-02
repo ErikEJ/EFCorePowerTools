@@ -26,7 +26,9 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 # Documentation
 
-[Getting started and user guide](https://github.com/ErikEJ/EFCorePowerTools/wiki)
+[Reverse Engineering Quick Start](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
+
+[User guide](https://github.com/ErikEJ/EFCorePowerTools/wiki)
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes)
 
