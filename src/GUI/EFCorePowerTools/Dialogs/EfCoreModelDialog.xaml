@@ -165,7 +165,7 @@
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>
-        
+
         <CheckBox Grid.Row="14"
                   TabIndex="10"
                   Content="{x:Static locale:ReverseEngineerLocale.UseDataAnnotations}"
@@ -185,7 +185,7 @@
                       SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
-        
+
         <CheckBox Grid.Row="16"
                   TabIndex="12"
                   Content="{x:Static locale:ReverseEngineerLocale.IncludeConnectionStringGeneratedCode}"
@@ -198,18 +198,26 @@
                   Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        
+
         <StackPanel Grid.Row="18"
                     Style="{StaticResource ButtonRowStyle}">
-            <Label Padding="16, 2" ToolTip="Rate" Height="30" Width="120" >
-                <Hyperlink FontSize="24" ToolTip="Let me know if you like this free tool" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
+            <TextBlock              
+                ToolTip="User Guide"
+                Margin="12,5,12,0" Width="38">
+                <Hyperlink
+                    x:Name="DocLink"
+                    RequestNavigate="DocLink_RequestNavigate"
+                    NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering">Help</Hyperlink>
+            </TextBlock>
+            <Label Padding="2, 0, 0, 6" ToolTip="Rate" Height="30" Width="80" >
+                <Hyperlink FontSize="20" ToolTip="Let me know if you like this free tool" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
                     <Hyperlink.Style>
-                        <Style TargetType="Hyperlink"
+                        <Style TargetType="{x:Type Hyperlink}"
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
                             <Setter Property="Foreground" Value="Goldenrod"/>
                         </Style>
                     </Hyperlink.Style>
-                    ⭐ Rate
+                    <Run Text="⭐ Rate"/>
                 </Hyperlink>
             </Label>
             <dw:DialogButton TabIndex="20"

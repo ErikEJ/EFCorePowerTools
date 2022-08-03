@@ -70,5 +70,14 @@ namespace EFCorePowerTools.Dialogs
             };
             process.Start();
         }
+
+        private void DocLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
+            };
+            process.Start();
+        }
     }
 }
