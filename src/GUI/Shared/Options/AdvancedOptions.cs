@@ -38,8 +38,8 @@ namespace EFCorePowerTools
         public bool MergeDacpacs { get; set; }
 
         [Category("Reverse Engineering")]
-        [DisplayName(@"Use sp_describe_first_result_set only")]
-        [Description("Use sp_describe_first_result_set only for stored procedure result sets")]
+        [DisplayName(@"Use alternate result set discovery")]
+        [Description("Use sp_describe_first_result_set to retrieve stored procedure result sets")]
         [DefaultValue(false)]
         public bool UseLegacyResultSetDiscovery { get; set; }
 
