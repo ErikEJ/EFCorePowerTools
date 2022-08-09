@@ -372,9 +372,11 @@ namespace RevEng.Core
             {
                 throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
             }
-
+#if CORE70
+            var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions);
+#else
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);
-
+#endif
             var codeModel = codeGenerator.GenerateModel(model, codeOptions);
             if (entitiesOnly)
             {
