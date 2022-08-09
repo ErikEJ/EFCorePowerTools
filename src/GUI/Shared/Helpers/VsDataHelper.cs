@@ -142,6 +142,22 @@ namespace EFCorePowerTools.Helpers
             }
         }
 
+        internal static async System.Threading.Tasks.Task<bool> IsDdexProviderInstalledAsync(Guid id)
+        {
+            try
+            {
+                var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
+                return providerManager != null &&
+                    providerManager.Providers.TryGetValue(id, out IVsDataProvider provider);
+            }
+            catch
+            {
+                // Ignored
+            }
+
+            return false;
+        }
+
         internal Dictionary<string, DatabaseConnectionModel> GetDataConnections(EFCorePowerToolsPackage package)
         {
             var credentialStore = new CredentialStore();
@@ -231,22 +247,6 @@ namespace EFCorePowerTools.Helpers
             }
 
             return databaseList;
-        }
-
-        internal static async System.Threading.Tasks.Task<bool> IsDdexProviderInstalledAsync(Guid id)
-        {
-            try
-            {
-                var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
-                return providerManager != null &&
-                    providerManager.Providers.TryGetValue(id, out IVsDataProvider provider);
-            }
-            catch
-            {
-                // Ignored
-            }
-
-            return false;
         }
 
         private static DatabaseConnectionModel GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
