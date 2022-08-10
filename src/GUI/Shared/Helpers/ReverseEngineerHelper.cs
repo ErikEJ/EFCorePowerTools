@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using EFCorePowerTools.Handlers.ReverseEngineer;
@@ -51,6 +52,41 @@ namespace EFCorePowerTools.Helpers
             }
 
             return new Tuple<bool, Version>(hasRights, version);
+        }
+
+        public (CodeGenerationMode UsedMode, IEnumerable<KeyValuePair<int, string>> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
+        {
+            var list = new List<KeyValuePair<int, string>>();
+
+            if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
+            {
+                list.Add(new KeyValuePair<int, string>(2, "EF Core 6"));
+                list.Add(new KeyValuePair<int, string>(3, "EF Core 7 (preview)"));
+            }
+
+            if (minimumVersion.Major == 5 || minimumVersion.Major == 2)
+            {
+                list.Add(new KeyValuePair<int, string>(0, "EF Core 5"));
+            }
+
+            if (minimumVersion.Major == 3 || (minimumVersion.Major == 2 && minimumVersion.Minor == 0) || minimumVersion.Major == 5)
+            {
+                list.Add(new KeyValuePair<int, string>(1, "EF Core 3"));
+            }
+
+            if (!list.Any())
+            {
+                throw new InvalidOperationException("no supported target frameworks found in project");
+            }
+
+            var firstMode = list.Select(i => i.Key).First();
+
+            if (!list.Any(i => i.Key == (int)codeGenerationMode))
+            {
+                codeGenerationMode = (CodeGenerationMode)firstMode;
+            }
+
+            return (codeGenerationMode, list);
         }
 
         public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)

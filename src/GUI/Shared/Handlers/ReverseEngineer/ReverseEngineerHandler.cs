@@ -194,7 +194,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     if (!fromSqlProj)
                     {
-                        if (!await ChooseDataBaseConnectionAsync(options))
+                        if (!await ChooseDataBaseConnectionAsync(options, project))
                         {
                             return;
                         }
@@ -310,7 +310,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return false;
         }
 
-        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options)
+        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
         {
             var databaseList = vsDataHelper.GetDataConnections(package);
             var dacpacList = await EnvDteExtensions.GetDacpacFilesInActiveSolutionAsync();
@@ -341,7 +341,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 psd.PublishSchemas(options.Schemas);
             }
 
-            psd.PublishCodeGenerationMode(options.CodeGenerationMode);
+            var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+
+            psd.PublishCodeGenerationMode(usedMode, allowedVersions);
 
             if (!string.IsNullOrEmpty(options.UiHint))
             {

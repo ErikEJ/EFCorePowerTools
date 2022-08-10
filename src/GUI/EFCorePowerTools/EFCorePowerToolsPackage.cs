@@ -309,7 +309,10 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = project.IsCSharpProject();
+            menuCommand.Visible = project.IsCSharpProject()
+                && (await project.IsNetCore31OrHigherIncluding70Async()
+                    || await project.IsLegacyAsync()
+                    || await project.IsNetStandard21Async());
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
