@@ -140,6 +140,43 @@ namespace EFCorePowerTools.Extensions
             return await ContainsReferenceAsync(project, "Microsoft.EntityFrameworkCore.Design");
         }
 
+        public static async Task<Version> GetEFCoreVersionHintAsync(this Project project)
+        {
+            var version = new Version(3, 0);
+
+            if (await project.IsNetStandard20Async())
+            {
+                version = new Version(2, 0);
+            }
+
+            if (await project.IsNetStandard21Async())
+            {
+                version = new Version(2, 1);
+            }
+
+            if (await project.IsNetCore31Async())
+            {
+                version = new Version(5, 0);
+            }
+
+            if (await project.IsNet50Async())
+            {
+                version = new Version(5, 0);
+            }
+
+            if (await project.IsNet60Async())
+            {
+                version = new Version(6, 0);
+            }
+
+            if (await project.IsNet70Async())
+            {
+                version = new Version(6, 0);
+            }
+
+            return version;
+        }
+
         public static bool IsCSharpProject(this Project project)
         {
             if (project == null)
@@ -165,6 +202,11 @@ namespace EFCorePowerTools.Extensions
         public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
         {
             return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
+        }
+
+        public static async Task<bool> IsNetStandard21Async(this Project project)
+        {
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.1") ?? false;
         }
 
         public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)

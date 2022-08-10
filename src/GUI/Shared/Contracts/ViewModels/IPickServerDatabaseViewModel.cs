@@ -19,6 +19,7 @@ namespace EFCorePowerTools.Contracts.ViewModels
 
         ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
         ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
+        ObservableCollection<KeyValuePair<int, string>> CodeGenerationModeList { get; }
 
         List<SchemaInfo> Schemas { get; }
 
