@@ -88,10 +88,13 @@ namespace EFCorePowerTools.Extensions
                 return null;
             }
 
-            var searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
+            var assemblyPath = await project.GetOutPutAssemblyPathAsync();
+
+            var searchPath = Path.GetDirectoryName(assemblyPath);
 
             var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories)
-                .Where(f => !f.EndsWith("\\msdb.dacpac") && !f.EndsWith("\\master.dacpac"))
+                .Where(f => !f.EndsWith("\\msdb.dacpac", StringComparison.OrdinalIgnoreCase)
+                    && !f.EndsWith("\\master.dacpac", StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
             if (!await VS.Build.ProjectIsUpToDateAsync(project))
