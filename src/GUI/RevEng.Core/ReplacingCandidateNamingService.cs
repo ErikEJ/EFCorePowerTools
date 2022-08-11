@@ -102,7 +102,7 @@ namespace RevEng.Core
 
             if (!string.IsNullOrEmpty(schema.ColumnRegexPattern) && schema.ColumnPatternReplaceWith != null)
             {
-                string newColumnName = RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith);
+                string newColumnName = GenerateIdentifier(RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith));
 
                 if (!string.IsNullOrWhiteSpace(newColumnName))
                 {
