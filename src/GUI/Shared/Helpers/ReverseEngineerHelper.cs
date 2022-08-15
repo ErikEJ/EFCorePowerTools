@@ -60,18 +60,18 @@ namespace EFCorePowerTools.Helpers
 
             if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
             {
-                list.Add(new KeyValuePair<int, string>(2, "EF Core 6"));
-                list.Add(new KeyValuePair<int, string>(3, "EF Core 7 (preview)"));
+                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore6, "EF Core 6"));
+                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore7, "EF Core 7 (preview)"));
             }
 
             if (minimumVersion.Major == 5 || minimumVersion.Major == 2)
             {
-                list.Add(new KeyValuePair<int, string>(0, "EF Core 5"));
+                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore5, "EF Core 5"));
             }
 
             if (minimumVersion.Major == 3 || (minimumVersion.Major == 2 && minimumVersion.Minor == 0) || minimumVersion.Major == 5)
             {
-                list.Add(new KeyValuePair<int, string>(1, "EF Core 3"));
+                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore3, "EF Core 3"));
             }
 
             if (!list.Any())
