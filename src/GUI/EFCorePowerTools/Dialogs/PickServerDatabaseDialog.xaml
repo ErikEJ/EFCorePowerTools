@@ -187,7 +187,6 @@
                   Margin="0,5,0,0"
                   Style="{StaticResource SourceSelectionComboBoxStyle}"
                   ItemsSource="{Binding CodeGenerationModeList}"
-                  DisplayMemberPath="Value"
                   SelectedIndex="{Binding CodeGenerationMode, Mode=TwoWay}" />
         </StackPanel>
 

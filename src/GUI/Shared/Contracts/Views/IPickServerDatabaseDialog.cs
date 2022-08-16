@@ -9,7 +9,7 @@ namespace EFCorePowerTools.Contracts.Views
         void PublishConnections(IEnumerable<DatabaseConnectionModel> connections);
         void PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions);
         void PublishSchemas(IEnumerable<SchemaInfo> schemas);
-        void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode, IEnumerable<KeyValuePair<int, string>> allowedVersions);
+        void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode);
         void PublishUiHint(string uiHint);
     }
 }
