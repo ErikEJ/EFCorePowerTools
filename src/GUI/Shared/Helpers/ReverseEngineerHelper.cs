@@ -69,7 +69,7 @@ namespace EFCorePowerTools.Helpers
                 list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore5, "EF Core 5"));
             }
 
-            if (minimumVersion.Major == 3 || (minimumVersion.Major == 2 && minimumVersion.Minor == 0) || minimumVersion.Major == 5)
+            if (minimumVersion.Major == 3 || minimumVersion.Major == 2 || minimumVersion.Major == 5)
             {
                 list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore3, "EF Core 3"));
             }
