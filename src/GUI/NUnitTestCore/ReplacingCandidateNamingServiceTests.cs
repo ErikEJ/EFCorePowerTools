@@ -700,6 +700,59 @@ namespace UnitTests.Services
         }
 
         /// <summary>
+        /// Testing the table renaming method using Regex.
+        /// </summary>
+        [Test]
+        public void GenerateCustomColumnNameUsingRegexRenamingIssue1486()
+        {
+            // Arrange
+            var expected = "UserID";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      ColumnPatternReplaceWith = "$0",
+                      ColumnRegexPattern = "^.+$",
+                      Tables = new List<TableRenamer>
+                      {
+                          new TableRenamer
+                          { 
+                            Name = "Users",
+                            Columns = new List<ColumnNamer>
+                            { 
+                                new ColumnNamer
+                                { 
+                                    Name = "UserID",
+                                    NewName = "UserID",
+                                },
+                            },
+                          },
+                      },
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbColumn = new DatabaseColumn
+            {
+                Name = "UserID",
+                Table = new DatabaseTable
+                {
+                    Schema = "dbo",
+                    Name = "Users",
+                },
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
+
+            // Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        /// <summary>
         /// This is to guarantee that the renaming using regex does not overwrite the current table renaming method.
         /// </summary>
         [Test]
