@@ -107,16 +107,6 @@
                                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <!--<dw:DialogButton
-                             Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
-                             Command="{Binding AddDatabaseConnectionCommand}"
-                            />
-                        <dw:DialogButton
-                             Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
-                             Command="{Binding AddAdhocDatabaseConnectionCommand}"
-                            />-->
                     </StackPanel>
                 </xctk:DropDownButton.DropDownContent>
             </xctk:DropDownButton>
@@ -186,8 +176,10 @@
                   TabIndex="6"
                   Margin="0,5,0,0"
                   Style="{StaticResource SourceSelectionComboBoxStyle}"
-                  ItemsSource="{Binding CodeGenerationModeList}"
-                  SelectedIndex="{Binding CodeGenerationMode, Mode=TwoWay}" />
+                  ItemsSource="{Binding CodeGenerationModeList, Mode=OneWay}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Value"
+                  SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />
         </StackPanel>
 
         <StackPanel Grid.Row="4"

@@ -341,10 +341,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 psd.PublishSchemas(options.Schemas);
             }
 
-            // TODO Fix XAML binding!
-            var (usedMode, _) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+            var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
 
-            psd.PublishCodeGenerationMode(usedMode);
+            psd.PublishCodeGenerationMode(usedMode, allowedVersions);
 
             if (!string.IsNullOrEmpty(options.UiHint))
             {

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Locales;
 using RevEng.Common;
@@ -54,24 +55,24 @@ namespace EFCorePowerTools.Helpers
             return new Tuple<bool, Version>(hasRights, version);
         }
 
-        public (CodeGenerationMode UsedMode, IEnumerable<KeyValuePair<int, string>> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
+        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
         {
-            var list = new List<KeyValuePair<int, string>>();
+            var list = new List<CodeGenerationItem>();
 
             if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
             {
-                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore6, "EF Core 6"));
-                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore7, "EF Core 7 (preview)"));
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (preview)" });
             }
 
             if (minimumVersion.Major == 5 || minimumVersion.Major == 2)
             {
-                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore5, "EF Core 5"));
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore5, Value = "EF Core 5" });
             }
 
             if (minimumVersion.Major == 3 || minimumVersion.Major == 2 || minimumVersion.Major == 5)
             {
-                list.Add(new KeyValuePair<int, string>((int)CodeGenerationMode.EFCore3, "EF Core 3"));
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore3, Value = "EF Core 3" });
             }
 
             if (!list.Any())

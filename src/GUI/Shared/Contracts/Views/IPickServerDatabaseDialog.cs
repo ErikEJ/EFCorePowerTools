@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Contracts.Views
@@ -9,7 +10,7 @@ namespace EFCorePowerTools.Contracts.Views
         void PublishConnections(IEnumerable<DatabaseConnectionModel> connections);
         void PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions);
         void PublishSchemas(IEnumerable<SchemaInfo> schemas);
-        void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode);
+        void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode, IList<CodeGenerationItem> allowedVersions);
         void PublishUiHint(string uiHint);
     }
 }

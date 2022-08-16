@@ -50,13 +50,7 @@ namespace EFCorePowerTools.ViewModels
             CancelCommand = new RelayCommand(Cancel_Executed);
             FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
 
-            CodeGenerationModeList = new[]
-            {
-                "EF Core 5",
-                "EF Core 3",
-                "EF Core 6",
-                "EF Core 7 (preview)",
-            };
+            CodeGenerationModeList = new ObservableCollection<CodeGenerationItem>();
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
             DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
@@ -77,9 +71,9 @@ namespace EFCorePowerTools.ViewModels
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
         public ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
+        public ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; }
 
         public List<SchemaInfo> Schemas { get; private set; }
-        public IReadOnlyList<string> CodeGenerationModeList { get; }
 
         public int CodeGenerationMode
         {

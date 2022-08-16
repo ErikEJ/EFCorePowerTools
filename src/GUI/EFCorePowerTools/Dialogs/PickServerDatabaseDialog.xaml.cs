@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Dialogs
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
         private readonly Action<IEnumerable<DatabaseDefinitionModel>> addDefinitions;
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
-        private readonly Action<CodeGenerationMode> codeGeneration;
+        private readonly Action<CodeGenerationMode, IList<CodeGenerationItem>> codeGeneration;
         private readonly Action<string> uiHint;
 
         public PickServerDatabaseDialog(
@@ -57,8 +57,13 @@ namespace EFCorePowerTools.Dialogs
                     viewModel.Schemas.Add(model);
                 }
             };
-            codeGeneration = (codeGeneration) =>
+            codeGeneration = (codeGeneration, allowedVersions) =>
             {
+                foreach (var item in allowedVersions)
+                {
+                    viewModel.CodeGenerationModeList.Add(item);
+                }
+
                 viewModel.CodeGenerationMode = (int)codeGeneration;
             };
 
@@ -101,9 +106,9 @@ namespace EFCorePowerTools.Dialogs
             addSchemas(schemas);
         }
 
-        public void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode)
+        public void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode, IList<CodeGenerationItem> allowedVersions)
         {
-            codeGeneration(codeGenerationMode);
+            codeGeneration(codeGenerationMode, allowedVersions);
         }
 
         public void PublishUiHint(string uiHint)
