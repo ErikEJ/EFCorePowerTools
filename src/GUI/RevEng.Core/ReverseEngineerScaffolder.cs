@@ -90,8 +90,7 @@ namespace RevEng.Core
                 UseNullableReferenceTypes = options.UseNullableReferences,
 #endif
 #if CORE70
-                //TODO Add T4 support conditionally
-                //ProjectDir = options.ProjectPath,
+                ProjectDir = options.UseT4 ? options.ProjectPath : null,
 #endif
             };
 

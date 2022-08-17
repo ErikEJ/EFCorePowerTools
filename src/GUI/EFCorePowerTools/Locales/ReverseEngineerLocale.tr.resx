@@ -184,7 +184,7 @@
     <value>Bağlam adı gerekli</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>Handlebars şablonlarını kullanarak kodu özelleştir</value>
+    <value>şablonlarını kullanarak kodu özelleştir</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>Veritabanı bağlantısı bulunamadı. Yenilenemiyor.</value>

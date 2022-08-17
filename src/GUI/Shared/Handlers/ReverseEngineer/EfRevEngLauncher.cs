@@ -84,6 +84,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDatabaseNames = options.UseDatabaseNames,
                 UseFluentApiOnly = options.UseFluentApiOnly,
                 UseHandleBars = options.UseHandleBars,
+                UseT4 = options.UseT4,
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UseSpatial = options.UseSpatial,

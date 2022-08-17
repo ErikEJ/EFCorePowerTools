@@ -122,7 +122,7 @@ namespace RevEng.Core
                 }
 #endif
                 RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
-                if (!options.UseHandleBars)
+                if (!options.UseHandleBars && !options.UseT4)
                 {
                     PostProcess(filePaths.ContextFile, options.UseNullableReferences, !options.LegacyLangVersion);
                 }
@@ -135,7 +135,7 @@ namespace RevEng.Core
                 warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
             }
 
-            if (!options.UseHandleBars)
+            if (!options.UseHandleBars && !options.UseT4)
             {
                 foreach (var file in filePaths.AdditionalFiles)
                 {

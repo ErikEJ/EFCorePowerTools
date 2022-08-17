@@ -187,7 +187,7 @@
     <value>上下文名称是必填项</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>使用 Handlebars 模板生成自定义代码</value>
+    <value>使用 模板生成自定义代码</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>找不到数据库连接，无法刷新</value>
