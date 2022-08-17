@@ -89,6 +89,10 @@ namespace RevEng.Core
 #if CORE60
                 UseNullableReferenceTypes = options.UseNullableReferences,
 #endif
+#if CORE70
+                //TODO Add T4 support conditionally
+                //ProjectDir = options.ProjectPath,
+#endif
             };
 
             var dbOptions = new DatabaseModelFactoryOptions(options.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), schemas);

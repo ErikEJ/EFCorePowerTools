@@ -677,6 +677,21 @@ namespace UnitTests.Services
                       TablePatternReplaceWith = "",
                       ColumnPatternReplaceWith = "",
                       ColumnRegexPattern = "PREFIX_",
+                      Tables = new List<TableRenamer>
+                      {
+                          new TableRenamer
+                          {
+                            Name = "whatever",
+                            Columns = new List<ColumnNamer>
+                            {
+                                new ColumnNamer
+                                {
+                                    Name = "PREFIX_APPLE_NAME",
+                                    NewName = "AppleName",
+                                },
+                            },
+                          },
+                      },
                   },
               };
 
