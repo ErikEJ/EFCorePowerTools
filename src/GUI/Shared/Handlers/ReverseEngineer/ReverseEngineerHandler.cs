@@ -561,20 +561,22 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
+
             var startTime = DateTime.Now;
 
             if (options.UseHandleBars || options.UseT4)
             {
-                DropTemplates(options.OptionsPath, options.CodeGenerationMode, options.UseHandleBars);
+                reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars);
             }
 
             options.UseNullableReferences = !await project.IsLegacyAsync() && options.UseNullableReferences;
 
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 3);
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode, project);
 
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 
             var tfm = await project.GetAttributeAsync("TargetFrameworkMoniker");
             bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
@@ -614,7 +616,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
 
             var duration = DateTime.Now - startTime;
 
@@ -690,61 +692,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 await project.AddExistingFilesAsync(new List<string> { renamingOptions.Item2 }.ToArray());
             }
-        }
-
-        private void DropTemplates(string path, CodeGenerationMode codeGenerationMode, bool useHandlebars)
-        {
-            string zipName;
-            if (useHandlebars)
-            {
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore5:
-                        zipName = "CodeTemplates502.zip";
-                        break;
-                    case CodeGenerationMode.EFCore3:
-                        zipName = "CodeTemplates.zip";
-                        break;
-                    case CodeGenerationMode.EFCore6:
-                        zipName = "CodeTemplates600.zip";
-                        break;
-                    default:
-                        throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
-                }
-            }
-            else
-            {
-                if (codeGenerationMode == CodeGenerationMode.EFCore7)
-                {
-                    zipName = "T4_700.zip";
-                }
-                else
-                {
-                    throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
-                }
-            }
-
-            var defaultZip = "CodeTemplates.zip";
-            var userTemplateZip = Path.Combine(path, defaultZip);
-
-            var toDir = Path.Combine(path, "CodeTemplates");
-            var templateZip = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), zipName);
-
-            if (File.Exists(userTemplateZip) && useHandlebars)
-            {
-                templateZip = userTemplateZip;
-            }
-
-            if (!Directory.Exists(toDir) || IsDirectoryEmpty(toDir))
-            {
-                Directory.CreateDirectory(toDir);
-                ZipFile.ExtractToDirectory(templateZip, toDir);
-            }
-        }
-
-        private bool IsDirectoryEmpty(string path)
-        {
-            return !Directory.EnumerateFileSystemEntries(path).Any();
         }
 
         private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)

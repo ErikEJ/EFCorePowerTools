@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO.Compression;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -53,6 +56,56 @@ namespace EFCorePowerTools.Helpers
             }
 
             return new Tuple<bool, Version>(hasRights, version);
+        }
+
+        public void DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars)
+        {
+            string zipName;
+            if (useHandlebars)
+            {
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore5:
+                        zipName = "CodeTemplates502.zip";
+                        break;
+                    case CodeGenerationMode.EFCore3:
+                        zipName = "CodeTemplates.zip";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        zipName = "CodeTemplates600.zip";
+                        break;
+                    default:
+                        throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
+                }
+            }
+            else
+            {
+                if (codeGenerationMode == CodeGenerationMode.EFCore7)
+                {
+                    zipName = "T4_700.zip";
+                }
+                else
+                {
+                    throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
+                }
+            }
+
+            var defaultZip = "CodeTemplates.zip";
+            var userTemplateZip = Path.Combine(optionsPath, defaultZip);
+
+            var toDir = useHandlebars ? Path.Combine(optionsPath, "CodeTemplates") : Path.Combine(projectPath, "CodeTemplates");
+            var templateZip = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), zipName);
+
+            if (File.Exists(userTemplateZip) && useHandlebars)
+            {
+                templateZip = userTemplateZip;
+            }
+
+            if (!Directory.Exists(toDir) || IsDirectoryEmpty(toDir))
+            {
+                Directory.CreateDirectory(toDir);
+                ZipFile.ExtractToDirectory(templateZip, toDir);
+            }
         }
 
         public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
@@ -121,6 +174,11 @@ namespace EFCorePowerTools.Helpers
             return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
                 .Replace("[ConnectionString]", options.ConnectionString)
                 .Replace("[ContextName]", options.ContextClassName);
+        }
+
+        public bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
         }
 
         private string ReplaceFirst(string text, string search, string replace)
