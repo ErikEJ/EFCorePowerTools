@@ -184,7 +184,7 @@
     <value>Le nom du contexte est requis</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>Personnaliser le code à l'aide des modèles Handlebars</value>
+    <value>Personnaliser le code à l'aide des modèles</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>Connexion à la base de données introuvable, actualisation impossible</value>

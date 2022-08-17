@@ -184,7 +184,7 @@
     <value>Il nome del contesto è obbligatorio</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>Personalizza la generazione del codce codice tramite i template Handlebars</value>
+    <value>Personalizza la generazione del codce codice tramite i template</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>Connessione al database non trovata, impossibile aggiornare</value>

@@ -462,7 +462,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDatabaseNames = options.UseDatabaseNames,
                 UsePluralizer = options.UseInflector,
                 UseDbContextSplitting = options.UseDbContextSplitting,
-                UseHandlebars = options.UseHandleBars,
+                UseHandlebars = options.UseHandleBars || options.UseT4,
                 SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
                 IncludeConnectionString = options.IncludeConnectionString,
                 OutputPath = options.OutputPath,
@@ -496,6 +496,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 return false;
             }
 
+            var isHandleBarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 0
+                || modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 1;
+            options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars && isHandleBarsLanguage;
+            options.SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage;
+            options.UseT4 = modelingOptionsResult.Payload.UseHandlebars && !isHandleBarsLanguage;
+
             options.InstallNuGetPackage = modelingOptionsResult.Payload.InstallNuGetPackage;
             options.UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations;
             options.ContextClassName = modelingOptionsResult.Payload.ModelName;
@@ -512,8 +518,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseHierarchyId = modelingOptionsResult.Payload.MapHierarchyId;
             options.UseNodaTime = modelingOptionsResult.Payload.MapNodaTimeTypes;
             options.UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting;
-            options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars;
-            options.SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage;
             options.IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString;
             options.SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated;
             options.UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
@@ -559,9 +563,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var startTime = DateTime.Now;
 
-            if (options.UseHandleBars)
+            if (options.UseHandleBars || options.UseT4)
             {
-                DropTemplates(options.OptionsPath, options.CodeGenerationMode);
+                DropTemplates(options.OptionsPath, options.CodeGenerationMode, options.UseHandleBars);
             }
 
             options.UseNullableReferences = !await project.IsLegacyAsync() && options.UseNullableReferences;
@@ -688,32 +692,45 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private void DropTemplates(string path, CodeGenerationMode codeGenerationMode)
+        private void DropTemplates(string path, CodeGenerationMode codeGenerationMode, bool useHandlebars)
         {
             string zipName;
-            switch (codeGenerationMode)
+            if (useHandlebars)
             {
-                case CodeGenerationMode.EFCore5:
-                    zipName = "CodeTemplates502.zip";
-                    break;
-                case CodeGenerationMode.EFCore3:
-                    zipName = "CodeTemplates.zip";
-                    break;
-                case CodeGenerationMode.EFCore6:
-                    zipName = "CodeTemplates600.zip";
-                    break;
-                default:
-                    throw new ArgumentException($"Unsupported code generation mode: {codeGenerationMode}");
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore5:
+                        zipName = "CodeTemplates502.zip";
+                        break;
+                    case CodeGenerationMode.EFCore3:
+                        zipName = "CodeTemplates.zip";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        zipName = "CodeTemplates600.zip";
+                        break;
+                    default:
+                        throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
+                }
+            }
+            else
+            {
+                if (codeGenerationMode == CodeGenerationMode.EFCore7)
+                {
+                    zipName = "T4_700.zip";
+                }
+                else
+                {
+                    throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
+                }
             }
 
             var defaultZip = "CodeTemplates.zip";
+            var userTemplateZip = Path.Combine(path, defaultZip);
 
             var toDir = Path.Combine(path, "CodeTemplates");
-
-            var userTemplateZip = Path.Combine(path, defaultZip);
             var templateZip = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), zipName);
 
-            if (File.Exists(userTemplateZip))
+            if (File.Exists(userTemplateZip) && useHandlebars)
             {
                 templateZip = userTemplateZip;
             }

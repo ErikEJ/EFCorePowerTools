@@ -140,6 +140,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="T4_700.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
     <Resource Include="Resources\Table.png" />

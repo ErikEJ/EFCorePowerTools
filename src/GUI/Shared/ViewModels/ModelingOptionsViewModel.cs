@@ -44,8 +44,9 @@ Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
             };
             HandlebarsLanguageList = new[]
             {
-                "C#",
-                "TypeScript",
+                "C# - Handlebars",
+                "TypeScript - Handlebars",
+                "C# - T4",
             };
         }
 

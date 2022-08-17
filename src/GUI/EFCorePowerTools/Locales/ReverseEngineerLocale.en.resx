@@ -187,7 +187,7 @@
     <value>Context name is required</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>Customize code using Handlebars templates</value>
+    <value>Customize code using templates</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>Database connection not found, cannot refresh</value>

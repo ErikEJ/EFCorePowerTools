@@ -58,7 +58,7 @@
                         TargetType="ComboBox">
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                         <Setter Property="IsEditable" Value="False"/>
-                        <Setter Property="MinWidth" Value="105"/>
+                        <Setter Property="MinWidth" Value="160"/>
                         <Setter Property="Height" Value="23"/>
                     </Style>
                 </ResourceDictionary>
@@ -182,7 +182,7 @@
             <ComboBox TabIndex="11"
                       ItemsSource="{Binding HandlebarsLanguageList}"
                       Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
-                      SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
+                      SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="12,0,0,0"
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
 

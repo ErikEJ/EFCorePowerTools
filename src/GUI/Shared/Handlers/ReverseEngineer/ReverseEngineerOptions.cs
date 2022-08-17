@@ -26,6 +26,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseDatabaseNames { get; set; }
         public bool UseInflector { get; set; }
         public bool UseHandleBars { get; set; }
+        public bool UseT4 { get; set; }
         public int SelectedHandlebarsLanguage { get; set; }
         public bool IncludeConnectionString { get; set; }
         public int SelectedToBeGenerated { get; set; }
