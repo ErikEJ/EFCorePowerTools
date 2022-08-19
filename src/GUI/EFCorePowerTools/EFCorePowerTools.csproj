@@ -466,7 +466,7 @@
       <Version>16.9.31025.104</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>17.1.4057</Version>
+      <Version>17.3.2093</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -477,7 +477,7 @@
       <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="NuGet.ProjectModel">
-      <Version>5.11.0</Version>
+      <Version>5.11.2</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.2.0-beta.435</Version>
