@@ -34,10 +34,6 @@ del bin\Release\net6.0\publish\Microsoft.SqlServer.Types.dll
 del bin\Release\net6.0\publish\Microsoft.Win32.SystemEvents.dll
 del bin\Release\net6.0\publish\NetTopologySuite.dll
 del bin\Release\net6.0\publish\NetTopologySuite.IO.SqlServerBytes.dll
-del bin\Release\net6.0\publish\RevEng.Core.Abstractions.dll 
-del bin\Release\net6.0\publish\RevEng.Core.Abstractions.pdb 
-del bin\Release\net6.0\publish\RevEng.Common.dll
-del bin\Release\net6.0\publish\RevEng.Common.pdb
 del bin\Release\net6.0\publish\System.CodeDom.dll
 del bin\Release\net6.0\publish\System.Configuration.ConfigurationManager.dll
 del bin\Release\net6.0\publish\System.Drawing.Common.dll
