@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Globalization;
-using System.IO.Compression;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Locales;

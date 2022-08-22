@@ -538,7 +538,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac))
             {
                 if (options.ConnectionString.ToLowerInvariant().Contains(".database.windows.net")
-                    && options.ConnectionString.ToLowerInvariant().Contains("active directory interactive"))
+                    && (options.ConnectionString.ToLowerInvariant().Contains("active directory interactive")
+                        || options.ConnectionString.ToLowerInvariant().Contains("active directory default")))
                 {
                     return;
                 }
