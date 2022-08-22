@@ -90,7 +90,7 @@ namespace EFCorePowerTools.Dialogs
 
             if (cmdDatabaseType.SelectedIndex == 2)
             {
-                txtSample.Text = "Server=myserver.database.windows.net;Authentication=Active Directory Interactive;Database=mydatabase;User Id=user@domain.com";
+                txtSample.Text = "Server=myserver.database.windows.net;Authentication=Active Directory Default;Database=mydatabase;User Id=user@domain.com";
             }
 
             if (cmdDatabaseType.SelectedIndex == 3)
