@@ -10,10 +10,6 @@ namespace ConsoleApp.Models
 {
     public partial class ChinookContext : DbContext
     {
-        public ChinookContext()
-        {
-        }
-
         public ChinookContext(DbContextOptions<ChinookContext> options)
             : base(options)
         {
@@ -28,7 +24,6 @@ namespace ConsoleApp.Models
         public virtual DbSet<InvoiceLine> InvoiceLines { get; set; }
         public virtual DbSet<MediaType> MediaTypes { get; set; }
         public virtual DbSet<Playlist> Playlists { get; set; }
-        public virtual DbSet<Special> Specials { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -51,9 +46,9 @@ namespace ConsoleApp.Models
             modelBuilder.ApplyConfiguration(new Configurations.InvoiceLineConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.MediaTypeConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PlaylistConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.SpecialConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TrackConfiguration());
 
+            OnModelCreatingGeneratedProcedures(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 

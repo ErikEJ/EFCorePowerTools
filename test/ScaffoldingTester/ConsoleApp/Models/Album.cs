@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace ConsoleApp.Models
 {
+    /// <summary>
+    /// Album table
+    /// </summary>
     public partial class Album
     {
         public Album()
@@ -13,6 +16,9 @@ namespace ConsoleApp.Models
         }
 
         public int AlbumId { get; set; }
+        /// <summary>
+        /// Title of album
+        /// </summary>
         public string Title { get; set; }
         public int ArtistId { get; set; }
 

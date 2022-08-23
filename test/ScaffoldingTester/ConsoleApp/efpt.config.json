@@ -54,15 +54,15 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Specials]",
+         "Name": "[dbo].[Track]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Track]",
-         "ObjectType": 0
+         "Name": "[dbo].[GetTitles]",
+         "ObjectType": 1
       }
    ],
-   "UiHint": "DESKTOP-F14GQSD\\SQLEXPRESS.Chinook",
+   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Chinook",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": true,
@@ -79,5 +79,6 @@
    "UseNodaTime": false,
    "UseNullableReferences": false,
    "UseSchemaFolders": false,
-   "UseSpatial": true
+   "UseSpatial": true,
+   "UseT4": false
 }
