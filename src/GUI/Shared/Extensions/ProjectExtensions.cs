@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
@@ -16,6 +17,30 @@ namespace EFCorePowerTools.Extensions
     internal static class ProjectExtensions
     {
         public const int SOk = 0;
+
+        public static async Task<string> GetStartupProjectOutputPathAsync()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            IVsSolutionBuildManager buildManager;
+            IVsHierarchy startupProject;
+            Project project;
+
+            try
+            {
+                buildManager = await VS.Services.GetSolutionBuildManagerAsync();
+
+                ErrorHandler.ThrowOnFailure(buildManager.get_StartupProject(out startupProject));
+
+                project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
+
+                return await project.GetOutPutAssemblyPathAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
         public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
         {

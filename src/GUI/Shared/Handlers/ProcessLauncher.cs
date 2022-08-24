@@ -98,7 +98,7 @@ namespace EFCorePowerTools.Handlers
 
             var launchPath = await DropNetCoreFilesAsync();
 
-            var startupOutputPath = await EnvDteExtensions.GetStartupProjectOutputPathAsync() ?? outputPath;
+            var startupOutputPath = await ProjectExtensions.GetStartupProjectOutputPathAsync() ?? outputPath;
 
             outputPath = FixExtension(outputPath);
 
