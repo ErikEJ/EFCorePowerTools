@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
@@ -73,10 +74,10 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        internal static DatabaseConnectionModel PromptForInfo(EFCorePowerToolsPackage package)
+        internal static async Task<DatabaseConnectionModel> PromptForInfoAsync()
         {
             // Show dialog with SqlClient selected by default
-            var dialogFactory = package.GetService<IVsDataConnectionDialogFactory>();
+            var dialogFactory = await VS.GetServiceAsync<IVsDataConnectionDialogFactory, IVsDataConnectionDialogFactory>();
             var dialog = dialogFactory.CreateConnectionDialog();
             dialog.AddAllSources();
             dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
@@ -87,13 +88,13 @@ namespace EFCorePowerTools.Helpers
                 return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
             }
 
-            var info = GetDatabaseInfo(package, dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
+            var info = await GetDatabaseInfoAsync(dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
             if (info.ConnectionName == Guid.Empty.ToString())
             {
                 return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
             }
 
-            var savedName = SaveDataConnection(package, dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.ConnectionName));
+            var savedName = await SaveDataConnectionAsync(dialog.EncryptedConnectionString, info.DatabaseType, new Guid(info.ConnectionName));
             info.ConnectionName = savedName;
             info.DataConnection = dialogResult;
             return info;
@@ -117,21 +118,20 @@ namespace EFCorePowerTools.Helpers
             return ofd.FileName;
         }
 
-        internal static string SaveDataConnection(
-            EFCorePowerToolsPackage package,
+        internal static async Task<string> SaveDataConnectionAsync(
             string encryptedConnectionString,
             DatabaseType dbType,
             Guid provider)
         {
-            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
+            var dataExplorerConnectionManager = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
             var savedName = GetSavedConnectionName(DataProtection.DecryptString(encryptedConnectionString), dbType);
             dataExplorerConnectionManager.AddConnection(savedName, provider, encryptedConnectionString, true);
             return savedName;
         }
 
-        internal static void RemoveDataConnection(EFCorePowerToolsPackage package, IVsDataConnection dataConnection)
+        internal static async Task RemoveDataConnectionAsync(IVsDataConnection dataConnection)
         {
-            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
+            var dataExplorerConnectionManager = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
 
             foreach (var connection in dataExplorerConnectionManager.Connections.Values)
             {
@@ -158,13 +158,13 @@ namespace EFCorePowerTools.Helpers
             return false;
         }
 
-        internal Dictionary<string, DatabaseConnectionModel> GetDataConnections(EFCorePowerToolsPackage package)
+        internal async Task<Dictionary<string, DatabaseConnectionModel>> GetDataConnectionsAsync(EFCorePowerToolsPackage package)
         {
             var credentialStore = new CredentialStore();
 
             // http://www.mztools.com/articles/2007/MZ2007018.aspx
             Dictionary<string, DatabaseConnectionModel> databaseList = new Dictionary<string, DatabaseConnectionModel>();
-            var dataExplorerConnectionManager = package.GetService<IVsDataExplorerConnectionManager>();
+            var dataExplorerConnectionManager = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
             Guid providerSQLite = new Guid(Common.Resources.SQLiteProvider);
             Guid providerMicrosoftSQLite = new Guid(Common.Resources.MicrosoftSQLiteProvider);
             Guid providerSQLitePrivate = new Guid(Common.Resources.SQLitePrivateProvider);
@@ -249,13 +249,13 @@ namespace EFCorePowerTools.Helpers
             return databaseList;
         }
 
-        private static DatabaseConnectionModel GetDatabaseInfo(EFCorePowerToolsPackage package, Guid provider, string connectionString)
+        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(Guid provider, string connectionString)
         {
             var dbType = DatabaseType.Undefined;
             var providerGuid = Guid.Empty.ToString();
 
             // Find provider
-            var providerManager = package.GetService<IVsDataProviderManager>();
+            var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
             IVsDataProvider dp;
             providerManager.Providers.TryGetValue(provider, out dp);
             if (dp != null)

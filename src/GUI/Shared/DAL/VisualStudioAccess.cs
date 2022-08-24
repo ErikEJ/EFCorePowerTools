@@ -4,6 +4,7 @@ using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Helpers;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using RevEng.Common;
 
 namespace EFCorePowerTools.DAL
@@ -19,7 +20,20 @@ namespace EFCorePowerTools.DAL
 
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
         {
-            var info = VsDataHelper.PromptForInfo(package);
+            DatabaseConnectionModel info = null;
+
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                // Switch to main thread
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                info = await VsDataHelper.PromptForInfoAsync();
+            });
+
+            if (info == null)
+            {
+                return null;
+            }
+
             if (info.DatabaseType == DatabaseType.Undefined)
             {
                 return null;
@@ -49,9 +63,9 @@ namespace EFCorePowerTools.DAL
             };
         }
 
-        void IVisualStudioAccess.RemoveDatabaseConnection(IVsDataConnection dataConnection)
+        async System.Threading.Tasks.Task IVisualStudioAccess.RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection)
         {
-            VsDataHelper.RemoveDataConnection(package, dataConnection);
+            await VsDataHelper.RemoveDataConnectionAsync(dataConnection);
         }
 
         void IVisualStudioAccess.ShowMessage(string message)

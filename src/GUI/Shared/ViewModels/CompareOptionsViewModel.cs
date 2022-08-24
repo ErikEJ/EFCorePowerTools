@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
@@ -111,7 +112,7 @@ namespace EFCorePowerTools.ViewModels
 
             try
             {
-                visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                Task ignore = visualStudioAccess.RemoveDatabaseConnectionAsync(SelectedDatabaseConnection.DataConnection);
                 DatabaseConnections.Remove(SelectedDatabaseConnection);
             }
             catch (Exception e)

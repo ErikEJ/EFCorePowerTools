@@ -10,7 +10,7 @@ namespace EFCorePowerTools.Common.DAL
 
         DatabaseDefinitionModel PromptForNewDatabaseDefinition();
 
-        void RemoveDatabaseConnection(IVsDataConnection dataConnection);
+        Task RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection);
 
         void ShowMessage(string message);
 

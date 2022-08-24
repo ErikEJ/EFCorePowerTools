@@ -91,12 +91,6 @@ namespace EFCorePowerTools
             });
         }
 
-        internal T GetService<T>()
-            where T : class
-        {
-            return (T)GetService(typeof(T));
-        }
-
         internal TView GetView<TView>()
             where TView : IView
         {

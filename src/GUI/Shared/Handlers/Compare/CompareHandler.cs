@@ -89,7 +89,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
                 await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
 
-                var databaseList = vsDataHelper.GetDataConnections(package);
+                var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
                 var contextTypes = await GetDbContextTypesAsync(outputPath, project);
 
                 var optionsDialog = package.GetView<ICompareOptionsDialog>();

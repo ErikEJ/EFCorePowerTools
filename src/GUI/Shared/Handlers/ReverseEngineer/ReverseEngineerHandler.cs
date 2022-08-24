@@ -280,7 +280,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var databaseList = vsDataHelper.GetDataConnections(package);
+            var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             if (databaseList != null && databaseList.Any())
             {
                 var dataBaseInfo = databaseList.Values.FirstOrDefault(m => m.ConnectionName == options.UiHint);
@@ -312,7 +312,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
         {
-            var databaseList = vsDataHelper.GetDataConnections(package);
+            var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
             var psd = package.GetView<IPickServerDatabaseDialog>();

@@ -13,6 +13,7 @@ using EFCorePowerTools.DAL;
 using EFCorePowerTools.Locales;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
 namespace EFCorePowerTools.ViewModels
@@ -275,7 +276,10 @@ namespace EFCorePowerTools.ViewModels
                 }
                 else
                 {
-                    visualStudioAccess.RemoveDatabaseConnection(SelectedDatabaseConnection.DataConnection);
+                    ThreadHelper.JoinableTaskFactory.Run(async () =>
+                    {
+                        await visualStudioAccess.RemoveDatabaseConnectionAsync(SelectedDatabaseConnection.DataConnection);
+                    });
                 }
 
                 DatabaseConnections.Remove(SelectedDatabaseConnection);
