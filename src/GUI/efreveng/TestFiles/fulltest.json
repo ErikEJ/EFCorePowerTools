@@ -274,7 +274,7 @@
   "UseNoObjectFilter": false,
   "UseBoolPropertiesWithoutDefaultSql": true,
   "UseDatabaseNames": false,
-  "UseDbContextSplitting": false,
+  "UseDbContextSplitting": true,
   "UseFluentApiOnly": true,
   "UseHandleBars": false,
   "UseInflector": true,

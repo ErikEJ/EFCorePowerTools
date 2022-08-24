@@ -30,7 +30,7 @@ namespace RevEng.Core
                 return new List<string>();
             }
 
-            var contextNamespace = Regex.Match(source, @"(?<=(?:^|\s|;)namespace\s+).*?(?=(?:\s|\{))", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5)).Value;
+            var contextNamespace = GetContextNamespace(source);
 
             var configurationNamespace = configNamespace ?? contextNamespace;
 
@@ -128,6 +128,18 @@ namespace RevEng.Core
             ReverseEngineerRunner.RetryFileWrite(dbContextFilePath, finalSource);
 
             return result;
+        }
+
+        private static string GetContextNamespace(string source)
+        {
+            var ns = Regex.Match(source, @"(?<=(?:^|\s|;)namespace\s+).*?(?=(?:\s|\{))", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5)).Value;
+
+            if (ns?.EndsWith(';') ?? false)
+            {
+                return ns.Remove(ns.Length - 1);
+            }
+
+            return ns;
         }
 
         private static List<string> BuildDbContext(string configurationNamespace, List<string> configurationLines, string[] sourceLines)
