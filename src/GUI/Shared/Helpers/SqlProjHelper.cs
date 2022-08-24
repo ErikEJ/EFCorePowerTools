@@ -108,11 +108,6 @@ namespace EFCorePowerTools.Helpers
             {
                 result.Add(file);
             }
-
-            foreach (var file in Directory.GetFiles(path, "*.dacpac", SearchOption.AllDirectories))
-            {
-                result.Add(file);
-            }
         }
 
         private static async System.Threading.Tasks.Task LinkedFilesSearchAsync(IEnumerable<SolutionItem> projectItems, HashSet<string> files)
