@@ -9,6 +9,7 @@ namespace EFCorePowerTools
         public const uint cmdidMigrationStatus = 0x007;
         public const uint cmdidDgmlBuild = 0x0100;
         public const uint cmdidDgmlNuget = 0x0200;
+        public const uint cmdidT4Drop = 0x0250;
         public const uint cmdidSqlBuild = 0x0400;
         public const uint cmdidDebugViewBuild = 0x0450;
         public const uint cmdidDbCompare = 0x008;

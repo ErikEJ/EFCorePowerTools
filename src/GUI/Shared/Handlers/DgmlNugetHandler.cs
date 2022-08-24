@@ -10,13 +10,6 @@ namespace EFCorePowerTools.Handlers
 {
     internal class DgmlNugetHandler
     {
-        private readonly EFCorePowerToolsPackage package;
-
-        public DgmlNugetHandler(EFCorePowerToolsPackage package)
-        {
-            this.package = package;
-        }
-
         public async System.Threading.Tasks.Task InstallDgmlNugetAsync(Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -30,6 +23,15 @@ namespace EFCorePowerTools.Handlers
             var window = await VS.Documents.OpenAsync(path);
             await window.WindowFrame.ShowAsync();
             Telemetry.TrackEvent("PowerTools.InstallDgmlNuget");
+        }
+
+        public void UnzipT4Templates(Project project)
+        {
+            var helper = new ReverseEngineerHelper();
+
+            var path = Path.GetDirectoryName(project.FullPath);
+
+            helper.DropT4Templates(path);
         }
 
         private string GetReadme()

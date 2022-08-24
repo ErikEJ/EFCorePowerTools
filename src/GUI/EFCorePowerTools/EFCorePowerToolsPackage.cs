@@ -54,7 +54,7 @@ namespace EFCorePowerTools
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
-            dgmlNugetHandler = new DgmlNugetHandler(this);
+            dgmlNugetHandler = new DgmlNugetHandler();
             migrationsHandler = new MigrationsHandler(this);
             compareHandler = new CompareHandler(this);
         }
@@ -135,6 +135,16 @@ namespace EFCorePowerTools
                         OnProjectMenuBeforeQueryStatus,
                         menuCommandId5);
                     oleMenuCommandService.AddCommand(menuItem5);
+
+                    var menuCommandId6 = new CommandID(
+                        GuidList.GuidDbContextPackageCmdSet,
+                        (int)PkgCmdIDList.cmdidT4Drop);
+                    var menuItem6 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId6);
+                    oleMenuCommandService.AddCommand(menuItem6);
 
                     var menuCommandId7 = new CommandID(
                         GuidList.GuidDbContextPackageCmdSet,
@@ -449,6 +459,10 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
                     await dgmlNugetHandler.InstallDgmlNugetAsync(project);
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
+                {
+                    dgmlNugetHandler.UnzipT4Templates(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {

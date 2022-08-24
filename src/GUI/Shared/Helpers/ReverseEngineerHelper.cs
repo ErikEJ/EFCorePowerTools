@@ -56,6 +56,11 @@ namespace EFCorePowerTools.Helpers
             return new Tuple<bool, Version>(hasRights, version);
         }
 
+        public void DropT4Templates(string projectPath)
+        {
+            DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);
+        }
+
         public void DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars)
         {
             string zipName;
