@@ -33,7 +33,7 @@
 		<PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0" />
 		<PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="3.0.1" />
 		<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.0.2" />
-		<PackageReference Include="Humanizer.Core" Version="2.9.9" />
+		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="3.1.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />

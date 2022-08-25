@@ -107,7 +107,7 @@
         </Strings>
       </Button>
 
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0150" type="Button">
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0250" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="Template" />
         <CommandFlag>IconIsMoniker</CommandFlag>
