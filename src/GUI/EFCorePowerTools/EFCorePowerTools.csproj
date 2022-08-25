@@ -140,9 +140,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="T4_700.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
     <Resource Include="Resources\Table.png" />
@@ -200,6 +197,10 @@
     </Content>
     <Content Include="..\lib\efreveng70.exe.zip">
       <Link>efreveng70.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\lib\T4_700.zip">
+      <Link>T4_700.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="app.config" />

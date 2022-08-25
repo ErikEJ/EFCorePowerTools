@@ -165,14 +165,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             string version = "3.1";
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore6)
+            if (codeGenerationMode == CodeGenerationMode.EFCore6 || codeGenerationMode == CodeGenerationMode.EFCore7)
             {
                 version = "6.0";
-            }
-
-            if (codeGenerationMode == CodeGenerationMode.EFCore7)
-            {
-                version = "7.0";
             }
 
             if (!await IsDotnetInstalledAsync(version))
