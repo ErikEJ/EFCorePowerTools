@@ -112,7 +112,9 @@ namespace EFCorePowerTools.ViewModels
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 Task ignore = visualStudioAccess.RemoveDatabaseConnectionAsync(SelectedDatabaseConnection.DataConnection);
+#pragma warning restore S1481 // Unused local variables should be removed
                 DatabaseConnections.Remove(SelectedDatabaseConnection);
             }
             catch (Exception e)

@@ -121,19 +121,14 @@ namespace EFCorePowerTools.Helpers
                     await LinkedFilesSearchAsync(item.Children, files);
                 }
 
-                if (item.Type == SolutionItemType.PhysicalFile && item is Project)
+                if (item.Type == SolutionItemType.PhysicalFile)
                 {
-                    var project = item as Project;
-                    var isLink = await project.GetAttributeAsync("IsLink");
-                    var extension = await project.GetAttributeAsync("Extension");
-                    if (isLink != null && isLink == "true" &&
-                        extension != null && extension.Equals(".dacpac", StringComparison.OrdinalIgnoreCase))
+                    var file = item as PhysicalFile;
+                    var fullPath = file.FullPath;
+
+                    if (file.Extension == ".dacpac" && !string.IsNullOrEmpty(fullPath))
                     {
-                        var fullPath = item.FullPath;
-                        if (!string.IsNullOrEmpty(fullPath))
-                        {
-                            files.Add(fullPath);
-                        }
+                        files.Add(fullPath);
                     }
                 }
             }
