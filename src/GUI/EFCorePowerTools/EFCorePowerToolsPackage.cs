@@ -71,8 +71,6 @@ namespace EFCorePowerTools
                     Telemetry.TrackException(exception);
                 }
 
-                await VS.StatusBar.ShowMessageAsync(SharedLocale.AnErrorOccurred);
-
                 var messageBuilder = new StringBuilder();
 
                 foreach (var error in statusMessages)
@@ -82,6 +80,7 @@ namespace EFCorePowerTools
 
                 if (exception != null)
                 {
+                    await VS.StatusBar.ShowMessageAsync(SharedLocale.AnErrorOccurred);
                     await exception.Demystify().LogAsync(messageBuilder.ToString());
                 }
                 else

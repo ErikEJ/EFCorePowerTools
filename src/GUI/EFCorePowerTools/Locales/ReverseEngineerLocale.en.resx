@@ -148,7 +148,7 @@
     <value>This column is part of the primary key and cannot be unchecked if the table is selected.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>Please check the 'Extensions' output window for errors</value>
+    <value>Please check the 'Extensions' output window for issues</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
     <value>Please check the 'Extensions' output window for warnings</value>
