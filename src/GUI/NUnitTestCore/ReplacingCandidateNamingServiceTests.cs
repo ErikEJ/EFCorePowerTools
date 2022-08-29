@@ -718,6 +718,47 @@ namespace UnitTests.Services
         /// Testing the table renaming method using Regex.
         /// </summary>
         [Test]
+        public void GenerateCustomColumnNameUsingRegexRenamingIssue1503()
+        {
+            // Arrange
+            var expected = "ThisIsUPPERCASE";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^tbl",
+                      TablePatternReplaceWith = "",
+                      ColumnPatternReplaceWith = "",
+                      ColumnRegexPattern = "^(vch|bit|dtm|int|dec|nvc|sin|chr|nch)",
+                      Tables = new List<TableRenamer>(),
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption);
+
+            var exampleDbColumn = new DatabaseColumn
+            {
+                Name = "vchThisIsUPPERCASE",
+                Table = new DatabaseTable
+                {
+                    Schema = "dbo",
+                    Name = "whatever",
+                },
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
+
+            // Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        /// <summary>
+        /// Testing the table renaming method using Regex.
+        /// </summary>
+        [Test]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1486()
         {
             // Arrange
@@ -744,7 +785,7 @@ namespace UnitTests.Services
                                 },
                             },
                           },
-                      },
+                      },                       
                   },
               };
 
