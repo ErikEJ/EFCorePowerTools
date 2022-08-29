@@ -659,6 +659,72 @@ namespace UnitTests.Services
             StringAssert.Contains(expected, result);
         }
 
+        /// Testing the table renaming method using Regex.
+        /// </summary>
+        [Test]
+        public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1503()
+        {
+            // Arrange
+            var expected = "GGD";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^tbl",
+                      TablePatternReplaceWith = "",
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption, true);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "tblGGD",
+                Schema = "dbo",
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+
+            // Assert
+            StringAssert.Contains(expected, result);
+        }
+
+        /// Testing the table renaming method using Regex.
+        /// </summary>
+        [Test]
+        public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1503_WithCasing()
+        {
+            // Arrange
+            var expected = "Ggd";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^tbl",
+                      TablePatternReplaceWith = "",
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption, false);
+
+            var exampleDbTable = new DatabaseTable
+            {
+                Name = "tblGGD",
+                Schema = "dbo",
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbTable);
+
+            // Assert
+            StringAssert.Contains(expected, result);
+        }
+
         /// <summary>
         /// Testing the table renaming method using Regex.
         /// </summary>

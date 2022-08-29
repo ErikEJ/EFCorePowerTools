@@ -12,10 +12,12 @@ namespace RevEng.Core
     public class ReplacingCandidateNamingService : CandidateNamingService
     {
         private readonly List<Schema> customNameOptions;
+        private readonly bool preserveCasingUsingRegex;
 
-        public ReplacingCandidateNamingService(List<Schema> customNameOptions)
+        public ReplacingCandidateNamingService(List<Schema> customNameOptions, bool preserveCasingUsingRegex = false)
         {
             this.customNameOptions = customNameOptions;
+            this.preserveCasingUsingRegex = preserveCasingUsingRegex;
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -47,7 +49,14 @@ namespace RevEng.Core
             }
             else if (!string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null)
             {
-                newTableName = GenerateIdentifier(RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith));
+                if (preserveCasingUsingRegex)
+                {
+                    newTableName = RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith);
+                }
+                else
+                {
+                    newTableName = GenerateIdentifier(RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith));
+                }
             }
             else
             {

@@ -105,6 +105,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs,
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
                 UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
+                PreserveTableNameCasingWithRegex = AdvancedOptions.Instance.PreserveTableNameCasingWithRegex,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
