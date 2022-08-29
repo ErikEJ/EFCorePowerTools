@@ -109,9 +109,18 @@ namespace RevEng.Core
                 }
             }
 
+            var newColumnName = string.Empty;
+
             if (!string.IsNullOrEmpty(schema.ColumnRegexPattern) && schema.ColumnPatternReplaceWith != null)
             {
-                string newColumnName = RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith);
+                if (preserveCasingUsingRegex)
+                {
+                    newColumnName = RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith);
+                }
+                else
+                {
+                    newColumnName = GenerateIdentifier(RegexNameReplace(schema.ColumnRegexPattern, originalColumn.Name, schema.ColumnPatternReplaceWith));
+                }
 
                 if (!string.IsNullOrWhiteSpace(newColumnName))
                 {

@@ -725,9 +725,6 @@ namespace UnitTests.Services
             StringAssert.Contains(expected, result);
         }
 
-        /// <summary>
-        /// Testing the table renaming method using Regex.
-        /// </summary>
         [Test]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1478()
         {
@@ -780,9 +777,43 @@ namespace UnitTests.Services
             StringAssert.Contains(expected, result);
         }
 
-        /// <summary>
-        /// Testing the table renaming method using Regex.
-        /// </summary>
+        [Test]
+        public void GenerateCustomColumnNameUsingRegexRenamingIssue1478_Preserve()
+        {
+            // Arrange
+            var expected = "APPLE_NAME";
+
+            var exampleOption = new List<Schema>
+              {
+                  new Schema
+                  {
+                      SchemaName = "dbo",
+                      TableRegexPattern = "^PREFIX_",
+                      TablePatternReplaceWith = "",
+                      ColumnPatternReplaceWith = "",
+                      ColumnRegexPattern = "PREFIX_",
+                  },
+              };
+
+            var sut = new ReplacingCandidateNamingService(exampleOption, true);
+
+            var exampleDbColumn = new DatabaseColumn
+            {
+                Name = "PREFIX_APPLE_NAME",
+                Table = new DatabaseTable
+                {
+                    Schema = "dbo",
+                    Name = "whatever",
+                },
+            };
+
+            // Act
+            var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
+
+            // Assert
+            StringAssert.Contains(expected, result);
+        }
+
         [Test]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1503()
         {
@@ -802,7 +833,7 @@ namespace UnitTests.Services
                   },
               };
 
-            var sut = new ReplacingCandidateNamingService(exampleOption);
+            var sut = new ReplacingCandidateNamingService(exampleOption, true);
 
             var exampleDbColumn = new DatabaseColumn
             {
