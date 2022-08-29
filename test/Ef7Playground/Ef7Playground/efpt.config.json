@@ -8,6 +8,7 @@
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "Ef7Playground",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 2,

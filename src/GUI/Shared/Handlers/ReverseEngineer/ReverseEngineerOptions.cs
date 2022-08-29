@@ -53,5 +53,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public List<SchemaInfo> Schemas { get; set; }
         [IgnoreDataMember]
         public bool InstallNuGetPackage { get; set; }
+        public bool PreserveCasingWithRegex { get; set; }
     }
 }

@@ -105,7 +105,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs,
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
                 UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
-                PreserveTableNameCasingWithRegex = AdvancedOptions.Instance.PreserveTableNameCasingWithRegex,
+                PreserveCasingWithRegex = options.PreserveCasingWithRegex,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
@@ -248,7 +248,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (Directory.Exists(toDir)
                 && File.Exists(Path.Combine(toDir, GetExeName()))
-                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 99)
+                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 89)
             {
                 return fullPath;
             }

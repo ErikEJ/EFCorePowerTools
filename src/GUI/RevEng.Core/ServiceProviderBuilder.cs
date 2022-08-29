@@ -84,7 +84,7 @@ namespace RevEng.Core
 #endif
             if (options.CustomReplacers != null)
             {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveTableNameCasingWithRegex));
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
 #if !CORE70

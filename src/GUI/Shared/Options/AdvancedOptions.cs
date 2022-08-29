@@ -49,12 +49,6 @@ namespace EFCorePowerTools
         [DefaultValue(true)]
         public bool PreferAsyncCalls { get; set; } = true;
 
-        [Category("Reverse Engineering")]
-        [DisplayName(@"Preserve table name casing")]
-        [Description("Preserve table name casing when using regex based renaming")]
-        [DefaultValue(false)]
-        public bool PreserveTableNameCasingWithRegex { get; set; }
-
         [Category("Other")]
         [DisplayName(@"Participate in Telemetry")]
         [Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports")]
