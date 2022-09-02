@@ -31,7 +31,7 @@ efpt.config.json:
    "ContextClassName": "CustomContext",
 ```
 
-`CustomContext.cs`
+`CustomContext.cs` (file renamed)
 
 ```csharp
 public partial class CustomContext : DbContext
