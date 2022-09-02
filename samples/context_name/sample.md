@@ -8,7 +8,7 @@ efpt.config.json:
    "ContextClassName": "NorthwindContext",
 ```
 
-Generated code:
+`NorthwindContext.cs`
 
 ```csharp
 public partial class NorthwindContext : DbContext
@@ -31,7 +31,7 @@ efpt.config.json:
    "ContextClassName": "CustomContext",
 ```
 
-Generated code:
+`CustomContext.cs`
 
 ```csharp
 public partial class CustomContext : DbContext
