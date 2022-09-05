@@ -2,14 +2,15 @@
 
 ## Why
 
-Instead of using the default project namespace, you may want to override.
+Instead of using any default entity namespace, you may want to override.
 
 ## Before
 
 `efpt.config.json`
 
 ```json
-   "ProjectRootNamespace": "Ef7Playground",
+   "ModelNamespace": null,
+   "OutputPath": "",
 ```
 
 `Customer.cs`
@@ -29,7 +30,8 @@ public partial class Customer
 `efpt.config.json`
 
 ```json
-   "ProjectRootNamespace": "CustomNamespace",
+   "ModelNamespace": "Entities",
+   "OutputPath": "",
 ```
 
 `Customer.cs`
@@ -38,7 +40,7 @@ public partial class Customer
 using System;
 using System.Collections.Generic;
 
-namespace CustomNamespace;
+namespace Ef7Playground.Entities;
 
 public partial class Customer
 {
