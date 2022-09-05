@@ -2,7 +2,7 @@
 
 ## Why
 
-Instead of using the database name as proposed context name, you may want to name the dervied DbContext after your doamin or similar.
+Instead of using the database name as proposed context name, you may want to name the dervied DbContext after your domain or similar.
 
 ## Before
 
