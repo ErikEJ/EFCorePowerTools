@@ -1,8 +1,12 @@
 # Context Name
 
+## Why
+
+Instead of using the database name as proposed context name, you may want to name the dervied DbContext after your doamin or similar.
+
 ## Before
 
-efpt.config.json:
+`efpt.config.json`
 
 ```json
    "ContextClassName": "NorthwindContext",
@@ -25,7 +29,7 @@ public partial class NorthwindContext : DbContext
 
 ## After
 
-efpt.config.json:
+`efpt.config.json`
 
 ```json
    "ContextClassName": "CustomContext",
