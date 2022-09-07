@@ -46,7 +46,7 @@ Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
             {
                 "C# - Handlebars",
                 "TypeScript - Handlebars",
-                "C# - T4",
+                "C# - T4 (preview)",
             };
         }
 

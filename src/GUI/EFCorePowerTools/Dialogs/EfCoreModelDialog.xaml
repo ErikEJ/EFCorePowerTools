@@ -58,7 +58,7 @@
                         TargetType="ComboBox">
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                         <Setter Property="IsEditable" Value="False"/>
-                        <Setter Property="MinWidth" Value="160"/>
+                        <Setter Property="MinWidth" Value="196"/>
                         <Setter Property="Height" Value="23"/>
                     </Style>
                 </ResourceDictionary>
