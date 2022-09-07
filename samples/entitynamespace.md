@@ -1,4 +1,4 @@
-# Namespace
+# EntityTypes sub-namespace
 
 ## Why
 

@@ -1,4 +1,4 @@
-# Namespace
+# EntityTypes path
 
 ## Why
 
