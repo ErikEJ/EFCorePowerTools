@@ -33,7 +33,7 @@ public partial class NorthwindContext : DbContext
    "OutputContextPath": "Context",
 ```
 
-`Context/NorthwindContext.cs`
+`Context/NorthwindContext.cs` (file moved)
 
 ```csharp
 namespace Ef7Playground.Context;

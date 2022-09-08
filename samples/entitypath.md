@@ -34,7 +34,7 @@ public partial class Customer
    "OutputPath": "Models",
 ```
 
-`Models/Customer.cs`
+`Models/Customer.cs` (file moved)
 
 ```csharp
 using System;
