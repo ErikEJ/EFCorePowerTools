@@ -4,7 +4,6 @@ using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Helpers;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Threading;
 using RevEng.Common;
 
 namespace EFCorePowerTools.DAL

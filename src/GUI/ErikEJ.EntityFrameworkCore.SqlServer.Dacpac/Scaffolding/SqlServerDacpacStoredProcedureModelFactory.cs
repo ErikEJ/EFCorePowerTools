@@ -1,13 +1,13 @@
-﻿using GOEddie.Dacpac.References;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using GOEddie.Dacpac.References;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
@@ -110,13 +110,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 var newParameter = new ModuleParameter()
                 {
-                     Length = parameter.Length,
-                     Name = parameter.Name.Parts[2].Trim('@'),
-                     Output = parameter.IsOutput,
-                     Precision = parameter.Precision,
-                     Scale = parameter.Scale,
-                     StoreType = parameter.DataType.First().Name.Parts[0],
-                     Nullable = true,
+                    Length = parameter.Length,
+                    Name = parameter.Name.Parts[2].Trim('@'),
+                    Output = parameter.IsOutput,
+                    Precision = parameter.Precision,
+                    Scale = parameter.Scale,
+                    StoreType = parameter.DataType.First().Name.Parts[0],
+                    Nullable = true,
                 };
 
                 result.Add(newParameter);

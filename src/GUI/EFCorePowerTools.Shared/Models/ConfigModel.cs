@@ -1,7 +1,7 @@
-﻿using JetBrains.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace EFCorePowerTools.Common.Models
 {

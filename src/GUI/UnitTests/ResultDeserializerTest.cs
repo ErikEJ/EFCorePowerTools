@@ -1,6 +1,6 @@
-﻿using EFCorePowerTools.Handlers.ReverseEngineer;
+﻿using System.IO;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using NUnit.Framework;
-using System.IO;
 
 namespace UnitTests
 {

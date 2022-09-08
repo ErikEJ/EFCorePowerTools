@@ -21,8 +21,8 @@ namespace EFCorePowerTools.ViewModels
         private bool mayIncludeConnectionString;
 
         public ModelingOptionsViewModel(
-IVisualStudioAccess visualStudioAccess,
-Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
+            IVisualStudioAccess visualStudioAccess,
+            Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
         {
             this.visualStudioAccess = visualStudioAccess;
             this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;

@@ -1,4 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -7,12 +13,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Modelling
 {
@@ -30,7 +30,7 @@ namespace Modelling
         }
 #pragma warning restore CA1002 // Do not expose generic lists
 
-        private static List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath,  bool generateDdl)
+        private static List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath, bool generateDdl)
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath, startupOutputPath);

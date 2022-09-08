@@ -4,8 +4,8 @@ using NUnit.Framework;
 
 namespace UnitTests.ViewModels
 {
-    using EFCorePowerTools.ViewModels;
     using System.Linq;
+    using EFCorePowerTools.ViewModels;
 
     [TestFixture]
     public class SchemaInformationViewModelTests

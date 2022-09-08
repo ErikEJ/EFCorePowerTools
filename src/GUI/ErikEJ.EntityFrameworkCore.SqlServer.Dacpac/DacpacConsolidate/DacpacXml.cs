@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
-using System.Text;
 
 namespace GOEddie.Dacpac.References
 {

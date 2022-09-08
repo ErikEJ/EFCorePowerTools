@@ -2,12 +2,12 @@
 
 namespace UnitTests.ViewModels
 {
+    using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Common;
-    using System.Linq;
 
     [TestFixture]
     public class TableInformationViewModelTests

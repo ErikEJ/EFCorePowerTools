@@ -1,7 +1,7 @@
-﻿using EFCorePowerTools.Common.BLL;
+﻿using System;
+using EFCorePowerTools.Common.BLL;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
-using System;
 
 [assembly: CLSCompliant(false)]
 

@@ -1,7 +1,7 @@
-﻿using Community.VisualStudio.Toolkit;
-using JetBrains.Annotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Community.VisualStudio.Toolkit;
+using JetBrains.Annotations;
 
 namespace EFCorePowerTools.Contracts.Models
 {

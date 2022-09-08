@@ -1,6 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using Community.VisualStudio.Toolkit;
 
 namespace EFCorePowerTools

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EFCorePowerTools.Common.Models;
-using RevEng.Common;
 
 namespace EFCorePowerTools.DAL
 {

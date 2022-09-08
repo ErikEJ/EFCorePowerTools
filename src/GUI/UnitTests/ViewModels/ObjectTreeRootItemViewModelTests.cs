@@ -2,11 +2,11 @@
 
 namespace UnitTests.ViewModels
 {
+    using System.Linq;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using System.Linq;
 
     [TestFixture]
     public class ObjectTreeRootItemViewModelTests

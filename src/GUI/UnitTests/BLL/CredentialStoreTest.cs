@@ -15,10 +15,10 @@ namespace UnitTests.BLL
 
             var databaseConnection = new DatabaseConnectionModel
             {
-               ConnectionName = "test",
-               ConnectionString = "Data Source=test",
-               DatabaseType = DatabaseType.SQLite,
-               DataConnection = null,
+                ConnectionName = "test",
+                ConnectionString = "Data Source=test",
+                DatabaseType = DatabaseType.SQLite,
+                DataConnection = null,
             };
 
             var saved = credentialStore.SaveCredential(databaseConnection);

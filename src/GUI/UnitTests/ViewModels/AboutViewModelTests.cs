@@ -2,12 +2,12 @@
 
 namespace UnitTests.ViewModels
 {
+    using System;
     using EFCorePowerTools.Common.BLL;
     using EFCorePowerTools.Common.DAL;
     using EFCorePowerTools.Common.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
-    using System;
 
     [TestFixture]
     public class AboutViewModelTests

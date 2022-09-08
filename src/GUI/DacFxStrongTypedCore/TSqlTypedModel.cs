@@ -24,15 +24,15 @@
 //    SOFTWARE.
 //</copyright>
 //------------------------------------------------------------------------------
-using Microsoft.SqlServer.Dac.Model;
-using Microsoft.SqlServer.TransactSql.ScriptDom;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SqlServer.Dac.Model;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
-    public sealed class TSqlTypedModel: IDisposable
+    public sealed class TSqlTypedModel : IDisposable
     {
         TSqlModel model;
 
@@ -55,18 +55,18 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             model = new TSqlModel(filename, modelStorageType);
         }
-        
+
         public IEnumerable<T> GetObjects<T>(DacQueryScopes queryScope) where T : ISqlModelElement
         {
             // Map the System.Type to a set of ModelType classes that extend the type or implement the interface
-            foreach( ModelTypeClass modelType in UtilityMethods.GetModelElementTypes(typeof(T)))
+            foreach (ModelTypeClass modelType in UtilityMethods.GetModelElementTypes(typeof(T)))
             {
-                foreach(var element in model.GetObjects(queryScope, modelType))
+                foreach (var element in model.GetObjects(queryScope, modelType))
                 {
                     // Adapt instance with strongly-typed wrapper.
                     yield return (T)TSqlModelElement.AdaptInstance(element);
                 }
-            }           
+            }
         }
 
         public IEnumerable<T> GetObjects<T>(ObjectIdentifier id, DacQueryScopes queryScope) where T : ISqlModelElement
@@ -74,7 +74,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
             // Map the System.Type to a set of ModelType classes that extend the type or implement the interface
             foreach (ModelTypeClass modelType in UtilityMethods.GetModelElementTypes(typeof(T)))
             {
-                foreach (var element in model.GetObjects(modelType,id, queryScope))
+                foreach (var element in model.GetObjects(modelType, id, queryScope))
                 {
                     // Adapt instance with strongly-typed wrapper.
                     yield return (T)TSqlModelElement.AdaptInstance(element);
@@ -316,7 +316,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 
         public void Dispose()
         {
-            if(this.model != null)
+            if (this.model != null)
             {
                 model.Dispose();
                 model = null;

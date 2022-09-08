@@ -1,5 +1,5 @@
-﻿using EFCorePowerTools.Common.Models;
-using System;
+﻿using System;
+using EFCorePowerTools.Common.Models;
 
 namespace EFCorePowerTools.Common.BLL
 {

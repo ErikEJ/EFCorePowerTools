@@ -1,11 +1,11 @@
-﻿using Microsoft.SqlServer.Dac;
-using Microsoft.SqlServer.Dac.Model;
-using Microsoft.SqlServer.TransactSql.ScriptDom;
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using System.Text;
+using Microsoft.SqlServer.Dac;
+using Microsoft.SqlServer.Dac.Model;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
 
 namespace GOEddie.Dacpac.References
 {

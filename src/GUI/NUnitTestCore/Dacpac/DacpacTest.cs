@@ -1,9 +1,9 @@
-﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using NUnit.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using NUnit.Framework;
 
 namespace UnitTests
 {

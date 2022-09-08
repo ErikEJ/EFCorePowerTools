@@ -25,9 +25,9 @@
 //</copyright>
 //------------------------------------------------------------------------------
 
-using Microsoft.SqlServer.Dac.Model;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SqlServer.Dac.Model;
 using Index = Microsoft.SqlServer.Dac.Model.Index;
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
@@ -36,7 +36,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
     {
         public IEnumerable<ISqlIndex> Indexes
         {
-            get 
+            get
             {
                 foreach (var element in Element.GetReferencing(Index.IndexedObject))
                 {
@@ -58,7 +58,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 
         public IEnumerable<TSqlPrimaryKeyConstraint> PrimaryKeyConstraints
         {
-            get 
+            get
             {
                 foreach (var element in Element.GetReferencing(PrimaryKeyConstraint.Host))
                 {
@@ -107,7 +107,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get
             {
-                foreach(var constraint in ForeignKeyConstraints)
+                foreach (var constraint in ForeignKeyConstraints)
                 {
                     yield return constraint;
                 }
@@ -115,7 +115,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
                 {
                     yield return constraint;
                 }
-                foreach(var constraint in UniqueConstraints)
+                foreach (var constraint in UniqueConstraints)
                 {
                     yield return constraint;
                 }
@@ -133,7 +133,7 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get
             {
-                foreach(var element in Element.GetReferencing(DmlTrigger.TriggerObject))
+                foreach (var element in Element.GetReferencing(DmlTrigger.TriggerObject))
                 {
                     yield return (TSqlDmlTrigger)TSqlModelElement.AdaptInstance(element);
                 }

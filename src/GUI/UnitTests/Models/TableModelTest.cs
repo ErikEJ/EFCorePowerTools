@@ -1,8 +1,8 @@
 ﻿namespace UnitTests.Models
 {
+    using System;
     using NUnit.Framework;
     using RevEng.Common;
-    using System;
 
     [TestFixture]
     public class TableModelTest
