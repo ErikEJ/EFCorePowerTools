@@ -55,5 +55,6 @@ namespace RevEng.Common
         public bool UseLegacyResultSetDiscovery { get; set; }
         public bool UseAsyncCalls { get; set; }
         public bool PreserveCasingWithRegex { get; set; }
+        public bool UseCrmEndpoint { get; set; }
     }
 }

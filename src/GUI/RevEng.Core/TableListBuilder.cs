@@ -32,6 +32,7 @@ namespace RevEng.Core
             {
                 DatabaseType = this.databaseType,
                 MergeDacpacs = mergeDacpacs,
+                ConnectionString = connectionString,
             };
 
             serviceProvider = ServiceProviderBuilder.Build(options);

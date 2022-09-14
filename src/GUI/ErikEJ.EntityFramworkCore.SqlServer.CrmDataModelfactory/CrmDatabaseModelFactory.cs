@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Common;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
@@ -22,7 +16,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Utilities;
 
-namespace ErikEJ.EntityFramworkCore.SqlServer.CrmDatabase
+namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class CrmDatabaseModelFactory : IDatabaseModelFactory
     {
@@ -527,7 +521,7 @@ WHERE "
 
             // This is done separately due to MARS property may be turned off
             GetColumns(connection, tables, filter, viewFilter, typeAliases, databaseCollation);
-            
+
             GetForeignKeys(connection, tables, filter);
 
             foreach (var table in tables)

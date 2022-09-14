@@ -5,6 +5,10 @@
     <NoWarn>$(NoWarn);EF1001</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <DefineConstants>TRACE;CORE31</DefineConstants>
+  </PropertyGroup>  
+
   <ItemGroup>
     <None Remove="DbContextExtensions" />
     <None Remove="DbContextExtensions.Sync" />
@@ -34,6 +38,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.3.SqlServer.CrmDatabase\ErikEJ.EntityFrameworkCore.3.SqlServer.CrmDatabase.csproj" />
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />

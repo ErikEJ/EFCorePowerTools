@@ -48,7 +48,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
-		<ProjectReference Include="..\ErikEJ.EntityFramworkCore.SqlServer.CrmDataModelfactory\ErikEJ.EntityFramworkCore.SqlServer.CrmDatabase.csproj" />
+		<ProjectReference Include="..\ErikEJ.EntityFramworkCore.SqlServer.CrmDataModelfactory\ErikEJ.EntityFrameworkCore.6.SqlServer.CrmDatabase.csproj" />
 		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
 		<ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
 	</ItemGroup>
