@@ -10,11 +10,13 @@ Aims to lower the bar for getting started with EF Core, by providing GUI based a
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
-Demo video - Introduction
+[Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
+
+[Demo video - Introduction](https://youtu.be/uph-AGyOd8c)
 
 [![Demo at .NET Conf](https://img.youtube.com/vi/uph-AGyOd8c/2.jpg)](https://youtu.be/uph-AGyOd8c "Demo")
 
-Demo video - Advanced features
+[Demo video - Advanced features](https://youtu.be/3-Izu_qLDqY)
 
 [![Demo at EF Core Community Standup](https://img.youtube.com/vi/3-Izu_qLDqY/1.jpg)](https://youtu.be/3-Izu_qLDqY "Demo")
 
