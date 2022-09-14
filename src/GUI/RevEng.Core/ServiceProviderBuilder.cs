@@ -5,6 +5,7 @@ using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -141,6 +142,13 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+#if (CORE31 || CORE60)  && !CORE70
+                    var builder = new SqlConnectionStringBuilder(options.ConnectionString);
+                    if (builder.DataSource.EndsWith(".dynamics.com", StringComparison.Ordinal))
+                    {
+                        serviceCollection.AddSingleton<IDatabaseModelFactory, CrmDatabaseModelFactory>();
+                    }
+#endif
 #if !CORE70
                     if (options.UseHierarchyId)
                     {
