@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -535,11 +534,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac))
+            if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac)
+                && !string.IsNullOrEmpty(options.ConnectionString))
             {
-                if (options.ConnectionString.ToLowerInvariant().Contains(".database.windows.net")
-                    && (options.ConnectionString.ToLowerInvariant().Contains("active directory interactive")
-                        || options.ConnectionString.ToLowerInvariant().Contains("active directory default")))
+                if (options.ConnectionString.ToLowerInvariant().Contains("active directory default")
+                    || options.ConnectionString.ToLowerInvariant().Contains("encrypt=strict"))
                 {
                     return;
                 }

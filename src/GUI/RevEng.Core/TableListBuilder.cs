@@ -122,7 +122,7 @@ namespace RevEng.Core
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
             var dbModel = dbModelFactory.Create(connectionString, dbModelOptions);
 
-            return dbModel.Tables.ToList();
+            return dbModel.Tables.OrderBy(t => t.Schema).ThenBy(t => t.Name).ToList();
         }
     }
 }

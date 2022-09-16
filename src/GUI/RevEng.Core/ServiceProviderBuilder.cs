@@ -144,7 +144,8 @@ namespace RevEng.Core
 
 #if (CORE31 || CORE60)  && !CORE70
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString);
-                    if (builder.DataSource.EndsWith(".dynamics.com", StringComparison.Ordinal))
+                    if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
+                        || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, CrmDatabaseModelFactory>();
                     }
