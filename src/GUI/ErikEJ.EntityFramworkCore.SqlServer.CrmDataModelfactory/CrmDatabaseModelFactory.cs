@@ -467,7 +467,7 @@ AND "
 WHERE "
                 + viewFilter;
 
-            command.CommandText = commandText; // + viewCommandText;
+            command.CommandText = SupportsViewsAndIndexes() ? commandText + viewCommandText : commandText;
 
             using (var reader = command.ExecuteReader())
             {
@@ -942,14 +942,13 @@ ORDER BY [table_schema], [table_name], [obj].[name], [fkc].[constraint_column_id
         }
 
         private bool SupportsTemporalTable()
-        {
-            return false; // engineedition 1000!
-        }
+            => _compatibilityLevel >= 130 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
 
         private bool SupportsMemoryOptimizedTable()
-        {
-            return false; // engineedition 1000!
-        }
+            => _compatibilityLevel >= 120 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
+
+        private bool SupportsViewsAndIndexes()
+            => _engineEdition != 1000;
 
         private static string DisplayName(string? schema, string name)
             => (!string.IsNullOrEmpty(schema) ? schema + "." : "") + name;

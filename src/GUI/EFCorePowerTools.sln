@@ -80,7 +80,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.6.SqlServer.CrmDatabase", "ErikEJ.EntityFramworkCore.SqlServer.CrmDataModelfactory\ErikEJ.EntityFrameworkCore.6.SqlServer.CrmDatabase.csproj", "{AF80AE92-CC08-414E-9F1B-4119F03E84D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.3.SqlServer.CrmDatabase", "ErikEJ.EntityFrameworkCore.3.SqlServer.CrmDatabase\ErikEJ.EntityFrameworkCore.3.SqlServer.CrmDatabase.csproj", "{4AE3403B-13C1-440C-9012-3151536538FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase", "ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase\ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase.csproj", "{6CEAD653-42BA-4EA6-B46E-6B6AC1B01B95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -208,10 +208,10 @@ Global
 		{AF80AE92-CC08-414E-9F1B-4119F03E84D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF80AE92-CC08-414E-9F1B-4119F03E84D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF80AE92-CC08-414E-9F1B-4119F03E84D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AE3403B-13C1-440C-9012-3151536538FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AE3403B-13C1-440C-9012-3151536538FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AE3403B-13C1-440C-9012-3151536538FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AE3403B-13C1-440C-9012-3151536538FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CEAD653-42BA-4EA6-B46E-6B6AC1B01B95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CEAD653-42BA-4EA6-B46E-6B6AC1B01B95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CEAD653-42BA-4EA6-B46E-6B6AC1B01B95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CEAD653-42BA-4EA6-B46E-6B6AC1B01B95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -244,7 +244,7 @@ Global
 		{3D4F1757-D1DC-4DB8-928C-8F27CE125620} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{C3EA8258-4A3B-49F5-8943-32D4610A2E61} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 		{AF80AE92-CC08-414E-9F1B-4119F03E84D6} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
-		{4AE3403B-13C1-440C-9012-3151536538FF} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
+		{6CEAD653-42BA-4EA6-B46E-6B6AC1B01B95} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}

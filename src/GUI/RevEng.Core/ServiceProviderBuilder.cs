@@ -142,7 +142,7 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if (CORE31 || CORE60)  && !CORE70
+#if CORE60
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString);
                     if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
                         || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
