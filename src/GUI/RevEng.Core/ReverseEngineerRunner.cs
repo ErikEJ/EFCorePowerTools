@@ -97,30 +97,34 @@ namespace RevEng.Core
                 bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
 
                 procedurePaths = scaffolder.GenerateStoredProcedures(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
-                if (procedurePaths != null)
+
+#if CORE50 || CORE60
+                functionPaths = scaffolder.GenerateFunctions(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
+#endif
+                if (functionPaths != null || procedurePaths != null)
                 {
                     var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
-                    var index = dbContextLines.IndexOf("            OnModelCreatingPartial(modelBuilder);");
-                    if (index != -1)
+                    if (procedurePaths != null)
                     {
-                        dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
-                        RetryFileWrite(filePaths.ContextFile, dbContextLines);
+                        var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
+                        if (index != -1)
+                        {
+                            dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
+                            RetryFileWrite(filePaths.ContextFile, dbContextLines);
+                        }
+                    }
+
+                    if (functionPaths != null)
+                    {
+                        var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
+                        if (index != -1)
+                        {
+                            dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
+                            RetryFileWrite(filePaths.ContextFile, dbContextLines);
+                        }
                     }
                 }
 
-                functionPaths = scaffolder.GenerateFunctions(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
-#if CORE50 || CORE60
-                if (functionPaths != null)
-                {
-                    var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
-                    var index = dbContextLines.IndexOf("            OnModelCreatingPartial(modelBuilder);");
-                    if (index != -1)
-                    {
-                        dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
-                        RetryFileWrite(filePaths.ContextFile, dbContextLines);
-                    }
-                }
-#endif
                 RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
                 if (!options.UseHandleBars && !options.UseT4)
                 {
