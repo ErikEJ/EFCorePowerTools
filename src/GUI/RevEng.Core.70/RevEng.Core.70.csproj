@@ -33,8 +33,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-rc.2.22464.19" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0-rc.2.22464.19" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.0-rc.2.22464.19" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="7.0.0-preview.7" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.0-preview.7" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="7.0.0-rc.1" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.0-rc.1" />
 		<PackageReference Include="System.CodeDom" Version="5.0.0" />
 	</ItemGroup>
 
