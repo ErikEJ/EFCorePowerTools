@@ -109,8 +109,11 @@ namespace RevEng.Core
                         var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                         if (index != -1)
                         {
+#if CORE70
+                            dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
+#else
                             dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
-                            RetryFileWrite(filePaths.ContextFile, dbContextLines);
+#endif
                         }
                     }
 
@@ -119,10 +122,15 @@ namespace RevEng.Core
                         var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                         if (index != -1)
                         {
+#if CORE70
+                            dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
+#else
                             dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
-                            RetryFileWrite(filePaths.ContextFile, dbContextLines);
+#endif
                         }
                     }
+
+                    RetryFileWrite(filePaths.ContextFile, dbContextLines);
                 }
 
                 RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
