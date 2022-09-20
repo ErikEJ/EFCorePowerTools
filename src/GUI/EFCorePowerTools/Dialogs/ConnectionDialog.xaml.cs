@@ -74,17 +74,13 @@ namespace EFCorePowerTools.Dialogs
                     break;
             }
 
-            if (cmdDatabaseType.SelectedIndex == 0 && !ddexInstalled)
+            if (cmdDatabaseType.SelectedIndex == 0)
             {
-                DDEXLink.Inlines.Add(new System.Windows.Documents.Run("Install PostgreSQL DDEX provider"));
-                DDEXLink.NavigateUri = new Uri("https://marketplace.visualstudio.com/items?itemName=RojanskyS.NpgsqlPostgreSQLIntegration");
                 txtSample.Text = "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;";
             }
 
-            if (cmdDatabaseType.SelectedIndex == 1 && vsVersion.Major == 17 && !ddexInstalled)
+            if (cmdDatabaseType.SelectedIndex == 1)
             {
-                DDEXLink.Inlines.Add(new System.Windows.Documents.Run("Install SQLite DDEX provider"));
-                DDEXLink.NavigateUri = new Uri("https://marketplace.visualstudio.com/items?itemName=bricelam.VSDataSqlite");
                 txtSample.Text = "Data Source=C:\\data\\Application.db";
             }
 
@@ -98,16 +94,26 @@ namespace EFCorePowerTools.Dialogs
                 txtSample.Text = "database=localhost:demo.fdb;user=sysdba;password=masterkey";
             }
 
-            if (cmdDatabaseType.SelectedIndex == 4 && vsVersion.Major == 16 && !ddexInstalled)
+            if (cmdDatabaseType.SelectedIndex == 4)
             {
-                DDEXLink.NavigateUri = new Uri("https://dev.mysql.com/downloads/windows/visualstudio/");
                 txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
             }
 
-            if (cmdDatabaseType.SelectedIndex == 5 && vsVersion.Major == 16 && !ddexInstalled)
+            if (cmdDatabaseType.SelectedIndex == 5)
             {
-                DDEXLink.NavigateUri = new Uri("https://www.oracle.com/database/technologies/dotnet-odtvsix-vs2019-downloads.html");
                 txtSample.Text = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=MyHost)(PORT=MyPort)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MyOracleSID)));User Id=myUsername;Password=myPassword;";
+            }
+
+            if (cmdDatabaseType.SelectedIndex == 0 && !ddexInstalled)
+            {
+                DDEXLink.Inlines.Add(new System.Windows.Documents.Run("Install PostgreSQL DDEX provider"));
+                DDEXLink.NavigateUri = new Uri("https://marketplace.visualstudio.com/items?itemName=RojanskyS.NpgsqlPostgreSQLIntegration");
+            }
+
+            if (cmdDatabaseType.SelectedIndex == 1 && vsVersion.Major == 17 && !ddexInstalled)
+            {
+                DDEXLink.Inlines.Add(new System.Windows.Documents.Run("Install SQLite DDEX provider"));
+                DDEXLink.NavigateUri = new Uri("https://marketplace.visualstudio.com/items?itemName=bricelam.VSDataSqlite");
             }
         }
 
