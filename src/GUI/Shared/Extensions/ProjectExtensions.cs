@@ -179,11 +179,6 @@ namespace EFCorePowerTools.Extensions
                 version = new Version(2, 1);
             }
 
-            if (await project.IsNetCore31Async())
-            {
-                version = new Version(5, 0);
-            }
-
             if (await project.IsNet50Async())
             {
                 version = new Version(5, 0);
