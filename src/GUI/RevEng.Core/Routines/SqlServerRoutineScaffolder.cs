@@ -13,7 +13,7 @@ using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 
-#if CORE50 || CORE60
+#if CORE60
 using Microsoft.EntityFrameworkCore.Infrastructure;
 #else
 using Microsoft.EntityFrameworkCore.Internal;

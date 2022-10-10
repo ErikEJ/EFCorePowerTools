@@ -61,9 +61,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\DacFxStrongTypedCore.161\DacFxStrongTypedCore.161.csproj" />
+	    <ProjectReference Include="..\DacFxStrongTypedCore.161\DacFxStrongTypedCore.161.csproj">
+           <PrivateAssets>all</PrivateAssets>
+        </ProjectReference>
 		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj">
-			<PrivateAssets>all</PrivateAssets>
+		   <PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
 	</ItemGroup>
 

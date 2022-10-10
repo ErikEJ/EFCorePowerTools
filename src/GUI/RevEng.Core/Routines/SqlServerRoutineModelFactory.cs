@@ -59,7 +59,7 @@ AND (
 AND ROUTINE_TYPE = N'{RoutineType}'");
 #pragma warning restore CA1305 // Specify IFormatProvider
 
-#if !CORE50 && !CORE60
+#if CORE31
                 // Filters out table-valued functions without filtering out stored procedures
                 sql.AppendLine("AND COALESCE(DATA_TYPE, '') != 'TABLE'");
 #endif

@@ -37,10 +37,7 @@ namespace Microsoft.EntityFrameworkCore
 
         private static string CreateDebugView(DbContext context)
         {
-#if CORE50
-            var model = context.Model;
-            return model.AsModel().DebugView.LongView;
-#elif CORE60
+#if CORE60
             return context.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 #else
             var model = context.Model;

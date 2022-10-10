@@ -19,9 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
-#if (CORE50 || CORE60) && !CORE70
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
-#endif
 using System;
 
 namespace RevEng.Core
@@ -40,14 +38,7 @@ namespace RevEng.Core
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
-#if CORE50
-                .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
-                 new CommentCSharpEntityTypeGenerator(
-                    provider.GetService<IAnnotationCodeGenerator>(),
-                    provider.GetService<ICSharpHelper>(),
-                    options.UseNullableReferences,
-                    options.UseNoConstructor))
-#elif CORE60
+#if CORE60
 #else
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
                  new CommentCSharpEntityTypeGenerator(
@@ -105,7 +96,7 @@ namespace RevEng.Core
             }
 #endif
 
-#if CORE50 || CORE60
+#if CORE60
             if (options.UseLegacyPluralizer)
             {
                 serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
@@ -142,7 +133,7 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60
+#if CORE60 || CORE70
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString);
                     if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
                         || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
@@ -150,21 +141,18 @@ namespace RevEng.Core
                         serviceCollection.AddSingleton<IDatabaseModelFactory, CrmDatabaseModelFactory>();
                     }
 #endif
-#if !CORE70
                     if (options.UseHierarchyId)
                     {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
 
-#if (CORE50 || CORE60) && !CORE70
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
+
                     break;
 
                 case DatabaseType.SQLServerDacpac:
@@ -187,13 +175,19 @@ namespace RevEng.Core
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-#if !CORE70
+
                     if (options.UseHierarchyId)
                     {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
+
+                    if (options.UseNodaTime)
+                    {
+                        var nodaTime = new SqlServerNodaTimeDesignTimeServices();
+                        nodaTime.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
                     break;
 
                 case DatabaseType.Npgsql:
@@ -243,7 +237,7 @@ namespace RevEng.Core
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
-#if (CORE50 || CORE60) && !CORE70
+#if CORE60 && !CORE70
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
