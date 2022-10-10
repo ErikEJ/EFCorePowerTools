@@ -6,9 +6,11 @@ Please include a **complete** description or project that I can redo/run to repr
 
 ### Provide technical details
 
-- EF Core version in use: (e.g. EF Core 6)
+- EF Core version in use: (e.g. EF Core 7)
 
 - Is Handlebars used: no/yes
+
+- Is T4 used: no/yes
 
 - Is .dacpac used: no/yes
 
