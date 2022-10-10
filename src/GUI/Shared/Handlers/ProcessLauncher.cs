@@ -247,11 +247,7 @@ namespace EFCorePowerTools.Handlers
 
             var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
 
-            if (versionInfo.Item2.StartsWith("5.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt50.exe.zip", RevEng.Common.CodeGenerationMode.EFCore5);
-            }
-            else if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
+            if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt60.exe.zip", RevEng.Common.CodeGenerationMode.EFCore6);
             }
