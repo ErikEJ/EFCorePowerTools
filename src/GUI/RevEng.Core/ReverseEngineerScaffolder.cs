@@ -67,7 +67,7 @@ namespace RevEng.Core
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = options.UseDatabaseNames,
-#if CORE50 || CORE60
+#if CORE60
                 NoPluralize = !options.UseInflector,
 #endif
             };
@@ -83,7 +83,7 @@ namespace RevEng.Core
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = options.ConnectionString,
-#if CORE50 || CORE60
+#if CORE60
                 SuppressOnConfiguring = !options.IncludeConnectionString,
 #endif
 #if CORE60
@@ -314,7 +314,7 @@ namespace RevEng.Core
                 var entityTypeExtension = Path.GetExtension(entityType.Path);
                 var entityMatch = databaseModel.GetEntityTypes().FirstOrDefault(x => x.Name == entityTypeName);
                 var entityTypeSchema = entityMatch?.GetSchema();
-#if CORE50 || CORE60
+#if CORE60
                 if (entityMatch?.GetViewName() != null)
                 {
                     entityTypeSchema = entityMatch?.GetViewSchema();
@@ -366,7 +366,7 @@ namespace RevEng.Core
                 }
             }
 
-#if CORE50 || CORE60
+#if CORE60
             var model = factory.Create(databaseModel, modelOptions);
 #else
             var model = factory.Create(databaseModel, modelOptions.UseDatabaseNames);

@@ -31,9 +31,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore5:
-                    revengFolder = "efreveng5.";
-                    break;
                 case CodeGenerationMode.EFCore3:
                     revengFolder = "efreveng3.";
                     break;
@@ -265,16 +262,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
             }
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore5)
-            {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
-
-                using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng50.exe.zip"), ZipArchiveMode.Read))
-                {
-                    archive.ExtractToDirectory(toDir, true);
-                }
-            }
-
             if (codeGenerationMode == CodeGenerationMode.EFCore6)
             {
                 ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
@@ -317,8 +304,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore5:
-                    return "efreveng50.dll";
                 case CodeGenerationMode.EFCore3:
                     return "efreveng.dll";
                 case CodeGenerationMode.EFCore6:

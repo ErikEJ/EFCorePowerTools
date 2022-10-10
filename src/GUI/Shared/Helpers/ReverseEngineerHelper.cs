@@ -68,9 +68,6 @@ namespace EFCorePowerTools.Helpers
             {
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore5:
-                        zipName = "CodeTemplates502.zip";
-                        break;
                     case CodeGenerationMode.EFCore3:
                         zipName = "CodeTemplates.zip";
                         break;
@@ -121,12 +118,7 @@ namespace EFCorePowerTools.Helpers
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (preview)" });
             }
 
-            if (minimumVersion.Major == 6 || minimumVersion.Major == 5 || minimumVersion.Major == 2)
-            {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore5, Value = "EF Core 5" });
-            }
-
-            if (minimumVersion.Major == 3 || minimumVersion.Major == 2 || minimumVersion.Major == 5)
+            if (minimumVersion.Major == 3 || minimumVersion.Major == 2)
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore3, Value = "EF Core 3" });
             }
