@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
-#if CORE50 || CORE60
+#if CORE60
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
@@ -126,26 +126,7 @@ namespace Modelling
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
             var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-#if CORE50
-            var hasDifferences = false;
-            var dependencies = context.GetService<ProviderConventionSetBuilderDependencies>();
-            var relationalDependencies = context.GetService<RelationalConventionSetBuilderDependencies>();
-
-            if (migrationsAssembly.ModelSnapshot != null)
-            {
-                var typeMappingConvention = new TypeMappingConvention(dependencies);
-                typeMappingConvention.ProcessModelFinalizing(((IConventionModel)migrationsAssembly.ModelSnapshot.Model).Builder, null);
-
-                var relationalModelConvention = new RelationalModelConvention(dependencies, relationalDependencies);
-                var sourceModel = relationalModelConvention.ProcessModelFinalized(migrationsAssembly.ModelSnapshot.Model);
-
-                hasDifferences = modelDiffer.HasDifferences(
-                     ((IMutableModel)sourceModel).FinalizeModel().GetRelationalModel(),
-                    context.Model.GetRelationalModel());
-            }
-
-            var pendingModelChanges = (!databaseExists || hasDifferences);
-#elif CORE60
+#if CORE60
             var hasDifferences = false;
             if (migrationsAssembly.ModelSnapshot != null)
             {
@@ -205,7 +186,7 @@ namespace Modelling
             EnsureServices(services);
 
             var migrator = services.GetRequiredService<IMigrator>();
-#if CORE50 || CORE60
+#if CORE60
             return migrator.GenerateScript(null, null, MigrationsSqlGenerationOptions.Idempotent);
 #else
             return migrator.GenerateScript(null, null, idempotent: true);

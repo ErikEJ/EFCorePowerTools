@@ -98,7 +98,7 @@ namespace RevEng.Core
 
                 procedurePaths = scaffolder.GenerateStoredProcedures(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 
-#if CORE50 || CORE60
+#if CORE60
                 functionPaths = scaffolder.GenerateFunctions(options, ref errors, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 #endif
                 if (functionPaths != null || procedurePaths != null)

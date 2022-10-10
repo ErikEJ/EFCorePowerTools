@@ -179,11 +179,6 @@ namespace EFCorePowerTools.Extensions
                 version = new Version(2, 1);
             }
 
-            if (await project.IsNet50Async())
-            {
-                version = new Version(5, 0);
-            }
-
             if (await project.IsNet60Async())
             {
                 version = new Version(6, 0);
@@ -216,12 +211,12 @@ namespace EFCorePowerTools.Extensions
 
         public static async Task<bool> IsNetCore31OrHigherIncluding70Async(this Project project)
         {
-            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project) || await IsNet70Async(project);
+            return await IsNetCore31Async(project) || await IsNet60Async(project) || await IsNet70Async(project);
         }
 
         public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
         {
-            return await IsNetCore31Async(project) || await IsNet50Async(project) || await IsNet60Async(project);
+            return await IsNetCore31Async(project) || await IsNet60Async(project);
         }
 
         public static async Task<bool> IsNetStandard21Async(this Project project)
@@ -309,11 +304,6 @@ namespace EFCorePowerTools.Extensions
         private static async Task<bool> IsNetCore31Async(this Project project)
         {
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v3.1") ?? false;
-        }
-
-        private static async Task<bool> IsNet50Async(this Project project)
-        {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v5.0") ?? false;
         }
 
         private static async Task<bool> IsNet60Async(this Project project)
