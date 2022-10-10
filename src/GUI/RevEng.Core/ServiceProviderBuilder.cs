@@ -19,7 +19,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
+#if CORE50 || CORE60 || CORE70
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+#endif
 using System;
 
 namespace RevEng.Core
@@ -147,11 +149,13 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+#if CORE50 || CORE60 || CORE70
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
+#endif
 
                     break;
 
@@ -182,11 +186,13 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+#if CORE50 || CORE60 || CORE70
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
+#endif
 
                     break;
 
