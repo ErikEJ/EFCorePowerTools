@@ -168,7 +168,7 @@ namespace RevEng.Core.Modules
 
             errors.AddRange(model.Errors);
 
-            foreach (var routine in model.Routines.Where(r => !(r is Function f) || !f.IsScalar))
+            foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
                 int i = 1;
 

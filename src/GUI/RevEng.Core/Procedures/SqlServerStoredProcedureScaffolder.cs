@@ -557,7 +557,7 @@ namespace RevEng.Core.Procedures
 
             using (Sb.Indent())
             {
-                foreach (var procedure in model.Routines.Cast<Procedure>())
+                foreach (var procedure in model.Routines.Cast<Procedure>().Where(p => string.IsNullOrEmpty(p.MappedType)))
                 {
                     if (procedure.NoResultSet)
                     {
