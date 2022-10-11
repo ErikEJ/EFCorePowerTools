@@ -79,12 +79,14 @@ namespace EfReveng
 
                 return 0;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 Console.Out.WriteLine("Error:");
                 Console.Out.WriteLine(ex.Demystify());
                 return 1;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }
