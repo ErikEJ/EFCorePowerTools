@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
-#if CORE60 || CORE70
+#if CORE60
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
 using System;
@@ -135,7 +135,7 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60 || CORE70
+#if CORE60
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString);
                     if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
                         || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
@@ -149,7 +149,7 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60 || CORE70
+#if CORE60
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
@@ -186,7 +186,7 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60 || CORE70
+#if CORE60
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
