@@ -30,7 +30,11 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
     using System;
     using System.Collections.Generic;
     using System.Linq;
+#if CORE70
+    using Microsoft.SqlServer.Server;
+#else
     using Microsoft.Data.SqlClient.Server;
+#endif
     using Microsoft.SqlServer.Dac.Model;
     /// <summary>
     /// Explicit implementation of <see cref="ISql90TSqlColumn"/>.

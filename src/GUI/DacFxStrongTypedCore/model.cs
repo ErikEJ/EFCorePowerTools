@@ -28,7 +28,11 @@
 
 namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
+#if CORE70
+    using Microsoft.SqlServer.Server;
+#else
     using Microsoft.Data.SqlClient.Server;
+#endif
     using Microsoft.SqlServer.Dac.Model;
     using System;
     using System.Collections.Generic;

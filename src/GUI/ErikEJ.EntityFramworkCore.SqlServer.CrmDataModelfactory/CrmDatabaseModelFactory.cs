@@ -907,7 +907,7 @@ ORDER BY [table_schema], [table_name], [obj].[name], [fkc].[constraint_column_id
                             break;
                         }
 
-                        foreignKey.Columns.Add(column);
+                        foreignKey.Columns.Add(column!);
                         foreignKey.PrincipalColumns.Add(principalColumn);
                     }
 

@@ -29,7 +29,11 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 {
     using System;
     using System.Collections.Generic;
+#if CORE70
+    using Microsoft.SqlServer.Server;
+#else
     using Microsoft.Data.SqlClient.Server;
+#endif
     using Microsoft.SqlServer.Dac.Model;
 
     public interface ISql90TSqlColumnReference : ISql90TSqlColumn

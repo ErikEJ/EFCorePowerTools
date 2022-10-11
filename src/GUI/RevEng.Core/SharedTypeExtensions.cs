@@ -74,7 +74,7 @@ namespace System
         public static bool IsCompatibleWith(this Type propertyType, Type fieldType)
         {
             if (propertyType.IsAssignableFrom(fieldType)
-                || fieldType.IsAssignableFrom(propertyType))
+                || (fieldType != null && fieldType.IsAssignableFrom(propertyType)))
             {
                 return true;
             }
