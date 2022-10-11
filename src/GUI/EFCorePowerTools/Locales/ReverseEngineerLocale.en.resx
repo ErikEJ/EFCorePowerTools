@@ -292,7 +292,7 @@
     <value>Remove constructor from entity classes (experimental)</value>
   </data>
   <data name="RemoveDefaultConstructor" xml:space="preserve">
-    <value>Remove default DbContext constructor</value>
+    <value>Remove default DbContext constructor (EF Core 3 &amp; 6)</value>
   </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
     <value>Remove navigations from entity classes (experimental)</value>
@@ -361,7 +361,7 @@
     <value>Use EF6 pluralizer</value>
   </data>
   <data name="UseManyToManyEntity" xml:space="preserve">
-    <value>Use many to many entity (EF Core 6)</value>
+    <value>Use many to many entity (EF Core 6 and later)</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Use table and column names directly from the database</value>
