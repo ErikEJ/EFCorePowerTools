@@ -312,10 +312,7 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = project.IsCSharpProject()
-                && (await project.IsNetCore31OrHigherIncluding70Async()
-                    || await project.IsLegacyAsync()
-                    || await project.IsNetStandard21Async());
+            menuCommand.Visible = project.IsCSharpProject();
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -338,6 +335,11 @@ namespace EFCorePowerTools
                 return;
             }
 
+            if (!project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
             var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
                 .Where(p => p.IsCSharpProject())
                 .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
@@ -347,7 +349,7 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
+            menuCommand.Visible = true;
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
