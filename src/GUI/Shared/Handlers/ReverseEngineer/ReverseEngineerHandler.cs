@@ -151,6 +151,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     options = new ReverseEngineerOptions
                     {
                         ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
+                        OutputPath = "Models",
                     };
                 }
 

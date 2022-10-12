@@ -24,7 +24,7 @@
 	</ItemGroup>
 
    <ItemGroup>
-     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-rc.1.22426.7" />
+     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-rc.2.22472.11" />
    </ItemGroup>
 
 </Project>
