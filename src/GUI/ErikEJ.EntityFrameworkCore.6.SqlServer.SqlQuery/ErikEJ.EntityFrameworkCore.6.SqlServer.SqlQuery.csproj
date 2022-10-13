@@ -26,13 +26,9 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
+
 	<ItemGroup>
-	  <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\DbContextExtensions.cs" Link="DbContextExtensions.cs" />
-	  <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\OutputParameter.cs" Link="OutputParameter.cs" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<None Include="..\ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+		<None Include="readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	
 	<ItemGroup>
