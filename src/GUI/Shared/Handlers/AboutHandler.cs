@@ -22,7 +22,7 @@ namespace EFCorePowerTools.Handlers
             try
             {
                 var dialog = package.GetView<IAboutDialog>();
-                dialog.ShowAndAwaitUserResponse(false);
+                dialog.ShowAndAwaitUserResponse(true);
                 Telemetry.TrackEvent("PowerTools.About");
             }
             catch (Exception exception)
