@@ -167,7 +167,7 @@ namespace EFCorePowerTools.Helpers
         public string GetReadMeText(ReverseEngineerOptions options, string content)
         {
             return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
-                .Replace("[ConnectionString]", options.ConnectionString)
+                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
