@@ -83,49 +83,23 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Alphabetical list of products");
 
-            entity.Property(e => e.CategoryId)
-                .HasColumnOrder(3)
-                .HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(15)
-                .HasColumnOrder(10);
-            entity.Property(e => e.Discontinued).HasColumnOrder(9);
-            entity.Property(e => e.ProductId)
-                .HasColumnOrder(0)
-                .HasColumnName("ProductID");
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.QuantityPerUnit)
-                .HasMaxLength(20)
-                .HasColumnOrder(4);
-            entity.Property(e => e.ReorderLevel).HasColumnOrder(8);
-            entity.Property(e => e.SupplierId)
-                .HasColumnOrder(2)
-                .HasColumnName("SupplierID");
-            entity.Property(e => e.UnitPrice)
-                .HasColumnOrder(5)
-                .HasColumnType("money");
-            entity.Property(e => e.UnitsInStock).HasColumnOrder(6);
-            entity.Property(e => e.UnitsOnOrder).HasColumnOrder(7);
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.QuantityPerUnit).HasMaxLength(20);
+            entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
 
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasIndex(e => e.CategoryName, "CategoryName");
 
-            entity.Property(e => e.CategoryId)
-                .HasColumnOrder(0)
-                .HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(15)
-                .HasColumnOrder(1);
-            entity.Property(e => e.Description)
-                .HasColumnOrder(2)
-                .HasColumnType("ntext");
-            entity.Property(e => e.Picture)
-                .HasColumnOrder(3)
-                .HasColumnType("image");
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.Description).HasColumnType("ntext");
+            entity.Property(e => e.Picture).HasColumnType("image");
         });
 
         modelBuilder.Entity<CategorySalesFor1997>(entity =>
@@ -134,12 +108,8 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Category Sales for 1997");
 
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(15)
-                .HasColumnOrder(0);
-            entity.Property(e => e.CategorySales)
-                .HasColumnOrder(1)
-                .HasColumnType("money");
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.CategorySales).HasColumnType("money");
         });
 
         modelBuilder.Entity<CurrentProductList>(entity =>
@@ -150,11 +120,8 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.ProductId)
                 .ValueGeneratedOnAdd()
-                .HasColumnOrder(0)
                 .HasColumnName("ProductID");
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
+            entity.Property(e => e.ProductName).HasMaxLength(40);
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -169,40 +136,18 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.CustomerId)
                 .HasMaxLength(5)
-                .HasColumnOrder(0)
                 .IsFixedLength()
                 .HasColumnName("CustomerID");
-            entity.Property(e => e.Address)
-                .HasMaxLength(60)
-                .HasColumnOrder(4);
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(5);
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.ContactName)
-                .HasMaxLength(30)
-                .HasColumnOrder(2);
-            entity.Property(e => e.ContactTitle)
-                .HasMaxLength(30)
-                .HasColumnOrder(3);
-            entity.Property(e => e.Country)
-                .HasMaxLength(15)
-                .HasColumnOrder(8);
-            entity.Property(e => e.Fax)
-                .HasMaxLength(24)
-                .HasColumnOrder(10);
-            entity.Property(e => e.Phone)
-                .HasMaxLength(24)
-                .HasColumnOrder(9);
-            entity.Property(e => e.PostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(7);
-            entity.Property(e => e.Rating).HasColumnOrder(11);
-            entity.Property(e => e.Region)
-                .HasMaxLength(15)
-                .HasColumnOrder(6);
+            entity.Property(e => e.Address).HasMaxLength(60);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.ContactName).HasMaxLength(30);
+            entity.Property(e => e.ContactTitle).HasMaxLength(30);
+            entity.Property(e => e.Country).HasMaxLength(15);
+            entity.Property(e => e.Fax).HasMaxLength(24);
+            entity.Property(e => e.Phone).HasMaxLength(24);
+            entity.Property(e => e.PostalCode).HasMaxLength(10);
+            entity.Property(e => e.Region).HasMaxLength(15);
 
             entity.HasMany(d => d.CustomerTypes).WithMany(p => p.Customers)
                 .UsingEntity<Dictionary<string, object>>(
@@ -228,19 +173,12 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Customer and Suppliers by City");
 
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(0);
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.ContactName)
-                .HasMaxLength(30)
-                .HasColumnOrder(2);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.ContactName).HasMaxLength(30);
             entity.Property(e => e.Relationship)
                 .HasMaxLength(9)
-                .IsUnicode(false)
-                .HasColumnOrder(3);
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<CustomerDemographic>(entity =>
@@ -249,12 +187,9 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.CustomerTypeId)
                 .HasMaxLength(10)
-                .HasColumnOrder(0)
                 .IsFixedLength()
                 .HasColumnName("CustomerTypeID");
-            entity.Property(e => e.CustomerDesc)
-                .HasColumnOrder(1)
-                .HasColumnType("ntext");
+            entity.Property(e => e.CustomerDesc).HasColumnType("ntext");
         });
 
         modelBuilder.Entity<Employee>(entity =>
@@ -263,58 +198,23 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.PostalCode, "PostalCode");
 
-            entity.Property(e => e.EmployeeId)
-                .HasColumnOrder(0)
-                .HasColumnName("EmployeeID");
-            entity.Property(e => e.Address)
-                .HasMaxLength(60)
-                .HasColumnOrder(7);
-            entity.Property(e => e.BirthDate)
-                .HasColumnOrder(5)
-                .HasColumnType("datetime");
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(8);
-            entity.Property(e => e.Country)
-                .HasMaxLength(15)
-                .HasColumnOrder(11);
-            entity.Property(e => e.Extension)
-                .HasMaxLength(4)
-                .HasColumnOrder(13);
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(10)
-                .HasColumnOrder(2);
-            entity.Property(e => e.HireDate)
-                .HasColumnOrder(6)
-                .HasColumnType("datetime");
-            entity.Property(e => e.HomePhone)
-                .HasMaxLength(24)
-                .HasColumnOrder(12);
-            entity.Property(e => e.LastName)
-                .HasMaxLength(20)
-                .HasColumnOrder(1);
-            entity.Property(e => e.Notes)
-                .HasColumnOrder(15)
-                .HasColumnType("ntext");
-            entity.Property(e => e.Photo)
-                .HasColumnOrder(14)
-                .HasColumnType("image");
-            entity.Property(e => e.PhotoPath)
-                .HasMaxLength(255)
-                .HasColumnOrder(17);
-            entity.Property(e => e.PostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(10);
-            entity.Property(e => e.Region)
-                .HasMaxLength(15)
-                .HasColumnOrder(9);
-            entity.Property(e => e.ReportsTo).HasColumnOrder(16);
-            entity.Property(e => e.Title)
-                .HasMaxLength(30)
-                .HasColumnOrder(3);
-            entity.Property(e => e.TitleOfCourtesy)
-                .HasMaxLength(25)
-                .HasColumnOrder(4);
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+            entity.Property(e => e.Address).HasMaxLength(60);
+            entity.Property(e => e.BirthDate).HasColumnType("datetime");
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.Country).HasMaxLength(15);
+            entity.Property(e => e.Extension).HasMaxLength(4);
+            entity.Property(e => e.FirstName).HasMaxLength(10);
+            entity.Property(e => e.HireDate).HasColumnType("datetime");
+            entity.Property(e => e.HomePhone).HasMaxLength(24);
+            entity.Property(e => e.LastName).HasMaxLength(20);
+            entity.Property(e => e.Notes).HasColumnType("ntext");
+            entity.Property(e => e.Photo).HasColumnType("image");
+            entity.Property(e => e.PhotoPath).HasMaxLength(255);
+            entity.Property(e => e.PostalCode).HasMaxLength(10);
+            entity.Property(e => e.Region).HasMaxLength(15);
+            entity.Property(e => e.Title).HasMaxLength(30);
+            entity.Property(e => e.TitleOfCourtesy).HasMaxLength(25);
 
             entity.HasOne(d => d.ReportsToNavigation).WithMany(p => p.InverseReportsToNavigation)
                 .HasForeignKey(d => d.ReportsTo)
@@ -343,82 +243,33 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Invoices");
 
-            entity.Property(e => e.Address)
-                .HasMaxLength(60)
-                .HasColumnOrder(8);
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(9);
-            entity.Property(e => e.Country)
-                .HasMaxLength(15)
-                .HasColumnOrder(12);
+            entity.Property(e => e.Address).HasMaxLength(60);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.Country).HasMaxLength(15);
             entity.Property(e => e.CustomerId)
                 .HasMaxLength(5)
-                .HasColumnOrder(6)
                 .IsFixedLength()
                 .HasColumnName("CustomerID");
-            entity.Property(e => e.CustomerName)
-                .HasMaxLength(40)
-                .HasColumnOrder(7);
-            entity.Property(e => e.Discount).HasColumnOrder(23);
-            entity.Property(e => e.ExtendedPrice)
-                .HasColumnOrder(24)
-                .HasColumnType("money");
-            entity.Property(e => e.Freight)
-                .HasColumnOrder(25)
-                .HasColumnType("money");
-            entity.Property(e => e.OrderDate)
-                .HasColumnOrder(15)
-                .HasColumnType("datetime");
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(14)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.PostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(11);
-            entity.Property(e => e.ProductId)
-                .HasColumnOrder(19)
-                .HasColumnName("ProductID");
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(20);
-            entity.Property(e => e.Quantity).HasColumnOrder(22);
-            entity.Property(e => e.Region)
-                .HasMaxLength(15)
-                .HasColumnOrder(10);
-            entity.Property(e => e.RequiredDate)
-                .HasColumnOrder(16)
-                .HasColumnType("datetime");
-            entity.Property(e => e.Salesperson)
-                .HasMaxLength(31)
-                .HasColumnOrder(13);
-            entity.Property(e => e.ShipAddress)
-                .HasMaxLength(60)
-                .HasColumnOrder(1);
-            entity.Property(e => e.ShipCity)
-                .HasMaxLength(15)
-                .HasColumnOrder(2);
-            entity.Property(e => e.ShipCountry)
-                .HasMaxLength(15)
-                .HasColumnOrder(5);
-            entity.Property(e => e.ShipName)
-                .HasMaxLength(40)
-                .HasColumnOrder(0);
-            entity.Property(e => e.ShipPostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(4);
-            entity.Property(e => e.ShipRegion)
-                .HasMaxLength(15)
-                .HasColumnOrder(3);
-            entity.Property(e => e.ShippedDate)
-                .HasColumnOrder(17)
-                .HasColumnType("datetime");
-            entity.Property(e => e.ShipperName)
-                .HasMaxLength(40)
-                .HasColumnOrder(18);
-            entity.Property(e => e.UnitPrice)
-                .HasColumnOrder(21)
-                .HasColumnType("money");
+            entity.Property(e => e.CustomerName).HasMaxLength(40);
+            entity.Property(e => e.ExtendedPrice).HasColumnType("money");
+            entity.Property(e => e.Freight).HasColumnType("money");
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.PostalCode).HasMaxLength(10);
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.Region).HasMaxLength(15);
+            entity.Property(e => e.RequiredDate).HasColumnType("datetime");
+            entity.Property(e => e.Salesperson).HasMaxLength(31);
+            entity.Property(e => e.ShipAddress).HasMaxLength(60);
+            entity.Property(e => e.ShipCity).HasMaxLength(15);
+            entity.Property(e => e.ShipCountry).HasMaxLength(15);
+            entity.Property(e => e.ShipName).HasMaxLength(40);
+            entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
+            entity.Property(e => e.ShipRegion).HasMaxLength(15);
+            entity.Property(e => e.ShippedDate).HasColumnType("datetime");
+            entity.Property(e => e.ShipperName).HasMaxLength(40);
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -439,49 +290,24 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.ShipVia, "ShippersOrders");
 
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(0)
-                .HasColumnName("OrderID");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.CustomerId)
                 .HasMaxLength(5)
-                .HasColumnOrder(1)
                 .IsFixedLength()
                 .HasColumnName("CustomerID");
-            entity.Property(e => e.EmployeeId)
-                .HasColumnOrder(2)
-                .HasColumnName("EmployeeID");
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Freight)
-                .HasColumnOrder(7)
                 .HasDefaultValueSql("((0))")
                 .HasColumnType("money");
-            entity.Property(e => e.OrderDate)
-                .HasColumnOrder(3)
-                .HasColumnType("datetime");
-            entity.Property(e => e.RequiredDate)
-                .HasColumnOrder(4)
-                .HasColumnType("datetime");
-            entity.Property(e => e.ShipAddress)
-                .HasMaxLength(60)
-                .HasColumnOrder(9);
-            entity.Property(e => e.ShipCity)
-                .HasMaxLength(15)
-                .HasColumnOrder(10);
-            entity.Property(e => e.ShipCountry)
-                .HasMaxLength(15)
-                .HasColumnOrder(13);
-            entity.Property(e => e.ShipName)
-                .HasMaxLength(40)
-                .HasColumnOrder(8);
-            entity.Property(e => e.ShipPostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(12);
-            entity.Property(e => e.ShipRegion)
-                .HasMaxLength(15)
-                .HasColumnOrder(11);
-            entity.Property(e => e.ShipVia).HasColumnOrder(6);
-            entity.Property(e => e.ShippedDate)
-                .HasColumnOrder(5)
-                .HasColumnType("datetime");
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.RequiredDate).HasColumnType("datetime");
+            entity.Property(e => e.ShipAddress).HasMaxLength(60);
+            entity.Property(e => e.ShipCity).HasMaxLength(15);
+            entity.Property(e => e.ShipCountry).HasMaxLength(15);
+            entity.Property(e => e.ShipName).HasMaxLength(40);
+            entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
+            entity.Property(e => e.ShipRegion).HasMaxLength(15);
+            entity.Property(e => e.ShippedDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
@@ -510,19 +336,10 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "ProductsOrder_Details");
 
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(0)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.ProductId)
-                .HasColumnOrder(1)
-                .HasColumnName("ProductID");
-            entity.Property(e => e.Discount).HasColumnOrder(4);
-            entity.Property(e => e.Quantity)
-                .HasColumnOrder(3)
-                .HasDefaultValueSql("((1))");
-            entity.Property(e => e.UnitPrice)
-                .HasColumnOrder(2)
-                .HasColumnType("money");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
@@ -541,23 +358,11 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Order Details Extended");
 
-            entity.Property(e => e.Discount).HasColumnOrder(5);
-            entity.Property(e => e.ExtendedPrice)
-                .HasColumnOrder(6)
-                .HasColumnType("money");
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(0)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.ProductId)
-                .HasColumnOrder(1)
-                .HasColumnName("ProductID");
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(2);
-            entity.Property(e => e.Quantity).HasColumnOrder(4);
-            entity.Property(e => e.UnitPrice)
-                .HasColumnOrder(3)
-                .HasColumnType("money");
+            entity.Property(e => e.ExtendedPrice).HasColumnType("money");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
 
         modelBuilder.Entity<OrderSubtotal>(entity =>
@@ -566,12 +371,8 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Order Subtotals");
 
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(0)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.Subtotal)
-                .HasColumnOrder(1)
-                .HasColumnType("money");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.Subtotal).HasColumnType("money");
         });
 
         modelBuilder.Entity<OrdersQry>(entity =>
@@ -580,66 +381,28 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Orders Qry");
 
-            entity.Property(e => e.Address)
-                .HasMaxLength(60)
-                .HasColumnOrder(15);
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(16);
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(14);
-            entity.Property(e => e.Country)
-                .HasMaxLength(15)
-                .HasColumnOrder(19);
+            entity.Property(e => e.Address).HasMaxLength(60);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.Country).HasMaxLength(15);
             entity.Property(e => e.CustomerId)
                 .HasMaxLength(5)
-                .HasColumnOrder(1)
                 .IsFixedLength()
                 .HasColumnName("CustomerID");
-            entity.Property(e => e.EmployeeId)
-                .HasColumnOrder(2)
-                .HasColumnName("EmployeeID");
-            entity.Property(e => e.Freight)
-                .HasColumnOrder(7)
-                .HasColumnType("money");
-            entity.Property(e => e.OrderDate)
-                .HasColumnOrder(3)
-                .HasColumnType("datetime");
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(0)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.PostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(18);
-            entity.Property(e => e.Region)
-                .HasMaxLength(15)
-                .HasColumnOrder(17);
-            entity.Property(e => e.RequiredDate)
-                .HasColumnOrder(4)
-                .HasColumnType("datetime");
-            entity.Property(e => e.ShipAddress)
-                .HasMaxLength(60)
-                .HasColumnOrder(9);
-            entity.Property(e => e.ShipCity)
-                .HasMaxLength(15)
-                .HasColumnOrder(10);
-            entity.Property(e => e.ShipCountry)
-                .HasMaxLength(15)
-                .HasColumnOrder(13);
-            entity.Property(e => e.ShipName)
-                .HasMaxLength(40)
-                .HasColumnOrder(8);
-            entity.Property(e => e.ShipPostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(12);
-            entity.Property(e => e.ShipRegion)
-                .HasMaxLength(15)
-                .HasColumnOrder(11);
-            entity.Property(e => e.ShipVia).HasColumnOrder(6);
-            entity.Property(e => e.ShippedDate)
-                .HasColumnOrder(5)
-                .HasColumnType("datetime");
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+            entity.Property(e => e.Freight).HasColumnType("money");
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.PostalCode).HasMaxLength(10);
+            entity.Property(e => e.Region).HasMaxLength(15);
+            entity.Property(e => e.RequiredDate).HasColumnType("datetime");
+            entity.Property(e => e.ShipAddress).HasMaxLength(60);
+            entity.Property(e => e.ShipCity).HasMaxLength(15);
+            entity.Property(e => e.ShipCountry).HasMaxLength(15);
+            entity.Property(e => e.ShipName).HasMaxLength(40);
+            entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
+            entity.Property(e => e.ShipRegion).HasMaxLength(15);
+            entity.Property(e => e.ShippedDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Product>(entity =>
@@ -654,35 +417,17 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.SupplierId, "SuppliersProducts");
 
-            entity.Property(e => e.ProductId)
-                .HasColumnOrder(0)
-                .HasColumnName("ProductID");
-            entity.Property(e => e.CategoryId)
-                .HasColumnOrder(3)
-                .HasColumnName("CategoryID");
-            entity.Property(e => e.Discontinued).HasColumnOrder(9);
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.QuantityPerUnit)
-                .HasMaxLength(20)
-                .HasColumnOrder(4);
-            entity.Property(e => e.ReorderLevel)
-                .HasColumnOrder(8)
-                .HasDefaultValueSql("((0))");
-            entity.Property(e => e.SupplierId)
-                .HasColumnOrder(2)
-                .HasColumnName("SupplierID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.QuantityPerUnit).HasMaxLength(20);
+            entity.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
+            entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
             entity.Property(e => e.UnitPrice)
-                .HasColumnOrder(5)
                 .HasDefaultValueSql("((0))")
                 .HasColumnType("money");
-            entity.Property(e => e.UnitsInStock)
-                .HasColumnOrder(6)
-                .HasDefaultValueSql("((0))");
-            entity.Property(e => e.UnitsOnOrder)
-                .HasColumnOrder(7)
-                .HasDefaultValueSql("((0))");
+            entity.Property(e => e.UnitsInStock).HasDefaultValueSql("((0))");
+            entity.Property(e => e.UnitsOnOrder).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
@@ -699,15 +444,9 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Product Sales for 1997");
 
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(15)
-                .HasColumnOrder(0);
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.ProductSales)
-                .HasColumnOrder(2)
-                .HasColumnType("money");
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.ProductSales).HasColumnType("money");
         });
 
         modelBuilder.Entity<ProductsAboveAveragePrice>(entity =>
@@ -716,12 +455,8 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Products Above Average Price");
 
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(0);
-            entity.Property(e => e.UnitPrice)
-                .HasColumnOrder(1)
-                .HasColumnType("money");
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
 
         modelBuilder.Entity<ProductsByCategory>(entity =>
@@ -730,17 +465,9 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Products by Category");
 
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(15)
-                .HasColumnOrder(0);
-            entity.Property(e => e.Discontinued).HasColumnOrder(4);
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.QuantityPerUnit)
-                .HasMaxLength(20)
-                .HasColumnOrder(2);
-            entity.Property(e => e.UnitsInStock).HasColumnOrder(3);
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.QuantityPerUnit).HasMaxLength(20);
         });
 
         modelBuilder.Entity<QuarterlyOrder>(entity =>
@@ -749,18 +476,11 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Quarterly Orders");
 
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(2);
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.Country)
-                .HasMaxLength(15)
-                .HasColumnOrder(3);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.Country).HasMaxLength(15);
             entity.Property(e => e.CustomerId)
                 .HasMaxLength(5)
-                .HasColumnOrder(0)
                 .IsFixedLength()
                 .HasColumnName("CustomerID");
         });
@@ -773,11 +493,9 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.RegionId)
                 .ValueGeneratedNever()
-                .HasColumnOrder(0)
                 .HasColumnName("RegionID");
             entity.Property(e => e.RegionDescription)
                 .HasMaxLength(50)
-                .HasColumnOrder(1)
                 .IsFixedLength();
         });
 
@@ -787,18 +505,10 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Sales by Category");
 
-            entity.Property(e => e.CategoryId)
-                .HasColumnOrder(0)
-                .HasColumnName("CategoryID");
-            entity.Property(e => e.CategoryName)
-                .HasMaxLength(15)
-                .HasColumnOrder(1);
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(40)
-                .HasColumnOrder(2);
-            entity.Property(e => e.ProductSales)
-                .HasColumnOrder(3)
-                .HasColumnType("money");
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.ProductSales).HasColumnType("money");
         });
 
         modelBuilder.Entity<SalesTotalsByAmount>(entity =>
@@ -807,40 +517,26 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Sales Totals by Amount");
 
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(2);
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(1)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.SaleAmount)
-                .HasColumnOrder(0)
-                .HasColumnType("money");
-            entity.Property(e => e.ShippedDate)
-                .HasColumnOrder(3)
-                .HasColumnType("datetime");
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.SaleAmount).HasColumnType("money");
+            entity.Property(e => e.ShippedDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Shipper>(entity =>
         {
-            entity.Property(e => e.ShipperId)
-                .HasColumnOrder(0)
-                .HasColumnName("ShipperID");
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.Phone)
-                .HasMaxLength(24)
-                .HasColumnOrder(2);
+            entity.ToTable(tb => tb.HasTrigger("ShippersTrigger"));
+
+            entity.Property(e => e.ShipperId).HasColumnName("ShipperID");
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.Phone).HasMaxLength(24);
         });
 
         modelBuilder.Entity<Special>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Specials__3214EC073B5BB931");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnOrder(0);
+            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<SummaryOfSalesByQuarter>(entity =>
@@ -849,15 +545,9 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Summary of Sales by Quarter");
 
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(1)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.ShippedDate)
-                .HasColumnOrder(0)
-                .HasColumnType("datetime");
-            entity.Property(e => e.Subtotal)
-                .HasColumnOrder(2)
-                .HasColumnType("money");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.ShippedDate).HasColumnType("datetime");
+            entity.Property(e => e.Subtotal).HasColumnType("money");
         });
 
         modelBuilder.Entity<SummaryOfSalesByYear>(entity =>
@@ -866,15 +556,9 @@ public partial class NorthwindContext : DbContext
                 .HasNoKey()
                 .ToView("Summary of Sales by Year");
 
-            entity.Property(e => e.OrderId)
-                .HasColumnOrder(1)
-                .HasColumnName("OrderID");
-            entity.Property(e => e.ShippedDate)
-                .HasColumnOrder(0)
-                .HasColumnType("datetime");
-            entity.Property(e => e.Subtotal)
-                .HasColumnOrder(2)
-                .HasColumnType("money");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.ShippedDate).HasColumnType("datetime");
+            entity.Property(e => e.Subtotal).HasColumnType("money");
         });
 
         modelBuilder.Entity<Supplier>(entity =>
@@ -883,42 +567,18 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.PostalCode, "PostalCode");
 
-            entity.Property(e => e.SupplierId)
-                .HasColumnOrder(0)
-                .HasColumnName("SupplierID");
-            entity.Property(e => e.Address)
-                .HasMaxLength(60)
-                .HasColumnOrder(4);
-            entity.Property(e => e.City)
-                .HasMaxLength(15)
-                .HasColumnOrder(5);
-            entity.Property(e => e.CompanyName)
-                .HasMaxLength(40)
-                .HasColumnOrder(1);
-            entity.Property(e => e.ContactName)
-                .HasMaxLength(30)
-                .HasColumnOrder(2);
-            entity.Property(e => e.ContactTitle)
-                .HasMaxLength(30)
-                .HasColumnOrder(3);
-            entity.Property(e => e.Country)
-                .HasMaxLength(15)
-                .HasColumnOrder(8);
-            entity.Property(e => e.Fax)
-                .HasMaxLength(24)
-                .HasColumnOrder(10);
-            entity.Property(e => e.HomePage)
-                .HasColumnOrder(11)
-                .HasColumnType("ntext");
-            entity.Property(e => e.Phone)
-                .HasMaxLength(24)
-                .HasColumnOrder(9);
-            entity.Property(e => e.PostalCode)
-                .HasMaxLength(10)
-                .HasColumnOrder(7);
-            entity.Property(e => e.Region)
-                .HasMaxLength(15)
-                .HasColumnOrder(6);
+            entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
+            entity.Property(e => e.Address).HasMaxLength(60);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.CompanyName).HasMaxLength(40);
+            entity.Property(e => e.ContactName).HasMaxLength(30);
+            entity.Property(e => e.ContactTitle).HasMaxLength(30);
+            entity.Property(e => e.Country).HasMaxLength(15);
+            entity.Property(e => e.Fax).HasMaxLength(24);
+            entity.Property(e => e.HomePage).HasColumnType("ntext");
+            entity.Property(e => e.Phone).HasMaxLength(24);
+            entity.Property(e => e.PostalCode).HasMaxLength(10);
+            entity.Property(e => e.Region).HasMaxLength(15);
         });
 
         modelBuilder.Entity<Territory>(entity =>
@@ -927,14 +587,10 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.TerritoryId)
                 .HasMaxLength(20)
-                .HasColumnOrder(0)
                 .HasColumnName("TerritoryID");
-            entity.Property(e => e.RegionId)
-                .HasColumnOrder(2)
-                .HasColumnName("RegionID");
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
             entity.Property(e => e.TerritoryDescription)
                 .HasMaxLength(50)
-                .HasColumnOrder(1)
                 .IsFixedLength();
 
             entity.HasOne(d => d.Region).WithMany(p => p.Territories)
@@ -943,6 +599,8 @@ public partial class NorthwindContext : DbContext
                 .HasConstraintName("FK_Territories_Region");
         });
 
+        OnModelCreatingGeneratedProcedures(modelBuilder);
+        OnModelCreatingGeneratedFunctions(modelBuilder);
         OnModelCreatingPartial(modelBuilder);
     }
 
