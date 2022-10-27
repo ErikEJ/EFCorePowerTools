@@ -600,7 +600,7 @@ namespace RevEng.Core.Procedures
 
             using (Sb.Indent())
             {
-                Sb.AppendLine($"ParameterName = \"{Code.Identifier(parameter.Name)}\",");
+                Sb.AppendLine($"ParameterName = \"{parameter.Name}\",");
 
                 if (sqlDbType.IsScaleType())
                 {
