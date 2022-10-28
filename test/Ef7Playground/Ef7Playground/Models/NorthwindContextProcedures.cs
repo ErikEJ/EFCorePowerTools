@@ -149,13 +149,13 @@ namespace Ef7Playground.Models
             {
                 new SqlParameter
                 {
-                    ParameterName = "BeginningDate",
+                    ParameterName = "Beginning_Date",
                     Value = BeginningDate ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
                 new SqlParameter
                 {
-                    ParameterName = "EndingDate",
+                    ParameterName = "Ending_Date",
                     Value = EndingDate ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
@@ -261,13 +261,13 @@ namespace Ef7Playground.Models
             {
                 new SqlParameter
                 {
-                    ParameterName = "BeginningDate",
+                    ParameterName = "Beginning_Date",
                     Value = BeginningDate ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
                 new SqlParameter
                 {
-                    ParameterName = "EndingDate",
+                    ParameterName = "Ending_Date",
                     Value = EndingDate ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
