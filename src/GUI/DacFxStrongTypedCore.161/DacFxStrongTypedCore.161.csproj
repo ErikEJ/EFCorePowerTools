@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="161.6337.0-preview" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="161.6343.0-preview" />
   </ItemGroup>
 
 </Project>

@@ -3,13 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>7.0.0-rc1</PackageVersion>	  
+    <PackageVersion>7.0.0-rc2</PackageVersion>	  
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
-    <!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.md</DocumentationFile>-->
-    <PackageReleaseNotes>For EF Core 7.0 RC1 with DacFX 161</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 7.0 RC2 with DacFX 161 (preview)</PackageReleaseNotes>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
@@ -52,7 +51,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0-rc.2.22472.11" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="161.6337.0-preview" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="161.6343.0-preview" />
 	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />	  
   </ItemGroup>
 
