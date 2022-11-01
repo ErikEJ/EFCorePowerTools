@@ -96,7 +96,7 @@ namespace EFCorePowerTools.Extensions
             return result.OrderBy(s => s).ToList();
         }
 
-        public static string GetRenamingPath(this Project project, string optionsPath)
+        public static string GetRenamingPath(this Project project, string optionsPath, bool navigationsFile = false)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -116,7 +116,9 @@ namespace EFCorePowerTools.Extensions
                 renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            return Path.Combine(renamingPath, "efpt.renaming.json");
+            const string efptRenamingJson = "efpt.renaming.json";
+            const string efptRenamingNavJson = "efpt.refrenaming.json";
+            return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
         }
 
         public static async Task<Tuple<bool, string>> ContainsEfCoreReferenceAsync(this Project project, DatabaseType dbType)
