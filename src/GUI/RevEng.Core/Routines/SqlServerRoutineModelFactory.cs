@@ -219,29 +219,32 @@ SELECT
 
             foreach (DataRow par in dtResult.Rows)
             {
-                var parameterName = par["Parameter"].ToString();
-                if (parameterName.StartsWith("@", StringComparison.Ordinal))
+                if (par != null)
                 {
-                    parameterName = parameterName.Substring(1);
+                    var parameterName = par["Parameter"].ToString();
+                    if (parameterName!.StartsWith("@", StringComparison.Ordinal))
+                    {
+                        parameterName = parameterName.Substring(1);
+                    }
+
+                    var parameter = new ModuleParameter()
+                    {
+                        Name = parameterName,
+                        RoutineName = par["RoutineName"].ToString(),
+                        RoutineSchema = par["RoutineSchema"].ToString(),
+                        StoreType = par["Type"].ToString(),
+                        Length = (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()!, CultureInfo.InvariantCulture),
+                        Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()!, CultureInfo.InvariantCulture),
+                        Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()!, CultureInfo.InvariantCulture),
+                        Output = (bool)par["output"],
+                        Nullable = true,
+                        TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
+                        TypeId = (par["TypeId"] is DBNull) ? (int?)null : int.Parse(par["TypeId"].ToString()!, CultureInfo.InvariantCulture),
+                        TypeSchema = (par["TypeSchema"] is DBNull) ? (int?)null : int.Parse(par["TypeSchema"].ToString()!, CultureInfo.InvariantCulture),
+                    };
+
+                    result.Add(parameter);
                 }
-
-                var parameter = new ModuleParameter()
-                {
-                    Name = parameterName,
-                    RoutineName = par["RoutineName"].ToString(),
-                    RoutineSchema = par["RoutineSchema"].ToString(),
-                    StoreType = par["Type"].ToString(),
-                    Length = (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString(), CultureInfo.InvariantCulture),
-                    Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString(), CultureInfo.InvariantCulture),
-                    Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString(), CultureInfo.InvariantCulture),
-                    Output = (bool)par["output"],
-                    Nullable = true,
-                    TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
-                    TypeId = (par["TypeId"] is DBNull) ? (int?)null : int.Parse(par["TypeId"].ToString(), CultureInfo.InvariantCulture),
-                    TypeSchema = (par["TypeSchema"] is DBNull) ? (int?)null : int.Parse(par["TypeSchema"].ToString(), CultureInfo.InvariantCulture),
-                };
-
-                result.Add(parameter);
             }
 
             return result.GroupBy(x => $"[{x.RoutineSchema}].[{x.RoutineName}]").ToDictionary(g => g.Key, g => g.ToList(), StringComparer.InvariantCulture);

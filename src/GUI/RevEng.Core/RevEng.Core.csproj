@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <Nullable>warnings</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>

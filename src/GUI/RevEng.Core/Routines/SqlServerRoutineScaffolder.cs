@@ -131,17 +131,25 @@ namespace RevEng.Core.Modules
             Directory.CreateDirectory(outputDir);
 
             var contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
-            Directory.CreateDirectory(Path.GetDirectoryName(contextPath));
-            File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
+            var path = Path.GetDirectoryName(contextPath);
+            if (path != null)
+            {
+                Directory.CreateDirectory(path);
+                File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
+            }
 
             var additionalFiles = new List<string>();
 
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
             {
                 var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
-                Directory.CreateDirectory(Path.GetDirectoryName(additionalFilePath));
-                File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
-                additionalFiles.Add(additionalFilePath);
+                var addpath = Path.GetDirectoryName(additionalFilePath);
+                if (addpath != null)
+                {
+                    Directory.CreateDirectory(addpath);
+                    File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
+                    additionalFiles.Add(additionalFilePath);
+                }
             }
 
             return new SavedModelFiles(contextPath, additionalFiles);

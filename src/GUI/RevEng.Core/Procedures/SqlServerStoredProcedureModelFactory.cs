@@ -88,28 +88,31 @@ namespace RevEng.Core.Procedures
 
                 foreach (DataRow row in schemaTable.Rows)
                 {
-                    var name = row["ColumnName"].ToString();
-                    if (string.IsNullOrEmpty(name))
+                    if (row != null)
                     {
-                        continue;
-                    }
+                        var name = row["ColumnName"].ToString();
+                        if (string.IsNullOrEmpty(name))
+                        {
+                            continue;
+                        }
 
-                    var storeType = row["DataTypeName"].ToString();
+                        var storeType = row["DataTypeName"].ToString();
 
-                    if (row["ProviderSpecificDataType"]?.ToString().StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
-                    {
+                        if (row["ProviderSpecificDataType"]?.ToString()?.StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
+                        {
 #pragma warning disable CA1308 // Normalize strings to uppercase
-                        storeType = row["ProviderSpecificDataType"].ToString().Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
+                            storeType = row["ProviderSpecificDataType"].ToString()?.Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
 #pragma warning restore CA1308 // Normalize strings to uppercase
-                    }
+                        }
 
-                    list.Add(new ModuleResultElement
-                    {
-                        Name = name,
-                        Nullable = (bool?)row["AllowDBNull"] ?? true,
-                        Ordinal = (int)row["ColumnOrdinal"],
-                        StoreType = storeType,
-                    });
+                        list.Add(new ModuleResultElement
+                        {
+                            Name = name,
+                            Nullable = (bool?)row["AllowDBNull"] ?? true,
+                            Ordinal = (int)row["ColumnOrdinal"],
+                            StoreType = storeType,
+                        });
+                    }
                 }
 
                 result.Add(list);
@@ -178,21 +181,24 @@ namespace RevEng.Core.Procedures
 
             foreach (DataRow row in dtResult.Rows)
             {
-                var name = row["name"].ToString();
-                if (string.IsNullOrEmpty(name))
+                if (row != null)
                 {
-                    continue;
+                    var name = row["name"].ToString();
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        continue;
+                    }
+
+                    var parameter = new ModuleResultElement()
+                    {
+                        Name = name,
+                        StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
+                        Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
+                        Nullable = (bool)row["is_nullable"],
+                    };
+
+                    list.Add(parameter);
                 }
-
-                var parameter = new ModuleResultElement()
-                {
-                    Name = name,
-                    StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
-                    Ordinal = int.Parse(row["column_ordinal"].ToString(), CultureInfo.InvariantCulture),
-                    Nullable = (bool)row["is_nullable"],
-                };
-
-                list.Add(parameter);
 
                 rCounter++;
             }

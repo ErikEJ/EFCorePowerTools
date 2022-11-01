@@ -4,7 +4,8 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>
 		<RootNamespace>RevEng.Core</RootNamespace>
-	</PropertyGroup>
+        <Nullable>warnings</Nullable>
+  </PropertyGroup>
 
 	<PropertyGroup>
 		<DefineConstants>TRACE;CORE60</DefineConstants>

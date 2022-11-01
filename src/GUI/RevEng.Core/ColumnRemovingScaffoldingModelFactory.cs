@@ -67,7 +67,7 @@ namespace RevEng.Core
             var tableDefinition = tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
             {
-                foreach (var column in tableDefinition?.ExcludedColumns)
+                foreach (var column in tableDefinition?.ExcludedColumns!)
                 {
                     var columnToRemove = table.Columns.FirstOrDefault(c => c.Name.Equals(column, StringComparison.OrdinalIgnoreCase));
                     if (columnToRemove != null)

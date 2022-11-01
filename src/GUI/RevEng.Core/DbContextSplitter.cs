@@ -15,9 +15,14 @@ namespace RevEng.Core
         // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
         public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable)
         {
+            if (dbContextPath == null)
+            {
+                throw new ArgumentNullException(nameof(dbContextPath));
+            }
+
             var dbContextFilePath = Path.GetFullPath(dbContextPath);
 
-            var configurationsDirectoryPath = Path.Combine(Path.GetDirectoryName(dbContextFilePath), "Configurations");
+            var configurationsDirectoryPath = Path.Combine(Path.GetDirectoryName(dbContextFilePath) ?? string.Empty, "Configurations");
 
             Directory.CreateDirectory(configurationsDirectoryPath);
 

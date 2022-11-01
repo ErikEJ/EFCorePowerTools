@@ -78,7 +78,7 @@ namespace RevEng.Core
                 Modules = new List<string>(),
             };
 
-            var procedureModel = procedureModelFactory.Create(connectionString, procedureModelOptions);
+            var procedureModel = procedureModelFactory!.Create(connectionString, procedureModelOptions);
 
             foreach (var procedure in procedureModel.Routines)
             {
@@ -105,7 +105,7 @@ namespace RevEng.Core
                 Modules = new List<string>(),
             };
 
-            var functionModel = functionModelFactory.Create(connectionString, functionModelOptions);
+            var functionModel = functionModelFactory!.Create(connectionString, functionModelOptions);
 
             foreach (var function in functionModel.Routines)
             {
@@ -120,7 +120,7 @@ namespace RevEng.Core
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
-            var dbModel = dbModelFactory.Create(connectionString, dbModelOptions);
+            var dbModel = dbModelFactory!.Create(connectionString, dbModelOptions);
 
             return dbModel.Tables.OrderBy(t => t.Schema).ThenBy(t => t.Name).ToList();
         }

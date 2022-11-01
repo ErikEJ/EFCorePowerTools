@@ -55,15 +55,18 @@ WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
 
             foreach (DataRow res in dtResult.Rows)
             {
-                var parameter = new ModuleResultElement()
+                if (res != null)
                 {
-                    Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
-                    StoreType = res["type_name"].ToString(),
-                    Ordinal = int.Parse(res["column_ordinal"].ToString(), CultureInfo.InvariantCulture),
-                    Nullable = (bool)res["is_nullable"],
-                };
+                    var parameter = new ModuleResultElement()
+                    {
+                        Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
+                        StoreType = res["type_name"].ToString(),
+                        Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
+                        Nullable = (bool)res["is_nullable"],
+                    };
 
-                list.Add(parameter);
+                    list.Add(parameter);
+                }
 
                 rCounter++;
             }

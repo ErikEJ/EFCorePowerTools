@@ -250,9 +250,16 @@ namespace RevEng.Core
             foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
             {
                 var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
-                Directory.CreateDirectory(Path.GetDirectoryName(additionalFilePath));
-                File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
-                additionalFiles.Add(additionalFilePath);
+                if (additionalFilePath != null)
+                {
+                    var path = Path.GetDirectoryName(additionalFilePath);
+                    if (path != null)
+                    {
+                        Directory.CreateDirectory(path);
+                        File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
+                        additionalFiles.Add(additionalFilePath);
+                    }
+                }
             }
 
             return new SavedModelFiles(contextPath, additionalFiles);
@@ -383,7 +390,7 @@ namespace RevEng.Core
             var codeModel = codeGenerator.GenerateModel(model, codeOptions);
             if (entitiesOnly)
             {
-                codeModel.ContextFile = null;
+                codeModel.ContextFile = null!;
             }
 
             if (dbContextOnly)

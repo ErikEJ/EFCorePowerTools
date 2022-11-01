@@ -40,7 +40,7 @@ namespace RevEng.Core.Procedures
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = GetDbContextExtensionsText(useAsyncCalls);
             var dbContextExtensionsName = useAsyncCalls ? "DbContextExtensions.cs" : "DbContextExtensions.Sync.cs";
-            var dbContextExtensionsPath = Path.Combine(contextDir, dbContextExtensionsName);
+            var dbContextExtensionsPath = Path.Combine(contextDir ?? string.Empty, dbContextExtensionsName);
             File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
@@ -210,6 +210,11 @@ namespace RevEng.Core.Procedures
             var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
             var assembly = typeof(SqlServerStoredProcedureScaffolder).GetTypeInfo().Assembly;
             using Stream stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
+            if (stream == null)
+            {
+                return string.Empty;
+            }
+
             using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
             return reader.ReadToEnd();
         }

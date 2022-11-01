@@ -90,7 +90,7 @@ namespace RevEng.Core
 
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
 
-            SavedModelFiles filePaths = scaffolder.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace);
+            SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace);
 
             if (options.SelectedToBeGenerated != 2)
             {
@@ -342,7 +342,7 @@ namespace RevEng.Core
 
             if (!string.IsNullOrEmpty(filePaths.ContextFile))
             {
-                var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile), "*.cs");
+                var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile) ?? string.Empty, "*.cs");
 
                 allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).Concat(entityTypeConfigurationPaths).ToHashSet();
 
