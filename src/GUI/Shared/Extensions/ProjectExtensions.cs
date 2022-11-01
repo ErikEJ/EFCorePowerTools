@@ -32,7 +32,8 @@ namespace EFCorePowerTools.Extensions
 
                 ErrorHandler.ThrowOnFailure(buildManager.get_StartupProject(out startupProject));
 
-                project = (Project)await SolutionItem.FromHierarchyAsync(startupProject, (uint)VSConstants.VSITEMID.Root);
+                project = (Project)await SolutionItem.FromHierarchyAsync(startupProject,
+                    (uint)VSConstants.VSITEMID.Root);
 
                 return await project.GetOutPutAssemblyPathAsync();
             }
@@ -96,7 +97,7 @@ namespace EFCorePowerTools.Extensions
             return result.OrderBy(s => s).ToList();
         }
 
-        public static string GetRenamingPath(this Project project, string optionsPath)
+        public static string GetRenamingPath(this Project project, string optionsPath, bool navigationsFile = false)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -116,10 +117,13 @@ namespace EFCorePowerTools.Extensions
                 renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            return Path.Combine(renamingPath, "efpt.renaming.json");
+            const string efptRenamingJson = "efpt.renaming.json";
+            const string efptRenamingNavJson = "efpt.renaming-nav.json";
+            return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
         }
 
-        public static async Task<Tuple<bool, string>> ContainsEfCoreReferenceAsync(this Project project, DatabaseType dbType)
+        public static async Task<Tuple<bool, string>> ContainsEfCoreReferenceAsync(this Project project,
+            DatabaseType dbType)
         {
             var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
             if (dbType == DatabaseType.SQLite)
@@ -221,10 +225,12 @@ namespace EFCorePowerTools.Extensions
 
         public static async Task<bool> IsNetStandard21Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.1") ?? false;
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.1") ??
+                   false;
         }
 
-        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
+        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result,
+            string extension)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -298,22 +304,26 @@ namespace EFCorePowerTools.Extensions
 
         private static async Task<bool> IsNetStandard20Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.0") ?? false;
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.0") ??
+                   false;
         }
 
         private static async Task<bool> IsNetCore31Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v3.1") ?? false;
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v3.1") ??
+                   false;
         }
 
         private static async Task<bool> IsNet60Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ?? false;
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ??
+                   false;
         }
 
         private static async Task<bool> IsNet70Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v7.0") ??
+                   false;
         }
 
         private static async Task<string> GetOutputPathAsync(Project project)
