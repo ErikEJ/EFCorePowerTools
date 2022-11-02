@@ -16,7 +16,7 @@ namespace EFCorePowerTools.Helpers
         /// <param name="contextFolder">optional subfolder for context location.</param>
         /// <param name="modelsFolder">optional subfolder for model location.</param>
         /// <returns>number of properties renamed. </returns>
-        public static async Task<int> ApplyRenamingRulesAsync(string path, string contextFolder = "Data", string modelsFolder = "Models")
+        public static async Task<int> ApplyRenamingRulesAsync(string path, string contextFolder, string modelsFolder)
         {
             var fileInfo = new FileInfo(path);
             var dir = fileInfo.Directory?.FullName;
@@ -87,8 +87,7 @@ namespace EFCorePowerTools.Helpers
                 }
             }
 
-            var rulesText = File.ReadAllText(path);
-            var rulesList = RenamingRulesSerializer.TryRead(rulesText);
+            var rulesList = RenamingRulesSerializer.TryRead(path);
             var renameCount = 0;
             foreach (var rule in rulesList)
             {
