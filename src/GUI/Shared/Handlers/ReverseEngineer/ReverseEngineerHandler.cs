@@ -140,6 +140,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 var renamingPath = project.GetRenamingPath(optionsPath);
+                var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
                 Tuple<bool, string> containsEfCoreReference = null;
@@ -234,6 +235,24 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await GenerateFilesAsync(project, options, containsEfCoreReference);
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, containsEfCoreReference, options, forceEdit);
+
+                if (File.Exists(referenceRenamingPath))
+                {
+                    try
+                    {
+                        // navigation property renaming must be done after the project nuget packages are installed
+                        // because Roslyn will resolve the project references in order to identify property symbols
+                        await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
+                            referenceRenamingPath,
+                            project.FullPath,
+                            options.OutputContextPath,
+                            options.OutputPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        package.LogError(new List<string>(), ex);
+                    }
+                }
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
