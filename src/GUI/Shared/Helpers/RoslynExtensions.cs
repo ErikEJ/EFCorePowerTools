@@ -94,7 +94,6 @@ namespace EFCorePowerTools.Helpers
         {
             try
             {
-                MSBuildLocator.RegisterDefaults();
                 var workspace = MSBuildWorkspace.Create();
                 var project = await workspace.OpenProjectAsync(csProjPath);
                 return project;

@@ -12,21 +12,17 @@ namespace EFCorePowerTools.Helpers
     internal static class RoslynEntityPropertyRenamer
     {
         /// <summary> apply renaming using Roslyn, return rename count.</summary>
-        /// <param name="path">path to renaming rules file. can process primitive or navigation rules.</param>
+        /// <param name="optionsPath">path to renaming rules file. can process primitive or navigation rules.</param>
+        /// <param name="projectPath">full path to current .csproj.</param>
         /// <param name="contextFolder">optional subfolder for context location.</param>
         /// <param name="modelsFolder">optional subfolder for model location.</param>
         /// <returns>number of properties renamed. </returns>
-        public static async Task<int> ApplyRenamingRulesAsync(string path, string contextFolder, string modelsFolder)
+        public static async Task<int> ApplyRenamingRulesAsync(string optionsPath, string projectPath, string contextFolder, string modelsFolder)
         {
-            var fileInfo = new FileInfo(path);
-            var dir = fileInfo.Directory?.FullName;
-            var csProjPath = Directory.GetFiles(dir, "*.csproj", SearchOption.TopDirectoryOnly).FirstOrDefault();
+            // TODO return string list of status messages instead of int
+            var project = await RoslynExtensions.LoadExistingProjectAsync(projectPath);
 
-            Project project = null;
-            if (csProjPath != null)
-            {
-                project = await RoslynExtensions.LoadExistingProjectAsync(csProjPath);
-            }
+            var dir = Path.GetDirectoryName(optionsPath);
 
             if (project == null)
             {
@@ -87,7 +83,7 @@ namespace EFCorePowerTools.Helpers
                 }
             }
 
-            var rulesList = RenamingRulesSerializer.TryRead(path);
+            var rulesList = RenamingRulesSerializer.TryRead(optionsPath);
             var renameCount = 0;
             foreach (var rule in rulesList)
             {

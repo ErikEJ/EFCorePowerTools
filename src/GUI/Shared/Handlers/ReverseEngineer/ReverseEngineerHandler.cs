@@ -244,6 +244,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         // because Roslyn will resolve the project references in order to identify property symbols
                         await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
                             referenceRenamingPath,
+                            project.FullPath,
                             options.OutputContextPath,
                             options.OutputPath);
                     }
