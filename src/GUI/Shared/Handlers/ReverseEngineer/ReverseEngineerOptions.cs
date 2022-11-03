@@ -36,6 +36,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string Dacpac { get; set; }
         [IgnoreDataMember]
         public List<Schema> CustomReplacers { get; set; }
+        [IgnoreDataMember]
         public Model CustomPropertyReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }

@@ -246,6 +246,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     {
                         var model = RenamingRulesSerializer.TryRead(referenceRenamingPath);
 
+                        if (!model?.Classes?.Any() ?? true)
+                        {
+                            return;
+                        }
+
                         // navigation property renaming must be done after the project nuget packages are installed
                         // because Roslyn will resolve the project references in order to identify property symbols
                         var statusMessages = await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
