@@ -4,5 +4,5 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".txt" #>
-Hello .NET Conf!
+Hello .NET Conf rehearsal!
 <#= DateTime.UtcNow #>

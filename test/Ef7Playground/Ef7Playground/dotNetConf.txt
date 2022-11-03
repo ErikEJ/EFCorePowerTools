@@ -1,2 +1,2 @@
-﻿Hello .NET Conf!
-10/31/2022 07:02:39
+﻿Hello .NET Conf rehearsal!
+11/03/2022 14:00:06
