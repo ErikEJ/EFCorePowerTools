@@ -1,7 +1,30 @@
 {
-  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=NorthWind;Integrated Security=True",
+  "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True",
   "ContextClassName": "NorthwindContext",
   "ContextNamespace": null,
+  "CustomPropertyReplacers": {
+    "Classes": [
+      {
+        "Name": "Customer",
+        "Properties": [
+          {
+            "AlternateName": "OrdersNavigation",
+            "Name": "Orders",
+            "NewName": "OrderLink"
+          },
+          {
+            "AlternateName": null,
+            "Name": "Country",
+            "NewName": "CountryRef"
+          }
+        ]
+      },
+      {
+        "Name": "Country",
+        "Properties": []
+      }
+    ]
+  },
   "CustomReplacers": [
     {
       "SchemaName": "dbo",
@@ -15,22 +38,6 @@
           ],
           "Name": "Categories",
           "NewName": "Categories"
-        },
-        {
-          "Columns": [],
-          "Name": "CustOrdersDetail",
-          "NewName": "CustomerOrdersDetail"
-        },
-        {
-          "Columns": [],
-          "Navigations": [
-            {
-              "Name": "ShipVia",
-              "NewName": "ShipBy"
-            }
-          ],
-          "Name": "Orders",
-          "NewName": "Orders"
         }
       ],
       "UseSchemaName": false
@@ -52,30 +59,36 @@
   "DatabaseType": 3,
   "DefaultDacpacSchema": null,
   "FilterSchemas": false,
+  "FullProjectPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\ScaffoldingTester\\ScaffoldingTester5\\ScaffoldingTester5.csproj",
   "IncludeConnectionString": true,
+  "LegacyLangVersion": false,
+  "MergeDacpacs": false,
   "ModelNamespace": null,
+  "OptionsPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\ScaffoldingTester\\ScaffoldingTester5",
   "OutputContextPath": null,
   "OutputPath": "Models",
-  "ProjectPath": "C:\\Temp\\Test\\",
+  "PreserveCasingWithRegex": true,
+  "ProjectPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\ScaffoldingTester\\ScaffoldingTester5",
   "ProjectRootNamespace": "ScaffoldingTester",
+  "RunCleanup": true,
   "Schemas": null,
   "SelectedHandlebarsLanguage": 0,
   "SelectedToBeGenerated": 0,
   "Tables": [
     {
-      "Name": "[dbo].[BoolNullableTest]",
-      "ObjectType": 0
-    },
-    {
       "Name": "[dbo].[Categories]",
       "ObjectType": 0
     },
     {
-      "Name": "[dbo].[Customers]",
+      "Name": "[dbo].[CustomerCustomerDemo]",
       "ObjectType": 0
     },
     {
-      "Name": "[dbo].[Department]",
+      "Name": "[dbo].[CustomerDemographics]",
+      "ObjectType": 0
+    },
+    {
+      "Name": "[dbo].[Customers]",
       "ObjectType": 0
     },
     {
@@ -91,9 +104,6 @@
       "ObjectType": 0
     },
     {
-      "ExcludedColumns": [
-        "ShippedDate"
-      ],
       "Name": "[dbo].[Orders]",
       "ObjectType": 0
     },
@@ -106,11 +116,11 @@
       "ObjectType": 0
     },
     {
-      "Name": "[dbo].[RegionShippers]",
+      "Name": "[dbo].[Shippers]",
       "ObjectType": 0
     },
     {
-      "Name": "[dbo].[Shippers]",
+      "Name": "[dbo].[Specials]",
       "ObjectType": 0
     },
     {
@@ -186,10 +196,6 @@
       "ObjectType": 3
     },
     {
-      "Name": "[dbo].[CategoryUpdate]",
-      "ObjectType": 1
-    },
-    {
       "Name": "[dbo].[CustOrderHist]",
       "ObjectType": 1
     },
@@ -206,11 +212,12 @@
       "ObjectType": 1
     },
     {
-      "Name": "[dbo].[OutputFail]",
-      "ObjectType": 1
+      "Name": "[dbo].[MultiSet]",
+      "ObjectType": 1,
+      "UseLegacyResultSetDiscovery": true
     },
     {
-      "Name": "[dbo].[ReturnValue]",
+      "Name": "[dbo].[OutputScenarios]",
       "ObjectType": 1
     },
     {
@@ -222,41 +229,12 @@
       "ObjectType": 1
     },
     {
-      "Name": "[dbo].[Spaces]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[TempObjects]",
+      "Name": "[dbo].[SpecialTypes]",
       "ObjectType": 1
     },
     {
       "Name": "[dbo].[Ten Most Expensive Products]",
-      "ObjectType": 1,
-      "MappedType": "Product"
-    },
-    {
-      "Name": "[dbo].[Test]",
       "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[TestMethodOutputNoParams]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[TestMethodOutputNoResult]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dupe].[CustOrderHist]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[GetCustInfoNoParams]",
-      "ObjectType": 2
-    },
-    {
-      "Name": "[dbo].[GetCustInfo]",
-      "ObjectType": 2
     },
     {
       "Name": "[dbo].[FuncWithTvpParameter]",
@@ -271,18 +249,25 @@
       "ObjectType": 2
     }
   ],
-  "UseNoObjectFilter": false,
+  "UseAsyncCalls": true,
   "UseBoolPropertiesWithoutDefaultSql": true,
   "UseDatabaseNames": false,
-  "UseDbContextSplitting": true,
+  "UseDbContextSplitting": false,
   "UseFluentApiOnly": true,
   "UseHandleBars": false,
+  "UseHierarchyId": false,
   "UseInflector": true,
   "UseLegacyPluralizer": false,
+  "UseLegacyResultSetDiscovery": false,
+  "UseManyToManyEntity": false,
+  "UseMultipleSprocResultSets": false,
   "UseNoConstructor": false,
-  "UseNoDefaultConstructor": true,
+  "UseNoDefaultConstructor": false,
   "UseNoNavigations": false,
-  "UseNodaTime": true,
+  "UseNoObjectFilter": false,
+  "UseNodaTime": false,
   "UseNullableReferences": false,
-  "UseSpatial": false
+  "UseSchemaFolders": false,
+  "UseSpatial": false,
+  "UseT4": false
 }

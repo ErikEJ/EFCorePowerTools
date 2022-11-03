@@ -7,12 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RevEng.Core
 {
     public static class ReverseEngineerRunner
     {
-        public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
+        public static async Task<ReverseEngineerResult> GenerateFilesAsync(ReverseEngineerCommandOptions options)
         {
             if (options == null)
             {
@@ -153,6 +154,18 @@ namespace RevEng.Core
                 {
                     PostProcess(file, options.UseNullableReferences, !options.LegacyLangVersion);
                 }
+            }
+
+            if (options.CustomPropertyReplacers != null
+                && options.CustomPropertyReplacers.Classes != null
+                && options.CustomPropertyReplacers.Classes.Any())
+            {
+                // TODO Pass result on (and maybe form other processes also?)
+                await RoslynRenamer.RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
+                    options.CustomPropertyReplacers,
+                    options.FullProjectPath,
+                    options.OutputContextPath,
+                    options.OutputPath);
             }
 
             if (options.RunCleanup)

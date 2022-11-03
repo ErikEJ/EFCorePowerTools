@@ -13,13 +13,18 @@ namespace RoslynRenamer
 {
     public static class RoslynEntityPropertyRenamer
     {
-        public static async Task<List<string>> ApplyRenamingRulesAsync(Model model, string fullProjectPath, string contextFolder = "", string modelsFolder = "")
+        public static Task<List<string>> ApplyRenamingRulesAsync(Model model, string fullProjectPath, string contextFolder = "", string modelsFolder = "")
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
+            return ApplyRenamingRulesInternalAsync(model, fullProjectPath, contextFolder, modelsFolder);
+        }
+
+        private static async Task<List<string>> ApplyRenamingRulesInternalAsync(Model model, string fullProjectPath, string contextFolder = "", string modelsFolder = "")
+        {
             var status = new List<string>();
 
             var project = await RoslynExtensions.LoadExistingProjectAsync(fullProjectPath);

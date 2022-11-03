@@ -5,5 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "CA1002:Do not expose generic lists", Justification = "Reviewed.")]
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "reviewed")]

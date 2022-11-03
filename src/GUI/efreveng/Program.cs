@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.Build.Utilities;
 using RevEng.Common;
 using RevEng.Core;
 
 [assembly: CLSCompliant(true)]
-
+[assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Reviewed")]
 namespace EfReveng
 {
     public static class Program
     {
-        public static int Main(string[] args)
+        public static async System.Threading.Tasks.Task<int> Main(string[] args)
         {
             try
             {
@@ -43,16 +45,16 @@ namespace EfReveng
 
                         buildResult.AddRange(builder.GetFunctions());
 
-                        Console.Out.WriteLine("Result:");
-                        Console.Out.WriteLine(buildResult.Write());
+                        await Console.Out.WriteLineAsync("Result:");
+                        await Console.Out.WriteLineAsync(buildResult.Write());
 
                         return 0;
                     }
 
                     if (!File.Exists(args[0]))
                     {
-                        Console.Out.WriteLine("Error:");
-                        Console.Out.WriteLine($"Could not open options file: {args[0]}");
+                        await Console.Out.WriteLineAsync("Error:");
+                        await Console.Out.WriteLineAsync($"Could not open options file: {args[0]}");
                         return 1;
                     }
 
@@ -60,20 +62,20 @@ namespace EfReveng
 
                     if (options == null)
                     {
-                        Console.Out.WriteLine("Error:");
-                        Console.Out.WriteLine("Could not read options");
+                        await Console.Out.WriteLineAsync("Error:");
+                        await Console.Out.WriteLineAsync("Could not read options");
                         return 1;
                     }
 
-                    var result = ReverseEngineerRunner.GenerateFiles(options);
+                    var result = await ReverseEngineerRunner.GenerateFilesAsync(options);
 
-                    Console.Out.WriteLine("Result:");
-                    Console.Out.WriteLine(result.Write());
+                    await Console.Out.WriteLineAsync("Result:");
+                    await Console.Out.WriteLineAsync(result.Write());
                 }
                 else
                 {
-                    Console.Out.WriteLine("Error:");
-                    Console.Out.WriteLine("Invalid command line");
+                    await Console.Out.WriteLineAsync("Error:");
+                    await Console.Out.WriteLineAsync("Invalid command line");
                     return 1;
                 }
 
@@ -82,8 +84,8 @@ namespace EfReveng
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
-                Console.Out.WriteLine("Error:");
-                Console.Out.WriteLine(ex.Demystify());
+                await Console.Out.WriteLineAsync("Error:");
+                await Console.Out.WriteLineAsync(ex.Demystify().ToString());
                 return 1;
             }
 #pragma warning restore CA1031 // Do not catch general exception types

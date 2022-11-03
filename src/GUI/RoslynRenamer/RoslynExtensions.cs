@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.MSBuild;
@@ -94,7 +95,8 @@ namespace RoslynRenamer
         {
             try
             {
-                var workspace = MSBuildWorkspace.Create();
+                MSBuildLocator.RegisterDefaults();
+                using var workspace = MSBuildWorkspace.Create();
                 var project = await workspace.OpenProjectAsync(csProjPath);
                 return project;
             }
