@@ -9,12 +9,12 @@ namespace ScaffoldingTester.Models
     {
         public CustomerDemographic()
         {
-            CustomerCustomerDemos = new HashSet<CustomerCustomerDemo>();
+            Customers = new HashSet<Customer>();
         }
 
         public string CustomerTypeId { get; set; }
         public string CustomerDesc { get; set; }
 
-        public virtual ICollection<CustomerCustomerDemo> CustomerCustomerDemos { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 }
