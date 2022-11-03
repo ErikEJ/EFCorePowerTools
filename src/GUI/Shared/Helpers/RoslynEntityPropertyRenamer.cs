@@ -16,10 +16,11 @@ namespace EFCorePowerTools.Helpers
         /// <param name="projectPath">full path to current .csproj.</param>
         /// <param name="contextFolder">optional subfolder for context location.</param>
         /// <param name="modelsFolder">optional subfolder for model location.</param>
-        /// <returns>number of properties renamed. </returns>
-        public static async Task<int> ApplyRenamingRulesAsync(string optionsPath, string projectPath, string contextFolder, string modelsFolder)
+        /// <returns>list of process messages.</returns>
+        public static async Task<List<string>> ApplyRenamingRulesAsync(string optionsPath, string projectPath, string contextFolder, string modelsFolder)
         {
-            // TODO return string list of status messages instead of int
+            var status = new List<string>();
+
             var project = await RoslynExtensions.LoadExistingProjectAsync(projectPath);
 
             var dir = Path.GetDirectoryName(optionsPath);
@@ -51,15 +52,18 @@ namespace EFCorePowerTools.Helpers
 
                 if (cSharpFolders.Count == 0)
                 {
-                    return 0;
+                    status.Add("Property renamer => No folders found");
+                    return status;
                 }
 
                 var cSharpFiles = cSharpFolders
                     .SelectMany(o => Directory.GetFiles(o, "*.cs", SearchOption.AllDirectories))
                     .Distinct().ToList();
+
                 if (cSharpFiles.Count == 0)
                 {
-                    return 0;
+                    status.Add("Property renamer => No .cs files found");
+                    return status;
                 }
 
                 var refAssemblies = new[]
@@ -76,10 +80,10 @@ namespace EFCorePowerTools.Helpers
                     var workspace = cSharpFiles.GetWorkspaceForFilePaths(refs);
                     project = workspace.CurrentSolution.Projects.First();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // TODO respond to this from caller
-                    return -1; // log this?
+                    status.Add($"Property renamer => Unable to get inmemory project from workspace: {ex.Message}");
+                    return status;
                 }
             }
 
@@ -116,12 +120,11 @@ namespace EFCorePowerTools.Helpers
                             // documents have been mutated. update reference to workspace:
                             project = docWithRename.Project;
                             renameCount++;
-                            Console.WriteLine(
-                                $"Renamed class {classRename.Name} nav prop {fromNames[0]} -> {refRename.NewName}");
+                            status.Add($"Property renamer => Renamed class {classRename.Name} property {fromNames[0]} -> {refRename.NewName}");
                         }
                         else
                         {
-                            Console.WriteLine($"Could not find table {classRename.Name} nav prop {string.Join(", ", fromNames)}");
+                            status.Add($"Property renamer => Could not find table {classRename.Name} property {string.Join(", ", fromNames)}");
                         }
                     }
                 }
@@ -129,12 +132,14 @@ namespace EFCorePowerTools.Helpers
 
             if (renameCount == 0)
             {
-                return 0;
+                status.Add("Property renamer => No properties renamed");
+                return status;
             }
 
             var saved = await project.Documents.SaveDocumentsAsync();
             Debug.Assert(saved > 0, "No documents saved");
-            return renameCount;
+            status.Add($"Property renamer => {renameCount} files renamed");
+            return status;
         }
     }
 }

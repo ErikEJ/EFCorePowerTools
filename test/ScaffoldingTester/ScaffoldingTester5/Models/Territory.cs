@@ -9,7 +9,7 @@ namespace ScaffoldingTester.Models
     {
         public Territory()
         {
-            EmployeeTerritories = new HashSet<EmployeeTerritory>();
+            Employees = new HashSet<Employee>();
         }
 
         public string TerritoryId { get; set; }
@@ -17,6 +17,7 @@ namespace ScaffoldingTester.Models
         public int RegionId { get; set; }
 
         public virtual Region Region { get; set; }
-        public virtual ICollection<EmployeeTerritory> EmployeeTerritories { get; set; }
+
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }
