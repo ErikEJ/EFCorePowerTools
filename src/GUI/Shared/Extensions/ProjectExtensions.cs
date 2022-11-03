@@ -117,7 +117,7 @@ namespace EFCorePowerTools.Extensions
             }
 
             const string efptRenamingJson = "efpt.renaming.json";
-            const string efptRenamingNavJson = "efpt.refrenaming.json";
+            const string efptRenamingNavJson = "efpt.property-renaming.json";
             return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
         }
 

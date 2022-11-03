@@ -7,22 +7,22 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Helpers
 {
-    internal static class RenamingRulesSerializer
+    public static class RenamingRulesSerializer
     {
-        public static IEnumerable<Schema> TryRead(string optionsPath)
+        public static IEnumerable<Model> TryRead(string optionsPath)
         {
             if (!File.Exists(optionsPath))
             {
-                return Enumerable.Empty<Schema>();
+                return Enumerable.Empty<Model>();
             }
 
-            var couldRead = TryRead(optionsPath, out List<Schema> deserialized);
+            var couldRead = TryRead(optionsPath, out List<Model> deserialized);
             if (couldRead)
             {
                 return deserialized;
             }
 
-            return Enumerable.Empty<Schema>();
+            return Enumerable.Empty<Model>();
         }
 
         private static bool TryRead<T>(string optionsPath, out T deserialized)

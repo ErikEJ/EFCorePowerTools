@@ -87,12 +87,11 @@ namespace EFCorePowerTools.Helpers
             var renameCount = 0;
             foreach (var rule in rulesList)
             {
-                foreach (var tableRename in rule.Tables)
+                foreach (var classRename in rule.Classes)
                 {
-                    var table = tableRename.NewName ?? tableRename.Name;
-                    foreach (var columnRename in tableRename.Columns)
+                    foreach (var refRename in classRename.Properties)
                     {
-                        var fromNames = new[] { columnRename.Name, columnRename.AlternateName }
+                        var fromNames = new[] { refRename.Name, refRename.AlternateName }
                             .Where(o => !string.IsNullOrEmpty(o)).Distinct().ToArray();
                         if (fromNames.Length == 0)
                         {
@@ -103,9 +102,9 @@ namespace EFCorePowerTools.Helpers
                         foreach (var fromName in fromNames)
                         {
                             docWithRename = await project.Documents.RenamePropertyAsync(
-                                table,
+                                classRename.Name,
                                 fromName,
-                                columnRename.NewName);
+                                refRename.NewName);
                             if (docWithRename != null)
                             {
                                 break;
@@ -118,11 +117,11 @@ namespace EFCorePowerTools.Helpers
                             project = docWithRename.Project;
                             renameCount++;
                             Console.WriteLine(
-                                $"Renamed table {table} nav prop {fromNames[0]} -> {columnRename.NewName}");
+                                $"Renamed class {classRename.Name} nav prop {fromNames[0]} -> {refRename.NewName}");
                         }
                         else
                         {
-                            Console.WriteLine($"Could not find table {table} nav prop {string.Join(", ", fromNames)}");
+                            Console.WriteLine($"Could not find table {classRename.Name} nav prop {string.Join(", ", fromNames)}");
                         }
                     }
                 }
@@ -134,7 +133,7 @@ namespace EFCorePowerTools.Helpers
             }
 
             var saved = await project.Documents.SaveDocumentsAsync();
-            Debug.Assert(saved > 0, "Not documents saved");
+            Debug.Assert(saved > 0, "No documents saved");
             return renameCount;
         }
     }
