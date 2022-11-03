@@ -1,24 +1,22 @@
-[
-  {
-    "Classes": [
-      {
-        "Name": "Customer",
-        "Properties": [
-          {
-            "Name": "Orders",
-            "NewName": "OrderLink",
-            "AlternateName": "OrdersNavigation"
-          },
-          {
-            "Name": "Country",
-            "NewName": "CountryRef"
-          }
-        ]
-      },
-      {
-        "Name": "Country",
-        "Properties": []
-      }
-    ]
-  }
-]
+{
+  "Classes": [
+    {
+      "Name": "Customer",
+      "Properties": [
+        {
+          "Name": "Orders",
+          "NewName": "OrderLink",
+          "AlternateName": "OrdersNavigation"
+        },
+        {
+          "Name": "Country",
+          "NewName": "CountryRef"
+        }
+      ]
+    },
+    {
+      "Name": "Country",
+      "Properties": []
+    }
+  ]
+}

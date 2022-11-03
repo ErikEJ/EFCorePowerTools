@@ -3,9 +3,9 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Helpers
+namespace RoslynRenamer
 {
-    public static class RenamingRulesSerializer
+    internal static class RenamingRulesSerializer
     {
         public static Model TryRead(string configFilePath)
         {

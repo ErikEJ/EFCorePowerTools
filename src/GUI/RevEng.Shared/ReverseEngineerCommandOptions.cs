@@ -11,6 +11,8 @@ namespace RevEng.Common
 
         public string ProjectPath { get; set; }
 
+        public string FullProjectPath { get; set; }
+
         public string OutputPath { get; set; }
 
         public string OptionsPath { get; set; }
@@ -33,6 +35,7 @@ namespace RevEng.Common
         public int SelectedToBeGenerated { get; set; }
         public string Dacpac { get; set; }
         public List<Schema> CustomReplacers { get; set; }
+        public Model CustomPropertyRenamers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
         public bool UseSpatial { get; set; }

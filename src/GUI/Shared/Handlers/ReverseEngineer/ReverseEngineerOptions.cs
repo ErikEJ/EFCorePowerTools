@@ -12,6 +12,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string ConnectionString { get; set; }
         [IgnoreDataMember]
         public string ProjectPath { get; set; }
+        [IgnoreDataMember]
+        public string FullProjectPath { get; set; }
         public string OutputPath { get; set; }
         [IgnoreDataMember]
         public string OptionsPath { get; set; }

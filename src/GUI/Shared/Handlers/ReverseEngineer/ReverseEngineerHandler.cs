@@ -162,6 +162,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
+                options.FullProjectPath = project.FullPath;
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
 
                 bool forceEdit = false;
@@ -240,10 +241,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     try
                     {
+                        var model = RenamingRulesSerializer.TryRead(referenceRenamingPath);
+
                         // navigation property renaming must be done after the project nuget packages are installed
                         // because Roslyn will resolve the project references in order to identify property symbols
                         var statusMessages = await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
-                            referenceRenamingPath,
+                            model,
                             project.FullPath,
                             options.OutputContextPath,
                             options.OutputPath);

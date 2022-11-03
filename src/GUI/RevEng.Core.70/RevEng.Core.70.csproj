@@ -48,6 +48,7 @@
 		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj" />
 		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
 		<ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
+		<ProjectReference Include="..\RoslynRenamer\RoslynRenamer.csproj" />
 	</ItemGroup>
 
 </Project>

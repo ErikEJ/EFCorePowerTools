@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Helpers
+[assembly: CLSCompliant(false)]
+namespace RoslynRenamer
 {
-    internal static class RoslynEntityPropertyRenamer
+    public static class RoslynEntityPropertyRenamer
     {
-        /// <summary> apply renaming using Roslyn, return rename count.</summary>
-        /// <param name="optionsPath">path to renaming rules file. can process primitive or navigation rules.</param>
-        /// <param name="projectPath">full path to current .csproj.</param>
-        /// <param name="contextFolder">optional subfolder for context location.</param>
-        /// <param name="modelsFolder">optional subfolder for model location.</param>
-        /// <returns>list of process messages.</returns>
-        public static async Task<List<string>> ApplyRenamingRulesAsync(Model model, string projectPath, string contextFolder = "", string modelsFolder = "")
+        public static async Task<List<string>> ApplyRenamingRulesAsync(Model model, string fullProjectPath, string contextFolder = "", string modelsFolder = "")
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             var status = new List<string>();
 
-            var project = await RoslynExtensions.LoadExistingProjectAsync(projectPath);
+            var project = await RoslynExtensions.LoadExistingProjectAsync(fullProjectPath);
 
-            var dir = Path.GetDirectoryName(projectPath);
+            var dir = Path.GetDirectoryName(fullProjectPath);
 
             if (project == null)
             {
@@ -78,7 +78,7 @@ namespace EFCorePowerTools.Helpers
 
                 try
                 {
-                    var workspace = cSharpFiles.GetWorkspaceForFilePaths(refs);
+                    using var workspace = cSharpFiles.GetWorkspaceForFilePaths(refs);
                     project = workspace.CurrentSolution.Projects.First();
                 }
                 catch (Exception ex)
