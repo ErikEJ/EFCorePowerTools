@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using AdysTech.CredentialManager;
@@ -46,6 +47,15 @@ namespace EFCorePowerTools.Helpers
 
         public bool SaveCredential(DatabaseConnectionModel connectionModel)
         {
+            var existingConnections = GetStoredDatabaseConnections();
+
+            var duplicate = existingConnections.FirstOrDefault(c => Root + c.ConnectionName == Root + connectionModel.ConnectionName);
+
+            if (duplicate != null)
+            {
+                throw new InvalidOperationException($"Name already used: '{duplicate.ConnectionName}' - please pick another one");
+            }
+
             var cred = new NetworkCredential(connectionModel.ConnectionName, connectionModel.ConnectionString).ToICredential();
             cred.TargetName = Root + connectionModel.ConnectionName;
             cred.Attributes = new Dictionary<string, object>

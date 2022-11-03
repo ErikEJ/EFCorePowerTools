@@ -5,7 +5,6 @@ using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Helpers;
-using RevEng.Common;
 
 namespace EFCorePowerTools.Dialogs
 {
