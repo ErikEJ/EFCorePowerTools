@@ -31,7 +31,7 @@ namespace RoslynRenamer
 
             var dir = Path.GetDirectoryName(fullProjectPath);
 
-            if (project == null || project.Documents.Any())
+            if (project == null || !project.Documents.Any())
             {
                 /* If existing project file fails to load, we can fallback to creating an adhoc workspace with an in memory project
                  * that contains only the cs files we are concerned with.

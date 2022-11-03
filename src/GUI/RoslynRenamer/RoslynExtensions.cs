@@ -102,7 +102,7 @@ namespace RoslynRenamer
                 return project;
             }
             catch
-            { 
+            {
                 return null;
             }
         }

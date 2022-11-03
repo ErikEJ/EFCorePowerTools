@@ -156,17 +156,17 @@ namespace RevEng.Core
                 }
             }
 
-            if (options.CustomPropertyReplacers != null
-                && options.CustomPropertyReplacers.Classes != null
-                && options.CustomPropertyReplacers.Classes.Any())
-            {
-                // TODO Pass result on (and maybe form other processes also?)
-                await RoslynRenamer.RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
-                    options.CustomPropertyReplacers,
-                    options.FullProjectPath,
-                    options.OutputContextPath,
-                    options.OutputPath);
-            }
+            //if (options.CustomPropertyReplacers != null
+            //    && options.CustomPropertyReplacers.Classes != null
+            //    && options.CustomPropertyReplacers.Classes.Any())
+            //{
+            //    // TODO Pass result on (and maybe form other processes also?)
+            //    await RoslynRenamer.RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
+            //        options.CustomPropertyReplacers,
+            //        options.FullProjectPath,
+            //        options.OutputContextPath,
+            //        options.OutputPath);
+            //}
 
             if (options.RunCleanup)
             {
