@@ -97,11 +97,12 @@ namespace RoslynRenamer
             {
                 MSBuildLocator.RegisterDefaults();
                 using var workspace = MSBuildWorkspace.Create();
+                workspace.WorkspaceFailed += (_, failure) => System.Diagnostics.Debug.WriteLine(failure.Diagnostic);
                 var project = await workspace.OpenProjectAsync(csProjPath);
                 return project;
             }
             catch
-            {
+            { 
                 return null;
             }
         }
