@@ -9,7 +9,7 @@ namespace EFCorePowerTools.Helpers
     {
         public static Model TryRead(string configFilePath)
         {
-            if (!File.Exists(configFilePath))
+            if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
             {
                 return new Model();
             }

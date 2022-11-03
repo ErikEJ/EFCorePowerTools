@@ -2,6 +2,29 @@
    "CodeGenerationMode": 2,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
+   "CustomPropertyReplacers": {
+      "Classes": [
+         {
+            "Name": "Customer",
+            "Properties": [
+               {
+                  "AlternateName": "OrdersNavigation",
+                  "Name": "Orders",
+                  "NewName": "OrderLink"
+               },
+               {
+                  "AlternateName": null,
+                  "Name": "Country",
+                  "NewName": "CountryRef"
+               }
+            ]
+         },
+         {
+            "Name": "Country",
+            "Properties": [ ]
+         }
+      ]
+   },
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": true,

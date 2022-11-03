@@ -142,6 +142,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 var renamingPath = project.GetRenamingPath(optionsPath);
                 var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
+                var propertyNamingModel = RenamingRulesSerializer.TryRead(referenceRenamingPath);
 
                 Tuple<bool, string> containsEfCoreReference = null;
 
@@ -188,6 +189,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                         containsEfCoreReference = new Tuple<bool, string>(true, null);
                         options.CustomReplacers = namingOptionsAndPath.Item1;
+                        options.CustomPropertyReplacers = propertyNamingModel;
                         options.InstallNuGetPackage = !onlyGenerate;
                     }
                 }
@@ -224,6 +226,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     containsEfCoreReference = await project.ContainsEfCoreReferenceAsync(options.DatabaseType);
                     options.InstallNuGetPackage = !containsEfCoreReference.Item1;
+                    options.CustomPropertyReplacers = propertyNamingModel;
 
                     if (!await GetModelOptionsAsync(options, project.Name))
                     {
@@ -233,9 +236,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
-                await GenerateFilesAsync(project, options, containsEfCoreReference);
-
                 await InstallNuGetPackagesAsync(project, onlyGenerate, containsEfCoreReference, options, forceEdit);
+
+                await GenerateFilesAsync(project, options, containsEfCoreReference);
 
                 if (File.Exists(referenceRenamingPath))
                 {

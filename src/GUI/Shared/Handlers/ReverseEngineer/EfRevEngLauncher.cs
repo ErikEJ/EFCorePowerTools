@@ -64,6 +64,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 ConnectionString = options.ConnectionString,
                 ContextClassName = options.ContextClassName,
                 CustomReplacers = options.CustomReplacers,
+                CustomPropertyReplacers = options.CustomPropertyReplacers,
                 Dacpac = options.Dacpac,
                 DatabaseType = options.DatabaseType,
                 DefaultDacpacSchema = options.DefaultDacpacSchema,
