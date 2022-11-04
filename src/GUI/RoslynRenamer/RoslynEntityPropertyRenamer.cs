@@ -60,10 +60,10 @@ namespace RoslynRenamer
                     switch (jsonFile.Name.ToLower(CultureInfo.InvariantCulture))
                     {
                         case RuleFiles.PropertyFilename:
-                            if (TryReadRules<PropertyRenamingRoot>(jsonFile, status, out var classRenamingRoot))
+                            if (TryReadRules<PropertyRenamingRoot>(jsonFile, status, out var propertyRenamingRoot))
                             {
                                 status.AddRange(
-                                    await ApplyRenamingRulesInternalAsync(classRenamingRoot, fullProjectPath));
+                                    await ApplyRenamingRulesInternalAsync(propertyRenamingRoot, fullProjectPath));
                             }
 
                             break;
