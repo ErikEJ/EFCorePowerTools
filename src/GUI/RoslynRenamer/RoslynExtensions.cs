@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
@@ -15,6 +18,8 @@ namespace RoslynRenamer
 {
     internal static class RoslynExtensions
     {
+        private static VisualStudioInstance vsInstance;
+
         public static async Task<Document> RenamePropertyAsync(
             this IEnumerable<Document> documents,
             string className,
@@ -95,14 +100,58 @@ namespace RoslynRenamer
         {
             try
             {
-                MSBuildLocator.RegisterDefaults();
+                vsInstance ??= MSBuildLocatorRegisterDefaults();
+                Debug.WriteLine($"Using msbuild: {vsInstance.MSBuildPath}");
                 using var workspace = MSBuildWorkspace.Create();
-                workspace.WorkspaceFailed += (_, failure) => System.Diagnostics.Debug.WriteLine(failure.Diagnostic);
+                workspace.WorkspaceFailed += (_, failure) => Debug.WriteLine(failure.Diagnostic);
                 var project = await workspace.OpenProjectAsync(csProjPath);
+                var docs = project.Documents.ToArray();
+                var diagnostics = workspace.Diagnostics;
+                foreach (var diagnostic in diagnostics)
+                {
+                    if (diagnostic.Kind == WorkspaceDiagnosticKind.Failure)
+                    {
+                        throw new Exception(diagnostic.Message);
+                    }
+                }
+
+                Debug.Assert(docs.Length > 0);
                 return project;
             }
             catch
             {
+                return null;
+            }
+        }
+
+        private static VisualStudioInstance MSBuildLocatorRegisterDefaults()
+        {
+            // override default behavior using using reflection to get the VS instances list and register the LATEST version of VS  
+            try
+            {
+                var instances = MSBuildLocator.QueryVisualStudioInstances(VisualStudioInstanceQueryOptions.Default)
+                    .OrderByDescending(o => o.Version).ToArray();
+                if (instances.Length > 0)
+                {
+                    var latest = instances.FirstOrDefault();
+
+                    latest = (VisualStudioInstance)Activator.CreateInstance(
+                        typeof(VisualStudioInstance),
+                        BindingFlags.NonPublic | BindingFlags.Instance,
+                        null,
+                        new object[] { latest.Name, latest.MSBuildPath + "\\", latest.Version, latest.DiscoveryType },
+                        null,
+                        null)!;
+
+                    MSBuildLocator.RegisterInstance(latest);
+                    return latest;
+                }
+
+                return MSBuildLocator.RegisterDefaults();
+            }
+            catch
+            {
+                // ignored
                 return null;
             }
         }
@@ -140,11 +189,11 @@ namespace RoslynRenamer
 
                 var text = SourceText.From(content);
                 var documentInfo = DocumentInfo.Create(
-                    DocumentId.CreateNewId(projectId),
-                    info.Name,
-                    null,
-                    SourceCodeKind.Regular,
-                    TextLoader.From(TextAndVersion.Create(text, VersionStamp.Default, info.FullName)))
+                        DocumentId.CreateNewId(projectId),
+                        info.Name,
+                        null,
+                        SourceCodeKind.Regular,
+                        TextLoader.From(TextAndVersion.Create(text, VersionStamp.Default, info.FullName)))
                     .WithFilePath(info.FullName);
                 ws.AddDocument(documentInfo);
             }

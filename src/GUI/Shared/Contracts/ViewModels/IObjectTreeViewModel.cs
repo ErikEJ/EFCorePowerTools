@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.Contracts.ViewModels
 {

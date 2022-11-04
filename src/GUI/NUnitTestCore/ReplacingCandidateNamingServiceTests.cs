@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 using RevEng.Core;
 
 namespace UnitTests.Services

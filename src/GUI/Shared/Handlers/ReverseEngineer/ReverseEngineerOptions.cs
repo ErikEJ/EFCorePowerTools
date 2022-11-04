@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using RevEng.Common;
+using RevEng.Common.PropertyRenaming;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -37,7 +39,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         [IgnoreDataMember]
         public List<Schema> CustomReplacers { get; set; }
         [IgnoreDataMember]
-        public Model CustomPropertyReplacers { get; set; }
+        public PropertyRenamingRoot CustomPropertyReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
         public bool UseSpatial { get; set; }

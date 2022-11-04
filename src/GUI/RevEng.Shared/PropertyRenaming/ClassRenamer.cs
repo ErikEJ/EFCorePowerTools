@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RevEng.Common
+namespace RevEng.Common.PropertyRenaming
 {
     [DataContract]
-    public class ClassRenamer
+    public sealed class ClassRenamer
     {
         public ClassRenamer()
         {

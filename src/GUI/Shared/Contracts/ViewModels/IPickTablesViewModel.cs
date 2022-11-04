@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using EFCorePowerTools.Contracts.EventArgs;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.Contracts.ViewModels
 {

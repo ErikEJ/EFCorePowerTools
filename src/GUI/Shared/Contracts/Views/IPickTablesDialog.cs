@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.Contracts.Views
 {

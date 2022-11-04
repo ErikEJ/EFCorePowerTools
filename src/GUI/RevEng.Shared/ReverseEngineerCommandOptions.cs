@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using RevEng.Common.PropertyRenaming;
+using RevEng.Common.TableColumnRenaming;
 
 namespace RevEng.Common
 {
@@ -35,7 +37,7 @@ namespace RevEng.Common
         public int SelectedToBeGenerated { get; set; }
         public string Dacpac { get; set; }
         public List<Schema> CustomReplacers { get; set; }
-        public Model CustomPropertyReplacers { get; set; }
+        public PropertyRenamingRoot CustomPropertyReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
         public bool UseSpatial { get; set; }

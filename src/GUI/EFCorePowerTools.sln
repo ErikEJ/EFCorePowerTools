@@ -76,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoslynRenamer", "RoslynRenamer\RoslynRenamer.csproj", "{98BD9628-C3E3-452E-A260-BAE9672F467C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdmxRenamingGenerator", "EdmxRenamingGenerator\EdmxRenamingGenerator.csproj", "{F84B05EA-867A-48FD-8EF1-71B03B8180F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdmxRuleGenerator", "EdmxRuleGenerator\EdmxRuleGenerator.csproj", "{F84B05EA-867A-48FD-8EF1-71B03B8180F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

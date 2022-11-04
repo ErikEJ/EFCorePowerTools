@@ -2,25 +2,26 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 using RevEng.Common;
+using RevEng.Common.PropertyRenaming;
 
 namespace EFCorePowerTools.Helpers
 {
     public static class RenamingRulesSerializer
     {
-        public static Model TryRead(string configFilePath)
+        public static PropertyRenamingRoot TryRead(string configFilePath)
         {
             if (string.IsNullOrEmpty(configFilePath) || !File.Exists(configFilePath))
             {
-                return new Model();
+                return new PropertyRenamingRoot();
             }
 
-            var couldRead = TryRead(configFilePath, out Model deserialized);
+            var couldRead = TryRead(configFilePath, out PropertyRenamingRoot deserialized);
             if (couldRead)
             {
                 return deserialized;
             }
 
-            return new Model();
+            return new PropertyRenamingRoot();
         }
 
         private static bool TryRead<T>(string optionsPath, out T deserialized)

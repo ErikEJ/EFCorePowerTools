@@ -16,6 +16,7 @@ using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {

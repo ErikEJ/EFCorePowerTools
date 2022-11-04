@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RevEng.Common
+namespace RevEng.Common.TableColumnRenaming
 {
     [DataContract]
     public class TableRenamer

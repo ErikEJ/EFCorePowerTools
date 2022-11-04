@@ -116,9 +116,7 @@ namespace EFCorePowerTools.Extensions
                 renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            const string efptRenamingJson = "efpt.renaming.json";
-            const string efptRenamingNavJson = "efpt.property-renaming.json";
-            return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
+            return Path.Combine(renamingPath, navigationsFile ? RuleFiles.PropertyFilename : RuleFiles.RenamingFilename);
         }
 
         public static async Task<Tuple<bool, string>> ContainsEfCoreReferenceAsync(this Project project, DatabaseType dbType)

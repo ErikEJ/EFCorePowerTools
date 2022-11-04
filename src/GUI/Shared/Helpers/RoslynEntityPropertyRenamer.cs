@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using RevEng.Common;
+using RevEng.Common.PropertyRenaming;
 
 namespace EFCorePowerTools.Helpers
 {
@@ -18,7 +19,7 @@ namespace EFCorePowerTools.Helpers
         /// <param name="contextFolder">optional subfolder for context location.</param>
         /// <param name="modelsFolder">optional subfolder for model location.</param>
         /// <returns>list of process messages.</returns>
-        public static async Task<List<string>> ApplyRenamingRulesAsync(Model model, string projectPath, string contextFolder = "", string modelsFolder = "")
+        public static async Task<List<string>> ApplyRenamingRulesAsync(PropertyRenamingRoot propertyRenamingRoot, string projectPath, string contextFolder = "", string modelsFolder = "")
         {
             var status = new List<string>();
 
@@ -89,7 +90,7 @@ namespace EFCorePowerTools.Helpers
             }
 
             var renameCount = 0;
-            foreach (var classRename in model.Classes)
+            foreach (var classRename in propertyRenamingRoot.Classes)
             {
                 foreach (var refRename in classRename.Properties)
                 {

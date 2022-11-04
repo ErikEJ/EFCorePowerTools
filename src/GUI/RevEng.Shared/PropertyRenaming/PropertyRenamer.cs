@@ -1,12 +1,15 @@
 ﻿using System.Runtime.Serialization;
 
-namespace RevEng.Common
+namespace RevEng.Common.PropertyRenaming
 {
     [DataContract]
-    public class ColumnNamer
+    public class PropertyRenamer
     {
         [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
+        public string NewName { get; set; }
 
         /// <summary>
         /// Gets or sets the optional alternative name to look for if Name is not found.
@@ -16,8 +19,5 @@ namespace RevEng.Common
         /// </summary>
         [DataMember]
         public string AlternateName { get; set; }
-
-        [DataMember]
-        public string NewName { get; set; }
     }
 }

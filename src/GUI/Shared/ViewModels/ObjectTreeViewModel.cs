@@ -8,6 +8,7 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Locales;
 using GalaSoft.MvvmLight;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.ViewModels
 {

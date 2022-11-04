@@ -8,6 +8,7 @@ using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using RevEng.Common;
+using RevEng.Common.TableColumnRenaming;
 
 namespace EFCorePowerTools.Dialogs
 {

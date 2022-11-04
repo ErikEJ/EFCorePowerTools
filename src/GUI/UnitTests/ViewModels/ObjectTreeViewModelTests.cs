@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using RevEng.Common.TableColumnRenaming;
 
 namespace UnitTests.ViewModels
 {
