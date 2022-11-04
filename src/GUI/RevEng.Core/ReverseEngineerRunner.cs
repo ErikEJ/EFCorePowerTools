@@ -156,18 +156,6 @@ namespace RevEng.Core
                 }
             }
 
-            if (options.CustomPropertyReplacers != null
-                && options.CustomPropertyReplacers.Classes != null
-                && options.CustomPropertyReplacers.Classes.Any())
-            {
-                // TODO Build tools!
-                warnings.AddRange(await RoslynRenamer.RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
-                    options.CustomPropertyReplacers,
-                    options.FullProjectPath,
-                    options.OutputContextPath,
-                    options.OutputPath));
-            }
-
             if (options.RunCleanup)
             {
                 var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);

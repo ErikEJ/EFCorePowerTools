@@ -35,6 +35,10 @@ namespace RevEng.Common
         public int SelectedToBeGenerated { get; set; }
         public string Dacpac { get; set; }
         public List<Schema> CustomReplacers { get; set; }
+
+        /// <summary>
+        /// Gets or sets replacers. Currently not used due to issues runnning Roslyn outside of VS.
+        /// </summary>
         public Model CustomPropertyReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
