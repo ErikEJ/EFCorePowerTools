@@ -238,7 +238,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, containsEfCoreReference, options, forceEdit);
 
-                await GenerateFilesAsync(project, options, containsEfCoreReference);
+                await GenerateFilesAsync(project, options, containsEfCoreReference, onlyGenerate);
 
                 if (File.Exists(referenceRenamingPath))
                 {
@@ -589,7 +589,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference, bool onlyGenerate)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -634,7 +634,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await project.AddExistingFilesAsync(new List<string> { revEngResult.ContextFilePath }.ToArray());
                 }
 
-                if (AdvancedOptions.Instance.OpenGeneratedDbContext)
+                if (AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
                 {
                     var readmeName = "PowerToolsReadMe.txt";
                     var finalText = reverseEngineerHelper.GetReadMeText(options, File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8));
