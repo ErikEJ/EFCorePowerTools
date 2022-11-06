@@ -1,4 +1,4 @@
-<#@ template hostSpecific="true" linePragmas="false" #>
+<#@ template hostSpecific="true" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore.Design" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore.Relational" #>
@@ -11,9 +11,15 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="Microsoft.EntityFrameworkCore" #>
 <#@ import namespace="Microsoft.EntityFrameworkCore.Design" #>
+<#@ import namespace="Microsoft.EntityFrameworkCore.Infrastructure" #>
 <#@ import namespace="Microsoft.EntityFrameworkCore.Scaffolding" #>
 <#@ import namespace="Microsoft.Extensions.DependencyInjection" #>
 <#
+    if (!ProductInfo.GetVersion().StartsWith("7.0"))
+    {
+        Warning("Your templates were created using an older version of Entity Framework. Additional features and bug fixes may be available. See https://aka.ms/efcore-docs-updating-templates for more information.");
+    }
+
     var services = (IServiceProvider)Host;
     var providerCode = services.GetRequiredService<IProviderConfigurationCodeGenerator>();
     var annotationCodeGenerator = services.GetRequiredService<IAnnotationCodeGenerator>();
@@ -62,7 +68,7 @@ public partial class <#= Options.ContextName #> : DbContext
     foreach (var entityType in Model.GetEntityTypes().Where(e => !e.IsSimpleManyToManyJoinEntityType()))
     {
 #>
-    public virtual DbSet<<#= entityType.Name #>> <#= entityType.GetDbSetName() #> { get; set; }<#= Options.UseNullableReferenceTypes ? " = null!;" : "" #>
+    public virtual DbSet<<#= entityType.Name #>> <#= entityType.GetDbSetName() #> { get; set; }
 
 <#
     }

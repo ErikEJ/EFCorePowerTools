@@ -4,5 +4,15 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".txt" #>
+
 Hello .NET Conf rehearsal!
 <#= DateTime.UtcNow #>
+
+<#
+for (int i = 0; i<=10; i++)
+{ 
+#>
+   The square of <#= i #> is <#= i*i #>
+<# 
+} 
+#>

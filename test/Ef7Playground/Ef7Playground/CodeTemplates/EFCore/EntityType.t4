@@ -20,10 +20,6 @@
         return "";
     }
 
-    var enumList = new List<(string EntityTypeName, string PropertyName, string? EnumType)>();
-    // add your enums here:
-    enumList.Add( ("Customer", "Rating", "Rating") );
-
     var services = (IServiceProvider)Host;
     var annotationCodeGenerator = services.GetRequiredService<IAnnotationCodeGenerator>();
     var code = services.GetRequiredService<ICSharpHelper>();
@@ -104,11 +100,8 @@ public partial class <#= EntityType.Name #>
 
         var needsNullable = Options.UseNullableReferenceTypes && property.IsNullable && !property.ClrType.IsValueType;
         var needsInitializer = Options.UseNullableReferenceTypes && !property.IsNullable && !property.ClrType.IsValueType;
-
-        var enumTuple = enumList.SingleOrDefault(t => t.EntityTypeName == EntityType.Name && t.PropertyName == property.Name);
-        var propertyName = enumTuple.EnumType ?? code.Reference(property.ClrType);
 #>
-    public <#= propertyName #><#= needsNullable ? "?" : "" #> <#= property.Name #> { get; set; }<#= needsInitializer ? " = null!;" : "" #>
+    public <#= code.Reference(property.ClrType) #><#= needsNullable ? "?" : "" #> <#= property.Name #> { get; set; }<#= needsInitializer ? " = null!;" : "" #>
 <#
         firstProperty = false;
     }
@@ -138,7 +131,7 @@ public partial class <#= EntityType.Name #>
         {
             var needsNullable = Options.UseNullableReferenceTypes && !(navigation.ForeignKey.IsRequired && navigation.IsOnDependent);
             var needsInitializer = Options.UseNullableReferenceTypes && navigation.ForeignKey.IsRequired && navigation.IsOnDependent;
-#>   
+#>
     public virtual <#= targetType #><#= needsNullable ? "?" : "" #> <#= navigation.Name #> { get; set; }<#= needsInitializer ? " = null!;" : "" #>
 <#
         }

@@ -15,9 +15,7 @@ public partial class OrderDetail
 
     public float Discount { get; set; }
 
-   
     public virtual Order Order { get; set; } = null!;
 
-   
     public virtual Product Product { get; set; } = null!;
 }

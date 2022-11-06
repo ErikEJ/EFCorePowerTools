@@ -27,7 +27,7 @@ public partial class Customer
 
     public string? Fax { get; set; }
 
-    public Rating Rating { get; set; }
+    public int Rating { get; set; }
 
     public virtual ICollection<Order> Orders { get; } = new List<Order>();
 
