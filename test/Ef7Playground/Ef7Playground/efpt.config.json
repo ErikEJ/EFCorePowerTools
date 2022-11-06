@@ -175,11 +175,11 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[FuncWithTvpParameter]",
+         "Name": "[dbo].[ISOweek]",
          "ObjectType": 2
       },
       {
-         "Name": "[dbo].[ISOweek]",
+         "Name": "[dbo].[tvp]",
          "ObjectType": 2
       }
    ],

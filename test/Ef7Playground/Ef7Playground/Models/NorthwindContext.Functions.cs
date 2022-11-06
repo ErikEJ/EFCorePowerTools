@@ -16,8 +16,15 @@ namespace Ef7Playground.Models
             throw new NotSupportedException("This method can only be called from Entity Framework Core queries");
         }
 
+        [DbFunction("tvp", "dbo")]
+        public IQueryable<tvpResult> tvp(int? storeid)
+        {
+            return FromExpression(() => tvp(storeid));
+        }
+
         protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<tvpResult>().HasNoKey();
         }
     }
 }
