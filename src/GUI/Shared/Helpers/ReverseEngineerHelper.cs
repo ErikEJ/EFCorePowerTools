@@ -115,7 +115,7 @@ namespace EFCorePowerTools.Helpers
             if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (preview)" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
             }
 
             if (minimumVersion.Major == 3 || minimumVersion.Major == 2)
