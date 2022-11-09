@@ -14,7 +14,7 @@ Console.WriteLine($"deletion rows affected: {rowsAffected}");
 
 rowsAffected = db.Regions
     .Where(r => r.RegionId == 5)
-    .ExecuteUpdate(r => r.SetProperty(p => p.RegionDescription, p => "Updated"));
+    .ExecuteUpdate(r => r.SetProperty(p => p.RegionDescription, "Updated"));
 
 Console.WriteLine($"update rows affected: {rowsAffected}");
 
