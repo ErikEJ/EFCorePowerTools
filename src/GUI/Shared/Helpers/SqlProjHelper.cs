@@ -22,9 +22,20 @@ namespace EFCorePowerTools.Helpers
             foreach (var item in projects)
             {
                 var folder = Path.GetDirectoryName(item.FullPath);
-                if (Directory.Exists(folder))
+                if (!Directory.Exists(folder))
                 {
-                    AddFiles(result, folder);
+                    continue;
+                }
+
+                if (item.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    result.Add(item.FullPath);
+                    continue;
+                }
+
+                if (item.IsCSharpProject() && !string.IsNullOrEmpty(await item.GetAttributeAsync("SqlServerVersion")))
+                {
+                    AddFiles(result, Path.GetDirectoryName(item.FullPath), "*.dacpac");
                 }
 
                 try
@@ -102,9 +113,11 @@ namespace EFCorePowerTools.Helpers
             throw new InvalidOperationException("Dacpac build failed, please pick the file manually");
         }
 
-        private static void AddFiles(HashSet<string> result, string path)
+        private static void AddFiles(HashSet<string> result, string path, string pattern)
         {
-            foreach (var file in Directory.GetFiles(path, "*.sqlproj", SearchOption.AllDirectories))
+            var searchPath = Path.Combine(path, "bin");
+
+            foreach (var file in Directory.GetFiles(searchPath, pattern, SearchOption.AllDirectories))
             {
                 result.Add(file);
             }

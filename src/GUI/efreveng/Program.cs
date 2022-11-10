@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.Build.Utilities;
 using RevEng.Common;
 using RevEng.Core;
 
