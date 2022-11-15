@@ -76,7 +76,7 @@ namespace RevEng.Core
             {
                 UseDataAnnotations = !options.UseFluentApiOnly,
                 Language = "C#",
-                ContextName = code.Identifier(options.ContextClassName),
+                ContextName = options.ContextClassName,
                 ContextDir = outputContextDir,
                 RootNamespace = null,
                 ContextNamespace = contextNamespace,
