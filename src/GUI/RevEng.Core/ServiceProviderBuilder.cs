@@ -2,7 +2,6 @@
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
-using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.Data.SqlClient;
@@ -17,6 +16,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
 #if CORE60
@@ -214,8 +214,6 @@ namespace RevEng.Core
 
                     break;
 
-#if !CORE70
-
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -228,6 +226,7 @@ namespace RevEng.Core
 
                     break;
 
+#if !CORE70
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
