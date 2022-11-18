@@ -40,7 +40,7 @@ namespace EFCorePowerTools.Helpers
             {
                 connection.Open();
 
-                using (var command = new SqlCommand("SELECT HAS_PERMS_BY_NAME('[' + DB_NAME() + ']', 'DATABASE', 'VIEW DEFINITION');", connection))
+                using (var command = new SqlCommand("SELECT HAS_PERMS_BY_NAME(QUOTENAME(DB_NAME()), 'DATABASE', 'VIEW DEFINITION');", connection))
                 {
                     var result = (int)command.ExecuteScalar();
                     hasRights = Convert.ToBoolean(result);
