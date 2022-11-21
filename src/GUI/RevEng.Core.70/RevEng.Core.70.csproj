@@ -21,7 +21,6 @@
 	<ItemGroup>
 	  <Compile Remove="..\RevEng.Core\Check.cs" />
 	  <Compile Remove="..\RevEng.Core\CommentCSharpEntityTypeGenerator.cs" />
-	  <Compile Remove="..\RevEng.Core\CustomTemplateFileService.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,6 +30,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="7.0.0-beta1" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="7.0.0" />
     <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />

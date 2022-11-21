@@ -1,8 +1,8 @@
 ﻿#if !CORE70
-using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #endif
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
@@ -81,7 +81,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
-#if !CORE70
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -96,7 +95,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
-#endif
 
 #if CORE60
             if (options.UseLegacyPluralizer)

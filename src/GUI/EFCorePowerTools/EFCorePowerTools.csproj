@@ -190,6 +190,9 @@
     <Content Include="CodeTemplates600.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="CodeTemplates700.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Key.snk" />
     <Content Include="PowerToolsReadMe.txt">
       <IncludeInVSIX>true</IncludeInVSIX>

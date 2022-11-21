@@ -74,6 +74,9 @@ namespace EFCorePowerTools.Helpers
                     case CodeGenerationMode.EFCore6:
                         zipName = "CodeTemplates600.zip";
                         break;
+                    case CodeGenerationMode.EFCore7:
+                        zipName = "CodeTemplates700.zip";
+                        break;
                     default:
                         throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
                 }
