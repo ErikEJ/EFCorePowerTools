@@ -10,18 +10,18 @@
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
     <!--<DocumentationFile>https://raw.githubusercontent.com/wiki/ErikEJ/EFCorePowerTools/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.md</DocumentationFile>-->
     <PackageReleaseNotes>For EF Core 6.0 with DacFX 160</PackageReleaseNotes>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
-	<MinClientVersion>5.0</MinClientVersion>	  
+    <MinClientVersion>5.0</MinClientVersion>	  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
-	<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	<EmbedUntrackedSources>true</EmbedUntrackedSources>
-	<DebugType>embedded</DebugType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'True'">

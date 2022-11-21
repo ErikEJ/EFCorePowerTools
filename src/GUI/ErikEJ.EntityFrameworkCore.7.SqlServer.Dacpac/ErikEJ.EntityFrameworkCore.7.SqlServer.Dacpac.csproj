@@ -3,18 +3,18 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>7.0.0</PackageVersion>	  
+    <PackageVersion>7.0.1</PackageVersion>	  
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
-    <PackageReleaseNotes>For EF Core 7.0 with DacFX 161</PackageReleaseNotes>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>For EF Core 7.0 with DacFX 161, update with trigger detection</PackageReleaseNotes>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
-	<MinClientVersion>5.0</MinClientVersion>	  
+	  <MinClientVersion>5.0</MinClientVersion>	  
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageReadmeFile>readme.md</PackageReadmeFile>
+	  <PackageReadmeFile>readme.md</PackageReadmeFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
@@ -26,6 +26,10 @@
   <PropertyGroup Condition="'$(CI)' == 'True'">
 	  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
+  
+  <PropertyGroup>
+		<DefineConstants>TRACE;DEBUG;CORE70</DefineConstants>
+	</PropertyGroup>  
 
   <ItemGroup>
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />

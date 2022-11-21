@@ -111,8 +111,14 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             foreach (var item in items)
             {
                 GetForeignKeys(item, dbModel);
-                GetUniqueConstraints(item, dbModel);
-                GetIndexes(item, dbModel);
+
+                var dbTable = dbModel.Tables
+                    .Single(t => t.Name == item.Name.Parts[1]
+                    && t.Schema == item.Name.Parts[0]);
+
+                GetUniqueConstraints(item, dbTable);
+                GetIndexes(item, dbTable);
+                GetTriggers(item, dbTable);
             }
 
             var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
@@ -237,12 +243,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetUniqueConstraints(TSqlTable table, DatabaseModel dbModel)
+        private static void GetUniqueConstraints(TSqlTable table, DatabaseTable dbTable)
         {
-            var dbTable = dbModel.Tables
-                .Single(t => t.Name == table.Name.Parts[1]
-                && t.Schema == table.Name.Parts[0]);
-
             var uqs = table.UniqueConstraints.ToList();
             foreach (var uq in uqs)
             {
@@ -277,12 +279,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetIndexes(TSqlTable table, DatabaseModel dbModel)
+        private static void GetIndexes(TSqlTable table, DatabaseTable dbTable)
         {
-            var dbTable = dbModel.Tables
-                .Single(t => t.Name == table.Name.Parts[1]
-                && t.Schema == table.Name.Parts[0]);
-
             var ixs = table.Indexes.ToList();
             foreach (var sqlIx in ixs)
             {
@@ -322,6 +320,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     dbTable.Indexes.Add(index);
                 }
             }
+        }
+
+        private static void GetTriggers(TSqlTable table, DatabaseTable dbTable)
+        {
+#if CORE70
+            var triggers = table.Triggers.ToList();
+
+            if (triggers.Any())
+            {
+                dbTable.Triggers.Add(new DatabaseTrigger { Name = "trigger" });
+            }
+#endif
         }
 
         private static void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
