@@ -292,7 +292,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var nuGetHelper = new NuGetHelper();
 
             if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit)
-                && await project.IsNetCore31OrHigherAsync()
+                && await project.IsNetCore31OrHigherIncluding70Async()
                 && containsEfCoreReference != null)
             {
                 await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
