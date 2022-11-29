@@ -193,6 +193,6 @@
     <value>无法删除连接</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>仅支持 EF Core 5</value>
+    <value>仅支持 EF Core 5 及以上版本</value>
   </data>
 </root>

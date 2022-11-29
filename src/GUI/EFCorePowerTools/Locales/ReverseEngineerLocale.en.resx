@@ -126,8 +126,14 @@
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
     <value>Add Custom Connection</value>
   </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>Add manually defined connection</value>
+  </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Add Database Connection</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>Add Server Explorer (DDEX) connection</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
     <value>Add external .dacpac</value>
@@ -201,6 +207,9 @@
   <data name="DbContextSubNamespace" xml:space="preserve">
     <value>DbContext sub-namespace (overrides path) - optional</value>
   </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>Install DDEX Provider for better experience</value>
+  </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value>EntityTypes &amp; DbContext</value>
   </data>
@@ -230,6 +239,9 @@
   </data>
   <data name="GettingReadyToConnect" xml:space="preserve">
     <value>Getting ready to connect...</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
   </data>
   <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
     <value>Include connection string in generated code</value>
@@ -285,6 +297,12 @@
   <data name="POCOEntities" xml:space="preserve">
     <value>POCO entities</value>
   </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ Rate</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>Let me know if you like this free tool</value>
+  </data>
   <data name="ReleaseNotes" xml:space="preserve">
     <value>Release Notes</value>
   </data>
@@ -317,6 +335,9 @@
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
     <value>Split DbContext into Configuration classes (preview)</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>Improve your SQLite experience</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
     <value>The credentials in use has not been granted 'VIEW DEFINITION' rights, so functionality may be degraded or faulty.</value>
@@ -371,6 +392,9 @@
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
     <value>Use regular expression</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>User Guide</value>
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
     <value>Use schema folder separation (experimental)</value>
