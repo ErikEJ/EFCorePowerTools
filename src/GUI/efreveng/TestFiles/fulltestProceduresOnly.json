@@ -152,6 +152,7 @@
   "UseInflector": true,
   "UseLegacyPluralizer": false,
   "UseNoConstructor": false,
+  "UseNoDefaultConstructor": true,
   "UseNoNavigations": false,
   "UseNodaTime": true,
   "UseNullableReferences": false,

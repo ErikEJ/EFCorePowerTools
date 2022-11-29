@@ -13,7 +13,7 @@ namespace RevEng.Core
 {
     public static class ReverseEngineerRunner
     {
-        public static async Task<ReverseEngineerResult> GenerateFilesAsync(ReverseEngineerCommandOptions options)
+        public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
             if (options == null)
             {
@@ -267,7 +267,7 @@ namespace RevEng.Core
 
             if (removeDefaultConstructor)
             {
-                var index = lines.IndexOf($"        public {contextName}()");
+                var index = lines.IndexOf($"    public {contextName}()");
                 if (index != -1)
                 {
                     lines.RemoveAt(index + 3);

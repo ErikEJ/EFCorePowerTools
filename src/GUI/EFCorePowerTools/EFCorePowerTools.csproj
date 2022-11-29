@@ -309,7 +309,9 @@
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.tr.resx" />

@@ -66,7 +66,7 @@ namespace EfReveng
                         return 1;
                     }
 
-                    var result = await ReverseEngineerRunner.GenerateFilesAsync(options);
+                    var result = ReverseEngineerRunner.GenerateFiles(options);
 
                     await Console.Out.WriteLineAsync("Result:");
                     await Console.Out.WriteLineAsync(result.Write());
