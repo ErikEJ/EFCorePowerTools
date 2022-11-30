@@ -67,7 +67,7 @@
         </Grid>
 
         <TextBlock
-            Grid.Row="5" ToolTip="Install DDEX Provider for better experience"
+            Grid.Row="5" ToolTip="{x:Static locale:ReverseEngineerLocale.DDEXProviderExperience}"
                 Margin="12,12,12,12">
                 <Hyperlink                   
                     x:Name="DDEXLink"                  

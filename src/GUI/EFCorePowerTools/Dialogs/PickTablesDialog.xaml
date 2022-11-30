@@ -317,7 +317,7 @@
         </TreeView>
 
         <TextBlock
-            Grid.Row="2" ToolTip="Improve your SQLite experience"
+            Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}"
                 Margin="12,20,12,0">
                 <Hyperlink                   
                     x:Name="SqliteToolboxLink"

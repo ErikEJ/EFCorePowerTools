@@ -121,7 +121,7 @@
     <value>关于</value>
   </data>
   <data name="AddinFreeDisclaimer" xml:space="preserve">
-    <value>此扩展是免费的，但我将不胜感激的审查</value>
+    <value>此扩展是免费的，但如果您能给我评论，我将不胜感激</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>确定</value>

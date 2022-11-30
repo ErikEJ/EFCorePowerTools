@@ -114,7 +114,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>Add T4 Scaffolding Templates</ButtonText>
+          <ButtonText>添加 T4 模板</ButtonText>
         </Strings>
       </Button>
       
