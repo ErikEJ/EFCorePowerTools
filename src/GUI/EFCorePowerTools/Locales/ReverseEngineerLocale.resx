@@ -126,7 +126,13 @@
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
     <value />
   </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
     <value />
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
@@ -201,6 +207,9 @@
   <data name="DbContextSubNamespace" xml:space="preserve">
     <value />
   </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value />
+  </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value />
   </data>
@@ -229,6 +238,9 @@
     <value />
   </data>
   <data name="GettingReadyToConnect" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Help" xml:space="preserve">
     <value />
   </data>
   <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
@@ -285,6 +297,12 @@
   <data name="POCOEntities" xml:space="preserve">
     <value />
   </data>
+  <data name="Rate" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="ReleaseNotes" xml:space="preserve">
     <value />
   </data>
@@ -316,6 +334,9 @@
     <value />
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
     <value />
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
@@ -370,6 +391,9 @@
     <value />
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UserGuide" xml:space="preserve">
     <value />
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">

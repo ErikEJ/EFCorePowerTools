@@ -202,22 +202,22 @@
         <StackPanel Grid.Row="18"
                     Style="{StaticResource ButtonRowStyle}">
             <TextBlock              
-                ToolTip="User Guide"
+                ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}"
                 Margin="12,5,12,0" Width="38">
                 <Hyperlink
                     x:Name="DocLink"
                     RequestNavigate="DocLink_RequestNavigate"
-                    NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering">Help</Hyperlink>
+                    NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering"><Run Text="{x:Static locale:ReverseEngineerLocale.Help}"/></Hyperlink>
             </TextBlock>
-            <Label Padding="2, 0, 0, 6" ToolTip="Rate" Height="30" Width="80" >
-                <Hyperlink FontSize="20" ToolTip="Let me know if you like this free tool" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
+            <Label Padding="2, 0, 0, 6" ToolTip="{x:Static locale:ReverseEngineerLocale.Rate}" Height="30" Width="80" >
+                <Hyperlink FontSize="20" ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
                     <Hyperlink.Style>
                         <Style TargetType="{x:Type Hyperlink}"
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
                             <Setter Property="Foreground" Value="Goldenrod"/>
                         </Style>
                     </Hyperlink.Style>
-                    <Run Text="⭐ Rate"/>
+                    <Run Text="{x:Static locale:ReverseEngineerLocale.Rate}"/>
                 </Hyperlink>
             </Label>
             <dw:DialogButton TabIndex="20"

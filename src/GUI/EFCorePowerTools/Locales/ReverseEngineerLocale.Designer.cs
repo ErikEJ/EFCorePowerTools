@@ -90,9 +90,27 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string AddAdhocDatabaseConnectionTip {
+            get {
+                return ResourceManager.GetString("AddAdhocDatabaseConnectionTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AddDatabaseConnection {
             get {
                 return ResourceManager.GetString("AddDatabaseConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AddDatabaseConnectionTip {
+            get {
+                return ResourceManager.GetString("AddDatabaseConnectionTip", resourceCulture);
             }
         }
         
@@ -315,6 +333,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string DDEXProviderExperience {
+            get {
+                return ResourceManager.GetString("DDEXProviderExperience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string EntityTypesAndContext {
             get {
                 return ResourceManager.GetString("EntityTypesAndContext", resourceCulture);
@@ -399,6 +426,15 @@ namespace EFCorePowerTools.Locales {
         public static string GettingReadyToConnect {
             get {
                 return ResourceManager.GetString("GettingReadyToConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
@@ -567,6 +603,24 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Rate {
+            get {
+                return ResourceManager.GetString("Rate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RateTip {
+            get {
+                return ResourceManager.GetString("RateTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ReleaseNotes {
             get {
                 return ResourceManager.GetString("ReleaseNotes", resourceCulture);
@@ -660,6 +714,15 @@ namespace EFCorePowerTools.Locales {
         public static string SplitDbContextIntoConfigurationClasses {
             get {
                 return ResourceManager.GetString("SplitDbContextIntoConfigurationClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SQLiteExperience {
+            get {
+                return ResourceManager.GetString("SQLiteExperience", resourceCulture);
             }
         }
         
@@ -822,6 +885,15 @@ namespace EFCorePowerTools.Locales {
         public static string UseRegularExpression {
             get {
                 return ResourceManager.GetString("UseRegularExpression", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string UserGuide {
+            get {
+                return ResourceManager.GetString("UserGuide", resourceCulture);
             }
         }
         

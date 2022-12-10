@@ -121,13 +121,19 @@
     <value>添加</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>添加 ad hoc 连接（预览） </value>
+    <value>添加自定义连接</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>添加 ad hoc 连接...</value>
+    <value>添加自定义连接</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>添加手工定义的连接</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>添加数据库连接</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>添加数据设计器连接</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
     <value>添加 SQL Server 数据库项目(.dacpac)</value>
@@ -148,10 +154,10 @@
     <value>此列是主键的一部分，如果选择了该表，则不能取消选中该列。</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>请检查输出窗口是否有错误</value>
+    <value>请检查输出窗口中的扩展是否有错误</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
-    <value>请检查输出窗口中的警告</value>
+    <value>请检查输出窗口中的扩展是否有警告</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
     <value>选择配置文件</value>
@@ -187,7 +193,7 @@
     <value>上下文名称是必填项</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>使用 模板生成自定义代码</value>
+    <value>使用模板生成自定义代码</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>找不到数据库连接，无法刷新</value>
@@ -200,6 +206,9 @@
   </data>
   <data name="DbContextSubNamespace" xml:space="preserve">
     <value>上下文子命名空间</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>安装数据设计器获得更好的体验</value>
   </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value>实体和上下文</value>
@@ -231,6 +240,9 @@
   <data name="GettingReadyToConnect" xml:space="preserve">
     <value>正在准备连接...</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
   <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
     <value>在生成的代码中包含连接字符串</value>
   </data>
@@ -245,6 +257,9 @@
   </data>
   <data name="LoadingOptions" xml:space="preserve">
     <value>正在加载选项...</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>映射 hierarchyid 数据类型</value>
   </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>映射 NodaTime 数据类型</value>
@@ -282,6 +297,12 @@
   <data name="POCOEntities" xml:space="preserve">
     <value>POCO实体</value>
   </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ 好评</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>如果你喜欢这个免费工具，请告诉我</value>
+  </data>
   <data name="ReleaseNotes" xml:space="preserve">
     <value>发行说明</value>
   </data>
@@ -315,8 +336,11 @@
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
     <value>使用分组配置（预览）</value>
   </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>提升 SQLite 体验</value>
+  </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
-    <value>当前 SQL Server 用户没有“查看定义”的权限，默认约束可能不可用</value>
+    <value>使用的凭据尚未授予“VIEW DEFINITION”权限，因此功能可能会降级或错误。</value>
   </data>
   <data name="SQLServerVersionNotSupported" xml:space="preserve">
     <value>可能不支持 SQL Server {0} 版本</value>
@@ -357,6 +381,9 @@
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>使用 EF6 的复数形式</value>
   </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>使用多对多实体(EF Core 6及以上版本)</value>
+  </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>使用数据库中的表名和列名</value>
   </data>
@@ -365,6 +392,9 @@
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
     <value>使用正则表达式</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>用户指南</value>
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
     <value>使用架构文件夹模式(实验性)</value>

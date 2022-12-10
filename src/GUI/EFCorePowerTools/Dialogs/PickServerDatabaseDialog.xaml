@@ -92,7 +92,7 @@
                         <MenuItem 
                             Header="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
                             Command="{Binding AddDatabaseConnectionCommand}"
-                            ToolTip="Add Server Explorer (DDEX) connection"
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnectionTip}"
                             >
                             <MenuItem.Icon>
                                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
@@ -101,7 +101,7 @@
                         <MenuItem 
                             Header="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
                             Command="{Binding AddAdhocDatabaseConnectionCommand}"
-                            ToolTip="Add manually defined connection"
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnectionTip}"
                             >
                             <MenuItem.Icon>
                                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
