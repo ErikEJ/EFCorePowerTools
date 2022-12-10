@@ -35,7 +35,7 @@ namespace RevEng.Core
                 ConnectionString = connectionString,
             };
 
-            serviceProvider = ServiceProviderBuilder.Build(options);
+            serviceProvider = ServiceProviderBuilder.Build(options, new List<string>(), new List<string>(), new List<string>());
         }
 
         public List<TableModel> GetTableModels()

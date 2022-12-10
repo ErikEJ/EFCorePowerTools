@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RevEng.Core
 {
@@ -22,7 +21,8 @@ namespace RevEng.Core
 
             var errors = new List<string>();
             var warnings = new List<string>();
-            var serviceProvider = ServiceProviderBuilder.Build(options);
+            var info = new List<string>();
+            var serviceProvider = ServiceProviderBuilder.Build(options, errors, warnings, info);
             var schemas = new List<string>();
 
             options.ConnectionString = SqlServerHelper.SetConnectionString(options.DatabaseType, options.ConnectionString);

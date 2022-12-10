@@ -19,6 +19,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
+using System.Collections.Generic;
 #if CORE60
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
@@ -28,28 +29,35 @@ namespace RevEng.Core
 {
     public static class ServiceProviderBuilder
     {
-        public static ServiceProvider Build(ReverseEngineerCommandOptions options)
+        public static ServiceProvider Build(ReverseEngineerCommandOptions options, List<string> errors, List<string> warnings, List<string> info)
         {
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
+            var reporter = new OperationReporter(
+                new OperationReportHandler(
+                    m => errors.Add(m),
+                    m => warnings.Add(m),
+                    m => info.Add(m),
+                    m => info.Add(m)));
+
             // Add base services for scaffolding
             var serviceCollection = new ServiceCollection();
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
+                .AddSingleton<IOperationReporter, OperationReporter>(provider =>
+                    reporter)
 #if CORE60
 #else
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
-                 new CommentCSharpEntityTypeGenerator(
-                    provider.GetService<ICSharpHelper>(),
-                    options.UseNullableReferences,
-                    options.UseNoConstructor))
+                     new CommentCSharpEntityTypeGenerator(
+                        provider.GetService<ICSharpHelper>(),
+                        options.UseNullableReferences,
+                        options.UseNoConstructor))
 #endif
-                .AddSingleton<IOperationReporter, OperationReporter>()
-                .AddSingleton<IOperationReportHandler, OperationReportHandler>()
 #if CORE60
 
                 .AddSingleton<IScaffoldingModelFactory>(provider =>
