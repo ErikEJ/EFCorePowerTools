@@ -14,6 +14,7 @@
 <#@ import namespace="Microsoft.EntityFrameworkCore.Design" #>
 <#@ import namespace="Microsoft.Extensions.DependencyInjection" #>
 <#
+    // Template version: 7.0.1 - please do NOT remove this line
     if (EntityType.IsSimpleManyToManyJoinEntityType())
     {
         // Don't scaffold these
