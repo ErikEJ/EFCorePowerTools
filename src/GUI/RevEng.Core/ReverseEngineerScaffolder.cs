@@ -56,7 +56,9 @@ namespace RevEng.Core
             List<string> schemas,
             string outputContextDir,
             string modelNamespace,
-            string contextNamespace)
+            string contextNamespace,
+            string projectPath,
+            string outputPath)
         {
             if (options == null)
             {
@@ -90,7 +92,7 @@ namespace RevEng.Core
                 UseNullableReferenceTypes = options.UseNullableReferences,
 #endif
 #if CORE70
-                ProjectDir = options.UseT4 ? options.ProjectPath : null,
+                ProjectDir = options.UseT4 ? projectPath : null,
 #endif
             };
 
@@ -109,7 +111,7 @@ namespace RevEng.Core
 
             filePaths = Save(
                 scaffoldedModel,
-                Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)));
+                Path.GetFullPath(Path.Combine(options.ProjectPath, outputPath ?? string.Empty)));
             return filePaths;
         }
 
