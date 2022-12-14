@@ -243,7 +243,9 @@ namespace RevEng.Core
                         continue;
                     }
 
-                    if (path.EndsWith(Path.Join("CodeTemplates", "EFCore")))
+                    if (path.EndsWith(Path.Join("CodeTemplates", "EFCore"))
+                        && File.Exists(Path.Join(path, "EntityType.T4"))
+                        && File.Exists(Path.Join(path, "DbContext.T4")))
                     {
                         var outputRoot = path.Replace(Path.Join(Path.DirectorySeparatorChar.ToString(), "CodeTemplates", "EFCore"), string.Empty);
                         var output = outputRoot.Replace(Path.Join(projectPath, Path.DirectorySeparatorChar.ToString()), string.Empty);
