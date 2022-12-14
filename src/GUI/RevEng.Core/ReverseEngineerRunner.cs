@@ -91,8 +91,17 @@ namespace RevEng.Core
 
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
 
-            SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace);
+            SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
 
+#if CORE70
+            if (options.UseT4)
+            {
+                foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
+                {
+                    scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
+                }
+            }
+#endif
             if (options.SelectedToBeGenerated != 2)
             {
                 bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
@@ -219,6 +228,33 @@ namespace RevEng.Core
                 }
             }
         }
+
+#if CORE70
+        private static List<(string Path, string OutputPath)> GetAlternateCodeTemplatePaths(string projectPath)
+        {
+            var result = new List<(string Path, string OutputPath)>();
+
+            if (Directory.Exists(projectPath))
+            {
+                foreach (var path in Directory.EnumerateDirectories(projectPath, "*", new EnumerationOptions { RecurseSubdirectories = true }))
+                {
+                    if (path == Path.Join(projectPath, "CodeTemplates", "EFCore"))
+                    {
+                        continue;
+                    }
+
+                    if (path.EndsWith(Path.Join("CodeTemplates", "EFCore")))
+                    {
+                        var outputRoot = path.Replace(Path.Join(Path.DirectorySeparatorChar.ToString(), "CodeTemplates", "EFCore"), string.Empty);
+                        var output = outputRoot.Replace(Path.Join(projectPath, Path.DirectorySeparatorChar.ToString()), string.Empty);
+                        result.Add((outputRoot, output));
+                    }
+                }
+            }
+
+            return result;
+        }
+#endif
 
         private static SavedModelFiles CreateCleanupPaths(SavedModelFiles procedurePaths, SavedModelFiles functionPaths, SavedModelFiles filePaths)
         {
