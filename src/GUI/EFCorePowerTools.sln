@@ -76,6 +76,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerToolsExtensionPack", "PowerToolsExtensionPack\PowerToolsExtensionPack.csproj", "{5F2D0F07-F822-4C9D-88CF-DBF0C0199B4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizardItemTemplate", "WizardItemTemplate\WizardItemTemplate.csproj", "{8C77EC98-0296-4DBE-8064-11C4B4315181}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -422,6 +424,18 @@ Global
 		{5F2D0F07-F822-4C9D-88CF-DBF0C0199B4F}.Release|arm64.Build.0 = Release|arm64
 		{5F2D0F07-F822-4C9D-88CF-DBF0C0199B4F}.Release|x86.ActiveCfg = Release|x86
 		{5F2D0F07-F822-4C9D-88CF-DBF0C0199B4F}.Release|x86.Build.0 = Release|x86
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Debug|arm64.ActiveCfg = Debug|arm64
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Debug|arm64.Build.0 = Debug|arm64
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Debug|x86.ActiveCfg = Debug|x86
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Debug|x86.Build.0 = Debug|x86
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Release|arm64.ActiveCfg = Release|arm64
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Release|arm64.Build.0 = Release|arm64
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Release|x86.ActiveCfg = Release|x86
+		{8C77EC98-0296-4DBE-8064-11C4B4315181}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

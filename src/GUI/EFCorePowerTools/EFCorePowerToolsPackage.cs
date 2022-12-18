@@ -48,6 +48,7 @@ namespace EFCorePowerTools
         private readonly MigrationsHandler migrationsHandler;
         private readonly CompareHandler compareHandler;
         private IServiceProvider extensionServices;
+        private static EFCorePowerToolsPackage instance;
 
         public EFCorePowerToolsPackage()
         {
@@ -57,6 +58,15 @@ namespace EFCorePowerTools
             dgmlNugetHandler = new DgmlNugetHandler();
             migrationsHandler = new MigrationsHandler(this);
             compareHandler = new CompareHandler(this);
+            instance = this;
+        }
+
+        public static EFCorePowerToolsPackage Instance
+        {
+            get
+            {
+                return instance;
+            }
         }
 
         internal void LogError(List<string> statusMessages, Exception exception)

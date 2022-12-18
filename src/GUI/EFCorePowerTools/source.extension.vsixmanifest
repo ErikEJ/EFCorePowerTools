@@ -19,10 +19,10 @@ About - Displays version and other diagnostic information about your Visual Stud
         <Tags>sql sqlite sqlce entityframework efcore codegeneration database</Tags>
     </Metadata>
     <Installation>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0,17.0)" />
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
-			<ProductArchitecture>amd64</ProductArchitecture>			
-		</InstallationTarget>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0,17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.7.2,)" />
@@ -33,5 +33,6 @@ About - Displays version and other diagnostic information about your Visual Stud
     </Prerequisites>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:ProjectName="WizardItemTemplate" d:TargetPath="|WizardItemTemplate;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" TargetVersion="[17.0,18.0)" />
     </Assets>
 </PackageManifest>

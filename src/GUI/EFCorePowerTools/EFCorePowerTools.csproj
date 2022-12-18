@@ -214,6 +214,13 @@
       <Project>{d4594a0c-b02f-469d-9521-f0bdd5a30fc0}</Project>
       <Name>RevEng.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WizardItemTemplate\WizardItemTemplate.csproj">
+      <Project>{8C77EC98-0296-4DBE-8064-11C4B4315181}</Project>
+      <Name>WizardItemTemplate</Name>
+      <VSIXSubPath>ItemTemplates</VSIXSubPath>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.17.0.146, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
