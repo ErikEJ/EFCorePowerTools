@@ -44,7 +44,9 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 Download the latest version of the Visual Studio extension from [Visual Studio MarketPlace](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
 
-Or just install from the Extensions dialog in Visual Studio.
+Or simply install from the Extensions dialog in Visual Studio.
+
+I have also published [EF Core Power Pack](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerPack) which includes some helpful DDEX providers as well as EF Core Power Tools.
 
 ## Daily build
 
