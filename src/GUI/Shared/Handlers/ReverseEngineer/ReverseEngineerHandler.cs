@@ -640,11 +640,20 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     var finalText = reverseEngineerHelper.GetReadMeText(options, File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8));
                     var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
 
+                    finalText = AddResultToFinalText(finalText, revEngResult);
+
                     File.WriteAllText(readmePath, finalText, Encoding.UTF8);
 
-                    await VS.Documents.OpenAsync(readmePath);
-
-                    await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                    if (revEngResult.HasIssues)
+                    {
+                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        await VS.Documents.OpenAsync(readmePath);
+                    }
+                    else
+                    {
+                        await VS.Documents.OpenAsync(readmePath);
+                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                    }
                 }
             }
 
@@ -667,17 +676,41 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 VSHelper.ShowMessage(errors);
             }
 
-            if (revEngResult.EntityErrors.Count > 0)
+            if (revEngResult.EntityErrors.Any())
             {
                 package.LogError(revEngResult.EntityErrors, null);
             }
 
-            if (revEngResult.EntityWarnings.Count > 0)
+            if (revEngResult.EntityWarnings.Any())
             {
                 package.LogError(revEngResult.EntityWarnings, null);
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
+        }
+
+        private string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
+        {
+            if (revEngResult.HasIssues)
+            {
+                var warningText = new StringBuilder();
+
+                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
+
+                foreach (var errorItem in revEngResult.EntityErrors)
+                {
+                    warningText.AppendLine(errorItem);
+                }
+
+                foreach (var warningItem in revEngResult.EntityWarnings)
+                {
+                    warningText.AppendLine(warningItem);
+                }
+
+                finalText = warningText.ToString() + Environment.NewLine + finalText;
+            }
+
+            return finalText;
         }
 
         private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)

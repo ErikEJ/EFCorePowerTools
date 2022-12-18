@@ -1,0 +1,18 @@
+{
+  "description": "A package that contains EF Core Power Tools and some useful DDEX providers that improve your experience when using EF Core Power Tools.",
+  "version": "1.0.0.0",
+  "extensions": [
+    {
+      "vsixId": "f4c4712c-ceae-4803-8e52-0e2049d5de9f",
+      "name": "EF Core Power Tools"
+    },
+    {
+      "vsixId": "0b471821-68a4-49dd-b175-e6daf4e5cebf",
+      "name": "VisualStudio.Data.Sqlite"
+    },
+    {
+      "vsixId": "Npgsql.VSIX.07074491-d0c6-4138-9d44-ea3f8920e84b",
+      "name": "Npgsql PostgreSQL Integration"
+    }
+  ]
+}
