@@ -38,7 +38,7 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 ## Requirements 
 
-.NET Framework 4.7.2 or later is required. For EF Core reverse engineering, .NET Core 3.1 x64 runtime must be installed.
+.NET Framework 4.7.2 or later is required. For EF Core reverse engineering, .NET Core 3.1 or .NET 6.0 x64 runtime must be installed.
 
 ## Release
 
