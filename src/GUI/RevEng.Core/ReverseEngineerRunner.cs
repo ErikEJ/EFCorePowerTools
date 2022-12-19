@@ -243,12 +243,12 @@ namespace RevEng.Core
                         continue;
                     }
 
-                    if (path.EndsWith(Path.Join("CodeTemplates", "EFCore"))
-                        && File.Exists(Path.Join(path, "EntityType.T4"))
-                        && File.Exists(Path.Join(path, "DbContext.T4")))
+                    if (path.EndsWith(Path.Join("CodeTemplates", "EFCore"), StringComparison.InvariantCultureIgnoreCase)
+                        && (File.Exists(Path.Join(path, "EntityType.T4"))
+                        || File.Exists(Path.Join(path, "DbContext.T4"))))
                     {
-                        var outputRoot = path.Replace(Path.Join(Path.DirectorySeparatorChar.ToString(), "CodeTemplates", "EFCore"), string.Empty);
-                        var output = outputRoot.Replace(Path.Join(projectPath, Path.DirectorySeparatorChar.ToString()), string.Empty);
+                        var outputRoot = path.Replace(Path.Join(Path.DirectorySeparatorChar.ToString(), "CodeTemplates", "EFCore"), string.Empty, StringComparison.InvariantCultureIgnoreCase);
+                        var output = outputRoot.Replace(Path.Join(projectPath, Path.DirectorySeparatorChar.ToString()), string.Empty, StringComparison.InvariantCultureIgnoreCase);
                         result.Add((outputRoot, output));
                     }
                 }
