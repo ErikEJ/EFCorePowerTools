@@ -12,6 +12,6 @@
     <LanguageTag>csharp</LanguageTag>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem ReplaceParameters="false" >efpt.config.json</ProjectItem>
+    <ProjectItem TargetFileName="efpt.config.json" ReplaceParameters="false" >efpt.config.json</ProjectItem>
   </TemplateContent>
 </VSTemplate>
