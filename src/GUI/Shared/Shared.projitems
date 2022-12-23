@@ -101,6 +101,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Telemetry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsDataHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VsThemes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\PackageManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\ReverseEngineerWizardLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Options\AdvancedOptions.cs">
       <SubType>Component</SubType>
