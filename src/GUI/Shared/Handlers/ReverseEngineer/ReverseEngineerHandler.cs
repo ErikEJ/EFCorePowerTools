@@ -78,12 +78,20 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return (optionsPath, project);
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             try
             {
+                var project = await VS.Solutions.GetActiveProjectAsync();
+
+                if (project == null)
+                {
+                    await VS.StatusBar.ShowMessageAsync($"Unable to find active project");
+                    return;
+                }
+
                 if (await VSHelper.IsDebugModeAsync())
                 {
                     VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);

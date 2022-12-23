@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
-    <Name>EF Core Power Tools Reverse Engineer Configuration</Name>
+    <Name>EF Core Database First Wizard</Name>
     <Description>Adds Entity Framework Core Power Tools Reverse Engineering eftp.config.json file to your project</Description>
     <Icon>WizardItemTemplate.ico</Icon>
     <TemplateID>46304267-cec1-41fc-b025-6f81d12695ac</TemplateID>
     <AppliesTo>CSharp + CPS</AppliesTo>
     <ProjectType>CSharp</ProjectType>
-    <Hidden>true</Hidden>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <LanguageTag>csharp</LanguageTag>
   </TemplateData>
   <TemplateContent>
-    <ProjectItem TargetFileName="efpt.config.json" ReplaceParameters="false" >efpt.config.json</ProjectItem>
+    <ProjectItem TargetFileName="efpt.config.json" OpenInEditor="false" ReplaceParameters="false" >efpt.config.json</ProjectItem>
   </TemplateContent>
+  <WizardExtension>
+      <Assembly>EFCorePowerTools, Version=2.6.0.0, Culture=neutral, PublicKeyToken=d9645e6262c2eca7</Assembly>
+      <FullClassName>EFCorePowerTools.ItemWizard.ReverseEngineerWizardLauncher</FullClassName>
+  </WizardExtension>    
 </VSTemplate>

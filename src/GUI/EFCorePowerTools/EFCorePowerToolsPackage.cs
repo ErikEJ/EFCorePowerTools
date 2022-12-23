@@ -21,6 +21,7 @@ using EFCorePowerTools.Handlers;
 using EFCorePowerTools.Handlers.Compare;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
+using EFCorePowerTools.ItemWizard;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Options;
@@ -101,6 +102,8 @@ namespace EFCorePowerTools
             try
             {
                 await base.InitializeAsync(cancellationToken, progress);
+
+                PackageManager.Package = this;
 
                 var oleMenuCommandService = await GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
 
@@ -449,7 +452,7 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
                 {
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project);
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync();
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
