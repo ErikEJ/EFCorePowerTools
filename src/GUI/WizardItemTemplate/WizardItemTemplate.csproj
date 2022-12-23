@@ -62,7 +62,6 @@
   <ItemGroup>
     <None Include="efpt.config.json" />
     <None Include="Key.snk" />
-    <None Include="WizardItemTemplateOld.ico" />
   </ItemGroup>
   <ItemGroup>
     <VSTemplate Include="WizardItemTemplate.vstemplate">

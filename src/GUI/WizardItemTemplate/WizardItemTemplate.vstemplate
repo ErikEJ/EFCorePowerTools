@@ -2,7 +2,7 @@
 <VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
   <TemplateData>
     <Name>EF Core Database First Wizard</Name>
-    <Description>Adds Entity Framework Core Power Tools Reverse Engineering eftp.config.json file to your project</Description>
+    <Description>An EF Core Power Tools Reverse Engineering configuration file.&#xD;&#xA;&#xD;&#xA;You can run database first reverse engineering after schema changes from the context menu of the efpt.config.json file.&#xD;&#xA;&#xD;&#xA;EF Core Power Tools</Description>
     <Icon>WizardItemTemplate.ico</Icon>
     <TemplateID>46304267-cec1-41fc-b025-6f81d12695ac</TemplateID>
     <AppliesTo>CSharp + CPS</AppliesTo>
