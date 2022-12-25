@@ -32,5 +32,8 @@ namespace RevEng.Common
 
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public string ColumnPatternReplaceWith { get; set; }
+
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        public List<string> WordsToExcludeFromPluralization { get; set; }
     }
 }
