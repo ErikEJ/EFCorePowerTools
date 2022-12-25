@@ -26,5 +26,25 @@ namespace UnitTests
 
             Assert.True("Dogs" == result);
         }
+
+        [Test]
+        public void NotPluralizeUserData()
+        {
+            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { "UserData" });
+            var sut = new HumanizerPluralizer();
+            var result = sut.Pluralize("UserData");
+
+            Assert.True("UserData" == result);
+        }
+
+        [Test]
+        public void NotSingularizeUserData()
+        {
+            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { "UserData" });
+            var sut = new HumanizerPluralizer();
+            var result = sut.Singularize("UserData");
+
+            Assert.True("UserData" == result);
+        }
     }
 }
