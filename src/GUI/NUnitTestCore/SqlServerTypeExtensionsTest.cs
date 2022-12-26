@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using RevEng.Core;
 
-namespace NUnitTestCore
+namespace UnitTests
 {
     [TestFixture]
     public class SqlServerTypeExtensionsTest

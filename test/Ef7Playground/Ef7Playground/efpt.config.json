@@ -184,6 +184,10 @@
       }
    ],
    "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Northwind",
+   "UncountableWords": [
+      "Status",
+      "Data"
+   ],
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

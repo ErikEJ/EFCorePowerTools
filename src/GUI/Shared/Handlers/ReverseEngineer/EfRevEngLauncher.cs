@@ -86,6 +86,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseT4 = options.UseT4,
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
+                UncountableWords = options.UncountableWords,
                 UseSpatial = options.UseSpatial,
                 UseHierarchyId = options.UseHierarchyId,
                 UseDbContextSplitting = options.UseDbContextSplitting,
