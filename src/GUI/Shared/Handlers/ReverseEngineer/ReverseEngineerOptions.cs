@@ -27,6 +27,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public List<SerializationTableModel> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
         public bool UseInflector { get; set; }
+        public List<string> UncountableWords { get; set; }
         public bool UseHandleBars { get; set; }
         public bool UseT4 { get; set; }
         public int SelectedHandlebarsLanguage { get; set; }

@@ -42,6 +42,7 @@ namespace RevEng.Common
         public Model CustomPropertyReplacers { get; set; }
         public string DefaultDacpacSchema { get; set; }
         public bool UseLegacyPluralizer { get; set; }
+        public List<string> UncountableWords { get; set; }
         public bool UseSpatial { get; set; }
         public bool UseHierarchyId { get; set; }
         public bool UseDbContextSplitting { get; set; }

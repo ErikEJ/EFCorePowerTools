@@ -3,6 +3,7 @@ using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 #endif
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using Humanizer.Inflections;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -104,12 +105,6 @@ namespace RevEng.Core
                     => new CustomTemplateFileService(options.OptionsPath));
             }
 
-#if CORE60
-            if (options.UseLegacyPluralizer)
-            {
-                serviceCollection.AddSingleton<IPluralizer, LegacyPluralizer>();
-            }
-#else
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)
@@ -118,10 +113,14 @@ namespace RevEng.Core
                 }
                 else
                 {
+                    if (options.UncountableWords != null && options.UncountableWords.Count > 0)
+                    {
+                        options.UncountableWords.ForEach(w => Vocabularies.Default.AddUncountable(w));
+                    }
+
                     serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
                 }
             }
-#endif
 
             serviceCollection.AddNotImplementedDesignTimeServices();
 
