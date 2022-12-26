@@ -8,43 +8,51 @@ namespace UnitTests
     public class HumanizerPluralizerTest
     {
         [Test]
-        public void NotPluralizeAWordWhenExcluded()
+        [TestCase("Cat")]
+        [TestCase("CatDatum")]
+        public void NotPluralizeAWordWhenExcluded(string word)
         {
-            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { "Dog" });
+            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { word });
             var sut = new HumanizerPluralizer();
-            var result = sut.Pluralize("Dog");
+            var result = sut.Pluralize(word);
 
-            Assert.True("Dog" == result);
+            Assert.True(word == result);
         }
 
         [Test]
-        public void PluralizeAWordWhenNotExcluded()
+        [TestCase("Turtle", "Turtles")]
+        [TestCase("TurtleDatum", "TurtleData")]
+        public void PluralizeAWordWhenNotExcluded(string word, string expected)
         {
-            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { "Cat" });
+            HumanizerPluralizer.SetWordsNotToAlter(new List<string>());
             var sut = new HumanizerPluralizer();
-            var result = sut.Pluralize("Dog");
+            var result = sut.Pluralize(word);
 
-            Assert.True("Dogs" == result);
+            Assert.True(expected == result);
         }
 
         [Test]
-        public void NotPluralizeUserData()
+        [TestCase("Users")]
+        [TestCase("UserData")]
+        public void NotSingularizeAWordWhenExcluded(string word)
         {
-            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { "UserData" });
+            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { word });
             var sut = new HumanizerPluralizer();
-            var result = sut.Pluralize("UserData");
+            var result = sut.Singularize(word);
 
-            Assert.True("UserData" == result);
+            Assert.True(word == result);
         }
 
         [Test]
-        public void NotSingularizeUserData()
+        [TestCase("Tortoises", "Tortoise")]
+        [TestCase("TortoiseData", "TortoiseDatum")]
+        public void SingularizeAWordWhenNotExcluded(string word, string expected)
         {
-            HumanizerPluralizer.SetWordsNotToAlter(new List<string> { "UserData" });
+            HumanizerPluralizer.SetWordsNotToAlter(new List<string>());
             var sut = new HumanizerPluralizer();
-            var result = sut.Singularize("UserData");
+            var result = sut.Singularize(word);
 
-            Assert.True("UserData" == result);
+            Assert.True(expected == result);
         }
     }
 }
