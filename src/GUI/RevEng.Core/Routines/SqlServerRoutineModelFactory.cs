@@ -14,6 +14,8 @@ namespace RevEng.Core.Procedures
 {
     public abstract class SqlServerRoutineModelFactory
     {
+        public string RoutineSql { get; set; }
+
         public string RoutineType { get; set; }
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
@@ -36,34 +38,11 @@ namespace RevEng.Core.Procedures
             using (var connection = new SqlConnection(connectionString))
             {
                 var sql = new StringBuilder();
-#pragma warning disable CA1305 // Specify IFormatProvider
-                sql.AppendLine($@"
-SELECT
-    ROUTINE_SCHEMA,
-    ROUTINE_NAME,
-    CAST(CASE WHEN (ROUTINE_TYPE = 'FUNCTION' AND DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
-FROM INFORMATION_SCHEMA.ROUTINES
-WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
-AND OBJECTPROPERTY(OBJECT_ID(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)), 'IsMSShipped') = 0
-AND (
-            select 
-                major_id 
-            from 
-                sys.extended_properties 
-            where 
-                major_id = object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) and 
-                minor_id = 0 and 
-                class = 1 and 
-                name = N'microsoft_database_tools_support'
-        ) IS NULL 
-AND ROUTINE_TYPE = N'{RoutineType}'");
-#pragma warning restore CA1305 // Specify IFormatProvider
-
+                sql.AppendLine(RoutineSql);
 #if CORE31
                 // Filters out table-valued functions without filtering out stored procedures
                 sql.AppendLine("AND COALESCE(DATA_TYPE, '') != 'TABLE'");
 #endif
-
                 sql.AppendLine("ORDER BY ROUTINE_NAME;");
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities

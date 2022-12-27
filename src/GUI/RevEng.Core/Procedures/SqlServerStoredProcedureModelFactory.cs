@@ -17,6 +17,27 @@ namespace RevEng.Core.Procedures
         public SqlServerStoredProcedureModelFactory()
         {
             RoutineType = "PROCEDURE";
+
+            RoutineSql = $@"
+SELECT
+    ROUTINE_SCHEMA,
+    ROUTINE_NAME,
+    CAST(0 AS bit) AS IS_SCALAR
+FROM INFORMATION_SCHEMA.ROUTINES
+WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
+AND OBJECTPROPERTY(OBJECT_ID(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)), 'IsMSShipped') = 0
+AND (
+            select
+                major_id 
+            from 
+                sys.extended_properties 
+            where 
+                major_id = object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) and 
+                minor_id = 0 and 
+                class = 1 and 
+                name = N'microsoft_database_tools_support'
+        ) IS NULL 
+AND ROUTINE_TYPE = N'PROCEDURE'";
         }
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
