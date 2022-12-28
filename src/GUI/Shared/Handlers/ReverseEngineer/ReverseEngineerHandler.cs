@@ -655,11 +655,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (revEngResult.HasIssues)
                     {
                         await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                        await VS.Documents.OpenAsync(readmePath);
+                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
                     }
                     else
                     {
-                        await VS.Documents.OpenAsync(readmePath);
+                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
                         await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                     }
                 }
