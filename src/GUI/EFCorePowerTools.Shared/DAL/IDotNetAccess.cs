@@ -4,6 +4,6 @@ namespace EFCorePowerTools.Common.DAL
 {
     public interface IDotNetAccess
     {
-        Version GetExtensionVersion();
+        string GetExtensionVersion();
     }
 }

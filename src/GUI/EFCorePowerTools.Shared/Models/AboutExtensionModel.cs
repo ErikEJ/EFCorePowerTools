@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
@@ -7,14 +6,14 @@ namespace EFCorePowerTools.Common.Models
 {
     public class AboutExtensionModel : INotifyPropertyChanged
     {
-        private Version extensionVersion;
+        private string extensionVersion;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static string SourceCodeUrl => "https://github.com/ErikEJ/EFCorePowerTools";
         public static string MarketplaceUrl => "https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details";
 
-        public Version ExtensionVersion
+        public string ExtensionVersion
         {
             get => extensionVersion;
             set
