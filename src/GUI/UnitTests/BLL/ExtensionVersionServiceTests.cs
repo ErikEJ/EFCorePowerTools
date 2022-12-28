@@ -37,7 +37,7 @@ namespace UnitTests.BLL
         public void SetExtensionVersion_ProvideVersion()
         {
             // Arrange
-            var version = new Version(50, 10, 0, 4);
+            var version = "50.10.0.4";
             var dnaMock = new Mock<IDotNetAccess>();
             dnaMock.Setup(m => m.GetExtensionVersion()).Returns(version);
             var aem = new AboutExtensionModel();

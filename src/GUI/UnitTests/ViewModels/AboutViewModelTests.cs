@@ -101,7 +101,7 @@ namespace UnitTests.ViewModels
         public void LoadedCommand_Execute_EmptyModel_LoadData()
         {
             // Arrange
-            var extensionVersion = new Version(10, 14, 15, 0);
+            var extensionVersion = "10.14.15.0";
             var aem = new AboutExtensionModel();
             var evsMock = new Mock<IExtensionVersionService>();
             evsMock.Setup(m => m.SetExtensionVersion(aem)).Callback<AboutExtensionModel>(m => m.ExtensionVersion = extensionVersion);
@@ -120,7 +120,7 @@ namespace UnitTests.ViewModels
         public void LoadedCommand_Execute_FilledModel_FormatData()
         {
             // Arrange
-            var extensionVersion = new Version(10, 14, 15, 0);
+            var extensionVersion = "10.14.15.0";
             var aem = new AboutExtensionModel
             {
                 ExtensionVersion = extensionVersion,
