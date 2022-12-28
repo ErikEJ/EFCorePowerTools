@@ -241,7 +241,7 @@ namespace EFCorePowerTools
                 if (AdvancedOptions.Instance.ParticipateInTelemetry)
                 {
                     Telemetry.Initialize(
-                        System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                        FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion,
                         (await VisualStudioVersionAsync()).ToString(),
                         "00dac4de-337c-4fed-a835-70db30078b2a");
                 }

@@ -119,7 +119,7 @@ namespace EFCorePowerTools.Dialogs
         {
             try
             {
-                ReleaseNotesLink.Inlines.Add(new Run(typeof(EFCorePowerToolsPackage).Assembly.GetName().Version.ToString(3)));
+                ReleaseNotesLink.Inlines.Add(new Run(FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion));
             }
             catch
             {

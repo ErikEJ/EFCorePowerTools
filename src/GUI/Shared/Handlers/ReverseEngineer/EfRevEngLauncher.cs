@@ -25,7 +25,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             this.options = options;
             this.codeGenerationMode = codeGenerationMode;
-            var versionSuffix = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var versionSuffix = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion;
 
             revengFolder = "efreveng3.";
 

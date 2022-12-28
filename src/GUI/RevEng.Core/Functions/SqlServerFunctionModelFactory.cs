@@ -37,7 +37,6 @@ AND (
                 name = N'microsoft_database_tools_support'
         ) IS NULL 
 AND ROUTINE_TYPE = N'FUNCTION'";
-
         }
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
