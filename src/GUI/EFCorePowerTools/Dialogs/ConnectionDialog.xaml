@@ -39,12 +39,9 @@
             x:Name="cmdDatabaseType"
             SelectedValue="{Binding DbType, Mode=TwoWay}" 
             SelectedValuePath="Tag" Grid.Row="3" Margin="12,2" Width="136" HorizontalAlignment="Left" >
-                <ComboBoxItem Tag="5" >PostgreSQL</ComboBoxItem>
-                <ComboBoxItem Tag="4" >SQLite</ComboBoxItem>
                 <ComboBoxItem Tag="3" >Azure SQL DB</ComboBoxItem>
                 <ComboBoxItem Tag="10">Firebird</ComboBoxItem>
                 <ComboBoxItem Tag="6" >MySQL</ComboBoxItem>
-                <ComboBoxItem Tag="7" >Oracle</ComboBoxItem>
             </ComboBox>
 
         </Grid>
@@ -61,20 +58,10 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="{x:Static locale:ReverseEngineerLocale.ConnectionSample}" Margin="12,0" />
-            <TextBox Margin="12, 2" x:Name="txtSample" 
+            <TextBox Margin="12,4,12,0" x:Name="txtSample" 
                      Grid.Column="1" 
                      IsTabStop="False" />
         </Grid>
-
-        <TextBlock
-            Grid.Row="5" ToolTip="{x:Static locale:ReverseEngineerLocale.DDEXProviderExperience}"
-                Margin="12,12,12,12">
-                <Hyperlink                   
-                    x:Name="DDEXLink"                  
-                    RequestNavigate="DDEXLink_RequestNavigate"
-                    >
-                </Hyperlink>
-        </TextBlock>
 
         <dw:DialogButton Command="{Binding CancelCommand}"
                          IsCancel="True"

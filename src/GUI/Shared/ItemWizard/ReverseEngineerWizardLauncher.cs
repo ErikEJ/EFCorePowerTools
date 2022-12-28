@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TemplateWizard;
 
 namespace EFCorePowerTools.ItemWizard
@@ -17,7 +18,7 @@ namespace EFCorePowerTools.ItemWizard
             if (PackageManager.Package != null)
             {
                 var handler = new ReverseEngineerHandler(PackageManager.Package);
-                _ = handler.ReverseEngineerCodeFirstAsync();
+                handler.ReverseEngineerCodeFirstAsync().FireAndForget();
             }
         }
 
