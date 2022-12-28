@@ -89,7 +89,7 @@ namespace EFCorePowerTools.ViewModels
         {
             Version = aboutExtensionModel.ExtensionVersion == null
                           ? AboutLocale.VersionNotAvailable
-                          : $"{AboutLocale.Version} {aboutExtensionModel.ExtensionVersion.ToString(4)}";
+                          : $"{AboutLocale.Version} {aboutExtensionModel.ExtensionVersion}";
         }
 
         private void AboutExtensionModelOnPropertyChanged(

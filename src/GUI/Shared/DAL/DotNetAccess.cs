@@ -5,6 +5,6 @@ namespace EFCorePowerTools.DAL
 {
     public class DotNetAccess : IDotNetAccess
     {
-        string IDotNetAccess.GetExtensionVersion() => FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion;
+        string IDotNetAccess.GetExtensionVersion() => FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage)?.Assembly.Location).FileVersion ?? null;
     }
 }
