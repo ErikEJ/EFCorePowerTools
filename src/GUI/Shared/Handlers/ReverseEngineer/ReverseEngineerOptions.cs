@@ -48,8 +48,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool FilterSchemas { get; set; }
         public bool UseBoolPropertiesWithoutDefaultSql { get; set; }
         public bool UseNullableReferences { get; set; }
-        public bool UseNoConstructor { get; set; }
-        public bool UseNoNavigations { get; set; }
         public bool UseNoObjectFilter { get; set; }
         public bool UseNoDefaultConstructor { get; set; }
         public bool UseManyToManyEntity { get; set; }

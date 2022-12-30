@@ -56,8 +56,7 @@ namespace RevEng.Core
                 .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
                      new CommentCSharpEntityTypeGenerator(
                         provider.GetService<ICSharpHelper>(),
-                        options.UseNullableReferences,
-                        options.UseNoConstructor))
+                        options.UseNullableReferences))
 #endif
 #if CORE60
 

@@ -93,8 +93,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNodaTime = options.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNullableReferences = options.UseNullableReferences,
-                UseNoConstructor = options.UseNoConstructor,
-                UseNoNavigations = options.UseNoNavigations,
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,

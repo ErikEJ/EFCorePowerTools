@@ -106,7 +106,6 @@ namespace RevEng.Core
                     modelOptions,
                     codeOptions,
                     options.UseBoolPropertiesWithoutDefaultSql,
-                    options.UseNoNavigations,
                     options.SelectedToBeGenerated == 1, // DbContext only
                     options.SelectedToBeGenerated == 2, // Entities only
                     options.UseSchemaFolders);
@@ -344,7 +343,6 @@ namespace RevEng.Core
             ModelReverseEngineerOptions modelOptions,
             ModelCodeGenerationOptions codeOptions,
             bool removeNullableBoolDefaults,
-            bool excludeNavigations,
             bool dbContextOnly,
             bool entitiesOnly,
             bool useSchemaFolders)
@@ -366,14 +364,6 @@ namespace RevEng.Core
                                 && (column.DefaultValueSql?.Trim() == "1" || column.DefaultValueSql?.Trim() == "0")))))
                 {
                     column.DefaultValueSql = null;
-                }
-            }
-
-            if (excludeNavigations)
-            {
-                foreach (var table in databaseModel.Tables)
-                {
-                    table.ForeignKeys.Clear();
                 }
             }
 

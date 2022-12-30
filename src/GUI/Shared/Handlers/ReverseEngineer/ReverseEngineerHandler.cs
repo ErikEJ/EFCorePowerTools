@@ -515,8 +515,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 MapHierarchyId = options.UseHierarchyId,
                 MapNodaTimeTypes = options.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
-                UseNoConstructor = options.UseNoConstructor,
-                UseNoNavigations = options.UseNoNavigations,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
@@ -561,8 +559,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated;
             options.UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
             options.UseNullableReferences = modelingOptionsResult.Payload.UseNullableReferences;
-            options.UseNoConstructor = modelingOptionsResult.Payload.UseNoConstructor;
-            options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
             options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
             options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;

@@ -401,36 +401,6 @@ namespace EFCorePowerTools.Common.Models
             }
         }
 
-        public bool UseNoConstructor
-        {
-            get => useNoConstructor;
-            set
-            {
-                if (value == useNoConstructor)
-                {
-                    return;
-                }
-
-                useNoConstructor = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool UseNoNavigations
-        {
-            get => useNoNavigations;
-            set
-            {
-                if (value == useNoNavigations)
-                {
-                    return;
-                }
-
-                useNoNavigations = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool UseNoObjectFilter
         {
             get => useNoObjectFilter;

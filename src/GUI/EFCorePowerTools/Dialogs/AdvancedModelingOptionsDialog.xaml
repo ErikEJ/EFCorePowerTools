@@ -13,7 +13,7 @@
                  ResizeMode="NoResize"
                  SizeToContent="WidthAndHeight"
                  WindowStartupLocation="CenterOwner"
-                 mc:Ignorable="d" Height="500">
+                 mc:Ignorable="d" Height="440">
 
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
@@ -111,20 +111,6 @@
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="23" />
 
-                </StackPanel>
-            </GroupBox>
-
-            <GroupBox Header="{x:Static locale:ReverseEngineerLocale.POCOEntities}">
-                <StackPanel>
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveConstructorFromEntities}"
-                      IsChecked="{Binding Model.UseNoConstructor}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="30" />
-
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveNavigationsFromEntities}"
-                      IsChecked="{Binding Model.UseNoNavigations}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="31" />
                 </StackPanel>
             </GroupBox>
 
