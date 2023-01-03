@@ -519,6 +519,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoObjectFilter = options.UseNoObjectFilter,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
+                UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
             };
 
             var modelDialog = package.GetView<IModelingOptionsDialog>()
@@ -562,6 +563,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
             options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
             options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
+            options.UseDateOnlyTimeOnly = modelingOptionsResult.Payload.UseDateOnlyTimeOnly;
 
             return true;
         }

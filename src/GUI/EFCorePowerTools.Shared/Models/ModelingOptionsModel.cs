@@ -33,11 +33,10 @@ namespace EFCorePowerTools.Common.Models
         private bool useEf6Pluralizer;
         private bool useBoolPropertiesWithoutDefaultSql;
         private bool useNullableReferences;
-        private bool useNoConstructor;
         private bool useNoDefaultConstructor;
-        private bool useNoNavigations;
         private bool useNoObjectFilter;
         private bool useManyToManyEntity;
+        private bool useDateOnlyTimeOnly;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -442,6 +441,21 @@ namespace EFCorePowerTools.Common.Models
                 }
 
                 useManyToManyEntity = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseDateOnlyTimeOnly
+        {
+            get => useDateOnlyTimeOnly;
+            set
+            {
+                if (value == useDateOnlyTimeOnly)
+                {
+                    return;
+                }
+
+                useDateOnlyTimeOnly = value;
                 OnPropertyChanged();
             }
         }

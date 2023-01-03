@@ -38,6 +38,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseSchemaFolders = presets.UseSchemaFolders;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
+            Model.UseDateOnlyTimeOnly= presets.UseDateOnlyTimeOnly;
         }
 
         private void Ok_Executed()

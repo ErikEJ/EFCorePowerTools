@@ -22,6 +22,7 @@ using RevEng.Common;
 using RevEng.Core.Procedures;
 using System.Collections.Generic;
 #if CORE60
+using ErikEJ.EntityFrameworkCore.SqlServer.Design;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
 using System;
@@ -159,6 +160,12 @@ namespace RevEng.Core
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
+
+                    if (options.UseDateOnlyTimeOnly)
+                    {
+                        var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
+                        dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
+                    }
 #endif
 
                     break;
@@ -195,6 +202,12 @@ namespace RevEng.Core
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
+                    }
+
+                    if (options.UseDateOnlyTimeOnly)
+                    {
+                        var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
+                        dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
 #endif
 

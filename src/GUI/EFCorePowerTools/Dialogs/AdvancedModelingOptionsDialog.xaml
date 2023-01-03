@@ -101,15 +101,20 @@
                           Style="{StaticResource MarginCheckBlockStyle}"
                           TabIndex="21" />
                     
+                    <CheckBox Content="Map DateOnly and TimeOnly"
+                      IsChecked="{Binding Model.UseDateOnlyTimeOnly}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="22" />
+
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
                       IsChecked="{Binding Model.MapNodaTimeTypes}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="22" />
+                      TabIndex="23" />
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseEF6Pluralizer}"
                       IsChecked="{Binding Model.UseEf6Pluralizer}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="23" />
+                      TabIndex="24" />
 
                 </StackPanel>
             </GroupBox>
@@ -121,12 +126,12 @@
             <dw:DialogButton Command="{Binding OkCommand}"
                              Content="{x:Static locale:SharedLocale.Ok}"
                              IsDefault="True"
-                             TabIndex="20" />
+                             TabIndex="40" />
             <dw:DialogButton Command="{Binding CancelCommand}"
                              Content="{x:Static locale:SharedLocale.Cancel}"
                              IsCancel="True"
                              SnapsToDevicePixels="False"
-                             TabIndex="21" />
+                             TabIndex="41" />
         </StackPanel>
     </Grid>
 </dw:DialogWindow>

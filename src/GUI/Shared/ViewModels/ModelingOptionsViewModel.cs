@@ -119,6 +119,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
+            Model.UseDateOnlyTimeOnly = presets.UseDateOnlyTimeOnly;
 
             Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }
@@ -195,6 +196,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
             Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
             Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
+            Model.UseDateOnlyTimeOnly = advancedModelingOptionsResult.Payload.UseDateOnlyTimeOnly;
         }
     }
 }
