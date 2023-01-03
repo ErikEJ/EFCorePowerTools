@@ -12,7 +12,6 @@ namespace Ef7Playground.Models.POCO;
 [Index("OrderId", Name = "OrdersOrder_Details")]
 [Index("ProductId", Name = "ProductID")]
 [Index("ProductId", Name = "ProductsOrder_Details")]
-[Table("Order Details", Schema = "dbo")]
 public partial class OrderDetail
 {
     [Key]

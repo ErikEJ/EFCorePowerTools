@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ef7Playground.Models.POCO;
 
+/// <summary>
+/// Shipper table comment
+/// </summary>
 [Table("Shippers", Schema = "dbo")]
 public partial class Shipper
 {

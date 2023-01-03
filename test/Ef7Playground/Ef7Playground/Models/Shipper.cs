@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Ef7Playground.Models;
 
+/// <summary>
+/// Shipper table comment
+/// </summary>
 public partial class Shipper
 {
     public int ShipperId { get; set; }

@@ -59,6 +59,9 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<SalesTotalsByAmount> SalesTotalsByAmounts { get; set; }
 
+    /// <summary>
+    /// Shipper table comment
+    /// </summary>
     public virtual DbSet<Shipper> Shippers { get; set; }
 
     public virtual DbSet<Special> Specials { get; set; }
@@ -525,7 +528,11 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<Shipper>(entity =>
         {
-            entity.ToTable(tb => tb.HasTrigger("ShippersTrigger"));
+            entity.ToTable(tb =>
+                {
+                    tb.HasComment("Shipper table comment");
+                    tb.HasTrigger("ShippersTrigger");
+                });
 
             entity.Property(e => e.ShipperId).HasColumnName("ShipperID");
             entity.Property(e => e.CompanyName).HasMaxLength(40);

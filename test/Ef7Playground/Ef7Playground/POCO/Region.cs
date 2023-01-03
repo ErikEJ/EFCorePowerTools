@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ef7Playground.Models.POCO;
 
-[Table("Region")]
 [Table("Region", Schema = "dbo")]
 public partial class Region
 {
