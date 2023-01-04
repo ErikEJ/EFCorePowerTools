@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Threading;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -32,7 +33,23 @@ namespace EFCorePowerTools.Extensions
                     continue;
                 }
 
-                file.ExtractToFile(completeFileName, true);
+                RetryFileWrite(file, completeFileName);
+            }
+        }
+
+        private static void RetryFileWrite(ZipArchiveEntry entry, string completeFileName)
+        {
+            for (int i = 1; i <= 3; ++i)
+            {
+                try
+                {
+                    entry.ExtractToFile(completeFileName, true);
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
             }
         }
     }
