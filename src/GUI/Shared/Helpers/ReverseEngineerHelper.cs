@@ -61,7 +61,7 @@ namespace EFCorePowerTools.Helpers
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);
         }
 
-        public void DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars)
+        public void DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
             if (useHandlebars)
@@ -108,6 +108,14 @@ namespace EFCorePowerTools.Helpers
             {
                 Directory.CreateDirectory(toDir);
                 ZipFile.ExtractToDirectory(templateZip, toDir);
+
+                // Using POCO Templates
+                if (selectedOption == 3)
+                {
+                    var pocoT4 = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "POCOEntityType.t4");
+                    var target = Path.Combine(toDir, "EFCore", "EntityType.t4");
+                    File.Copy(pocoT4, target, true);
+                }
             }
         }
 

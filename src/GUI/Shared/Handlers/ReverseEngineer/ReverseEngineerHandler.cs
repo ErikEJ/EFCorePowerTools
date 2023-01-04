@@ -605,7 +605,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.UseHandleBars || options.UseT4)
             {
-                reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars);
+                reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
             }
 
             options.UseNullableReferences = !await project.IsLegacyAsync() && options.UseNullableReferences;

@@ -47,6 +47,7 @@ namespace EFCorePowerTools.ViewModels
                 "C# - Handlebars",
                 "TypeScript - Handlebars",
                 "C# - T4",
+                "C# - T4 (POCO)",
             };
         }
 
