@@ -104,6 +104,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
                 UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
                 PreserveCasingWithRegex = options.PreserveCasingWithRegex,
+                UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

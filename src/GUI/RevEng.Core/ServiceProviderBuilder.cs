@@ -22,7 +22,6 @@ using RevEng.Common;
 using RevEng.Core.Procedures;
 using System.Collections.Generic;
 #if CORE60
-using ErikEJ.EntityFrameworkCore.SqlServer.Design;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
 using System;
