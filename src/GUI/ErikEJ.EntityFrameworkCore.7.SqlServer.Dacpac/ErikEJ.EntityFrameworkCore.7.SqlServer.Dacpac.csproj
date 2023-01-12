@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>7.0.1</PackageVersion>	  
+    <PackageVersion>7.0.2-preview1</PackageVersion>	  
     <NoWarn>$(NoWarn);EF1001</NoWarn>	  
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
-    <PackageReleaseNotes>For EF Core 7.0 with DacFX 161, update with trigger detection</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 7.0 with DacFX 161, update with improved DI</PackageReleaseNotes>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
@@ -41,6 +41,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\Design\SqlServerDacpacDesignTimeServices.cs" Link="Design\SqlServerDacpacDesignTimeServices.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\ISqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\ISqlServerDacpacDatabaseModelFactoryOptions.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\AliasResolutionVisitor.cs" Link="SqlSharpener\AliasResolutionVisitor.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\DataType.cs" Link="SqlSharpener\DataType.cs" />

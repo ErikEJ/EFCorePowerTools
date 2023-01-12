@@ -23,9 +23,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private static readonly ISet<string> MaxLengthRequiredTypes
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
-        private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+        private readonly ISqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
-        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
+        public SqlServerDacpacDatabaseModelFactory(ISqlServerDacpacDatabaseModelFactoryOptions options)
         {
             dacpacOptions = options;
         }
