@@ -269,6 +269,12 @@ namespace EFCorePowerTools.Helpers
                     providerGuid = EFCorePowerTools.Common.Resources.SQLitePrivateProvider;
                 }
 
+                if (providerInvariant == "Microsoft.Data.Sqlite")
+                {
+                    dbType = DatabaseType.SQLite;
+                    providerGuid = EFCorePowerTools.Common.Resources.MicrosoftSQLiteProvider;
+                }
+
                 if (providerInvariant == "System.Data.SqlClient")
                 {
                     dbType = DatabaseType.SQLServer;
