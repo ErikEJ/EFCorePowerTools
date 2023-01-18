@@ -306,6 +306,12 @@ namespace RevEng.Core
             if (removeDefaultConstructor)
             {
                 var index = lines.IndexOf($"    public {contextName}()");
+
+                if (index == -1)
+                {
+                    index = lines.IndexOf($"        public {contextName}()");
+                }
+
                 if (index != -1)
                 {
                     lines.RemoveAt(index + 3);
