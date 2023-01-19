@@ -1,11 +1,19 @@
 
-dotnet publish -o bin\Release\net6.0\publish -f net6.0 -r win-x64 -c Release --no-self-contained
+dotnet publish -o bin\Release\net6.0\x64\publish -f net6.0 -r win-x64 -c Release --no-self-contained
 
 if %errorlevel% equ 1 goto notbuilt
 
-"C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng70.exe.zip .\bin\Release\net6.0\publish\*
+"C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng70.exe.zip .\bin\Release\net6.0\x64\publish\*
 
 move /Y efreveng70.exe.zip ..\lib\
+
+dotnet publish -o bin\Release\net6.0\arm64\publish -f net6.0 -r win-arm64 -c Release --no-self-contained
+
+if %errorlevel% equ 1 goto notbuilt
+
+"C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng70arm.exe.zip .\bin\Release\net6.0\arm64\publish\*
+
+move /Y efreveng70arm.exe.zip ..\lib\
 
 goto end
 

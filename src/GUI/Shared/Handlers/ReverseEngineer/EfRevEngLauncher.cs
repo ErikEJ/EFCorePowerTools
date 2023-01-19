@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
@@ -266,9 +267,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (codeGenerationMode == CodeGenerationMode.EFCore6)
             {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+                var zipName = "efreveng60.exe.zip";
 
-                using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng60.exe.zip"), ZipArchiveMode.Read))
+                if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+                {
+                    zipName = "efreveng60arm.exe.zip";
+                }
+                else
+                {
+                    ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+                }
+
+                using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
                 {
                     archive.ExtractToDirectory(toDir, true);
                 }
@@ -276,7 +286,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (codeGenerationMode == CodeGenerationMode.EFCore7)
             {
-                using (var archive = ZipFile.Open(Path.Combine(fromDir, "efreveng70.exe.zip"), ZipArchiveMode.Read))
+                var zipName = "efreveng70.exe.zip";
+
+                if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
+                {
+                    zipName = "efreveng70arm.exe.zip";
+                }
+
+                using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
                 {
                     archive.ExtractToDirectory(toDir, true);
                 }
