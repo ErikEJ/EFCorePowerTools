@@ -11,9 +11,6 @@
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
-        <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
-            <ProductArchitecture>arm64</ProductArchitecture>
-        </InstallationTarget>
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.8,)" />
