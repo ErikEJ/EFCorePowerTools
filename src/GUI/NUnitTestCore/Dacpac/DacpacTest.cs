@@ -25,7 +25,7 @@ namespace UnitTests
         public void CanEnumerateTables()
         {
             // Arrange
-            var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var factory = new SqlServerDacpacDatabaseModelFactory();
             var options = new DatabaseModelFactoryOptions(new List<string>(), new List<string>());
 
             // Act
@@ -39,7 +39,7 @@ namespace UnitTests
         public void CanEnumerateSelectedTables()
         {
             // Arrange
-            var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var factory = new SqlServerDacpacDatabaseModelFactory();
             var tables = new List<string> { "[dbo].[Album]", "[dbo].[Artist]", "[dbo].[InvoiceLine]" };
             var options = new DatabaseModelFactoryOptions(tables, new List<string>());
 

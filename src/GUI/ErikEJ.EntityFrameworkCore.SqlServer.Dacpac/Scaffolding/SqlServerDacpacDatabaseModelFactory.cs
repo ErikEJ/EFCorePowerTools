@@ -25,6 +25,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private readonly ISqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
+        public SqlServerDacpacDatabaseModelFactory()
+        {
+        }
+
         public SqlServerDacpacDatabaseModelFactory(ISqlServerDacpacDatabaseModelFactoryOptions options)
         {
             dacpacOptions = options;
