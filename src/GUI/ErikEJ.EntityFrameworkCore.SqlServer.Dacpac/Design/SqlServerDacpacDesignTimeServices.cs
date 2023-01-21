@@ -20,7 +20,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Design
                 .AddSingleton<LoggingDefinitions, SqlServerLoggingDefinitions>()
                 .AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>()
                 .AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()
-                .AddSingleton<ISqlServerDacpacDatabaseModelFactoryOptions, SqlServerDacpacDatabaseModelFactoryOptions>()
                 .AddSingleton<IProviderConfigurationCodeGenerator, SqlServerCodeGenerator>()
                 .AddSingleton<IAnnotationCodeGenerator, SqlServerAnnotationCodeGenerator>();
     }

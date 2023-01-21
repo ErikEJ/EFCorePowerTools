@@ -4,7 +4,13 @@
 
 # Sample usage
 
+CLI:
+
 `dotnet ef dbcontext scaffold ..\Db.dacpac ErikEJ.EntityFrameworkCore.SqlServer.Dacpac`
+
+PMC:
+
+`Scaffold-DbContext ..\Db.dacpac ErikEJ.EntityFrameworkCore.SqlServer.Dacpac`
 
 ## Current conventions
 
