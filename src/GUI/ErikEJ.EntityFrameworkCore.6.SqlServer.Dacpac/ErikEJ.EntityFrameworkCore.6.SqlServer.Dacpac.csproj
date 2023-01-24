@@ -51,7 +51,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="160.6161.0" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="161.6374.0" />
 	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />	  
   </ItemGroup>
 
@@ -60,20 +60,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\DacFxStrongTypedCore\DacFxStrongTypedCore.csproj">
-			<PrivateAssets>all</PrivateAssets>
-		</ProjectReference>
+		<ProjectReference Include="..\DacFxStrongTypedCore.161\DacFxStrongTypedCore.161.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
 		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj">
 			<PrivateAssets>all</PrivateAssets>
 		</ProjectReference>
 	</ItemGroup>
 
 	<ItemGroup>
-	    <None Include="..\DacFxStrongTypedCore\bin\$(Configuration)\netstandard2.1\DacFxStrongTypedCore.dll">
-		    <Visible>false</Visible>
-		    <Pack>true</Pack>
-		    <PackagePath>lib\$(TargetFramework)</PackagePath>
-	    </None>
+      <None Include="..\DacFxStrongTypedCore.161\bin\$(Configuration)\netstandard2.1\DacFxStrongTypedCore.161.dll">
+        <Visible>false</Visible>
+        <Pack>true</Pack>
+        <PackagePath>lib\$(TargetFramework)</PackagePath>
+      </None>
 	    <None Include="..\RevEng.Core.Abstractions\bin\$(Configuration)\netstandard2.0\RevEng.Core.Abstractions.dll">
 		    <Visible>false</Visible>
 		    <Pack>true</Pack>

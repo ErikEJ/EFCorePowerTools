@@ -248,7 +248,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (Directory.Exists(toDir)
                 && File.Exists(Path.Combine(toDir, GetExeName()))
-                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 89)
+                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 106)
             {
                 return fullPath;
             }
@@ -259,44 +259,27 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Directory.CreateDirectory(toDir);
+            var cpuArch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm" : string.Empty;
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore3)
+            var zipName = "efreveng.exe.zip";
+
+            switch (codeGenerationMode)
             {
-                ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
+                case CodeGenerationMode.EFCore3:
+                    break;
+                case CodeGenerationMode.EFCore6:
+                    zipName = $"efreveng60{cpuArch}.exe.zip";
+                    break;
+                case CodeGenerationMode.EFCore7:
+                    zipName = $"efreveng70{cpuArch}.exe.zip";
+                    break;
+                default:
+                    break;
             }
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore6)
+            using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
             {
-                var zipName = "efreveng60.exe.zip";
-
-                if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
-                {
-                    zipName = "efreveng60arm.exe.zip";
-                }
-                else
-                {
-                    ZipFile.ExtractToDirectory(Path.Combine(fromDir, "efreveng.exe.zip"), toDir);
-                }
-
-                using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
-                {
-                    archive.ExtractToDirectory(toDir, true);
-                }
-            }
-
-            if (codeGenerationMode == CodeGenerationMode.EFCore7)
-            {
-                var zipName = "efreveng70.exe.zip";
-
-                if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64)
-                {
-                    zipName = "efreveng70arm.exe.zip";
-                }
-
-                using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
-                {
-                    archive.ExtractToDirectory(toDir, true);
-                }
+                archive.ExtractToDirectory(toDir, true);
             }
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
