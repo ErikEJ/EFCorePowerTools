@@ -200,9 +200,14 @@ namespace EFCorePowerTools.Helpers
                             }
 
                             if (objProviderGuid == new Guid(Resources.SqlServerDotNetProvider)
-                                || objProviderGuid == providerNpgsql)
+                                || objProviderGuid == new Guid(Resources.MicrosoftSqlServerDotNetProvider))
                             {
-                                info.DatabaseType = objProviderGuid == providerNpgsql ? DatabaseType.Npgsql : DatabaseType.SQLServer;
+                                info.DatabaseType = DatabaseType.SQLServer;
+                            }
+
+                            if (objProviderGuid == providerNpgsql)
+                            {
+                                info.DatabaseType = DatabaseType.Npgsql;
                             }
 
                             // This provider depends on https://dev.mysql.com/downloads/windows/visualstudio/
@@ -279,6 +284,12 @@ namespace EFCorePowerTools.Helpers
                 {
                     dbType = DatabaseType.SQLServer;
                     providerGuid = Resources.SqlServerDotNetProvider;
+                }
+
+                if (providerInvariant == "Microsoft.Data.SqlClient")
+                {
+                    dbType = DatabaseType.SQLServer;
+                    providerGuid = Resources.MicrosoftSqlServerDotNetProvider;
                 }
 
                 if (providerInvariant == "Npgsql")

@@ -61,6 +61,15 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 8800600a-add9-47e8-81d2-1d13b5a09c13.
+        /// </summary>
+        internal static string MicrosoftSqlServerDotNetProvider {
+            get {
+                return ResourceManager.GetString("MicrosoftSqlServerDotNetProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c6882346-e592-4da5-80ba-d2eadcda0359.
         /// </summary>
         internal static string MysqlVSProvider {
