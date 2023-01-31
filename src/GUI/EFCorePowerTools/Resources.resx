@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MicrosoftSqlServerDotNetProvider" xml:space="preserve">
+    <value>8800600a-add9-47e8-81d2-1d13b5a09c13</value>
+  </data>
   <data name="MysqlVSProvider" xml:space="preserve">
     <value>c6882346-e592-4da5-80ba-d2eadcda0359</value>
   </data>
