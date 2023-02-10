@@ -305,13 +305,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
 
-                await nuGetHelper.InstallPackageAsync(containsEfCoreReference.Item2, project);
+                var done = nuGetHelper.InstallPackage(containsEfCoreReference.Item2, project);
+
+                if (!done)
+                {
+                    await VS.StatusBar.ShowMessageAsync("Provider package installation failed, install manually.");                    
+                }
             }
 
             if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
                 && AdvancedOptions.Instance.DiscoverMultipleResultSets)
             {
-                await nuGetHelper.InstallPackageAsync("Dapper", project);
+                nuGetHelper.InstallPackage("Dapper", project);
             }
         }
 

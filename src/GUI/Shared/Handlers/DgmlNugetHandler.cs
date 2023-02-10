@@ -16,7 +16,7 @@ namespace EFCorePowerTools.Handlers
 
             await VS.StatusBar.ShowMessageAsync(DgmlLocale.InstallingPackage);
             var nuGetHelper = new NuGetHelper();
-            await nuGetHelper.InstallPackageAsync("ErikEJ.EntityFrameworkCore.DgmlBuilder", project);
+            nuGetHelper.InstallPackage("ErikEJ.EntityFrameworkCore.DgmlBuilder", project);
             await VS.StatusBar.ShowMessageAsync(DgmlLocale.PackageInstalled);
             var path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()) + ".txt";
             File.WriteAllText(path, GetReadme(), Encoding.UTF8);

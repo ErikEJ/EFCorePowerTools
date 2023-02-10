@@ -74,11 +74,11 @@ namespace EFCorePowerTools.Handlers.Compare
                     var nugetHelper = new NuGetHelper();
                     if (version.Major == 6)
                     {
-                        await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(6, 0, 0));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(6, 0, 0));
                     }
                     else if (version.Major == 5)
                     {
-                        await nugetHelper.InstallPackageAsync("EfCore.SchemaCompare", project, new Version(5, 1, 3));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(5, 1, 3));
                     }
 
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);

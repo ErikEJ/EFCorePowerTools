@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 
 namespace EFCorePowerTools.Helpers
 {
     public class NuGetHelper
     {
-        public async Task<bool> InstallPackageAsync(string packageId, Project project, Version version = null)
+        public bool InstallPackage(string packageId, Project project, Version version = null)
         {
             var args = $"add {project.FullPath} package {packageId} ";
             if (version != null)
@@ -22,52 +20,34 @@ namespace EFCorePowerTools.Helpers
                 Arguments = args,
             };
 
-            var result = await RunProcessAsync(startInfo);
+            var result = RunProcess(startInfo);
 
-            if (string.IsNullOrWhiteSpace(result))
-            {
-                return false;
-            }
-
-            return true;
+            return result;
         }
 
-        private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
+        private static bool RunProcess(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
             startInfo.CreateNoWindow = true;
-            startInfo.StandardOutputEncoding = Encoding.UTF8;
-            var standardOutput = new StringBuilder();
-            var error = string.Empty;
+
+            var completed = true;
 
             using (var process = Process.Start(startInfo))
             {
                 while (process != null && !process.HasExited)
                 {
-                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
+                    completed = false;
                 }
 
-                if (process != null)
+                if (process != null && process.HasExited)
                 {
-                    standardOutput.Append(await process.StandardOutput.ReadToEndAsync());
-                }
-
-                if (process != null)
-                {
-                    error = await process.StandardError.ReadToEndAsync();
+                    completed = process.ExitCode == 0;
                 }
             }
 
-            var result = standardOutput.ToString();
-
-            if (string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(error))
-            {
-                result = "Error:" + Environment.NewLine + error;
-            }
-
-            return result;
+            return completed;
         }
     }
 }
