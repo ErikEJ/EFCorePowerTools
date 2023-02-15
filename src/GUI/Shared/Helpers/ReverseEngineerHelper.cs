@@ -64,6 +64,9 @@ namespace EFCorePowerTools.Helpers
         public void DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
+
+            const string T4Version = "703";
+
             if (useHandlebars)
             {
                 switch (codeGenerationMode)
@@ -85,7 +88,7 @@ namespace EFCorePowerTools.Helpers
             {
                 if (codeGenerationMode == CodeGenerationMode.EFCore7)
                 {
-                    zipName = "T4_700.zip";
+                    zipName = $"T4_{T4Version}.zip";
                 }
                 else
                 {

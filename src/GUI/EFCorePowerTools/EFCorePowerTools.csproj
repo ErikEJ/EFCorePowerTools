@@ -190,8 +190,8 @@
       <Link>efreveng70arm.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\lib\T4_700.zip">
-      <Link>T4_700.zip</Link>
+    <Content Include="..\lib\T4_703.zip">
+      <Link>T4_703.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="app.config" />
