@@ -530,7 +530,10 @@ namespace EFCorePowerTools
                 }
                 else if (result.OptionsPath == null && result.Project != null)
                 {
-                    await VS.MessageBox.ShowErrorAsync($"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).");
+                    await VS.MessageBox.ShowAsync(
+                        $"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).",
+                        icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
+                        buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
                 }
             }
             catch (Exception ex)

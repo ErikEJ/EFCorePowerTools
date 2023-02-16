@@ -33,7 +33,7 @@ namespace EFCorePowerTools.Helpers
 
         public static VSConstants.MessageBoxResult ShowMessage(string messageText)
         {
-            return VS.MessageBox.Show("EF Core Power Tools", messageText);
+            return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK);
         }
     }
 }
