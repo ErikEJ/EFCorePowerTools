@@ -61,7 +61,7 @@ namespace EFCorePowerTools.Helpers
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);
         }
 
-        public void DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
+        public string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
 
@@ -120,6 +120,34 @@ namespace EFCorePowerTools.Helpers
                     File.Copy(pocoT4, target, true);
                 }
             }
+
+            if (!useHandlebars && Directory.Exists(toDir))
+            {
+                var error = $"The latest T4 template version could not be found, looking for 'Template version: {T4Version}' in the T4 file - please update your T4 templates, for example by renaming the CodeTemplates folder.";
+                var check = $"Template version: {T4Version}";
+
+                var target = Path.Combine(toDir, "EFCore", "EntityType.t4");
+                if (File.Exists(target))
+                {
+                    var content = File.ReadAllText(target, Encoding.UTF8);
+                    if (content.IndexOf(check, StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+                        return error;
+                    }
+                }
+
+                target = Path.Combine(toDir, "EFCore", "DbContext.t4");
+                if (File.Exists(target))
+                {
+                    var content = File.ReadAllText(target, Encoding.UTF8);
+                    if (content.IndexOf(check, StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+                        return error;
+                    }
+                }
+            }
+
+            return string.Empty;
         }
 
         public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)

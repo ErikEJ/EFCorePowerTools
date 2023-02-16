@@ -33,6 +33,8 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
+    public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
+
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
@@ -42,6 +44,8 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<OrderSubtotal> OrderSubtotals { get; set; }
 
     public virtual DbSet<OrdersQry> OrdersQries { get; set; }
+
+    public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -65,6 +69,8 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<Shipper> Shippers { get; set; }
 
     public virtual DbSet<Special> Specials { get; set; }
+
+    public virtual DbSet<StringSplitResult> StringSplitResults { get; set; }
 
     public virtual DbSet<SummaryOfSalesByQuarter> SummaryOfSalesByQuarters { get; set; }
 
@@ -275,6 +281,17 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
 
+        modelBuilder.Entity<MigrationHistory>(entity =>
+        {
+            entity.HasKey(e => new { e.MigrationId, e.ContextKey }).HasName("PK_dbo.__MigrationHistory");
+
+            entity.ToTable("__MigrationHistory");
+
+            entity.Property(e => e.MigrationId).HasMaxLength(150);
+            entity.Property(e => e.ContextKey).HasMaxLength(300);
+            entity.Property(e => e.ProductVersion).HasMaxLength(32);
+        });
+
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasIndex(e => e.CustomerId, "CustomerID");
@@ -406,6 +423,26 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
             entity.Property(e => e.ShipRegion).HasMaxLength(15);
             entity.Property(e => e.ShippedDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Person>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_dbo.Person");
+
+            entity.ToTable("Person");
+
+            entity.Property(e => e.Address)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.City)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.LastName)
+                .HasMaxLength(255)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Product>(entity =>
@@ -544,6 +581,14 @@ public partial class NorthwindContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Specials__3214EC073B5BB931");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.TheDate).HasColumnType("date");
+        });
+
+        modelBuilder.Entity<StringSplitResult>(entity =>
+        {
+            entity.HasKey(e => e.Value).HasName("PK_dbo.StringSplitResults");
+
+            entity.Property(e => e.Value).HasMaxLength(128);
         });
 
         modelBuilder.Entity<SummaryOfSalesByQuarter>(entity =>

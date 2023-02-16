@@ -15,6 +15,10 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
+         "Name": "[dbo].[__MigrationHistory]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Categories]",
          "ObjectType": 0
       },
@@ -47,6 +51,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Person]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Products]",
          "ObjectType": 0
       },
@@ -60,6 +68,10 @@
       },
       {
          "Name": "[dbo].[Specials]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[StringSplitResults]",
          "ObjectType": 0
       },
       {
@@ -175,6 +187,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[FuncWithTvpParameter]",
+         "ObjectType": 2
+      },
+      {
          "Name": "[dbo].[ISOweek]",
          "ObjectType": 2
       },
@@ -190,6 +206,7 @@
    ],
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
@@ -197,9 +214,7 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
-   "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
-   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": true,
