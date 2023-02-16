@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Ef7Playground.Models.POCO;
 
 [PrimaryKey("CustomerId", "CustomerTypeId")]
+[Table("CustomerCustomerDemo")]
 [Table("CustomerCustomerDemo", Schema = "dbo")]
 public partial class CustomerCustomerDemo
 {

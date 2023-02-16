@@ -6,14 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ef7Playground.Models.POCO;
 
-[Table("Specials", Schema = "dbo")]
-public partial class Special
+[Table("StringSplitResults", Schema = "dbo")]
+public partial class StringSplitResult
 {
     [Key]
-    public int Id { get; set; }
-
-    [Column(TypeName = "date")]
-    public DateTime? TheDate { get; set; }
-
-    public TimeSpan? TheTime { get; set; }
+    [StringLength(128)]
+    public string Value { get; set; } = null!;
 }

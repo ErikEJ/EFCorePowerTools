@@ -7,7 +7,7 @@
    "IncludeConnectionString": true,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "Models2",
+   "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "Ef7Playground",
    "Schemas": null,
@@ -15,91 +15,191 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dashboard].[SearchRequests]",
+         "Name": "[dbo].[__MigrationHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[AuditLogs]",
+         "Name": "[dbo].[Categories]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[CollateralProviders]",
+         "Name": "[dbo].[CustomerCustomerDemo]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[CompanyStructures]",
+         "Name": "[dbo].[CustomerDemographics]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[ContactData]",
+         "Name": "[dbo].[Customers]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[CustomerData]",
+         "Name": "[dbo].[Employees]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[DataClassifications]",
+         "Name": "[dbo].[EmployeeTerritories]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Metadata]",
+         "Name": "[dbo].[Order Details]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[StorageLogs]",
+         "Name": "[dbo].[Orders]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserCustomListEntries]",
+         "Name": "[dbo].[Person]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserCustomLists]",
+         "Name": "[dbo].[Products]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserData]",
+         "Name": "[dbo].[Region]",
          "ObjectType": 0
       },
       {
-         "Name": "[vfauthz].[DataProtectionKeys]",
+         "Name": "[dbo].[Shippers]",
          "ObjectType": 0
       },
       {
-         "Name": "[vfauthz].[DefaultConfigurationPermissionGroups]",
+         "Name": "[dbo].[Specials]",
          "ObjectType": 0
       },
       {
-         "Name": "[vfauthz].[DefaultConfigurations]",
+         "Name": "[dbo].[StringSplitResults]",
          "ObjectType": 0
       },
       {
-         "Name": "[vfauthz].[Logs]",
+         "Name": "[dbo].[Suppliers]",
          "ObjectType": 0
       },
       {
-         "Name": "[vfauthz].[PermissionGroups]",
+         "Name": "[dbo].[Territories]",
          "ObjectType": 0
       },
       {
-         "Name": "[vfauthz].[PermissionPermissionGroups]",
-         "ObjectType": 0
+         "Name": "[dbo].[Alphabetical list of products]",
+         "ObjectType": 3
       },
       {
-         "Name": "[vfauthz].[Permissions]",
-         "ObjectType": 0
+         "Name": "[dbo].[Category Sales for 1997]",
+         "ObjectType": 3
       },
       {
-         "Name": "[vfauthz].[UserPermissionGroups]",
-         "ObjectType": 0
+         "Name": "[dbo].[Current Product List]",
+         "ObjectType": 3
       },
       {
-         "Name": "[vfauthz].[Users]",
-         "ObjectType": 0
+         "Name": "[dbo].[Customer and Suppliers by City]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Invoices]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Order Details Extended]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Order Subtotals]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Orders Qry]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Product Sales for 1997]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Products Above Average Price]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Products by Category]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Quarterly Orders]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Sales by Category]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Sales Totals by Amount]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Summary of Sales by Quarter]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Summary of Sales by Year]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[CustOrderHist]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CustOrdersDetail]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CustOrdersOrders]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Employee Sales by Country]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MultiSet]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[OutputScenarios]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sales by Year]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SalesByCategory]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SpecialTypes]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ten Most Expensive Products]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[FuncWithTvpParameter]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[ISOweek]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[tvp]",
+         "ObjectType": 2
       }
    ],
-   "UiHint": "UDV-EEJE.ComplianceDB",
+   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Northwind",
    "UncountableWords": [
       "Status",
       "Data"
