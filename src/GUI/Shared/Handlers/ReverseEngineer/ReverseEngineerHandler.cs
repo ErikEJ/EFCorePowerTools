@@ -614,6 +614,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 if (!string.IsNullOrEmpty(result))
                 {
                     await VS.MessageBox.ShowAsync(
+                        "EF Core Power Tools",
                         result,
                         icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
                         buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);

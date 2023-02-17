@@ -101,9 +101,8 @@ namespace RevEng.Core.Functions
 
         private void GenerateFunctionStub(Routine function, RoutineModel model)
         {
-            // TODO Use Code.Identifier again after 7.0.3
             var paramStrings = function.Parameters
-                .Select(p => $"{Code.Reference(p.ClrType())} {p.Name}");
+                .Select(p => $"{Code.Reference(p.ClrType())} {Code.Identifier(p.Name)}");
 
             var identifier = GenerateIdentifierName(function, model);
 

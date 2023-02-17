@@ -79,8 +79,7 @@ namespace RevEng.Core
                 UseDataAnnotations = !options.UseFluentApiOnly,
                 Language = "C#",
 
-                // TODO Use Code.Identifier again after 7.0.3
-                ContextName = options.ContextClassName,
+                ContextName = code.Identifier(options.ContextClassName),
                 ContextDir = outputContextDir,
                 RootNamespace = null,
                 ContextNamespace = contextNamespace,
