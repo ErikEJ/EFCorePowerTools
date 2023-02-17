@@ -9,5 +9,5 @@ public partial class CustomerDemographic
 
     public string? CustomerDesc { get; set; }
 
-    public virtual ICollection<Customer> Customers { get; } = new List<Customer>();
+    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 }

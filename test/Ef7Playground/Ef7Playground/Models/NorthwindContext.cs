@@ -173,6 +173,14 @@ public partial class NorthwindContext : DbContext
                     {
                         j.HasKey("CustomerId", "CustomerTypeId").IsClustered(false);
                         j.ToTable("CustomerCustomerDemo");
+                        j.IndexerProperty<string>("CustomerId")
+                            .HasMaxLength(5)
+                            .IsFixedLength()
+                            .HasColumnName("CustomerID");
+                        j.IndexerProperty<string>("CustomerTypeId")
+                            .HasMaxLength(10)
+                            .IsFixedLength()
+                            .HasColumnName("CustomerTypeID");
                     });
         });
 
@@ -243,6 +251,11 @@ public partial class NorthwindContext : DbContext
                     j =>
                     {
                         j.HasKey("EmployeeId", "TerritoryId").IsClustered(false);
+                        j.ToTable("EmployeeTerritories");
+                        j.IndexerProperty<int>("EmployeeId").HasColumnName("EmployeeID");
+                        j.IndexerProperty<string>("TerritoryId")
+                            .HasMaxLength(20)
+                            .HasColumnName("TerritoryID");
                     });
         });
 

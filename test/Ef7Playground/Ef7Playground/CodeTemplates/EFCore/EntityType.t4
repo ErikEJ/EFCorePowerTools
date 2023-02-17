@@ -14,7 +14,7 @@
 <#@ import namespace="Microsoft.EntityFrameworkCore.Design" #>
 <#@ import namespace="Microsoft.Extensions.DependencyInjection" #>
 <#
-    // Template version: 7.0.1 - please do NOT remove this line
+    // Template version: 703 - please do NOT remove this line
     if (EntityType.IsSimpleManyToManyJoinEntityType())
     {
         // Don't scaffold these
@@ -152,7 +152,7 @@ public partial class <#= EntityType.Name #>
             }
         }
 #>
-    public virtual ICollection<<#= skipNavigation.TargetEntityType.Name #>> <#= skipNavigation.Name #> { get; } = new List<<#= skipNavigation.TargetEntityType.Name #>>();
+    public virtual ICollection<<#= skipNavigation.TargetEntityType.Name #>> <#= skipNavigation.Name #> { get; set; } = new List<<#= skipNavigation.TargetEntityType.Name #>>();
 <#
     }
 #>

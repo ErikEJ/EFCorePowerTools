@@ -136,7 +136,7 @@ namespace Ef7Playground.Models
             return _;
         }
 
-        public virtual async Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? BeginningDate, DateTime? EndingDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -150,13 +150,13 @@ namespace Ef7Playground.Models
                 new SqlParameter
                 {
                     ParameterName = "Beginning_Date",
-                    Value = BeginningDate ?? Convert.DBNull,
+                    Value = Beginning_Date ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
                 new SqlParameter
                 {
                     ParameterName = "Ending_Date",
-                    Value = EndingDate ?? Convert.DBNull,
+                    Value = Ending_Date ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
                 parameterreturnValue,
@@ -248,7 +248,7 @@ namespace Ef7Playground.Models
             return _;
         }
 
-        public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? BeginningDate, DateTime? EndingDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -262,13 +262,13 @@ namespace Ef7Playground.Models
                 new SqlParameter
                 {
                     ParameterName = "Beginning_Date",
-                    Value = BeginningDate ?? Convert.DBNull,
+                    Value = Beginning_Date ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
                 new SqlParameter
                 {
                     ParameterName = "Ending_Date",
-                    Value = EndingDate ?? Convert.DBNull,
+                    Value = Ending_Date ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.DateTime,
                 },
                 parameterreturnValue,

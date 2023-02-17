@@ -47,5 +47,5 @@ public partial class Employee
 
     public virtual Employee? ReportsToNavigation { get; set; }
 
-    public virtual ICollection<Territory> Territories { get; } = new List<Territory>();
+    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
 }
