@@ -219,6 +219,6 @@
    "UseNodaTime": false,
    "UseNullableReferences": true,
    "UseSchemaFolders": false,
-   "UseSpatial": false,
+   "UseSpatial": true,
    "UseT4": true
 }
