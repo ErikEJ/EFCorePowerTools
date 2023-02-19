@@ -8,7 +8,7 @@ namespace EFCorePowerTools.Helpers
     {
         public bool InstallPackage(string packageId, Project project, Version version = null)
         {
-            var args = $"add {project.FullPath} package {packageId} ";
+            var args = $"add \"{project.FullPath}\" package {packageId} ";
             if (version != null)
             {
                 args += "-v " + version.ToString(3);

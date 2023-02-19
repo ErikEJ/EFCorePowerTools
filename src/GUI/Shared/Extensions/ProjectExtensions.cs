@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio;
@@ -121,40 +123,13 @@ namespace EFCorePowerTools.Extensions
             return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
         }
 
-        public static async Task<Tuple<bool, string>> ContainsEfCoreReferenceAsync(this Project project, DatabaseType dbType)
+        public static async Task<List<NuGetPackage>> GetNeededPackagesAsync(this Project project, ReverseEngineerOptions options)
         {
-            var providerPackage = "Microsoft.EntityFrameworkCore.SqlServer";
-            if (dbType == DatabaseType.SQLite)
-            {
-                providerPackage = "Microsoft.EntityFrameworkCore.Sqlite";
-            }
+            var neededPackages = GetNeededPackages(options.DatabaseType, options);
 
-            if (dbType == DatabaseType.Npgsql)
-            {
-                providerPackage = "Npgsql.EntityFrameworkCore.PostgreSQL";
-            }
+            await IsInstalledAsync(project, neededPackages);
 
-            if (dbType == DatabaseType.Mysql)
-            {
-                providerPackage = "Pomelo.EntityFrameworkCore.MySql";
-            }
-
-            if (dbType == DatabaseType.Oracle)
-            {
-                providerPackage = "Oracle.EntityFrameworkCore";
-            }
-
-            if (dbType == DatabaseType.Firebird)
-            {
-                providerPackage = "FirebirdSql.EntityFrameworkCore.Firebird";
-            }
-
-            if ((await ContainsReferenceAsync(project, providerPackage)).Item1)
-            {
-                return new Tuple<bool, string>(true, providerPackage);
-            }
-
-            return new Tuple<bool, string>(false, providerPackage);
+            return neededPackages;
         }
 
         public static async Task<Tuple<bool, string>> ContainsEfSchemaCompareReferenceAsync(this Project project)
@@ -257,6 +232,172 @@ namespace EFCorePowerTools.Extensions
             }
 
             return list;
+        }
+
+        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerOptions options)
+        {
+            // TODO Update versions here when adding provider updates
+            var packages = new List<NuGetPackage>();
+
+            if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
+            {
+                var pkgVersion = "7.0.3";
+                switch (options.CodeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore3:
+                        pkgVersion = "3.1.32";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        pkgVersion = "6.0.14";
+                        break;
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Microsoft.EntityFrameworkCore.SqlServer",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "SqlServer",
+                });
+            }
+
+            if (databaseType == DatabaseType.SQLite)
+            {
+                var pkgVersion = "7.0.3";
+                switch (options.CodeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore3:
+                        pkgVersion = "3.1.32";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        pkgVersion = "6.0.14";
+                        break;
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Microsoft.EntityFrameworkCore.Sqlite",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Sqlite",
+                });
+            }
+
+            if (databaseType == DatabaseType.Npgsql)
+            {
+                var pkgVersion = "7.0.3";
+                switch (options.CodeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore3:
+                        pkgVersion = "3.1.18";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        pkgVersion = "6.0.8";
+                        break;
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Npgsql",
+                });
+            }
+
+            if (databaseType == DatabaseType.Mysql)
+            {
+                var pkgVersion = "7.0.0";
+                switch (options.CodeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore3:
+                        pkgVersion = "3.2.7";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        pkgVersion = "6.0.2";
+                        break;
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Pomelo.EntityFrameworkCore.MySql",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Mysql",
+                });
+            }
+
+            if (databaseType == DatabaseType.Oracle)
+            {
+                var pkgVersion = "7.21.9";
+                switch (options.CodeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore3:
+                        pkgVersion = "3.21.90";
+                        break;
+                    case CodeGenerationMode.EFCore6:
+                        pkgVersion = "6.21.90";
+                        break;
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Oracle.EntityFrameworkCore",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Oracle",
+                });
+            }
+
+            if (databaseType == DatabaseType.Firebird)
+            {
+                var pkgVersion = "9.1.1";
+                switch (options.CodeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore3:
+                        pkgVersion = "7.10.1";
+                        break;
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Firebird",
+                });
+            }
+
+            return packages;
+        }
+
+        private static async Task IsInstalledAsync(Project project, List<NuGetPackage> packages)
+        {
+            var projectAssetsFile = await project.GetAttributeAsync("ProjectAssetsFile");
+
+            if (projectAssetsFile != null && File.Exists(projectAssetsFile))
+            {
+                var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile, NuGet.Common.NullLogger.Instance);
+
+                if (lockFile != null)
+                {
+                    foreach (var lib in lockFile.Libraries)
+                    {
+                        var package = packages.FirstOrDefault(p => p.PackageId == lib.Name);
+
+                        if (package != null)
+                        {
+                            package.Installed = true;
+                        }
+                    }
+                }
+            }
         }
 
         private static async Task<Tuple<bool, string>> ContainsReferenceAsync(Project project, string designPackage)

@@ -152,8 +152,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
                 var propertyNamingModel = RenamingRulesSerializer.TryRead(referenceRenamingPath);
 
-                Tuple<bool, string> containsEfCoreReference = null;
-
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
 
                 if (options == null)
@@ -176,6 +174,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 bool forceEdit = false;
 
+                var neededPackages = new List<NuGetPackage>();
+
                 DatabaseConnectionModel dbInfo = null;
 
                 if (onlyGenerate || fromSqlProj)
@@ -195,7 +195,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             return;
                         }
 
-                        containsEfCoreReference = new Tuple<bool, string>(true, null);
                         options.CustomReplacers = namingOptionsAndPath.Item1;
                         options.CustomPropertyReplacers = propertyNamingModel;
                         options.InstallNuGetPackage = !onlyGenerate;
@@ -232,8 +231,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
-                    containsEfCoreReference = await project.ContainsEfCoreReferenceAsync(options.DatabaseType);
-                    options.InstallNuGetPackage = !containsEfCoreReference.Item1;
+                    neededPackages = await project.GetNeededPackagesAsync(options);
+                    options.InstallNuGetPackage = neededPackages.Any(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
                     options.CustomPropertyReplacers = propertyNamingModel;
 
                     if (!await GetModelOptionsAsync(options, project.Name))
@@ -244,9 +243,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
-                await InstallNuGetPackagesAsync(project, onlyGenerate, containsEfCoreReference, options, forceEdit);
+                await InstallNuGetPackagesAsync(project, onlyGenerate, neededPackages, options, forceEdit);
 
-                await GenerateFilesAsync(project, options, containsEfCoreReference, onlyGenerate);
+                var missingProviderPackage = neededPackages.FirstOrDefault(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
+                {
+                    missingProviderPackage = null;
+                }
+
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate);
 
                 if (File.Exists(referenceRenamingPath))
                 {
@@ -295,21 +300,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private static async System.Threading.Tasks.Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, Tuple<bool, string> containsEfCoreReference, ReverseEngineerOptions options, bool forceEdit)
+        private static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, List<NuGetPackage> packages, ReverseEngineerOptions options, bool forceEdit)
         {
             var nuGetHelper = new NuGetHelper();
 
-            if (options.InstallNuGetPackage && (!onlyGenerate || forceEdit)
+            if (options.InstallNuGetPackage
+                && (!onlyGenerate || forceEdit)
                 && await project.IsNetCore31OrHigherIncluding70Async()
-                && containsEfCoreReference != null)
+                && packages.Any(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed))
             {
                 await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
 
-                var done = nuGetHelper.InstallPackage(containsEfCoreReference.Item2, project);
-
-                if (!done)
+                foreach (var nuGetPackage in packages)
                 {
-                    await VS.StatusBar.ShowMessageAsync("Provider package installation failed, install manually.");                    
+                    var done = nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
+
+                    if (!done)
+                    {
+                        await VS.StatusBar.ShowMessageAsync("Provider package installation failed, install manually.");
+                    }
                 }
             }
 
@@ -600,7 +609,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, Tuple<bool, string> containsEfCoreReference, bool onlyGenerate)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -679,12 +688,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
 
             var duration = DateTime.Now - startTime;
-
-            var missingProviderPackage = containsEfCoreReference.Item1 ? null : containsEfCoreReference.Item2;
-            if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
-            {
-                missingProviderPackage = null;
-            }
 
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
