@@ -252,11 +252,15 @@ namespace RevEng.Core
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 #endif
-
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
+                    if (options.UseSpatial)
+                    {
+                        var spatial = new SqliteNetTopologySuiteDesignTimeServices();
+                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
 #if CORE60
                     if (options.UseNodaTime)
                     {

@@ -260,6 +260,88 @@ namespace EFCorePowerTools.Extensions
                     IsMainProviderPackage = true,
                     UseMethodName = "SqlServer",
                 });
+
+                if (options.UseSpatial)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "NetTopologySuite",
+                    });
+                }
+
+                if (options.UseNodaTime)
+                {
+                    pkgVersion = "7.0.0";
+                    switch (options.CodeGenerationMode)
+                    {
+                        case CodeGenerationMode.EFCore3:
+                            pkgVersion = "3.1.2";
+                            break;
+                        case CodeGenerationMode.EFCore6:
+                            pkgVersion = "6.0.1";
+                            break;
+                    }
+
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "NodaTime",
+                    });
+                }
+
+                if (options.UseHierarchyId)
+                {
+                    pkgVersion = "4.0.0";
+                    switch (options.CodeGenerationMode)
+                    {
+                        case CodeGenerationMode.EFCore3:
+                            pkgVersion = "1.2.0";
+                            break;
+                        case CodeGenerationMode.EFCore6:
+                            pkgVersion = "3.0.1";
+                            break;
+                    }
+
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "EntityFrameworkCore.SqlServer.HierarchyId",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "HierarchyId",
+                    });
+                }
+
+                if (options.UseDateOnlyTimeOnly)
+                {
+                    pkgVersion = "7.0.1";
+                    switch (options.CodeGenerationMode)
+                    {
+                        case CodeGenerationMode.EFCore6:
+                            pkgVersion = "6.0.1";
+                            break;
+                    }
+
+                    if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
+                        || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
+                    {
+                        packages.Add(new NuGetPackage
+                        {
+                            PackageId = "ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly",
+                            Version = pkgVersion,
+                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                            IsMainProviderPackage = false,
+                            UseMethodName = "DateOnlyTimeOnly",
+                        });
+                    }
+                }
             }
 
             if (databaseType == DatabaseType.SQLite)
@@ -283,6 +365,42 @@ namespace EFCorePowerTools.Extensions
                     IsMainProviderPackage = true,
                     UseMethodName = "Sqlite",
                 });
+
+                if (options.UseSpatial)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Microsoft.EntityFrameworkCore.Sqllite.NetTopologySuite",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { databaseType },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "NetTopologySuite",
+                    });
+                }
+
+                if (options.UseNodaTime)
+                {
+                    pkgVersion = "7.0.0";
+                    switch (options.CodeGenerationMode)
+                    {
+                        case CodeGenerationMode.EFCore6:
+                            pkgVersion = "6.0.0";
+                            break;
+                    }
+
+                    if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
+                        || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
+                    {
+                        packages.Add(new NuGetPackage
+                        {
+                            PackageId = "EntityFrameworkCore.Sqlite.NodaTime",
+                            Version = pkgVersion,
+                            DatabaseTypes = new List<DatabaseType> { databaseType },
+                            IsMainProviderPackage = false,
+                            UseMethodName = "NodaTime",
+                        });
+                    }
+                }
             }
 
             if (databaseType == DatabaseType.Npgsql)
@@ -306,6 +424,30 @@ namespace EFCorePowerTools.Extensions
                     IsMainProviderPackage = true,
                     UseMethodName = "Npgsql",
                 });
+
+                if (options.UseSpatial)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { databaseType },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "NetTopologySuite",
+                    });
+                }
+
+                if (options.UseNodaTime)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { databaseType },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "NodaTime",
+                    });
+                }
             }
 
             if (databaseType == DatabaseType.Mysql)
@@ -329,6 +471,18 @@ namespace EFCorePowerTools.Extensions
                     IsMainProviderPackage = true,
                     UseMethodName = "Mysql",
                 });
+
+                if (options.UseSpatial)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { databaseType },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "NetTopologySuite",
+                    });
+                }
             }
 
             if (databaseType == DatabaseType.Oracle)
