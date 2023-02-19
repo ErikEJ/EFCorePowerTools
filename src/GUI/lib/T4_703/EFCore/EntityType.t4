@@ -125,7 +125,7 @@ public partial class <#= EntityType.Name #>
         if (navigation.IsCollection)
         {
 #>
-    public virtual ICollection<<#= targetType #>> <#= navigation.Name #> { get; } = new List<<#= targetType #>>();
+    public virtual ICollection<<#= targetType #>> <#= navigation.Name #> { get; set; } = new List<<#= targetType #>>();
 <#
         }
         else
