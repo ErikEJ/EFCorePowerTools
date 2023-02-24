@@ -313,12 +313,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 foreach (var nuGetPackage in packages)
                 {
-                    var done = nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
-
-                    if (!done)
-                    {
-                        await VS.StatusBar.ShowMessageAsync("Provider package installation failed, install manually.");
-                    }
+                    nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
                 }
             }
 

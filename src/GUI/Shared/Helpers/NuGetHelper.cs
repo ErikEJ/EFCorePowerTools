@@ -6,7 +6,7 @@ namespace EFCorePowerTools.Helpers
 {
     public class NuGetHelper
     {
-        public bool InstallPackage(string packageId, Project project, Version version = null)
+        public void InstallPackage(string packageId, Project project, Version version = null)
         {
             var args = $"add \"{project.FullPath}\" package {packageId} ";
             if (version != null)
@@ -20,34 +20,17 @@ namespace EFCorePowerTools.Helpers
                 Arguments = args,
             };
 
-            var result = RunProcess(startInfo);
-
-            return result;
+            RunProcess(startInfo);
         }
 
-        private static bool RunProcess(ProcessStartInfo startInfo)
+        private static void RunProcess(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
             startInfo.CreateNoWindow = true;
 
-            var completed = true;
-
-            using (var process = Process.Start(startInfo))
-            {
-                while (process != null && !process.HasExited)
-                {
-                    completed = false;
-                }
-
-                if (process != null && process.HasExited)
-                {
-                    completed = process.ExitCode == 0;
-                }
-            }
-
-            return completed;
+            Process.Start(startInfo);
         }
     }
 }

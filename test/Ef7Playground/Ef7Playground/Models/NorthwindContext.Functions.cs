@@ -11,7 +11,7 @@ namespace Ef7Playground.Models
     {
 
         [DbFunction("ISOweek", "dbo")]
-        public static int? _ISOweek(DateTime? DATE)
+        public static int? ISOweek(DateTime? DATE)
         {
             throw new NotSupportedException("This method can only be called from Entity Framework Core queries");
         }
