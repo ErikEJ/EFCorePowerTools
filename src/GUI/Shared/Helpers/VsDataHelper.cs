@@ -46,7 +46,7 @@ namespace EFCorePowerTools.Helpers
 
         public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
-            if (dbType == DatabaseType.SQLServer)
+            if (dbType == DatabaseType.SQLServer && !connectionString.Contains(";Authentication="))
             {
                 return PathFromConnectionString(connectionString);
             }
@@ -58,7 +58,7 @@ namespace EFCorePowerTools.Helpers
 
             if (builder.TryGetValue("Data Source", out object dataSource))
             {
-                result += dataSource.ToString();
+                result += dataSource.ToString().Replace(".database.windows.net", string.Empty);
             }
 
             if (builder.TryGetValue("DataSource", out object dataSource2))
@@ -71,6 +71,11 @@ namespace EFCorePowerTools.Helpers
                 result += "." + database.ToString();
             }
 
+            if (builder.TryGetValue("Initial Catalog", out object catalog))
+            {
+                result += "." + catalog.ToString();
+            }
+
             return result;
         }
 
@@ -80,7 +85,6 @@ namespace EFCorePowerTools.Helpers
             var dialogFactory = await VS.GetServiceAsync<IVsDataConnectionDialogFactory, IVsDataConnectionDialogFactory>();
             var dialog = dialogFactory.CreateConnectionDialog();
             dialog.AddAllSources();
-            dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
             var dialogResult = dialog.ShowDialog(connect: true);
 
             if (dialogResult == null)
