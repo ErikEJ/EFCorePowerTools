@@ -213,6 +213,23 @@ namespace EFCorePowerTools.Helpers
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
+        public string GetReadMeText(ReverseEngineerOptions options, string content, List<NuGetPackage> packages)
+        {
+            var extraPackages = packages.Where(p => !p.IsMainProviderPackage).Select(p => $"Use{p.UseMethodName}()").ToList();
+
+            var useText = string.Empty;
+
+            if (extraPackages.Count > 0)
+            {
+                useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
+            }
+
+            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
+                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
+                .Replace("[UseList]", useText)
+                .Replace("[ContextName]", options.ContextClassName);
+        }
+
         public bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();

@@ -12,7 +12,7 @@ public partial class Special
 
     public Geometry Test3 { get; set; } = null!;
 
-    public DateTime? TheDate { get; set; }
+    public DateOnly? TheDate { get; set; }
 
-    public TimeSpan? TheTime { get; set; }
+    public TimeOnly? TheTime { get; set; }
 }

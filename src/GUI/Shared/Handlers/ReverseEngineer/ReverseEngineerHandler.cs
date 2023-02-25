@@ -251,7 +251,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
 
                 if (File.Exists(referenceRenamingPath))
                 {
@@ -304,15 +304,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var nuGetHelper = new NuGetHelper();
 
+            var packagesToInstall = packages.Where(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed).ToList();
+
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
                 && await project.IsNetCore31OrHigherIncluding70Async()
-                && packages.Any(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed))
+                && packagesToInstall.Any())
             {
                 await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
 
-                foreach (var nuGetPackage in packages)
+                foreach (var nuGetPackage in packagesToInstall)
                 {
+
                     nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
                 }
             }
@@ -607,7 +610,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -663,7 +666,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 if (AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
                 {
                     var readmeName = "PowerToolsReadMe.txt";
-                    var finalText = reverseEngineerHelper.GetReadMeText(options, File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8));
+                    var finalText = string.Empty;
+                    var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
+
+                    if (packages.Any())
+                    {
+                        finalText = reverseEngineerHelper.GetReadMeText(options, template, packages);
+                    }
+                    else
+                    {
+                        finalText = reverseEngineerHelper.GetReadMeText(options, template);
+                    }
+
                     var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
 
                     finalText = AddResultToFinalText(finalText, revEngResult);
