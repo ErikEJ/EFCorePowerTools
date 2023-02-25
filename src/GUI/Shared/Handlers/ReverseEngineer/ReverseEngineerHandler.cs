@@ -243,7 +243,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
-                await InstallNuGetPackagesAsync(project, onlyGenerate, neededPackages, options, forceEdit);
+                await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
                 var missingProviderPackage = neededPackages.FirstOrDefault(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
                 if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
@@ -300,22 +300,27 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, List<NuGetPackage> packages, ReverseEngineerOptions options, bool forceEdit)
+        private static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
         {
             var nuGetHelper = new NuGetHelper();
 
-            var packagesToInstall = packages.Where(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed).ToList();
-
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
-                && await project.IsNetCore31OrHigherIncluding70Async()
-                && packagesToInstall.Any())
+                && await project.IsNetCore31OrHigherIncluding70Async())
             {
+                var packages = await project.GetNeededPackagesAsync(options);
+
+                var packagesToInstall = packages.Where(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed).ToList();
+
+                if (!packagesToInstall.Any())
+                {
+                    return;
+                }
+
                 await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
 
                 foreach (var nuGetPackage in packagesToInstall)
                 {
-
                     nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
                 }
             }
