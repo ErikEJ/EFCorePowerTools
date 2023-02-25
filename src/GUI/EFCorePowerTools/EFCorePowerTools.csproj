@@ -202,7 +202,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
-    <Content Include="PowerToolsReadMe.txt">
+    <Content Include="PowerToolsReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="POCOEntityType.t4">
