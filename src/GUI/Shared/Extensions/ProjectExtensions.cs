@@ -342,6 +342,21 @@ namespace EFCorePowerTools.Extensions
                         });
                     }
                 }
+
+                if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                    && (options.CodeGenerationMode == CodeGenerationMode.EFCore6
+                        || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
+                    && AdvancedOptions.Instance.DiscoverMultipleResultSets)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Dapper",
+                        Version = "2.0.123",
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = null,
+                    });
+                }
             }
 
             if (databaseType == DatabaseType.SQLite)

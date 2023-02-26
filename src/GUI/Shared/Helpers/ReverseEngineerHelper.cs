@@ -215,7 +215,8 @@ namespace EFCorePowerTools.Helpers
 
         public string GetReadMeText(ReverseEngineerOptions options, string content, List<NuGetPackage> packages)
         {
-            var extraPackages = packages.Where(p => !p.IsMainProviderPackage).Select(p => $"Use{p.UseMethodName}()").ToList();
+            var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
+                .Select(p => $"Use{p.UseMethodName}()").ToList();
 
             var useText = string.Empty;
 

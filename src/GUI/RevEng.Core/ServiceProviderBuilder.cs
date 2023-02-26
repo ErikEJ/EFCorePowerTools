@@ -209,7 +209,6 @@ namespace RevEng.Core
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
 #endif
-
                     break;
 
                 case DatabaseType.Npgsql:
@@ -256,11 +255,6 @@ namespace RevEng.Core
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
-                    if (options.UseSpatial)
-                    {
-                        var spatial = new SqliteNetTopologySuiteDesignTimeServices();
-                        spatial.ConfigureDesignTimeServices(serviceCollection);
-                    }
 #if CORE60
                     if (options.UseNodaTime)
                     {

@@ -324,12 +324,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
                 }
             }
-
-            if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                && AdvancedOptions.Instance.DiscoverMultipleResultSets)
-            {
-                nuGetHelper.InstallPackage("Dapper", project);
-            }
         }
 
         private async Task<bool> ChooseDataBaseConnectionByUiHintAsync(ReverseEngineerOptions options)
