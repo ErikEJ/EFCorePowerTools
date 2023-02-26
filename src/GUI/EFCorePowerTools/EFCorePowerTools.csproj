@@ -194,6 +194,10 @@
       <Link>T4_703.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="..\lib\DacFX161.zip">
+      <Link>DacFX161.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="app.config" />
     <Content Include="CodeTemplates600.zip">
       <IncludeInVSIX>true</IncludeInVSIX>

@@ -247,7 +247,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var fullPath = Path.Combine(toDir, GetExeName());
 
             if (Directory.Exists(toDir)
-                && File.Exists(Path.Combine(toDir, GetExeName()))
+                && File.Exists(fullPath)
                 && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 106)
             {
                 return fullPath;
@@ -280,6 +280,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
             {
                 archive.ExtractToDirectory(toDir, true);
+            }
+
+            if (codeGenerationMode != CodeGenerationMode.EFCore3)
+            {
+                using (var archive = ZipFile.Open(Path.Combine(fromDir, "DacFX161.zip"), ZipArchiveMode.Read))
+                {
+                    archive.ExtractToDirectory(toDir, true);
+                }
             }
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
