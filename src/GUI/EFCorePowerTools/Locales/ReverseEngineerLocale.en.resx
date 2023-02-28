@@ -136,7 +136,7 @@
     <value>Add Server Explorer (DDEX) connection</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
-    <value>Add external .dacpac</value>
+    <value>Add external .dacpac file</value>
   </data>
   <data name="AddSchemasToFilter" xml:space="preserve">
     <value>Add Schemas to filter</value>
@@ -160,19 +160,19 @@
     <value>Please check the 'Extensions' output window for warnings</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
-    <value>Choose Configuration File</value>
+    <value>Choose Your Configuration File</value>
   </data>
   <data name="ChooseDatabaseConnection" xml:space="preserve">
-    <value>Choose Database Connection</value>
+    <value>Choose Your Data Connection</value>
   </data>
   <data name="ChooseDatabaseObjects" xml:space="preserve">
-    <value>Choose Database Objects</value>
+    <value>Choose Your Database Objects</value>
   </data>
   <data name="ChooseSchemas" xml:space="preserve">
-    <value>Choose Schemas</value>
+    <value>Choose Your Schemas</value>
   </data>
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
-    <value>Choose SQL Server Database project (.dacpac)</value>
+    <value>Choose Your SQL Server Database project</value>
   </data>
   <data name="CodeGeneration" xml:space="preserve">
     <value>Code generation</value>
@@ -210,6 +210,9 @@
   <data name="DDEXProviderExperience" xml:space="preserve">
     <value>Install DDEX Provider for better experience</value>
   </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>Choose Your EF Core version</value>
+  </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value>EntityTypes &amp; DbContext</value>
   </data>
@@ -232,7 +235,7 @@
     <value>Functions</value>
   </data>
   <data name="GenerateEFCoreModelInProject" xml:space="preserve">
-    <value>Generate EF Core Model in Project {0}</value>
+    <value>Choose Your Settings for Project {0}</value>
   </data>
   <data name="GeneratingCode" xml:space="preserve">
     <value>Generating code...</value>

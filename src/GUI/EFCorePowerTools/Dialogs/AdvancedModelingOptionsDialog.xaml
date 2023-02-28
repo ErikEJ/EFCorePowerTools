@@ -13,7 +13,7 @@
                  ResizeMode="NoResize"
                  SizeToContent="WidthAndHeight"
                  WindowStartupLocation="CenterOwner"
-                 mc:Ignorable="d" Height="440">
+                 mc:Ignorable="d" Height="600">
 
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
@@ -29,6 +29,11 @@
                         <Setter Property="Orientation" Value="Horizontal" />
                         <Setter Property="Margin" Value="0,10,0,0" />
                         <Setter Property="HorizontalAlignment" Value="Right" />
+                    </Style>
+                    <Style TargetType="TextBox" x:Key="TextInputStyle">
+                        <Setter Property="Height" Value="22"/>
+                        <Setter Property="Margin" Value="0,2,0,8"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
@@ -86,7 +91,27 @@
                       IsChecked="{Binding Model.UseSchemaFolders}"
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="11" />
+                    <dw:LiveTextBlock 
+                          Text="{x:Static locale:ReverseEngineerLocale.EntityTypesSubNamespace}"/>
+                        <TextBox Grid.Row="7"
+                         TabIndex="12"
+                         Style="{StaticResource TextInputStyle}"
+                         Text="{Binding Model.ModelNamespace, Mode=TwoWay}"/>
+                    <dw:LiveTextBlock Grid.Row="8"
+                          Text="{x:Static locale:ReverseEngineerLocale.DbContextPath}"/>
+                    <TextBox 
+                 TabIndex="13"
+                 Style="{StaticResource TextInputStyle}"
+                 Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
+
+                    <dw:LiveTextBlock 
+                          Text="{x:Static locale:ReverseEngineerLocale.DbContextSubNamespace}"/>
+                    <TextBox 
+                 TabIndex="14"
+                 Style="{StaticResource TextInputStyle}"
+                 Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
                 </StackPanel>
+                
             </GroupBox>
 
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.Mapping}">

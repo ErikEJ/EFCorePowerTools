@@ -210,6 +210,9 @@
   <data name="DDEXProviderExperience" xml:space="preserve">
     <value />
   </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value />
   </data>

@@ -8,11 +8,12 @@
                  xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 MinHeight="660"
-                 MinWidth="418"
+                 MinHeight="460"
+                 MinWidth="420"
+                 Height="460"
+                 Width="420"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
-                 SizeToContent="WidthAndHeight"
                  d:DataContext="{d:DesignInstance Type=viewModels:ModelingOptionsViewModel, IsDesignTimeCreatable=False}"
                  Title="{Binding Title, Mode=OneWay}">
 
@@ -58,7 +59,7 @@
                         TargetType="ComboBox">
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                         <Setter Property="IsEditable" Value="False"/>
-                        <Setter Property="MinWidth" Value="196"/>
+                        <Setter Property="MinWidth" Value="172"/>
                         <Setter Property="Height" Value="23"/>
                     </Style>
                 </ResourceDictionary>
@@ -122,36 +123,16 @@
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
 
+
         <dw:LiveTextBlock Grid.Row="6"
-                          Text="{x:Static locale:ReverseEngineerLocale.EntityTypesSubNamespace}"/>
-        <TextBox Grid.Row="7"
-                 TabIndex="3"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.ModelNamespace, Mode=TwoWay}"/>
-
-        <dw:LiveTextBlock Grid.Row="8"
-                          Text="{x:Static locale:ReverseEngineerLocale.DbContextPath}"/>
-        <TextBox Grid.Row="9"
-                 TabIndex="4"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
-
-        <dw:LiveTextBlock Grid.Row="10"
-                          Text="{x:Static locale:ReverseEngineerLocale.DbContextSubNamespace}"/>
-        <TextBox Grid.Row="11"
-                 TabIndex="5"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
-
-        <dw:LiveTextBlock Grid.Row="12"
                           Text="{x:Static locale:ReverseEngineerLocale.WhatToGenerate}"/>
-        <ComboBox Grid.Row="12"
+        <ComboBox Grid.Row="6"
                   TabIndex="6"
                   ItemsSource="{Binding GenerationModeList}"
                   Style="{StaticResource GenerationMethodComboBoxStyle}"
                   SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
 
-        <GroupBox Grid.Row="13"
+        <GroupBox Grid.Row="7"
                   Header="{x:Static locale:ReverseEngineerLocale.Naming}"
                   Style="{StaticResource NamingGroupBoxStyle}">
             <StackPanel>
@@ -166,14 +147,14 @@
             </StackPanel>
         </GroupBox>
 
-        <CheckBox Grid.Row="14"
-                  TabIndex="10"
+        <CheckBox Grid.Row="8"
+                  TabIndex="8"
                   Content="{x:Static locale:ReverseEngineerLocale.UseDataAnnotations}"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="15">
+                    Grid.Row="9">
             <CheckBox TabIndex="11"
                       Name="UseHandlebarsCheckbox"
                       Content="{x:Static locale:ReverseEngineerLocale.CustomizeUsingHandlebars}"
@@ -186,20 +167,20 @@
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
 
-        <CheckBox Grid.Row="16"
+        <CheckBox Grid.Row="10"
                   TabIndex="12"
                   Content="{x:Static locale:ReverseEngineerLocale.IncludeConnectionStringGeneratedCode}"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
-        <CheckBox Grid.Row="17"
+        <CheckBox Grid.Row="11"
                   TabIndex="14"
                   Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
-        <StackPanel Grid.Row="18"
+        <StackPanel Grid.Row="12"
                     Style="{StaticResource ButtonRowStyle}">
             <TextBlock              
                 ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}"

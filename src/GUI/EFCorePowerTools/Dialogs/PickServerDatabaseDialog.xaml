@@ -17,7 +17,7 @@
                  xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
                  Loaded="Window_Loaded"
                  MinWidth="420"
-                 MinHeight="200"
+                 MinHeight="220"
                  d:DataContext="{d:DesignInstance Type=viewModels:PickServerDatabaseViewModel, IsDesignTimeCreatable=False}">
 
     <i:Interaction.Triggers>
@@ -177,6 +177,7 @@
                   Margin="0,5,0,0"
                   Style="{StaticResource SourceSelectionComboBoxStyle}"
                   ItemsSource="{Binding CodeGenerationModeList, Mode=OneWay}"
+                  ToolTip="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Value"
                   SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />

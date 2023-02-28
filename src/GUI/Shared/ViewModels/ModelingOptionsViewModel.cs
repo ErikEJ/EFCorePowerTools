@@ -198,6 +198,9 @@ namespace EFCorePowerTools.ViewModels
             Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
             Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
             Model.UseDateOnlyTimeOnly = advancedModelingOptionsResult.Payload.UseDateOnlyTimeOnly;
+            Model.ContextNamespace = advancedModelingOptionsResult.Payload.ContextNamespace;
+            Model.OutputContextPath = advancedModelingOptionsResult.Payload.OutputContextPath;
+            Model.ModelNamespace = advancedModelingOptionsResult.Payload.ModelNamespace;
         }
     }
 }

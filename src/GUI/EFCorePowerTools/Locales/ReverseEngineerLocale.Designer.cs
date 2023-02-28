@@ -342,6 +342,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string EFCoreVersionTip {
+            get {
+                return ResourceManager.GetString("EFCoreVersionTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string EntityTypesAndContext {
             get {
                 return ResourceManager.GetString("EntityTypesAndContext", resourceCulture);
