@@ -48,6 +48,12 @@ namespace EFCorePowerTools
         [DefaultValue(true)]
         public bool PreferAsyncCalls { get; set; } = true;
 
+        [Category("Reverse Engineering")]
+        [DisplayName(@"Set mappings based on data types in use")]
+        [Description("Set mappings for special types based on usage")]
+        [DefaultValue(true)]
+        public bool MapUsedTypes { get; set; } = true;
+
         [Category("Other")]
         [DisplayName(@"Participate in Telemetry")]
         [Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports")]

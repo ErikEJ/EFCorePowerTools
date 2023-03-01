@@ -44,7 +44,7 @@ namespace RevEng.Common
         public IEnumerable<string> ExcludedColumns { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to exclude table from default result set discovery
+        /// Gets or sets a value indicating whether to exclude table from default result set discovery.
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public bool UseLegacyResultSetDiscovery { get; set; }

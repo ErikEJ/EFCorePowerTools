@@ -13,6 +13,7 @@
     {
         public ColumnModel(
             string name,
+            string storeType,
             bool isPrimaryKey,
             bool isForeignKey)
         {
@@ -24,6 +25,7 @@
             Name = name;
             IsPrimaryKey = isPrimaryKey;
             IsForeignKey = isForeignKey;
+            StoreType = storeType;
         }
 
         /// <summary>
@@ -31,6 +33,12 @@
         /// </summary>
         [DataMember]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the store type name.
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public string StoreType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether a primary key exists for the table or not.
