@@ -10,13 +10,6 @@ namespace EFCorePowerTools.DAL
 {
     public class VisualStudioAccess : IVisualStudioAccess
     {
-        private readonly EFCorePowerToolsPackage package;
-
-        public VisualStudioAccess(EFCorePowerToolsPackage package)
-        {
-            this.package = package;
-        }
-
         DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
         {
             DatabaseConnectionModel info = null;

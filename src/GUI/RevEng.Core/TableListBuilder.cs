@@ -50,11 +50,12 @@ namespace RevEng.Core
 
                 var primaryKeyColumnNames = databaseTable.PrimaryKey?.Columns.Select(c => c.Name).ToHashSet();
                 var foreignKeyColumnNames = databaseTable.ForeignKeys?.SelectMany(c => c.Columns).Select(c => c.Name).ToHashSet();
-                columns.AddRange(from colum in databaseTable.Columns.Where(c => !string.IsNullOrWhiteSpace(c.Name))
+                columns.AddRange(from column in databaseTable.Columns.Where(c => !string.IsNullOrWhiteSpace(c.Name))
                                  select new ColumnModel(
-                                     colum.Name,
-                                     primaryKeyColumnNames?.Contains(colum.Name) ?? false,
-                                     foreignKeyColumnNames?.Contains(colum.Name) ?? false));
+                                     column.Name,
+                                     column.StoreType,
+                                     primaryKeyColumnNames?.Contains(column.Name) ?? false,
+                                     foreignKeyColumnNames?.Contains(column.Name) ?? false));
                 buildResult.Add(new TableModel(databaseTable.Name, databaseTable.Schema, databaseType, databaseTable is DatabaseView ? ObjectType.View : ObjectType.Table, columns));
             }
 

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
 	<PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="7.0.1" />
 	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
