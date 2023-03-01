@@ -32,6 +32,26 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
+        public void AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
+        {
+            if (!AdvancedOptions.Instance.MapUsedTypes)
+            {
+                return;
+            }
+
+            if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
+                || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
+            {
+                options.UseHierarchyId = tables.Any(t => t.Columns.Any(c => c.StoreType == "hierarchyid"))
+                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer);
+
+                options.UseSpatial = tables.Any(t => t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography"));
+
+                options.UseDateOnlyTimeOnly = tables.Any(t => t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
+                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer);
+            }
+        }
+
         public Tuple<bool, Version> HasSqlServerViewDefinitionRightsAndVersion(string connectionString)
         {
             var hasRights = false;

@@ -621,7 +621,7 @@ namespace EFCorePowerTools
                     .AddSingleton<IMessenger>(messenger);
 
             // Register DAL
-            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>(provider => new VisualStudioAccess(this))
+            services.AddTransient<IVisualStudioAccess, VisualStudioAccess>()
                     .AddSingleton<ITelemetryAccess, TelemetryAccess>()
                     .AddSingleton<IOperatingSystemAccess, OperatingSystemAccess>()
                     .AddSingleton<ICredentialStore, CredentialStore>()
