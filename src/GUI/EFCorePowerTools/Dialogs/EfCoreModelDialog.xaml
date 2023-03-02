@@ -8,9 +8,9 @@
                  xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 MinHeight="460"
+                 MinHeight="500"
                  MinWidth="420"
-                 Height="460"
+                 Height="500"
                  Width="420"
                  WindowStartupLocation="CenterOwner"
                  ResizeMode="NoResize"
@@ -46,7 +46,7 @@
                     </Style>
                     <Style TargetType="StackPanel" x:Key="ButtonRowStyle">
                         <Setter Property="Orientation" Value="Horizontal"/>
-                        <Setter Property="Margin" Value="0,10,0,0"/>
+                        <Setter Property="Margin" Value="0,40,0,0"/>
                         <Setter Property="HorizontalAlignment" Value="Right"/>
                     </Style>
                     <Style x:Key="GenerationMethodComboBoxStyle"
@@ -73,14 +73,6 @@
 
     <Grid Margin="15, 5, 15, 10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
