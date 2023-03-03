@@ -207,6 +207,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     {
                         if (!await ChooseDataBaseConnectionAsync(options, project))
                         {
+                            await VS.StatusBar.ClearAsync();
                             return;
                         }
 
@@ -216,6 +217,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                         if (dbInfo == null)
                         {
+                            await VS.StatusBar.ClearAsync();
                             return;
                         }
 
@@ -226,6 +228,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
                     {
+                        await VS.StatusBar.ClearAsync();
                         return;
                     }
 
@@ -237,6 +240,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     if (!await GetModelOptionsAsync(options, project.Name))
                     {
+                        await VS.StatusBar.ClearAsync();
                         return;
                     }
 
@@ -380,9 +384,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (dacpacList != null && dacpacList.Any())
             {
-                psd.PublishDefinitions(dacpacList.Select(m => new DatabaseDefinitionModel
+                psd.PublishDefinitions(dacpacList.Select(m => new DatabaseConnectionModel
                 {
                     FilePath = m,
+                    DatabaseType = DatabaseType.SQLServerDacpac,
                 }));
             }
 
@@ -410,7 +415,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
             options.Schemas = options.FilterSchemas ? pickDataSourceResult.Payload.Schemas?.ToList() : null;
             options.UiHint = pickDataSourceResult.Payload.UiHint;
-            options.Dacpac = pickDataSourceResult.Payload.Definition?.FilePath;
+            options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
 
             if (pickDataSourceResult.Payload.Connection != null)
             {

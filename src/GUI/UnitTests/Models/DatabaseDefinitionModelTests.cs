@@ -12,7 +12,7 @@ namespace UnitTests.Models
         {
             // Arrange
             var invokes = 0;
-            var ddm = new DatabaseDefinitionModel();
+            var ddm = new DatabaseConnectionModel();
             ddm.PropertyChanged += (sender, args) => invokes++;
 
             // Act
@@ -28,7 +28,7 @@ namespace UnitTests.Models
         {
             // Arrange
             var invokes = 0;
-            var ddm = new DatabaseDefinitionModel();
+            var ddm = new DatabaseConnectionModel();
             ddm.PropertyChanged += (sender, args) => invokes++;
             const string filePath = @"C:\Temp\Test\Database.dacpac";
 

@@ -8,7 +8,7 @@ namespace EFCorePowerTools.Common.DAL
     {
         DatabaseConnectionModel PromptForNewDatabaseConnection();
 
-        DatabaseDefinitionModel PromptForNewDatabaseDefinition();
+        DatabaseConnectionModel PromptForNewDacpacDatabaseDefinition();
 
         Task RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection);
 

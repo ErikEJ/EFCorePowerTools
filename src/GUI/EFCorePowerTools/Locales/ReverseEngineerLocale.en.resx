@@ -136,7 +136,7 @@
     <value>Add Server Explorer (DDEX) connection</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
-    <value>Add external .dacpac file</value>
+    <value>Add .dacpac file</value>
   </data>
   <data name="AddSchemasToFilter" xml:space="preserve">
     <value>Add Schemas to filter</value>

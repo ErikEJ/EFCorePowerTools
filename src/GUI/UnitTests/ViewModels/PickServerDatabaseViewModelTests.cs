@@ -99,7 +99,6 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNotNull(vm.DatabaseConnections);
-            Assert.IsNotNull(vm.DatabaseDefinitions);
         }
 
         [Test]
@@ -116,7 +115,6 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
         }
 
         [Test]
@@ -155,150 +153,6 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.AreSame(dbConnection1, vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void LoadedCommand_Executed_DatabaseConnectionsAndDefinitions()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
-            var dbConnection1 = new DatabaseConnectionModel();
-            var dbConnection2 = new DatabaseConnectionModel();
-            var dbDefinition1 = new DatabaseDefinitionModel();
-            var dbDefinition2 = new DatabaseDefinitionModel();
-            vm.DatabaseConnections.Add(dbConnection1);
-            vm.DatabaseConnections.Add(dbConnection2);
-            vm.DatabaseDefinitions.Add(dbDefinition1);
-            vm.DatabaseDefinitions.Add(dbDefinition2);
-
-            // Act
-            vm.LoadedCommand.Execute(null);
-
-            // Assert
-            Assert.AreSame(dbConnection1, vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_SimpleSortOrder()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
-            var dbDefinition1 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseB.sqlproj",
-            };
-            var dbDefinition2 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseA.sqlproj",
-            };
-            vm.DatabaseDefinitions.Add(dbDefinition1);
-            vm.DatabaseDefinitions.Add(dbDefinition2);
-
-            // Act
-            vm.LoadedCommand.Execute(null);
-
-            // Assert
-            Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.AreSame(dbDefinition2, vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_ExtendedSortOrder()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
-            var dbDefinition1 = new DatabaseDefinitionModel
-            {
-                FilePath = "TestExampleDatabaseA.sqlproj",
-            };
-            var dbDefinition2 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseB.sqlproj",
-            };
-            var dbDefinition3 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseCtest.sqlproj",
-            };
-            vm.DatabaseDefinitions.Add(dbDefinition1);
-            vm.DatabaseDefinitions.Add(dbDefinition2);
-            vm.DatabaseDefinitions.Add(dbDefinition3);
-
-            // Act
-            vm.LoadedCommand.Execute(null);
-
-            // Assert
-            Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.AreSame(dbDefinition2, vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_FilePathNull()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
-            var dbDefinition = new DatabaseDefinitionModel
-            {
-                FilePath = null,
-            };
-            vm.DatabaseDefinitions.Add(dbDefinition);
-
-            // Act
-            vm.LoadedCommand.Execute(null);
-
-            // Assert
-            Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void LoadedCommand_Executed_OnlyDatabaseDefinitions_WithOtherFiles()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
-            var dbDefinition1 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseA.dacpac",
-            };
-            var dbDefinition2 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseB.sqlproj",
-            };
-            var dbDefinition3 = new DatabaseDefinitionModel
-            {
-                FilePath = "ExampleDatabaseC.txt",
-            };
-            vm.DatabaseDefinitions.Add(dbDefinition1);
-            vm.DatabaseDefinitions.Add(dbDefinition2);
-            vm.DatabaseDefinitions.Add(dbDefinition3);
-
-            // Act
-            vm.LoadedCommand.Execute(null);
-
-            // Assert
-            Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.AreSame(dbDefinition2, vm.SelectedDatabaseDefinition);
         }
 
         [Test]
@@ -400,47 +254,6 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void AddDatabaseDefinitionCommand_Executed_NoConnectionReturned()
-        {
-            // Arrange
-            var vsaMock = new Mock<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            vsaMock.Setup(m => m.PromptForNewDatabaseDefinition()).Returns<DatabaseDefinitionModel>(null);
-            var vm = new PickServerDatabaseViewModel(vsaMock.Object, creds, psdFactory, connFactory);
-
-            // Act
-            vm.AddDatabaseDefinitionCommand.Execute(null);
-
-            // Assert
-            CollectionAssert.IsEmpty(vm.DatabaseDefinitions);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-            vsaMock.Verify(m => m.PromptForNewDatabaseDefinition(), Times.Once);
-        }
-
-        [Test]
-        public void AddDatabaseDefinitionCommand_Executed_NewDefinitionReturned()
-        {
-            // Arrange
-            var dbDefinition = new DatabaseDefinitionModel();
-            var vsaMock = new Mock<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            vsaMock.Setup(m => m.PromptForNewDatabaseDefinition()).Returns(dbDefinition);
-            var vm = new PickServerDatabaseViewModel(vsaMock.Object, creds, psdFactory, connFactory);
-
-            // Act
-            vm.AddDatabaseDefinitionCommand.Execute(null);
-
-            // Assert
-            CollectionAssert.Contains(vm.DatabaseDefinitions, dbDefinition);
-            Assert.AreSame(dbDefinition, vm.SelectedDatabaseDefinition);
-            vsaMock.Verify(m => m.PromptForNewDatabaseDefinition(), Times.Once);
-        }
-
-        [Test]
         public void OkCommand_CanExecute_NothingSelected()
         {
             // Arrange
@@ -479,27 +292,6 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void OkCommand_CanExecute_DefinitionSelected()
-        {
-            // Arrange
-            var dbDefinition = new DatabaseDefinitionModel();
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
-            {
-                SelectedDatabaseDefinition = dbDefinition,
-            };
-
-            // Act
-            var canExecute = vm.OkCommand.CanExecute(null);
-
-            // Assert
-            Assert.IsTrue(canExecute);
-        }
-
-        [Test]
         public void OkCommand_Executed_CloseRequestedToView_DatabaseConnection()
         {
             // Arrange
@@ -527,38 +319,6 @@ namespace UnitTests.ViewModels
             Assert.IsTrue(closeRequested);
             Assert.IsTrue(dialogResult);
             Assert.AreSame(dbConnection, vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void OkCommand_Executed_CloseRequestedToView_DatabaseDefinition()
-        {
-            // Arrange
-            var dbDefinition = new DatabaseDefinitionModel();
-            var closeRequested = false;
-            bool? dialogResult = null;
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
-            {
-                SelectedDatabaseDefinition = dbDefinition,
-            };
-            vm.CloseRequested += (sender, args) =>
-            {
-                closeRequested = true;
-                dialogResult = args.DialogResult;
-            };
-
-            // Act
-            vm.OkCommand.Execute(null);
-
-            // Assert
-            Assert.IsTrue(closeRequested);
-            Assert.IsTrue(dialogResult);
-            Assert.AreSame(dbDefinition, vm.SelectedDatabaseDefinition);
-            Assert.IsNull(vm.SelectedDatabaseConnection);
         }
 
         [Test]
@@ -606,38 +366,6 @@ namespace UnitTests.ViewModels
             Assert.IsTrue(closeRequested);
             Assert.IsFalse(dialogResult);
             Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void CancelCommand_Executed_DatabaseDefinition()
-        {
-            // Arrange
-            var dbDefinition = new DatabaseDefinitionModel();
-            var closeRequested = false;
-            bool? dialogResult = null;
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
-            {
-                SelectedDatabaseDefinition = dbDefinition,
-            };
-            vm.CloseRequested += (sender, args) =>
-            {
-                closeRequested = true;
-                dialogResult = args.DialogResult;
-            };
-
-            // Act
-            vm.CancelCommand.Execute(null);
-
-            // Assert
-            Assert.IsTrue(closeRequested);
-            Assert.IsFalse(dialogResult);
-            Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
         }
 
         [Test]
@@ -673,73 +401,6 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.IsTrue(canExecute);
-        }
-
-        [Test]
-        public void Selection_OnlyConnectionOrDefinitionSelected_DatabaseConnection()
-        {
-            // Arrange
-            var dbConnection = new DatabaseConnectionModel();
-            var dbDefinition = new DatabaseDefinitionModel();
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
-            {
-                SelectedDatabaseDefinition = dbDefinition,
-            };
-
-            // Act
-            vm.SelectedDatabaseConnection = dbConnection;
-
-            // Assert
-            Assert.IsNull(vm.SelectedDatabaseDefinition);
-            Assert.AreSame(dbConnection, vm.SelectedDatabaseConnection);
-        }
-
-        [Test]
-        public void Selection_OnlyConnectionOrDefinitionSelected_DatabaseDefinition()
-        {
-            // Arrange
-            var dbConnection = new DatabaseConnectionModel();
-            var dbDefinition = new DatabaseDefinitionModel();
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory)
-            {
-                SelectedDatabaseConnection = dbConnection,
-            };
-
-            // Act
-            vm.SelectedDatabaseDefinition = dbDefinition;
-
-            // Assert
-            Assert.IsNull(vm.SelectedDatabaseConnection);
-            Assert.AreSame(dbDefinition, vm.SelectedDatabaseDefinition);
-        }
-
-        [Test]
-        public void PropertyChangedOnDatabaseDefinitionsChanged()
-        {
-            // Arrange
-            string propertyChangedName = null;
-            var dbDefinition = new DatabaseDefinitionModel();
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-            var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
-            vm.PropertyChanged += (sender, args) => propertyChangedName = args.PropertyName;
-
-            // Act
-            vm.DatabaseDefinitions.Add(dbDefinition);
-
-            // Assert
-            Assert.IsNotNull(propertyChangedName);
-            Assert.AreEqual(nameof(IPickServerDatabaseViewModel.DatabaseDefinitions), propertyChangedName);
         }
     }
 }

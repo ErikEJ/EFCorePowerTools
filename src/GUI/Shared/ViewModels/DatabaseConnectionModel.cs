@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.Data.Services;
@@ -13,10 +15,29 @@ namespace EFCorePowerTools.Common.Models
     {
         private string connectionName;
         private string connectionString;
+        private string filePath;
         private DatabaseType databaseType;
         private IVsDataConnection dataConnection;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Gets or sets the file path to the database definition.
+        /// </summary>
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                if (value == filePath)
+                {
+                    return;
+                }
+
+                filePath = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string ConnectionName
         {
@@ -39,6 +60,26 @@ namespace EFCorePowerTools.Common.Models
             {
                 if (DataConnection == null)
                 {
+                    if (DatabaseType == DatabaseType.SQLServerDacpac)
+                    {
+                        if (string.IsNullOrEmpty(FilePath))
+                        {
+                            return "<null>";
+                        }
+
+                        if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return $"{Path.GetFileNameWithoutExtension(FilePath)} (.dacpac)";
+                        }
+
+                        if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return FilePath.Length > 40
+                                       ? "..." + FilePath.Substring(FilePath.Length - 40)
+                                       : FilePath;
+                        }
+                    }
+
                     return $"{ConnectionName} ({DatabaseType})";
                 }
 
