@@ -124,7 +124,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 if (SelectedDatabaseConnection != null)
                 {
-                    return SelectedDatabaseConnection.ConnectionName;
+                    return SelectedDatabaseConnection.ConnectionName ?? selectedDatabaseConnection.FilePath;
                 }
 
                 return uiHint;
@@ -135,7 +135,15 @@ namespace EFCorePowerTools.ViewModels
                 if (!string.IsNullOrEmpty(value))
                 {
                     var databaseConnectionCandidate = DatabaseConnections
-                        .FirstOrDefault(c => c.ConnectionName != null && c.ConnectionName.ToLowerInvariant() == value.ToLowerInvariant());
+                        .FirstOrDefault(c => c.ConnectionName != null && c.ConnectionName.Equals(value, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (databaseConnectionCandidate != null)
+                    {
+                        SelectedDatabaseConnection = databaseConnectionCandidate;
+                    }
+
+                    databaseConnectionCandidate = DatabaseConnections
+                        .FirstOrDefault(c => c.FilePath != null && c.FilePath.Equals(value, StringComparison.InvariantCultureIgnoreCase));
 
                     if (databaseConnectionCandidate != null)
                     {
@@ -172,6 +180,10 @@ namespace EFCorePowerTools.ViewModels
             if (DatabaseConnections.Any(c => c.FilePath != null && SelectedDatabaseConnection == null))
             {
                 SelectedDatabaseConnection = PreSelectDatabaseDefinition(UiHint);
+                if (SelectedDatabaseConnection is null && DatabaseConnections.Any())
+                {
+                    SelectedDatabaseConnection = DatabaseConnections.First();
+                }
             }
         }
 
