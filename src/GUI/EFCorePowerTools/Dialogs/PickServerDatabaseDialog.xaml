@@ -107,14 +107,23 @@
                                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem 
+                            Header="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
+                            Command="{Binding AddAdhocDatabaseConnectionCommand}"
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
+                            >
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/DatabaseSchema.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </StackPanel>
                 </xctk:DropDownButton.DropDownContent>
             </xctk:DropDownButton>
 
         </Grid>
 
-        <TextBlock Grid.Row="1" Margin="10,0,0,0"
-                   Text="{x:Static locale:ReverseEngineerLocale.ChooseSqlServerDatabaseProject}"/>
+        <TextBlock Grid.Row="1" 
+                   Text="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"/>
 
         <Grid Grid.Row="2"
               HorizontalAlignment="Stretch">
@@ -126,24 +135,15 @@
                 <ColumnDefinition Width="62.4"/>
             </Grid.ColumnDefinitions>
 
-            <ComboBox Grid.Column="0"
-                      Visibility="{Binding DatabaseDefinitions, Converter={StaticResource CollectionCountToVisibilityConverter}, Mode=OneWay}"
-                      TabIndex="4"
-                      Style="{StaticResource SourceSelectionComboBoxStyle}"
-                      ItemsSource="{Binding DatabaseDefinitions, Mode=OneWay}"
-                      SelectedItem="{Binding SelectedDatabaseDefinition, Mode=TwoWay}" Grid.ColumnSpan="3" Margin="0,12,0,12">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding FilePath, Converter={StaticResource FilePathToDisplayNameConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <dw:DialogButton Grid.Column="3"
-                             TabIndex="2"
-                             Style="{StaticResource SourceSelectionButtonStyle}"
-                             Content="{x:Static locale:ReverseEngineerLocale.Add}"
-                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
-                             Command="{Binding AddDatabaseDefinitionCommand}" Margin="10,0,0,0" Grid.ColumnSpan="2"/>
+            <ComboBox
+                  TabIndex="6"
+                  Margin="0,6,0,12"
+                  Style="{StaticResource SourceSelectionComboBoxStyle}"
+                  ItemsSource="{Binding CodeGenerationModeList, Mode=OneWay}"
+                  ToolTip="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Value"
+                  SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />
         </Grid>
 
         <StackPanel Grid.Row="3" 
@@ -165,22 +165,6 @@
                              ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
                              Content="{x:Static locale:ReverseEngineerLocale.Add}"
                              Command="{Binding FilterSchemasCommand}"/>
-        </StackPanel>
-
-        <StackPanel 
-            Grid.Row="4"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-            <ComboBox
-                  TabIndex="6"
-                  Margin="0,5,0,0"
-                  Style="{StaticResource SourceSelectionComboBoxStyle}"
-                  ItemsSource="{Binding CodeGenerationModeList, Mode=OneWay}"
-                  ToolTip="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"
-                  SelectedValuePath="Key"
-                  DisplayMemberPath="Value"
-                  SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />
         </StackPanel>
 
         <StackPanel Grid.Row="4"

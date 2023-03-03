@@ -440,6 +440,7 @@
     <Resource Include="Resources\Cancel.png" />
     <Resource Include="Resources\Column.png" />
     <Resource Include="Resources\DatabaseStoredProcedures.png" />
+    <Resource Include="Resources\DatabaseSchema.png" />
     <Content Include="Resources\efcreveng2.png" />
     <Resource Include="Resources\GlyphDown.png" />
     <Resource Include="Resources\GlyphRight.png" />
