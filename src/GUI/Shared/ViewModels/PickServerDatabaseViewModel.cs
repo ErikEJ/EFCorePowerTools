@@ -132,12 +132,15 @@ namespace EFCorePowerTools.ViewModels
 
             set
             {
-                var databaseConnectionCandidate = DatabaseConnections
-                    .FirstOrDefault(c => c.ConnectionName.ToLowerInvariant() == value.ToLowerInvariant());
-
-                if (databaseConnectionCandidate != null)
+                if (!string.IsNullOrEmpty(value))
                 {
-                    SelectedDatabaseConnection = databaseConnectionCandidate;
+                    var databaseConnectionCandidate = DatabaseConnections
+                        .FirstOrDefault(c => c.ConnectionName != null && c.ConnectionName.ToLowerInvariant() == value.ToLowerInvariant());
+
+                    if (databaseConnectionCandidate != null)
+                    {
+                        SelectedDatabaseConnection = databaseConnectionCandidate;
+                    }
                 }
 
                 uiHint = value;
