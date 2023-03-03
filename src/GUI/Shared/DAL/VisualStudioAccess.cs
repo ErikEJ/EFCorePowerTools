@@ -40,7 +40,7 @@ namespace EFCorePowerTools.DAL
             };
         }
 
-        DatabaseDefinitionModel IVisualStudioAccess.PromptForNewDatabaseDefinition()
+        DatabaseConnectionModel IVisualStudioAccess.PromptForNewDacpacDatabaseDefinition()
         {
             var fileName = VsDataHelper.PromptForDacpac();
 
@@ -49,9 +49,10 @@ namespace EFCorePowerTools.DAL
                 return null;
             }
 
-            return new DatabaseDefinitionModel
+            return new DatabaseConnectionModel
             {
                 FilePath = fileName,
+                DatabaseType = DatabaseType.SQLServerDacpac,
             };
         }
 

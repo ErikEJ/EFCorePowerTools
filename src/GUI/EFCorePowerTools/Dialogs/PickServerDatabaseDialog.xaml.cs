@@ -14,9 +14,9 @@ namespace EFCorePowerTools.Dialogs
 {
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)> getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)> getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
-        private readonly Action<IEnumerable<DatabaseDefinitionModel>> addDefinitions;
+        private readonly Action<IEnumerable<DatabaseConnectionModel>> addDefinitions;
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
         private readonly Action<CodeGenerationMode, IList<CodeGenerationItem>> codeGeneration;
         private readonly Action<string> uiHint;
@@ -33,7 +33,7 @@ namespace EFCorePowerTools.Dialogs
                 DialogResult = args.DialogResult;
                 Close();
             };
-            getDialogResult = () => (viewModel.SelectedDatabaseConnection, viewModel.SelectedDatabaseDefinition, (CodeGenerationMode)viewModel.CodeGenerationMode, viewModel.FilterSchemas, viewModel.Schemas.ToArray(), viewModel.UiHint);
+            getDialogResult = () => (viewModel.SelectedDatabaseConnection, (CodeGenerationMode)viewModel.CodeGenerationMode, viewModel.FilterSchemas, viewModel.Schemas.ToArray(), viewModel.UiHint);
             addConnections = models =>
             {
                 foreach (var model in models)
@@ -45,7 +45,7 @@ namespace EFCorePowerTools.Dialogs
             {
                 foreach (var model in models)
                 {
-                    viewModel.DatabaseDefinitions.Add(model);
+                    viewModel.DatabaseConnections.Add(model);
                 }
             };
             addSchemas = models =>
@@ -74,7 +74,7 @@ namespace EFCorePowerTools.Dialogs
             InitializeComponent();
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, DatabaseDefinitionModel Definition, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) Payload) ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
@@ -95,7 +95,7 @@ namespace EFCorePowerTools.Dialogs
             addConnections(connections);
         }
 
-        void IPickServerDatabaseDialog.PublishDefinitions(IEnumerable<DatabaseDefinitionModel> definitions)
+        void IPickServerDatabaseDialog.PublishDefinitions(IEnumerable<DatabaseConnectionModel> definitions)
         {
             addDefinitions(definitions);
         }

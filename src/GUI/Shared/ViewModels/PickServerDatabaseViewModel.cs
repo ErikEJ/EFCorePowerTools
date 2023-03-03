@@ -26,7 +26,6 @@ namespace EFCorePowerTools.ViewModels
         private readonly Func<IPickConnectionDialog> pickConnectionDialogFactory;
 
         private DatabaseConnectionModel selectedDatabaseConnection;
-        private DatabaseDefinitionModel selectedDatabaseDefinition;
         private bool filterSchemas = false;
         private string uiHint;
         private int codeGenerationMode;
@@ -54,9 +53,8 @@ namespace EFCorePowerTools.ViewModels
             CodeGenerationModeList = new ObservableCollection<CodeGenerationItem>();
 
             DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
-            DatabaseDefinitions = new ObservableCollection<DatabaseDefinitionModel>();
             Schemas = new List<SchemaInfo>();
-            DatabaseDefinitions.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseDefinitions));
+            DatabaseConnections.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseConnections));
         }
 
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
@@ -64,14 +62,13 @@ namespace EFCorePowerTools.ViewModels
         public ICommand LoadedCommand { get; }
         public ICommand AddDatabaseConnectionCommand { get; }
         public ICommand AddAdhocDatabaseConnectionCommand { get; }
-        public ICommand RemoveDatabaseConnectionCommand { get; }
         public ICommand AddDatabaseDefinitionCommand { get; }
+        public ICommand RemoveDatabaseConnectionCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand FilterSchemasCommand { get; }
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
-        public ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
         public ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; }
 
         public List<SchemaInfo> Schemas { get; private set; }
@@ -118,31 +115,6 @@ namespace EFCorePowerTools.ViewModels
 
                 selectedDatabaseConnection = value;
                 RaisePropertyChanged();
-
-                if (selectedDatabaseConnection != null)
-                {
-                    SelectedDatabaseDefinition = null;
-                }
-            }
-        }
-
-        public DatabaseDefinitionModel SelectedDatabaseDefinition
-        {
-            get => selectedDatabaseDefinition;
-            set
-            {
-                if (Equals(value, selectedDatabaseDefinition))
-                {
-                    return;
-                }
-
-                selectedDatabaseDefinition = value;
-                RaisePropertyChanged();
-
-                if (selectedDatabaseDefinition != null)
-                {
-                    SelectedDatabaseConnection = null;
-                }
             }
         }
 
@@ -153,11 +125,6 @@ namespace EFCorePowerTools.ViewModels
                 if (SelectedDatabaseConnection != null)
                 {
                     return SelectedDatabaseConnection.ConnectionName;
-                }
-
-                if (SelectedDatabaseDefinition != null)
-                {
-                    return SelectedDatabaseDefinition.FilePath;
                 }
 
                 return uiHint;
@@ -180,20 +147,16 @@ namespace EFCorePowerTools.ViewModels
         private void Loaded_Executed()
         {
             // Database connection first
-            if (DatabaseConnections.Any() && SelectedDatabaseConnection == null)
+            if (DatabaseConnections.Any(c => c.FilePath == null) && SelectedDatabaseConnection == null)
             {
-                if (DatabaseDefinitions.Any()
-                    && !string.IsNullOrEmpty(UiHint)
-                    && UiHint.EndsWith(".sqlproj"))
+                if (!string.IsNullOrEmpty(UiHint))
                 {
-                    var candidate = DatabaseDefinitions
-                        .FirstOrDefault(m => !string.IsNullOrWhiteSpace(m.FilePath)
-                            && m.FilePath.EndsWith(".sqlproj")
-                            && m.FilePath.Equals(UiHint));
+                    var candidate = DatabaseConnections
+                        .FirstOrDefault(m => m.ConnectionName == UiHint);
 
                     if (candidate != null)
                     {
-                        SelectedDatabaseDefinition = candidate;
+                        SelectedDatabaseConnection = candidate;
                         return;
                     }
                 }
@@ -202,10 +165,10 @@ namespace EFCorePowerTools.ViewModels
                 return;
             }
 
-            // Database definition (SQL project) first
-            if (DatabaseDefinitions.Any() && SelectedDatabaseConnection == null)
+            // Database definitions (SQL project) second
+            if (DatabaseConnections.Any(c => c.FilePath != null && SelectedDatabaseConnection == null))
             {
-                SelectedDatabaseDefinition = PreSelectDatabaseDefinition(UiHint);
+                SelectedDatabaseConnection = PreSelectDatabaseDefinition(UiHint);
             }
         }
 
@@ -295,10 +258,10 @@ namespace EFCorePowerTools.ViewModels
 
         private void AddDatabaseDefinition_Executed()
         {
-            DatabaseDefinitionModel newDatabaseDefinition;
+            DatabaseConnectionModel newDatabaseDefinition;
             try
             {
-                newDatabaseDefinition = visualStudioAccess.PromptForNewDatabaseDefinition();
+                newDatabaseDefinition = visualStudioAccess.PromptForNewDacpacDatabaseDefinition();
             }
             catch (Exception e)
             {
@@ -311,8 +274,8 @@ namespace EFCorePowerTools.ViewModels
                 return;
             }
 
-            DatabaseDefinitions.Add(newDatabaseDefinition);
-            SelectedDatabaseDefinition = newDatabaseDefinition;
+            DatabaseConnections.Add(newDatabaseDefinition);
+            SelectedDatabaseConnection = newDatabaseDefinition;
         }
 
         private void Ok_Executed()
@@ -320,14 +283,13 @@ namespace EFCorePowerTools.ViewModels
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => SelectedDatabaseConnection != null || SelectedDatabaseDefinition != null;
+        private bool Ok_CanExecute() => SelectedDatabaseConnection != null;
 
         private bool RemoveDatabaseConnection_CanExecute() => SelectedDatabaseConnection != null;
 
         private void Cancel_Executed()
         {
             SelectedDatabaseConnection = null;
-            SelectedDatabaseDefinition = null;
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
         }
 
@@ -344,9 +306,9 @@ namespace EFCorePowerTools.ViewModels
 
         private bool FilterSchemas_CanExecute() => FilterSchemas;
 
-        private DatabaseDefinitionModel PreSelectDatabaseDefinition(string uiHint)
+        private DatabaseConnectionModel PreSelectDatabaseDefinition(string uiHint)
         {
-            var subset = DatabaseDefinitions
+            var subset = DatabaseConnections
                 .Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
                 .ToArray();
             if (!string.IsNullOrEmpty(uiHint) && uiHint.EndsWith(".sqlproj"))

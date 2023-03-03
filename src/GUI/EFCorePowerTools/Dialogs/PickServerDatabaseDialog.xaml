@@ -109,7 +109,7 @@
                         </MenuItem>
                         <MenuItem 
                             Header="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
-                            Command="{Binding AddAdhocDatabaseConnectionCommand}"
+                            Command="{Binding AddDatabaseDefinitionCommand}"
                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
                             >
                             <MenuItem.Icon>

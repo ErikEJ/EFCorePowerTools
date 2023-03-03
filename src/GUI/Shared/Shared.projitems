@@ -56,7 +56,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converter\ColumnEnabledConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\EnumToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\EnumToLabelConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Converter\FilePathToDisplayNameConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\LevelToWidthConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\ObjectTypeIconToImageStyleConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\DotNetAccess.cs" />

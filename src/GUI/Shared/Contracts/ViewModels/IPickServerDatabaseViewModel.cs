@@ -14,17 +14,18 @@ namespace EFCorePowerTools.Contracts.ViewModels
 
         ICommand LoadedCommand { get; }
         ICommand AddDatabaseConnectionCommand { get; }
+        ICommand AddAdhocDatabaseConnectionCommand { get; }
+        ICommand AddDatabaseDefinitionCommand { get; }
+
         ICommand OkCommand { get; }
         ICommand CancelCommand { get; }
 
         ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
-        ObservableCollection<DatabaseDefinitionModel> DatabaseDefinitions { get; }
         ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; }
 
         List<SchemaInfo> Schemas { get; }
 
         DatabaseConnectionModel SelectedDatabaseConnection { get; set; }
-        DatabaseDefinitionModel SelectedDatabaseDefinition { get; set; }
 
         string UiHint { get; set; }
         int CodeGenerationMode { get; set; }
