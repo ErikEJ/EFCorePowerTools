@@ -250,6 +250,8 @@ namespace RevEng.Core.Modules
 
         private static Tuple<string, string> CreateIdentifier(string name)
         {
+            var original = name;
+
             var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
 
             string columAttribute = null;
@@ -262,8 +264,12 @@ namespace RevEng.Core.Modules
                 var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
                 name = regex.Replace(name, string.Empty);
 
-                // Class name doesn't begin with a letter, insert an underscore
-                if (!char.IsLetter(name, 0))
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    // we cannot fix it
+                    name = original;
+                }
+                else if (!char.IsLetter(name, 0))
                 {
                     name = name.Insert(0, "_");
                 }

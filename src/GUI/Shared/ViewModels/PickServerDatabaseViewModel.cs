@@ -233,7 +233,8 @@ namespace EFCorePowerTools.ViewModels
 
             try
             {
-                if (SelectedDatabaseConnection.DataConnection is null)
+                if (SelectedDatabaseConnection.DataConnection is null
+                    && SelectedDatabaseConnection.FilePath is null)
                 {
                     credentialStore.DeleteCredential(SelectedDatabaseConnection.ConnectionName);
                 }
@@ -285,7 +286,7 @@ namespace EFCorePowerTools.ViewModels
 
         private bool Ok_CanExecute() => SelectedDatabaseConnection != null;
 
-        private bool RemoveDatabaseConnection_CanExecute() => SelectedDatabaseConnection != null;
+        private bool RemoveDatabaseConnection_CanExecute() => SelectedDatabaseConnection != null && SelectedDatabaseConnection.FilePath == null;
 
         private void Cancel_Executed()
         {
