@@ -39,6 +39,9 @@ namespace EFCorePowerTools.ViewModels
             Model.UseSchemaFolders = presets.UseSchemaFolders;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
             Model.UseDateOnlyTimeOnly = presets.UseDateOnlyTimeOnly;
+            Model.ContextNamespace = presets.ContextNamespace;
+            Model.OutputContextPath = presets.OutputContextPath;
+            Model.ModelNamespace = presets.ModelNamespace;
         }
 
         private void Ok_Executed()
