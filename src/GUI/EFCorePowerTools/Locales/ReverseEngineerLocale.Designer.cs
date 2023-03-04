@@ -684,6 +684,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string RenamingNavigations {
+            get {
+                return ResourceManager.GetString("RenamingNavigations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ReportingResult {
             get {
                 return ResourceManager.GetString("ReportingResult", resourceCulture);

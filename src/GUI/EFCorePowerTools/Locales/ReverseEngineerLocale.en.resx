@@ -324,6 +324,9 @@
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
     <value>Remove SQL default from bool columns</value>
   </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>Renaming navigations</value>
+  </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>Reporting result...</value>
   </data>

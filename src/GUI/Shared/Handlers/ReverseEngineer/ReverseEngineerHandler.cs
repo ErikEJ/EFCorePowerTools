@@ -255,33 +255,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
-
-                if (File.Exists(referenceRenamingPath))
-                {
-                    try
-                    {
-                        var model = RenamingRulesSerializer.TryRead(referenceRenamingPath);
-
-                        if (!model?.Classes?.Any() ?? true)
-                        {
-                            return;
-                        }
-
-                        // navigation property renaming must be done after the project nuget packages are installed
-                        // because Roslyn will resolve the project references in order to identify property symbols
-                        var statusMessages = await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
-                            model,
-                            project.FullPath,
-                            options.OutputContextPath,
-                            options.OutputPath);
-                        package.LogError(statusMessages, null);
-                    }
-                    catch (Exception ex)
-                    {
-                        package.LogError(new List<string>(), ex);
-                    }
-                }
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, referenceRenamingPath);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -329,6 +303,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
         }
+
 
         private async Task<bool> ChooseDataBaseConnectionByUiHintAsync(ReverseEngineerOptions options)
         {
@@ -586,37 +561,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return true;
         }
 
-        private void VerifySQLServerRightsAndVersion(ReverseEngineerOptions options)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac)
-                && !string.IsNullOrEmpty(options.ConnectionString))
-            {
-                if (options.ConnectionString.ToLowerInvariant().Contains("active directory default")
-                    || options.ConnectionString.ToLowerInvariant().Contains("activedirectorydefault")
-                    || options.ConnectionString.ToLowerInvariant().Contains("active directory interactive")
-                    || options.ConnectionString.ToLowerInvariant().Contains("activedirectoryinteractive")
-                    || options.ConnectionString.ToLowerInvariant().Contains("encrypt=strict"))
-                {
-                    return;
-                }
-
-                var rightsAndVersion = reverseEngineerHelper.HasSqlServerViewDefinitionRightsAndVersion(options.ConnectionString);
-
-                if (!rightsAndVersion.Item1)
-                {
-                    VSHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
-                }
-
-                if (rightsAndVersion.Item2.Major < 11)
-                {
-                    VSHelper.ShowMessage(string.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
-                }
-            }
-        }
-
-        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, string referenceRenamingPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -705,6 +650,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
 
+            await ApplyNavigationRenamersAsync(project, referenceRenamingPath, options);
+
             var duration = DateTime.Now - startTime;
 
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
@@ -727,6 +674,65 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
+        }
+
+        private void VerifySQLServerRightsAndVersion(ReverseEngineerOptions options)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac)
+                && !string.IsNullOrEmpty(options.ConnectionString))
+            {
+                if (options.ConnectionString.ToLowerInvariant().Contains("active directory default")
+                    || options.ConnectionString.ToLowerInvariant().Contains("activedirectorydefault")
+                    || options.ConnectionString.ToLowerInvariant().Contains("active directory interactive")
+                    || options.ConnectionString.ToLowerInvariant().Contains("activedirectoryinteractive")
+                    || options.ConnectionString.ToLowerInvariant().Contains("encrypt=strict"))
+                {
+                    return;
+                }
+
+                var rightsAndVersion = reverseEngineerHelper.HasSqlServerViewDefinitionRightsAndVersion(options.ConnectionString);
+
+                if (!rightsAndVersion.Item1)
+                {
+                    VSHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
+                }
+
+                if (rightsAndVersion.Item2.Major < 11)
+                {
+                    VSHelper.ShowMessage(string.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
+                }
+            }
+        }
+
+        private async Task ApplyNavigationRenamersAsync(Project project, string referenceRenamingPath, ReverseEngineerOptions options)
+        {
+            if (File.Exists(referenceRenamingPath))
+            {
+                try
+                {
+                    var model = RenamingRulesSerializer.TryRead(referenceRenamingPath);
+
+                    if (!model?.Classes?.Any() ?? true)
+                    {
+                        return;
+                    }
+
+                    // navigation property renaming must be done after the project nuget packages are installed
+                    // because Roslyn will resolve the project references in order to identify property symbols
+                    var statusMessages = await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
+                        model,
+                        project.FullPath,
+                        options.OutputContextPath,
+                        options.OutputPath);
+                    package.LogError(statusMessages, null);
+                }
+                catch (Exception ex)
+                {
+                    package.LogError(new List<string>(), ex);
+                }
+            }
         }
 
         private string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)

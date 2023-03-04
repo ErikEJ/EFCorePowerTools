@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.Locales;
 using Microsoft.CodeAnalysis;
 using RevEng.Common;
 
@@ -89,8 +91,11 @@ namespace EFCorePowerTools.Helpers
             }
 
             var renameCount = 0;
+            var i = 1;
             foreach (var classRename in model.Classes)
             {
+                await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.RenamingNavigations, i++, model.Classes.Count);
+
                 foreach (var refRename in classRename.Properties)
                 {
                     var fromNames = new[] { refRename.Name, refRename.AlternateName }
@@ -126,6 +131,8 @@ namespace EFCorePowerTools.Helpers
                     }
                 }
             }
+
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.RenamingNavigations, model.Classes.Count, model.Classes.Count);
 
             if (renameCount == 0)
             {
