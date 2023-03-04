@@ -43,7 +43,9 @@ namespace EFCorePowerTools.Extensions
             {
                 try
                 {
+#pragma warning disable SCS0018 // See line 25 above
                     entry.ExtractToFile(completeFileName, true);
+#pragma warning restore SCS0018
                     break;
                 }
                 catch (IOException) when (i <= 3)

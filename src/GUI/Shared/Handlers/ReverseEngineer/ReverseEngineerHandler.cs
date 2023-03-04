@@ -304,7 +304,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-
         private async Task<bool> ChooseDataBaseConnectionByUiHintAsync(ReverseEngineerOptions options)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
