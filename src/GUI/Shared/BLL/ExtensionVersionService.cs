@@ -3,8 +3,6 @@ using EFCorePowerTools.Common.BLL;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 
-[assembly: CLSCompliant(false)]
-
 namespace EFCorePowerTools.BLL
 {
     public sealed class ExtensionVersionService : IExtensionVersionService

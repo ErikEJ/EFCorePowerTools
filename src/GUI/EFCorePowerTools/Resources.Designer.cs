@@ -61,6 +61,15 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 796A79E8-2579-4375-9E12-03A9E0D1FC02.
+        /// </summary>
+        internal static string MicrosoftSQLiteProvider {
+            get {
+                return ResourceManager.GetString("MicrosoftSQLiteProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 8800600a-add9-47e8-81d2-1d13b5a09c13.
         /// </summary>
         internal static string MicrosoftSqlServerDotNetProvider {
@@ -93,6 +102,24 @@ namespace EFCorePowerTools {
         internal static string OracleProvider {
             get {
                 return ResourceManager.GetString("OracleProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 687EA40E-7B91-472A-9A58-2A3D43DE1ACE.
+        /// </summary>
+        internal static string SQLitePrivateProvider {
+            get {
+                return ResourceManager.GetString("SQLitePrivateProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0ebaab6e-ca80-4b4a-8ddf-cbe6bf058c70.
+        /// </summary>
+        internal static string SQLiteProvider {
+            get {
+                return ResourceManager.GetString("SQLiteProvider", resourceCulture);
             }
         }
         

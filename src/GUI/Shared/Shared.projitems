@@ -9,6 +9,8 @@
     <Import_RootNamespace>EFCorePowerTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BLL\ExtensionVersionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BLL\IExtensionVersionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Models\ProjectModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\CodeGenerationItem.cs" />
@@ -60,10 +62,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converter\ObjectTypeIconToImageStyleConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\DotNetAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\ICredentialStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\IDotNetAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\IOperatingSystemAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\ITelemetryAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\IVisualStudioAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\OperatingSystemAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\TelemetryAccess.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\VisualStudioAccess.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\ModelingGenerationMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\NuGetPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RenamingRulesSerializer.cs" />
@@ -104,6 +110,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\PackageManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\ReverseEngineerWizardLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AboutExtensionModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ConfigModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ModelingOptionsModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Options\AdvancedOptions.cs">
       <SubType>Component</SubType>
     </Compile>

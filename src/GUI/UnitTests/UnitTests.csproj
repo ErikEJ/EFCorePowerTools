@@ -81,14 +81,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EFCorePowerTools.BLL\EFCorePowerTools.BLL.csproj">
-      <Project>{F7BBF46C-7EA9-44FE-9DF0-43FA60B7CB3C}</Project>
-      <Name>EFCorePowerTools.BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EFCorePowerTools.Shared\EFCorePowerTools.Common.csproj">
-      <Project>{2bd0c616-7126-4e12-a37d-a08b04bbf5e9}</Project>
-      <Name>EFCorePowerTools.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EFCorePowerTools\EFCorePowerTools.csproj">
       <Project>{c670be03-6397-4ac0-9914-ad1bb679778f}</Project>
       <Name>EFCorePowerTools</Name>
