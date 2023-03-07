@@ -81,10 +81,16 @@ namespace EFCorePowerTools.Helpers
 
         internal static async Task<DatabaseConnectionModel> PromptForInfoAsync()
         {
-            // Show dialog with SqlClient selected by default
+            // Show dialog with modern SqlClient selected by default
             var dialogFactory = await VS.GetServiceAsync<IVsDataConnectionDialogFactory, IVsDataConnectionDialogFactory>();
             var dialog = dialogFactory.CreateConnectionDialog();
             dialog.AddAllSources();
+
+            dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
+            dialog.SelectedProvider = await IsDdexProviderInstalledAsync(new Guid(Resources.MicrosoftSqlServerDotNetProvider))
+                ? new Guid(Resources.MicrosoftSqlServerDotNetProvider)
+                : new Guid(Resources.SqlServerDotNetProvider);
+
             var dialogResult = dialog.ShowDialog(connect: true);
 
             if (dialogResult == null)
@@ -172,7 +178,6 @@ namespace EFCorePowerTools.Helpers
             Guid providerSQLite = new Guid(Resources.SQLiteProvider);
             Guid providerMicrosoftSQLite = new Guid(Resources.MicrosoftSQLiteProvider);
             Guid providerSQLitePrivate = new Guid(Resources.SQLitePrivateProvider);
-
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
@@ -325,7 +330,7 @@ namespace EFCorePowerTools.Helpers
 
         private static string PathFromConnectionString(string connectionString)
         {
-            var builder = new SqlConnectionStringBuilder(connectionString);
+            var builder = new SqlConnectionStringBuilderHelper().GetBuilder(connectionString);
 
             var database = builder.InitialCatalog;
             if (string.IsNullOrEmpty(database) && !string.IsNullOrEmpty(builder.AttachDBFilename))
@@ -340,9 +345,9 @@ namespace EFCorePowerTools.Helpers
             }
             else
             {
-                using (var cmd = new SqlCommand(connectionString))
+                using (var cmd = new SqlCommand())
                 {
-                    using (var conn = new SqlConnection(connectionString))
+                    using (var conn = new SqlConnection(builder.ConnectionString))
                     {
                         cmd.Connection = conn;
                         cmd.CommandText = "SELECT SERVERPROPERTY('ServerName')";

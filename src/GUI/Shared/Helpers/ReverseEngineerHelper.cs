@@ -56,6 +56,9 @@ namespace EFCorePowerTools.Helpers
         {
             var hasRights = false;
             Version version;
+
+            connectionString = new SqlConnectionStringBuilderHelper().GetBuilder(connectionString).ConnectionString;
+
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
