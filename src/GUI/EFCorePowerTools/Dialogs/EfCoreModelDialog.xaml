@@ -9,12 +9,12 @@
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
                  MinHeight="500"
-                 MinWidth="420"
+                 MinWidth="422"
                  Height="500"
-                 Width="420"
+                 Width="422"
                  WindowStartupLocation="CenterOwner"
-                 SizeToContent="WidthAndHeight"
-                 ResizeMode="NoResize"
+                 SizeToContent="Height"
+                 ResizeMode="CanResize"
                  d:DataContext="{d:DesignInstance Type=viewModels:ModelingOptionsViewModel, IsDesignTimeCreatable=False}"
                  Title="{Binding Title, Mode=OneWay}">
 
