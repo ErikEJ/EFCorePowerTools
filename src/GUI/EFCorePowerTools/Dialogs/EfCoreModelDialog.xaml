@@ -8,11 +8,12 @@
                  xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                  mc:Ignorable="d"
                  ShowInTaskbar="False"
-                 MinHeight="540"
+                 MinHeight="500"
                  MinWidth="420"
-                 Height="540"
+                 Height="500"
                  Width="420"
                  WindowStartupLocation="CenterOwner"
+                 SizeToContent="WidthAndHeight"
                  ResizeMode="NoResize"
                  d:DataContext="{d:DesignInstance Type=viewModels:ModelingOptionsViewModel, IsDesignTimeCreatable=False}"
                  Title="{Binding Title, Mode=OneWay}">
@@ -155,7 +156,7 @@
             <ComboBox TabIndex="11"
                       ItemsSource="{Binding HandlebarsLanguageList}"
                       Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
-                      SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="10,0,0,0"
+                      SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="12,0,0,0"
                       IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
         </StackPanel>
 
