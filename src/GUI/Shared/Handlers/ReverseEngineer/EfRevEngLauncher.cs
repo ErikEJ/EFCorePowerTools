@@ -124,6 +124,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await GetTablesInternalAsync(arguments);
         }
 
+        public async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType)
+        {
+            var arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+
+            var filePath = await GetDgmlInternalAsync(arguments);
+
+            return filePath;
+        }
+
         private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
@@ -162,7 +171,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return result;
         }
 
+        private async Task<string> GetDgmlInternalAsync(string arguments)
+        {
+            var startInfo = await CreateStartInfoAsync(arguments);
+
+            var standardOutput = await RunProcessAsync(startInfo);
+
+            return resultDeserializer.BuildDgmlResult(standardOutput);
+        }
+
         private async Task<List<TableModel>> GetTablesInternalAsync(string arguments)
+        {
+            var startInfo = await CreateStartInfoAsync(arguments);
+
+            var standardOutput = await RunProcessAsync(startInfo);
+
+            return resultDeserializer.BuildTableResult(standardOutput);
+        }
+
+        private async Task<ProcessStartInfo> CreateStartInfoAsync(string arguments)
         {
             string version = "3.1";
 
@@ -183,10 +210,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 FileName = "dotnet",
                 Arguments = $"\"{launchPath}\" {arguments}",
             };
-
-            var standardOutput = await RunProcessAsync(startInfo);
-
-            return resultDeserializer.BuildTableResult(standardOutput);
+            return startInfo;
         }
 
         private async Task<ReverseEngineerResult> GetOutputAsync()

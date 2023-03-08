@@ -50,6 +50,18 @@ namespace EfReveng
                         return 0;
                     }
 
+                    if (args.Length == 3 && args[0] == "dgml" && int.TryParse(args[1], out int dbType))
+                    {
+                        var builder = new DgmlBuilder(dbType, args[2]);
+
+                        var buildResult = builder.GetDgmlFileName();
+
+                        await Console.Out.WriteLineAsync("Result:");
+                        await Console.Out.WriteLineAsync(buildResult);
+
+                        return 0;
+                    }
+
                     if (!File.Exists(args[0]))
                     {
                         await Console.Out.WriteLineAsync("Error:");

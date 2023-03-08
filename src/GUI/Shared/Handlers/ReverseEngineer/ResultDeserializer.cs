@@ -43,6 +43,23 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             throw new InvalidOperationException($"Table list error: Unable to launch external process: {Environment.NewLine + output}");
         }
 
+        public string BuildDgmlResult(string output)
+        {
+            var resultParts = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.None);
+            if (resultParts.Length == 2 && TryRead(resultParts[1], out List<TableModel> deserialized))
+            {
+                return resultParts[1];
+            }
+
+            var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
+            if (errorParts.Length == 2)
+            {
+                throw new InvalidOperationException("Dgml error: " + Environment.NewLine + errorParts[1]);
+            }
+
+            throw new InvalidOperationException($"Dgml error: Unable to launch external process: {Environment.NewLine + output}");
+        }
+
         private static bool TryRead<T>(string options, out T deserialized)
             where T : class, new()
         {

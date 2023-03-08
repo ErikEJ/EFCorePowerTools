@@ -16,6 +16,7 @@
 		<Compile Include="..\RevEng.Core\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
 		<Compile Include="..\RevEng.Core\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
 		<Compile Include="..\RevEng.Core\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core\Dgml\*.cs" Link="Dgml\%(Filename)%(Extension)" />    
 	</ItemGroup>
 
 	<ItemGroup>

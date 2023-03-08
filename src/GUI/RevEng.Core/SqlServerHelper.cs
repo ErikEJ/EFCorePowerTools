@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using NetTopologySuite.Noding;
 using RevEng.Common;
 
 namespace RevEng.Core
