@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
@@ -16,7 +15,7 @@ namespace RevEng.Core.Dgml
             this.databaseModel = databaseModel;
         }
 
-        public FileInfo CreateDgml()
+        public void CreateDgml()
         {
             using (var dgmlHelper = new DgmlHelper(this.fileName))
             {
@@ -42,8 +41,6 @@ namespace RevEng.Core.Dgml
                         var colDesc = col.Comment;
                         var shortType = col.StoreType;
                         var category = "Field";
-
-                        
 
                         if (col.IsNullable)
                         {
@@ -87,6 +84,13 @@ namespace RevEng.Core.Dgml
                         dgmlHelper.WriteLink(table.Name, $"{table.Name}_{col.Name}", null, "Contains");
                     }
 
+                    foreach (var key in table.ForeignKeys)
+                    {
+                        var source = $"{table.Name}_{key.Columns[0].Name}";
+                        var target = $"{key.PrincipalTable.Name}_{key.PrincipalColumns[0].Name}";
+                        dgmlHelper.WriteLink(source, target, key.Name, "Foreign Key");
+                    }
+
                     ////    List<Constraint> foreignKeys = _allForeignKeys.Where(c => c.ConstraintTableName == table).ToList();
                     ////    foreach (Constraint key in foreignKeys)
                     ////    {
@@ -103,8 +107,6 @@ namespace RevEng.Core.Dgml
 
                 dgmlHelper.Close();
             }
-
-            return null;
         }
     }
 }
