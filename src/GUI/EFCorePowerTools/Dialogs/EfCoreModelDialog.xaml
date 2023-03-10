@@ -10,11 +10,9 @@
                  ShowInTaskbar="False"
                  MinHeight="500"
                  MinWidth="422"
-                 Height="500"
-                 Width="422"
                  WindowStartupLocation="CenterOwner"
-                 SizeToContent="Height"
-                 ResizeMode="CanResize"
+                 SizeToContent="WidthAndHeight"
+                 ResizeMode="NoResize"
                  d:DataContext="{d:DesignInstance Type=viewModels:ModelingOptionsViewModel, IsDesignTimeCreatable=False}"
                  Title="{Binding Title, Mode=OneWay}">
 
@@ -86,7 +84,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0"  >
