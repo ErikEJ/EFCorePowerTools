@@ -123,9 +123,11 @@
         </Grid>
 
         <TextBlock Grid.Row="1" 
+                   Visibility="{Binding CodeGenerationMode, Converter={StaticResource BoolToVisibilityConverter}}" 
                    Text="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"/>
 
         <Grid Grid.Row="2"
+              Visibility="{Binding IsFullPrompt, Converter={StaticResource BoolToVisibilityConverter}}" 
               HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="110*"/>
@@ -146,7 +148,8 @@
                   SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />
         </Grid>
 
-        <StackPanel Grid.Row="3" 
+        <StackPanel Visibility="{Binding CodeGenerationMode, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Grid.Row="3" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Center">
@@ -155,7 +158,8 @@
             </CheckBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="3"
+        <StackPanel Visibility="{Binding CodeGenerationMode, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Grid.Row="3"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center" 

@@ -48,6 +48,7 @@ namespace EFCorePowerTools
         private readonly DgmlNugetHandler dgmlNugetHandler;
         private readonly MigrationsHandler migrationsHandler;
         private readonly CompareHandler compareHandler;
+        private readonly ServerDgmlHandler serverDgmlHandler;
         private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
@@ -58,6 +59,7 @@ namespace EFCorePowerTools
             dgmlNugetHandler = new DgmlNugetHandler();
             migrationsHandler = new MigrationsHandler(this);
             compareHandler = new CompareHandler(this);
+            serverDgmlHandler = new ServerDgmlHandler(this);
         }
 
         internal void LogError(List<string> statusMessages, Exception exception)
@@ -211,6 +213,16 @@ namespace EFCorePowerTools
                         OnSqlProjectMenuBeforeQueryStatus,
                         menuCommandId13);
                     oleMenuCommandService.AddCommand(menuItem13);
+
+                    var menuCommandId14 = new CommandID(
+                        GuidList.GuidDbContextPackageCmdSet,
+                        (int)PkgCmdIDList.cmdidDbDgml);
+                    var menuItem14 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId14);
+                    oleMenuCommandService.AddCommand(menuItem14);
 
                     var menuCommandId1101 = new CommandID(
                         GuidList.GuidReverseEngineerMenu,
@@ -485,6 +497,10 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {
                     await compareHandler.HandleComparisonAsync(path, project);
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml)
+                {
+                    await serverDgmlHandler.GenerateAsync();
                 }
             }
             catch (Exception ex)
