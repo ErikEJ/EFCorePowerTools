@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
@@ -83,6 +84,8 @@ namespace EFCorePowerTools.Handlers
                     DatabaseType = DatabaseType.SQLServerDacpac,
                 }));
             }
+
+            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore6, new List<CodeGenerationItem>());
 
             var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
             if (!pickDataSourceResult.ClosedByOK)
