@@ -752,7 +752,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     warningText.AppendLine(warningItem);
                 }
 
-                finalText = warningText.ToString() + Environment.NewLine + finalText;
+                finalText = finalText + Environment.NewLine + warningText.ToString();
             }
 
             return finalText;
