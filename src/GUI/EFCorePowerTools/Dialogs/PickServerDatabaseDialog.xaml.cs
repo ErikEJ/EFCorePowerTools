@@ -63,6 +63,13 @@ namespace EFCorePowerTools.Dialogs
                     viewModel.CodeGenerationModeList.Add(item);
                 }
 
+                if (!allowedVersions.Any())
+                {
+                    grdRow1.Height = new GridLength(0);
+                    grdRow2.Height = new GridLength(0);
+                    grdRow3.Height = new GridLength(0);
+                }
+
                 viewModel.CodeGenerationMode = (int)codeGeneration;
             };
 

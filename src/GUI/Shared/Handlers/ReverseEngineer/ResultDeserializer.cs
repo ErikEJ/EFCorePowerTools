@@ -46,9 +46,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string BuildDgmlResult(string output)
         {
             var resultParts = output.Split(new[] { "Result:" + Environment.NewLine }, StringSplitOptions.None);
-            if (resultParts.Length == 2 && TryRead(resultParts[1], out List<TableModel> deserialized))
+            if (resultParts.Length == 2)
             {
-                return resultParts[1];
+                return resultParts[1].Trim();
             }
 
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);

@@ -29,7 +29,11 @@
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
-      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" priority="0x0600">
+      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" priority="0x0500">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
+      </Group>
+
+      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmCompareMenuItemsGroup" priority="0x0600">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
@@ -117,7 +121,7 @@
           <ButtonText>Add T4 Scaffolding Templates</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDgmlBuild" priority="0x0200" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="NewDiagram" />
@@ -163,7 +167,7 @@
       </Button>
       
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDbCompare" priority="0x0900" type="Button">
-        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmCompareMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="CompareSchemas" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -173,6 +177,16 @@
         </Strings>
       </Button>
 
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidDbDgml" priority="0x0800" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidDbDgml</CommandName>
+          <ButtonText>Visualize Database Schema (preview)</ButtonText>
+        </Strings>
+      </Button>
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -242,7 +256,8 @@
       <IDSymbol name="cmdidEdmMenuAbout" value="0x0300" />
       <IDSymbol name="cmdidSqlBuild" value="0x0400" />
       <IDSymbol name="cmdidDebugViewBuild" value="0x0450" />
-      <IDSymbol name="cmdidEdmDatabaseMenuItemsGroup" value="0x0470" />
+      <IDSymbol name="cmdidEdmCompareMenuItemsGroup" value="0x0470" />
+      <IDSymbol name="cmdidEdmDatabaseMenuItemsGroup" value="0x0480" />
       <IDSymbol name="cmdidEdmMigrationMenuItemsGroup" value="0x0490" />
       <IDSymbol name="cmdidEdmMenu" value="0x0500" />
       <IDSymbol name="cmdidEdmMenuGroup" value="0x0600" />
@@ -258,6 +273,7 @@
       <IDSymbol name="cmdidAbout" value="0x0006" />
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
       <IDSymbol name="cmdidDbCompare" value="0x0008" />
+      <IDSymbol name="cmdidDbDgml" value="0x0009" />
     </GuidSymbol>
 
     <!-- This is the guid used to group the menu ReverseEngineer commands together -->
@@ -273,7 +289,7 @@
     <GuidSymbol name="guidVSPackageCommandProjectContextMenuCmdSet" value="{9a55a2b4-3e29-4359-882b-fa5f51c09301}">
       <IDSymbol name="MyGroupForCommands" value="0x1020" />
       <!-- Warning!!: Keep the value in sync with the code in Command1.cs -->
-      <IDSymbol name="Command1Id" value="0x009" />
+      <IDSymbol name="Command1Id" value="0x109" />
     </GuidSymbol>
 
   </Symbols>
