@@ -117,19 +117,22 @@
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.Mapping}">
                 <StackPanel>
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapSpatialTypes}"
+                          x:Name="chkSpatial"    
                           IsChecked="{Binding Model.MapSpatialTypes}"
                           Style="{StaticResource MarginCheckBlockStyle}"
                           TabIndex="20" />
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapHierarchyId}"
+                          x:Name="chkHierarchy"
                           IsChecked="{Binding Model.MapHierarchyId}"
                           Style="{StaticResource MarginCheckBlockStyle}"
                           TabIndex="21" />
                     
                     <CheckBox Content="Map DateOnly and TimeOnly"
-                      IsChecked="{Binding Model.UseDateOnlyTimeOnly}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="22" />
+                          x:Name="chkDateAndTime"                                
+                          IsChecked="{Binding Model.UseDateOnlyTimeOnly}"
+                          Style="{StaticResource MarginCheckBlockStyle}"
+                          TabIndex="22" />
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
                       IsChecked="{Binding Model.MapNodaTimeTypes}"

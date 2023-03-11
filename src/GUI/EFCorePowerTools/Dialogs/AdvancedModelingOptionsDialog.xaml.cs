@@ -27,6 +27,13 @@ namespace EFCorePowerTools.Dialogs
             applyPresets = viewModel.ApplyPresets;
 
             InitializeComponent();
+
+            if (AdvancedOptions.Instance.MapUsedTypes)
+            {
+                chkSpatial.IsEnabled = false;
+                chkDateAndTime.IsEnabled = false;
+                chkHierarchy.IsEnabled = false;
+            }
         }
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
