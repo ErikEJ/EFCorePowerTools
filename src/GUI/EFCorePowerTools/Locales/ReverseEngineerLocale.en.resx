@@ -406,7 +406,7 @@
     <value>Use schema folder separation (experimental)</value>
   </data>
   <data name="UseSmartMapping" xml:space="preserve">
-    <value>Use Smart Mapping for non-native types</value>
+    <value>Use Smart Mapping of spatial etc.</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Use text search</value>

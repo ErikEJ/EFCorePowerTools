@@ -74,10 +74,10 @@ namespace EFCorePowerTools.Dialogs
 
         private void ToggleOptions()
         {
-            var toggle = AdvancedOptions.Instance.MapUsedTypes;
-
             if (chkSpatial != null)
             {
+                var toggle = AdvancedOptions.Instance.MapUsedTypes;
+
                 chkSpatial.IsEnabled = !toggle;
                 chkDateAndTime.IsEnabled = !toggle;
                 chkHierarchy.IsEnabled = !toggle;
