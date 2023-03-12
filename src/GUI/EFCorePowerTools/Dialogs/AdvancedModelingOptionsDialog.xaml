@@ -117,6 +117,7 @@
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.Mapping}">
                 <StackPanel>
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSmartMapping}"
+                          ToolTip="{x:Static locale:ReverseEngineerLocale.UseSmartMappingToolTip}"
                           Checked="chkSmartMapping_Checked"
                           Unchecked="chkSmartMapping_Checked"    
                           x:Name="chkSmartMapping"
@@ -144,6 +145,7 @@
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.MapNodaTimeTypes}"
                       IsChecked="{Binding Model.MapNodaTimeTypes}"
+                              Margin="0,10,0,4"
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="23" />
 

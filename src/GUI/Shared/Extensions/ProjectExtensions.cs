@@ -381,18 +381,6 @@ namespace EFCorePowerTools.Extensions
                     UseMethodName = "Sqlite",
                 });
 
-                if (options.UseSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.Sqllite.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-
                 if (options.UseNodaTime)
                 {
                     pkgVersion = "7.0.0";

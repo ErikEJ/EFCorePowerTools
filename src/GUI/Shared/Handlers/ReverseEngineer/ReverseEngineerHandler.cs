@@ -236,6 +236,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
                     options.InstallNuGetPackage = neededPackages.Any(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+
                     options.CustomPropertyReplacers = propertyNamingModel;
 
                     if (!await GetModelOptionsAsync(options, project.Name))

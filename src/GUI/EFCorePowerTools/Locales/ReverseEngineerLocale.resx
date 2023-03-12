@@ -408,6 +408,9 @@
   <data name="UseSmartMapping" xml:space="preserve">
     <value />
   </data>
+  <data name="UseSmartMappingToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value />
   </data>

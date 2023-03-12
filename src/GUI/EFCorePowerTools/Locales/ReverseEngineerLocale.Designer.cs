@@ -936,6 +936,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string UseSmartMappingToolTip {
+            get {
+                return ResourceManager.GetString("UseSmartMappingToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string UseTextSearch {
             get {
                 return ResourceManager.GetString("UseTextSearch", resourceCulture);
