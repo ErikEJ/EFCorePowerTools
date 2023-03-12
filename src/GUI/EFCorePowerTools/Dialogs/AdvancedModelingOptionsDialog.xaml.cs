@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Controls;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -28,12 +29,7 @@ namespace EFCorePowerTools.Dialogs
 
             InitializeComponent();
 
-            if (AdvancedOptions.Instance.MapUsedTypes)
-            {
-                chkSpatial.IsEnabled = false;
-                chkDateAndTime.IsEnabled = false;
-                chkHierarchy.IsEnabled = false;
-            }
+            ToggleOptions();
         }
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
@@ -56,6 +52,36 @@ namespace EFCorePowerTools.Dialogs
         {
             applyPresets(presets);
             return this;
+        }
+
+        private void chkSmartMapping_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var checkBox = sender as CheckBox;
+            if (checkBox != null)
+            {
+                if (checkBox.IsChecked ?? true)
+                {
+                    AdvancedOptions.Instance.MapUsedTypes = true;
+                    ToggleOptions();
+                }
+                else
+                {
+                    AdvancedOptions.Instance.MapUsedTypes = false;
+                    ToggleOptions();
+                }
+            }
+        }
+
+        private void ToggleOptions()
+        {
+            var toggle = AdvancedOptions.Instance.MapUsedTypes;
+
+            if (chkSpatial != null)
+            {
+                chkSpatial.IsEnabled = !toggle;
+                chkDateAndTime.IsEnabled = !toggle;
+                chkHierarchy.IsEnabled = !toggle;
+            }
         }
     }
 }

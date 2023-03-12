@@ -325,6 +325,16 @@ namespace EFCorePowerTools.Common.Models
             }
         }
 
+        public bool UseSmartMapping
+        {
+            get => AdvancedOptions.Instance.MapUsedTypes;
+            set
+            {
+                AdvancedOptions.Instance.MapUsedTypes = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool MapHierarchyId
         {
             get => mapHierarchyId;

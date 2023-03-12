@@ -49,8 +49,8 @@ namespace EFCorePowerTools
         public bool PreferAsyncCalls { get; set; } = true;
 
         [Category("Reverse Engineering")]
-        [DisplayName(@"Set mappings based on all data types in use")]
-        [Description("Enable mappings for types like date, time, spatial based on usage")]
+        [DisplayName(@"Set mappings for non-native data types (spatial, date, time)")]
+        [Description("Enable mappings and install packages for types like date, time and spatial based on use in database")]
         [DefaultValue(true)]
         public bool MapUsedTypes { get; set; } = true;
 

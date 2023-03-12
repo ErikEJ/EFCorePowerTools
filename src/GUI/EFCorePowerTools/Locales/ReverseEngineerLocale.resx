@@ -405,6 +405,9 @@
   <data name="UseSchemaFolders" xml:space="preserve">
     <value />
   </data>
+  <data name="UseSmartMapping" xml:space="preserve">
+    <value />
+  </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value />
   </data>
