@@ -48,12 +48,6 @@ namespace EFCorePowerTools
         [DefaultValue(true)]
         public bool PreferAsyncCalls { get; set; } = true;
 
-        [Category("Reverse Engineering")]
-        [DisplayName(@"Set mappings for additional data types (spatial, date, time)")]
-        [Description("Enable mappings and install packages for types like date, time and spatial based on use in database")]
-        [DefaultValue(false)]
-        public bool MapUsedTypes { get; set; } = true;
-
         [Category("Other")]
         [DisplayName(@"Participate in Telemetry")]
         [Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports")]

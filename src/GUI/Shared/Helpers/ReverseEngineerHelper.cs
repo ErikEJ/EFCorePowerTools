@@ -34,11 +34,6 @@ namespace EFCorePowerTools.Helpers
 
         public void AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
         {
-            if (!AdvancedOptions.Instance.MapUsedTypes)
-            {
-                return;
-            }
-
             if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
                 || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
             {

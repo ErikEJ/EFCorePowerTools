@@ -446,7 +446,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                                        ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
                                        : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
 
-            reverseEngineerHelper.AddSuggestedMappings(options, predefinedTables);
+            // TODO Use these suggestion in a warning later in the flow instead
+            ////reverseEngineerHelper.AddSuggestedMappings(options, predefinedTables);
 
             var isSqliteToolboxInstalled = options.DatabaseType != DatabaseType.SQLite;
 

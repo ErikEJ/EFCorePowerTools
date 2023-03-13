@@ -405,12 +405,6 @@
   <data name="UseSchemaFolders" xml:space="preserve">
     <value>Use schema folder separation (experimental)</value>
   </data>
-  <data name="UseSmartMapping" xml:space="preserve">
-    <value>Use Smart Mapping of the types below</value>
-  </data>
-  <data name="UseSmartMappingToolTip" xml:space="preserve">
-    <value>Enable mappings and install packages for types like date, time and spatial based on your schema</value>
-  </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Use text search</value>
   </data>
