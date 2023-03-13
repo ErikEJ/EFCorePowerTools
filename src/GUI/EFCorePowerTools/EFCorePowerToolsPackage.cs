@@ -327,7 +327,25 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = project.IsCSharpProject();
+            var isCsharpProject = project.IsCSharpProject();
+
+            menuCommand.Visible = isCsharpProject;
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
+            {
+                menuCommand.Visible = isCsharpProject && await project.IsNetCore31OrHigherIncluding70Async();
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
+            {
+                //TODO Check is installed
+                menuCommand.Visible = isCsharpProject && await project.IsNet60OrHigherAsync();
+            }
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
