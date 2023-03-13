@@ -338,12 +338,11 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                menuCommand.Visible = isCsharpProject && await project.IsNetCore31OrHigherIncluding70Async();
+                menuCommand.Visible = isCsharpProject && await project.IsNetCore31OrHigherIncluding70Async() && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
-                //TODO Check is installed
                 menuCommand.Visible = isCsharpProject && await project.IsNet60OrHigherAsync();
             }
         }

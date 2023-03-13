@@ -206,6 +206,29 @@ namespace EFCorePowerTools.Extensions
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.1") ?? false;
         }
 
+        public static async Task<bool> IsInstalledAsync(this Project project, NuGetPackage package)
+        {
+            var projectAssetsFile = await project.GetAttributeAsync("ProjectAssetsFile");
+
+            if (projectAssetsFile != null && File.Exists(projectAssetsFile))
+            {
+                var lockFile = LockFileUtilities.GetLockFile(projectAssetsFile, NuGet.Common.NullLogger.Instance);
+
+                if (lockFile != null)
+                {
+                    foreach (var lib in lockFile.Libraries)
+                    {
+                        if (lib.Name == package.PackageId)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
