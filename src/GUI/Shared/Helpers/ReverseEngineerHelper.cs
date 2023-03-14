@@ -34,6 +34,7 @@ namespace EFCorePowerTools.Helpers
 
         public void AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
         {
+            // TODO Use these suggestion in a warning later in the flow instead
             if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
                 || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
             {

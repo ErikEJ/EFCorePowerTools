@@ -334,16 +334,18 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
-                menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                menuCommand.Visible = isCsharpProject && await project.IsNetCore31OrHigherIncluding70Async() && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
+                menuCommand.Visible = isCsharpProject
+                    && await project.IsNetCore31OrHigherIncluding70Async()
+                    && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
-                menuCommand.Visible = isCsharpProject && await project.IsNet60OrHigherAsync();
+                menuCommand.Visible = isCsharpProject
+                    && await project.IsNet60OrHigherAsync();
             }
         }
 

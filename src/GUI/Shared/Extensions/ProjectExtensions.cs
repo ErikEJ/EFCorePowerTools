@@ -176,6 +176,7 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
+            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
             return project.IsCapabilityMatch("CSharp");
         }
 
