@@ -8,6 +8,7 @@ using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using Microsoft.Internal.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -176,8 +177,13 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
+            // For debugging
+            ////project.GetItemInfo(out IVsHierarchy h, out uint itemId, out _);
+            ////HierarchyUtilities.TryGetHierarchyProperty<string>(h, itemId, (int)__VSHPROPID5.VSHPROPID_ProjectCapabilities, out string value);
+            ////string[] capabilities = (value ?? "").Split(' ');
+
             // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            return project.IsCapabilityMatch("CSharp");
+            return project.IsCapabilityMatch("CSharp & !BuildTSqlScript");
         }
 
         public static async Task<bool> IsLegacyAsync(this Project project)

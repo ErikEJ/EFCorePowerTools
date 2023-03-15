@@ -20,7 +20,7 @@ namespace EFCorePowerTools.Handlers
             await VS.StatusBar.ShowMessageAsync(DgmlLocale.PackageInstalled);
             var path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()) + ".txt";
             File.WriteAllText(path, GetReadme(), Encoding.UTF8);
-            var window = await VS.Documents.OpenAsync(path);
+            var window = await VS.Documents.OpenInPreviewTabAsync(path);
             await window.WindowFrame.ShowAsync();
             Telemetry.TrackEvent("PowerTools.InstallDgmlNuget");
         }
