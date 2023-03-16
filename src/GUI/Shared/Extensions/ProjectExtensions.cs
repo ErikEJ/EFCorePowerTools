@@ -178,11 +178,11 @@ namespace EFCorePowerTools.Extensions
 
             // For debugging
             ////project.GetItemInfo(out IVsHierarchy h, out uint itemId, out _);
-            ////HierarchyUtilities.TryGetHierarchyProperty<string>(h, itemId, (int)__VSHPROPID5.VSHPROPID_ProjectCapabilities, out string value);
-            ////string[] capabilities = (value ?? "").Split(' ');
+            ////Microsoft.Internal.VisualStudio.PlatformUI.HierarchyUtilities.TryGetHierarchyProperty<string>(h, itemId, (int)__VSHPROPID5.VSHPROPID_ProjectCapabilities, out string value);
+            ////var capabilities = (value ?? string.Empty).Split(' ');
 
             // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            return project.IsCapabilityMatch("CSharp & !BuildTSqlScript");
+            return project.IsCapabilityMatch("CSharp & (AppServicePublish | WindowsForms | DataSourceWindow)");
         }
 
         public static async Task<bool> IsLegacyAsync(this Project project)
