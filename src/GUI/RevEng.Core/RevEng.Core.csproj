@@ -13,7 +13,6 @@
   <ItemGroup>
     <None Remove="DbContextExtensions" />
     <None Remove="DbContextExtensions.Sync" />
-    <None Remove="Procedures\DbContextExtensions.cs.txt" />
   </ItemGroup>
 
   <ItemGroup>
