@@ -332,6 +332,7 @@ namespace EFCorePowerTools
             menuCommand.Visible = isCsharpProject;
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
+                menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||

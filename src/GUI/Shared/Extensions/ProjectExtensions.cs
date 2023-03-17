@@ -182,7 +182,7 @@ namespace EFCorePowerTools.Extensions
             ////var capabilities = (value ?? string.Empty).Split(' ');
 
             // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            return project.IsCapabilityMatch("CSharp");
+            return project.IsCapabilityMatch("CSharp & !TestContainer");
         }
 
         public static async Task<bool> IsLegacyAsync(this Project project)
@@ -199,7 +199,7 @@ namespace EFCorePowerTools.Extensions
 
         public static async Task<bool> IsNet60OrHigherAsync(this Project project)
         {
-            return await IsNetCore31Async(project) || await IsNet60Async(project) || await IsNet70Async(project);
+            return await IsNet60Async(project) || await IsNet70Async(project);
         }
 
         public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
