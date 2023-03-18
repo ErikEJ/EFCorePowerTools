@@ -341,12 +341,23 @@ namespace EFCorePowerTools
                 menuCommand.Visible = isCsharpProject
                     && await project.IsNetCore31OrHigherIncluding70Async()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
+                return;
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
                 menuCommand.Visible = isCsharpProject
                     && await project.IsNet60OrHigherAsync();
+                return;
+            }
+
+            if (isCsharpProject)
+            {
+                var path = await project.GetOutPutAssemblyPathAsync(lookForDacpac: true);
+                if (!string.IsNullOrEmpty(path))
+                {
+                    menuCommand.Visible = false;
+                }
             }
         }
 

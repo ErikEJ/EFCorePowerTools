@@ -44,7 +44,7 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
+        public static async Task<string> GetOutPutAssemblyPathAsync(this Project project, bool lookForDacpac = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -52,6 +52,11 @@ namespace EFCorePowerTools.Extensions
 
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
+
+            if (lookForDacpac)
+            {
+                assemblyNameExe = assemblyName + ".dacpac";
+            }
 
             var outputPath = await GetOutputPathAsync(project);
 
@@ -65,7 +70,7 @@ namespace EFCorePowerTools.Extensions
                 return Path.Combine(outputPath, assemblyNameExe);
             }
 
-            if (File.Exists(Path.Combine(outputPath, assemblyNameDll)))
+            if (!lookForDacpac && File.Exists(Path.Combine(outputPath, assemblyNameDll)))
             {
                 return Path.Combine(outputPath, assemblyNameDll);
             }
@@ -182,7 +187,7 @@ namespace EFCorePowerTools.Extensions
             ////var capabilities = (value ?? string.Empty).Split(' ');
 
             // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            return project.IsCapabilityMatch("CSharp & !TestContainer");
+            return project.IsCapabilityMatch("CSharp & !TestContainer & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
         public static async Task<bool> IsLegacyAsync(this Project project)
