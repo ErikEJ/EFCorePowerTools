@@ -669,7 +669,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 package.LogError(revEngResult.EntityErrors, null);
             }
 
-            var warnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToArray();
+            var warnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToList();
 
             if (warnings.Any())
             {
