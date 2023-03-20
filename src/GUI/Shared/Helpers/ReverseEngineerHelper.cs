@@ -32,20 +32,32 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public void AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
+        public List<string> AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
         {
-            // TODO Use these suggestion in a warning later in the flow instead
+            var result = new List<string>();
+
             if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
                 || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
             {
-                options.UseHierarchyId = tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
-                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer);
+                if (!options.UseHierarchyId && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
+                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
+                {
+                    result.Add("Your database schema contains one or more 'hierarchyid' columns, but you have not enabled them to be mapped.");
+                }
 
-                options.UseSpatial = tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography"));
+                if (!options.UseSpatial && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
+                {
+                    result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
+                }
 
-                options.UseDateOnlyTimeOnly = tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
-                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer);
+                if (!options.UseDateOnlyTimeOnly && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
+                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
+                {
+                    result.Add("Your database schema contains one or more 'date' or 'time' columns, but you have not enabled them to be mapped to TimeOnly/DateOnly.");
+                }
             }
+
+            return result;
         }
 
         public Tuple<bool, Version> HasSqlServerViewDefinitionRightsAndVersion(string connectionString)
