@@ -44,7 +44,7 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
-        public static async Task<string> GetOutPutAssemblyPathAsync(this Project project, bool lookForDacpac = false)
+        public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -53,10 +53,6 @@ namespace EFCorePowerTools.Extensions
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
 
-            if (lookForDacpac)
-            {
-                assemblyNameExe = assemblyName + ".dacpac";
-            }
 
             var outputPath = await GetOutputPathAsync(project);
 
@@ -70,9 +66,33 @@ namespace EFCorePowerTools.Extensions
                 return Path.Combine(outputPath, assemblyNameExe);
             }
 
-            if (!lookForDacpac && File.Exists(Path.Combine(outputPath, assemblyNameDll)))
+            if (File.Exists(Path.Combine(outputPath, assemblyNameDll)))
             {
                 return Path.Combine(outputPath, assemblyNameDll);
+            }
+
+            return null;
+        }
+
+        public static async Task<string> GetMsBuildSqlProjOutPutAssemblyPathAsync(this Project project)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var assemblyName = await project.GetAttributeAsync("AssemblyName");
+
+            var assemblyNameExe = assemblyName + ".dacpac";
+            var assemblyNameDll = assemblyName + ".deps.json";
+
+            var outputPath = await GetOutputPathAsync(project);
+
+            if (string.IsNullOrEmpty(outputPath))
+            {
+                return null;
+            }
+
+            if (File.Exists(Path.Combine(outputPath, assemblyNameExe)) && File.Exists(Path.Combine(outputPath, assemblyNameDll)))
+            {
+                return Path.Combine(outputPath, assemblyNameExe);
             }
 
             return null;

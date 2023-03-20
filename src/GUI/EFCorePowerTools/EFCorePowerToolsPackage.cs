@@ -353,7 +353,8 @@ namespace EFCorePowerTools
 
             if (isCsharpProject)
             {
-                var path = await project.GetOutPutAssemblyPathAsync(lookForDacpac: true);
+                // TODO remove this and just use Capability when it becomes available
+                var path = await project.GetMsBuildSqlProjOutPutAssemblyPathAsync();
                 if (!string.IsNullOrEmpty(path))
                 {
                     menuCommand.Visible = false;
