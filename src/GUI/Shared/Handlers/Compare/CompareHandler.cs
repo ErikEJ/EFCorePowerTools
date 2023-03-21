@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Views;
@@ -46,6 +47,12 @@ namespace EFCorePowerTools.Handlers.Compare
                 if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
                 {
                     VSHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
+                    return;
+                }
+
+                if (await project.IsNet70OnlyAsync())
+                {
+                    VSHelper.ShowError($".NET 7 is currently not supported.");
                     return;
                 }
 

@@ -227,6 +227,11 @@ namespace EFCorePowerTools.Extensions
             return await IsNet60Async(project) || await IsNet70Async(project);
         }
 
+        public static async Task<bool> IsNet70OnlyAsync(this Project project)
+        {
+            return await IsNet70Async(project);
+        }
+
         public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
         {
             return await IsNetCore31Async(project) || await IsNet60Async(project);
