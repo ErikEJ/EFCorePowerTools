@@ -1,0 +1,11 @@
+<Project Sdk="MSBuild.Sdk.SqlProj/2.5.0">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Database\dbo\Tables\Table1.sql" Link="Table1.sql" />
+  </ItemGroup>
+
+</Project>

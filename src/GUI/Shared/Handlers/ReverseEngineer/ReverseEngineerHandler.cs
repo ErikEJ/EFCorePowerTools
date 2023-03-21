@@ -25,6 +25,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
+        private List<string> missingTypeWarnings = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
@@ -458,6 +459,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 preselectedTables.AddRange(normalizedTables);
             }
 
+            missingTypeWarnings = reverseEngineerHelper.AddSuggestedMappings(options, predefinedTables);
+
             await VS.StatusBar.ClearAsync();
 
             var ptd = package.GetView<IPickTablesDialog>()
@@ -666,9 +669,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 package.LogError(revEngResult.EntityErrors, null);
             }
 
-            if (revEngResult.EntityWarnings.Any())
+            var warnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToList();
+
+            if (warnings.Any())
             {
-                package.LogError(revEngResult.EntityWarnings, null);
+                package.LogError(warnings, null);
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
