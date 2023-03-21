@@ -335,13 +335,12 @@ namespace EFCorePowerTools.Helpers
             var database = builder.InitialCatalog;
             if (string.IsNullOrEmpty(database) && !string.IsNullOrEmpty(builder.AttachDBFilename))
             {
-                database = Path.GetFileName(builder.AttachDBFilename);
+                return Path.GetFileName(builder.AttachDBFilename);
             }
 
-            string server;
             if (builder.DataSource.StartsWith("(localdb)", StringComparison.OrdinalIgnoreCase))
             {
-                server = builder.DataSource;
+                return builder.DataSource + "." + database;
             }
             else
             {
@@ -350,14 +349,12 @@ namespace EFCorePowerTools.Helpers
                     using (var conn = new SqlConnection(builder.ConnectionString))
                     {
                         cmd.Connection = conn;
-                        cmd.CommandText = "SELECT SERVERPROPERTY('ServerName')";
+                        cmd.CommandText = "SELECT LOWER(@@servername) + '.' + DB_NAME() + '.' + SCHEMA_NAME()";
                         conn.Open();
-                        server = (string)cmd.ExecuteScalar();
+                        return (string)cmd.ExecuteScalar();
                     }
                 }
             }
-
-            return server + "." + database;
         }
     }
 }
