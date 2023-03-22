@@ -50,13 +50,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     return;
                 }
 
-                if (await project.IsNet70OnlyAsync())
-                {
-                    VSHelper.ShowError($".NET 7 is currently not supported.");
-                    return;
-                }
-
-                if (!await project.IsNetCore31OrHigherAsync())
+                if (!await project.IsNetCore31OrHigherIncluding70Async())
                 {
                     VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
@@ -72,7 +66,7 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    if (version.Major != 5 && version.Major != 6)
+                    if (version.Major != 6 && version.Major != 7)
                     {
                         VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
@@ -83,9 +77,10 @@ namespace EFCorePowerTools.Handlers.Compare
                     {
                         nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(6, 0, 0));
                     }
-                    else if (version.Major == 5)
+                    else if (version.Major == 7)
                     {
-                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(5, 1, 3));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(7, 0, 0));
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new Version(7, 0, 0));
                     }
 
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);

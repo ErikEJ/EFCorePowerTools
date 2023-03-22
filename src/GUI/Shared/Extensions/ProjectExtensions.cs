@@ -232,11 +232,6 @@ namespace EFCorePowerTools.Extensions
             return await IsNet70Async(project);
         }
 
-        public static async Task<bool> IsNetCore31OrHigherAsync(this Project project)
-        {
-            return await IsNetCore31Async(project) || await IsNet60Async(project);
-        }
-
         public static async Task<bool> IsNetStandard21Async(this Project project)
         {
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.1") ?? false;

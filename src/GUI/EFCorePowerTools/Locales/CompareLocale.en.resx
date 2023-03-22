@@ -166,7 +166,7 @@
     <value>Type</value>
   </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
-    <value>Installing EfCore.SchemaCompare version 5.1.3, please retry the command</value>
+    <value>Installing EfCore.SchemaCompare, please retry the command</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>Loading data</value>
@@ -193,6 +193,6 @@
     <value>Unable to remove connection</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>Only EF Core 5 or later is supported.</value>
+    <value>Only EF Core 6 or later is supported.</value>
   </data>
 </root>

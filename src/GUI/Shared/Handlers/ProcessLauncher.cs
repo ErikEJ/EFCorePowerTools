@@ -247,13 +247,19 @@ namespace EFCorePowerTools.Handlers
 
             var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
 
+            var isNet7 = await project.IsNet70OnlyAsync();
+
             if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt60.exe.zip", RevEng.Common.CodeGenerationMode.EFCore6);
             }
-            else if (versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
+            else if (!isNet7 && versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt70.exe.zip", RevEng.Common.CodeGenerationMode.EFCore7);
+            }
+            else if (isNet7 && versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
+            {
+                ExtractTool(toDir, fromDir, "efpt70sc.exe.zip", RevEng.Common.CodeGenerationMode.EFCore7);
             }
             else
             {
