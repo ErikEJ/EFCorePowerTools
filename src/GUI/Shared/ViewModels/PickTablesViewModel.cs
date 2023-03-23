@@ -123,11 +123,12 @@ namespace EFCorePowerTools.ViewModels
         }
 
         /// <summary>
-        /// At least a single table or stored procedure must be selected.
+        /// At least a single table, function or stored procedure must be selected.
         /// </summary>
         private bool Ok_CanExecute()
             => ObjectTree.GetSelectedObjects().Any(c => c.ObjectType.HasColumns())
-              || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.Procedure);
+              || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.Procedure)
+              || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.ScalarFunction);
 
         private void Cancel_Executed()
         {
