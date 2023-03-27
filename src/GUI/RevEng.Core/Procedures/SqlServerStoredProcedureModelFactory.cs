@@ -112,9 +112,9 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                     if (row != null)
                     {
                         var name = row["ColumnName"].ToString();
-                        if (string.IsNullOrEmpty(name))
+                        if (string.IsNullOrWhiteSpace(name))
                         {
-                            continue;
+                            throw new InvalidOperationException($"Un-named result column in procedure with data type '{row["DataTypeName"]}'");
                         }
 
                         var storeType = row["DataTypeName"].ToString();
