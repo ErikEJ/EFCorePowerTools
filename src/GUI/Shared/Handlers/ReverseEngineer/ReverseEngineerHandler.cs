@@ -170,7 +170,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
-                options.FullProjectPath = project.FullPath;
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
 
                 bool forceEdit = false;

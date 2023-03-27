@@ -11,8 +11,6 @@ namespace RevEng.Common
 
         public string ProjectPath { get; set; }
 
-        public string FullProjectPath { get; set; }
-
         public string OutputPath { get; set; }
 
         public string OptionsPath { get; set; }
