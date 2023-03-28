@@ -107,6 +107,8 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                     break;
                 }
 
+                int unnamedColumnCount = 0;
+
                 foreach (DataRow row in schemaTable.Rows)
                 {
                     if (row != null)
@@ -114,7 +116,8 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                         var name = row["ColumnName"].ToString();
                         if (string.IsNullOrWhiteSpace(name))
                         {
-                            throw new InvalidOperationException($"Un-named result column in procedure with data type '{row["DataTypeName"]}'");
+                            unnamedColumnCount++;
+                            continue;
                         }
 
                         var storeType = row["DataTypeName"].ToString();
@@ -134,6 +137,12 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                             StoreType = storeType,
                         });
                     }
+                }
+
+                // If the result set only contains un-named columns
+                if (schemaTable.Rows.Count == unnamedColumnCount)
+                {
+                    throw new InvalidOperationException($"Only un-named result columns in procedure");
                 }
 
                 result.Add(list);

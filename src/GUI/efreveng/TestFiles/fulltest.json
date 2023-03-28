@@ -196,44 +196,7 @@
       "ObjectType": 3
     },
     {
-      "Name": "[dbo].[CustOrderHist]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[CustOrdersDetail]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[CustOrdersOrders]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[Employee Sales by Country]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[MultiSet]",
-      "ObjectType": 1,
-      "UseLegacyResultSetDiscovery": true
-    },
-    {
-      "Name": "[dbo].[OutputScenarios]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[Sales by Year]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[SalesByCategory]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[SpecialTypes]",
-      "ObjectType": 1
-    },
-    {
-      "Name": "[dbo].[Ten Most Expensive Products]",
+      "Name": "[dbo].[sum]",
       "ObjectType": 1
     },
     {
