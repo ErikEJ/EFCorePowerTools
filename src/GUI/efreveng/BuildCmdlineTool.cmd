@@ -15,4 +15,3 @@ echo Build error
 
 :end
 
-pause
