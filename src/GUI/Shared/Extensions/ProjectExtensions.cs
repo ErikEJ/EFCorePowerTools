@@ -181,12 +181,7 @@ namespace EFCorePowerTools.Extensions
                 version = new Version(2, 1);
             }
 
-            if (await project.IsNet60Async())
-            {
-                version = new Version(6, 0);
-            }
-
-            if (await project.IsNet70Async())
+            if (await project.IsNet60OrHigherAsync())
             {
                 version = new Version(6, 0);
             }
@@ -224,7 +219,7 @@ namespace EFCorePowerTools.Extensions
 
         public static async Task<bool> IsNet60OrHigherAsync(this Project project)
         {
-            return await IsNet60Async(project) || await IsNet70Async(project);
+            return await IsNet60Async(project) || await IsNet70Async(project) || await IsNet80Async(project);
         }
 
         public static async Task<bool> IsNet70OnlyAsync(this Project project)
@@ -673,6 +668,11 @@ namespace EFCorePowerTools.Extensions
         private static async Task<bool> IsNet70Async(this Project project)
         {
             return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+        }
+
+        private static async Task<bool> IsNet80Async(this Project project)
+        {
+            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v8.0") ?? false;
         }
 
         private static async Task<string> GetOutputPathAsync(Project project)
