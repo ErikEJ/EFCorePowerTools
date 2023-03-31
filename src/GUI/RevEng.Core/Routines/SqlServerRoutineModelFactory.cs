@@ -147,6 +147,11 @@ namespace RevEng.Core.Procedures
                                 }
                             }
 
+                            if (module.UnnamedColumnCount > 0)
+                            {
+                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} un-named columns.{Environment.NewLine}");
+                            }
+
                             if (dupesFound)
                             {
                                 continue;

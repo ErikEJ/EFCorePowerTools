@@ -59,7 +59,7 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
 
             if (useLegacyResultSetDiscovery)
             {
-                return GetFirstResultSet(connection, module.Schema, module.Name);
+                return GetFirstResultSet(connection, module);
             }
 
             return GetAllResultSets(connection, module, !multipleResults);
@@ -145,9 +145,74 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                     throw new InvalidOperationException($"Only un-named result columns in procedure");
                 }
 
+                if (unnamedColumnCount > 0)
+                {
+                    module.UnnamedColumnCount += unnamedColumnCount;
+                }
+
                 result.Add(list);
             }
             while (schemaReader.NextResult() && !singleResult);
+
+            return result;
+        }
+
+        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, Routine module)
+        {
+            using var dtResult = new DataTable();
+            var list = new List<ModuleResultElement>();
+
+            var sql = $"exec dbo.sp_describe_first_result_set N'[{module.Schema}].[{module.Name}]';";
+
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            using var adapter = new SqlDataAdapter
+            {
+                SelectCommand = new SqlCommand(sql, connection),
+            };
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+
+            adapter.Fill(dtResult);
+
+            int unnamedColumnCount = 0;
+
+            foreach (DataRow row in dtResult.Rows)
+            {
+                if (row != null)
+                {
+                    var name = row["name"].ToString();
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        unnamedColumnCount++;
+                        continue;
+                    }
+
+                    var parameter = new ModuleResultElement()
+                    {
+                        Name = name,
+                        StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
+                        Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
+                        Nullable = (bool)row["is_nullable"],
+                    };
+
+                    list.Add(parameter);
+                }
+            }
+
+            // If the result set only contains un-named columns
+            if (dtResult.Rows.Count == unnamedColumnCount)
+            {
+                throw new InvalidOperationException($"Only un-named result columns in procedure");
+            }
+
+            if (unnamedColumnCount > 0)
+            {
+                module.UnnamedColumnCount += unnamedColumnCount;
+            }
+
+            var result = new List<List<ModuleResultElement>>
+            {
+                list,
+            };
 
             return result;
         }
@@ -189,56 +254,6 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
             }
 
             return dataTable;
-        }
-
-        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, string schema, string moduleName)
-        {
-            using var dtResult = new DataTable();
-            var list = new List<ModuleResultElement>();
-
-            var sql = $"exec dbo.sp_describe_first_result_set N'[{schema}].[{moduleName}]';";
-
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-            using var adapter = new SqlDataAdapter
-            {
-                SelectCommand = new SqlCommand(sql, connection),
-            };
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-
-            adapter.Fill(dtResult);
-
-            int rCounter = 0;
-
-            foreach (DataRow row in dtResult.Rows)
-            {
-                if (row != null)
-                {
-                    var name = row["name"].ToString();
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
-
-                    var parameter = new ModuleResultElement()
-                    {
-                        Name = name,
-                        StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
-                        Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
-                        Nullable = (bool)row["is_nullable"],
-                    };
-
-                    list.Add(parameter);
-                }
-
-                rCounter++;
-            }
-
-            var result = new List<List<ModuleResultElement>>
-            {
-                list,
-            };
-
-            return result;
         }
     }
 }

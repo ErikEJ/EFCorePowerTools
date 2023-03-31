@@ -10,6 +10,8 @@ namespace RevEng.Core.Abstractions.Metadata
     {
         public bool HasValidResultSet { get; set; }
 
+        public int UnnamedColumnCount { get; set; }
+
         public bool SupportsMultipleResultSet
         {
             get
