@@ -53,7 +53,6 @@ namespace EFCorePowerTools.Extensions
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
 
-
             var outputPath = await GetOutputPathAsync(project);
 
             if (string.IsNullOrEmpty(outputPath))
