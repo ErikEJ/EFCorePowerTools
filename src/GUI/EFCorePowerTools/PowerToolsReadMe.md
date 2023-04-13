@@ -6,20 +6,20 @@ You need to configure your app now - here are some hints:
 
 1. Register your DbContext class in your "Program.cs" file.
 
-```csharp
-     builder.Services.AddDbContext<[ContextName]>(
-        options => options.Use[ProviderName](builder.Configuration.GetConnectionString("DefaultConnection")[UseList]);
-```
+    ```csharp
+    builder.Services.AddDbContext<[ContextName]>(
+        options => options.Use[ProviderName](builder.Configuration.GetConnectionString("DefaultConnection")[UseList]));
+    ```
 
 2. Add "ConnectionStrings" to your configuration file (secrets.json, appsettings.Development.json or appsettings.json).
 
-```json
+    ```json
     {
         "ConnectionStrings": {
             "DefaultConnection": "[ConnectionString]"
         }
     }
-```
+    ```
 
 ### Thank you!
 
