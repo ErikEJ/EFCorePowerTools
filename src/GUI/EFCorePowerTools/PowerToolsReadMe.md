@@ -8,7 +8,7 @@ You need to configure your app now - here are some hints:
 
 ```csharp
      builder.Services.AddDbContext<[ContextName]>(
-        options => options.Use[ProviderName](builder.Configuration.GetConnectionString("DefaultConnection")[UseList]);
+        options => options.Use[ProviderName](builder.Configuration.GetConnectionString("DefaultConnection")[UseList]));
 ```
 
 2. Add "ConnectionStrings" to your configuration file (secrets.json, appsettings.Development.json or appsettings.json).
