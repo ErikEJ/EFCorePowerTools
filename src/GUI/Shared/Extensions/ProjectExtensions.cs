@@ -294,14 +294,14 @@ namespace EFCorePowerTools.Extensions
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.4";
+                var pkgVersion = "7.0.5";
                 switch (options.CodeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore3:
                         pkgVersion = "3.1.32";
                         break;
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.15";
+                        pkgVersion = "6.0.16";
                         break;
                 }
 
@@ -414,14 +414,14 @@ namespace EFCorePowerTools.Extensions
 
             if (databaseType == DatabaseType.SQLite)
             {
-                var pkgVersion = "7.0.4";
+                var pkgVersion = "7.0.5";
                 switch (options.CodeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore3:
                         pkgVersion = "3.1.32";
                         break;
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.15";
+                        pkgVersion = "6.0.16";
                         break;
                 }
 

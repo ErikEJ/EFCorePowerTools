@@ -1,0 +1,86 @@
+{
+  "$schema": "https://github.com/tbd",
+  "tables": [
+      {
+         "name": "[dbo].[Categories]"
+      },
+      {
+         "name": "[dbo].[CustomerCustomerDemo]"
+      },
+      {
+         "name": "[dbo].[Oldtable]",
+         "exclude": true
+      }
+  ],
+  "views": [
+      {
+         "name": "[dbo].[Categories]"
+      },
+      {
+         "name": "[dbo].[CustomerCustomerDemo]"
+      }
+  ],
+  "stored-procedures": [
+      {
+         "name": "[dbo].[Alphabetical list of products]"
+      },
+      {
+         "name": "[dbo].[Category Sales for 1997]",
+         "use-legacy-resultset-discovery": true,
+         "mapped-type": "Customer"
+      }
+   ],
+  "functions": [
+      {
+         "name": "[dbo].[FunctionA]"
+      },
+      {
+         "name": "[dbo].[FunctionB]"
+      }
+  ],
+  "code-generation":
+  { 
+     "target-version": 7,
+     "enable-on-configuring": false,
+     "type": "all",
+     "use-database-names": false,
+     "use-data-annotations": false,
+     "use-inflector": false,
+     "use-legacy-inflector": false,
+     "use-many-to-many-entity": false,
+     "use-t4": false,
+     "remove-defaultsql-from-bool-properties": false,
+     "soft-delete-obsolete-files": false,
+     "discover-multiple-stored-procedure-resultsets-preview": false,
+     "use-alternate-stored-procedure-resultset-discovery": false
+  },
+  "names":
+  {
+    "root-namespace": "MyProject",
+    "dbcontext-name": "NorthwindContext",
+    "dbcontext-namespace": null,
+    "model-namespace": null
+  },
+  "file-layout":
+  {
+      "output-path": "Models",
+      "output-dbcontext-path": null,
+      "split-dbcontext-preview": false,
+      "use-schema-folders-preview": false
+  },
+ "type-mappings":
+  {
+     "use-DateOnly-TimeOnly": false,
+     "use-HierarchyId": false,
+     "use-spatial": false,
+     "use-NodaTime": false
+  },
+  "replacements":
+   {
+      "preserve-casing-with-regex": false,
+      "uncountable-words": [
+         "Status",
+         "Data"
+      ]
+   }
+}
