@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
@@ -54,6 +56,17 @@ namespace RevEng.Common.Efcpt
                 throw new ArgumentNullException(nameof(provider));
             }
 
+            int selectedToBegenerated = 0;
+            if (codegeneration.type == "dbcontext")
+            {
+                selectedToBegenerated = 1;
+            }
+
+            if (codegeneration.type == "entities")
+            {
+                selectedToBegenerated = 2;
+            }
+
             var isDacpac = connectionString.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase);
 
             return new ReverseEngineerCommandOptions
@@ -63,6 +76,48 @@ namespace RevEng.Common.Efcpt
                 ProjectPath = projectPath,
                 OutputPath = filelayout?.outputpath,
                 OutputContextPath = filelayout?.outputdbcontextpath,
+                UseSchemaFolders = filelayout?.useschemafolderspreview ?? false,
+                ModelNamespace = names?.modelnamespace,
+                ContextNamespace = names?.dbcontextnamespace,
+                ProjectRootNamespace = names?.rootnamespace,
+                UseFluentApiOnly = !codegeneration.usedataannotations,
+                ContextClassName = names?.dbcontextname ?? "Context",
+                Tables = null, //TODO!
+                UseDatabaseNames = codegeneration.usedatabasenames,
+                UseInflector = codegeneration.useinflector,
+                UseT4 = codegeneration.uset4,
+                IncludeConnectionString = codegeneration.enableonconfiguring,
+                SelectedToBeGenerated = selectedToBegenerated,
+                Dacpac = isDacpac ? connectionString : null,
+                CustomReplacers = null, // TODO!
+                UseLegacyPluralizer = codegeneration.uselegacyinflector,
+                UncountableWords = replacements.uncountablewords.ToList(),
+                UseSpatial = typemappings?.usespatial ?? false,
+                UseHierarchyId = typemappings?.useHierarchyId ?? false,
+                UseDbContextSplitting = filelayout?.splitdbcontextpreview ?? false,
+                UseNodaTime = typemappings?.useNodaTime ?? false,
+                UseBoolPropertiesWithoutDefaultSql = codegeneration.removedefaultsqlfromboolproperties,
+                UseNoDefaultConstructor = true, // TBD for EF Core 6
+                RunCleanup = codegeneration.softdeleteobsoletefiles,
+                UseManyToManyEntity = codegeneration.usemanytomanyentity,
+                UseMultipleSprocResultSets = codegeneration.discovermultiplestoredprocedureresultsetspreview,
+                UseLegacyResultSetDiscovery = codegeneration.usealternatestoredprocedureresultsetdiscovery,
+                PreserveCasingWithRegex = replacements.preservecasingwithregex,
+                UseDateOnlyTimeOnly = typemappings.useDateOnlyTimeOnly,
+
+                //TODO add to options
+                UseNullableReferences = true,
+
+                UseHandleBars = false,
+                SelectedHandlebarsLanguage = 0,
+                LegacyLangVersion = false,
+                MergeDacpacs = false,
+                UseNoObjectFilter = false,
+                UseAsyncCalls = true,
+                OptionsPath = null, // for handlebars only
+                FilterSchemas = false,
+                DefaultDacpacSchema = null,
+                Schemas = null,
             };
         }
     }
@@ -115,9 +170,9 @@ namespace RevEng.Common.Efcpt
         [JsonPropertyName("dbcontext-name")]
         public string dbcontextname { get; set; }
         [JsonPropertyName("dbcontext-namespace")]
-        public object dbcontextnamespace { get; set; }
+        public string dbcontextnamespace { get; set; }
         [JsonPropertyName("model-namespace")]
-        public object modelnamespace { get; set; }
+        public string modelnamespace { get; set; }
     }
 
     public class FileLayout
