@@ -45,6 +45,7 @@
      "type": "all",
      "use-database-names": false,
      "use-data-annotations": false,
+     "use-nullable-reference-types": true,
      "use-inflector": false,
      "use-legacy-inflector": false,
      "use-many-to-many-entity": false,

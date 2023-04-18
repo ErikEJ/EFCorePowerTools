@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
@@ -56,7 +59,12 @@ namespace RevEng.Common.Efcpt
                 throw new ArgumentNullException(nameof(provider));
             }
 
-            int selectedToBegenerated = 0;
+            if (string.IsNullOrEmpty(projectPath))
+            {
+                throw new ArgumentNullException(nameof(projectPath));
+            }
+
+            int selectedToBegenerated = 0; // "all"
             if (codegeneration.type == "dbcontext")
             {
                 selectedToBegenerated = 1;
@@ -67,7 +75,7 @@ namespace RevEng.Common.Efcpt
                 selectedToBegenerated = 2;
             }
 
-            var isDacpac = connectionString.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase);
+            var isDacpac = connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase);
 
             return new ReverseEngineerCommandOptions
             {
@@ -89,7 +97,7 @@ namespace RevEng.Common.Efcpt
                 IncludeConnectionString = codegeneration.enableonconfiguring,
                 SelectedToBeGenerated = selectedToBegenerated,
                 Dacpac = isDacpac ? connectionString : null,
-                CustomReplacers = null, // TODO!
+                CustomReplacers = GetNamingOptions(projectPath),
                 UseLegacyPluralizer = codegeneration.uselegacyinflector,
                 UncountableWords = replacements.uncountablewords.ToList(),
                 UseSpatial = typemappings?.usespatial ?? false,
@@ -104,21 +112,35 @@ namespace RevEng.Common.Efcpt
                 UseLegacyResultSetDiscovery = codegeneration.usealternatestoredprocedureresultsetdiscovery,
                 PreserveCasingWithRegex = replacements.preservecasingwithregex,
                 UseDateOnlyTimeOnly = typemappings.useDateOnlyTimeOnly,
-
-                //TODO add to options
-                UseNullableReferences = true,
+                UseNullableReferences = codegeneration.usenullablereferencetypes,
 
                 UseHandleBars = false,
-                SelectedHandlebarsLanguage = 0,
-                LegacyLangVersion = false,
-                MergeDacpacs = false,
-                UseNoObjectFilter = false,
-                UseAsyncCalls = true,
-                OptionsPath = null, // for handlebars only
-                FilterSchemas = false,
-                DefaultDacpacSchema = null,
-                Schemas = null,
+                SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
+                OptionsPath = null, // handlebars support, will not support it
+                LegacyLangVersion = false, // no 3.1 support
+                MergeDacpacs = false, // not implemented, will consider if asked for
+                DefaultDacpacSchema = null, // not implemented, will consider if asked for
+                UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
+                UseAsyncCalls = true, // not implemented, will consider if asked for
+                FilterSchemas = false, // not implemented
+                Schemas = null, // not implemented
             };
+        }
+
+        private static List<Schema> GetNamingOptions(string optionsPath)
+        {
+            var optionsCustomNamePath = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.renaming.json");
+
+            if (!File.Exists(optionsCustomNamePath))
+            {
+                return new List<Schema>();
+            }
+
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8))))
+            {
+                var ser = new DataContractJsonSerializer(typeof(List<Schema>));
+                return ser.ReadObject(ms) as List<Schema>;
+            }
         }
     }
 
@@ -137,6 +159,9 @@ namespace RevEng.Common.Efcpt
 
         [JsonPropertyName("use-data-annotations")]
         public bool usedataannotations { get; set; }
+
+        [JsonPropertyName("use-nullable-reference-types")]
+        public bool usenullablereferencetypes { get; set; } = true;
 
         [JsonPropertyName("use-inflector")]
         public bool useinflector { get; set; }
