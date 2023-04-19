@@ -351,7 +351,15 @@ namespace EFCorePowerTools.Helpers
                         cmd.Connection = conn;
                         cmd.CommandText = "SELECT LOWER(@@servername) + '.' + DB_NAME() + '.' + SCHEMA_NAME()";
                         conn.Open();
-                        return (string)cmd.ExecuteScalar();
+
+                        object res = cmd.ExecuteScalar();
+
+                        if (res != null)
+                        {
+                            return (string)res;
+                        }
+
+                        return builder.DataSource + "." + database;
                     }
                 }
             }

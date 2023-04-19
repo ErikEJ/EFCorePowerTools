@@ -114,6 +114,7 @@ namespace RevEng.Common.Efcpt
                 UseDateOnlyTimeOnly = typemappings.useDateOnlyTimeOnly,
                 UseNullableReferences = codegeneration.usenullablereferencetypes,
 
+                // Not supported/implemented:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it
@@ -259,8 +260,6 @@ namespace RevEng.Common.Efcpt
         public string name { get; set; }
         public bool exclude { get; set; }
     }
-
-    
 
 #pragma warning restore SA1402 // File may only contain a single type
 #pragma warning restore SA1300 // Element should begin with upper-case letter
