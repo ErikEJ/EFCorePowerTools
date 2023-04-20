@@ -349,12 +349,12 @@ namespace EFCorePowerTools.Helpers
                     using (var conn = new SqlConnection(builder.ConnectionString))
                     {
                         cmd.Connection = conn;
-                        cmd.CommandText = "SELECT LOWER(@@servername) + '.' + DB_NAME() + '.' + SCHEMA_NAME()";
+                        cmd.CommandText = "SELECT ISNULL(LOWER(CAST(SERVERPROPERTY('ServerName') AS NVARCHAR(128))), '') + '.' + ISNULL(DB_NAME(), '') + '.' + ISNULL(SCHEMA_NAME(), '')";
                         conn.Open();
 
                         object res = cmd.ExecuteScalar();
 
-                        if (res != null)
+                        if (res != null && res != DBNull.Value)
                         {
                             return (string)res;
                         }
