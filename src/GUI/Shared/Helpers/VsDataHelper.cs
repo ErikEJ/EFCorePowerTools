@@ -84,7 +84,7 @@ namespace EFCorePowerTools.Helpers
             // Show dialog with modern SqlClient selected by default
             var dialogFactory = await VS.GetServiceAsync<IVsDataConnectionDialogFactory, IVsDataConnectionDialogFactory>();
             var dialog = dialogFactory.CreateConnectionDialog();
-            dialog.AddAllSources();
+            dialog.AddSources((source, provider) => TryGetEntityFrameworkCoreProvider(provider));
 
             dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
             dialog.SelectedProvider = await IsDdexProviderInstalledAsync(new Guid(Resources.MicrosoftSqlServerDotNetProvider))
@@ -98,7 +98,7 @@ namespace EFCorePowerTools.Helpers
                 return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
             }
 
-            var info = await GetDatabaseInfoAsync(dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
+            var info = GetDatabaseInfo(dialogResult.Provider, DataProtection.DecryptString(dialog.EncryptedConnectionString));
             if (info.ConnectionName == Guid.Empty.ToString())
             {
                 return new DatabaseConnectionModel { DatabaseType = DatabaseType.Undefined };
@@ -263,13 +263,20 @@ namespace EFCorePowerTools.Helpers
             return databaseList;
         }
 
-        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(Guid provider, string connectionString)
+        private static bool TryGetEntityFrameworkCoreProvider(Guid provider)
+        {
+            var dataconnectionModel = GetDatabaseInfo(provider, null);
+
+            return dataconnectionModel.DatabaseType != DatabaseType.Undefined;
+        }
+
+        private static DatabaseConnectionModel GetDatabaseInfo(Guid provider, string connectionString)
         {
             var dbType = DatabaseType.Undefined;
             var providerGuid = Guid.Empty.ToString();
 
             // Find provider
-            var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
+            var providerManager = VS.GetRequiredService<IVsDataProviderManager, IVsDataProviderManager>();
             IVsDataProvider dp;
             providerManager.Providers.TryGetValue(provider, out dp);
             if (dp != null)
