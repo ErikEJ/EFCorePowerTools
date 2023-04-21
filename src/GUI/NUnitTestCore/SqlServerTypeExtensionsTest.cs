@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using RevEng.Core;
 
 namespace UnitTests
@@ -51,8 +52,57 @@ namespace UnitTests
             {
                 try
                 {
-                    SqlServerSqlTypeExtensions.GetClrType(typeName, true);
-                    SqlServerSqlTypeExtensions.GetClrType(typeName, false);
+                    SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = false;
+
+                    var res1 = SqlServerSqlTypeExtensions.GetClrType(typeName, true);
+
+                    if (typeName == "date")
+                    {
+                        Assert.AreEqual(typeof(DateTime?), res1);
+                    }
+
+                    if (typeName == "time")
+                    {
+                        Assert.AreEqual(typeof(TimeSpan?), res1);
+                    }
+
+                    var res2 = SqlServerSqlTypeExtensions.GetClrType(typeName, false);
+
+                    if (typeName == "date")
+                    {
+                        Assert.AreEqual(typeof(DateTime), res2);
+                    }
+
+                    if (typeName == "time")
+                    {
+                        Assert.AreEqual(typeof(TimeSpan), res2);
+                    }
+
+                    SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = true;
+
+                    var res3 = SqlServerSqlTypeExtensions.GetClrType(typeName, true);
+
+                    if (typeName == "date")
+                    {
+                        Assert.AreEqual(typeof(DateOnly?), res3);
+                    }
+
+                    if (typeName == "time")
+                    {
+                        Assert.AreEqual(typeof(TimeOnly?), res3);
+                    }
+
+                    var res4 = SqlServerSqlTypeExtensions.GetClrType(typeName, false);
+
+                    if (typeName == "date")
+                    {
+                        Assert.AreEqual(typeof(DateOnly), res4);
+                    }
+
+                    if (typeName == "time")
+                    {
+                        Assert.AreEqual(typeof(TimeOnly), res4);
+                    }
                 }
                 catch
                 {

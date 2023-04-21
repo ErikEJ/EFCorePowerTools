@@ -12,5 +12,6 @@ namespace RevEng.Core.Abstractions
         public bool FullModel { get; set; }
         public bool DiscoverMultipleResultSets { get; set; }
         public bool UseLegacyResultSetDiscovery { get; set; }
+        public bool UseDateOnlyTimeOnly { get; set; }
     }
 }

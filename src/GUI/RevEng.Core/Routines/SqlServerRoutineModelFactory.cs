@@ -29,6 +29,8 @@ namespace RevEng.Core.Procedures
                 throw new ArgumentNullException(nameof(options));
             }
 
+            SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly;
+
             var result = new List<Routine>();
             var found = new List<Tuple<string, string, bool>>();
             var errors = new List<string>();

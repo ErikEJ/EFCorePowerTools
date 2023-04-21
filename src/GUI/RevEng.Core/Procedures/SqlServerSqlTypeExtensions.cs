@@ -10,6 +10,8 @@ namespace RevEng.Core
 {
     public static class SqlServerSqlTypeExtensions
     {
+        public static bool UseDateOnlyTimeOnly { get; set; }
+
         private static readonly ISet<SqlDbType> ScaleTypes = new HashSet<SqlDbType>
         {
             SqlDbType.Decimal,
@@ -97,6 +99,8 @@ namespace RevEng.Core
         {
             var sqlType = GetSqlDbType(storeType);
 
+            var useDateOnlyTimeOnly = UseDateOnlyTimeOnly;
+
             switch (sqlType)
             {
                 case SqlDbType.BigInt:
@@ -122,11 +126,25 @@ namespace RevEng.Core
 
                 case SqlDbType.DateTime:
                 case SqlDbType.SmallDateTime:
-                case SqlDbType.Date:
                 case SqlDbType.DateTime2:
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
+                case SqlDbType.Date:
+#if CORE60
+                    if (useDateOnlyTimeOnly)
+                    {
+                        return isNullable ? typeof(DateOnly?) : typeof(DateOnly);
+                    }
+#endif
+                    return isNullable ? typeof(DateTime?) : typeof(DateTime);
+
                 case SqlDbType.Time:
+#if CORE60
+                    if (useDateOnlyTimeOnly)
+                    {
+                        return isNullable ? typeof(TimeOnly?) : typeof(TimeOnly);
+                    }
+#endif
                     return isNullable ? typeof(TimeSpan?) : typeof(TimeSpan);
 
                 case SqlDbType.Decimal:

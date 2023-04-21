@@ -192,6 +192,7 @@ namespace RevEng.Core
                 {
                     DiscoverMultipleResultSets = options.UseMultipleSprocResultSets,
                     UseLegacyResultSetDiscovery = options.UseLegacyResultSetDiscovery && !options.UseMultipleSprocResultSets,
+                    UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                     FullModel = true,
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
                     ModulesUsingLegacyDiscovery = options.Tables
