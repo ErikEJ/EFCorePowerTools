@@ -16,34 +16,6 @@ namespace EFCorePowerTools.Helpers
 {
     internal class VsDataHelper
     {
-        public static string GetDatabaseName(string connectionString, DatabaseType dbType)
-        {
-            var builder = new DbConnectionStringBuilder();
-            builder.ConnectionString = connectionString;
-
-            if (builder.TryGetValue("Initial Catalog", out object catalog))
-            {
-                return catalog.ToString();
-            }
-
-            if (builder.TryGetValue("Database", out object database))
-            {
-                return database.ToString();
-            }
-
-            if (builder.TryGetValue("Data Source", out object dataSource))
-            {
-                return dataSource.ToString();
-            }
-
-            if (builder.TryGetValue("DataSource", out object dataSource2))
-            {
-                return dataSource2.ToString();
-            }
-
-            return dbType.ToString();
-        }
-
         public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
             if (dbType == DatabaseType.SQLServer && !connectionString.Contains(";Authentication="))

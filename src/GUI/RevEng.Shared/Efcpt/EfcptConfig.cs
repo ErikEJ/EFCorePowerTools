@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
 {
@@ -46,103 +40,6 @@ namespace RevEng.Common.Efcpt
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public Replacements replacements { get; set; }
-
-        public ReverseEngineerCommandOptions ToOptions(string connectionString, string provider, string projectPath)
-        {
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentNullException(nameof(connectionString));
-            }
-
-            if (string.IsNullOrEmpty(provider))
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-
-            if (string.IsNullOrEmpty(projectPath))
-            {
-                throw new ArgumentNullException(nameof(projectPath));
-            }
-
-            int selectedToBegenerated = 0; // "all"
-            if (codegeneration.type == "dbcontext")
-            {
-                selectedToBegenerated = 1;
-            }
-
-            if (codegeneration.type == "entities")
-            {
-                selectedToBegenerated = 2;
-            }
-
-            var isDacpac = connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase);
-
-            return new ReverseEngineerCommandOptions
-            {
-                ConnectionString = connectionString,
-                DatabaseType = isDacpac ? DatabaseType.SQLServerDacpac : Providers.GetDatabaseTypeFromProvider(provider),
-                ProjectPath = projectPath,
-                OutputPath = filelayout?.outputpath,
-                OutputContextPath = filelayout?.outputdbcontextpath,
-                UseSchemaFolders = filelayout?.useschemafolderspreview ?? false,
-                ModelNamespace = names?.modelnamespace,
-                ContextNamespace = names?.dbcontextnamespace,
-                ProjectRootNamespace = names?.rootnamespace,
-                UseFluentApiOnly = !codegeneration.usedataannotations,
-                ContextClassName = names?.dbcontextname ?? "Context",
-                Tables = null, //TODO!
-                UseDatabaseNames = codegeneration.usedatabasenames,
-                UseInflector = codegeneration.useinflector,
-                UseT4 = codegeneration.uset4,
-                IncludeConnectionString = codegeneration.enableonconfiguring,
-                SelectedToBeGenerated = selectedToBegenerated,
-                Dacpac = isDacpac ? connectionString : null,
-                CustomReplacers = GetNamingOptions(projectPath),
-                UseLegacyPluralizer = codegeneration.uselegacyinflector,
-                UncountableWords = replacements.uncountablewords.ToList(),
-                UseSpatial = typemappings?.usespatial ?? false,
-                UseHierarchyId = typemappings?.useHierarchyId ?? false,
-                UseDbContextSplitting = filelayout?.splitdbcontextpreview ?? false,
-                UseNodaTime = typemappings?.useNodaTime ?? false,
-                UseBoolPropertiesWithoutDefaultSql = codegeneration.removedefaultsqlfromboolproperties,
-                UseNoDefaultConstructor = true, // TBD for EF Core 6
-                RunCleanup = codegeneration.softdeleteobsoletefiles,
-                UseManyToManyEntity = codegeneration.usemanytomanyentity,
-                UseMultipleSprocResultSets = codegeneration.discovermultiplestoredprocedureresultsetspreview,
-                UseLegacyResultSetDiscovery = codegeneration.usealternatestoredprocedureresultsetdiscovery,
-                PreserveCasingWithRegex = replacements.preservecasingwithregex,
-                UseDateOnlyTimeOnly = typemappings.useDateOnlyTimeOnly,
-                UseNullableReferences = codegeneration.usenullablereferencetypes,
-
-                // Not supported/implemented:
-                UseHandleBars = false,
-                SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
-                OptionsPath = null, // handlebars support, will not support it
-                LegacyLangVersion = false, // no 3.1 support
-                MergeDacpacs = false, // not implemented, will consider if asked for
-                DefaultDacpacSchema = null, // not implemented, will consider if asked for
-                UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
-                UseAsyncCalls = true, // not implemented, will consider if asked for
-                FilterSchemas = false, // not implemented
-                Schemas = null, // not implemented
-            };
-        }
-
-        private static List<Schema> GetNamingOptions(string optionsPath)
-        {
-            var optionsCustomNamePath = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.renaming.json");
-
-            if (!File.Exists(optionsCustomNamePath))
-            {
-                return new List<Schema>();
-            }
-
-            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8))))
-            {
-                var ser = new DataContractJsonSerializer(typeof(List<Schema>));
-                return ser.ReadObject(ms) as List<Schema>;
-            }
-        }
     }
 
     public class CodeGeneration
@@ -191,8 +88,6 @@ namespace RevEng.Common.Efcpt
 
     public class Names
     {
-        [JsonPropertyName("root-namespace")]
-        public string rootnamespace { get; set; }
         [JsonPropertyName("dbcontext-name")]
         public string dbcontextname { get; set; }
         [JsonPropertyName("dbcontext-namespace")]
@@ -260,7 +155,6 @@ namespace RevEng.Common.Efcpt
         public string name { get; set; }
         public bool exclude { get; set; }
     }
-
 #pragma warning restore SA1402 // File may only contain a single type
 #pragma warning restore SA1300 // Element should begin with upper-case letter
 #pragma warning restore CA1819 // Properties should not return arrays

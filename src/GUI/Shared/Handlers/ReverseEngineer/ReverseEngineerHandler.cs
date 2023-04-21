@@ -476,7 +476,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName)
         {
-            var classBasis = VsDataHelper.GetDatabaseName(options.ConnectionString, options.DatabaseType);
+            var classBasis = DbContextNamer.GetDatabaseName(options.ConnectionString, options.DatabaseType);
 
             if (string.IsNullOrEmpty(options.ContextClassName))
             {
