@@ -25,14 +25,15 @@ namespace RevEng.Common.Efcpt
 
         [JsonPropertyName("code-generation")]
         [JsonInclude]
-        public CodeGeneration codegeneration { get; set; }
+        public CodeGeneration codegeneration { get; set; } = new CodeGeneration();
 
-        [JsonInclude]
+        [JsonPropertyName("names")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public Names names { get; set; }
 
         [JsonPropertyName("file-layout")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public FileLayout filelayout { get; set; }
+        [JsonInclude]
+        public FileLayout filelayout { get; set; } = new FileLayout();
 
         [JsonPropertyName("type-mappings")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -50,7 +51,7 @@ namespace RevEng.Common.Efcpt
         [JsonPropertyName("enable-on-configuring")]
         public bool enableonconfiguring { get; set; }
 
-        public string type { get; set; }
+        public string type { get; set; } = "all";
 
         [JsonPropertyName("use-database-names")]
         public bool usedatabasenames { get; set; }
@@ -99,11 +100,14 @@ namespace RevEng.Common.Efcpt
     public class FileLayout
     {
         [JsonPropertyName("output-path")]
-        public string outputpath { get; set; }
+        public string outputpath { get; set; } = "Models";
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("output-dbcontext-path")]
         public string outputdbcontextpath { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("split-dbcontext-preview")]
         public bool splitdbcontextpreview { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("use-schema-folders-preview")]
         public bool useschemafolderspreview { get; set; }
     }

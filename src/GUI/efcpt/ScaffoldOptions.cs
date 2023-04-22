@@ -19,6 +19,8 @@ namespace Efcpt
         [Option('i', "input", HelpText = "Sets the full pathname to the efpt-config.json file, default is 'efpt-config.json' in currrent directory")]
         public FileInfo ConfigFile { get; set; }
 
+        public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
+
         internal void Dump()
         {
             Console.WriteLine($"ConnectionString: {ConnectionString}");

@@ -1,4 +1,6 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Data.Common;
+using System.IO;
 
 namespace RevEng.Common
 {
@@ -6,6 +8,16 @@ namespace RevEng.Common
     {
         public static string GetDatabaseName(string connectionString, DatabaseType dbType)
         {
+            if (connectionString == null)
+            {
+                throw new ArgumentNullException(nameof(connectionString));
+            }
+
+            if (connectionString.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return Path.GetFileNameWithoutExtension(connectionString);
+            }
+
             var builder = new DbConnectionStringBuilder();
             builder.ConnectionString = connectionString;
 

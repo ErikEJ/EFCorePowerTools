@@ -2,30 +2,23 @@
 
 namespace RevEng.Common.Efcpt
 {
-    internal static class Providers
+    public static class Providers
     {
-        public static Dictionary<string, string> GetKnownProviders()
+        public static DatabaseType GetDatabaseTypeFromProvider(string providerAlias, bool isDacpac)
         {
-            var result = new Dictionary<string, string>();
-
-            foreach (var provider in GetProvidersWithAliases())
+            if (!GetKnownProviders().TryGetValue(providerAlias, out var provider))
             {
-                result.Add(provider.Key, provider.Key);
-
-                foreach (var item in provider.Value)
-                {
-                    result.Add(item, provider.Key);
-                }
+                return DatabaseType.Undefined;
             }
 
-            return result;
-        }
-
-        public static DatabaseType GetDatabaseTypeFromProvider(string provider)
-        {
             switch (provider)
             {
                 case "Microsoft.EntityFrameworkCore.SqlServer":
+                    if (isDacpac)
+                    {
+                        return DatabaseType.SQLServerDacpac;
+                    }
+
                     return DatabaseType.SQLServer;
 
                 case "Microsoft.EntityFrameworkCore.Sqlite":
@@ -46,6 +39,23 @@ namespace RevEng.Common.Efcpt
                 default:
                     return DatabaseType.Undefined;
             }
+        }
+
+        public static Dictionary<string, string> GetKnownProviders()
+        {
+            var result = new Dictionary<string, string>();
+
+            foreach (var provider in GetProvidersWithAliases())
+            {
+                result.Add(provider.Key, provider.Key);
+
+                foreach (var item in provider.Value)
+                {
+                    result.Add(item, provider.Key);
+                }
+            }
+
+            return result;
         }
 
         private static Dictionary<string, List<string>> GetProvidersWithAliases()

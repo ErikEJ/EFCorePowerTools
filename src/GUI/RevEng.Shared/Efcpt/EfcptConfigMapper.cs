@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace RevEng.Common.Efcpt
 {
@@ -44,7 +45,7 @@ namespace RevEng.Common.Efcpt
 
             var isDacpac = connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase);
 
-            var databaseType = isDacpac ? DatabaseType.SQLServerDacpac : Providers.GetDatabaseTypeFromProvider(provider);
+            var databaseType = Providers.GetDatabaseTypeFromProvider(provider, isDacpac);
 
             var dbContextDefaultName = config.names?.dbcontextname
                 ?? GetDbContextNameSuggestion(connectionString, databaseType);
@@ -52,7 +53,7 @@ namespace RevEng.Common.Efcpt
             return new ReverseEngineerCommandOptions
             {
                 ConnectionString = connectionString,
-                DatabaseType = isDacpac ? DatabaseType.SQLServerDacpac : Providers.GetDatabaseTypeFromProvider(provider),
+                DatabaseType = databaseType,
                 ProjectPath = projectPath,
                 OutputPath = config.filelayout?.outputpath,
                 OutputContextPath = config.filelayout?.outputdbcontextpath,
@@ -97,6 +98,18 @@ namespace RevEng.Common.Efcpt
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
             };
+        }
+
+        public static bool TryGetEfcptConfig(string fullPath, List<TableModel> objects, out EfcptConfig config)
+        {
+            // TODO Merge objects with existing config or add to new and save or return a new file class
+
+            config = new EfcptConfig();
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            File.WriteAllText(fullPath, System.Text.Json.JsonSerializer.Serialize(config, options), Encoding.UTF8);
+
+            return true;
         }
 
         private static List<SerializationTableModel> BuildObjectList(EfcptConfig config)
