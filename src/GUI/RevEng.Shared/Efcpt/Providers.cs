@@ -4,7 +4,6 @@ namespace RevEng.Common.Efcpt
 {
     internal static class Providers
     {
-
         public static Dictionary<string, string> GetKnownProviders()
         {
             var result = new Dictionary<string, string>();
@@ -49,7 +48,6 @@ namespace RevEng.Common.Efcpt
             }
         }
 
-
         private static Dictionary<string, List<string>> GetProvidersWithAliases()
         {
             return new Dictionary<string, List<string>>
@@ -61,10 +59,12 @@ namespace RevEng.Common.Efcpt
                 {
                     "Microsoft.EntityFrameworkCore.Sqlite",
                     new List<string> { "sqlite" }
-                },                {
+                },
+                {
                     "Npgsql.EntityFrameworkCore.PostgreSQL",
                     new List<string> { "postgres" }
-                },                {
+                },
+                {
                     "Pomelo.EntityFrameworkCore.MySql",
                     new List<string> { "mysql" }
                 },                {

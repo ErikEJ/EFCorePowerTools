@@ -61,7 +61,7 @@ namespace RevEng.Common.Efcpt
                 ContextNamespace = config.names?.dbcontextnamespace,
                 UseFluentApiOnly = !config.codegeneration.usedataannotations,
                 ContextClassName = config.names?.dbcontextname ?? dbContextDefaultName,
-                Tables = null, //TODO!
+                Tables = BuildObjectList(config),
                 UseDatabaseNames = config.codegeneration.usedatabasenames,
                 UseInflector = config.codegeneration.useinflector,
                 UseT4 = config.codegeneration.uset4,
@@ -97,6 +97,63 @@ namespace RevEng.Common.Efcpt
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
             };
+        }
+
+        private static List<SerializationTableModel> BuildObjectList(EfcptConfig config)
+        {
+            var objects = new List<SerializationTableModel>();
+
+            if (config.tables != null)
+            {
+                foreach (var table in config.tables)
+                {
+                    if (!table.exclude)
+                    {
+                        objects.Add(new SerializationTableModel(table.name, ObjectType.Table, null));
+                    }
+                }
+            }
+
+            if (config.views != null)
+            {
+                foreach (var view in config.views)
+                {
+                    if (!view.exclude)
+                    {
+                        objects.Add(new SerializationTableModel(view.name, ObjectType.View, null));
+                    }
+                }
+            }
+
+            if (config.storedprocedures != null)
+            {
+                foreach (var sproc in config.storedprocedures)
+                {
+                    if (!sproc.exclude)
+                    {
+                        var proc = new SerializationTableModel(sproc.name, ObjectType.Procedure, null);
+                        proc.MappedType = sproc.mappedtype;
+                        proc.UseLegacyResultSetDiscovery = sproc.uselegacyresultsetdiscovery;
+
+                        objects.Add(proc);
+                    }
+                }
+            }
+
+            if (config.functions != null)
+            {
+                foreach (var function in config.functions)
+                {
+                    if (!function.exclude)
+                    {
+                        var func = new SerializationTableModel(function.name, ObjectType.ScalarFunction, null);
+
+                        objects.Add(func);
+                    }
+                }
+            }
+
+            return objects;
         }
 
         private static string GetDbContextNameSuggestion(string connectionString, DatabaseType databaseType)

@@ -354,7 +354,6 @@ namespace EFCorePowerTools
                 return;
             }
 
-            // TODO remove this and just use Capability when it becomes available
             var path = await project.GetMsBuildSqlProjOutPutAssemblyPathAsync();
             if (!string.IsNullOrEmpty(path))
             {
