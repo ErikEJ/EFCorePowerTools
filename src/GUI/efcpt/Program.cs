@@ -49,7 +49,7 @@ public static class Program
 
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
-        options.Dump();
+        Console.WriteLine("EF Core Power Tools CLI - https://github.com/ErikEJ/EFCorePowerTools");
 
         // TODO test .dacpac!
 
@@ -83,15 +83,13 @@ public static class Program
             Console.WriteLine($"Found {functions.Count} functions");
         }
 
-        var configPath = options.ConfigFile?.FullName ?? "efcpt-config.json";
+        var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
 
-        if (EfcptConfigMapper.TryGetEfcptConfig(configPath, buildResult, out EfcptConfig config))
+        if (EfcptConfigMapper.TryGetEfcptConfig(configPath, options.ConnectionString, dbType, buildResult, out EfcptConfig config))
         {
-            var fullPath = Path.GetFullPath(configPath);
+            Console.WriteLine($"Using config file: '{configPath}'");
 
-            Console.WriteLine($"Using config file: '{fullPath}'");
-
-            var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Path.GetDirectoryName(fullPath), options.IsDacpac);
+            var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Path.GetDirectoryName(configPath), options.IsDacpac);
 
             Console.WriteLine("Generating code...");
 
@@ -99,8 +97,7 @@ public static class Program
 
             var result = ReverseEngineerRunner.GenerateFiles(commandOptions);
 
-            //TODO improve precision
-            Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {sw.Elapsed.TotalSeconds} seconds");
+            Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {(int)sw.Elapsed.TotalSeconds} seconds");
 
             foreach (var error in result.EntityErrors)
             {

@@ -99,16 +99,39 @@ namespace RevEng.Common.Efcpt
             };
         }
 
-        public static bool TryGetEfcptConfig(string fullPath, List<TableModel> objects, out EfcptConfig config)
+        public static bool TryGetEfcptConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out EfcptConfig config)
         {
-            // TODO Merge objects with existing config or add to new and save or return a new file class
+            if (File.Exists(fullPath))
+            {
+                config = JsonSerializer.Deserialize<EfcptConfig>(File.ReadAllText(fullPath, Encoding.UTF8));
+            }
+            else
+            {
+                config = new EfcptConfig();
+                config.names.dbcontextname = GetDbContextNameSuggestion(connectionString, databaseType);
+                config.names.rootnamespace = GetRootNamespace(fullPath);
+            }
 
-            config = new EfcptConfig();
+            // TODO Merge objects
 
             var options = new JsonSerializerOptions { WriteIndented = true };
-            File.WriteAllText(fullPath, System.Text.Json.JsonSerializer.Serialize(config, options), Encoding.UTF8);
+            File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
 
             return true;
+        }
+
+        private static string GetRootNamespace(string fullPath)
+        {
+            // TODO Improve by looking for a single .csproj in current folder, and suggest it's name
+            var dir = Path.GetDirectoryName(fullPath);
+
+            if (!string.IsNullOrEmpty(dir))
+            {
+                var info = new DirectoryInfo(dir);
+                return info.Name;
+            }
+
+            return "Project";
         }
 
         private static List<SerializationTableModel> BuildObjectList(EfcptConfig config)
