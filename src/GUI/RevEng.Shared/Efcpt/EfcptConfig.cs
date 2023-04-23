@@ -45,9 +45,6 @@ namespace RevEng.Common.Efcpt
 
     public class CodeGeneration
     {
-        [JsonPropertyName("target-version")]
-        public int targetversion { get; set; }
-
         [JsonPropertyName("enable-on-configuring")]
         public bool enableonconfiguring { get; set; }
 

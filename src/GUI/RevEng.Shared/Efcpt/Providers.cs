@@ -77,10 +77,12 @@ namespace RevEng.Common.Efcpt
                 {
                     "Pomelo.EntityFrameworkCore.MySql",
                     new List<string> { "mysql" }
-                },                {
+                },
+                {
                     "Oracle.EntityFrameworkCore",
                     new List<string> { "oracle" }
-                },                {
+                },
+                {
                     "FirebirdSql.EntityFrameworkCore.Firebird",
                     new List<string> { "firebird" }
                 },

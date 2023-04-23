@@ -10,7 +10,7 @@ namespace RevEng.Common.Efcpt
 {
     public static class EfcptConfigMapper
     {
-        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, string provider, string projectPath)
+        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, string provider, string projectPath, bool isDacpac)
         {
             if (config is null)
             {
@@ -42,8 +42,6 @@ namespace RevEng.Common.Efcpt
             {
                 selectedToBegenerated = 2;
             }
-
-            var isDacpac = connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase);
 
             var databaseType = Providers.GetDatabaseTypeFromProvider(provider, isDacpac);
 
@@ -97,6 +95,7 @@ namespace RevEng.Common.Efcpt
                 UseAsyncCalls = true, // not implemented, will consider if asked for
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
+                ProjectRootNamespace = null,
             };
         }
 

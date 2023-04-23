@@ -10,8 +10,6 @@ namespace RevEng.Core
 {
     public static class SqlServerSqlTypeExtensions
     {
-        public static bool UseDateOnlyTimeOnly { get; set; }
-
         private static readonly ISet<SqlDbType> ScaleTypes = new HashSet<SqlDbType>
         {
             SqlDbType.Decimal,
@@ -49,6 +47,8 @@ namespace RevEng.Core
                 { "hierarchyid", "udt" },
                 { "sysname", "nvarchar" },
             });
+
+        public static bool UseDateOnlyTimeOnly { get; set; }
 
         public static bool IsScaleType(this SqlDbType sqlDbType)
         {

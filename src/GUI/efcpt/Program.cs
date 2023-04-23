@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using CommandLine;
+using CommandLine.Text;
 using Efcpt;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
@@ -18,10 +20,13 @@ public static class Program
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            return Parser.Default.ParseArguments<ScaffoldOptions>(args)
+            var parserResult = new Parser(c => c.HelpWriter = null)
+                .ParseArguments<ScaffoldOptions>(args);
+
+            return parserResult
               .MapResult(
                 options => RunAndReturnExitCode(options),
-                _ => 1);
+                errs => DisplayHelp(parserResult, errs));
         }
         catch (Exception ex)
         {
@@ -30,29 +35,53 @@ public static class Program
         }
     }
 
+    private static int DisplayHelp(ParserResult<ScaffoldOptions> parserResult, IEnumerable<Error> errs)
+    {
+        Console.WriteLine(HelpText.AutoBuild(parserResult, h =>
+        {
+            h.AddPostOptionsLine("SAMPLES:");
+            h.AddPostOptionsLine(@"efcpt ""Server=(local);Database=Northwind;User=sa;Pwd=123;Encrypt=false"" mssql");
+            h.AddPostOptionsLine(@"efcpt ""/temp/mydb.dacpac"" mssql");
+            return h;
+        }));
+        return 1;
+    }
+
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
         options.Dump();
 
         // TODO test .dacpac!
-        // TODO Validate options
-        // TODO add progress messages - Spectre.Console ?
 
         var dbType = Providers.GetDatabaseTypeFromProvider(options.Provider, options.IsDacpac);
 
         if (dbType == DatabaseType.Undefined)
         {
-            // TODO Show error
+            Console.Error.WriteLine($"Unknown provider '{options.Provider}'");
             return 1;
         }
+
+        Console.WriteLine("Getting database objects...");
 
         var builder = new TableListBuilder((int)dbType, options.ConnectionString, Array.Empty<SchemaInfo>(), false);
 
         var buildResult = builder.GetTableModels();
 
-        buildResult.AddRange(builder.GetProcedures());
+        Console.WriteLine($"Found {buildResult.Count} tables and views");
 
-        buildResult.AddRange(builder.GetFunctions());
+        var procedures = builder.GetProcedures();
+        buildResult.AddRange(procedures);
+        if (procedures.Count > 0)
+        {
+            Console.WriteLine($"Found {procedures.Count} stored procedures");
+        }
+
+        var functions = builder.GetFunctions();
+        buildResult.AddRange(functions);
+        if (functions.Count > 0)
+        {
+            Console.WriteLine($"Found {functions.Count} functions");
+        }
 
         var configPath = options.ConfigFile?.FullName ?? "efcpt-config.json";
 
@@ -60,11 +89,29 @@ public static class Program
         {
             var fullPath = Path.GetFullPath(configPath);
 
-            var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Path.GetDirectoryName(fullPath));
+            Console.WriteLine($"Using config file: '{fullPath}'");
+
+            var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Path.GetDirectoryName(fullPath), options.IsDacpac);
+
+            Console.WriteLine("Generating code...");
+
+            Stopwatch sw = Stopwatch.StartNew();
 
             var result = ReverseEngineerRunner.GenerateFiles(commandOptions);
 
-            // TODO report result
+            //TODO improve precision
+            Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {sw.Elapsed.TotalSeconds} seconds");
+
+            foreach (var error in result.EntityErrors)
+            {
+                Console.WriteLine($"error: {error}");
+            }
+
+            foreach (var warning in result.EntityWarnings)
+            {
+                Console.WriteLine($"warning: {warning}");
+            }
+
             return 0;
         }
 

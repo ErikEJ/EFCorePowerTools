@@ -40,7 +40,6 @@
   ],
   "code-generation":
   { 
-     "target-version": 7,
      "enable-on-configuring": false,
      "type": "all",
      "use-database-names": false,
@@ -57,7 +56,6 @@
   },
   "names":
   {
-    "root-namespace": "MyProject",
     "dbcontext-name": "NorthwindContext",
     "dbcontext-namespace": null,
     "model-namespace": null

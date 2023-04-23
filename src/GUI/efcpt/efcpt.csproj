@@ -8,6 +8,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <!--<PackageReadmeFile>readme.md</PackageReadmeFile>-->
     <PackageVersion>7.0.0-preview1</PackageVersion>
+    <Copyright>Copyright (c) ErikEJ 2023</Copyright>
+    <Company>ErikEJ</Company>
+    <Version>7.0.0-preview1</Version>
     <PackageReleaseNotes>early preview</PackageReleaseNotes>
     <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
