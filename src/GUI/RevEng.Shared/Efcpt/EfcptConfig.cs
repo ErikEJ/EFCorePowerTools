@@ -160,10 +160,12 @@ namespace RevEng.Common.Efcpt
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool exclude { get; set; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("use-legacy-resultset-discovery")]
         public bool uselegacyresultsetdiscovery { get; set; }
 
         [JsonPropertyName("mapped-type")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string mappedtype { get; set; }
     }
 

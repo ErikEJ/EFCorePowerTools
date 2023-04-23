@@ -11,9 +11,7 @@
         "functions",
         "code-generation",
         "names",
-        "file-layout",
-        "type-mappings",
-        "replacements"
+        "file-layout"
     ],
     "properties": {
         "tables": {
@@ -24,8 +22,7 @@
                 "type": "object",
                 "title": "A Schema",
                 "required": [
-                    "name",
-                    "exclude"
+                    "name"
                 ],
                 "properties": {
                     "name": {
@@ -114,9 +111,7 @@
                 "type": "object",
                 "title": "A Schema",
                 "required": [
-                    "name",
-                    "use-legacy-resultset-discovery",
-                    "mapped-type"
+                    "name"
                 ],
                 "properties": {
                     "name": {
@@ -137,7 +132,7 @@
                     },
                     "mapped-type": {
                         "type": "string",
-                        "default": "",
+                        "default": null,
                         "title": "The mapped-type Schema",
                         "examples": [
                             "Customer"
@@ -347,8 +342,7 @@
             "title": "The names Schema",
             "required": [
                 "dbcontext-name",
-                "dbcontext-namespace",
-                "model-namespace"
+                "root-namespace"
             ],
             "properties": {
                 "dbcontext-name": {
@@ -374,6 +368,14 @@
                     "examples": [
                         null
                     ]
+                },
+                "root-namespace": {
+                    "type": "null",
+                    "default": null,
+                    "title": "The root-namespace Schema",
+                    "examples": [
+                        null
+                    ]
                 }
             },
             "examples": [{
@@ -387,10 +389,7 @@
             "default": {},
             "title": "The file-layout Schema",
             "required": [
-                "output-path",
-                "output-dbcontext-path",
-                "split-dbcontext-preview",
-                "use-schema-folders-preview"
+                "output-path"
             ],
             "properties": {
                 "output-path": {
@@ -437,12 +436,6 @@
             "type": "object",
             "default": {},
             "title": "The type-mappings Schema",
-            "required": [
-                "use-DateOnly-TimeOnly",
-                "use-HierarchyId",
-                "use-spatial",
-                "use-NodaTime"
-            ],
             "properties": {
                 "use-DateOnly-TimeOnly": {
                     "type": "boolean",
@@ -488,10 +481,6 @@
             "type": "object",
             "default": {},
             "title": "The replacements Schema",
-            "required": [
-                "preserve-casing-with-regex",
-                "uncountable-words"
-            ],
             "properties": {
                 "preserve-casing-with-regex": {
                     "type": "boolean",
