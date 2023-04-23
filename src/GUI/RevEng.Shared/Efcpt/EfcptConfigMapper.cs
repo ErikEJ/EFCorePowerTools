@@ -112,6 +112,8 @@ namespace RevEng.Common.Efcpt
                 config.names.rootnamespace = GetRootNamespaceSuggestion(fullPath);
             }
 
+            config.JsonSchema = "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-schema.json";
+
             AddTables(objects, config);
 
             AddViews(objects, config);

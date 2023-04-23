@@ -1,0 +1,603 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": [
+        "tables",
+        "views",
+        "stored-procedures",
+        "functions",
+        "code-generation",
+        "names",
+        "file-layout",
+        "type-mappings",
+        "replacements"
+    ],
+    "properties": {
+        "tables": {
+            "type": "array",
+            "default": [],
+            "title": "The tables Schema",
+            "items": {
+                "type": "object",
+                "title": "A Schema",
+                "required": [
+                    "name",
+                    "exclude"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "The name Schema",
+                        "examples": [
+                            "[dbo].[Categories]",
+                            "[dbo].[CustomerCustomerDemo]",
+                            "[dbo].[Oldtable]"
+                        ]
+                    },
+                    "exclude": {
+                        "type": "boolean",
+                        "default": false,
+                        "title": "The exclude Schema",
+                        "examples": [
+                            true
+                        ]
+                    }
+                },
+                "examples": [{
+                    "name": "[dbo].[Categories]"
+                },
+                {
+                    "name": "[dbo].[CustomerCustomerDemo]"
+                },
+                {
+                    "name": "[dbo].[Oldtable]",
+                    "exclude": true
+                }]
+            },
+            "examples": [
+                [{
+                    "name": "[dbo].[Categories]"
+                },
+                {
+                    "name": "[dbo].[CustomerCustomerDemo]"
+                },
+                {
+                    "name": "[dbo].[Oldtable]",
+                    "exclude": true
+                }]
+            ]
+        },
+        "views": {
+            "type": "array",
+            "default": [],
+            "title": "The views Schema",
+            "items": {
+                "type": "object",
+                "title": "A Schema",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "The name Schema",
+                        "examples": [
+                            "[dbo].[Categories]",
+                            "[dbo].[CustomerCustomerDemo]"
+                        ]
+                    }
+                },
+                "examples": [{
+                    "name": "[dbo].[Categories]"
+                },
+                {
+                    "name": "[dbo].[CustomerCustomerDemo]"
+                }]
+            },
+            "examples": [
+                [{
+                    "name": "[dbo].[Categories]"
+                },
+                {
+                    "name": "[dbo].[CustomerCustomerDemo]"
+                }]
+            ]
+        },
+        "stored-procedures": {
+            "type": "array",
+            "default": [],
+            "title": "The stored-procedures Schema",
+            "items": {
+                "type": "object",
+                "title": "A Schema",
+                "required": [
+                    "name",
+                    "use-legacy-resultset-discovery",
+                    "mapped-type"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "The name Schema",
+                        "examples": [
+                            "[dbo].[Alphabetical list of products]",
+                            "[dbo].[Category Sales for 1997]"
+                        ]
+                    },
+                    "use-legacy-resultset-discovery": {
+                        "type": "boolean",
+                        "default": false,
+                        "title": "The use-legacy-resultset-discovery Schema",
+                        "examples": [
+                            true
+                        ]
+                    },
+                    "mapped-type": {
+                        "type": "string",
+                        "default": "",
+                        "title": "The mapped-type Schema",
+                        "examples": [
+                            "Customer"
+                        ]
+                    }
+                },
+                "examples": [{
+                    "name": "[dbo].[Alphabetical list of products]"
+                },
+                {
+                    "name": "[dbo].[Category Sales for 1997]",
+                    "use-legacy-resultset-discovery": true,
+                    "mapped-type": "Customer"
+                }]
+            },
+            "examples": [
+                [{
+                    "name": "[dbo].[Alphabetical list of products]"
+                },
+                {
+                    "name": "[dbo].[Category Sales for 1997]",
+                    "use-legacy-resultset-discovery": true,
+                    "mapped-type": "Customer"
+                }]
+            ]
+        },
+        "functions": {
+            "type": "array",
+            "default": [],
+            "title": "The functions Schema",
+            "items": {
+                "type": "object",
+                "title": "A Schema",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "The name Schema",
+                        "examples": [
+                            "[dbo].[FunctionA]",
+                            "[dbo].[FunctionB]"
+                        ]
+                    }
+                },
+                "examples": [{
+                    "name": "[dbo].[FunctionA]"
+                },
+                {
+                    "name": "[dbo].[FunctionB]"
+                }]
+            },
+            "examples": [
+                [{
+                    "name": "[dbo].[FunctionA]"
+                },
+                {
+                    "name": "[dbo].[FunctionB]"
+                }]
+            ]
+        },
+        "code-generation": {
+            "type": "object",
+            "default": {},
+            "title": "The code-generation Schema",
+            "required": [
+                "enable-on-configuring",
+                "type",
+                "use-database-names",
+                "use-data-annotations",
+                "use-nullable-reference-types",
+                "use-inflector",
+                "use-legacy-inflector",
+                "use-many-to-many-entity",
+                "use-t4",
+                "remove-defaultsql-from-bool-properties",
+                "soft-delete-obsolete-files",
+                "discover-multiple-stored-procedure-resultsets-preview",
+                "use-alternate-stored-procedure-resultset-discovery"
+            ],
+            "properties": {
+                "enable-on-configuring": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The enable-on-configuring Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "type": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The type Schema",
+                    "examples": [
+                        "all"
+                    ]
+                },
+                "use-database-names": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-database-names Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-data-annotations": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-data-annotations Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-nullable-reference-types": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-nullable-reference-types Schema",
+                    "examples": [
+                        true
+                    ]
+                },
+                "use-inflector": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-inflector Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-legacy-inflector": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-legacy-inflector Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-many-to-many-entity": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-many-to-many-entity Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-t4": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-t4 Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "remove-defaultsql-from-bool-properties": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The remove-defaultsql-from-bool-properties Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "soft-delete-obsolete-files": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The soft-delete-obsolete-files Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "discover-multiple-stored-procedure-resultsets-preview": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The discover-multiple-stored-procedure-resultsets-preview Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-alternate-stored-procedure-resultset-discovery": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-alternate-stored-procedure-resultset-discovery Schema",
+                    "examples": [
+                        false
+                    ]
+                }
+            },
+            "examples": [{
+                "enable-on-configuring": false,
+                "type": "all",
+                "use-database-names": false,
+                "use-data-annotations": false,
+                "use-nullable-reference-types": true,
+                "use-inflector": false,
+                "use-legacy-inflector": false,
+                "use-many-to-many-entity": false,
+                "use-t4": false,
+                "remove-defaultsql-from-bool-properties": false,
+                "soft-delete-obsolete-files": false,
+                "discover-multiple-stored-procedure-resultsets-preview": false,
+                "use-alternate-stored-procedure-resultset-discovery": false
+            }]
+        },
+        "names": {
+            "type": "object",
+            "default": {},
+            "title": "The names Schema",
+            "required": [
+                "dbcontext-name",
+                "dbcontext-namespace",
+                "model-namespace"
+            ],
+            "properties": {
+                "dbcontext-name": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The dbcontext-name Schema",
+                    "examples": [
+                        "NorthwindContext"
+                    ]
+                },
+                "dbcontext-namespace": {
+                    "type": "null",
+                    "default": null,
+                    "title": "The dbcontext-namespace Schema",
+                    "examples": [
+                        null
+                    ]
+                },
+                "model-namespace": {
+                    "type": "null",
+                    "default": null,
+                    "title": "The model-namespace Schema",
+                    "examples": [
+                        null
+                    ]
+                }
+            },
+            "examples": [{
+                "dbcontext-name": "NorthwindContext",
+                "dbcontext-namespace": null,
+                "model-namespace": null
+            }]
+        },
+        "file-layout": {
+            "type": "object",
+            "default": {},
+            "title": "The file-layout Schema",
+            "required": [
+                "output-path",
+                "output-dbcontext-path",
+                "split-dbcontext-preview",
+                "use-schema-folders-preview"
+            ],
+            "properties": {
+                "output-path": {
+                    "type": "string",
+                    "default": "",
+                    "title": "The output-path Schema",
+                    "examples": [
+                        "Models"
+                    ]
+                },
+                "output-dbcontext-path": {
+                    "type": "null",
+                    "default": null,
+                    "title": "The output-dbcontext-path Schema",
+                    "examples": [
+                        null
+                    ]
+                },
+                "split-dbcontext-preview": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The split-dbcontext-preview Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-schema-folders-preview": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-schema-folders-preview Schema",
+                    "examples": [
+                        false
+                    ]
+                }
+            },
+            "examples": [{
+                "output-path": "Models",
+                "output-dbcontext-path": null,
+                "split-dbcontext-preview": false,
+                "use-schema-folders-preview": false
+            }]
+        },
+        "type-mappings": {
+            "type": "object",
+            "default": {},
+            "title": "The type-mappings Schema",
+            "required": [
+                "use-DateOnly-TimeOnly",
+                "use-HierarchyId",
+                "use-spatial",
+                "use-NodaTime"
+            ],
+            "properties": {
+                "use-DateOnly-TimeOnly": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-DateOnly-TimeOnly Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-HierarchyId": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-HierarchyId Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-spatial": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-spatial Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "use-NodaTime": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The use-NodaTime Schema",
+                    "examples": [
+                        false
+                    ]
+                }
+            },
+            "examples": [{
+                "use-DateOnly-TimeOnly": false,
+                "use-HierarchyId": false,
+                "use-spatial": false,
+                "use-NodaTime": false
+            }]
+        },
+        "replacements": {
+            "type": "object",
+            "default": {},
+            "title": "The replacements Schema",
+            "required": [
+                "preserve-casing-with-regex",
+                "uncountable-words"
+            ],
+            "properties": {
+                "preserve-casing-with-regex": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "The preserve-casing-with-regex Schema",
+                    "examples": [
+                        false
+                    ]
+                },
+                "uncountable-words": {
+                    "type": "array",
+                    "default": [],
+                    "title": "The uncountable-words Schema",
+                    "items": {
+                        "type": "string",
+                        "title": "A Schema",
+                        "examples": [
+                            "Status",
+                            "Data"
+                        ]
+                    },
+                    "examples": [
+                        ["Status",
+                            "Data"
+                        ]
+                    ]
+                }
+            },
+            "examples": [{
+                "preserve-casing-with-regex": false,
+                "uncountable-words": [
+                    "Status",
+                    "Data"
+                ]
+            }]
+        }
+    },
+    "examples": [{
+        "tables": [{
+            "name": "[dbo].[Categories]"
+        },
+        {
+            "name": "[dbo].[CustomerCustomerDemo]"
+        },
+        {
+            "name": "[dbo].[Oldtable]",
+            "exclude": true
+        }],
+        "views": [{
+            "name": "[dbo].[Categories]"
+        },
+        {
+            "name": "[dbo].[CustomerCustomerDemo]"
+        }],
+        "stored-procedures": [{
+            "name": "[dbo].[Alphabetical list of products]"
+        },
+        {
+            "name": "[dbo].[Category Sales for 1997]",
+            "use-legacy-resultset-discovery": true,
+            "mapped-type": "Customer"
+        }],
+        "functions": [{
+            "name": "[dbo].[FunctionA]"
+        },
+        {
+            "name": "[dbo].[FunctionB]"
+        }],
+        "code-generation": {
+            "enable-on-configuring": false,
+            "type": "all",
+            "use-database-names": false,
+            "use-data-annotations": false,
+            "use-nullable-reference-types": true,
+            "use-inflector": false,
+            "use-legacy-inflector": false,
+            "use-many-to-many-entity": false,
+            "use-t4": false,
+            "remove-defaultsql-from-bool-properties": false,
+            "soft-delete-obsolete-files": false,
+            "discover-multiple-stored-procedure-resultsets-preview": false,
+            "use-alternate-stored-procedure-resultset-discovery": false
+        },
+        "names": {
+            "dbcontext-name": "NorthwindContext",
+            "dbcontext-namespace": null,
+            "model-namespace": null
+        },
+        "file-layout": {
+            "output-path": "Models",
+            "output-dbcontext-path": null,
+            "split-dbcontext-preview": false,
+            "use-schema-folders-preview": false
+        },
+        "type-mappings": {
+            "use-DateOnly-TimeOnly": false,
+            "use-HierarchyId": false,
+            "use-spatial": false,
+            "use-NodaTime": false
+        },
+        "replacements": {
+            "preserve-casing-with-regex": false,
+            "uncountable-words": [
+                "Status",
+                "Data"
+            ]
+        }
+    }]
+}
