@@ -119,7 +119,7 @@ namespace RevEng.Core.Procedures
                                         new List<ModuleResultElement>(),
                                     };
 #pragma warning disable CA1308 // Normalize strings to uppercase
-                                    errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'.{Environment.NewLine}{ex.Message}{Environment.NewLine}");
+                                    errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.");
 #pragma warning restore CA1308 // Normalize strings to uppercase
                                 }
 #pragma warning restore CA1031 // Do not catch general exception types

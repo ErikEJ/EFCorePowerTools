@@ -140,7 +140,7 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                 }
 
                 // If the result set only contains un-named columns
-                if (schemaTable.Rows.Count == unnamedColumnCount)
+                if (schemaTable.Rows.Count > 0 && schemaTable.Rows.Count == unnamedColumnCount)
                 {
                     throw new InvalidOperationException($"Only un-named result columns in procedure");
                 }

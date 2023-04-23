@@ -9,6 +9,7 @@ using Efcpt;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
+using Spectre.Console;
 
 namespace ErikEJ.EfCorePowerTools;
 
@@ -49,10 +50,12 @@ public static class Program
 
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
-        Console.WriteLine("EF Core Power Tools CLI - https://github.com/ErikEJ/EFCorePowerTools");
+        Console.WriteLine();
+        AnsiConsole.MarkupLine("[bold yellow]EF Core Power Tools CLI[/]");
+        AnsiConsole.MarkupLine("[link]https://github.com/ErikEJ/EFCorePowerTools[/]");
+        Console.WriteLine();
 
-        // TODO test .dacpac!
-
+        // TODO test .dacpac! test root namespace
         var dbType = Providers.GetDatabaseTypeFromProvider(options.Provider, options.IsDacpac);
 
         if (dbType == DatabaseType.Undefined)
@@ -98,6 +101,8 @@ public static class Program
             var result = ReverseEngineerRunner.GenerateFiles(commandOptions);
 
             Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {(int)sw.Elapsed.TotalSeconds} seconds");
+
+            Console.WriteLine();
 
             foreach (var error in result.EntityErrors)
             {

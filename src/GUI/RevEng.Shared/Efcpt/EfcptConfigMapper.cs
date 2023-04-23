@@ -109,7 +109,7 @@ namespace RevEng.Common.Efcpt
             {
                 config = new EfcptConfig();
                 config.names.dbcontextname = GetDbContextNameSuggestion(connectionString, databaseType);
-                config.names.rootnamespace = GetRootNamespace(fullPath);
+                config.names.rootnamespace = GetRootNamespaceSuggestion(fullPath);
             }
 
             // TODO Merge objects
@@ -120,18 +120,24 @@ namespace RevEng.Common.Efcpt
             return true;
         }
 
-        private static string GetRootNamespace(string fullPath)
+        private static string GetRootNamespaceSuggestion(string fullPath)
         {
-            // TODO Improve by looking for a single .csproj in current folder, and suggest it's name
             var dir = Path.GetDirectoryName(fullPath);
 
             if (!string.IsNullOrEmpty(dir))
             {
+                var csprojFiles = Directory.GetFiles(dir, "*.csproj");
+
+                if (csprojFiles.Length == 1)
+                {
+                    return Path.GetFileNameWithoutExtension(csprojFiles[0]);
+                }
+
                 var info = new DirectoryInfo(dir);
                 return info.Name;
             }
 
-            return "Project";
+            return "RootNamespace";
         }
 
         private static List<SerializationTableModel> BuildObjectList(EfcptConfig config)
