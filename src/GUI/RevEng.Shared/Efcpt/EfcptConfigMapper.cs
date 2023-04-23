@@ -171,7 +171,7 @@ namespace RevEng.Common.Efcpt
                 config.views = new List<View>();
             }
 
-            config.tables.RemoveAll(x => !ids.Contains(x.name));
+            config.views.RemoveAll(x => !ids.Contains(x.name));
 
             foreach (var view in newViews)
             {

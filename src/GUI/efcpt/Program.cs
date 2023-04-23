@@ -101,7 +101,7 @@ public static class Program
 
             sw.Stop();
 
-            Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {(int)sw.Elapsed.TotalSeconds} seconds");
+            Console.WriteLine($"{result.EntityTypeFilePaths.Count + 1} files generated in {(int)sw.Elapsed.TotalSeconds} seconds");
             Console.WriteLine();
 
             foreach (var error in result.EntityErrors)

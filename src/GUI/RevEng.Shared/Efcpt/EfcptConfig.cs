@@ -9,7 +9,23 @@ namespace RevEng.Common.Efcpt
     public class EfcptConfig
     {
         [JsonPropertyName("$schema")]
-        public string JsonShema { get; set; }
+        public string JsonSchema { get; set; }
+
+        [JsonPropertyName("code-generation")]
+        public CodeGeneration codegeneration { get; set; } = new CodeGeneration();
+
+        [JsonPropertyName("names")]
+        public Names names { get; set; } = new Names();
+
+        [JsonPropertyName("file-layout")]
+        public FileLayout filelayout { get; set; } = new FileLayout();
+
+        [JsonPropertyName("type-mappings")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public TypeMappings typemappings { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public Replacements replacements { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<Table> tables { get; set; }
@@ -23,23 +39,6 @@ namespace RevEng.Common.Efcpt
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public List<Function> functions { get; set; }
-
-        [JsonPropertyName("code-generation")]
-        public CodeGeneration codegeneration { get; set; } = new CodeGeneration();
-
-        [JsonPropertyName("names")]
-        public Names names { get; set; } = new Names();
-
-        [JsonPropertyName("file-layout")]
-        [JsonInclude]
-        public FileLayout filelayout { get; set; } = new FileLayout();
-
-        [JsonPropertyName("type-mappings")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public TypeMappings typemappings { get; set; }
-
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public Replacements replacements { get; set; }
     }
 
     public class CodeGeneration
