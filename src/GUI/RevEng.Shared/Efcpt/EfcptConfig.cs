@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
 {
@@ -11,17 +12,17 @@ namespace RevEng.Common.Efcpt
         public string JsonShema { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public Table[] tables { get; set; }
+        public List<Table> tables { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public View[] views { get; set; }
+        public List<View> views { get; set; }
 
         [JsonPropertyName("stored-procedures")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public StoredProcedures[] storedprocedures { get; set; }
+        public List<StoredProcedure> storedprocedures { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public Function[] functions { get; set; }
+        public List<Function> functions { get; set; }
 
         [JsonPropertyName("code-generation")]
         public CodeGeneration codegeneration { get; set; } = new CodeGeneration();
@@ -140,21 +141,29 @@ namespace RevEng.Common.Efcpt
     public class Table
     {
         public string name { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool exclude { get; set; }
     }
 
     public class View
     {
         public string name { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool exclude { get; set; }
     }
 
-    public class StoredProcedures
+    public class StoredProcedure
     {
         public string name { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool exclude { get; set; }
+
         [JsonPropertyName("use-legacy-resultset-discovery")]
         public bool uselegacyresultsetdiscovery { get; set; }
+
         [JsonPropertyName("mapped-type")]
         public string mappedtype { get; set; }
     }
@@ -162,6 +171,8 @@ namespace RevEng.Common.Efcpt
     public class Function
     {
         public string name { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool exclude { get; set; }
     }
 #pragma warning restore SA1402 // File may only contain a single type

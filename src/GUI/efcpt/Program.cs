@@ -50,12 +50,16 @@ public static class Program
 
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
+        var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
+
         Console.WriteLine();
         AnsiConsole.MarkupLine("[bold yellow]EF Core Power Tools CLI[/]");
         AnsiConsole.MarkupLine("[link]https://github.com/ErikEJ/EFCorePowerTools[/]");
         Console.WriteLine();
+        AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
+        Console.WriteLine();
 
-        // TODO test .dacpac! test root namespace
+        // TODO test .dacpac!
         var dbType = Providers.GetDatabaseTypeFromProvider(options.Provider, options.IsDacpac);
 
         if (dbType == DatabaseType.Undefined)
@@ -65,43 +69,39 @@ public static class Program
         }
 
         Console.WriteLine("Getting database objects...");
-
         var builder = new TableListBuilder((int)dbType, options.ConnectionString, Array.Empty<SchemaInfo>(), false);
 
         var buildResult = builder.GetTableModels();
-
-        Console.WriteLine($"Found {buildResult.Count} tables and views");
+        Console.WriteLine($"{buildResult.Count} tables/views");
 
         var procedures = builder.GetProcedures();
         buildResult.AddRange(procedures);
         if (procedures.Count > 0)
         {
-            Console.WriteLine($"Found {procedures.Count} stored procedures");
+            Console.WriteLine($"{procedures.Count} stored procedures");
         }
 
         var functions = builder.GetFunctions();
         buildResult.AddRange(functions);
         if (functions.Count > 0)
         {
-            Console.WriteLine($"Found {functions.Count} functions");
+            Console.WriteLine($"{functions.Count} functions");
         }
-
-        var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
 
         if (EfcptConfigMapper.TryGetEfcptConfig(configPath, options.ConnectionString, dbType, buildResult, out EfcptConfig config))
         {
-            Console.WriteLine($"Using config file: '{configPath}'");
-
             var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Path.GetDirectoryName(configPath), options.IsDacpac);
 
-            Console.WriteLine("Generating code...");
+            Console.WriteLine();
+            Console.WriteLine("Generating EF Core DbContext and entity classes...");
 
             Stopwatch sw = Stopwatch.StartNew();
 
             var result = ReverseEngineerRunner.GenerateFiles(commandOptions);
 
-            Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {(int)sw.Elapsed.TotalSeconds} seconds");
+            sw.Stop();
 
+            Console.WriteLine($"Generated {result.EntityTypeFilePaths.Count + 1} files in {(int)sw.Elapsed.TotalSeconds} seconds");
             Console.WriteLine();
 
             foreach (var error in result.EntityErrors)

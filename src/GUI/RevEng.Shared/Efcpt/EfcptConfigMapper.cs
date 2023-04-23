@@ -83,6 +83,7 @@ namespace RevEng.Common.Efcpt
                 PreserveCasingWithRegex = config.replacements?.preservecasingwithregex ?? false,
                 UseDateOnlyTimeOnly = config.typemappings?.useDateOnlyTimeOnly ?? false,
                 UseNullableReferences = config.codegeneration.usenullablereferencetypes,
+                ProjectRootNamespace = config.names.rootnamespace,
 
                 // Not supported/implemented:
                 UseHandleBars = false,
@@ -95,7 +96,6 @@ namespace RevEng.Common.Efcpt
                 UseAsyncCalls = true, // not implemented, will consider if asked for
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
-                ProjectRootNamespace = null,
             };
         }
 
@@ -112,7 +112,13 @@ namespace RevEng.Common.Efcpt
                 config.names.rootnamespace = GetRootNamespaceSuggestion(fullPath);
             }
 
-            // TODO Merge objects
+            AddTables(objects, config);
+
+            AddViews(objects, config);
+
+            AddSprocs(objects, config);
+
+            AddFunctions(objects, config);
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
@@ -120,9 +126,127 @@ namespace RevEng.Common.Efcpt
             return true;
         }
 
+        private static void AddTables(List<TableModel> objects, EfcptConfig config)
+        {
+            var newTables = objects.Where(o => o.ObjectType == ObjectType.Table).ToList();
+
+            if (newTables.Count == 0)
+            {
+                return;
+            }
+
+            var ids = new HashSet<string>(newTables.Select(x => x.DisplayName));
+
+            if (config.tables is null)
+            {
+                config.tables = new List<Table>();
+            }
+
+            config.tables.RemoveAll(x => !ids.Contains(x.name));
+
+            foreach (var table in newTables)
+            {
+                var existing = config.tables.SingleOrDefault(t => t.name == table.DisplayName);
+
+                if (existing == null)
+                {
+                    config.tables.Add(new Table { name = table.DisplayName });
+                }
+            }
+        }
+
+        private static void AddViews(List<TableModel> objects, EfcptConfig config)
+        {
+            var newViews = objects.Where(o => o.ObjectType == ObjectType.View).ToList();
+
+            if (newViews.Count == 0)
+            {
+                return;
+            }
+
+            var ids = new HashSet<string>(newViews.Select(x => x.DisplayName));
+
+            if (config.views is null)
+            {
+                config.views = new List<View>();
+            }
+
+            config.tables.RemoveAll(x => !ids.Contains(x.name));
+
+            foreach (var view in newViews)
+            {
+                var existing = config.views.SingleOrDefault(t => t.name == view.DisplayName);
+
+                if (existing == null)
+                {
+                    config.views.Add(new View { name = view.DisplayName });
+                }
+            }
+        }
+
+        private static void AddSprocs(List<TableModel> objects, EfcptConfig config)
+        {
+            var newItems = objects.Where(o => o.ObjectType == ObjectType.Procedure).ToList();
+
+            if (newItems.Count == 0)
+            {
+                return;
+            }
+
+            var ids = new HashSet<string>(newItems.Select(x => x.DisplayName));
+
+            if (config.storedprocedures is null)
+            {
+                config.storedprocedures = new List<StoredProcedure>();
+            }
+
+            config.storedprocedures.RemoveAll(x => !ids.Contains(x.name));
+
+            foreach (var table in newItems)
+            {
+                var existing = config.storedprocedures.SingleOrDefault(t => t.name == table.DisplayName);
+
+                if (existing == null)
+                {
+                    config.storedprocedures.Add(new StoredProcedure { name = table.DisplayName });
+                }
+            }
+        }
+
+        private static void AddFunctions(List<TableModel> objects, EfcptConfig config)
+        {
+            var newItems = objects.Where(o => o.ObjectType == ObjectType.ScalarFunction).ToList();
+
+            if (newItems.Count == 0)
+            {
+                return;
+            }
+
+            var ids = new HashSet<string>(newItems.Select(x => x.DisplayName));
+
+            if (config.functions is null)
+            {
+                config.functions = new List<Function>();
+            }
+
+            config.functions.RemoveAll(x => !ids.Contains(x.name));
+
+            foreach (var table in newItems)
+            {
+                var existing = config.functions.SingleOrDefault(t => t.name == table.DisplayName);
+
+                if (existing == null)
+                {
+                    config.functions.Add(new Function { name = table.DisplayName });
+                }
+            }
+        }
+
         private static string GetRootNamespaceSuggestion(string fullPath)
         {
             var dir = Path.GetDirectoryName(fullPath);
+
+            Console.WriteLine(dir);
 
             if (!string.IsNullOrEmpty(dir))
             {
