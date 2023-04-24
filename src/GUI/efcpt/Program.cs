@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
@@ -42,8 +41,8 @@ public static class Program
         Console.WriteLine(HelpText.AutoBuild(parserResult, h =>
         {
             h.AddPostOptionsLine("SAMPLES:");
-            h.AddPostOptionsLine(@"efcpt ""Server=(local);Database=Northwind;User=sa;Pwd=123;Encrypt=false"" mssql");
-            h.AddPostOptionsLine(@"efcpt ""/temp/mydb.dacpac"" mssql");
+            h.AddPostOptionsLine(@"  efcpt ""Server=(local);Database=Northwind;User=sa;Pwd=123;Encrypt=false"" mssql");
+            h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac"" Microsoft.EntityFrameworkCore.SqlServer");
             return h;
         }));
         return 1;
@@ -120,7 +119,7 @@ public static class Program
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
             Console.WriteLine();
-            AnsiConsole.MarkupLine("[bold blue on white]Thanks for using EF Core Power Tools, open the readme file for next steps:[/]");
+            AnsiConsole.MarkupLine("[bold blue on white]Thank you for using EF Core Power Tools, please open the readme file for next steps:[/]");
 
             AnsiConsole.MarkupLine($"[link]{fileUri}[/]");
 
