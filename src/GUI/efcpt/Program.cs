@@ -98,6 +98,7 @@ public static class Program
             var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Directory.GetCurrentDirectory(), options.IsDacpac);
 
             Console.WriteLine();
+
             Console.WriteLine("Generating EF Core DbContext and entity classes...");
 
             if (commandOptions.UseT4)
