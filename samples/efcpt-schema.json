@@ -3,7 +3,7 @@
     "$id": "http://example.com/example.json",
     "type": "object",
     "default": {},
-    "title": "Root Schema",
+    "title": "Configuration for EF Core Power Tools",
     "required": [
         "tables",
         "views",
@@ -17,27 +17,26 @@
         "tables": {
             "type": "array",
             "default": [],
-            "title": "The tables Schema",
+            "title": "List of tables discovered in the source database",
             "items": {
                 "type": "object",
-                "title": "A Schema",
+                "title": "Table",
                 "required": [
                     "name"
                 ],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "title": "The name Schema",
+                        "title": "Full table name",
                         "examples": [
                             "[dbo].[Categories]",
-                            "[dbo].[CustomerCustomerDemo]",
-                            "[dbo].[Oldtable]"
+                            "Oldtable"
                         ]
                     },
                     "exclude": {
                         "type": "boolean",
                         "default": false,
-                        "title": "The exclude Schema",
+                        "title": "Set to true to exclude this table from code generation",
                         "examples": [
                             true
                         ]
@@ -47,10 +46,7 @@
                     "name": "[dbo].[Categories]"
                 },
                 {
-                    "name": "[dbo].[CustomerCustomerDemo]"
-                },
-                {
-                    "name": "[dbo].[Oldtable]",
+                    "name": "Oldtable",
                     "exclude": true
                 }]
             },
@@ -59,10 +55,7 @@
                     "name": "[dbo].[Categories]"
                 },
                 {
-                    "name": "[dbo].[CustomerCustomerDemo]"
-                },
-                {
-                    "name": "[dbo].[Oldtable]",
+                    "name": "Oldtable",
                     "exclude": true
                 }]
             ]
@@ -70,20 +63,28 @@
         "views": {
             "type": "array",
             "default": [],
-            "title": "The views Schema",
+            "title": "List of views discovered in the source database",
             "items": {
                 "type": "object",
-                "title": "A Schema",
+                "title": "View",
                 "required": [
                     "name"
                 ],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "title": "The name Schema",
+                        "title": "Full view name",
                         "examples": [
                             "[dbo].[Categories]",
                             "[dbo].[CustomerCustomerDemo]"
+                        ]
+                    },
+                    "exclude": {
+                        "type": "boolean",
+                        "default": false,
+                        "title": "Set to true to exclude this view from code generation",
+                        "examples": [
+                            true
                         ]
                     }
                 },
@@ -91,7 +92,8 @@
                     "name": "[dbo].[Categories]"
                 },
                 {
-                    "name": "[dbo].[CustomerCustomerDemo]"
+                    "name": "[dbo].[CustomerCustomerDemo]",
+                    "exclude": true
                 }]
             },
             "examples": [
@@ -99,33 +101,42 @@
                     "name": "[dbo].[Categories]"
                 },
                 {
-                    "name": "[dbo].[CustomerCustomerDemo]"
+                    "name": "[dbo].[CustomerCustomerDemo]",
+                    "exclude": true
                 }]
             ]
         },
         "stored-procedures": {
             "type": "array",
             "default": [],
-            "title": "The stored-procedures Schema",
+            "title": "List of stored procedures discovered in the source database",
             "items": {
                 "type": "object",
-                "title": "A Schema",
+                "title": "Stored procedure",
                 "required": [
                     "name"
                 ],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "title": "The name Schema",
+                        "title": "The stored procedure name",
                         "examples": [
                             "[dbo].[Alphabetical list of products]",
                             "[dbo].[Category Sales for 1997]"
                         ]
                     },
+                    "exclude": {
+                        "type": "boolean",
+                        "default": false,
+                        "title": "Set to true to exclude this stored procedure from code generation",
+                        "examples": [
+                            true
+                        ]
+                    },
                     "use-legacy-resultset-discovery": {
                         "type": "boolean",
                         "default": false,
-                        "title": "The use-legacy-resultset-discovery Schema",
+                        "title": "Use sp_describe_first_result_set instead of SET FMTONLY for result set discovery",
                         "examples": [
                             true
                         ]
@@ -133,7 +144,7 @@
                     "mapped-type": {
                         "type": "string",
                         "default": null,
-                        "title": "The mapped-type Schema",
+                        "title": "Name of a to a class (DbSet) in your DbContext that maps the result of the stored procedure ",
                         "examples": [
                             "Customer"
                         ]
@@ -162,20 +173,28 @@
         "functions": {
             "type": "array",
             "default": [],
-            "title": "The functions Schema",
+            "title": "List of scalar and TVF functions discovered in the source database",
             "items": {
                 "type": "object",
-                "title": "A Schema",
+                "title": "Function",
                 "required": [
                     "name"
                 ],
                 "properties": {
                     "name": {
                         "type": "string",
-                        "title": "The name Schema",
+                        "title": "Name of function",
                         "examples": [
                             "[dbo].[FunctionA]",
                             "[dbo].[FunctionB]"
+                        ]
+                    },
+                    "exclude": {
+                        "type": "boolean",
+                        "default": false,
+                        "title": "Set to true to exclude this function from code generation",
+                        "examples": [
+                            true
                         ]
                     }
                 },
@@ -198,7 +217,7 @@
         "code-generation": {
             "type": "object",
             "default": {},
-            "title": "The code-generation Schema",
+            "title": "Options for code generation",
             "required": [
                 "enable-on-configuring",
                 "type",
@@ -218,7 +237,7 @@
                 "enable-on-configuring": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The enable-on-configuring Schema",
+                    "title": "Add OnConfiguring method to the DbContext",
                     "examples": [
                         false
                     ]
@@ -226,7 +245,7 @@
                 "type": {
                     "type": "string",
                     "default": "all",
-                    "title": "The type Schema",
+                    "title": "Type of files to generate",
                     "enum": ["all", "dbcontext", "entities"],
                     "examples": [
                         "all"
@@ -235,7 +254,7 @@
                 "use-database-names": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-database-names Schema",
+                    "title": "Use table and column names from the database",
                     "examples": [
                         false
                     ]
@@ -243,15 +262,15 @@
                 "use-data-annotations": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-data-annotations Schema",
+                    "title": "Use DataAnnotation attributes rather than the fluent API (as much as possible)",
                     "examples": [
                         false
                     ]
                 },
                 "use-nullable-reference-types": {
                     "type": "boolean",
-                    "default": false,
-                    "title": "The use-nullable-reference-types Schema",
+                    "default": true,
+                    "title": "Use nullable reference types",
                     "examples": [
                         true
                     ]
@@ -259,7 +278,7 @@
                 "use-inflector": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-inflector Schema",
+                    "title": "Pluralize or singularize generated names (entity class names singular and DbSet names plural)",
                     "examples": [
                         false
                     ]
@@ -267,7 +286,7 @@
                 "use-legacy-inflector": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-legacy-inflector Schema",
+                    "title": "Use EF6 Pluralizer instead of Humanizer",
                     "examples": [
                         false
                     ]
@@ -275,7 +294,7 @@
                 "use-many-to-many-entity": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-many-to-many-entity Schema",
+                    "title": "Preserve a many to many entity instead of skipping it ",
                     "examples": [
                         false
                     ]
@@ -283,7 +302,7 @@
                 "use-t4": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-t4 Schema",
+                    "title": "Customize code using T4 templates",
                     "examples": [
                         false
                     ]
@@ -291,7 +310,7 @@
                 "remove-defaultsql-from-bool-properties": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The remove-defaultsql-from-bool-properties Schema",
+                    "title": "Remove SQL default from bool columns to avoid them being bool?",
                     "examples": [
                         false
                     ]
@@ -299,7 +318,7 @@
                 "soft-delete-obsolete-files": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The soft-delete-obsolete-files Schema",
+                    "title": "Run Cleanup of obsolete files",
                     "examples": [
                         false
                     ]
@@ -307,7 +326,7 @@
                 "discover-multiple-stored-procedure-resultsets-preview": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The discover-multiple-stored-procedure-resultsets-preview Schema",
+                    "title": "Discover multiple result sets from SQL stored procedures (preview)",
                     "examples": [
                         false
                     ]
@@ -315,7 +334,7 @@
                 "use-alternate-stored-procedure-resultset-discovery": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-alternate-stored-procedure-resultset-discovery Schema",
+                    "title": "Use alternate result set discovery - use sp_describe_first_result_set to retrieve stored procedure result sets",
                     "examples": [
                         false
                     ]
