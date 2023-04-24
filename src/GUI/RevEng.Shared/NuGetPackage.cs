@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using RevEng.Common;
 
-namespace EFCorePowerTools.Helpers
+namespace RevEng.Common
 {
     public class NuGetPackage
     {

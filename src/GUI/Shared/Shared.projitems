@@ -72,7 +72,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ModelingGenerationMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ServerDgmlHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\NuGetPackage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RenamingRulesSerializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RoslynEntityPropertyRenamer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RoslynExtensions.cs" />

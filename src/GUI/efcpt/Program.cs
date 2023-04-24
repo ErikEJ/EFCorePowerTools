@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
@@ -53,7 +54,7 @@ public static class Program
         var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
 
         Console.WriteLine();
-        AnsiConsole.MarkupLine("[bold yellow]EF Core Power Tools CLI[/]");
+        AnsiConsole.MarkupLine("[bold blue on white]EF Core Power Tools CLI[/]");
         AnsiConsole.MarkupLine("[link]https://github.com/ErikEJ/EFCorePowerTools[/]");
         Console.WriteLine();
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
@@ -113,6 +114,15 @@ public static class Program
             {
                 Console.WriteLine($"warning: {warning}");
             }
+
+            var readmePath = Providers.CreateReadme(options.Provider, commandOptions);
+
+            var fileUri = new Uri(new Uri("file://"), readmePath);
+
+            Console.WriteLine();
+            AnsiConsole.MarkupLine("[bold blue on white]Thanks for using EF Core Power Tools, open the readme file for next steps:[/]");
+
+            AnsiConsole.MarkupLine($"[link]{fileUri}[/]");
 
             return 0;
         }

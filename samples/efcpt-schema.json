@@ -227,6 +227,7 @@
                     "type": "string",
                     "default": "",
                     "title": "The type Schema",
+                    "enum": ["all", "dbcontext", "entities"],
                     "examples": [
                         "all"
                     ]
@@ -354,7 +355,7 @@
                     ]
                 },
                 "dbcontext-namespace": {
-                    "type": "null",
+                    "type": "string",
                     "default": null,
                     "title": "The dbcontext-namespace Schema",
                     "examples": [
@@ -362,7 +363,7 @@
                     ]
                 },
                 "model-namespace": {
-                    "type": "null",
+                    "type": "string",
                     "default": null,
                     "title": "The model-namespace Schema",
                     "examples": [
@@ -370,7 +371,7 @@
                     ]
                 },
                 "root-namespace": {
-                    "type": "null",
+                    "type": "string",
                     "default": null,
                     "title": "The root-namespace Schema",
                     "examples": [
@@ -401,7 +402,7 @@
                     ]
                 },
                 "output-dbcontext-path": {
-                    "type": "null",
+                    "type": "string",
                     "default": null,
                     "title": "The output-dbcontext-path Schema",
                     "examples": [

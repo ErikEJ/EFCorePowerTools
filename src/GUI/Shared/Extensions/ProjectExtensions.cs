@@ -374,11 +374,11 @@ namespace EFCorePowerTools.Extensions
 
                 if (options.UseDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.1";
+                    pkgVersion = "7.0.3";
                     switch (options.CodeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.1";
+                            pkgVersion = "6.0.3";
                             break;
                     }
 

@@ -30,6 +30,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+using RevEng.Common;
 
 namespace EFCorePowerTools
 {
