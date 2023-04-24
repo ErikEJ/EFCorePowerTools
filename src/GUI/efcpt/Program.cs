@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
+using Figgle;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
@@ -54,10 +55,11 @@ public static class Program
         var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
         var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
-        Console.WriteLine();
+        Console.WriteLine(
+            FiggleFonts.CyberMedium.Render("ef core power tools"));
         AnsiConsole.MarkupLine($"[bold darkblue on white]EF Core Power Tools CLI {version}[/]");
         AnsiConsole.MarkupLine("[link]https://github.com/ErikEJ/EFCorePowerTools[/]");
-        Console.WriteLine();
+        Console.WriteLine(); 
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
         Console.WriteLine();
 
