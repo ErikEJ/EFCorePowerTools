@@ -359,7 +359,7 @@
         "names": {
             "type": "object",
             "default": {},
-            "title": "The names Schema",
+            "title": "Custom class and namespace names",
             "required": [
                 "dbcontext-name",
                 "root-namespace"
@@ -368,7 +368,7 @@
                 "dbcontext-name": {
                     "type": "string",
                     "default": "",
-                    "title": "The dbcontext-name Schema",
+                    "title": "Name of DbContext class",
                     "examples": [
                         "NorthwindContext"
                     ]
@@ -376,7 +376,7 @@
                 "dbcontext-namespace": {
                     "type": "string",
                     "default": null,
-                    "title": "The dbcontext-namespace Schema",
+                    "title": "Namespace of DbContext class",
                     "examples": [
                         null
                     ]
@@ -384,7 +384,7 @@
                 "model-namespace": {
                     "type": "string",
                     "default": null,
-                    "title": "The model-namespace Schema",
+                    "title": "Namespace of entities",
                     "examples": [
                         null
                     ]
@@ -392,7 +392,7 @@
                 "root-namespace": {
                     "type": "string",
                     "default": null,
-                    "title": "The root-namespace Schema",
+                    "title": "Root namespace",
                     "examples": [
                         null
                     ]
@@ -407,7 +407,7 @@
         "file-layout": {
             "type": "object",
             "default": {},
-            "title": "The file-layout Schema",
+            "title": "Custom file layout options",
             "required": [
                 "output-path"
             ],
@@ -415,7 +415,7 @@
                 "output-path": {
                     "type": "string",
                     "default": "Models",
-                    "title": "The output-path Schema",
+                    "title": "Output path",
                     "examples": [
                         "Models"
                     ]
@@ -423,7 +423,7 @@
                 "output-dbcontext-path": {
                     "type": "string",
                     "default": null,
-                    "title": "The output-dbcontext-path Schema",
+                    "title": "DbContext output path",
                     "examples": [
                         "Context"
                     ]
@@ -431,7 +431,7 @@
                 "split-dbcontext-preview": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The split-dbcontext-preview Schema",
+                    "title": "Split DbContext (preview)",
                     "examples": [
                         false
                     ]
@@ -439,7 +439,7 @@
                 "use-schema-folders-preview": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-schema-folders-preview Schema",
+                    "title": "Use schema folders (preview)",
                     "examples": [
                         false
                     ]
@@ -455,12 +455,12 @@
         "type-mappings": {
             "type": "object",
             "default": {},
-            "title": "The type-mappings Schema",
+            "title": "Optional type mappings",
             "properties": {
                 "use-DateOnly-TimeOnly": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-DateOnly-TimeOnly Schema",
+                    "title": "Map date and time to DateOnly/TimeOnly (mssql)",
                     "examples": [
                         false
                     ]
@@ -468,7 +468,7 @@
                 "use-HierarchyId": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-HierarchyId Schema",
+                    "title": "Map hierarchyId (mssql)",
                     "examples": [
                         false
                     ]
@@ -476,7 +476,7 @@
                 "use-spatial": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-spatial Schema",
+                    "title": "Map spatial columns",
                     "examples": [
                         false
                     ]
@@ -484,7 +484,7 @@
                 "use-NodaTime": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The use-NodaTime Schema",
+                    "title": "Use NodaTime",
                     "examples": [
                         false
                     ]
@@ -500,12 +500,12 @@
         "replacements": {
             "type": "object",
             "default": {},
-            "title": "The replacements Schema",
+            "title": "Custom naming options",
             "properties": {
                 "preserve-casing-with-regex": {
                     "type": "boolean",
                     "default": false,
-                    "title": "The preserve-casing-with-regex Schema",
+                    "title": "Preserve casing with regex when custom naming",
                     "examples": [
                         false
                     ]
@@ -513,10 +513,10 @@
                 "uncountable-words": {
                     "type": "array",
                     "default": [],
-                    "title": "The uncountable-words Schema",
+                    "title": "Uncountable (ignored) words for Humanizer",
                     "items": {
                         "type": "string",
-                        "title": "A Schema",
+                        "title": "Word list",
                         "examples": [
                             "Status",
                             "Data"
