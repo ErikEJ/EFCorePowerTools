@@ -151,6 +151,8 @@ public static class Program
 
             AnsiConsole.MarkupLine($"[blue][link]{fileUri}[/][/]");
 
+            Console.WriteLine();
+
             return 0;
         }
 
