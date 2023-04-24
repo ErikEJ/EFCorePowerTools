@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
-using Efcpt;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
@@ -31,7 +32,7 @@ public static class Program
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine(ex.Demystify().ToString());
+            AnsiConsole.WriteException(ex.Demystify(), ExceptionFormats.ShortenPaths);
             return 1;
         }
     }
@@ -51,15 +52,15 @@ public static class Program
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
         var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
+        var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         Console.WriteLine();
-        AnsiConsole.MarkupLine("[bold blue on white]EF Core Power Tools CLI[/]");
+        AnsiConsole.MarkupLine($"[bold darkblue on white]EF Core Power Tools CLI {version}[/]");
         AnsiConsole.MarkupLine("[link]https://github.com/ErikEJ/EFCorePowerTools[/]");
         Console.WriteLine();
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
         Console.WriteLine();
 
-        // TODO test .dacpac!
         var dbType = Providers.GetDatabaseTypeFromProvider(options.Provider, options.IsDacpac);
 
         if (dbType == DatabaseType.Undefined)
@@ -90,10 +91,19 @@ public static class Program
 
         if (EfcptConfigMapper.TryGetEfcptConfig(configPath, options.ConnectionString, dbType, buildResult, out EfcptConfig config))
         {
-            var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Path.GetDirectoryName(configPath), options.IsDacpac);
+            var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Directory.GetCurrentDirectory(), options.IsDacpac);
 
             Console.WriteLine();
             Console.WriteLine("Generating EF Core DbContext and entity classes...");
+
+            if (commandOptions.UseT4)
+            {
+                var t4Result = new T4Helper().DropT4Templates(commandOptions.ProjectPath);
+                if (!string.IsNullOrEmpty(t4Result))
+                {
+                    AnsiConsole.WriteLine(t4Result);
+                }
+            }
 
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -101,7 +111,19 @@ public static class Program
 
             sw.Stop();
 
+            var paths = new List<string> { Path.GetDirectoryName(result.ContextFilePath) };
+
+            paths = paths.Concat(result.ContextConfigurationFilePaths.Select(p => Path.GetDirectoryName(p)).Distinct()).ToList();
+
+            paths = paths.Concat(result.EntityTypeFilePaths.Select(p => Path.GetDirectoryName(p)).Distinct()).ToList();
+
             Console.WriteLine($"{result.EntityTypeFilePaths.Count + 1} files generated in {(int)sw.Elapsed.TotalSeconds} seconds");
+
+            foreach (var path in paths.Distinct())
+            {
+                Console.WriteLine($"output: {path}");
+            }
+
             Console.WriteLine();
 
             foreach (var error in result.EntityErrors)
@@ -119,7 +141,7 @@ public static class Program
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
             Console.WriteLine();
-            AnsiConsole.MarkupLine("[bold blue on white]Thank you for using EF Core Power Tools, please open the readme file for next steps:[/]");
+            AnsiConsole.MarkupLine("[bold darkblue on white]Thank you for using EF Core Power Tools, please open the readme file for next steps:[/]");
 
             AnsiConsole.MarkupLine($"[link]{fileUri}[/]");
 
@@ -127,5 +149,22 @@ public static class Program
         }
 
         return 1;
+    }
+
+    private sealed class ScaffoldOptions
+    {
+        [Value(0, MetaName = "connection", HelpText = "ADO.NET connection string for the source database (or .dacpac path)", Required = true)]
+        public string ConnectionString { get; set; }
+
+        [Value(1, MetaName = "provider", HelpText = "Name of EF Core provider, or use an abbreviation (mssql, postgres, sqlite, oracle, mysql)", Required = true)]
+        public string Provider { get; set; }
+
+        [Option('o', "output", HelpText = "Root output folder, defaults to current directory")]
+        public string Output { get; set; }
+
+        [Option('i', "input", HelpText = "Full pathname to the efcpt-config.json file, default is 'efcpt-config.json' in currrent directory")]
+        public FileInfo ConfigFile { get; set; }
+
+        public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
     }
 }

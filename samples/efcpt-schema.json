@@ -225,7 +225,7 @@
                 },
                 "type": {
                     "type": "string",
-                    "default": "",
+                    "default": "all",
                     "title": "The type Schema",
                     "enum": ["all", "dbcontext", "entities"],
                     "examples": [
@@ -395,7 +395,7 @@
             "properties": {
                 "output-path": {
                     "type": "string",
-                    "default": "",
+                    "default": "Models",
                     "title": "The output-path Schema",
                     "examples": [
                         "Models"
@@ -406,7 +406,7 @@
                     "default": null,
                     "title": "The output-dbcontext-path Schema",
                     "examples": [
-                        null
+                        "Context"
                     ]
                 },
                 "split-dbcontext-preview": {
@@ -428,7 +428,7 @@
             },
             "examples": [{
                 "output-path": "Models",
-                "output-dbcontext-path": null,
+                "output-dbcontext-path": "Context",
                 "split-dbcontext-preview": false,
                 "use-schema-folders-preview": false
             }]
