@@ -61,7 +61,7 @@ public static class Program
 
         AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version}[/]");
         AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
-        Console.WriteLine(); 
+        Console.WriteLine();
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
         Console.WriteLine();
 
@@ -124,6 +124,8 @@ public static class Program
 
             Console.WriteLine($"{result.EntityTypeFilePaths.Count + 1} files generated in {(int)sw.Elapsed.TotalSeconds} seconds");
 
+            Console.WriteLine();
+
             foreach (var path in paths.Distinct())
             {
                 Console.WriteLine($"output: {path}");
@@ -145,7 +147,6 @@ public static class Program
 
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
-            Console.WriteLine();
             AnsiConsole.MarkupLine("[cyan]Thank you for using EF Core Power Tools, please open the readme file for next steps:[/]");
 
             AnsiConsole.MarkupLine($"[blue][link]{fileUri}[/][/]");
