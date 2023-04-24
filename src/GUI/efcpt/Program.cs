@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Text;
 using CommandLine;
 using CommandLine.Text;
-using Figgle;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
@@ -55,10 +54,13 @@ public static class Program
         var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
         var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
-        Console.WriteLine(
-            FiggleFonts.CyberMedium.Render("ef core power tools"));
-        AnsiConsole.MarkupLine($"[bold darkblue on white]EF Core Power Tools CLI {version}[/]");
-        AnsiConsole.MarkupLine("[link]https://github.com/ErikEJ/EFCorePowerTools[/]");
+        AnsiConsole.Write(
+            new FigletText("EF Core Power Tools")
+                .Centered()
+                .Color(Color.Aqua));
+
+        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version}[/]");
+        AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
         Console.WriteLine(); 
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
         Console.WriteLine();
@@ -143,9 +145,9 @@ public static class Program
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
             Console.WriteLine();
-            AnsiConsole.MarkupLine("[bold darkblue on white]Thank you for using EF Core Power Tools, please open the readme file for next steps:[/]");
+            AnsiConsole.MarkupLine("[cyan]Thank you for using EF Core Power Tools, please open the readme file for next steps:[/]");
 
-            AnsiConsole.MarkupLine($"[link]{fileUri}[/]");
+            AnsiConsole.MarkupLine($"[blue][link]{fileUri}[/][/]");
 
             return 0;
         }
