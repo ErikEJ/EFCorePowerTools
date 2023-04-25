@@ -1,6 +1,6 @@
-# efcpt - EF Core Power Tools CLI (preview)
+# efcpt - EF Core Power Tools CLI
 
-Cross platform command line tool that for advanced EF Core reverse engineering. See the full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
+Cross platform command line tool for advanced EF Core reverse engineering. See the full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
 
 ## Getting started
 
@@ -9,11 +9,11 @@ The tool runs on any computer with the .NET 6.0 runtime installed.
 1. Install/update the tool
 
 ```bash
-dotnet tool install -g ErikEJ.EFCorePowerTools.CLI
+dotnet tool install -g ErikEJ.EFCorePowerTools.Cli
 ```
 
 ```bash
-dotnet tool update -g ErikEJ.EFCorePowerTools.CLI
+dotnet tool update -g ErikEJ.EFCorePowerTools.Cli
 ```
 
 2. Run the tool from the folder where you want the code to be generated (usually where your .NET project is located)

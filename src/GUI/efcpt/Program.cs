@@ -18,6 +18,8 @@ public static class Program
 {
     public const string ConfigName = "efcpt-config.json";
 
+    public const int EfCoreVersion = 7;
+
     public static int Main(string[] args)
     {
         try
@@ -61,7 +63,7 @@ public static class Program
                 .Centered()
                 .Color(Color.Aqua));
 
-        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version}[/]");
+        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version} for EF Core {EfCoreVersion}[/]");
         AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
         Console.WriteLine();
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
@@ -103,7 +105,7 @@ public static class Program
 
             Console.WriteLine("Generating EF Core DbContext and entity classes...");
 
-            if (commandOptions.UseT4)
+            if (commandOptions.UseT4 && EfCoreVersion > 6)
             {
                 var t4Result = new T4Helper().DropT4Templates(commandOptions.ProjectPath);
                 if (!string.IsNullOrEmpty(t4Result))
@@ -145,7 +147,7 @@ public static class Program
                 Console.WriteLine($"warning: {warning}");
             }
 
-            var readmePath = Providers.CreateReadme(options.Provider, commandOptions);
+            var readmePath = Providers.CreateReadme(options.Provider, commandOptions, EfCoreVersion);
 
             var fileUri = new Uri(new Uri("file://"), readmePath);
 

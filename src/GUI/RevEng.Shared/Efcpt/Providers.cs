@@ -46,14 +46,14 @@ namespace RevEng.Common.Efcpt
             }
         }
 
-        public static string CreateReadme(string provider, ReverseEngineerCommandOptions commandOptions)
+        public static string CreateReadme(string provider, ReverseEngineerCommandOptions commandOptions, int efCoreVersion)
         {
             if (commandOptions == null)
             {
                 throw new ArgumentNullException(nameof(commandOptions));
             }
 
-            var packages = GetNeededPackages(commandOptions.DatabaseType, commandOptions, 7);
+            var packages = GetNeededPackages(commandOptions.DatabaseType, commandOptions, efCoreVersion);
 
             var readmeName = "efcpt-readme.md";
 
@@ -96,7 +96,7 @@ namespace RevEng.Common.Efcpt
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
-        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerCommandOptions options, int version)
+        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerCommandOptions options, int efCoreVersion)
         {
             // TODO Update versions here when adding provider updates
             var packages = new List<NuGetPackage>();
@@ -104,7 +104,7 @@ namespace RevEng.Common.Efcpt
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
                 var pkgVersion = "7.0.5";
-                switch (version)
+                switch (efCoreVersion)
                 {
                     case 6:
                         pkgVersion = "6.0.16";
@@ -135,7 +135,7 @@ namespace RevEng.Common.Efcpt
                 if (options.UseNodaTime)
                 {
                     pkgVersion = "7.0.0";
-                    switch (version)
+                    switch (efCoreVersion)
                     {
                         case 6:
                             pkgVersion = "6.0.1";
@@ -155,7 +155,7 @@ namespace RevEng.Common.Efcpt
                 if (options.UseHierarchyId)
                 {
                     pkgVersion = "4.0.0";
-                    switch (version)
+                    switch (efCoreVersion)
                     {
                         case 6:
                             pkgVersion = "3.0.1";
@@ -175,7 +175,7 @@ namespace RevEng.Common.Efcpt
                 if (options.UseDateOnlyTimeOnly)
                 {
                     pkgVersion = "7.0.3";
-                    switch (version)
+                    switch (efCoreVersion)
                     {
                         case 6:
                             pkgVersion = "6.0.3";
@@ -209,7 +209,7 @@ namespace RevEng.Common.Efcpt
             if (databaseType == DatabaseType.SQLite)
             {
                 var pkgVersion = "7.0.5";
-                switch (version)
+                switch (efCoreVersion)
                 {
                     case 6:
                         pkgVersion = "6.0.16";
@@ -228,7 +228,7 @@ namespace RevEng.Common.Efcpt
                 if (options.UseNodaTime)
                 {
                     pkgVersion = "7.0.0";
-                    switch (version)
+                    switch (efCoreVersion)
                     {
                         case 6:
                             pkgVersion = "6.0.0";
@@ -249,7 +249,7 @@ namespace RevEng.Common.Efcpt
             if (databaseType == DatabaseType.Npgsql)
             {
                 var pkgVersion = "7.0.3";
-                switch (version)
+                switch (efCoreVersion)
                 {
                     case 6:
                         pkgVersion = "6.0.8";
@@ -293,7 +293,7 @@ namespace RevEng.Common.Efcpt
             if (databaseType == DatabaseType.Mysql)
             {
                 var pkgVersion = "7.0.0";
-                switch (version)
+                switch (efCoreVersion)
                 {
                     case 6:
                         pkgVersion = "6.0.2";
@@ -325,7 +325,7 @@ namespace RevEng.Common.Efcpt
             if (databaseType == DatabaseType.Oracle)
             {
                 var pkgVersion = "7.21.9";
-                switch (version)
+                switch (efCoreVersion)
                 {
                     case 6:
                         pkgVersion = "6.21.90";
@@ -342,7 +342,7 @@ namespace RevEng.Common.Efcpt
                 });
             }
 
-            if (databaseType == DatabaseType.Firebird && version == 6)
+            if (databaseType == DatabaseType.Firebird && efCoreVersion == 6)
             {
                 var pkgVersion = "9.1.1";
 
