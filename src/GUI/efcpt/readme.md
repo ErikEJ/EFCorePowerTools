@@ -1,6 +1,6 @@
-# efcpt - EF Core Power Tools CLI
+# efcpt - EF Core Power Tools CLI (preview)
 
-Cross platform command line tool that for advanced EF Core reverse engineering. See the a full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
+Cross platform command line tool that for advanced EF Core reverse engineering. See the full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
 
 ## Getting started
 
