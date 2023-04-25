@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>efcpt</ToolCommandName>
+    <PackageId>ErikEJ.EFCorePowerTools.Cli</PackageId>
+    <Description>Entity Framework Core Power Tools command line tool </Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageVersion>6.0.0-preview2</PackageVersion>
+    <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+    <Authors>ErikEJ</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
+    <Company>ErikEJ</Company>
+    <Version>6.0.0-preview2</Version>
+    <PackageReleaseNotes>early preview for EF Core 6</PackageReleaseNotes>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>CORE60</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\efcpt\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\efcpt\efcpt-readme.md" Link="efcpt-readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="..\efcpt\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Spectre.Console" Version="0.46.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
+  </ItemGroup>
+
+</Project>
