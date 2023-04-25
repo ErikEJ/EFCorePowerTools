@@ -1,6 +1,6 @@
 # efcpt - EF Core Power Tools CLI
 
-Cross platform CLI that exposes the EF Core Power Tools reverse engineeering features. See the full guide explaining all features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
+Cross platform command line tool that for advanced EF Core reverse engineering. See the a full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
 
 ## Getting started
 
@@ -22,9 +22,9 @@ dotnet tool update -g ErikEJ.EFCorePowerTools.CLI
 efcpt "Data Source=(local);Initial Catalog=Northwind;User id=user;Pwd=secret123;Encrypt=false" mssql
 ```
 
-A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options.
+A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file.
 
-To get help, run
+To get command line syntax help, run
 
 ```bash
 efcpt help

@@ -5,10 +5,12 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>efcpt</ToolCommandName>
     <PackageId>ErikEJ.EFCorePowerTools.Cli</PackageId>
-    <Description>Command line version of Entity Framework Core Power Tools</Description>
+    <Description>Entity Framework Core Power Tools command line tool</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageVersion>7.0.0-preview1</PackageVersion>
+    <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
     <Version>7.0.0-preview1</Version>
