@@ -54,6 +54,10 @@ You can download the daily build from [Open VSIX Gallery](https://www.vsixgaller
 
 Ensure you always have the latest daily build (if you are brave) by installing [this extension](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.VSIXGallery-nightlybuilds)
 
+## Cross platform CLI - efcpt
+
+A cross platform dotnet global tool is currently in preview, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/GUI/efcpt/readme.md)
+
 ## Related NuGet packages
 
 [ErikEJ.EntityFrameworkCore.DgmlBuilder](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/GUI/ErikEJ.EntityFrameworkCore.DgmlBuilder/readme.md)
