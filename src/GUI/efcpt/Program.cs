@@ -16,6 +16,8 @@ namespace ErikEJ.EfCorePowerTools;
 
 public static class Program
 {
+    public const string ConfigName = "efcpt-config.json";
+
     public static int Main(string[] args)
     {
         try
@@ -51,7 +53,7 @@ public static class Program
 
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
-        var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath("efcpt-config.json");
+        var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath(ConfigName);
         var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         AnsiConsole.Write(
@@ -170,7 +172,7 @@ public static class Program
         [Option('o', "output", HelpText = "Root output folder, defaults to current directory")]
         public string Output { get; set; }
 
-        [Option('i', "input", HelpText = "Full pathname to the efcpt-config.json file, default is 'efcpt-config.json' in currrent directory")]
+        [Option('i', "input", HelpText = $"Full pathname to the {Program.ConfigName} file, default is '{Program.ConfigName}' in currrent directory")]
         public FileInfo ConfigFile { get; set; }
 
         public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
