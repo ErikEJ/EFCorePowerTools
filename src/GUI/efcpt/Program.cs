@@ -67,7 +67,7 @@ public static class Program
                 .Centered()
                 .Color(Color.Aqua));
 
-        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version} for EF Core {EfCoreVersion}[/]");
+        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version} (preview) for EF Core {EfCoreVersion}[/]");
         AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
         Console.WriteLine();
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
