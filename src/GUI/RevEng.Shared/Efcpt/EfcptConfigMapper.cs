@@ -67,7 +67,7 @@ namespace RevEng.Common.Efcpt
                 IncludeConnectionString = config.codegeneration.enableonconfiguring,
                 SelectedToBeGenerated = selectedToBegenerated,
                 Dacpac = isDacpac ? connectionString : null,
-                CustomReplacers = GetNamingOptions(projectPath),
+                CustomReplacers = GetNamingOptions(),
                 UseLegacyPluralizer = config.codegeneration.uselegacyinflector,
                 UncountableWords = config.replacements?.uncountablewords.ToList(),
                 UseSpatial = config.typemappings?.usespatial ?? false,
@@ -328,10 +328,9 @@ namespace RevEng.Common.Efcpt
             return DbContextNamer.GetDatabaseName(connectionString, databaseType) + "Context";
         }
 
-        private static List<Schema> GetNamingOptions(string optionsPath)
+        private static List<Schema> GetNamingOptions()
         {
-            var optionsCustomNamePath = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.renaming.json");
-
+            var optionsCustomNamePath = Path.GetFullPath("efpt.renaming.json");
             if (!File.Exists(optionsCustomNamePath))
             {
                 return new List<Schema>();
