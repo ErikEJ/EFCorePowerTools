@@ -10,7 +10,7 @@ namespace RevEng.Common.Efcpt
 {
     public static class EfcptConfigMapper
     {
-        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, string provider, string projectPath, bool isDacpac)
+        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, string provider, string projectPath, bool isDacpac, string configPath)
         {
             if (config is null)
             {
@@ -30,6 +30,11 @@ namespace RevEng.Common.Efcpt
             if (string.IsNullOrEmpty(projectPath))
             {
                 throw new ArgumentNullException(nameof(projectPath));
+            }
+
+            if (string.IsNullOrEmpty(configPath))
+            {
+                throw new ArgumentNullException(nameof(configPath));
             }
 
             int selectedToBegenerated = 0; // "all"
@@ -67,7 +72,7 @@ namespace RevEng.Common.Efcpt
                 IncludeConnectionString = config.codegeneration.enableonconfiguring,
                 SelectedToBeGenerated = selectedToBegenerated,
                 Dacpac = isDacpac ? connectionString : null,
-                CustomReplacers = GetNamingOptions(),
+                CustomReplacers = GetNamingOptions(configPath),
                 UseLegacyPluralizer = config.codegeneration.uselegacyinflector,
                 UncountableWords = config.replacements?.uncountablewords.ToList(),
                 UseSpatial = config.typemappings?.usespatial ?? false,
@@ -328,9 +333,9 @@ namespace RevEng.Common.Efcpt
             return DbContextNamer.GetDatabaseName(connectionString, databaseType) + "Context";
         }
 
-        private static List<Schema> GetNamingOptions()
+        private static List<Schema> GetNamingOptions(string configPath)
         {
-            var optionsCustomNamePath = Path.GetFullPath("efpt.renaming.json");
+            var optionsCustomNamePath = Path.Combine(Path.GetDirectoryName(configPath), "efpt.renaming.json");
             if (!File.Exists(optionsCustomNamePath))
             {
                 return new List<Schema>();
