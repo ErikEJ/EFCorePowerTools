@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using CommandLine;
 using CommandLine.Text;
 using RevEng.Common;
@@ -81,24 +82,31 @@ public static class Program
             return 1;
         }
 
-        Console.WriteLine("Getting database objects...");
         var builder = new TableListBuilder((int)dbType, options.ConnectionString, Array.Empty<SchemaInfo>(), false);
+        var buildResult = new List<TableModel>();
 
-        var buildResult = builder.GetTableModels();
-        Console.WriteLine($"{buildResult.Count} tables/views");
+        AnsiConsole.Status()
+            .Start("Getting database objects...", ctx =>
+            {
+                ctx.Spinner(Spinner.Known.Ascii);
+                ctx.SpinnerStyle(Style.Parse("green"));
+                buildResult = builder.GetTableModels();
+            });
+
+        Console.WriteLine($"{buildResult.Count} tables/views found");
 
         var procedures = builder.GetProcedures();
         buildResult.AddRange(procedures);
         if (procedures.Count > 0)
         {
-            Console.WriteLine($"{procedures.Count} stored procedures");
+            Console.WriteLine($"{procedures.Count} stored procedures found");
         }
 
         var functions = builder.GetFunctions();
         buildResult.AddRange(functions);
         if (functions.Count > 0)
         {
-            Console.WriteLine($"{functions.Count} functions");
+            Console.WriteLine($"{functions.Count} functions found");
         }
 
         if (EfcptConfigMapper.TryGetEfcptConfig(configPath, options.ConnectionString, dbType, buildResult, out EfcptConfig config))
@@ -106,8 +114,6 @@ public static class Program
             var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Directory.GetCurrentDirectory(), options.IsDacpac, configPath);
 
             Console.WriteLine();
-
-            Console.WriteLine("Generating EF Core DbContext and entity classes...");
 
             if (commandOptions.UseT4 && EfCoreVersion > 6)
             {
@@ -118,9 +124,17 @@ public static class Program
                 }
             }
 
+            var result = new ReverseEngineerResult();
+
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = ReverseEngineerRunner.GenerateFiles(commandOptions);
+            AnsiConsole.Status()
+                .Start("Generating EF Core DbContext and entity classes...", ctx =>
+                {
+                    ctx.Spinner(Spinner.Known.Ascii);
+                    ctx.SpinnerStyle(Style.Parse("green"));
+                    result = ReverseEngineerRunner.GenerateFiles(commandOptions);
+                });
 
             sw.Stop();
 
@@ -130,7 +144,7 @@ public static class Program
 
             paths = paths.Concat(result.EntityTypeFilePaths.Select(p => Path.GetDirectoryName(p)).Distinct()).ToList();
 
-            Console.WriteLine($"{result.EntityTypeFilePaths.Count + 1} files generated in {(int)sw.Elapsed.TotalSeconds} seconds");
+            Console.WriteLine($"{result.EntityTypeFilePaths.Count + result.ContextConfigurationFilePaths.Count + 1} files generated in {sw.Elapsed.TotalSeconds:0.0} seconds");
 
             Console.WriteLine();
 
@@ -178,7 +192,7 @@ public static class Program
         [Option('o', "output", HelpText = "Root output folder, defaults to current directory")]
         public string Output { get; set; }
 
-        [Option('i', "input", HelpText = $"Full pathname to the {Program.ConfigName} file, default is '{Program.ConfigName}' in currrent directory")]
+        [Option('i', "input", HelpText = $"Full pathname to the {ConfigName} file, default is '{ConfigName}' in currrent directory")]
         public FileInfo ConfigFile { get; set; }
 
         public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;

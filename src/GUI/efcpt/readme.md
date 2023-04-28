@@ -25,7 +25,7 @@ dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.0-*
 From the folder where you want the code to be generated (usually where your .NET project is located)
 
 ```bash
-efcpt "Data Source=(local);Initial Catalog=Northwind;User id=user;Pwd=secret123;Encrypt=false" mssql
+efcpt "Server=(local);Database=Northwind;User id=user;Pwd=secret123;Encrypt=false" mssql
 ```
 
 ### Configure options
