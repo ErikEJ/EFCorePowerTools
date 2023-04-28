@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using CommandLine;
 using CommandLine.Text;
 using RevEng.Common;
