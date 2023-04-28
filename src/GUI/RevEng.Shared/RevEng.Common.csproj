@@ -5,6 +5,7 @@
     <NoWarn>$(NoWarn);EF1001</NoWarn>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
