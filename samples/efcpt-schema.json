@@ -4,6 +4,7 @@
     "type": "object",
     "default": {},
     "title": "Configuration for EF Core Power Tools",
+    "markdownDescription": "See a full feature guide in [the wiki](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering)",
     "required": [
         "tables",
         "views",

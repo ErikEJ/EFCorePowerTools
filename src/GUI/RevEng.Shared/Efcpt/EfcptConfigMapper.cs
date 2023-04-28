@@ -115,6 +115,7 @@ namespace RevEng.Common.Efcpt
                 config = new EfcptConfig();
                 config.names.dbcontextname = GetDbContextNameSuggestion(connectionString, databaseType);
                 config.names.rootnamespace = GetRootNamespaceSuggestion(fullPath);
+                //TODO Consider if more default values should be picked up from existing efpt.config.json
             }
 
             config.JsonSchema = "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-schema.json";
@@ -251,6 +252,13 @@ namespace RevEng.Common.Efcpt
 
         private static string GetRootNamespaceSuggestion(string fullPath)
         {
+            var legacyConfig = GetLegacyOptions(fullPath);
+
+            if (legacyConfig != null && !string.IsNullOrWhiteSpace(legacyConfig.ProjectRootNamespace))
+            {
+                return legacyConfig.ProjectRootNamespace;
+            }
+
             var dir = Path.GetDirectoryName(fullPath);
 
             Console.WriteLine(dir);
@@ -335,16 +343,31 @@ namespace RevEng.Common.Efcpt
 
         private static List<Schema> GetNamingOptions(string configPath)
         {
-            var optionsCustomNamePath = Path.Combine(Path.GetDirectoryName(configPath), "efpt.renaming.json");
-            if (!File.Exists(optionsCustomNamePath))
+            var path = Path.Combine(Path.GetDirectoryName(configPath), "efpt.renaming.json");
+            if (!File.Exists(path))
             {
                 return new List<Schema>();
             }
 
-            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(optionsCustomNamePath, Encoding.UTF8))))
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(path, Encoding.UTF8))))
             {
                 var ser = new DataContractJsonSerializer(typeof(List<Schema>));
                 return ser.ReadObject(ms) as List<Schema>;
+            }
+        }
+
+        private static ReverseEngineerCommandOptions GetLegacyOptions(string configPath)
+        {
+            var path = Path.Combine(Path.GetDirectoryName(configPath), "efpt.config.json");
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(path, Encoding.UTF8))))
+            {
+                var ser = new DataContractJsonSerializer(typeof(ReverseEngineerCommandOptions));
+                return ser.ReadObject(ms) as ReverseEngineerCommandOptions;
             }
         }
     }
