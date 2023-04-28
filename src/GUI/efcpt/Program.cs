@@ -36,7 +36,7 @@ public static class Program
             return parserResult
               .MapResult(
                 options => RunAndReturnExitCode(options),
-                errs => DisplayHelp(parserResult, errs));
+                errs => DisplayHelp(parserResult));
         }
         catch (Exception ex)
         {
@@ -45,7 +45,7 @@ public static class Program
         }
     }
 
-    private static int DisplayHelp(ParserResult<ScaffoldOptions> parserResult, IEnumerable<Error> errs)
+    private static int DisplayHelp(ParserResult<ScaffoldOptions> parserResult)
     {
         Console.WriteLine(HelpText.AutoBuild(parserResult, h =>
         {

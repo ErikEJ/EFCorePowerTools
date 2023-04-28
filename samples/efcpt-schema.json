@@ -7,9 +7,6 @@
     "markdownDescription": "See a full feature guide in [the wiki](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering)",
     "required": [
         "tables",
-        "views",
-        "stored-procedures",
-        "functions",
         "code-generation",
         "names",
         "file-layout"
