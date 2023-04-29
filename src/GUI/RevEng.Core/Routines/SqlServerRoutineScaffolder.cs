@@ -387,6 +387,11 @@ namespace RevEng.Core.Modules
                     }
                 }
 
+                if (property.StoreType == "decimal")
+                {
+                    Sb.AppendLine($"[Column(TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
+                }
+
                 Sb.AppendLine($"public {Code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
             }
         }

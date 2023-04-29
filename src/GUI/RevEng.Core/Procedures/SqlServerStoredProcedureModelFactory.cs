@@ -135,6 +135,8 @@ AND ROUTINE_TYPE = N'PROCEDURE'";
                             Nullable = (bool?)row["AllowDBNull"] ?? true,
                             Ordinal = (int)row["ColumnOrdinal"],
                             StoreType = storeType,
+                            Precision = (short?)row["NumericPrecision"],
+                            Scale = (short?)row["NumericScale"],
                         });
                     }
                 }
