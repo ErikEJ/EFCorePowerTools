@@ -73,14 +73,14 @@ public static partial class Program
         AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version} (preview) for EF Core {EfCoreVersion}[/]");
         AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
         AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
+        AnsiConsole.MarkupLine($"[green]config file:[/] [bold]{configPath}[/]");
         AnsiConsole.WriteLine();
 
         var dbType = Providers.GetDatabaseTypeFromProvider(options.Provider, options.IsDacpac);
 
         if (dbType == DatabaseType.Undefined)
         {
-            Console.Error.WriteLine($"Unknown provider '{options.Provider}'");
+            AnsiConsole.MarkupLine($"[red]error:[/] Unknown provider '{options.Provider}' - valid values are: mssql, postgres, sqlite, oracle, mysql, firebird");
             return 1;
         }
 
@@ -152,7 +152,7 @@ public static partial class Program
 
             foreach (var path in paths.Distinct())
             {
-                AnsiConsole.WriteLine($"output: {path}");
+                AnsiConsole.MarkupLine($"[green]output folder:[/] [bold]{path}[/]");
             }
 
             AnsiConsole.WriteLine();

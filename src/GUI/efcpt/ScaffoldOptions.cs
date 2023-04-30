@@ -11,7 +11,7 @@ public static partial class Program
         [Value(0, MetaName = "connection", HelpText = "ADO.NET connection string for the source database (or .dacpac path)", Required = true)]
         public string ConnectionString { get; set; }
 
-        [Value(1, MetaName = "provider", HelpText = "Name of EF Core provider, or use an abbreviation (mssql, postgres, sqlite, oracle, mysql)", Required = true)]
+        [Value(1, MetaName = "provider", HelpText = "Name of EF Core provider, or use an abbreviation (mssql, postgres, sqlite, oracle, mysql, firebird)", Required = true)]
         public string Provider { get; set; }
 
         [Option('o', "output", HelpText = "Root output folder, defaults to current directory")]
