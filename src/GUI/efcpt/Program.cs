@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
@@ -63,14 +62,13 @@ public static partial class Program
     private static int RunAndReturnExitCode(ScaffoldOptions options)
     {
         var configPath = options.ConfigFile?.FullName ?? Path.GetFullPath(ConfigName);
-        var version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
 
         AnsiConsole.Write(
             new FigletText("EF Core Power Tools")
                 .Centered()
                 .Color(Color.Aqua));
 
-        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version} (preview) for EF Core {EfCoreVersion}[/]");
+        AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {UpdateChecker.CurrentPackageVersion()} for EF Core {EfCoreVersion}[/]");
         AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine($"[green]config file:[/] [bold]{configPath}[/]");

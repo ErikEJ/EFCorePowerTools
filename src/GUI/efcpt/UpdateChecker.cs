@@ -46,7 +46,7 @@ internal static class UpdateChecker
         }
     }
 
-    private static NuGetVersion CurrentPackageVersion()
+    public static NuGetVersion CurrentPackageVersion()
     {
         return new NuGetVersion(Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion);
     }
