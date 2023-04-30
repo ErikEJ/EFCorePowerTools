@@ -11,13 +11,13 @@ The tool runs on any computer with the .NET 6.0 runtime installed.
 For EF Core 7:
 
 ```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 7.0.0-*
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
 ```
 
 For EF Core 6:
 
 ```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.0-*
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
 ```
 
 ### Run the tool 
@@ -35,5 +35,5 @@ A configuration file `efcpt-config.json` is created in the output folder, and yo
 ### Update the tool
 
 ```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.0-*
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
 ```

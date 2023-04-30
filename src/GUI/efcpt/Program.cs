@@ -5,8 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
+using NuGet.Protocol;
+using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
@@ -24,19 +29,21 @@ public static class Program
     public const int EfCoreVersion = 7;
 #endif
 
-    public static int Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
         try
         {
-            Console.OutputEncoding = Encoding.UTF8;
-
             var parserResult = new Parser(c => c.HelpWriter = null)
                 .ParseArguments<ScaffoldOptions>(args);
 
-            return parserResult
+            var result = parserResult
               .MapResult(
                 options => RunAndReturnExitCode(options),
                 errs => DisplayHelp(parserResult));
+
+            await CheckForPackageUpdateAsync();
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -69,9 +76,9 @@ public static class Program
 
         AnsiConsole.MarkupLine($"[cyan]EF Core Power Tools CLI {version} (preview) for EF Core {EfCoreVersion}[/]");
         AnsiConsole.MarkupLine("[blue][link]https://github.com/ErikEJ/EFCorePowerTools[/][/]");
-        Console.WriteLine();
+        AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine($"[green]Using: '{configPath}'[/]");
-        Console.WriteLine();
+        AnsiConsole.WriteLine();
 
         var dbType = Providers.GetDatabaseTypeFromProvider(options.Provider, options.IsDacpac);
 
@@ -92,27 +99,27 @@ public static class Program
                 buildResult = builder.GetTableModels();
             });
 
-        Console.WriteLine($"{buildResult.Count} tables/views found");
+        AnsiConsole.WriteLine($"{buildResult.Count} tables/views found");
 
         var procedures = builder.GetProcedures();
         buildResult.AddRange(procedures);
         if (procedures.Count > 0)
         {
-            Console.WriteLine($"{procedures.Count} stored procedures found");
+            AnsiConsole.WriteLine($"{procedures.Count} stored procedures found");
         }
 
         var functions = builder.GetFunctions();
         buildResult.AddRange(functions);
         if (functions.Count > 0)
         {
-            Console.WriteLine($"{functions.Count} functions found");
+            AnsiConsole.WriteLine($"{functions.Count} functions found");
         }
 
         if (EfcptConfigMapper.TryGetEfcptConfig(configPath, options.ConnectionString, dbType, buildResult, out EfcptConfig config))
         {
             var commandOptions = EfcptConfigMapper.ToOptions(config, options.ConnectionString, options.Provider, Directory.GetCurrentDirectory(), options.IsDacpac, configPath);
 
-            Console.WriteLine();
+            AnsiConsole.WriteLine();
 
             if (commandOptions.UseT4 && EfCoreVersion > 6)
             {
@@ -143,25 +150,25 @@ public static class Program
 
             paths = paths.Concat(result.EntityTypeFilePaths.Select(p => Path.GetDirectoryName(p)).Distinct()).ToList();
 
-            Console.WriteLine($"{result.EntityTypeFilePaths.Count + result.ContextConfigurationFilePaths.Count + 1} files generated in {sw.Elapsed.TotalSeconds:0.0} seconds");
+            AnsiConsole.WriteLine($"{result.EntityTypeFilePaths.Count + result.ContextConfigurationFilePaths.Count + 1} files generated in {sw.Elapsed.TotalSeconds:0.0} seconds");
 
-            Console.WriteLine();
+            AnsiConsole.WriteLine();
 
             foreach (var path in paths.Distinct())
             {
-                Console.WriteLine($"output: {path}");
+                AnsiConsole.WriteLine($"output: {path}");
             }
 
-            Console.WriteLine();
+            AnsiConsole.WriteLine();
 
             foreach (var error in result.EntityErrors)
             {
-                Console.WriteLine($"error: {error}");
+                AnsiConsole.MarkupLine($"[red]error:[/] {error}");
             }
 
             foreach (var warning in result.EntityWarnings)
             {
-                Console.WriteLine($"warning: {warning}");
+                AnsiConsole.MarkupLine($"[yellow]warning:[/] {warning}");
             }
 
             var readmePath = Providers.CreateReadme(options.Provider, commandOptions, EfCoreVersion);
@@ -172,12 +179,53 @@ public static class Program
 
             AnsiConsole.MarkupLine($"[blue][link]{fileUri}[/][/]");
 
-            Console.WriteLine();
+            AnsiConsole.WriteLine();
 
             return 0;
         }
 
         return 1;
+    }
+
+    private static async Task CheckForPackageUpdateAsync()
+    {
+        try
+        {
+            var logger = new NuGet.Common.NullLogger();
+            var cancellationToken = CancellationToken.None;
+
+            using var cache = new SourceCacheContext();
+            var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
+            var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
+
+            var versions = await resource.GetAllVersionsAsync(
+                "ErikEJ.EFCorePowerTools.CLI",
+                cache,
+                logger,
+                cancellationToken);
+
+            var latestVersion = versions.Where(v => v.Major == EfCoreVersion).OrderByDescending(v => v).FirstOrDefault();
+
+            if (latestVersion > CurrentPackageVersion())
+            {
+                AnsiConsole.Markup("[yellow]Your are not using the latest version of the tool, please update to get the latest bug fixes, features and support.[/]");
+                AnsiConsole.WriteLine();
+                AnsiConsole.Markup($"[yellow]Latest version is '{latestVersion}'.[/]");
+                AnsiConsole.WriteLine();
+                AnsiConsole.Markup($"[yellow]Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {EfCoreVersion}.0.*-*' to get the latest version.[/]");
+            }
+        }
+        catch (Exception)
+        {
+            // Ignore
+        }
+    }
+
+    private static NuGetVersion CurrentPackageVersion()
+    {
+        return new NuGetVersion("7.0.0-preview1");
+
+        //return Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
     }
 
     private sealed class ScaffoldOptions

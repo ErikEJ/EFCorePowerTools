@@ -9,6 +9,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageVersion>7.0.0-preview3</PackageVersion>
+    <InformationalVersion>7.0.0-preview3</InformationalVersion>
+    <Version>7.0.0</Version>
     <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
     <Authors>ErikEJ</Authors>
@@ -16,7 +18,6 @@
     <RepositoryType>git</RepositoryType>
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
-    <Version>7.0.0-preview3</Version>
     <PackageReleaseNotes>early preview</PackageReleaseNotes>
     <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
@@ -38,6 +39,7 @@
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="NuGet.Protocol" Version="6.5.0" />
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
   </ItemGroup>
 
