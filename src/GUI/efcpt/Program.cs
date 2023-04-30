@@ -4,14 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
-using NuGet.Protocol;
-using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
@@ -19,7 +14,7 @@ using Spectre.Console;
 
 namespace ErikEJ.EfCorePowerTools;
 
-public static class Program
+public static partial class Program
 {
     public const string ConfigName = "efcpt-config.json";
 
@@ -41,7 +36,7 @@ public static class Program
                 options => RunAndReturnExitCode(options),
                 errs => DisplayHelp(parserResult));
 
-            await CheckForPackageUpdateAsync();
+            await UpdateChecker.CheckForPackageUpdateAsync(EfCoreVersion);
 
             return result;
         }
@@ -185,63 +180,5 @@ public static class Program
         }
 
         return 1;
-    }
-
-    private static async Task CheckForPackageUpdateAsync()
-    {
-        try
-        {
-            var logger = new NuGet.Common.NullLogger();
-            var cancellationToken = CancellationToken.None;
-
-            using var cache = new SourceCacheContext();
-            var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-            var resource = await repository.GetResourceAsync<FindPackageByIdResource>();
-
-            var versions = await resource.GetAllVersionsAsync(
-                "ErikEJ.EFCorePowerTools.CLI",
-                cache,
-                logger,
-                cancellationToken);
-
-            var latestVersion = versions.Where(v => v.Major == EfCoreVersion).OrderByDescending(v => v).FirstOrDefault();
-
-            if (latestVersion > CurrentPackageVersion())
-            {
-                AnsiConsole.Markup("[yellow]Your are not using the latest version of the tool, please update to get the latest bug fixes, features and support.[/]");
-                AnsiConsole.WriteLine();
-                AnsiConsole.Markup($"[yellow]Latest version is '{latestVersion}'.[/]");
-                AnsiConsole.WriteLine();
-                AnsiConsole.Markup($"[yellow]Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {EfCoreVersion}.0.*-*' to get the latest version.[/]");
-            }
-        }
-        catch (Exception)
-        {
-            // Ignore
-        }
-    }
-
-    private static NuGetVersion CurrentPackageVersion()
-    {
-        return new NuGetVersion("7.0.0-preview1");
-
-        //return Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-    }
-
-    private sealed class ScaffoldOptions
-    {
-        [Value(0, MetaName = "connection", HelpText = "ADO.NET connection string for the source database (or .dacpac path)", Required = true)]
-        public string ConnectionString { get; set; }
-
-        [Value(1, MetaName = "provider", HelpText = "Name of EF Core provider, or use an abbreviation (mssql, postgres, sqlite, oracle, mysql)", Required = true)]
-        public string Provider { get; set; }
-
-        [Option('o', "output", HelpText = "Root output folder, defaults to current directory")]
-        public string Output { get; set; }
-
-        [Option('i', "input", HelpText = $"Full pathname to the {ConfigName} file, default is '{ConfigName}' in currrent directory")]
-        public FileInfo ConfigFile { get; set; }
-
-        public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
     }
 }
