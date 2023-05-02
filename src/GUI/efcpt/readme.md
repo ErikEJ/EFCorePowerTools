@@ -54,13 +54,23 @@ All filters are case sensitive.
 ```json
 "tables": [
       {
-         "exclusionWildcard": "[dbo].*"
+         "exclusionWildcard": "*"
       },
       {
-         "name": "[dbo].[Users]"
+         "name": "[dbo].[Users]",
+         "exclude": false
       },
       {
-         "name": "[xyz].[Users]"
+         "name": "[dbo].[Accounts]",
+         "exclude": false
+      },
+      {
+         "name": "[dbo].[Messages]"
+      },
+      {
+         "name": "[dbo].[Payments]"
       }
   ],
 ```
+
+In the example above, only Users and Accounts tables will be selected.
