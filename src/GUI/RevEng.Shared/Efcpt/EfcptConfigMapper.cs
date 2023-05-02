@@ -151,8 +151,8 @@ namespace RevEng.Common.Efcpt
             }
 
             var result = entities ?? new List<T>();
-            var ids = new HashSet<string>(newItems.Select(x => x.DisplayName));
-            result.RemoveAll(x => !ids.Contains(x.Name));
+            var newIds = new HashSet<string>(newItems.Select(x => x.DisplayName));
+            result.RemoveAll(x => !newIds.Contains(x.Name) && string.IsNullOrEmpty(x.ExclusionWildcard));
             foreach (var displayName in newItems.Select(t => t.DisplayName))
             {
                 T existing = result.SingleOrDefault(t => t.Name == displayName);
@@ -221,7 +221,8 @@ namespace RevEng.Common.Efcpt
                 }
 
                 var objectType = DefineObjectType<T>();
-                var serializationTableModels = entities.Where(entity => !entity.Exclude)
+                var serializationTableModels = entities.Where(entity => (!entity.Exclude ?? false)
+                    && !string.IsNullOrEmpty(entity.Name))
                     .Select(entity => new SerializationTableModel(entity.Name, objectType, null));
                 addRange(serializationTableModels);
             }

@@ -1,14 +1,19 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
 {
     public class View : IEntity
     {
         [JsonPropertyName("name")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string Name { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("exclude")]
-        public bool Exclude { get; set; }
+        public bool? Exclude { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("exclusionWildcard")]
+        public string ExclusionWildcard { get; set; }
     }
 }

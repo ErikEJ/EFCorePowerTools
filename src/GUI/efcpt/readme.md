@@ -37,3 +37,30 @@ A configuration file `efcpt-config.json` is created in the output folder, and yo
 ```bash
 dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
 ```
+
+### Excluding objects
+
+The config file will always contain all current database objects. You can use the `exclusionWildcard` item under each type of data object to filter included objects. 
+
+You can use the following filter expressions:
+
+- `abc*`: Starts with.
+- `*xyz`: Ends with.
+- `abc*xyz`: Starts with and ends with.
+- `*`: Exclude all unless `"exclude": false` is explicitly set.
+
+All filters are case sensitive.
+
+```json
+"tables": [
+      {
+         "exclusionWildcard": "[dbo].*"
+      },
+      {
+         "name": "[dbo].[Users]"
+      },
+      {
+         "name": "[xyz].[Users]"
+      }
+  ],
+```

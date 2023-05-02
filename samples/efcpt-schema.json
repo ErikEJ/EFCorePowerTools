@@ -19,9 +19,6 @@
             "items": {
                 "type": "object",
                 "title": "Table",
-                "required": [
-                    "name"
-                ],
                 "properties": {
                     "name": {
                         "type": "string",
@@ -33,8 +30,16 @@
                     },
                     "exclude": {
                         "type": "boolean",
-                        "default": false,
+                        "default": null,
                         "title": "Set to true to exclude this table from code generation",
+                        "examples": [
+                            true
+                        ]
+                    },
+                    "exclusionWildcard": {
+                        "type": "string",
+                        "default": null,
+                        "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
                             true
                         ]
@@ -65,9 +70,6 @@
             "items": {
                 "type": "object",
                 "title": "View",
-                "required": [
-                    "name"
-                ],
                 "properties": {
                     "name": {
                         "type": "string",
@@ -81,6 +83,14 @@
                         "type": "boolean",
                         "default": false,
                         "title": "Set to true to exclude this view from code generation",
+                        "examples": [
+                            true
+                        ]
+                    },
+                    "exclusionWildcard": {
+                        "type": "string",
+                        "default": null,
+                        "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
                             true
                         ]
@@ -111,9 +121,6 @@
             "items": {
                 "type": "object",
                 "title": "Stored procedure",
-                "required": [
-                    "name"
-                ],
                 "properties": {
                     "name": {
                         "type": "string",
@@ -146,6 +153,14 @@
                         "examples": [
                             "Customer"
                         ]
+                    },
+                    "exclusionWildcard": {
+                        "type": "string",
+                        "default": null,
+                        "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
+                        "examples": [
+                            true
+                        ]
                     }
                 },
                 "examples": [{
@@ -175,9 +190,6 @@
             "items": {
                 "type": "object",
                 "title": "Function",
-                "required": [
-                    "name"
-                ],
                 "properties": {
                     "name": {
                         "type": "string",
@@ -191,6 +203,14 @@
                         "type": "boolean",
                         "default": false,
                         "title": "Set to true to exclude this function from code generation",
+                        "examples": [
+                            true
+                        ]
+                    },
+                    "exclusionWildcard": {
+                        "type": "string",
+                        "default": null,
+                        "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
                             true
                         ]
