@@ -45,21 +45,17 @@ namespace RevEng.Common.Efcpt
             };
 
             var databaseType = Providers.GetDatabaseTypeFromProvider(provider, isDacpac);
-            var fileLayout = config.FileLayout ?? new FileLayout();
             var replacements = config.Replacements ?? new Replacements();
             var typeMappings = config.TypeMappings ?? new TypeMappings();
             var names = config.Names ?? new Names();
             var dbContextDefaultName = names.DbContextName
                                        ?? GetDbContextNameSuggestion(connectionString, databaseType);
 
-            return new ReverseEngineerCommandOptions
+            var options = new ReverseEngineerCommandOptions
             {
                 ConnectionString = connectionString,
                 DatabaseType = databaseType,
                 ProjectPath = projectPath,
-                OutputPath = fileLayout.OutputPath,
-                OutputContextPath = fileLayout.OutputDbContextPath,
-                UseSchemaFolders = fileLayout.UseSchemaFoldersPreview,
                 ModelNamespace = names.ModelNamespace,
                 ContextNamespace = names.DbContextNamespace,
                 UseFluentApiOnly = !config.CodeGeneration.UseDataAnnotations,
@@ -76,7 +72,6 @@ namespace RevEng.Common.Efcpt
                 UncountableWords = replacements.UncountableWords?.ToList(),
                 UseSpatial = typeMappings.UseSpatial,
                 UseHierarchyId = typeMappings.UseHierarchyId,
-                UseDbContextSplitting = fileLayout.SplitDbContextPreview,
                 UseNodaTime = typeMappings.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
                 UseNoDefaultConstructor = true, // TBD for EF Core 6
@@ -101,6 +96,18 @@ namespace RevEng.Common.Efcpt
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
             };
+
+            if (config.FileLayout is null)
+            {
+                return options;
+            }
+
+            options.OutputPath = config.FileLayout.OutputPath;
+            options.OutputContextPath = config.FileLayout.OutputDbContextPath;
+            options.UseSchemaFolders = config.FileLayout.UseSchemaFoldersPreview;
+            options.UseDbContextSplitting = config.FileLayout.SplitDbContextPreview;
+
+            return options;
         }
 
         public static bool TryGetEfcptConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out EfcptConfig config)
@@ -136,19 +143,23 @@ namespace RevEng.Common.Efcpt
         private static List<T> Add<T>(IEnumerable<TableModel> models, List<T> entities)
             where T : IEntity, new()
         {
-            var result = entities ?? new List<T>();
             var objectType = DefineObjectType<T>();
             var newItems = models.Where(o => o.ObjectType == objectType).ToList();
             if (newItems.Count == 0)
             {
-                return result;
+                return entities;
             }
 
+            var result = entities ?? new List<T>();
             var ids = new HashSet<string>(newItems.Select(x => x.DisplayName));
             result.RemoveAll(x => !ids.Contains(x.Name));
-            foreach (var table in from table in newItems let existing = result.SingleOrDefault(t => t.Name == table.DisplayName) where existing == null select table)
+            foreach (var displayName in newItems.Select(t => t.DisplayName))
             {
-                result.Add(new T { Name = table.DisplayName });
+                T existing = result.SingleOrDefault(t => t.Name == displayName);
+                if (existing == null)
+                {
+                    result.Add(new T { Name = displayName });
+                }
             }
 
             return result;
@@ -204,8 +215,15 @@ namespace RevEng.Common.Efcpt
             void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
                 where T : IEntity, new()
             {
+                if (entities is null)
+                {
+                    return;
+                }
+
                 var objectType = DefineObjectType<T>();
-                addRange(from entity in entities where !entity.Exclude select new SerializationTableModel(entity.Name, objectType, null));
+                var serializationTableModels = entities.Where(entity => !entity.Exclude)
+                    .Select(entity => new SerializationTableModel(entity.Name, objectType, null));
+                addRange(serializationTableModels);
             }
 
             ToSerializationModel(config.Tables, objects.AddRange);
