@@ -37,58 +37,52 @@ namespace RevEng.Common.Efcpt
                 throw new ArgumentNullException(nameof(configPath));
             }
 
-            int selectedToBegenerated = 0; // "all"
-            if (config.codegeneration.type == "dbcontext")
+            var selectedToBeGenerated = config.CodeGeneration.Type.ToUpperInvariant() switch
             {
-                selectedToBegenerated = 1;
-            }
-
-            if (config.codegeneration.type == "entities")
-            {
-                selectedToBegenerated = 2;
-            }
+                "DBCONTEXT" => 1,
+                "ENTITIES" => 2,
+                _ => 0, // "all"
+            };
 
             var databaseType = Providers.GetDatabaseTypeFromProvider(provider, isDacpac);
+            var replacements = config.Replacements ?? new Replacements();
+            var typeMappings = config.TypeMappings ?? new TypeMappings();
+            var names = config.Names ?? new Names();
+            var dbContextDefaultName = names.DbContextName
+                                       ?? GetDbContextNameSuggestion(connectionString, databaseType);
 
-            var dbContextDefaultName = config.names?.dbcontextname
-                ?? GetDbContextNameSuggestion(connectionString, databaseType);
-
-            return new ReverseEngineerCommandOptions
+            var options = new ReverseEngineerCommandOptions
             {
                 ConnectionString = connectionString,
                 DatabaseType = databaseType,
                 ProjectPath = projectPath,
-                OutputPath = config.filelayout?.outputpath,
-                OutputContextPath = config.filelayout?.outputdbcontextpath,
-                UseSchemaFolders = config.filelayout?.useschemafolderspreview ?? false,
-                ModelNamespace = config.names?.modelnamespace,
-                ContextNamespace = config.names?.dbcontextnamespace,
-                UseFluentApiOnly = !config.codegeneration.usedataannotations,
-                ContextClassName = config.names?.dbcontextname ?? dbContextDefaultName,
+                ModelNamespace = names.ModelNamespace,
+                ContextNamespace = names.DbContextNamespace,
+                UseFluentApiOnly = !config.CodeGeneration.UseDataAnnotations,
+                ContextClassName = dbContextDefaultName,
                 Tables = BuildObjectList(config),
-                UseDatabaseNames = config.codegeneration.usedatabasenames,
-                UseInflector = config.codegeneration.useinflector,
-                UseT4 = config.codegeneration.uset4,
-                IncludeConnectionString = config.codegeneration.enableonconfiguring,
-                SelectedToBeGenerated = selectedToBegenerated,
+                UseDatabaseNames = config.CodeGeneration.UseDatabaseNames,
+                UseInflector = config.CodeGeneration.UseInflector,
+                UseT4 = config.CodeGeneration.UseT4,
+                IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
+                SelectedToBeGenerated = selectedToBeGenerated,
                 Dacpac = isDacpac ? connectionString : null,
                 CustomReplacers = GetNamingOptions(configPath),
-                UseLegacyPluralizer = config.codegeneration.uselegacyinflector,
-                UncountableWords = config.replacements?.uncountablewords.ToList(),
-                UseSpatial = config.typemappings?.usespatial ?? false,
-                UseHierarchyId = config.typemappings?.useHierarchyId ?? false,
-                UseDbContextSplitting = config.filelayout?.splitdbcontextpreview ?? false,
-                UseNodaTime = config.typemappings?.useNodaTime ?? false,
-                UseBoolPropertiesWithoutDefaultSql = config.codegeneration.removedefaultsqlfromboolproperties,
+                UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
+                UncountableWords = replacements.UncountableWords?.ToList(),
+                UseSpatial = typeMappings.UseSpatial,
+                UseHierarchyId = typeMappings.UseHierarchyId,
+                UseNodaTime = typeMappings.UseNodaTime,
+                UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
                 UseNoDefaultConstructor = true, // TBD for EF Core 6
-                RunCleanup = config.codegeneration.softdeleteobsoletefiles,
-                UseManyToManyEntity = config.codegeneration.usemanytomanyentity,
-                UseMultipleSprocResultSets = config.codegeneration.discovermultiplestoredprocedureresultsetspreview,
-                UseLegacyResultSetDiscovery = config.codegeneration.usealternatestoredprocedureresultsetdiscovery,
-                PreserveCasingWithRegex = config.replacements?.preservecasingwithregex ?? false,
-                UseDateOnlyTimeOnly = config.typemappings?.useDateOnlyTimeOnly ?? false,
-                UseNullableReferences = config.codegeneration.usenullablereferencetypes,
-                ProjectRootNamespace = config.names.rootnamespace,
+                RunCleanup = config.CodeGeneration.SoftDeleteObsoleteFiles,
+                UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
+                UseMultipleSprocResultSets = config.CodeGeneration.DiscoverMultipleStoredProcedureResultsetsPreview,
+                UseLegacyResultSetDiscovery = config.CodeGeneration.UseAlternateStoredProcedureResultsetDiscovery,
+                PreserveCasingWithRegex = replacements.PreserveCasingWithRegex,
+                UseDateOnlyTimeOnly = typeMappings.UseDateOnlyTimeOnly,
+                UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,
+                ProjectRootNamespace = names.RootNamespace,
 
                 // Not supported/implemented:
                 UseHandleBars = false,
@@ -102,6 +96,18 @@ namespace RevEng.Common.Efcpt
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
             };
+
+            if (config.FileLayout is null)
+            {
+                return options;
+            }
+
+            options.OutputPath = config.FileLayout.OutputPath;
+            options.OutputContextPath = config.FileLayout.OutputDbContextPath;
+            options.UseSchemaFolders = config.FileLayout.UseSchemaFoldersPreview;
+            options.UseDbContextSplitting = config.FileLayout.SplitDbContextPreview;
+
+            return options;
         }
 
         public static bool TryGetEfcptConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out EfcptConfig config)
@@ -112,21 +118,21 @@ namespace RevEng.Common.Efcpt
             }
             else
             {
-                config = new EfcptConfig();
-                config.names.dbcontextname = GetDbContextNameSuggestion(connectionString, databaseType);
-                config.names.rootnamespace = GetRootNamespaceSuggestion(fullPath);
-                //TODO Consider if more default values should be picked up from existing efpt.config.json
+                config = new EfcptConfig
+                {
+                    Names =
+                    {
+                        DbContextName = GetDbContextNameSuggestion(connectionString, databaseType),
+                        RootNamespace = GetRootNamespaceSuggestion(fullPath),
+                    },
+                };
+                // TODO Consider if more default values should be picked up from existing efpt.config.json
             }
 
-            config.JsonSchema = "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-schema.json";
-
-            AddTables(objects, config);
-
-            AddViews(objects, config);
-
-            AddSprocs(objects, config);
-
-            AddFunctions(objects, config);
+            config.Tables = Add(objects, config.Tables);
+            config.Views = Add(objects, config.Views);
+            config.StoredProcedures = Add(objects, config.StoredProcedures);
+            config.Functions = Add(objects, config.Functions);
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
@@ -134,120 +140,43 @@ namespace RevEng.Common.Efcpt
             return true;
         }
 
-        private static void AddTables(List<TableModel> objects, EfcptConfig config)
+        private static List<T> Add<T>(IEnumerable<TableModel> models, List<T> entities)
+            where T : IEntity, new()
         {
-            var newTables = objects.Where(o => o.ObjectType == ObjectType.Table).ToList();
-
-            if (newTables.Count == 0)
-            {
-                return;
-            }
-
-            var ids = new HashSet<string>(newTables.Select(x => x.DisplayName));
-
-            if (config.tables is null)
-            {
-                config.tables = new List<Table>();
-            }
-
-            config.tables.RemoveAll(x => !ids.Contains(x.name));
-
-            foreach (var table in newTables)
-            {
-                var existing = config.tables.SingleOrDefault(t => t.name == table.DisplayName);
-
-                if (existing == null)
-                {
-                    config.tables.Add(new Table { name = table.DisplayName });
-                }
-            }
-        }
-
-        private static void AddViews(List<TableModel> objects, EfcptConfig config)
-        {
-            var newViews = objects.Where(o => o.ObjectType == ObjectType.View).ToList();
-
-            if (newViews.Count == 0)
-            {
-                return;
-            }
-
-            var ids = new HashSet<string>(newViews.Select(x => x.DisplayName));
-
-            if (config.views is null)
-            {
-                config.views = new List<View>();
-            }
-
-            config.views.RemoveAll(x => !ids.Contains(x.name));
-
-            foreach (var view in newViews)
-            {
-                var existing = config.views.SingleOrDefault(t => t.name == view.DisplayName);
-
-                if (existing == null)
-                {
-                    config.views.Add(new View { name = view.DisplayName });
-                }
-            }
-        }
-
-        private static void AddSprocs(List<TableModel> objects, EfcptConfig config)
-        {
-            var newItems = objects.Where(o => o.ObjectType == ObjectType.Procedure).ToList();
-
+            var objectType = DefineObjectType<T>();
+            var newItems = models.Where(o => o.ObjectType == objectType).ToList();
             if (newItems.Count == 0)
             {
-                return;
+                return entities;
             }
 
+            var result = entities ?? new List<T>();
             var ids = new HashSet<string>(newItems.Select(x => x.DisplayName));
-
-            if (config.storedprocedures is null)
+            result.RemoveAll(x => !ids.Contains(x.Name));
+            foreach (var displayName in newItems.Select(t => t.DisplayName))
             {
-                config.storedprocedures = new List<StoredProcedure>();
-            }
-
-            config.storedprocedures.RemoveAll(x => !ids.Contains(x.name));
-
-            foreach (var table in newItems)
-            {
-                var existing = config.storedprocedures.SingleOrDefault(t => t.name == table.DisplayName);
-
+                T existing = result.SingleOrDefault(t => t.Name == displayName);
                 if (existing == null)
                 {
-                    config.storedprocedures.Add(new StoredProcedure { name = table.DisplayName });
+                    result.Add(new T { Name = displayName });
                 }
             }
+
+            return result;
         }
 
-        private static void AddFunctions(List<TableModel> objects, EfcptConfig config)
+        private static ObjectType DefineObjectType<T>()
+            where T : IEntity, new()
         {
-            var newItems = objects.Where(o => o.ObjectType == ObjectType.ScalarFunction).ToList();
-
-            if (newItems.Count == 0)
+            var instance = new T();
+            ObjectType objectType = instance switch
             {
-                return;
-            }
-
-            var ids = new HashSet<string>(newItems.Select(x => x.DisplayName));
-
-            if (config.functions is null)
-            {
-                config.functions = new List<Function>();
-            }
-
-            config.functions.RemoveAll(x => !ids.Contains(x.name));
-
-            foreach (var table in newItems)
-            {
-                var existing = config.functions.SingleOrDefault(t => t.name == table.DisplayName);
-
-                if (existing == null)
-                {
-                    config.functions.Add(new Function { name = table.DisplayName });
-                }
-            }
+                View _ => ObjectType.View,
+                Function _ => ObjectType.ScalarFunction,
+                StoredProcedure _ => ObjectType.Procedure,
+                _ => ObjectType.Table,
+            };
+            return objectType;
         }
 
         private static string GetRootNamespaceSuggestion(string fullPath)
@@ -283,55 +212,24 @@ namespace RevEng.Common.Efcpt
         {
             var objects = new List<SerializationTableModel>();
 
-            if (config.tables != null)
+            void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
+                where T : IEntity, new()
             {
-                foreach (var table in config.tables)
+                if (entities is null)
                 {
-                    if (!table.exclude)
-                    {
-                        objects.Add(new SerializationTableModel(table.name, ObjectType.Table, null));
-                    }
+                    return;
                 }
+
+                var objectType = DefineObjectType<T>();
+                var serializationTableModels = entities.Where(entity => !entity.Exclude)
+                    .Select(entity => new SerializationTableModel(entity.Name, objectType, null));
+                addRange(serializationTableModels);
             }
 
-            if (config.views != null)
-            {
-                foreach (var view in config.views)
-                {
-                    if (!view.exclude)
-                    {
-                        objects.Add(new SerializationTableModel(view.name, ObjectType.View, null));
-                    }
-                }
-            }
-
-            if (config.storedprocedures != null)
-            {
-                foreach (var sproc in config.storedprocedures)
-                {
-                    if (!sproc.exclude)
-                    {
-                        var proc = new SerializationTableModel(sproc.name, ObjectType.Procedure, null);
-                        proc.MappedType = sproc.mappedtype;
-                        proc.UseLegacyResultSetDiscovery = sproc.uselegacyresultsetdiscovery;
-
-                        objects.Add(proc);
-                    }
-                }
-            }
-
-            if (config.functions != null)
-            {
-                foreach (var function in config.functions)
-                {
-                    if (!function.exclude)
-                    {
-                        var func = new SerializationTableModel(function.name, ObjectType.ScalarFunction, null);
-
-                        objects.Add(func);
-                    }
-                }
-            }
+            ToSerializationModel(config.Tables, objects.AddRange);
+            ToSerializationModel(config.Views, objects.AddRange);
+            ToSerializationModel(config.StoredProcedures, objects.AddRange);
+            ToSerializationModel(config.Functions, objects.AddRange);
 
             return objects;
         }
@@ -349,11 +247,9 @@ namespace RevEng.Common.Efcpt
                 return new List<Schema>();
             }
 
-            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(path, Encoding.UTF8))))
-            {
-                var ser = new DataContractJsonSerializer(typeof(List<Schema>));
-                return ser.ReadObject(ms) as List<Schema>;
-            }
+            using var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(path, Encoding.UTF8)));
+            var ser = new DataContractJsonSerializer(typeof(List<Schema>));
+            return ser.ReadObject(ms) as List<Schema>;
         }
 
         private static ReverseEngineerCommandOptions GetLegacyOptions(string configPath)
@@ -364,11 +260,9 @@ namespace RevEng.Common.Efcpt
                 return null;
             }
 
-            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(path, Encoding.UTF8))))
-            {
-                var ser = new DataContractJsonSerializer(typeof(ReverseEngineerCommandOptions));
-                return ser.ReadObject(ms) as ReverseEngineerCommandOptions;
-            }
+            using var ms = new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText(path, Encoding.UTF8)));
+            var ser = new DataContractJsonSerializer(typeof(ReverseEngineerCommandOptions));
+            return ser.ReadObject(ms) as ReverseEngineerCommandOptions;
         }
     }
 }

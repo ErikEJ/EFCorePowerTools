@@ -1,4 +1,6 @@
-﻿namespace RevEng.Common
+﻿using RevEng.Common.Efcpt;
+
+namespace RevEng.Common
 {
     using System;
     using System.Collections.Generic;
