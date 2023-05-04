@@ -30,7 +30,7 @@ namespace RevEng.Core
 {
     public static class ServiceProviderBuilder
     {
-        public static ServiceProvider Build(ReverseEngineerCommandOptions options, List<string> errors, List<string> warnings, List<string> info)
+        public static IServiceCollection AddEfpt(this IServiceCollection serviceCollection, ReverseEngineerCommandOptions options, List<string> errors, List<string> warnings, List<string> info)
         {
             if (options == null)
             {
@@ -43,9 +43,6 @@ namespace RevEng.Core
                     m => warnings.Add(m),
                     m => info.Add(m),
                     m => info.Add(m)));
-
-            // Add base services for scaffolding
-            var serviceCollection = new ServiceCollection();
 
             serviceCollection
                 .AddEntityFrameworkDesignTimeServices()
@@ -271,7 +268,7 @@ namespace RevEng.Core
 
             serviceCollection.AddSingleton<IReverseEngineerScaffolder, ReverseEngineerScaffolder>();
 
-            return serviceCollection.BuildServiceProvider();
+            return serviceCollection;
         }
     }
 }

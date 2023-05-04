@@ -20,6 +20,7 @@
     <Company>ErikEJ</Company>
     <PackageReleaseNotes>early preview</PackageReleaseNotes>
     <TargetFrameworks>net6.0</TargetFrameworks>
+    <RootNamespace>ErikEJ.EfCorePowerTools</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,8 +40,10 @@
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="NuGet.Protocol" Version="6.5.0" />
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="19.2.18" />
   </ItemGroup>
 
   <ItemGroup>

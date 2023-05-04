@@ -21,7 +21,7 @@ namespace RevEng.Core
                 throw new ArgumentNullException(nameof(connectionString), @"invalid connection string");
             }
 
-            this.connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
+            this.connectionString = connectionString.ApplyDatabaseType((DatabaseType)databaseType);
 
             var options = new ReverseEngineerCommandOptions
             {
@@ -29,7 +29,7 @@ namespace RevEng.Core
                 ConnectionString = connectionString,
             };
 
-            serviceProvider = ServiceProviderBuilder.Build(options, new List<string>(), new List<string>(), new List<string>());
+            serviceProvider = new ServiceCollection().AddEfpt(options, new List<string>(), new List<string>(), new List<string>()).BuildServiceProvider();
         }
 
         public string GetDgmlFileName()

@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Core;
+using RevEng.Core.Abstractions.Model;
 
 [assembly: CLSCompliant(true)]
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Reviewed")]
@@ -36,7 +40,17 @@ namespace EfReveng
                             schemas = args[3].Split(',').Select(s => new SchemaInfo { Name = s }).ToArray();
                         }
 
-                        var builder = new TableListBuilder(dbTypeInt, args[2], schemas, mergeDacpacs);
+                        var reverseEngineerCommandOptions = new ReverseEngineerCommandOptions
+                        {
+                            ConnectionString = args[2],
+                            DatabaseType = (DatabaseType)dbTypeInt,
+                            MergeDacpacs = mergeDacpacs,
+                        };
+                        var provider = new ServiceCollection().AddEfpt(reverseEngineerCommandOptions, new List<string>(), new List<string>(), new List<string>()).BuildServiceProvider();
+                        var procedureModelFactory = provider.GetRequiredService<IProcedureModelFactory>();
+                        var functionModelFactory = provider.GetRequiredService<IFunctionModelFactory>();
+                        var databaseModelFactory = provider.GetRequiredService<IDatabaseModelFactory>();
+                        var builder = new TableListBuilder(reverseEngineerCommandOptions, procedureModelFactory, functionModelFactory, databaseModelFactory, schemas);
 
                         var buildResult = builder.GetTableModels();
 

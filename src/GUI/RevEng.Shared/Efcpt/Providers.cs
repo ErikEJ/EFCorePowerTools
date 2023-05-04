@@ -9,7 +9,7 @@ namespace RevEng.Common.Efcpt
 {
     public static class Providers
     {
-        public static DatabaseType GetDatabaseTypeFromProvider(string providerAlias, bool isDacpac)
+        public static DatabaseType ToDatabaseType(this string providerAlias, bool isDacpac)
         {
             if (!GetKnownProviders().TryGetValue(providerAlias, out var provider))
             {

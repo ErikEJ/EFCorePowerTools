@@ -1,0 +1,169 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using ErikEJ.EfCorePowerTools.Services;
+using RevEng.Common;
+using RevEng.Common.Efcpt;
+using RevEng.Core;
+using Spectre.Console;
+
+namespace ErikEJ.EfCorePowerTools.HostedServices;
+
+internal sealed class ScaffoldHostedService : HostedService
+{
+    private readonly DisplayService displayService;
+    private readonly PackageService packageService;
+    private readonly IFileSystem fileSystem;
+    private readonly ReverseEngineerCommandOptions reverseEngineerCommandOptions;
+    private readonly ScaffoldOptions scaffoldOptions;
+    private readonly TableListBuilder tableListBuilder;
+
+    public ScaffoldHostedService(
+        TableListBuilder tableListBuilder,
+        DisplayService displayService,
+        PackageService packageService,
+        IFileSystem fileSystem,
+        ScaffoldOptions scaffoldOptions,
+        ReverseEngineerCommandOptions reverseEngineerCommandOptions)
+    {
+        this.tableListBuilder = tableListBuilder;
+        this.displayService = displayService;
+        this.packageService = packageService;
+        this.fileSystem = fileSystem;
+        this.scaffoldOptions = scaffoldOptions;
+        this.reverseEngineerCommandOptions = reverseEngineerCommandOptions;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        var tableModels = GetTablesAndViews();
+        GetProcedures(tableModels);
+        GetFunctions(tableModels);
+
+        if (!EfcptConfigMapper.TryGetEfcptConfig(
+                scaffoldOptions.ConfigFile.FullName,
+                scaffoldOptions.ConnectionString,
+                this.reverseEngineerCommandOptions.DatabaseType,
+                tableModels, 
+                out var config))
+        {
+            Environment.ExitCode = 1;
+            return;
+        }
+
+        var commandOptions = config.ToOptions(
+            scaffoldOptions.ConnectionString,
+            reverseEngineerCommandOptions.DatabaseType,
+            Directory.GetCurrentDirectory(),
+            scaffoldOptions.IsDacpac,
+            scaffoldOptions.ConfigFile.FullName);
+        displayService.MarkupLine();
+
+        if (commandOptions.UseT4 && Constants.EfCoreVersion > 6)
+        {
+            var t4Result = new T4Helper().DropT4Templates(commandOptions.ProjectPath);
+            if (!string.IsNullOrEmpty(t4Result))
+            {
+                displayService.MarkupLine(t4Result, Color.Default);
+            }
+        }
+
+        var sw = Stopwatch.StartNew();
+        var result = this.displayService.Wait(
+            "Generating EF Core DbContext and entity classes...",
+            () => ReverseEngineerRunner.GenerateFiles(commandOptions)) ?? new ReverseEngineerResult();
+        sw.Stop();
+        displayService.MarkupLine(
+            $"{result.EntityTypeFilePaths.Count + result.ContextConfigurationFilePaths.Count + 1} files generated in {sw.Elapsed.TotalSeconds:0.0} seconds",
+            Color.Default);
+        displayService.MarkupLine();
+
+        var paths = GetPaths(result);
+        ShowPaths(paths);
+        displayService.MarkupLine();
+
+        ShowErrors(result);
+        ShowWarnings(result);
+
+        var readmePath = Providers.CreateReadme(scaffoldOptions.Provider, commandOptions, Constants.EfCoreVersion);
+        var fileUri = new Uri(new Uri("file://"), readmePath);
+
+        displayService.MarkupLine(
+            "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
+        displayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
+        displayService.MarkupLine();
+        await packageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
+        Environment.ExitCode = 0;
+    }
+
+    private List<string> GetPaths(ReverseEngineerResult result)
+    {
+        var paths = new List<string> { Path.GetDirectoryName(result.ContextFilePath) };
+        paths = paths.Concat(result.ContextConfigurationFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p))
+            .Distinct()).ToList();
+        paths = paths.Concat(result.EntityTypeFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p)).Distinct())
+            .ToList();
+        return paths;
+    }
+
+    private void ShowPaths(List<string> paths)
+    {
+        foreach (var path in paths.Distinct())
+        {
+            displayService.MarkupLine(
+                () => displayService.Markup("output folder:", Color.Green),
+                () => displayService.Markup(path, Decoration.Bold));
+        }
+    }
+
+    private void ShowWarnings(ReverseEngineerResult result)
+    {
+        foreach (var warning in result.EntityWarnings)
+        {
+            displayService.MarkupLine(
+                () => displayService.Markup("warning:", Color.Yellow),
+                () => displayService.Markup(warning, Decoration.None));
+        }
+    }
+
+    private void ShowErrors(ReverseEngineerResult result)
+    {
+        foreach (var error in result.EntityErrors)
+        {
+            displayService.Error(error);
+        }
+    }
+
+    private List<TableModel> GetTablesAndViews()
+    {
+        var tableModels = displayService.Wait("Getting database objects...", tableListBuilder.GetTableModels) ??
+                          new List<TableModel>();
+        displayService.MarkupLine($"{tableModels.Count} tables/views found", Color.Default);
+        return tableModels;
+    }
+
+    private void GetFunctions(List<TableModel> tableModels)
+    {
+        var functions = tableListBuilder.GetFunctions();
+        tableModels.AddRange(functions);
+        if (functions.Count > 0)
+        {
+            displayService.MarkupLine($"{functions.Count} functions found", Color.Default);
+        }
+    }
+
+    private void GetProcedures(List<TableModel> tableModels)
+    {
+        var procedures = tableListBuilder.GetProcedures();
+        tableModels.AddRange(procedures);
+        if (procedures.Count > 0)
+        {
+            displayService.MarkupLine($"{procedures.Count} stored procedures found", Color.Default);
+        }
+    }
+}

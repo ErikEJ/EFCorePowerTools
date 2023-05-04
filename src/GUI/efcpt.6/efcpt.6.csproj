@@ -27,9 +27,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\efcpt\Extensions\*.cs">
+      <Link>Extensions\*.cs</Link>
+    </Compile>
+    <Compile Include="..\efcpt\HostedServices\*.cs">
+      <Link>HostedServices\*.cs</Link>
+    </Compile>
+    <Compile Include="..\efcpt\Options\*.cs">
+      <Link>Options\*.cs</Link>
+    </Compile>
+    <Compile Include="..\efcpt\Services\*.cs">
+      <Link>Services\*.cs</Link>
+    </Compile>
+    <Compile Include="..\efcpt\Constants.cs" Link="Constants.cs" />
+    <Compile Include="..\efcpt\HostConfiguration.cs" Link="HostConfiguration.cs" />
     <Compile Include="..\efcpt\Program.cs" Link="Program.cs" />
-    <Compile Include="..\efcpt\ScaffoldOptions.cs" Link="ScaffoldOptions.cs" />
-    <Compile Include="..\efcpt\UpdateChecker.cs" Link="UpdateChecker.cs" />
+    <Compile Include="..\efcpt\RegisterDependentServices.cs" Link="RegisterDependentServices.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,8 +55,10 @@
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="NuGet.Protocol" Version="6.5.0" />
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="19.2.18" />
   </ItemGroup>
 
   <ItemGroup>
