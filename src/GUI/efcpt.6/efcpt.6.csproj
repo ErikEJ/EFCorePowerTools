@@ -43,7 +43,6 @@
     <Compile Include="..\efcpt\HostConfiguration.cs" Link="HostConfiguration.cs" />
     <Compile Include="..\efcpt\Program.cs" Link="Program.cs" />
     <Compile Include="..\efcpt\RegisterDependentServices.cs" Link="RegisterDependentServices.cs" />
-    <Compile Include="..\efcpt\UpdateChecker.cs" Link="UpdateChecker.cs" />
   </ItemGroup>
 
   <ItemGroup>
