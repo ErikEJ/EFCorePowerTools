@@ -5,7 +5,7 @@ namespace RevEng.Core
 {
     public static class SqlServerHelper
     {
-        public static string SetConnectionString(DatabaseType databaseType, string connectionString)
+        public static string ApplyDatabaseType(this string connectionString, DatabaseType databaseType)
         {
             if (databaseType == DatabaseType.SQLServer)
             {

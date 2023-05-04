@@ -22,10 +22,10 @@ namespace RevEng.Core
             var errors = new List<string>();
             var warnings = new List<string>();
             var info = new List<string>();
-            var serviceProvider = ServiceProviderBuilder.Build(options, errors, warnings, info);
+            var serviceProvider = new ServiceCollection().AddEfpt(options, errors, warnings, info).BuildServiceProvider();
             var schemas = new List<string>();
 
-            options.ConnectionString = SqlServerHelper.SetConnectionString(options.DatabaseType, options.ConnectionString);
+            options.ConnectionString = options.ConnectionString.ApplyDatabaseType(options.DatabaseType);
 
             if (options.DefaultDacpacSchema != null)
             {

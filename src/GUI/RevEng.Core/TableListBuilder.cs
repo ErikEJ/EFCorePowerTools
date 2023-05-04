@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Model;
@@ -12,30 +10,27 @@ namespace RevEng.Core
 {
     public class TableListBuilder
     {
-        private readonly string connectionString;
+        private readonly IProcedureModelFactory procedureModelFactory;
+        private readonly IFunctionModelFactory functionModelFactory;
+        private readonly IDatabaseModelFactory databaseModelFactory;
+
         private readonly SchemaInfo[] schemas;
         private readonly DatabaseType databaseType;
-        private readonly ServiceProvider serviceProvider;
+        private readonly string connectionString;
 
-        public TableListBuilder(int databaseType, string connectionString, SchemaInfo[] schemas, bool mergeDacpacs)
+        public TableListBuilder(
+            ReverseEngineerCommandOptions options,
+            IProcedureModelFactory procedureModelFactory,
+            IFunctionModelFactory functionModelFactory,
+            IDatabaseModelFactory databaseModelFactory,
+            SchemaInfo[] schemas)
         {
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentNullException(nameof(connectionString), @"invalid connection string");
-            }
-
-            this.connectionString = SqlServerHelper.SetConnectionString((DatabaseType)databaseType, connectionString);
+            this.procedureModelFactory = procedureModelFactory;
+            this.functionModelFactory = functionModelFactory;
+            this.databaseModelFactory = databaseModelFactory;
             this.schemas = schemas;
-            this.databaseType = (DatabaseType)databaseType;
-
-            var options = new ReverseEngineerCommandOptions
-            {
-                DatabaseType = this.databaseType,
-                MergeDacpacs = mergeDacpacs,
-                ConnectionString = connectionString,
-            };
-
-            serviceProvider = ServiceProviderBuilder.Build(options, new List<string>(), new List<string>(), new List<string>());
+            this.databaseType = options.DatabaseType;
+            this.connectionString = options.ConnectionString;
         }
 
         public List<TableModel> GetTableModels()
@@ -43,7 +38,6 @@ namespace RevEng.Core
             var databaseTables = GetTableDefinitions();
 
             var buildResult = new List<TableModel>();
-
             foreach (var databaseTable in databaseTables)
             {
                 var columns = new List<ColumnModel>();
@@ -70,9 +64,7 @@ namespace RevEng.Core
             {
                 return result;
             }
-
-            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
-
+            
             var procedureModelOptions = new ModuleModelFactoryOptions
             {
                 FullModel = false,
@@ -98,8 +90,6 @@ namespace RevEng.Core
                 return result;
             }
 
-            var functionModelFactory = serviceProvider.GetService<IFunctionModelFactory>();
-
             var functionModelOptions = new ModuleModelFactoryOptions
             {
                 FullModel = false,
@@ -118,10 +108,8 @@ namespace RevEng.Core
 
         private List<DatabaseTable> GetTableDefinitions()
         {
-            var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
-
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
-            var dbModel = dbModelFactory!.Create(connectionString, dbModelOptions);
+            var dbModel = this.databaseModelFactory!.Create(connectionString, dbModelOptions);
 
             return dbModel.Tables.OrderBy(t => t.Schema).ThenBy(t => t.Name).ToList();
         }

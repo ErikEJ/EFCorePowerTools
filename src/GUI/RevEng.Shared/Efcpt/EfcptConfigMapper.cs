@@ -10,7 +10,7 @@ namespace RevEng.Common.Efcpt
 {
     public static class EfcptConfigMapper
     {
-        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, string provider, string projectPath, bool isDacpac, string configPath)
+        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, DatabaseType databaseType, string projectPath, bool isDacpac, string configPath)
         {
             if (config is null)
             {
@@ -20,11 +20,6 @@ namespace RevEng.Common.Efcpt
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentNullException(nameof(connectionString));
-            }
-
-            if (string.IsNullOrEmpty(provider))
-            {
-                throw new ArgumentNullException(nameof(provider));
             }
 
             if (string.IsNullOrEmpty(projectPath))
@@ -44,7 +39,6 @@ namespace RevEng.Common.Efcpt
                 _ => 0, // "all"
             };
 
-            var databaseType = Providers.GetDatabaseTypeFromProvider(provider, isDacpac);
             var replacements = config.Replacements ?? new Replacements();
             var typeMappings = config.TypeMappings ?? new TypeMappings();
             var names = config.Names ?? new Names();
