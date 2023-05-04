@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -49,7 +49,7 @@ internal sealed class ScaffoldHostedService : HostedService
                 scaffoldOptions.ConfigFile.FullName,
                 scaffoldOptions.ConnectionString,
                 this.reverseEngineerCommandOptions.DatabaseType,
-                tableModels, 
+                tableModels,
                 out var config))
         {
             Environment.ExitCode = 1;
