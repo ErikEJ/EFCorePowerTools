@@ -4,9 +4,9 @@ Cross platform command line tool for advanced EF Core reverse engineering. See t
 
 ## Getting started
 
-The tool runs on any computer with the .NET 6.0 runtime installed.
+The tool runs on any computer or operating system with the .NET 6.0 runtime installed.
 
-### Install the tool
+### Installing the tool
 
 For EF Core 7:
 
@@ -20,7 +20,7 @@ For EF Core 6:
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
 ```
 
-### Run the tool 
+### Running the tool 
 
 From the folder where you want the code to be generated (usually where your .NET project is located)
 
@@ -28,15 +28,15 @@ From the folder where you want the code to be generated (usually where your .NET
 efcpt "Server=(local);Database=Northwind;User id=user;Pwd=secret123;Encrypt=false" mssql
 ```
 
-### Configure options
+### Configuring options
 
 A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file.
 
-### Update the tool
+### Updating to new configuration
 
-```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
-```
+After updating the `efcpt-config.json`, you will need to run the `efcpt` CLI command from above once again in order to update the generated code.
+If you have updated the configuration file in a way that requires files to be deleted - by excluding objects for example - then you will need to set the `"soft-delete-obsolete-files"` option in the configuration file to `true` or delete the files manually.
+
 
 ### Excluding objects
 
@@ -73,3 +73,9 @@ All filters are case sensitive.
 ```
 
 In the example above, only Users and Accounts tables will be selected.
+
+### Updating the tool
+
+```bash
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
+```
