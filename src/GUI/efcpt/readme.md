@@ -4,7 +4,7 @@ Cross platform command line tool for advanced EF Core reverse engineering. See t
 
 ## Getting started
 
-The tool runs on any computer or operating system with the .NET 6.0 runtime installed.
+The tool runs on any operating system with the .NET 6.0 runtime installed.
 
 ### Installing the tool
 
@@ -44,9 +44,9 @@ The config file will always contain all current database objects. You can use th
 
 You can use the following filter expressions:
 
-- `abc*`: Starts with.
-- `*xyz`: Ends with.
-- `*`: Exclude all unless `"exclude": false` is explicitly set.
+- `abc*`: Starts with. NOTE: Not implemented yet. 
+- `*xyz`: Ends with. NOTE: Not implemented yet.
+- `*`: Exclude all objects in section unless `"exclude": false` is explicitly set.
 
 All filters are case sensitive.
 
