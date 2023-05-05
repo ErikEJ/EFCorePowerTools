@@ -38,10 +38,9 @@
                     },
                     "exclusionWildcard": {
                         "type": "string",
-                        "default": null,
                         "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
-                            true
+                            "*"
                         ]
                     }
                 },
@@ -89,10 +88,9 @@
                     },
                     "exclusionWildcard": {
                         "type": "string",
-                        "default": null,
                         "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
-                            true
+                            "*"
                         ]
                     }
                 },
@@ -156,10 +154,9 @@
                     },
                     "exclusionWildcard": {
                         "type": "string",
-                        "default": null,
                         "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
-                            true
+                            "*"
                         ]
                     }
                 },
@@ -209,10 +206,9 @@
                     },
                     "exclusionWildcard": {
                         "type": "string",
-                        "default": null,
                         "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
-                            true
+                            "*"
                         ]
                     }
                 },
