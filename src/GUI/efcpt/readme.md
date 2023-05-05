@@ -35,8 +35,8 @@ A configuration file `efcpt-config.json` is created in the output folder, and yo
 ### Updating to new configuration
 
 After updating the `efcpt-config.json`, you will need to run the `efcpt` CLI command from above once again in order to update the generated code.
-If you have updated the configuration file in a way that requires files to be deleted - by excluding objects for example - then you will need to set the `"soft-delete-obsolete-files"` option in the configuration file to `true` or delete the files manually.
 
+If you have updated the configuration file in a way that requires files to be deleted - by excluding objects for example - then you will need to set the `"soft-delete-obsolete-files"` option in the configuration file to `true` or delete the files manually.
 
 ### Excluding objects
 
