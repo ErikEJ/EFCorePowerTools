@@ -30,7 +30,7 @@ efcpt "Server=(local);Database=Northwind;User id=user;Pwd=secret123;Encrypt=fals
 
 ### Configuring options
 
-A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file.
+A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file. For reference there is a fully populated sample file [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json).
 
 ### Updating to new configuration
 
