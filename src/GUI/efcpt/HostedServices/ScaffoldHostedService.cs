@@ -41,14 +41,21 @@ internal sealed class ScaffoldHostedService : HostedService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var sw = Stopwatch.StartNew();
         var tableModels = GetTablesAndViews();
         GetProcedures(tableModels);
         GetFunctions(tableModels);
+        sw.Stop();
+
+        displayService.MarkupLine();
+        displayService.MarkupLine(
+            $"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds",
+            Color.Default);
 
         if (!EfcptConfigMapper.TryGetEfcptConfig(
                 scaffoldOptions.ConfigFile.FullName,
                 scaffoldOptions.ConnectionString,
-                this.reverseEngineerCommandOptions.DatabaseType,
+                reverseEngineerCommandOptions.DatabaseType,
                 tableModels,
                 out var config))
         {
@@ -73,7 +80,7 @@ internal sealed class ScaffoldHostedService : HostedService
             }
         }
 
-        var sw = Stopwatch.StartNew();
+        sw = Stopwatch.StartNew();
         var result = this.displayService.Wait(
             "Generating EF Core DbContext and entity classes...",
             () => ReverseEngineerRunner.GenerateFiles(commandOptions)) ?? new ReverseEngineerResult();
@@ -143,7 +150,19 @@ internal sealed class ScaffoldHostedService : HostedService
     {
         var tableModels = displayService.Wait("Getting database objects...", tableListBuilder.GetTableModels) ??
                           new List<TableModel>();
-        displayService.MarkupLine($"{tableModels.Count} tables/views found", Color.Default);
+
+        var tableCount = tableModels.Count(t => t.ObjectType == ObjectType.Table);
+        if (tableCount > 0)
+        {
+            displayService.MarkupLine($"{tableCount} tables found", Color.Default);
+        }
+
+        var viewCount = tableModels.Count(t => t.ObjectType == ObjectType.View);
+        if (viewCount > 0)
+        {
+            displayService.MarkupLine($"{viewCount} views found", Color.Default);
+        }
+
         return tableModels;
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
@@ -25,12 +26,17 @@ namespace RevEng.Core
             IDatabaseModelFactory databaseModelFactory,
             SchemaInfo[] schemas)
         {
+            if (options is null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             this.procedureModelFactory = procedureModelFactory;
             this.functionModelFactory = functionModelFactory;
             this.databaseModelFactory = databaseModelFactory;
             this.schemas = schemas;
-            this.databaseType = options.DatabaseType;
-            this.connectionString = options.ConnectionString;
+            databaseType = options.DatabaseType;
+            connectionString = options.ConnectionString;
         }
 
         public List<TableModel> GetTableModels()
@@ -64,7 +70,7 @@ namespace RevEng.Core
             {
                 return result;
             }
-            
+
             var procedureModelOptions = new ModuleModelFactoryOptions
             {
                 FullModel = false,
