@@ -5,11 +5,12 @@ using System.IO.Abstractions;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
-using ErikEJ.EfCorePowerTools.Services;
+using ErikEJ.EFCorePowerTools.HostedServices;
+using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.Hosting;
 using Spectre.Console;
 
-namespace ErikEJ.EfCorePowerTools;
+namespace ErikEJ.EFCorePowerTools;
 
 public static class Program
 {
@@ -39,16 +40,7 @@ public static class Program
                     var fileSystem = new FileSystem();
                     options.ConfigFile = new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
 
-                    displayService.Title("EF Core Power Tools");
-                    displayService.MarkupLine(
-                        $"EF Core Power Tools CLI {PackageService.CurrentPackageVersion()} for EF Core {Constants.EfCoreVersion}",
-                        Color.Cyan1);
-                    displayService.MarkupLine("https://github.com/ErikEJ/EFCorePowerTools", Color.Blue, DisplayService.Link);
-                    displayService.MarkupLine();
-                    displayService.MarkupLine(
-                        () => displayService.Markup("config file:", Color.Green),
-                        () => displayService.Markup(options.ConfigFile.FullName, Decoration.Bold));
-                    displayService.MarkupLine();
+                    DisplayHeader(options, displayService);
                     var hostBuilder = new HostBuilder();
                     await hostBuilder.Configure()
                         .RegisterServices(displayService, fileSystem, options)
@@ -58,6 +50,20 @@ public static class Program
                 },
                 async _ => await DisplayHelpAsync(parserResult).ConfigureAwait(false));
         return await result.ConfigureAwait(false);
+    }
+
+    private static void DisplayHeader(ScaffoldOptions options, DisplayService displayService)
+    {
+        displayService.Title("EF Core Power Tools");
+        displayService.MarkupLine(
+            $"EF Core Power Tools CLI {PackageService.CurrentPackageVersion()} for EF Core {Constants.EfCoreVersion}",
+            Color.Cyan1);
+        displayService.MarkupLine("https://github.com/ErikEJ/EFCorePowerTools", Color.Blue, DisplayService.Link);
+        displayService.MarkupLine();
+        displayService.MarkupLine(
+            () => displayService.Markup("config file:", Color.Green),
+            () => displayService.Markup(options.ConfigFile.FullName, Decoration.Bold));
+        displayService.MarkupLine();
     }
 
     private static Task<int> DisplayHelpAsync(ParserResult<ScaffoldOptions> parserResult)

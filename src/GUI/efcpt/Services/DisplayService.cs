@@ -3,7 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Spectre.Console;
 
-namespace ErikEJ.EfCorePowerTools.Services;
+namespace ErikEJ.EFCorePowerTools.Services;
 
 internal sealed class DisplayService
 {

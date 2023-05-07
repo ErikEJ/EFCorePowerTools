@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace ErikEJ.EfCorePowerTools.HostedServices;
+namespace ErikEJ.EFCorePowerTools.HostedServices;
 
 public abstract class HostedService : BackgroundService
 {

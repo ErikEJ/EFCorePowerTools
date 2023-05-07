@@ -19,7 +19,7 @@
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
     <PackageReleaseNotes>early preview for EF Core 6</PackageReleaseNotes>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,21 +28,19 @@
 
   <ItemGroup>
     <Compile Include="..\efcpt\Extensions\*.cs">
-      <Link>Extensions\*.cs</Link>
+      <Link>Extensions\%(Filename)%(Extension)</Link>
     </Compile>
     <Compile Include="..\efcpt\HostedServices\*.cs">
-      <Link>HostedServices\*.cs</Link>
+      <Link>HostedServices\%(Filename)%(Extension)</Link>
     </Compile>
     <Compile Include="..\efcpt\Options\*.cs">
-      <Link>Options\*.cs</Link>
+      <Link>Options\%(Filename)%(Extension)</Link>
     </Compile>
     <Compile Include="..\efcpt\Services\*.cs">
-      <Link>Services\*.cs</Link>
+      <Link>Services\%(Filename)%(Extension)</Link>
     </Compile>
     <Compile Include="..\efcpt\Constants.cs" Link="Constants.cs" />
-    <Compile Include="..\efcpt\HostConfiguration.cs" Link="HostConfiguration.cs" />
     <Compile Include="..\efcpt\Program.cs" Link="Program.cs" />
-    <Compile Include="..\efcpt\RegisterDependentServices.cs" Link="RegisterDependentServices.cs" />
   </ItemGroup>
 
   <ItemGroup>

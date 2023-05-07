@@ -9,7 +9,7 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using Spectre.Console;
 
-namespace ErikEJ.EfCorePowerTools.Services;
+namespace ErikEJ.EFCorePowerTools.Services;
 
 internal sealed class PackageService
 {

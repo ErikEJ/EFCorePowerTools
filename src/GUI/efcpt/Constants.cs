@@ -1,4 +1,4 @@
-namespace ErikEJ.EfCorePowerTools;
+﻿namespace ErikEJ.EFCorePowerTools;
 
 internal static class Constants
 {

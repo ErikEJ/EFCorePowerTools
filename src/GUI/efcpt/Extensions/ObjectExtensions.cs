@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
 
-namespace ErikEJ.EfCorePowerTools.Extensions;
+namespace ErikEJ.EFCorePowerTools.Extensions;
 
 internal static class ObjectExtensions
 {

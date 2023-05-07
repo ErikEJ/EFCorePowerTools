@@ -1,15 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
-using ErikEJ.EfCorePowerTools.HostedServices;
-using ErikEJ.EfCorePowerTools.Services;
+using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
 
-namespace ErikEJ.EfCorePowerTools;
+namespace ErikEJ.EFCorePowerTools.HostedServices;
 
 internal static class RegisterDependentServices
 {

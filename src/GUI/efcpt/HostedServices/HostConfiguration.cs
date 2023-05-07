@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace ErikEJ.EfCorePowerTools;
+namespace ErikEJ.EFCorePowerTools.HostedServices;
 
 internal static class HostConfiguration
 {

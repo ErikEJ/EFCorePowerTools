@@ -19,8 +19,7 @@
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
     <PackageReleaseNotes>early preview</PackageReleaseNotes>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <RootNamespace>ErikEJ.EfCorePowerTools</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

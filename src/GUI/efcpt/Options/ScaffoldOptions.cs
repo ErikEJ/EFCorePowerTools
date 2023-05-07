@@ -2,7 +2,7 @@
 using System.IO;
 using CommandLine;
 
-namespace ErikEJ.EfCorePowerTools;
+namespace ErikEJ.EFCorePowerTools;
 
 internal sealed class ScaffoldOptions
 {

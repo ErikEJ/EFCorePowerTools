@@ -6,13 +6,13 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ErikEJ.EfCorePowerTools.Services;
+using ErikEJ.EFCorePowerTools.Services;
 using RevEng.Common;
 using RevEng.Common.Efcpt;
 using RevEng.Core;
 using Spectre.Console;
 
-namespace ErikEJ.EfCorePowerTools.HostedServices;
+namespace ErikEJ.EFCorePowerTools.HostedServices;
 
 internal sealed class ScaffoldHostedService : HostedService
 {
