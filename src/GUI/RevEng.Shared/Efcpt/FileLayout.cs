@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
 {
@@ -7,7 +7,6 @@ namespace RevEng.Common.Efcpt
         [JsonPropertyName("output-path")]
         public string OutputPath { get; set; } = "Models";
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("output-dbcontext-path")]
         public string OutputDbContextPath { get; set; }
 

@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Efcpt
 {
@@ -10,11 +10,9 @@ namespace RevEng.Common.Efcpt
         [JsonPropertyName("dbcontext-name")]
         public string DbContextName { get; set; }
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("dbcontext-namespace")]
         public string DbContextNamespace { get; set; }
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("model-namespace")]
         public string ModelNamespace { get; set; }
     }
