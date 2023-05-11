@@ -1,0 +1,58 @@
+{
+   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=ReproSplitContextDB;Integrated Security=True",
+   "ContextClassName": "NorthwindContext",
+   "ContextNamespace": null,
+   "CustomReplacers": [ ],
+   "Dacpac": null,
+   "DatabaseType": 3,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "LegacyLangVersion": false,
+   "MergeDacpacs": false,
+   "ModelNamespace": null,
+   "OptionsPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground",
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground",
+   "ProjectRootNamespace": "Ef7Playground",
+   "RunCleanup": true,
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Element]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Relation]",
+         "ObjectType": 0
+      }
+   ],
+   "UncountableWords": [
+      "Status",
+      "Data"
+   ],
+   "UseAsyncCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseLegacyResultSetDiscovery": false,
+   "UseManyToManyEntity": false,
+   "UseMultipleSprocResultSets": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

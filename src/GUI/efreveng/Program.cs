@@ -42,10 +42,11 @@ namespace EfReveng
 
                         var reverseEngineerCommandOptions = new ReverseEngineerCommandOptions
                         {
-                            ConnectionString = args[2],
+                            ConnectionString = args[2].ApplyDatabaseType((DatabaseType)dbTypeInt),
                             DatabaseType = (DatabaseType)dbTypeInt,
                             MergeDacpacs = mergeDacpacs,
                         };
+
                         var provider = new ServiceCollection().AddEfpt(reverseEngineerCommandOptions, new List<string>(), new List<string>(), new List<string>()).BuildServiceProvider();
                         var procedureModelFactory = provider.GetRequiredService<IProcedureModelFactory>();
                         var functionModelFactory = provider.GetRequiredService<IFunctionModelFactory>();
