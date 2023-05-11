@@ -68,6 +68,7 @@ namespace RevEng.Core
                     @"
                             ",
                     StringComparison.OrdinalIgnoreCase))
+                .Where(m => m.Value.Trim().StartsWith("entity", StringComparison.Ordinal))
                 .ToList();
 
             if (!statementsBlockMatches.Any())
