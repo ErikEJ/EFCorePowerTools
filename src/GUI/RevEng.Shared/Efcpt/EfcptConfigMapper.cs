@@ -120,6 +120,7 @@ namespace RevEng.Common.Efcpt
                         RootNamespace = GetRootNamespaceSuggestion(fullPath),
                     },
                 };
+
                 // TODO Consider if more default values should be picked up from existing efpt.config.json
             }
 

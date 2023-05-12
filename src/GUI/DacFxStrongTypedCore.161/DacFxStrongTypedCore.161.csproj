@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="161.8089.0" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.0.52" />
   </ItemGroup>
 
 </Project>
