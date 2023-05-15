@@ -48,9 +48,9 @@ You can also use the `exclusionWildcard` item under each type of data object to 
 
 You can use the following filter expressions:
 
-- `*`: Exclude all objects in section unless `"exclude": false` is explicitly set. (Overrides all other filters)
-- `abc*`: Exclude all objects in section that starts with `abc`.
-- `*xyz`: Exclude all objects in section that ends with `xyz`.
+- `*`: Exclude all objects in section unless `"exclude": false` is explicitly set. Overrides all other filters.
+- `abc*`: Exclude all objects in section that starts with `abc`. Multiple filters allowed.
+- `*xyz`: Exclude all objects in section that ends with `xyz`. Multiple filters allowed.
 
 All filters are case sensitive.
 
