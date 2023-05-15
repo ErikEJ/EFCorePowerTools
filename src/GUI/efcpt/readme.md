@@ -40,13 +40,17 @@ If you have updated the configuration file in a way that requires files to be de
 
 ### Excluding objects
 
-The config file will always contain all current database objects. You can use the `exclusionWildcard` item under each type of data object to filter included objects. 
+The config file will always contain all current database objects. 
+
+You can exclude indvidual database objects with `"exclude": true` for the object.
+
+You can also use the `exclusionWildcard` item under each type of data object to filter included objects. 
 
 You can use the following filter expressions:
 
-- `abc*`: Starts with. NOTE: Not implemented yet. 
-- `*xyz`: Ends with. NOTE: Not implemented yet.
-- `*`: Exclude all objects in section unless `"exclude": false` is explicitly set.
+- `*`: Exclude all objects in section unless `"exclude": false` is explicitly set. (Overrides all other filters)
+- `abc*`: Exclude all objects in section that starts with `abc`.
+- `*xyz`: Exclude all objects in section that ends with `xyz`.
 
 All filters are case sensitive.
 
@@ -60,19 +64,31 @@ All filters are case sensitive.
          "exclude": false
       },
       {
-         "name": "[dbo].[Accounts]",
-         "exclude": false
-      },
-      {
          "name": "[dbo].[Messages]"
-      },
-      {
-         "name": "[dbo].[Payments]"
       }
   ],
 ```
 
-In the example above, only Users and Accounts tables will be selected.
+In the example above, only the Users table will be selected.
+
+```json
+"tables": [
+      {
+         "exclusionWildcard": "[other].*"
+      },
+      {
+         "name": "[dbo].[Users]",
+         "exclude": false
+      },
+      {
+         "name": "[other].[Accounts]"
+      },      
+      {
+         "name": "[other].[Messages]"
+      }
+  ],
+```
+In the example above, Users and Messages tables will be selected.
 
 ### Updating the tool
 
