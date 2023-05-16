@@ -174,11 +174,11 @@ namespace RevEng.Common.Efcpt
 
                 if (options.UseDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.3";
+                    pkgVersion = "7.0.4";
                     switch (efCoreVersion)
                     {
                         case 6:
-                            pkgVersion = "6.0.3";
+                            pkgVersion = "6.0.4";
                             break;
                     }
 
