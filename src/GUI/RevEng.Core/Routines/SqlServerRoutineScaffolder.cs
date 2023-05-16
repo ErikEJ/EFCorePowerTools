@@ -394,7 +394,6 @@ namespace RevEng.Core.Modules
                     }
                 }
 
-
                 Sb.AppendLine($"public {Code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
             }
         }

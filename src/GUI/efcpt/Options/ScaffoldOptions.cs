@@ -30,5 +30,4 @@ internal sealed class ScaffoldOptions
     public FileInfo ConfigFile { get; set; }
 
     public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
-
 }
