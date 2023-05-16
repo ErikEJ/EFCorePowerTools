@@ -144,30 +144,30 @@ namespace RevEng.Common.Efcpt
 
             var objects = new List<SerializationTableModel>();
 
-            void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
-                where T : IEntity, new()
-            {
-                if (entities is null)
-                {
-                    return;
-                }
-
-                var objectType = DefineObjectType<T>();
-
-                var excludeAll = entities.Any(t => t.ExclusionWildcard == "*");
-
-                var serializationTableModels = entities.Where<T>(entity => ExclusionFilter<T>(entity, excludeAll)
-                    && !string.IsNullOrEmpty(entity.Name))
-                    .Select<T, global::RevEng.Common.SerializationTableModel>(entity => new global::RevEng.Common.SerializationTableModel(entity.Name, objectType, null));
-                addRange(serializationTableModels);
-            }
-
             ToSerializationModel(config.Tables, objects.AddRange);
             ToSerializationModel(config.Views, objects.AddRange);
             ToSerializationModel(config.StoredProcedures, objects.AddRange);
             ToSerializationModel(config.Functions, objects.AddRange);
 
             return objects;
+        }
+
+        private static void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
+                where T : IEntity, new()
+        {
+            if (entities is null)
+            {
+                return;
+            }
+
+            var objectType = DefineObjectType<T>();
+
+            var excludeAll = entities.Any(t => t.ExclusionWildcard == "*");
+
+            var serializationTableModels = entities.Where(entity => ExclusionFilter(entity, excludeAll)
+                && !string.IsNullOrEmpty(entity.Name))
+                .Select(entity => new SerializationTableModel(entity.Name, objectType, null));
+            addRange(serializationTableModels);
         }
 
         private static bool ExclusionFilter<T>(T entity, bool excludeAll)
