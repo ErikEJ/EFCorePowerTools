@@ -174,11 +174,11 @@ namespace RevEng.Common.Efcpt
 
                 if (options.UseDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.4";
+                    pkgVersion = "7.0.3";
                     switch (efCoreVersion)
                     {
                         case 6:
-                            pkgVersion = "6.0.4";
+                            pkgVersion = "6.0.3";
                             break;
                     }
 
@@ -382,7 +382,7 @@ namespace RevEng.Common.Efcpt
             {
                 {
                     "Microsoft.EntityFrameworkCore.SqlServer",
-                    new List<string> { "mssql" }
+                    new List<string> { "mssql", "sqlserver" }
                 },
                 {
                     "Microsoft.EntityFrameworkCore.Sqlite",
@@ -390,7 +390,7 @@ namespace RevEng.Common.Efcpt
                 },
                 {
                     "Npgsql.EntityFrameworkCore.PostgreSQL",
-                    new List<string> { "postgres" }
+                    new List<string> { "postgres", "postgresql" }
                 },
                 {
                     "Pomelo.EntityFrameworkCore.MySql",

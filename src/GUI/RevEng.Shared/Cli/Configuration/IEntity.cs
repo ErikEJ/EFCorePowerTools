@@ -1,4 +1,4 @@
-﻿namespace RevEng.Common.Efcpt;
+﻿namespace RevEng.Common.Cli.Configuration;
 
 public interface IEntity
 {

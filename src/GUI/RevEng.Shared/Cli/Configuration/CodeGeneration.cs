@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace RevEng.Common.Efcpt
+namespace RevEng.Common.Cli.Configuration
 {
     public class CodeGeneration
     {

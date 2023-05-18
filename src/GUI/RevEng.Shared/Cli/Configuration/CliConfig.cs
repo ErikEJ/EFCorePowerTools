@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace RevEng.Common.Efcpt
+namespace RevEng.Common.Cli.Configuration
 {
 #pragma warning disable CA2227
-    public class EfcptConfig
+    public class CliConfig
     {
         [JsonPropertyName("$schema")]
 #pragma warning disable CA1822
