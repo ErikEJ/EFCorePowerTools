@@ -4,11 +4,11 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 
-namespace RevEng.Common.Efcpt
+namespace RevEng.Common.Cli
 {
-    public class T4Helper
+    public static class T4Helper
     {
-        public string DropT4Templates(string projectPath)
+        public static string DropT4Templates(string projectPath)
         {
             const string T4Version = "703";
 

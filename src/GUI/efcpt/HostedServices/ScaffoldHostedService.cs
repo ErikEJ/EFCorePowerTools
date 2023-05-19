@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
 using RevEng.Common;
-using RevEng.Common.Efcpt;
+using RevEng.Common.Cli;
 using RevEng.Core;
 using Spectre.Console;
 
@@ -52,7 +52,7 @@ internal sealed class ScaffoldHostedService : HostedService
             $"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds",
             Color.Default);
 
-        if (!EfcptConfigMapper.TryGetEfcptConfig(
+        if (!CliConfigMapper.TryGetCliConfig(
                 scaffoldOptions.ConfigFile.FullName,
                 scaffoldOptions.ConnectionString,
                 reverseEngineerCommandOptions.DatabaseType,
@@ -73,7 +73,7 @@ internal sealed class ScaffoldHostedService : HostedService
 
         if (commandOptions.UseT4 && Constants.EfCoreVersion > 6)
         {
-            var t4Result = new T4Helper().DropT4Templates(commandOptions.ProjectPath);
+            var t4Result = T4Helper.DropT4Templates(commandOptions.ProjectPath);
             if (!string.IsNullOrEmpty(t4Result))
             {
                 displayService.MarkupLine(t4Result, Color.Default);

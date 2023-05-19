@@ -92,6 +92,52 @@ namespace UnitTests
             Assert.AreEqual(3, result.Count);
         }
 
+        [Test]
+        public void CanAddEndsWithFilterAndExplicitInclude()
+        {
+            var config = GetConfig();
+
+            config.Tables.First().Exclude = false;
+
+            config.Tables.Add(new Table { ExclusionWildcard = "*ors]" });
+
+            var result = CliConfigMapper.BuildObjectList(config);
+
+            Assert.NotNull(result);
+
+            Assert.AreEqual(3, result.Count);
+        }
+
+        [Test]
+        public void CanAddContainsFilter()
+        {
+            var config = GetConfig();
+
+            config.Tables.Add(new Table { ExclusionWildcard = "*].[Ac*" });
+
+            var result = CliConfigMapper.BuildObjectList(config);
+
+            Assert.NotNull(result);
+
+            Assert.AreEqual(3, result.Count);
+        }
+
+        [Test]
+        public void CanAddContainsFilterAndExplicitInclude()
+        {
+            var config = GetConfig();
+
+            config.Tables[1].Exclude = false;
+
+            config.Tables.Add(new Table { ExclusionWildcard = "*].[Ac*" });
+
+            var result = CliConfigMapper.BuildObjectList(config);
+
+            Assert.NotNull(result);
+
+            Assert.AreEqual(4, result.Count);
+        }
+
         private CliConfig GetConfig()
         {
             var config = new CliConfig

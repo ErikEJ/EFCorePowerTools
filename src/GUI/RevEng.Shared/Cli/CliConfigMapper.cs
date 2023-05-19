@@ -178,18 +178,20 @@ namespace RevEng.Common.Cli
         {
             var filters = new List<ExclusionFilter>();
 
-            var candidates = entities.Where(t => !string.IsNullOrEmpty(t.ExclusionWildcard) &&
-                t.ExclusionWildcard != "*").ToList();
+            var candidates = entities.Where(t => !string.IsNullOrEmpty(t.ExclusionWildcard)
+                && t.ExclusionWildcard != "*"
+                && t.ExclusionWildcard.Contains('*')).ToList();
 
             foreach (var candiate in candidates)
             {
-                if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase) 
-                    && candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase))
+                if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase)
+                    && candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase)
+                    && candiate.ExclusionWildcard.Length > 2)
                 {
                     filters.Add(new ExclusionFilter
                     {
-                        Filter = candiate.ExclusionWildcard.Remove(0).Substring(0, candiate.ExclusionWildcard.Length - 1),
-                        FilterType = ExclustionFilterType.Contains,
+                        Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1).Substring(1),
+                        FilterType = ExclusionFilterType.Contains,
                     });
                     break;
                 }
@@ -199,7 +201,7 @@ namespace RevEng.Common.Cli
                     filters.Add(new ExclusionFilter
                     {
                         Filter = candiate.ExclusionWildcard.Substring(1),
-                        FilterType = ExclustionFilterType.EndsWith,
+                        FilterType = ExclusionFilterType.EndsWith,
                     });
                     break;
                 }
@@ -209,7 +211,7 @@ namespace RevEng.Common.Cli
                     filters.Add(new ExclusionFilter
                     {
                         Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1),
-                        FilterType = ExclustionFilterType.StartsWith,
+                        FilterType = ExclusionFilterType.StartsWith,
                     });
                     break;
                 }
@@ -233,7 +235,7 @@ namespace RevEng.Common.Cli
                     return true;
                 }
 
-                if (filter.FilterType == ExclustionFilterType.StartsWith
+                if (filter.FilterType == ExclusionFilterType.StartsWith
                     && !string.IsNullOrEmpty(entity.Name)
                     && string.IsNullOrEmpty(entity.ExclusionWildcard)
                     && entity.Name.StartsWith(filter.Filter, StringComparison.Ordinal))
@@ -241,7 +243,7 @@ namespace RevEng.Common.Cli
                     return false;
                 }
 
-                if (filter.FilterType == ExclustionFilterType.EndsWith
+                if (filter.FilterType == ExclusionFilterType.EndsWith
                     && !string.IsNullOrEmpty(entity.Name)
                     && string.IsNullOrEmpty(entity.ExclusionWildcard)
                     && entity.Name.EndsWith(filter.Filter, StringComparison.Ordinal))
@@ -249,7 +251,7 @@ namespace RevEng.Common.Cli
                     return false;
                 }
 
-                if (filter.FilterType == ExclustionFilterType.Contains
+                if (filter.FilterType == ExclusionFilterType.Contains
                     && !string.IsNullOrEmpty(entity.Name)
                     && string.IsNullOrEmpty(entity.ExclusionWildcard)
                     && entity.Name.Contains(filter.Filter))

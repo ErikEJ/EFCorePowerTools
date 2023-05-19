@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace RevEng.Common.Efcpt
+namespace RevEng.Common.Cli
 {
     public static class Providers
     {

@@ -1,6 +1,6 @@
 ﻿namespace RevEng.Common.Cli
 {
-    internal enum ExclustionFilterType
+    internal enum ExclusionFilterType
     {
         StartsWith = 0,
         EndsWith = 1,
