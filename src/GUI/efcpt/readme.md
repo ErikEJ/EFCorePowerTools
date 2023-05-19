@@ -8,13 +8,13 @@ The tool runs on any operating system with the .NET 6.0 runtime installed.
 
 ### Installing the tool
 
-For EF Core 7:
+EF Core 7:
 
 ```bash
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
 ```
 
-For EF Core 6:
+EF Core 6:
 
 ```bash
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
@@ -27,6 +27,8 @@ From the folder where you want the code to be generated (usually where your .NET
 ```bash
 efcpt "Server=(local);Database=Northwind;User id=user;Pwd=secret123;Encrypt=false" mssql
 ```
+
+Type `efcpt --help` for help on command line options.
 
 ### Configuring options
 
@@ -48,10 +50,12 @@ You can also use the `exclusionWildcard` item under each type of data object to 
 
 You can use the following filter expressions:
 
-- `*`: Exclude all objects in section unless `"exclude": false` is explicitly set. Overrides all other filters.
+- `*`: Exclude all objects in section. Overrides all other filters.
 - `abc*`: Exclude all objects in section that *starts* with `abc`. Multiple filters allowed.
 - `*xyz`: Exclude all objects in section that *ends* with `xyz`. Multiple filters allowed.
 - `*mno*`: Exclude all objects in section that *contains* `mno`. Multiple filters allowed.
+
+Filters will apply unless `"exclude": false` is explicitly set for a database object.
 
 All filters are case sensitive.
 
@@ -95,4 +99,10 @@ In the example above, Users and Messages tables will be selected.
 
 ```bash
 dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
+```
+
+or
+
+```bash
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
 ```
