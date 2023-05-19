@@ -155,9 +155,6 @@
     <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
-    <Content Include="CodeTemplates.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efpt60.exe.zip">
       <Link>efpt60.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>

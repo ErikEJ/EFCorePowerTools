@@ -83,7 +83,6 @@ namespace RevEng.Common.Cli
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it
-                LegacyLangVersion = false, // no 3.1 support
                 MergeDacpacs = false, // not implemented, will consider if asked for
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
                 UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)

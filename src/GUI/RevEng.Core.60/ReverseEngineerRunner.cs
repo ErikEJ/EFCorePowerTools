@@ -138,7 +138,7 @@ namespace RevEng.Core
                 RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
                 if (!options.UseHandleBars && !options.UseT4)
                 {
-                    PostProcess(filePaths.ContextFile, options.UseNullableReferences, !options.LegacyLangVersion);
+                    PostProcess(filePaths.ContextFile, options.UseNullableReferences);
                 }
 
                 entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
@@ -153,7 +153,7 @@ namespace RevEng.Core
             {
                 foreach (var file in filePaths.AdditionalFiles)
                 {
-                    PostProcess(file, options.UseNullableReferences, !options.LegacyLangVersion);
+                    PostProcess(file, options.UseNullableReferences);
                 }
             }
 
@@ -345,7 +345,7 @@ namespace RevEng.Core
             RetryFileWrite(contextFile, finalLines);
         }
 
-        private static void PostProcess(string file, bool useNullable, bool supportsNullable)
+        private static void PostProcess(string file, bool useNullable)
         {
             if (string.IsNullOrEmpty(file))
             {
@@ -354,16 +354,13 @@ namespace RevEng.Core
 
             var header = PathHelper.Header;
 
-            if (supportsNullable)
+            if (useNullable)
             {
-                if (useNullable)
-                {
-                    header = $"{header}{Environment.NewLine}#nullable enable";
-                }
-                else
-                {
-                    header = $"{header}{Environment.NewLine}#nullable disable";
-                }
+                header = $"{header}{Environment.NewLine}#nullable enable";
+            }
+            else
+            {
+                header = $"{header}{Environment.NewLine}#nullable disable";
             }
 
             var text = File.ReadAllText(file, Encoding.UTF8);

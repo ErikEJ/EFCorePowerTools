@@ -28,13 +28,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             this.codeGenerationMode = codeGenerationMode;
             var versionSuffix = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion;
 
-            revengFolder = "efreveng3.";
-
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore3:
-                    revengFolder = "efreveng3.";
-                    break;
                 case CodeGenerationMode.EFCore6:
                     revengFolder = "efreveng6.";
                     break;
@@ -98,7 +93,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 RunCleanup = AdvancedOptions.Instance.RunCleanup,
                 UseMultipleSprocResultSets = AdvancedOptions.Instance.DiscoverMultipleResultSets,
                 OptionsPath = options.OptionsPath,
-                LegacyLangVersion = await project.IsLegacyAsync(),
                 MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs,
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
                 UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
@@ -283,12 +277,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Directory.CreateDirectory(toDir);
             var cpuArch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm" : string.Empty;
 
-            var zipName = "efreveng.exe.zip";
+            string zipName;
 
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore3:
-                    break;
                 case CodeGenerationMode.EFCore6:
                     zipName = $"efreveng60{cpuArch}.exe.zip";
                     break;
@@ -296,7 +288,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     zipName = $"efreveng70{cpuArch}.exe.zip";
                     break;
                 default:
-                    break;
+                    throw new NotSupportedException();
             }
 
             using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
@@ -304,12 +296,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 archive.ExtractToDirectory(toDir, true);
             }
 
-            if (codeGenerationMode != CodeGenerationMode.EFCore3)
+            using (var archive = ZipFile.Open(Path.Combine(fromDir, "DacFX161.zip"), ZipArchiveMode.Read))
             {
-                using (var archive = ZipFile.Open(Path.Combine(fromDir, "DacFX161.zip"), ZipArchiveMode.Read))
-                {
-                    archive.ExtractToDirectory(toDir, true);
-                }
+                archive.ExtractToDirectory(toDir, true);
             }
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
@@ -336,8 +325,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore3:
-                    return "efreveng.dll";
                 case CodeGenerationMode.EFCore6:
                     return "efreveng60.dll";
                 case CodeGenerationMode.EFCore7:

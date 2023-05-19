@@ -582,7 +582,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            options.UseNullableReferences = !await project.IsLegacyAsync() && options.UseNullableReferences;
+            options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
 
@@ -590,61 +590,37 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 
-            var tfm = await project.GetAttributeAsync("TargetFrameworkMoniker");
-            bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
-
-            if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
-                && !await project.IsNet60OrHigherIncluding70Async() && !isNetStandard)
+            if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
+                && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
             {
-                foreach (var filePath in revEngResult.EntityTypeFilePaths)
+                var readmeName = "PowerToolsReadMe.md";
+                var finalText = string.Empty;
+                var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
+
+                if (packages.Any())
                 {
-                    await project.AddExistingFilesAsync(new List<string> { filePath }.ToArray());
+                    finalText = reverseEngineerHelper.GetReadMeText(options, template, packages);
                 }
-            }
-
-            if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
-            {
-                if (!await project.IsNet60OrHigherIncluding70Async() && !isNetStandard)
+                else
                 {
-                    foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
-                    {
-                        await project.AddExistingFilesAsync(new List<string> { filePath }.ToArray());
-                    }
-
-                    await project.AddExistingFilesAsync(new List<string> { revEngResult.ContextFilePath }.ToArray());
+                    finalText = reverseEngineerHelper.GetReadMeText(options, template);
                 }
 
-                if (AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
+                var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
+
+                finalText = AddResultToFinalText(finalText, revEngResult);
+
+                File.WriteAllText(readmePath, finalText, Encoding.UTF8);
+
+                if (revEngResult.HasIssues)
                 {
-                    var readmeName = "PowerToolsReadMe.md";
-                    var finalText = string.Empty;
-                    var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
-
-                    if (packages.Any())
-                    {
-                        finalText = reverseEngineerHelper.GetReadMeText(options, template, packages);
-                    }
-                    else
-                    {
-                        finalText = reverseEngineerHelper.GetReadMeText(options, template);
-                    }
-
-                    var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
-
-                    finalText = AddResultToFinalText(finalText, revEngResult);
-
-                    File.WriteAllText(readmePath, finalText, Encoding.UTF8);
-
-                    if (revEngResult.HasIssues)
-                    {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                    }
-                    else
-                    {
-                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                    }
+                    await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                }
+                else
+                {
+                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                 }
             }
 

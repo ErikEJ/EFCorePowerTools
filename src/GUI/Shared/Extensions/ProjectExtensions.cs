@@ -302,9 +302,6 @@ namespace EFCorePowerTools.Extensions
                 var pkgVersion = "7.0.5";
                 switch (options.CodeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore3:
-                        pkgVersion = "3.1.32";
-                        break;
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.16";
                         break;
@@ -336,9 +333,6 @@ namespace EFCorePowerTools.Extensions
                     pkgVersion = "7.0.0";
                     switch (options.CodeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore3:
-                            pkgVersion = "3.1.2";
-                            break;
                         case CodeGenerationMode.EFCore6:
                             pkgVersion = "6.0.1";
                             break;
@@ -359,9 +353,6 @@ namespace EFCorePowerTools.Extensions
                     pkgVersion = "4.0.0";
                     switch (options.CodeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore3:
-                            pkgVersion = "1.2.0";
-                            break;
                         case CodeGenerationMode.EFCore6:
                             pkgVersion = "3.0.1";
                             break;
@@ -422,9 +413,6 @@ namespace EFCorePowerTools.Extensions
                 var pkgVersion = "7.0.5";
                 switch (options.CodeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore3:
-                        pkgVersion = "3.1.32";
-                        break;
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.16";
                         break;
@@ -469,9 +457,6 @@ namespace EFCorePowerTools.Extensions
                 var pkgVersion = "7.0.3";
                 switch (options.CodeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore3:
-                        pkgVersion = "3.1.18";
-                        break;
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.8";
                         break;
@@ -516,9 +501,6 @@ namespace EFCorePowerTools.Extensions
                 var pkgVersion = "7.0.0";
                 switch (options.CodeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore3:
-                        pkgVersion = "3.2.7";
-                        break;
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.2";
                         break;
@@ -551,9 +533,6 @@ namespace EFCorePowerTools.Extensions
                 var pkgVersion = "7.21.9";
                 switch (options.CodeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore3:
-                        pkgVersion = "3.21.90";
-                        break;
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.21.90";
                         break;
@@ -571,22 +550,19 @@ namespace EFCorePowerTools.Extensions
 
             if (databaseType == DatabaseType.Firebird)
             {
-                var pkgVersion = "9.1.1";
-                switch (options.CodeGenerationMode)
+                if (options.CodeGenerationMode == CodeGenerationMode.EFCore6)
                 {
-                    case CodeGenerationMode.EFCore3:
-                        pkgVersion = "7.10.1";
-                        break;
-                }
+                    var pkgVersion = "9.1.1";
 
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Firebird",
-                });
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { databaseType },
+                        IsMainProviderPackage = true,
+                        UseMethodName = "Firebird",
+                    });
+                }
             }
 
             return packages;
