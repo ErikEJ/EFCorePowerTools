@@ -5,7 +5,7 @@ using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RevEng.Common;
-using RevEng.Common.Efcpt;
+using RevEng.Common.Cli;
 using RevEng.Core;
 
 namespace ErikEJ.EFCorePowerTools.HostedServices;
@@ -41,7 +41,7 @@ internal static class RegisterDependentServices
             return hostBuilder;
         }
 
-        displayService.Error($"Unknown provider '{scaffoldOptions.Provider}' - valid values are: mssql, postgres, sqlite, oracle, mysql, firebird");
+        displayService.Error($"Unknown provider '{scaffoldOptions.Provider}' - valid values are: mssql, sqlserver, postgres, postgresql, sqlite, oracle, mysql, firebird");
         Environment.ExitCode = 1;
 
         return hostBuilder;

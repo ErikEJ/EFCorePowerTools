@@ -1,6 +1,4 @@
-﻿using RevEng.Common.Efcpt;
-
-namespace RevEng.Common
+﻿namespace RevEng.Common
 {
     using System;
     using System.Collections.Generic;

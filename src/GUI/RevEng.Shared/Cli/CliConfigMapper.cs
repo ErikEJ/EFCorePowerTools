@@ -5,12 +5,13 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
+using RevEng.Common.Cli.Configuration;
 
-namespace RevEng.Common.Efcpt
+namespace RevEng.Common.Cli
 {
-    public static class EfcptConfigMapper
+    public static class CliConfigMapper
     {
-        public static ReverseEngineerCommandOptions ToOptions(this EfcptConfig config, string connectionString, DatabaseType databaseType, string projectPath, bool isDacpac, string configPath)
+        public static ReverseEngineerCommandOptions ToOptions(this CliConfig config, string connectionString, DatabaseType databaseType, string projectPath, bool isDacpac, string configPath)
         {
             if (config is null)
             {
@@ -104,15 +105,15 @@ namespace RevEng.Common.Efcpt
             return options;
         }
 
-        public static bool TryGetEfcptConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out EfcptConfig config)
+        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out CliConfig config)
         {
             if (File.Exists(fullPath))
             {
-                config = JsonSerializer.Deserialize<EfcptConfig>(File.ReadAllText(fullPath, Encoding.UTF8));
+                config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(fullPath, Encoding.UTF8));
             }
             else
             {
-                config = new EfcptConfig
+                config = new CliConfig
                 {
                     Names =
                     {
@@ -135,7 +136,7 @@ namespace RevEng.Common.Efcpt
             return true;
         }
 
-        public static List<SerializationTableModel> BuildObjectList(EfcptConfig config)
+        public static List<SerializationTableModel> BuildObjectList(CliConfig config)
         {
             if (config == null)
             {
@@ -153,7 +154,7 @@ namespace RevEng.Common.Efcpt
         }
 
         private static void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
-                where T : IEntity, new()
+            where T : IEntity, new()
         {
             if (entities is null)
             {
@@ -164,18 +165,99 @@ namespace RevEng.Common.Efcpt
 
             var excludeAll = entities.Any(t => t.ExclusionWildcard == "*");
 
-            var serializationTableModels = entities.Where(entity => ExclusionFilter(entity, excludeAll)
+            var filters = GetFilters(entities);
+
+            var serializationTableModels = entities.Where<T>(entity => ExclusionFilter(entity, excludeAll, filters)
                 && !string.IsNullOrEmpty(entity.Name))
                 .Select(entity => new SerializationTableModel(entity.Name, objectType, null));
             addRange(serializationTableModels);
         }
 
-        private static bool ExclusionFilter<T>(T entity, bool excludeAll)
+        private static List<ExclusionFilter> GetFilters<T>(IEnumerable<T> entities)
+            where T : IEntity, new()
+        {
+            var filters = new List<ExclusionFilter>();
+
+            var candidates = entities.Where(t => !string.IsNullOrEmpty(t.ExclusionWildcard)
+                && t.ExclusionWildcard != "*"
+                && t.ExclusionWildcard.Contains('*')).ToList();
+
+            foreach (var candiate in candidates)
+            {
+                if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase)
+                    && candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase)
+                    && candiate.ExclusionWildcard.Length > 2)
+                {
+                    filters.Add(new ExclusionFilter
+                    {
+                        Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1).Substring(1),
+                        FilterType = ExclusionFilterType.Contains,
+                    });
+                    break;
+                }
+
+                if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase))
+                {
+                    filters.Add(new ExclusionFilter
+                    {
+                        Filter = candiate.ExclusionWildcard.Substring(1),
+                        FilterType = ExclusionFilterType.EndsWith,
+                    });
+                    break;
+                }
+
+                if (candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase))
+                {
+                    filters.Add(new ExclusionFilter
+                    {
+                        Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1),
+                        FilterType = ExclusionFilterType.StartsWith,
+                    });
+                    break;
+                }
+            }
+
+            return filters;
+        }
+
+        private static bool ExclusionFilter<T>(T entity, bool excludeAll, List<ExclusionFilter> filters)
             where T : IEntity, new()
         {
             if (excludeAll)
             {
                 return entity.Exclude.HasValue && !entity.Exclude.Value;
+            }
+
+            foreach (var filter in filters)
+            {
+                if (entity.Exclude.HasValue && !entity.Exclude.Value)
+                {
+                    return true;
+                }
+
+                if (filter.FilterType == ExclusionFilterType.StartsWith
+                    && !string.IsNullOrEmpty(entity.Name)
+                    && string.IsNullOrEmpty(entity.ExclusionWildcard)
+                    && entity.Name.StartsWith(filter.Filter, StringComparison.Ordinal))
+                {
+                    return false;
+                }
+
+                if (filter.FilterType == ExclusionFilterType.EndsWith
+                    && !string.IsNullOrEmpty(entity.Name)
+                    && string.IsNullOrEmpty(entity.ExclusionWildcard)
+                    && entity.Name.EndsWith(filter.Filter, StringComparison.Ordinal))
+                {
+                    return false;
+                }
+
+                if (filter.FilterType == ExclusionFilterType.Contains
+                    && !string.IsNullOrEmpty(entity.Name)
+                    && string.IsNullOrEmpty(entity.ExclusionWildcard)
+                    && entity.Name.Contains(filter.Filter))
+                {
+                    return false;
+                }
             }
 
             return !entity.Exclude ?? true;
