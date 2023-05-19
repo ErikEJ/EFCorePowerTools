@@ -112,11 +112,7 @@ namespace Modelling
 
             var reporter = new OperationReporter(new OperationReportHandler());
 
-#if CORE60
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
-#else
-            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
-#endif
         }
 
         private static Assembly Load(string assemblyPath)

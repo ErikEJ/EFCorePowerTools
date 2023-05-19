@@ -41,14 +41,7 @@ namespace RevEng.Core
             {
                 options.Tables = new List<SerializationTableModel>();
             }
-#if CORE60
-#else
 
-            foreach (var table in options.Tables)
-            {
-                table.Name = table.Name.Replace("'", "''", StringComparison.OrdinalIgnoreCase);
-            }
-#endif
             var outputDir = !string.IsNullOrEmpty(options.OutputPath)
                ? Path.IsPathFullyQualified(options.OutputPath)
                     ? options.OutputPath
@@ -107,10 +100,9 @@ namespace RevEng.Core
                 bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
                 procedurePaths = scaffolder.GenerateStoredProcedures(options, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 
-#if CORE60
                 bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
                 functionPaths = scaffolder.GenerateFunctions(options, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
-#endif
+
                 if (functionPaths != null || procedurePaths != null)
                 {
                     var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();

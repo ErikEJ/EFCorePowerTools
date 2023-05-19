@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Internal;
-#if CORE60
 using Microsoft.EntityFrameworkCore.Metadata;
-#endif
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Design;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -97,8 +95,9 @@ namespace Modelling
             var databaseExists = relationalDatabaseCreator.Exists();
 
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
-#if CORE60
+
             var hasDifferences = false;
+
             if (migrationsAssembly?.ModelSnapshot != null)
             {
                 var snapshotModel = migrationsAssembly.ModelSnapshot.Model;
@@ -117,15 +116,7 @@ namespace Modelling
                 }
             }
 
-            var pendingModelChanges = !databaseExists || hasDifferences;
-#else
-            var modelDiffer = context.GetService<IMigrationsModelDiffer>();
-
-            var pendingModelChanges
-                = (!databaseExists || migrationsAssembly.ModelSnapshot != null)
-                    && modelDiffer.HasDifferences(migrationsAssembly.ModelSnapshot?.Model, context.Model);
-#endif
-            if (pendingModelChanges)
+            if (!databaseExists || hasDifferences)
             {
                 return "Changes";
             }
@@ -156,11 +147,8 @@ namespace Modelling
             EnsureServices(services);
 
             var migrator = services.GetRequiredService<IMigrator>();
-#if CORE60
+
             return migrator.GenerateScript(null, null, MigrationsSqlGenerationOptions.Idempotent);
-#else
-            return migrator.GenerateScript(null, null, idempotent: true);
-#endif
         }
 
         private static string ApplyMigrations(DbContext context)
@@ -235,11 +223,8 @@ namespace Modelling
 
             var reporter = new OperationReporter(
                 new OperationReportHandler());
-#if CORE60
+
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
-#else
-            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
-#endif
         }
 
         private static DesignTimeServicesBuilder GetDesignTimeServicesBuilder(string outputPath, string startupOutputPath)

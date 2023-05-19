@@ -1,8 +1,7 @@
-﻿#if CORE60
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-#else
-using JetBrains.Annotations;
-#endif
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -12,9 +11,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RevEng.Core
 {
@@ -32,16 +28,11 @@ namespace RevEng.Core
 #elif CORE70
         public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
             : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, modelRuntimeInitializer)
-#else
-        public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, List<SerializationTableModel> tables, DatabaseType databaseType)
-            : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions)
 #endif
         {
             this.tables = tables;
             this.databaseType = databaseType;
-#if CORE60
             this.ignoreManyToMany = ignoreManyToMany;
-#endif
         }
 
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)

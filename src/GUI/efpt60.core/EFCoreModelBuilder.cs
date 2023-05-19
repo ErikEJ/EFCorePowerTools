@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,11 +41,8 @@ namespace Modelling
 
                 var generated = generateDdl
                     ? GenerateCreateScript(dbContext)
-#if CORE60
                     : dbContext.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
-#else
-                    : dbContext.Model.AsModel().DebugView.View;
-#endif
+
                 result.Add(new Tuple<string, string>(type.Name, generated));
             }
 
@@ -61,11 +57,8 @@ namespace Modelling
             var generator = database.GetService<IMigrationsSqlGenerator>();
             var sql = database.GetService<ISqlGenerationHelper>();
 
-#if CORE60
             var operations = differ.GetDifferences(null, dbContext.GetService<IDesignTimeModel>().Model.GetRelationalModel());
-#else
-            var operations = differ.GetDifferences(null, model);
-#endif
+
             var commands = generator.Generate(operations, model);
 
             var builder = new StringBuilder();
@@ -107,11 +100,8 @@ namespace Modelling
 
             var reporter = new OperationReporter(
                 new OperationReportHandler());
-#if CORE60
+
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
-#else
-            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, Array.Empty<string>());
-#endif
         }
 
         private static Assembly Load(string assemblyPath)

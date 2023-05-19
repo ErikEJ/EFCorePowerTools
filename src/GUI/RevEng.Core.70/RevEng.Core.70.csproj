@@ -12,21 +12,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\RevEng.Core\*.cs" Link="%(Filename)%(Extension)" />
-		<Compile Include="..\RevEng.Core\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
-		<Compile Include="..\RevEng.Core\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
-		<Compile Include="..\RevEng.Core\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core\Dgml\*.cs" Link="Dgml\%(Filename)%(Extension)" />    
+		<Compile Include="..\RevEng.Core.60\*.cs" Link="%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core.60\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core.60\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
+		<Compile Include="..\RevEng.Core.60\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Dgml\*.cs" Link="Dgml\%(Filename)%(Extension)" />    
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="..\RevEng.Core\Check.cs" />
-	  <Compile Remove="..\RevEng.Core\CommentCSharpEntityTypeGenerator.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="..\RevEng.Core\DbContextExtensions" Link="DbContextExtensions" />
-    <EmbeddedResource Include="..\RevEng.Core\DbContextExtensions.Sync" Link="DbContextExtensions.Sync" />
+		<EmbeddedResource Include="..\RevEng.Core.60\DbContextExtensions" Link="DbContextExtensions" />
+    <EmbeddedResource Include="..\RevEng.Core.60\DbContextExtensions.Sync" Link="DbContextExtensions.Sync" />
 	</ItemGroup>
 
 	<ItemGroup>

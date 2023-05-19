@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,12 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-  </ItemGroup>	
-
-  <ItemGroup>
-    <Compile Include="..\efreveng\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-    <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestFiles\DbProject.dacpac">
+    <None Update="TestFiles\*.*">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>	

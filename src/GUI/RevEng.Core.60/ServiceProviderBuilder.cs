@@ -1,6 +1,8 @@
 ﻿#if !CORE70
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 #endif
+using System;
+using System.Collections.Generic;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Humanizer.Inflections;
@@ -20,11 +22,7 @@ using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
-using System.Collections.Generic;
-#if CORE60
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
-#endif
-using System;
 
 namespace RevEng.Core
 {
@@ -48,39 +46,19 @@ namespace RevEng.Core
                 .AddEntityFrameworkDesignTimeServices()
                 .AddSingleton<IOperationReporter, OperationReporter>(provider =>
                     reporter)
-#if CORE60
-#else
-                .AddSingleton<ICSharpEntityTypeGenerator>(provider =>
-                     new CommentCSharpEntityTypeGenerator(
-                        provider.GetService<ICSharpHelper>(),
-                        options.UseNullableReferences))
-#endif
-#if CORE60
+                .AddSingleton<IScaffoldingModelFactory>(provider =>
+                    new ColumnRemovingScaffoldingModelFactory(
+                        provider.GetService<IOperationReporter>(),
+                        provider.GetService<ICandidateNamingService>(),
+                        provider.GetService<IPluralizer>(),
+                        provider.GetService<ICSharpUtilities>(),
+                        provider.GetService<IScaffoldingTypeMapper>(),
+                        provider.GetService<LoggingDefinitions>(),
+                        provider.GetService<IModelRuntimeInitializer>(),
+                        options.Tables,
+                        options.DatabaseType,
+                        options.UseManyToManyEntity));
 
-                .AddSingleton<IScaffoldingModelFactory>(provider =>
-                new ColumnRemovingScaffoldingModelFactory(
-                    provider.GetService<IOperationReporter>(),
-                    provider.GetService<ICandidateNamingService>(),
-                    provider.GetService<IPluralizer>(),
-                    provider.GetService<ICSharpUtilities>(),
-                    provider.GetService<IScaffoldingTypeMapper>(),
-                    provider.GetService<LoggingDefinitions>(),
-                    provider.GetService<IModelRuntimeInitializer>(),
-                    options.Tables,
-                    options.DatabaseType,
-                    options.UseManyToManyEntity));
-#else
-                .AddSingleton<IScaffoldingModelFactory>(provider =>
-                new ColumnRemovingScaffoldingModelFactory(
-                    provider.GetService<IOperationReporter>(),
-                    provider.GetService<ICandidateNamingService>(),
-                    provider.GetService<IPluralizer>(),
-                    provider.GetService<ICSharpUtilities>(),
-                    provider.GetService<IScaffoldingTypeMapper>(),
-                    provider.GetService<LoggingDefinitions>(),
-                    options.Tables,
-                    options.DatabaseType));
-#endif
             if (options.CustomReplacers != null)
             {
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
@@ -92,10 +70,6 @@ namespace RevEng.Core
                 {
                     hbOptions.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;
                     hbOptions.LanguageOptions = (LanguageOptions)options.SelectedHandlebarsLanguage;
-#if CORE60
-#else
-                    hbOptions.EnableNullableReferenceTypes = options.UseNullableReferences;
-#endif
                 });
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
@@ -136,21 +110,19 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60
                     var builder = new SqlConnectionStringBuilder(options.ConnectionString);
                     if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
                         || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
                     {
                         serviceCollection.AddSingleton<IDatabaseModelFactory, CrmDatabaseModelFactory>();
                     }
-#endif
+
                     if (options.UseHierarchyId)
                     {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
@@ -162,7 +134,6 @@ namespace RevEng.Core
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
 
                     break;
 
@@ -193,7 +164,6 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if CORE60
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
@@ -205,7 +175,7 @@ namespace RevEng.Core
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
+
                     break;
 
                 case DatabaseType.Npgsql:
@@ -252,13 +222,11 @@ namespace RevEng.Core
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
-#if CORE60
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
 
                     break;
 

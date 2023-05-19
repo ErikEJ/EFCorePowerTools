@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+	  <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
   </ItemGroup>	
 
   <ItemGroup>
-    <Compile Include="..\efreveng\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-    <Compile Include="..\efreveng\Program.cs" Link="Program.cs" />
+    <Compile Include="..\efreveng60\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+    <Compile Include="..\efreveng60\Program.cs" Link="Program.cs" />
   </ItemGroup>	
 
   <ItemGroup>
