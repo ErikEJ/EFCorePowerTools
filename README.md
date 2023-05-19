@@ -4,21 +4,15 @@ Reverse engineering, model visualization and migrations UI for EF Core. For Visu
 
 Aims to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineering of an existing database, creating migrations and visualizing your DbContext model.
 
-[![Visual Studio Marketplace](http://vsmarketplacebadge.apphb.com/version/ErikEJ.EFCorePowerTools.svg)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
-[![Visual Studio Marketplace Rating](http://vsmarketplacebadge.apphb.com/rating-short/ErikEJ.EFCorePowerTools.svg)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
-![Visual Studio Marketplace Downloads](https://vsmarketplacebadge.apphb.com/installs-short/ErikEJ.EFCorePowerTools.svg)
-
+[![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
 [Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
 [Demo video - Introduction](https://youtu.be/uph-AGyOd8c)
 
-[![Demo at .NET Conf](https://img.youtube.com/vi/uph-AGyOd8c/2.jpg)](https://youtu.be/uph-AGyOd8c "Demo")
-
 [Demo video - Advanced features](https://youtu.be/3-Izu_qLDqY)
-
-[![Demo at EF Core Community Standup](https://img.youtube.com/vi/3-Izu_qLDqY/1.jpg)](https://youtu.be/3-Izu_qLDqY "Demo")
 
 [EF Core Power Tools presentation](https://erikej.github.io/EFCorePowerTools/index.html)
 
@@ -54,7 +48,7 @@ You can download the daily build from [Open VSIX Gallery](https://www.vsixgaller
 
 Ensure you always have the latest daily build (if you are brave) by installing [this extension](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.VSIXGallery-nightlybuilds)
 
-## Cross platform CLI - efcpt
+## Cross platform command line tool - efcpt
 
 A cross platform dotnet global tool is currently in preview, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/GUI/efcpt/readme.md)
 
