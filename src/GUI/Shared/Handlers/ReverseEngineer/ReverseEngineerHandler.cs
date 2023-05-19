@@ -285,7 +285,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
-                && await project.IsNetCore31OrHigherIncluding70Async())
+                && (await project.IsNet60OrHigherIncluding70Async() || await project.IsNetStandardAsync()))
             {
                 var packages = await project.GetNeededPackagesAsync(options);
 
@@ -594,7 +594,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             bool isNetStandard = tfm?.Contains(".NETStandard,Version=v2.") ?? false;
 
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 2)
-                && !await project.IsNetCore31OrHigherIncluding70Async() && !isNetStandard)
+                && !await project.IsNet60OrHigherIncluding70Async() && !isNetStandard)
             {
                 foreach (var filePath in revEngResult.EntityTypeFilePaths)
                 {
@@ -604,7 +604,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
             {
-                if (!await project.IsNetCore31OrHigherIncluding70Async() && !isNetStandard)
+                if (!await project.IsNet60OrHigherIncluding70Async() && !isNetStandard)
                 {
                     foreach (var filePath in revEngResult.ContextConfigurationFilePaths)
                     {

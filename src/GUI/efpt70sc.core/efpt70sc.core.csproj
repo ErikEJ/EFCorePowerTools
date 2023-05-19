@@ -17,11 +17,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="..\efpt30.core\EFCoreMigrationsBuilder.cs" Link="EFCoreMigrationsBuilder.cs" />
-		<Compile Include="..\efpt30.core\EFCoreModelBuilder.cs" Link="EFCoreModelBuilder.cs" />
-		<Compile Include="..\efpt30.core\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-		<Compile Include="..\efpt30.core\Program.cs" Link="Program.cs" />
-		<Compile Include="..\efpt60.core\EFCoreCompareBuilder.cs" Link="EFCoreCompareBuilder.cs" />
+    <Compile Include="..\efpt60.core\*.cs">
+      <Link>%(Filename)%(Extension)</Link>
+    </Compile>
 	</ItemGroup>
 
    <ItemGroup>

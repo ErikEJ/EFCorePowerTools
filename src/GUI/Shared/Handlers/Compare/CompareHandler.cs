@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Views;
@@ -50,7 +49,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     return;
                 }
 
-                if (!await project.IsNetCore31OrHigherIncluding70Async())
+                if (!await project.IsNet60OrHigherIncluding70Async())
                 {
                     VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;

@@ -158,10 +158,6 @@
     <Content Include="CodeTemplates.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\lib\efpt30.exe.zip">
-      <Link>efpt30.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efreveng.exe.zip">
       <Link>efreveng.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
