@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -51,9 +51,11 @@ internal sealed class PackageService
                 this.displayService.MarkupLine($"Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {Constants.EfCoreVersion}.0.*-*' to get the latest version.", Color.Yellow);
             }
         }
+#pragma warning disable CA1031
         catch (Exception)
         {
             // Ignore
         }
+#pragma warning restore CA1031
     }
 }

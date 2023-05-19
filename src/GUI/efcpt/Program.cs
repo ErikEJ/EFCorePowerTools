@@ -18,13 +18,15 @@ public static class Program
     {
         try
         {
-            return await MainAsync(args);
+            return await MainAsync(args).ConfigureAwait(false);
         }
+#pragma warning disable CA1031
         catch (Exception ex)
         {
             AnsiConsole.WriteException(ex.Demystify(), ExceptionFormats.ShortenPaths);
             return 1;
         }
+#pragma warning restore CA1031
     }
 
     public static async Task<int> MainAsync(string[] args)
@@ -32,12 +34,14 @@ public static class Program
         var parserResult = new Parser(c => c.HelpWriter = null)
             .ParseArguments<ScaffoldOptions>(args);
 
+        var displayService = new DisplayService();
+
         var result = parserResult
             .MapResult(
                 async options =>
                 {
-                    var displayService = new DisplayService();
                     var fileSystem = new FileSystem();
+
                     options.ConfigFile = new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
 
                     DisplayHeader(options, displayService);
@@ -49,6 +53,10 @@ public static class Program
                     return Environment.ExitCode;
                 },
                 async _ => await DisplayHelpAsync(parserResult).ConfigureAwait(false));
+
+        var packageService = new PackageService(displayService);
+        await packageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
+
         return await result.ConfigureAwait(false);
     }
 

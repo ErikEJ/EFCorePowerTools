@@ -104,7 +104,7 @@ internal sealed class ScaffoldHostedService : HostedService
             "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
         displayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
         displayService.MarkupLine();
-        await packageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
+
         Environment.ExitCode = 0;
     }
 
