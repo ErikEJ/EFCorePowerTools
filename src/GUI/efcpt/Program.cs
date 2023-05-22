@@ -8,6 +8,7 @@ using CommandLine.Text;
 using ErikEJ.EFCorePowerTools.HostedServices;
 using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.Hosting;
+using RevEng.Core;
 using Spectre.Console;
 
 namespace ErikEJ.EFCorePowerTools;
@@ -40,9 +41,11 @@ public static class Program
             .MapResult(
                 async options =>
                 {
+                    await ResolveProviderAsync(options, displayService).ConfigureAwait(false);
+
                     var fileSystem = new FileSystem();
 
-                    options.ConfigFile = new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
+                    options.ConfigFile = options.ConfigFile ?? new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
 
                     DisplayHeader(options, displayService);
                     var hostBuilder = new HostBuilder();
@@ -58,6 +61,28 @@ public static class Program
         await packageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
 
         return await result.ConfigureAwait(false);
+    }
+
+    private static async Task ResolveProviderAsync(ScaffoldOptions options, DisplayService displayService)
+    {
+        if (string.IsNullOrEmpty(options.Provider))
+        {
+            var resolver = new ConnectionStringResolver(options.ConnectionString);
+            var providers = resolver.ResolveAlias();
+
+            if (providers.Count == 1)
+            {
+                options.Provider = providers[0];
+            }
+
+            if (providers.Count != 1)
+            {
+                displayService.Error("Unable to resolve provider based on connection string, please specify the 'provider'");
+                displayService.Error("Supported providers: mssql, postgres, sqlite, oracle, mysql, firebird");
+            }
+
+            Environment.Exit(1);
+        }
     }
 
     private static void DisplayHeader(ScaffoldOptions options, DisplayService displayService)

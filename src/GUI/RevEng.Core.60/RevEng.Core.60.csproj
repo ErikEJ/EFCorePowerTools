@@ -8,7 +8,7 @@
   </PropertyGroup>
 
 	<PropertyGroup>
-		<DefineConstants>TRACE;CORE60</DefineConstants>
+		<DefineConstants>TRACE;CORE60;CORE60ONLY</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
