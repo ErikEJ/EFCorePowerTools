@@ -104,9 +104,9 @@ public static class Program
         Console.WriteLine(HelpText.AutoBuild(parserResult, h =>
         {
             h.AddPostOptionsLine("SAMPLES:");
-            h.AddPostOptionsLine(@"  efcpt ""Data Source=(local);Initial Catalog=Northwind;User=sa;Pwd=123;Encrypt=false""");
-            h.AddPostOptionsLine(@"  efcpt ""Server=my.database.windows.net;Authentication=Active Directory Default;Database=myddb;User Id=user@domain.com;"" mssql");
+            h.AddPostOptionsLine(@"  efcpt ""Data Source=.;Initial Catalog=Chinook;User=sa;Pwd=123""");
             h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac"" Microsoft.EntityFrameworkCore.SqlServer");
+            h.AddPostOptionsLine(@"  efcpt ""Server=my.database.windows.net;Authentication=Active Directory Default;Database=myddb;User Id=user@domain.com;"" mssql");
             return h;
         }));
 

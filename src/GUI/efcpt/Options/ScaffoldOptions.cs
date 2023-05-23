@@ -16,7 +16,7 @@ internal sealed class ScaffoldOptions
     [Value(
         1,
         MetaName = "provider",
-        HelpText = "Name of EF Core provider, or use an abbreviation (mssql, postgres, sqlite, oracle, mysql, firebird). The tool will attempt to detect from the connection string if not specified.")]
+        HelpText = "Name of EF Core provider, or use an abbreviation (mssql, postgres, sqlite, oracle, mysql, firebird). May not be required, as an attempt is made to resolve the provider from the connection string.")]
     public string Provider { get; set; }
 
     [Option('o', "output", HelpText = "Root output folder, defaults to current directory")]
