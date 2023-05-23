@@ -30,7 +30,7 @@ efcpt "Server=(local);Initial Catalog=Northwind;User id=user;Pwd=secret123;Encry
 
 Type `efcpt --help` for help on command line options.
 
-The provider name `mssql` is not required, the tool will attempt to determine the provider based on the connection string.
+The provider name (`mssql`) is not required, the tool will attempt to determine the provider from the connection string.
 
 ### Configuring options
 

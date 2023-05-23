@@ -41,7 +41,7 @@ public static class Program
             .MapResult(
                 async options =>
                 {
-                    await ResolveProviderAsync(options, displayService).ConfigureAwait(false);
+                    ResolveProvider(options, displayService);
 
                     var fileSystem = new FileSystem();
 
@@ -63,7 +63,7 @@ public static class Program
         return await result.ConfigureAwait(false);
     }
 
-    private static async Task ResolveProviderAsync(ScaffoldOptions options, DisplayService displayService)
+    private static void ResolveProvider(ScaffoldOptions options, DisplayService displayService)
     {
         if (string.IsNullOrEmpty(options.Provider))
         {
@@ -104,7 +104,7 @@ public static class Program
         Console.WriteLine(HelpText.AutoBuild(parserResult, h =>
         {
             h.AddPostOptionsLine("SAMPLES:");
-            h.AddPostOptionsLine(@"  efcpt ""Server=(local);Database=Northwind;User=sa;Pwd=123;Encrypt=false"" mssql");
+            h.AddPostOptionsLine(@"  efcpt ""Data Source=(local);Initial Catalog=Northwind;User=sa;Pwd=123;Encrypt=false""");
             h.AddPostOptionsLine(@"  efcpt ""Server=my.database.windows.net;Authentication=Active Directory Default;Database=myddb;User Id=user@domain.com;"" mssql");
             h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac"" Microsoft.EntityFrameworkCore.SqlServer");
             return h;

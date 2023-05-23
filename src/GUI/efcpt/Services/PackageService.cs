@@ -46,9 +46,9 @@ internal sealed class PackageService
             var latestVersion = versions.Where(v => v.Major == Constants.EfCoreVersion).MaxBy(v => v);
             if (latestVersion > CurrentPackageVersion())
             {
-                this.displayService.MarkupLine("Your are not using the latest version of the tool, please update to get the latest bug fixes, features and support", Color.Yellow);
-                this.displayService.MarkupLine($"Latest version is '{latestVersion}'", Color.Yellow);
-                this.displayService.MarkupLine($"Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {Constants.EfCoreVersion}.0.*-*' to get the latest version.", Color.Yellow);
+                displayService.MarkupLine("Your are not using the latest version of the tool, please update to get the latest bug fixes, features and support", Color.Yellow);
+                displayService.MarkupLine($"Latest version is '{latestVersion}'", Color.Yellow);
+                displayService.MarkupLine($"Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {Constants.EfCoreVersion}.0.*-*' to get the latest version.", Color.Yellow);
             }
         }
 #pragma warning disable CA1031
