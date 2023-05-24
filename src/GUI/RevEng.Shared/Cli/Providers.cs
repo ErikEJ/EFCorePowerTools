@@ -53,7 +53,15 @@ namespace RevEng.Common.Cli
                 throw new ArgumentNullException(nameof(commandOptions));
             }
 
-            var packages = GetNeededPackages(commandOptions.DatabaseType, commandOptions, codeGenerationMode);
+            var packages = GetNeededPackages(
+                commandOptions.DatabaseType,
+                commandOptions.UseSpatial,
+                commandOptions.UseNodaTime,
+                commandOptions.UseDateOnlyTimeOnly,
+                commandOptions.UseHierarchyId,
+                commandOptions.UseMultipleSprocResultSets,
+                commandOptions.Tables?.Any(t => t.ObjectType == ObjectType.Procedure) ?? false,
+                codeGenerationMode);
 
             var readmeName = "efcpt-readme.md";
 
@@ -68,35 +76,7 @@ namespace RevEng.Common.Cli
             return readmePath;
         }
 
-        private static string GetReadMeText(string provider, ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages)
-        {
-            var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
-                .Select(p => $"Use{p.UseMethodName}()").ToList();
-
-            var useText = string.Empty;
-
-            if (extraPackages.Count > 0)
-            {
-                useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
-            }
-
-            var packageText = new StringBuilder();
-
-            foreach (var package in packages)
-            {
-                packageText.AppendLine($"  <PackageReference Include=\"{package.PackageId}\" Version=\"{package.Version}\" />");
-            }
-
-            GetKnownProviders().TryGetValue(provider, out var providerName);
-
-            return content.Replace("[ProviderName]", providerName)
-                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
-                .Replace("[UseList]", useText)
-                .Replace("[PackageList]", packageText.ToString())
-                .Replace("[ContextName]", options.ContextClassName);
-        }
-
-        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
+        public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
         {
             // TODO Update versions here when adding provider updates
             var packages = new List<NuGetPackage>();
@@ -120,7 +100,7 @@ namespace RevEng.Common.Cli
                     UseMethodName = "SqlServer",
                 });
 
-                if (options.UseSpatial)
+                if (useSpatial)
                 {
                     packages.Add(new NuGetPackage
                     {
@@ -132,7 +112,7 @@ namespace RevEng.Common.Cli
                     });
                 }
 
-                if (options.UseNodaTime)
+                if (useNodaTime)
                 {
                     pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
@@ -152,7 +132,7 @@ namespace RevEng.Common.Cli
                     });
                 }
 
-                if (options.UseHierarchyId)
+                if (useHierarchyId)
                 {
                     pkgVersion = "4.0.0";
                     switch (codeGenerationMode)
@@ -172,7 +152,7 @@ namespace RevEng.Common.Cli
                     });
                 }
 
-                if (options.UseDateOnlyTimeOnly)
+                if (useDateOnlyTimeOnly)
                 {
                     pkgVersion = "7.0.3";
                     switch (codeGenerationMode)
@@ -196,10 +176,10 @@ namespace RevEng.Common.Cli
                     }
                 }
 
-                if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                if (hasProcedures
                     && (codeGenerationMode == CodeGenerationMode.EFCore6
                         || codeGenerationMode == CodeGenerationMode.EFCore7)
-                    && AdvancedOptions.Instance.DiscoverMultipleResultSets)
+                    && discoverMultipleResultSets)
                 {
                     packages.Add(new NuGetPackage
                     {
@@ -231,7 +211,7 @@ namespace RevEng.Common.Cli
                     UseMethodName = "Sqlite",
                 });
 
-                if (options.UseNodaTime)
+                if (useNodaTime)
                 {
                     pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
@@ -271,7 +251,7 @@ namespace RevEng.Common.Cli
                     UseMethodName = "Npgsql",
                 });
 
-                if (options.UseSpatial)
+                if (useSpatial)
                 {
                     packages.Add(new NuGetPackage
                     {
@@ -283,7 +263,7 @@ namespace RevEng.Common.Cli
                     });
                 }
 
-                if (options.UseNodaTime)
+                if (useNodaTime)
                 {
                     packages.Add(new NuGetPackage
                     {
@@ -315,7 +295,7 @@ namespace RevEng.Common.Cli
                     UseMethodName = "Mysql",
                 });
 
-                if (options.UseSpatial)
+                if (useSpatial)
                 {
                     packages.Add(new NuGetPackage
                     {
@@ -348,24 +328,49 @@ namespace RevEng.Common.Cli
                 });
             }
 
-            if (databaseType == DatabaseType.Firebird)
+            if (databaseType == DatabaseType.Firebird && codeGenerationMode == CodeGenerationMode.EFCore6)
             {
-                if (codeGenerationMode == CodeGenerationMode.EFCore6)
-                {
-                    var pkgVersion = "9.1.1";
+                var pkgVersion = "9.1.1";
 
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = true,
-                        UseMethodName = "Firebird",
-                    });
-                }
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Firebird",
+                });
             }
 
             return packages;
+        }
+
+        private static string GetReadMeText(string provider, ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages)
+        {
+            var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
+                .Select(p => $"Use{p.UseMethodName}()").ToList();
+
+            var useText = string.Empty;
+
+            if (extraPackages.Count > 0)
+            {
+                useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
+            }
+
+            var packageText = new StringBuilder();
+
+            foreach (var package in packages)
+            {
+                packageText.AppendLine($"  <PackageReference Include=\"{package.PackageId}\" Version=\"{package.Version}\" />");
+            }
+
+            GetKnownProviders().TryGetValue(provider, out var providerName);
+
+            return content.Replace("[ProviderName]", providerName)
+                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
+                .Replace("[UseList]", useText)
+                .Replace("[PackageList]", packageText.ToString())
+                .Replace("[ContextName]", options.ContextClassName);
         }
 
         private static Dictionary<string, string> GetKnownProviders()

@@ -17,7 +17,6 @@ namespace ErikEJ.EFCorePowerTools.HostedServices;
 internal sealed class ScaffoldHostedService : HostedService
 {
     private readonly DisplayService displayService;
-    private readonly PackageService packageService;
     private readonly IFileSystem fileSystem;
     private readonly ReverseEngineerCommandOptions reverseEngineerCommandOptions;
     private readonly ScaffoldOptions scaffoldOptions;
@@ -26,14 +25,12 @@ internal sealed class ScaffoldHostedService : HostedService
     public ScaffoldHostedService(
         TableListBuilder tableListBuilder,
         DisplayService displayService,
-        PackageService packageService,
         IFileSystem fileSystem,
         ScaffoldOptions scaffoldOptions,
         ReverseEngineerCommandOptions reverseEngineerCommandOptions)
     {
         this.tableListBuilder = tableListBuilder;
         this.displayService = displayService;
-        this.packageService = packageService;
         this.fileSystem = fileSystem;
         this.scaffoldOptions = scaffoldOptions;
         this.reverseEngineerCommandOptions = reverseEngineerCommandOptions;

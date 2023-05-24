@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
@@ -13,6 +14,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Common;
+using RevEng.Common.Cli;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -149,7 +151,15 @@ namespace EFCorePowerTools.Extensions
 
         public static async Task<List<NuGetPackage>> GetNeededPackagesAsync(this Project project, ReverseEngineerOptions options)
         {
-            var neededPackages = GetNeededPackages(options.DatabaseType, options);
+            var neededPackages = Providers.GetNeededPackages(
+                options.DatabaseType,
+                options.UseSpatial,
+                options.UseNodaTime,
+                options.UseDateOnlyTimeOnly,
+                options.UseHierarchyId,
+                AdvancedOptions.Instance.DiscoverMultipleResultSets,
+                options.Tables?.Any(t => t.ObjectType == ObjectType.Procedure) ?? false,
+                options.CodeGenerationMode);
 
             await IsInstalledAsync(project, neededPackages);
 
