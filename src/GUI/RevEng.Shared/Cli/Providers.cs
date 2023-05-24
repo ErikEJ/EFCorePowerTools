@@ -46,14 +46,14 @@ namespace RevEng.Common.Cli
             }
         }
 
-        public static string CreateReadme(string provider, ReverseEngineerCommandOptions commandOptions, int efCoreVersion)
+        public static string CreateReadme(string provider, ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode)
         {
             if (commandOptions == null)
             {
                 throw new ArgumentNullException(nameof(commandOptions));
             }
 
-            var packages = GetNeededPackages(commandOptions.DatabaseType, commandOptions, efCoreVersion);
+            var packages = GetNeededPackages(commandOptions.DatabaseType, commandOptions, codeGenerationMode);
 
             var readmeName = "efcpt-readme.md";
 
@@ -96,7 +96,7 @@ namespace RevEng.Common.Cli
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
-        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerCommandOptions options, int efCoreVersion)
+        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
         {
             // TODO Update versions here when adding provider updates
             var packages = new List<NuGetPackage>();
@@ -104,9 +104,9 @@ namespace RevEng.Common.Cli
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
                 var pkgVersion = "7.0.5";
-                switch (efCoreVersion)
+                switch (codeGenerationMode)
                 {
-                    case 6:
+                    case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.16";
                         break;
                 }
@@ -135,9 +135,9 @@ namespace RevEng.Common.Cli
                 if (options.UseNodaTime)
                 {
                     pkgVersion = "7.0.0";
-                    switch (efCoreVersion)
+                    switch (codeGenerationMode)
                     {
-                        case 6:
+                        case CodeGenerationMode.EFCore6:
                             pkgVersion = "6.0.1";
                             break;
                     }
@@ -155,9 +155,9 @@ namespace RevEng.Common.Cli
                 if (options.UseHierarchyId)
                 {
                     pkgVersion = "4.0.0";
-                    switch (efCoreVersion)
+                    switch (codeGenerationMode)
                     {
-                        case 6:
+                        case CodeGenerationMode.EFCore6:
                             pkgVersion = "3.0.1";
                             break;
                     }
@@ -175,25 +175,31 @@ namespace RevEng.Common.Cli
                 if (options.UseDateOnlyTimeOnly)
                 {
                     pkgVersion = "7.0.3";
-                    switch (efCoreVersion)
+                    switch (codeGenerationMode)
                     {
-                        case 6:
+                        case CodeGenerationMode.EFCore6:
                             pkgVersion = "6.0.3";
                             break;
                     }
 
-                    packages.Add(new NuGetPackage
+                    if (codeGenerationMode == CodeGenerationMode.EFCore6
+                        || codeGenerationMode == CodeGenerationMode.EFCore7)
                     {
-                        PackageId = "ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "DateOnlyTimeOnly",
-                    });
+                        packages.Add(new NuGetPackage
+                        {
+                            PackageId = "ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly",
+                            Version = pkgVersion,
+                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                            IsMainProviderPackage = false,
+                            UseMethodName = "DateOnlyTimeOnly",
+                        });
+                    }
                 }
 
                 if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                    && options.UseMultipleSprocResultSets)
+                    && (codeGenerationMode == CodeGenerationMode.EFCore6
+                        || codeGenerationMode == CodeGenerationMode.EFCore7)
+                    && AdvancedOptions.Instance.DiscoverMultipleResultSets)
                 {
                     packages.Add(new NuGetPackage
                     {
@@ -209,9 +215,9 @@ namespace RevEng.Common.Cli
             if (databaseType == DatabaseType.SQLite)
             {
                 var pkgVersion = "7.0.5";
-                switch (efCoreVersion)
+                switch (codeGenerationMode)
                 {
-                    case 6:
+                    case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.16";
                         break;
                 }
@@ -228,9 +234,9 @@ namespace RevEng.Common.Cli
                 if (options.UseNodaTime)
                 {
                     pkgVersion = "7.0.0";
-                    switch (efCoreVersion)
+                    switch (codeGenerationMode)
                     {
-                        case 6:
+                        case CodeGenerationMode.EFCore6:
                             pkgVersion = "6.0.0";
                             break;
                     }
@@ -249,9 +255,9 @@ namespace RevEng.Common.Cli
             if (databaseType == DatabaseType.Npgsql)
             {
                 var pkgVersion = "7.0.3";
-                switch (efCoreVersion)
+                switch (codeGenerationMode)
                 {
-                    case 6:
+                    case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.8";
                         break;
                 }
@@ -293,9 +299,9 @@ namespace RevEng.Common.Cli
             if (databaseType == DatabaseType.Mysql)
             {
                 var pkgVersion = "7.0.0";
-                switch (efCoreVersion)
+                switch (codeGenerationMode)
                 {
-                    case 6:
+                    case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.2";
                         break;
                 }
@@ -325,9 +331,9 @@ namespace RevEng.Common.Cli
             if (databaseType == DatabaseType.Oracle)
             {
                 var pkgVersion = "7.21.9";
-                switch (efCoreVersion)
+                switch (codeGenerationMode)
                 {
-                    case 6:
+                    case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.21.90";
                         break;
                 }
@@ -342,18 +348,21 @@ namespace RevEng.Common.Cli
                 });
             }
 
-            if (databaseType == DatabaseType.Firebird && efCoreVersion == 6)
+            if (databaseType == DatabaseType.Firebird)
             {
-                var pkgVersion = "9.1.1";
-
-                packages.Add(new NuGetPackage
+                if (codeGenerationMode == CodeGenerationMode.EFCore6)
                 {
-                    PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Firebird",
-                });
+                    var pkgVersion = "9.1.1";
+
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { databaseType },
+                        IsMainProviderPackage = true,
+                        UseMethodName = "Firebird",
+                    });
+                }
             }
 
             return packages;
