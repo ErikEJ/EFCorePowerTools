@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -109,7 +109,7 @@ namespace RevEng.Core.Modules
             "while",
         };
 
-        protected SqlServerRoutineScaffolder([NotNull] ICSharpHelper code)
+        protected SqlServerRoutineScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
         {
             if (code == null)
             {
@@ -195,7 +195,7 @@ namespace RevEng.Core.Modules
 
                     var typeName = GenerateIdentifierName(routine, model) + "Result" + suffix;
 
-                    var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName);
+                    var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
 
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
@@ -310,7 +310,7 @@ namespace RevEng.Core.Modules
             return CreateIdentifier(propertyName);
         }
 
-        private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name)
+        private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name, string schemaName)
         {
             var @namespace = options.ModelNamespace;
 
@@ -334,7 +334,7 @@ namespace RevEng.Core.Modules
                 Sb.AppendLine();
             }
 
-            Sb.AppendLine($"namespace {@namespace}");
+            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaFolders ? $".{schemaName}" : string.Empty)}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())
