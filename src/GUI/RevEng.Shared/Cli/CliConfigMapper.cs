@@ -120,8 +120,6 @@ namespace RevEng.Common.Cli
                         RootNamespace = GetRootNamespaceSuggestion(fullPath),
                     },
                 };
-
-                // TODO Consider if more default values should be picked up from existing efpt.config.json
             }
 
             config.Tables = Add(objects, config.Tables);

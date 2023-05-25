@@ -1,12 +1,14 @@
-﻿namespace ErikEJ.EFCorePowerTools;
+﻿using RevEng.Common;
+
+namespace ErikEJ.EFCorePowerTools;
 
 internal static class Constants
 {
     public const string ConfigFileName = "efcpt-config.json";
 
 #if CORE60
-    public const int EfCoreVersion = 6;
+    public const CodeGenerationMode EFCoreVersion = CodeGenerationMode.EFCore6;
 #else
-    public const int EfCoreVersion = 7;
+    public const CodeGenerationMode EFCoreVersion = CodeGenerationMode.EFCore7;
 #endif
 }

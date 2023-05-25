@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
@@ -13,6 +14,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Common;
+using RevEng.Common.Cli;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -149,7 +151,15 @@ namespace EFCorePowerTools.Extensions
 
         public static async Task<List<NuGetPackage>> GetNeededPackagesAsync(this Project project, ReverseEngineerOptions options)
         {
-            var neededPackages = GetNeededPackages(options.DatabaseType, options);
+            var neededPackages = Providers.GetNeededPackages(
+                options.DatabaseType,
+                options.UseSpatial,
+                options.UseNodaTime,
+                options.UseDateOnlyTimeOnly,
+                options.UseHierarchyId,
+                AdvancedOptions.Instance.DiscoverMultipleResultSets,
+                options.Tables?.Any(t => t.ObjectType == ObjectType.Procedure) ?? false,
+                options.CodeGenerationMode);
 
             await IsInstalledAsync(project, neededPackages);
 
@@ -290,282 +300,6 @@ namespace EFCorePowerTools.Extensions
             }
 
             return list;
-        }
-
-        private static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, ReverseEngineerOptions options)
-        {
-            // TODO Update versions here when adding provider updates
-            var packages = new List<NuGetPackage>();
-
-            if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
-            {
-                var pkgVersion = "7.0.5";
-                switch (options.CodeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.16";
-                        break;
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Microsoft.EntityFrameworkCore.SqlServer",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "SqlServer",
-                });
-
-                if (options.UseSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-
-                if (options.UseNodaTime)
-                {
-                    pkgVersion = "7.0.0";
-                    switch (options.CodeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.1";
-                            break;
-                    }
-
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NodaTime",
-                    });
-                }
-
-                if (options.UseHierarchyId)
-                {
-                    pkgVersion = "4.0.0";
-                    switch (options.CodeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "3.0.1";
-                            break;
-                    }
-
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "EntityFrameworkCore.SqlServer.HierarchyId",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "HierarchyId",
-                    });
-                }
-
-                if (options.UseDateOnlyTimeOnly)
-                {
-                    pkgVersion = "7.0.3";
-                    switch (options.CodeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.3";
-                            break;
-                    }
-
-                    if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
-                        || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
-                    {
-                        packages.Add(new NuGetPackage
-                        {
-                            PackageId = "ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly",
-                            Version = pkgVersion,
-                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                            IsMainProviderPackage = false,
-                            UseMethodName = "DateOnlyTimeOnly",
-                        });
-                    }
-                }
-
-                if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                    && (options.CodeGenerationMode == CodeGenerationMode.EFCore6
-                        || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
-                    && AdvancedOptions.Instance.DiscoverMultipleResultSets)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Dapper",
-                        Version = "2.0.123",
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = null,
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.SQLite)
-            {
-                var pkgVersion = "7.0.5";
-                switch (options.CodeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.16";
-                        break;
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Microsoft.EntityFrameworkCore.Sqlite",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Sqlite",
-                });
-
-                if (options.UseNodaTime)
-                {
-                    pkgVersion = "7.0.0";
-                    switch (options.CodeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.0";
-                            break;
-                    }
-
-                    if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
-                        || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
-                    {
-                        packages.Add(new NuGetPackage
-                        {
-                            PackageId = "EntityFrameworkCore.Sqlite.NodaTime",
-                            Version = pkgVersion,
-                            DatabaseTypes = new List<DatabaseType> { databaseType },
-                            IsMainProviderPackage = false,
-                            UseMethodName = "NodaTime",
-                        });
-                    }
-                }
-            }
-
-            if (databaseType == DatabaseType.Npgsql)
-            {
-                var pkgVersion = "7.0.3";
-                switch (options.CodeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.8";
-                        break;
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Npgsql",
-                });
-
-                if (options.UseSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-
-                if (options.UseNodaTime)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NodaTime",
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.Mysql)
-            {
-                var pkgVersion = "7.0.0";
-                switch (options.CodeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.2";
-                        break;
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Pomelo.EntityFrameworkCore.MySql",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Mysql",
-                });
-
-                if (options.UseSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.Oracle)
-            {
-                var pkgVersion = "7.21.9";
-                switch (options.CodeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.21.90";
-                        break;
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Oracle.EntityFrameworkCore",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Oracle",
-                });
-            }
-
-            if (databaseType == DatabaseType.Firebird)
-            {
-                if (options.CodeGenerationMode == CodeGenerationMode.EFCore6)
-                {
-                    var pkgVersion = "9.1.1";
-
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = true,
-                        UseMethodName = "Firebird",
-                    });
-                }
-            }
-
-            return packages;
         }
 
         private static async Task IsInstalledAsync(Project project, List<NuGetPackage> packages)

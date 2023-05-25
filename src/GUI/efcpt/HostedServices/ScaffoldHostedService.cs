@@ -17,7 +17,6 @@ namespace ErikEJ.EFCorePowerTools.HostedServices;
 internal sealed class ScaffoldHostedService : HostedService
 {
     private readonly DisplayService displayService;
-    private readonly PackageService packageService;
     private readonly IFileSystem fileSystem;
     private readonly ReverseEngineerCommandOptions reverseEngineerCommandOptions;
     private readonly ScaffoldOptions scaffoldOptions;
@@ -26,14 +25,12 @@ internal sealed class ScaffoldHostedService : HostedService
     public ScaffoldHostedService(
         TableListBuilder tableListBuilder,
         DisplayService displayService,
-        PackageService packageService,
         IFileSystem fileSystem,
         ScaffoldOptions scaffoldOptions,
         ReverseEngineerCommandOptions reverseEngineerCommandOptions)
     {
         this.tableListBuilder = tableListBuilder;
         this.displayService = displayService;
-        this.packageService = packageService;
         this.fileSystem = fileSystem;
         this.scaffoldOptions = scaffoldOptions;
         this.reverseEngineerCommandOptions = reverseEngineerCommandOptions;
@@ -71,7 +68,7 @@ internal sealed class ScaffoldHostedService : HostedService
             scaffoldOptions.ConfigFile.FullName);
         displayService.MarkupLine();
 
-        if (commandOptions.UseT4 && Constants.EfCoreVersion > 6)
+        if (commandOptions.UseT4 && (int)Constants.EFCoreVersion > 6)
         {
             var t4Result = T4Helper.DropT4Templates(commandOptions.ProjectPath);
             if (!string.IsNullOrEmpty(t4Result))
@@ -97,7 +94,7 @@ internal sealed class ScaffoldHostedService : HostedService
         ShowErrors(result);
         ShowWarnings(result);
 
-        var readmePath = Providers.CreateReadme(scaffoldOptions.Provider, commandOptions, Constants.EfCoreVersion);
+        var readmePath = Providers.CreateReadme(scaffoldOptions.Provider, commandOptions, Constants.EFCoreVersion);
         var fileUri = new Uri(new Uri("file://"), readmePath);
 
         displayService.MarkupLine(
