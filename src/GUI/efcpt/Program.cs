@@ -79,6 +79,11 @@ public static class Program
             {
                 displayService.Error("Unable to resolve provider based on connection string, please specify the 'provider'");
                 displayService.Error("Supported providers: mssql, postgres, sqlite, oracle, mysql, firebird");
+                if (providers.Count > 1)
+                {
+                    displayService.Error($"Potential providers: '{string.Join(', ', providers)}'");
+                }
+
                 Environment.Exit(1);
             }
         }
