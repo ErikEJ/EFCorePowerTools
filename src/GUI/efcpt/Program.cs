@@ -81,7 +81,7 @@ public static class Program
                 displayService.Error("Supported providers: mssql, postgres, sqlite, oracle, mysql, firebird");
                 if (providers.Count > 1)
                 {
-                    displayService.Error($"Potential providers: '{string.Join(', ', providers)}'");
+                    displayService.Error($"Potential providers: '{string.Join(", ", providers)}'");
                 }
 
                 Environment.Exit(1);
