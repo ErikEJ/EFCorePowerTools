@@ -474,7 +474,7 @@
                     "default": false,
                     "title": "Map date and time to DateOnly/TimeOnly (mssql)",
                     "examples": [
-                        false
+                        true
                     ]
                 },
                 "use-HierarchyId": {
@@ -482,7 +482,7 @@
                     "default": false,
                     "title": "Map hierarchyId (mssql)",
                     "examples": [
-                        false
+                        true
                     ]
                 },
                 "use-spatial": {
@@ -490,7 +490,7 @@
                     "default": false,
                     "title": "Map spatial columns",
                     "examples": [
-                        false
+                        true
                     ]
                 },
                 "use-NodaTime": {
@@ -498,14 +498,14 @@
                     "default": false,
                     "title": "Use NodaTime",
                     "examples": [
-                        false
+                        true
                     ]
                 }
             },
             "examples": [{
-                "use-DateOnly-TimeOnly": false,
-                "use-HierarchyId": false,
-                "use-spatial": false,
+                "use-DateOnly-TimeOnly": true,
+                "use-HierarchyId": true,
+                "use-spatial": true,
                 "use-NodaTime": false
             }]
         },

@@ -310,8 +310,6 @@ namespace RevEng.Common.Cli
 
             var dir = Path.GetDirectoryName(fullPath);
 
-            Console.WriteLine(dir);
-
             if (!string.IsNullOrEmpty(dir))
             {
                 var csprojFiles = Directory.GetFiles(dir, "*.csproj");

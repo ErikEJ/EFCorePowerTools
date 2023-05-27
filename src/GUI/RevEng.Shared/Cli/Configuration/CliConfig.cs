@@ -21,6 +21,7 @@ namespace RevEng.Common.Cli.Configuration
         public FileLayout FileLayout { get; set; } = new FileLayout();
 
         [JsonPropertyName("type-mappings")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TypeMappings TypeMappings { get; set; }
 
         [JsonPropertyName("replacements")]
