@@ -147,7 +147,7 @@
                     "mapped-type": {
                         "type": "string",
                         "default": null,
-                        "title": "Name of a to a class (DbSet) in your DbContext that maps the result of the stored procedure ",
+                        "title": "Name of an entity class (DbSet) in your DbContext that maps the result of the stored procedure ",
                         "examples": [
                             "Customer"
                         ]
@@ -388,7 +388,7 @@
                     ]
                 },
                 "dbcontext-namespace": {
-                    "type": "string",
+                    "type": [ "string", "null" ] ,
                     "default": null,
                     "title": "Namespace of DbContext class",
                     "examples": [
@@ -396,7 +396,7 @@
                     ]
                 },
                 "model-namespace": {
-                    "type": "string",
+                    "type": [ "string", "null" ] ,
                     "default": null,
                     "title": "Namespace of entities",
                     "examples": [
@@ -405,17 +405,15 @@
                 },
                 "root-namespace": {
                     "type": "string",
-                    "default": null,
                     "title": "Root namespace",
                     "examples": [
-                        null
+                        "MyProect"
                     ]
                 }
             },
             "examples": [{
-                "dbcontext-name": "NorthwindContext",
-                "dbcontext-namespace": null,
-                "model-namespace": null
+                "root-namespace": "MypProject",
+                "dbcontext-name": "NorthwindContext"
             }]
         },
         "file-layout": {
@@ -435,11 +433,11 @@
                     ]
                 },
                 "output-dbcontext-path": {
-                    "type": "string",
+                    "type": [ "string", "null" ],
                     "default": null,
                     "title": "DbContext output path",
                     "examples": [
-                        "Context"
+                        "Data"
                     ]
                 },
                 "split-dbcontext-preview": {
@@ -599,6 +597,7 @@
             "use-alternate-stored-procedure-resultset-discovery": false
         },
         "names": {
+            "root-namespace": "MyProject",
             "dbcontext-name": "NorthwindContext",
             "dbcontext-namespace": null,
             "model-namespace": null
