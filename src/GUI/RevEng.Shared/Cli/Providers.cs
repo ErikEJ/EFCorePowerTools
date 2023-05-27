@@ -364,9 +364,9 @@ namespace RevEng.Common.Cli
                 packageText.AppendLine($"  <PackageReference Include=\"{package.PackageId}\" Version=\"{package.Version}\" />");
             }
 
-            GetKnownProviders().TryGetValue(provider, out var providerName);
+            var mainPackage = packages.FirstOrDefault(p => p.IsMainProviderPackage);
 
-            return content.Replace("[ProviderName]", providerName)
+            return content.Replace("[ProviderName]", mainPackage?.UseMethodName ?? string.Empty)
                 .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
                 .Replace("[UseList]", useText)
                 .Replace("[PackageList]", packageText.ToString())
