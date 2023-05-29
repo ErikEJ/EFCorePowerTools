@@ -46,11 +46,16 @@ namespace RevEng.Common.Cli
             }
         }
 
-        public static string CreateReadme(string provider, ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode)
+        public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
         {
             if (commandOptions == null)
             {
                 throw new ArgumentNullException(nameof(commandOptions));
+            }
+
+            if (string.IsNullOrEmpty(redactedConnectionString))
+            {
+                throw new ArgumentNullException(nameof(redactedConnectionString));
             }
 
             var packages = GetNeededPackages(
@@ -67,7 +72,7 @@ namespace RevEng.Common.Cli
 
             var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
 
-            var finalText = GetReadMeText(provider, commandOptions, template, packages);
+            var finalText = GetReadMeText(commandOptions, template, packages, redactedConnectionString);
 
             var readmePath = Path.Combine(commandOptions.ProjectPath, readmeName);
 
@@ -345,7 +350,7 @@ namespace RevEng.Common.Cli
             return packages;
         }
 
-        private static string GetReadMeText(string provider, ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages)
+        private static string GetReadMeText(ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages, string redactedConnectionString)
         {
             var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
                 .Select(p => $"Use{p.UseMethodName}()").ToList();
@@ -367,7 +372,7 @@ namespace RevEng.Common.Cli
             var mainPackage = packages.FirstOrDefault(p => p.IsMainProviderPackage);
 
             return content.Replace("[ProviderName]", mainPackage?.UseMethodName ?? string.Empty)
-                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
+                .Replace("[ConnectionString]", redactedConnectionString.Replace(@"\", @"\\"))
                 .Replace("[UseList]", useText)
                 .Replace("[PackageList]", packageText.ToString())
                 .Replace("[ContextName]", options.ContextClassName);
