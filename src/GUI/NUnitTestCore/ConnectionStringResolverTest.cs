@@ -21,9 +21,9 @@ namespace UnitTests
 
             var resolver = new ConnectionStringResolver(builder.ConnectionString);
 
-            var result = resolver.Redact(RevEng.Common.DatabaseType.SQLServer);
+            var result = resolver.Redact();
 
-            Assert.AreEqual("Data Source=.", result);
+            Assert.AreEqual("data source=.", result);
         }
 
 
@@ -37,9 +37,9 @@ namespace UnitTests
 
             var resolver = new ConnectionStringResolver(builder.ConnectionString);
 
-            var result = resolver.Redact(RevEng.Common.DatabaseType.Npgsql);
+            var result = resolver.Redact();
 
-            Assert.AreEqual("Host=localhost", result);
+            Assert.AreEqual("host=localhost", result);
         }
 
         [Test]
@@ -52,9 +52,9 @@ namespace UnitTests
 
             var resolver = new ConnectionStringResolver(builder.ConnectionString);
 
-            var result = resolver.Redact(RevEng.Common.DatabaseType.Mysql);
+            var result = resolver.Redact();
 
-            Assert.AreEqual("Server=localhost", result);
+            Assert.AreEqual("server=localhost", result);
         }
 
         [Test]
@@ -67,9 +67,9 @@ namespace UnitTests
 
             var resolver = new ConnectionStringResolver(builder.ConnectionString);
 
-            var result = resolver.Redact(RevEng.Common.DatabaseType.Oracle);
+            var result = resolver.Redact();
 
-            Assert.AreEqual("DATA SOURCE=localhost", result);
+            Assert.AreEqual("data source=localhost", result);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace UnitTests
 
             var resolver = new ConnectionStringResolver(builder.ConnectionString);
 
-            var result = resolver.Redact(RevEng.Common.DatabaseType.Firebird);
+            var result = resolver.Redact();
 
             Assert.AreEqual("data source=localhost", result);
         }
