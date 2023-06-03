@@ -8,16 +8,16 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Product inventory information.
     /// </summary>
-    public partial class Productinventory
+    public partial class ProductInventory
     {
         /// <summary>
         /// Product identification number. Foreign key to Product.ProductID.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
         /// <summary>
-        /// Inventory location identification number. Foreign key to Location.LocationID.
+        /// Inventory location identification number. Foreign key to Location.LocationID. 
         /// </summary>
-        public int Locationid { get; set; }
+        public short LocationId { get; set; }
         /// <summary>
         /// Storage compartment within an inventory location.
         /// </summary>
@@ -25,13 +25,19 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Storage container on a shelf in an inventory location.
         /// </summary>
-        public int Bin { get; set; }
+        public byte Bin { get; set; }
         /// <summary>
         /// Quantity of products in the inventory location.
         /// </summary>
-        public int Quantity { get; set; }
+        public short Quantity { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Location Location { get; set; }
         public virtual Product Product { get; set; }

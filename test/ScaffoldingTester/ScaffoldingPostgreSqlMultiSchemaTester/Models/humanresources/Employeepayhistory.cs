@@ -8,16 +8,16 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Employee pay history.
     /// </summary>
-    public partial class Employeepayhistory
+    public partial class EmployeePayHistory
     {
         /// <summary>
         /// Employee identification number. Foreign key to Employee.BusinessEntityID.
         /// </summary>
-        public int Businessentityid { get; set; }
+        public int BusinessEntityId { get; set; }
         /// <summary>
         /// Date the change in pay is effective
         /// </summary>
-        public DateTime Ratechangedate { get; set; }
+        public DateTime RateChangeDate { get; set; }
         /// <summary>
         /// Salary hourly rate.
         /// </summary>
@@ -25,9 +25,12 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// 1 = Salary received monthly, 2 = Salary received biweekly
         /// </summary>
-        public int Payfrequency { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public byte PayFrequency { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Employee Businessentity { get; set; }
+        public virtual Employee BusinessEntity { get; set; }
     }
 }

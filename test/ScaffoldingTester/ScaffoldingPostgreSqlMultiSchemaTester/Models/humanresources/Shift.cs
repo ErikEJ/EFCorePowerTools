@@ -12,13 +12,13 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Shift()
         {
-            Employeedepartmenthistory = new HashSet<Employeedepartmenthistory>();
+            EmployeeDepartmentHistory = new HashSet<EmployeeDepartmentHistory>();
         }
 
         /// <summary>
         /// Primary key for Shift records.
         /// </summary>
-        public int Shiftid { get; set; }
+        public byte ShiftId { get; set; }
         /// <summary>
         /// Shift description.
         /// </summary>
@@ -26,13 +26,16 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Shift start time.
         /// </summary>
-        public TimeOnly Starttime { get; set; }
+        public TimeSpan StartTime { get; set; }
         /// <summary>
         /// Shift end time.
         /// </summary>
-        public TimeOnly Endtime { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public TimeSpan EndTime { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Employeedepartmenthistory> Employeedepartmenthistory { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistory { get; set; }
     }
 }

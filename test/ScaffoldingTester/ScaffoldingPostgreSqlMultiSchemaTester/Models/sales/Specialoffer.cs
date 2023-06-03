@@ -8,17 +8,17 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Sale discounts lookup table.
     /// </summary>
-    public partial class Specialoffer
+    public partial class SpecialOffer
     {
-        public Specialoffer()
+        public SpecialOffer()
         {
-            Specialofferproduct = new HashSet<Specialofferproduct>();
+            SpecialOfferProduct = new HashSet<SpecialOfferProduct>();
         }
 
         /// <summary>
         /// Primary key for SpecialOffer records.
         /// </summary>
-        public int Specialofferid { get; set; }
+        public int SpecialOfferId { get; set; }
         /// <summary>
         /// Discount description.
         /// </summary>
@@ -26,7 +26,7 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Discount precentage.
         /// </summary>
-        public decimal Discountpct { get; set; }
+        public decimal DiscountPct { get; set; }
         /// <summary>
         /// Discount type category.
         /// </summary>
@@ -38,22 +38,28 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Discount start date.
         /// </summary>
-        public DateTime Startdate { get; set; }
+        public DateTime StartDate { get; set; }
         /// <summary>
         /// Discount end date.
         /// </summary>
-        public DateTime Enddate { get; set; }
+        public DateTime EndDate { get; set; }
         /// <summary>
         /// Minimum discount percent allowed.
         /// </summary>
-        public int Minqty { get; set; }
+        public int MinQty { get; set; }
         /// <summary>
         /// Maximum discount percent allowed.
         /// </summary>
-        public int? Maxqty { get; set; }
+        public int? MaxQty { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Specialofferproduct> Specialofferproduct { get; set; }
+        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; set; }
     }
 }

@@ -15,279 +15,291 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "humanresources.department",
+         "Name": "[dbo].[AWBuildVersion]",
          "ObjectType": 0
       },
       {
-         "Name": "humanresources.employee",
+         "Name": "[dbo].[DatabaseLog]",
          "ObjectType": 0
       },
       {
-         "Name": "humanresources.employeedepartmenthistory",
+         "Name": "[dbo].[ErrorLog]",
          "ObjectType": 0
       },
       {
-         "Name": "humanresources.employeepayhistory",
+         "Name": "[HumanResources].[Department]",
          "ObjectType": 0
       },
       {
-         "Name": "humanresources.jobcandidate",
+         "Name": "[HumanResources].[Employee]",
          "ObjectType": 0
       },
       {
-         "Name": "humanresources.shift",
+         "Name": "[HumanResources].[EmployeeDepartmentHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "person.address",
+         "Name": "[HumanResources].[EmployeePayHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "person.addresstype",
+         "Name": "[HumanResources].[JobCandidate]",
          "ObjectType": 0
       },
       {
-         "Name": "person.businessentity",
+         "Name": "[HumanResources].[Shift]",
          "ObjectType": 0
       },
       {
-         "Name": "person.businessentityaddress",
+         "Name": "[Person].[Address]",
          "ObjectType": 0
       },
       {
-         "Name": "person.businessentitycontact",
+         "Name": "[Person].[AddressType]",
          "ObjectType": 0
       },
       {
-         "Name": "person.contacttype",
+         "Name": "[Person].[BusinessEntity]",
          "ObjectType": 0
       },
       {
-         "Name": "person.countryregion",
+         "Name": "[Person].[BusinessEntityAddress]",
          "ObjectType": 0
       },
       {
-         "Name": "person.emailaddress",
+         "Name": "[Person].[BusinessEntityContact]",
          "ObjectType": 0
       },
       {
-         "Name": "person.password",
+         "Name": "[Person].[ContactType]",
          "ObjectType": 0
       },
       {
-         "Name": "person.person",
+         "Name": "[Person].[CountryRegion]",
          "ObjectType": 0
       },
       {
-         "Name": "person.personphone",
+         "Name": "[Person].[EmailAddress]",
          "ObjectType": 0
       },
       {
-         "Name": "person.phonenumbertype",
+         "Name": "[Person].[Password]",
          "ObjectType": 0
       },
       {
-         "Name": "person.stateprovince",
+         "Name": "[Person].[Person]",
          "ObjectType": 0
       },
       {
-         "Name": "production.billofmaterials",
+         "Name": "[Person].[PersonPhone]",
          "ObjectType": 0
       },
       {
-         "Name": "production.culture",
+         "Name": "[Person].[PhoneNumberType]",
          "ObjectType": 0
       },
       {
-         "Name": "production.document",
+         "Name": "[Person].[StateProvince]",
          "ObjectType": 0
       },
       {
-         "Name": "production.illustration",
+         "Name": "[Production].[BillOfMaterials]",
          "ObjectType": 0
       },
       {
-         "Name": "production.location",
+         "Name": "[Production].[Culture]",
          "ObjectType": 0
       },
       {
-         "Name": "production.product",
+         "Name": "[Production].[Document]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productcategory",
+         "Name": "[Production].[Illustration]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productcosthistory",
+         "Name": "[Production].[Location]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productdescription",
+         "Name": "[Production].[Product]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productdocument",
+         "Name": "[Production].[ProductCategory]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productinventory",
+         "Name": "[Production].[ProductCostHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productlistpricehistory",
+         "Name": "[Production].[ProductDescription]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productmodel",
+         "Name": "[Production].[ProductDocument]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productmodelillustration",
+         "Name": "[Production].[ProductInventory]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productmodelproductdescriptionculture",
+         "Name": "[Production].[ProductListPriceHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productphoto",
+         "Name": "[Production].[ProductModel]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productproductphoto",
+         "Name": "[Production].[ProductModelIllustration]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productreview",
+         "Name": "[Production].[ProductModelProductDescriptionCulture]",
          "ObjectType": 0
       },
       {
-         "Name": "production.productsubcategory",
+         "Name": "[Production].[ProductPhoto]",
          "ObjectType": 0
       },
       {
-         "Name": "production.scrapreason",
+         "Name": "[Production].[ProductProductPhoto]",
          "ObjectType": 0
       },
       {
-         "Name": "production.transactionhistory",
+         "Name": "[Production].[ProductReview]",
          "ObjectType": 0
       },
       {
-         "Name": "production.transactionhistoryarchive",
+         "Name": "[Production].[ProductSubcategory]",
          "ObjectType": 0
       },
       {
-         "Name": "production.unitmeasure",
+         "Name": "[Production].[ScrapReason]",
          "ObjectType": 0
       },
       {
-         "Name": "production.workorder",
+         "Name": "[Production].[TransactionHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "production.workorderrouting",
+         "Name": "[Production].[TransactionHistoryArchive]",
          "ObjectType": 0
       },
       {
-         "Name": "purchasing.productvendor",
+         "Name": "[Production].[UnitMeasure]",
          "ObjectType": 0
       },
       {
-         "Name": "purchasing.purchaseorderdetail",
+         "Name": "[Production].[WorkOrder]",
          "ObjectType": 0
       },
       {
-         "Name": "purchasing.purchaseorderheader",
+         "Name": "[Production].[WorkOrderRouting]",
          "ObjectType": 0
       },
       {
-         "Name": "purchasing.shipmethod",
+         "Name": "[Purchasing].[ProductVendor]",
          "ObjectType": 0
       },
       {
-         "Name": "purchasing.vendor",
+         "Name": "[Purchasing].[PurchaseOrderDetail]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.countryregioncurrency",
+         "Name": "[Purchasing].[PurchaseOrderHeader]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.creditcard",
+         "Name": "[Purchasing].[ShipMethod]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.currency",
+         "Name": "[Purchasing].[Vendor]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.currencyrate",
+         "Name": "[Sales].[CountryRegionCurrency]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.customer",
+         "Name": "[Sales].[CreditCard]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.personcreditcard",
+         "Name": "[Sales].[Currency]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesorderdetail",
+         "Name": "[Sales].[CurrencyRate]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesorderheader",
+         "Name": "[Sales].[Customer]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesorderheadersalesreason",
+         "Name": "[Sales].[PersonCreditCard]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesperson",
+         "Name": "[Sales].[SalesOrderDetail]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salespersonquotahistory",
+         "Name": "[Sales].[SalesOrderHeader]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesreason",
+         "Name": "[Sales].[SalesOrderHeaderSalesReason]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salestaxrate",
+         "Name": "[Sales].[SalesPerson]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesterritory",
+         "Name": "[Sales].[SalesPersonQuotaHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.salesterritoryhistory",
+         "Name": "[Sales].[SalesReason]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.shoppingcartitem",
+         "Name": "[Sales].[SalesTaxRate]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.specialoffer",
+         "Name": "[Sales].[SalesTerritory]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.specialofferproduct",
+         "Name": "[Sales].[SalesTerritoryHistory]",
          "ObjectType": 0
       },
       {
-         "Name": "sales.store",
+         "Name": "[Sales].[ShoppingCartItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Sales].[SpecialOffer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Sales].[SpecialOfferProduct]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[Sales].[Store]",
          "ObjectType": 0
       }
    ],
-   "UiHint": ".Adventureworks",
+   "UiHint": "D:\\source\\EFCorePowerTools\\src\\GUI\\NUnitTestCore\\Dacpac\\AdventureWorks2014.dacpac",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

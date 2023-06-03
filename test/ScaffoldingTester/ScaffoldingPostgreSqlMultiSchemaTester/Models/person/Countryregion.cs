@@ -8,27 +8,30 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Lookup table containing the ISO standard codes for countries and regions.
     /// </summary>
-    public partial class Countryregion
+    public partial class CountryRegion
     {
-        public Countryregion()
+        public CountryRegion()
         {
-            Countryregioncurrency = new HashSet<Countryregioncurrency>();
-            Salesterritory = new HashSet<Salesterritory>();
-            Stateprovince = new HashSet<Stateprovince>();
+            CountryRegionCurrency = new HashSet<CountryRegionCurrency>();
+            SalesTerritory = new HashSet<SalesTerritory>();
+            StateProvince = new HashSet<StateProvince>();
         }
 
         /// <summary>
         /// ISO standard code for countries and regions.
         /// </summary>
-        public string Countryregioncode { get; set; }
+        public string CountryRegionCode { get; set; }
         /// <summary>
         /// Country or region name.
         /// </summary>
         public string Name { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Countryregioncurrency> Countryregioncurrency { get; set; }
-        public virtual ICollection<Salesterritory> Salesterritory { get; set; }
-        public virtual ICollection<Stateprovince> Stateprovince { get; set; }
+        public virtual ICollection<CountryRegionCurrency> CountryRegionCurrency { get; set; }
+        public virtual ICollection<SalesTerritory> SalesTerritory { get; set; }
+        public virtual ICollection<StateProvince> StateProvince { get; set; }
     }
 }

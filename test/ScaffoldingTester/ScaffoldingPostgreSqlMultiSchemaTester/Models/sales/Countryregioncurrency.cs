@@ -8,19 +8,22 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Cross-reference table mapping ISO currency codes to a country or region.
     /// </summary>
-    public partial class Countryregioncurrency
+    public partial class CountryRegionCurrency
     {
         /// <summary>
         /// ISO code for countries and regions. Foreign key to CountryRegion.CountryRegionCode.
         /// </summary>
-        public string Countryregioncode { get; set; }
+        public string CountryRegionCode { get; set; }
         /// <summary>
         /// ISO standard currency code. Foreign key to Currency.CurrencyCode.
         /// </summary>
-        public string Currencycode { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public string CurrencyCode { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Countryregion CountryregioncodeNavigation { get; set; }
-        public virtual Currency CurrencycodeNavigation { get; set; }
+        public virtual CountryRegion CountryRegionCodeNavigation { get; set; }
+        public virtual Currency CurrencyCodeNavigation { get; set; }
     }
 }

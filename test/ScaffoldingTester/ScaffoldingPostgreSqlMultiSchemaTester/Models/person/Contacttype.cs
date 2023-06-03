@@ -8,23 +8,26 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Lookup table containing the types of business entity contacts.
     /// </summary>
-    public partial class Contacttype
+    public partial class ContactType
     {
-        public Contacttype()
+        public ContactType()
         {
-            Businessentitycontact = new HashSet<Businessentitycontact>();
+            BusinessEntityContact = new HashSet<BusinessEntityContact>();
         }
 
         /// <summary>
         /// Primary key for ContactType records.
         /// </summary>
-        public int Contacttypeid { get; set; }
+        public int ContactTypeId { get; set; }
         /// <summary>
         /// Contact type description.
         /// </summary>
         public string Name { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Businessentitycontact> Businessentitycontact { get; set; }
+        public virtual ICollection<BusinessEntityContact> BusinessEntityContact { get; set; }
     }
 }

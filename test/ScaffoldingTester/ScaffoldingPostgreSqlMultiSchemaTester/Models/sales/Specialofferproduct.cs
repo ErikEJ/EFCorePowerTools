@@ -8,20 +8,32 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Cross-reference table mapping products to special offer discounts.
     /// </summary>
-    public partial class Specialofferproduct
+    public partial class SpecialOfferProduct
     {
+        public SpecialOfferProduct()
+        {
+            SalesOrderDetail = new HashSet<SalesOrderDetail>();
+        }
+
         /// <summary>
         /// Primary key for SpecialOfferProduct records.
         /// </summary>
-        public int Specialofferid { get; set; }
+        public int SpecialOfferId { get; set; }
         /// <summary>
         /// Product identification number. Foreign key to Product.ProductID.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Product Product { get; set; }
-        public virtual Specialoffer Specialoffer { get; set; }
+        public virtual SpecialOffer SpecialOffer { get; set; }
+        public virtual ICollection<SalesOrderDetail> SalesOrderDetail { get; set; }
     }
 }

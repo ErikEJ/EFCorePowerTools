@@ -12,31 +12,37 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Customer()
         {
-            Salesorderheader = new HashSet<Salesorderheader>();
+            SalesOrderHeader = new HashSet<SalesOrderHeader>();
         }
 
         /// <summary>
         /// Primary key.
         /// </summary>
-        public int Customerid { get; set; }
+        public int CustomerId { get; set; }
         /// <summary>
         /// Foreign key to Person.BusinessEntityID
         /// </summary>
-        public int? Personid { get; set; }
+        public int? PersonId { get; set; }
         /// <summary>
         /// Foreign key to Store.BusinessEntityID
         /// </summary>
-        public int? Storeid { get; set; }
+        public int? StoreId { get; set; }
         /// <summary>
         /// ID of the territory in which the customer is located. Foreign key to SalesTerritory.SalesTerritoryID.
         /// </summary>
-        public int? Territoryid { get; set; }
+        public int? TerritoryId { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Person Person { get; set; }
         public virtual Store Store { get; set; }
-        public virtual Salesterritory Territory { get; set; }
-        public virtual ICollection<Salesorderheader> Salesorderheader { get; set; }
+        public virtual SalesTerritory Territory { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeader { get; set; }
     }
 }

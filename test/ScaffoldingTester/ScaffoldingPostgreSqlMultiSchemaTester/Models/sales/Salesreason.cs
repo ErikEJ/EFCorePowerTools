@@ -8,17 +8,17 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Lookup table of customer purchase reasons.
     /// </summary>
-    public partial class Salesreason
+    public partial class SalesReason
     {
-        public Salesreason()
+        public SalesReason()
         {
-            Salesorderheadersalesreason = new HashSet<Salesorderheadersalesreason>();
+            SalesOrderHeaderSalesReason = new HashSet<SalesOrderHeaderSalesReason>();
         }
 
         /// <summary>
         /// Primary key for SalesReason records.
         /// </summary>
-        public int Salesreasonid { get; set; }
+        public int SalesReasonId { get; set; }
         /// <summary>
         /// Sales reason description.
         /// </summary>
@@ -26,9 +26,12 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Category the sales reason belongs to.
         /// </summary>
-        public string Reasontype { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public string ReasonType { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Salesorderheadersalesreason> Salesorderheadersalesreason { get; set; }
+        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; set; }
     }
 }

@@ -8,16 +8,16 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Contains online customer orders until the order is submitted or cancelled.
     /// </summary>
-    public partial class Shoppingcartitem
+    public partial class ShoppingCartItem
     {
         /// <summary>
         /// Primary key for ShoppingCartItem records.
         /// </summary>
-        public int Shoppingcartitemid { get; set; }
+        public int ShoppingCartItemId { get; set; }
         /// <summary>
         /// Shopping cart identification number.
         /// </summary>
-        public string Shoppingcartid { get; set; }
+        public string ShoppingCartId { get; set; }
         /// <summary>
         /// Product quantity ordered.
         /// </summary>
@@ -25,12 +25,15 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Product ordered. Foreign key to Product.ProductID.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
         /// <summary>
         /// Date the time the record was created.
         /// </summary>
-        public DateTime Datecreated { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public DateTime DateCreated { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Product Product { get; set; }
     }

@@ -12,26 +12,25 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Product()
         {
-            BillofmaterialsComponent = new HashSet<Billofmaterials>();
-            BillofmaterialsProductassembly = new HashSet<Billofmaterials>();
-            Productcosthistory = new HashSet<Productcosthistory>();
-            Productdocument = new HashSet<Productdocument>();
-            Productinventory = new HashSet<Productinventory>();
-            Productlistpricehistory = new HashSet<Productlistpricehistory>();
-            Productproductphoto = new HashSet<Productproductphoto>();
-            Productreview = new HashSet<Productreview>();
-            Productvendor = new HashSet<Productvendor>();
-            Purchaseorderdetail = new HashSet<Purchaseorderdetail>();
-            Shoppingcartitem = new HashSet<Shoppingcartitem>();
-            Specialofferproduct = new HashSet<Specialofferproduct>();
-            Transactionhistory = new HashSet<Transactionhistory>();
-            Workorder = new HashSet<Workorder>();
+            BillOfMaterialsComponent = new HashSet<BillOfMaterials>();
+            BillOfMaterialsProductAssembly = new HashSet<BillOfMaterials>();
+            ProductCostHistory = new HashSet<ProductCostHistory>();
+            ProductInventory = new HashSet<ProductInventory>();
+            ProductListPriceHistory = new HashSet<ProductListPriceHistory>();
+            ProductProductPhoto = new HashSet<ProductProductPhoto>();
+            ProductReview = new HashSet<ProductReview>();
+            ProductVendor = new HashSet<ProductVendor>();
+            PurchaseOrderDetail = new HashSet<PurchaseOrderDetail>();
+            ShoppingCartItem = new HashSet<ShoppingCartItem>();
+            SpecialOfferProduct = new HashSet<SpecialOfferProduct>();
+            TransactionHistory = new HashSet<TransactionHistory>();
+            WorkOrder = new HashSet<WorkOrder>();
         }
 
         /// <summary>
         /// Primary key for Product records.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
         /// <summary>
         /// Name of the product.
         /// </summary>
@@ -39,35 +38,35 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Unique product identification number.
         /// </summary>
-        public string Productnumber { get; set; }
+        public string ProductNumber { get; set; }
         /// <summary>
         /// 0 = Product is purchased, 1 = Product is manufactured in-house.
         /// </summary>
-        public bool? Makeflag { get; set; }
+        public bool? MakeFlag { get; set; }
         /// <summary>
         /// 0 = Product is not a salable item. 1 = Product is salable.
         /// </summary>
-        public bool? Finishedgoodsflag { get; set; }
+        public bool? FinishedGoodsFlag { get; set; }
         /// <summary>
         /// Product color.
         /// </summary>
         public string Color { get; set; }
         /// <summary>
-        /// Minimum inventory quantity.
+        /// Minimum inventory quantity. 
         /// </summary>
-        public int Safetystocklevel { get; set; }
+        public short SafetyStockLevel { get; set; }
         /// <summary>
-        /// Inventory level that triggers a purchase order or work order.
+        /// Inventory level that triggers a purchase order or work order. 
         /// </summary>
-        public int Reorderpoint { get; set; }
+        public short ReorderPoint { get; set; }
         /// <summary>
         /// Standard cost of the product.
         /// </summary>
-        public decimal Standardcost { get; set; }
+        public decimal StandardCost { get; set; }
         /// <summary>
         /// Selling price.
         /// </summary>
-        public decimal Listprice { get; set; }
+        public decimal ListPrice { get; set; }
         /// <summary>
         /// Product size.
         /// </summary>
@@ -75,11 +74,11 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Unit of measure for Size column.
         /// </summary>
-        public string Sizeunitmeasurecode { get; set; }
+        public string SizeUnitMeasureCode { get; set; }
         /// <summary>
         /// Unit of measure for Weight column.
         /// </summary>
-        public string Weightunitmeasurecode { get; set; }
+        public string WeightUnitMeasureCode { get; set; }
         /// <summary>
         /// Product weight.
         /// </summary>
@@ -87,11 +86,11 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Number of days required to manufacture the product.
         /// </summary>
-        public int Daystomanufacture { get; set; }
+        public int DaysToManufacture { get; set; }
         /// <summary>
         /// R = Road, M = Mountain, T = Touring, S = Standard
         /// </summary>
-        public string Productline { get; set; }
+        public string ProductLine { get; set; }
         /// <summary>
         /// H = High, M = Medium, L = Low
         /// </summary>
@@ -101,45 +100,50 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// </summary>
         public string Style { get; set; }
         /// <summary>
-        /// Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID.
+        /// Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID. 
         /// </summary>
-        public int? Productsubcategoryid { get; set; }
+        public int? ProductSubcategoryId { get; set; }
         /// <summary>
         /// Product is a member of this product model. Foreign key to ProductModel.ProductModelID.
         /// </summary>
-        public int? Productmodelid { get; set; }
+        public int? ProductModelId { get; set; }
         /// <summary>
         /// Date the product was available for sale.
         /// </summary>
-        public DateTime Sellstartdate { get; set; }
+        public DateTime SellStartDate { get; set; }
         /// <summary>
         /// Date the product was no longer available for sale.
         /// </summary>
-        public DateTime? Sellenddate { get; set; }
+        public DateTime? SellEndDate { get; set; }
         /// <summary>
         /// Date the product was discontinued.
         /// </summary>
-        public DateTime? Discontinueddate { get; set; }
+        public DateTime? DiscontinuedDate { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Productmodel Productmodel { get; set; }
-        public virtual Productsubcategory Productsubcategory { get; set; }
-        public virtual Unitmeasure SizeunitmeasurecodeNavigation { get; set; }
-        public virtual Unitmeasure WeightunitmeasurecodeNavigation { get; set; }
-        public virtual ICollection<Billofmaterials> BillofmaterialsComponent { get; set; }
-        public virtual ICollection<Billofmaterials> BillofmaterialsProductassembly { get; set; }
-        public virtual ICollection<Productcosthistory> Productcosthistory { get; set; }
-        public virtual ICollection<Productdocument> Productdocument { get; set; }
-        public virtual ICollection<Productinventory> Productinventory { get; set; }
-        public virtual ICollection<Productlistpricehistory> Productlistpricehistory { get; set; }
-        public virtual ICollection<Productproductphoto> Productproductphoto { get; set; }
-        public virtual ICollection<Productreview> Productreview { get; set; }
-        public virtual ICollection<Productvendor> Productvendor { get; set; }
-        public virtual ICollection<Purchaseorderdetail> Purchaseorderdetail { get; set; }
-        public virtual ICollection<Shoppingcartitem> Shoppingcartitem { get; set; }
-        public virtual ICollection<Specialofferproduct> Specialofferproduct { get; set; }
-        public virtual ICollection<Transactionhistory> Transactionhistory { get; set; }
-        public virtual ICollection<Workorder> Workorder { get; set; }
+        public virtual ProductModel ProductModel { get; set; }
+        public virtual ProductSubcategory ProductSubcategory { get; set; }
+        public virtual UnitMeasure SizeUnitMeasureCodeNavigation { get; set; }
+        public virtual UnitMeasure WeightUnitMeasureCodeNavigation { get; set; }
+        public virtual ICollection<BillOfMaterials> BillOfMaterialsComponent { get; set; }
+        public virtual ICollection<BillOfMaterials> BillOfMaterialsProductAssembly { get; set; }
+        public virtual ICollection<ProductCostHistory> ProductCostHistory { get; set; }
+        public virtual ICollection<ProductInventory> ProductInventory { get; set; }
+        public virtual ICollection<ProductListPriceHistory> ProductListPriceHistory { get; set; }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; set; }
+        public virtual ICollection<ProductReview> ProductReview { get; set; }
+        public virtual ICollection<ProductVendor> ProductVendor { get; set; }
+        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
+        public virtual ICollection<ShoppingCartItem> ShoppingCartItem { get; set; }
+        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; set; }
+        public virtual ICollection<TransactionHistory> TransactionHistory { get; set; }
+        public virtual ICollection<WorkOrder> WorkOrder { get; set; }
     }
 }

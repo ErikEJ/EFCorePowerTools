@@ -8,28 +8,28 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Sales representative current information.
     /// </summary>
-    public partial class Salesperson
+    public partial class SalesPerson
     {
-        public Salesperson()
+        public SalesPerson()
         {
-            Salesorderheader = new HashSet<Salesorderheader>();
-            Salespersonquotahistory = new HashSet<Salespersonquotahistory>();
-            Salesterritoryhistory = new HashSet<Salesterritoryhistory>();
+            SalesOrderHeader = new HashSet<SalesOrderHeader>();
+            SalesPersonQuotaHistory = new HashSet<SalesPersonQuotaHistory>();
+            SalesTerritoryHistory = new HashSet<SalesTerritoryHistory>();
             Store = new HashSet<Store>();
         }
 
         /// <summary>
         /// Primary key for SalesPerson records. Foreign key to Employee.BusinessEntityID
         /// </summary>
-        public int Businessentityid { get; set; }
+        public int BusinessEntityId { get; set; }
         /// <summary>
         /// Territory currently assigned to. Foreign key to SalesTerritory.SalesTerritoryID.
         /// </summary>
-        public int? Territoryid { get; set; }
+        public int? TerritoryId { get; set; }
         /// <summary>
         /// Projected yearly sales.
         /// </summary>
-        public decimal? Salesquota { get; set; }
+        public decimal? SalesQuota { get; set; }
         /// <summary>
         /// Bonus due if quota is met.
         /// </summary>
@@ -37,23 +37,29 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Commision percent received per sale.
         /// </summary>
-        public decimal Commissionpct { get; set; }
+        public decimal CommissionPct { get; set; }
         /// <summary>
         /// Sales total year to date.
         /// </summary>
-        public decimal Salesytd { get; set; }
+        public decimal SalesYtd { get; set; }
         /// <summary>
         /// Sales total of previous year.
         /// </summary>
-        public decimal Saleslastyear { get; set; }
+        public decimal SalesLastYear { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Employee Businessentity { get; set; }
-        public virtual Salesterritory Territory { get; set; }
-        public virtual ICollection<Salesorderheader> Salesorderheader { get; set; }
-        public virtual ICollection<Salespersonquotahistory> Salespersonquotahistory { get; set; }
-        public virtual ICollection<Salesterritoryhistory> Salesterritoryhistory { get; set; }
+        public virtual Employee BusinessEntity { get; set; }
+        public virtual SalesTerritory Territory { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeader { get; set; }
+        public virtual ICollection<SalesPersonQuotaHistory> SalesPersonQuotaHistory { get; set; }
+        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistory { get; set; }
         public virtual ICollection<Store> Store { get; set; }
     }
 }

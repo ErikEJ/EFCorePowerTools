@@ -8,49 +8,52 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Manufacturing work orders.
     /// </summary>
-    public partial class Workorder
+    public partial class WorkOrder
     {
-        public Workorder()
+        public WorkOrder()
         {
-            Workorderrouting = new HashSet<Workorderrouting>();
+            WorkOrderRouting = new HashSet<WorkOrderRouting>();
         }
 
         /// <summary>
         /// Primary key for WorkOrder records.
         /// </summary>
-        public int Workorderid { get; set; }
+        public int WorkOrderId { get; set; }
         /// <summary>
         /// Product identification number. Foreign key to Product.ProductID.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
         /// <summary>
         /// Product quantity to build.
         /// </summary>
-        public int Orderqty { get; set; }
+        public int OrderQty { get; set; }
         /// <summary>
         /// Quantity that failed inspection.
         /// </summary>
-        public int Scrappedqty { get; set; }
+        public short ScrappedQty { get; set; }
         /// <summary>
         /// Work order start date.
         /// </summary>
-        public DateTime Startdate { get; set; }
+        public DateTime StartDate { get; set; }
         /// <summary>
         /// Work order end date.
         /// </summary>
-        public DateTime? Enddate { get; set; }
+        public DateTime? EndDate { get; set; }
         /// <summary>
         /// Work order due date.
         /// </summary>
-        public DateTime Duedate { get; set; }
+        public DateTime DueDate { get; set; }
         /// <summary>
         /// Reason for inspection failure.
         /// </summary>
-        public int? Scrapreasonid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public short? ScrapReasonId { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Product Product { get; set; }
-        public virtual Scrapreason Scrapreason { get; set; }
-        public virtual ICollection<Workorderrouting> Workorderrouting { get; set; }
+        public virtual ScrapReason ScrapReason { get; set; }
+        public virtual ICollection<WorkOrderRouting> WorkOrderRouting { get; set; }
     }
 }

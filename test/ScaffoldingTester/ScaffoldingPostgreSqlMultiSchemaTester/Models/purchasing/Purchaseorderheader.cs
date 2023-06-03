@@ -8,62 +8,65 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// General purchase order information. See PurchaseOrderDetail.
     /// </summary>
-    public partial class Purchaseorderheader
+    public partial class PurchaseOrderHeader
     {
-        public Purchaseorderheader()
+        public PurchaseOrderHeader()
         {
-            Purchaseorderdetail = new HashSet<Purchaseorderdetail>();
+            PurchaseOrderDetail = new HashSet<PurchaseOrderDetail>();
         }
 
         /// <summary>
         /// Primary key.
         /// </summary>
-        public int Purchaseorderid { get; set; }
+        public int PurchaseOrderId { get; set; }
         /// <summary>
         /// Incremental number to track changes to the purchase order over time.
         /// </summary>
-        public int Revisionnumber { get; set; }
+        public byte RevisionNumber { get; set; }
         /// <summary>
         /// Order current status. 1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete
         /// </summary>
-        public int Status { get; set; }
+        public byte Status { get; set; }
         /// <summary>
         /// Employee who created the purchase order. Foreign key to Employee.BusinessEntityID.
         /// </summary>
-        public int Employeeid { get; set; }
+        public int EmployeeId { get; set; }
         /// <summary>
         /// Vendor with whom the purchase order is placed. Foreign key to Vendor.BusinessEntityID.
         /// </summary>
-        public int Vendorid { get; set; }
+        public int VendorId { get; set; }
         /// <summary>
         /// Shipping method. Foreign key to ShipMethod.ShipMethodID.
         /// </summary>
-        public int Shipmethodid { get; set; }
+        public int ShipMethodId { get; set; }
         /// <summary>
         /// Purchase order creation date.
         /// </summary>
-        public DateTime Orderdate { get; set; }
+        public DateTime OrderDate { get; set; }
         /// <summary>
         /// Estimated shipment date from the vendor.
         /// </summary>
-        public DateTime? Shipdate { get; set; }
+        public DateTime? ShipDate { get; set; }
         /// <summary>
         /// Purchase order subtotal. Computed as SUM(PurchaseOrderDetail.LineTotal)for the appropriate PurchaseOrderID.
         /// </summary>
-        public decimal Subtotal { get; set; }
+        public decimal SubTotal { get; set; }
         /// <summary>
         /// Tax amount.
         /// </summary>
-        public decimal Taxamt { get; set; }
+        public decimal TaxAmt { get; set; }
         /// <summary>
         /// Shipping cost.
         /// </summary>
         public decimal Freight { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Employee Employee { get; set; }
-        public virtual Shipmethod Shipmethod { get; set; }
+        public virtual ShipMethod ShipMethod { get; set; }
         public virtual Vendor Vendor { get; set; }
-        public virtual ICollection<Purchaseorderdetail> Purchaseorderdetail { get; set; }
+        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
     }
 }

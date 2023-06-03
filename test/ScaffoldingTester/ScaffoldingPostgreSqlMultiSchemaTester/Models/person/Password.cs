@@ -10,18 +10,24 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// </summary>
     public partial class Password
     {
-        public int Businessentityid { get; set; }
+        public int BusinessEntityId { get; set; }
         /// <summary>
         /// Password for the e-mail account.
         /// </summary>
-        public string Passwordhash { get; set; }
+        public string PasswordHash { get; set; }
         /// <summary>
         /// Random value concatenated with the password string before the password is hashed.
         /// </summary>
-        public string Passwordsalt { get; set; }
+        public string PasswordSalt { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Person Businessentity { get; set; }
+        public virtual Person BusinessEntity { get; set; }
     }
 }

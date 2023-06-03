@@ -6,27 +6,25 @@ using System.Collections.Generic;
 namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
 {
     /// <summary>
-    /// Résumés submitted to Human Resources by job applicants.
+    /// Current version number of the AdventureWorks 2014 sample database. 
     /// </summary>
-    public partial class JobCandidate
+    public partial class AwbuildVersion
     {
         /// <summary>
-        /// Primary key for JobCandidate records.
+        /// Primary key for AWBuildVersion records.
         /// </summary>
-        public int JobCandidateId { get; set; }
+        public byte SystemInformationId { get; set; }
         /// <summary>
-        /// Employee identification number if applicant was hired. Foreign key to Employee.BusinessEntityID.
+        /// Version number of the database in 9.yy.mm.dd.00 format.
         /// </summary>
-        public int? BusinessEntityId { get; set; }
+        public string DatabaseVersion { get; set; }
         /// <summary>
-        /// Résumé in XML format.
+        /// Date and time the record was last updated.
         /// </summary>
-        public string Resume { get; set; }
+        public DateTime VersionDate { get; set; }
         /// <summary>
         /// Date and time the record was last updated.
         /// </summary>
         public DateTime ModifiedDate { get; set; }
-
-        public virtual Employee BusinessEntity { get; set; }
     }
 }

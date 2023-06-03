@@ -8,23 +8,26 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Manufacturing failure reasons lookup table.
     /// </summary>
-    public partial class Scrapreason
+    public partial class ScrapReason
     {
-        public Scrapreason()
+        public ScrapReason()
         {
-            Workorder = new HashSet<Workorder>();
+            WorkOrder = new HashSet<WorkOrder>();
         }
 
         /// <summary>
         /// Primary key for ScrapReason records.
         /// </summary>
-        public int Scrapreasonid { get; set; }
+        public short ScrapReasonId { get; set; }
         /// <summary>
         /// Failure description.
         /// </summary>
         public string Name { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Workorder> Workorder { get; set; }
+        public virtual ICollection<WorkOrder> WorkOrder { get; set; }
     }
 }

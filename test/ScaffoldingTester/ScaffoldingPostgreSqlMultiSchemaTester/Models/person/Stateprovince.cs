@@ -8,30 +8,30 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// State and province lookup table.
     /// </summary>
-    public partial class Stateprovince
+    public partial class StateProvince
     {
-        public Stateprovince()
+        public StateProvince()
         {
             Address = new HashSet<Address>();
-            Salestaxrate = new HashSet<Salestaxrate>();
+            SalesTaxRate = new HashSet<SalesTaxRate>();
         }
 
         /// <summary>
         /// Primary key for StateProvince records.
         /// </summary>
-        public int Stateprovinceid { get; set; }
+        public int StateProvinceId { get; set; }
         /// <summary>
         /// ISO standard state or province code.
         /// </summary>
-        public string Stateprovincecode { get; set; }
+        public string StateProvinceCode { get; set; }
         /// <summary>
-        /// ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.
+        /// ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode. 
         /// </summary>
-        public string Countryregioncode { get; set; }
+        public string CountryRegionCode { get; set; }
         /// <summary>
         /// 0 = StateProvinceCode exists. 1 = StateProvinceCode unavailable, using CountryRegionCode.
         /// </summary>
-        public bool? Isonlystateprovinceflag { get; set; }
+        public bool? IsOnlyStateProvinceFlag { get; set; }
         /// <summary>
         /// State or province description.
         /// </summary>
@@ -39,13 +39,19 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// ID of the territory in which the state or province is located. Foreign key to SalesTerritory.SalesTerritoryID.
         /// </summary>
-        public int Territoryid { get; set; }
+        public int TerritoryId { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Countryregion CountryregioncodeNavigation { get; set; }
-        public virtual Salesterritory Territory { get; set; }
+        public virtual CountryRegion CountryRegionCodeNavigation { get; set; }
+        public virtual SalesTerritory Territory { get; set; }
         public virtual ICollection<Address> Address { get; set; }
-        public virtual ICollection<Salestaxrate> Salestaxrate { get; set; }
+        public virtual ICollection<SalesTaxRate> SalesTaxRate { get; set; }
     }
 }

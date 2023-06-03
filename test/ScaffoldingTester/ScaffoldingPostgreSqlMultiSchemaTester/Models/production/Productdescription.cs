@@ -8,24 +8,30 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Product descriptions in several languages.
     /// </summary>
-    public partial class Productdescription
+    public partial class ProductDescription
     {
-        public Productdescription()
+        public ProductDescription()
         {
-            Productmodelproductdescriptionculture = new HashSet<Productmodelproductdescriptionculture>();
+            ProductModelProductDescriptionCulture = new HashSet<ProductModelProductDescriptionCulture>();
         }
 
         /// <summary>
         /// Primary key for ProductDescription records.
         /// </summary>
-        public int Productdescriptionid { get; set; }
+        public int ProductDescriptionId { get; set; }
         /// <summary>
         /// Description of the product.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Productmodelproductdescriptionculture> Productmodelproductdescriptionculture { get; set; }
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; set; }
     }
 }

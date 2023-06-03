@@ -1,2 +1,1 @@
-This project is using the sample database "AdventureWorks" from this repo:
-https://github.com/rasputino/postgresDBSamples
+Using AdventureWorks2014.dacpac from Test\NUnitTestCore\dacpac\AdventureWorks2014

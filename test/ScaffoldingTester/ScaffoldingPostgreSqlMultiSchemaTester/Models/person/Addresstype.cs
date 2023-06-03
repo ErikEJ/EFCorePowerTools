@@ -6,26 +6,32 @@ using System.Collections.Generic;
 namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
 {
     /// <summary>
-    /// Types of addresses stored in the Address table.
+    /// Types of addresses stored in the Address table. 
     /// </summary>
-    public partial class Addresstype
+    public partial class AddressType
     {
-        public Addresstype()
+        public AddressType()
         {
-            Businessentityaddress = new HashSet<Businessentityaddress>();
+            BusinessEntityAddress = new HashSet<BusinessEntityAddress>();
         }
 
         /// <summary>
         /// Primary key for AddressType records.
         /// </summary>
-        public int Addresstypeid { get; set; }
+        public int AddressTypeId { get; set; }
         /// <summary>
         /// Address type description. For example, Billing, Home, or Shipping.
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Businessentityaddress> Businessentityaddress { get; set; }
+        public virtual ICollection<BusinessEntityAddress> BusinessEntityAddress { get; set; }
     }
 }

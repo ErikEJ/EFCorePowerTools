@@ -8,118 +8,120 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// General sales order information.
     /// </summary>
-    public partial class Salesorderheader
+    public partial class SalesOrderHeader
     {
-        public Salesorderheader()
+        public SalesOrderHeader()
         {
-            Salesorderdetail = new HashSet<Salesorderdetail>();
-            Salesorderheadersalesreason = new HashSet<Salesorderheadersalesreason>();
+            SalesOrderDetail = new HashSet<SalesOrderDetail>();
+            SalesOrderHeaderSalesReason = new HashSet<SalesOrderHeaderSalesReason>();
         }
 
         /// <summary>
         /// Primary key.
         /// </summary>
-        public int Salesorderid { get; set; }
+        public int SalesOrderId { get; set; }
         /// <summary>
         /// Incremental number to track changes to the sales order over time.
         /// </summary>
-        public int Revisionnumber { get; set; }
+        public byte RevisionNumber { get; set; }
         /// <summary>
         /// Dates the sales order was created.
         /// </summary>
-        public DateTime Orderdate { get; set; }
+        public DateTime OrderDate { get; set; }
         /// <summary>
         /// Date the order is due to the customer.
         /// </summary>
-        public DateTime Duedate { get; set; }
+        public DateTime DueDate { get; set; }
         /// <summary>
         /// Date the order was shipped to the customer.
         /// </summary>
-        public DateTime? Shipdate { get; set; }
+        public DateTime? ShipDate { get; set; }
         /// <summary>
         /// Order current status. 1 = In process; 2 = Approved; 3 = Backordered; 4 = Rejected; 5 = Shipped; 6 = Cancelled
         /// </summary>
-        public int Status { get; set; }
+        public byte Status { get; set; }
         /// <summary>
         /// 0 = Order placed by sales person. 1 = Order placed online by customer.
         /// </summary>
-        public bool? Onlineorderflag { get; set; }
+        public bool? OnlineOrderFlag { get; set; }
         /// <summary>
-        /// Customer purchase order number reference.
+        /// Customer purchase order number reference. 
         /// </summary>
-        public string Purchaseordernumber { get; set; }
+        public string PurchaseOrderNumber { get; set; }
         /// <summary>
         /// Financial accounting number reference.
         /// </summary>
-        public string Accountnumber { get; set; }
+        public string AccountNumber { get; set; }
         /// <summary>
         /// Customer identification number. Foreign key to Customer.BusinessEntityID.
         /// </summary>
-        public int Customerid { get; set; }
+        public int CustomerId { get; set; }
         /// <summary>
         /// Sales person who created the sales order. Foreign key to SalesPerson.BusinessEntityID.
         /// </summary>
-        public int? Salespersonid { get; set; }
+        public int? SalesPersonId { get; set; }
         /// <summary>
         /// Territory in which the sale was made. Foreign key to SalesTerritory.SalesTerritoryID.
         /// </summary>
-        public int? Territoryid { get; set; }
+        public int? TerritoryId { get; set; }
         /// <summary>
         /// Customer billing address. Foreign key to Address.AddressID.
         /// </summary>
-        public int Billtoaddressid { get; set; }
+        public int BillToAddressId { get; set; }
         /// <summary>
         /// Customer shipping address. Foreign key to Address.AddressID.
         /// </summary>
-        public int Shiptoaddressid { get; set; }
+        public int ShipToAddressId { get; set; }
         /// <summary>
         /// Shipping method. Foreign key to ShipMethod.ShipMethodID.
         /// </summary>
-        public int Shipmethodid { get; set; }
+        public int ShipMethodId { get; set; }
         /// <summary>
         /// Credit card identification number. Foreign key to CreditCard.CreditCardID.
         /// </summary>
-        public int? Creditcardid { get; set; }
+        public int? CreditCardId { get; set; }
         /// <summary>
         /// Approval code provided by the credit card company.
         /// </summary>
-        public string Creditcardapprovalcode { get; set; }
+        public string CreditCardApprovalCode { get; set; }
         /// <summary>
         /// Currency exchange rate used. Foreign key to CurrencyRate.CurrencyRateID.
         /// </summary>
-        public int? Currencyrateid { get; set; }
+        public int? CurrencyRateId { get; set; }
         /// <summary>
         /// Sales subtotal. Computed as SUM(SalesOrderDetail.LineTotal)for the appropriate SalesOrderID.
         /// </summary>
-        public decimal Subtotal { get; set; }
+        public decimal SubTotal { get; set; }
         /// <summary>
         /// Tax amount.
         /// </summary>
-        public decimal Taxamt { get; set; }
+        public decimal TaxAmt { get; set; }
         /// <summary>
         /// Shipping cost.
         /// </summary>
         public decimal Freight { get; set; }
         /// <summary>
-        /// Total due from customer. Computed as Subtotal + TaxAmt + Freight.
-        /// </summary>
-        public decimal? Totaldue { get; set; }
-        /// <summary>
         /// Sales representative comments.
         /// </summary>
         public string Comment { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Address Billtoaddress { get; set; }
-        public virtual Creditcard Creditcard { get; set; }
-        public virtual Currencyrate Currencyrate { get; set; }
+        public virtual Address BillToAddress { get; set; }
+        public virtual CreditCard CreditCard { get; set; }
+        public virtual CurrencyRate CurrencyRate { get; set; }
         public virtual Customer Customer { get; set; }
-        public virtual Salesperson Salesperson { get; set; }
-        public virtual Shipmethod Shipmethod { get; set; }
-        public virtual Address Shiptoaddress { get; set; }
-        public virtual Salesterritory Territory { get; set; }
-        public virtual ICollection<Salesorderdetail> Salesorderdetail { get; set; }
-        public virtual ICollection<Salesorderheadersalesreason> Salesorderheadersalesreason { get; set; }
+        public virtual SalesPerson SalesPerson { get; set; }
+        public virtual ShipMethod ShipMethod { get; set; }
+        public virtual Address ShipToAddress { get; set; }
+        public virtual SalesTerritory Territory { get; set; }
+        public virtual ICollection<SalesOrderDetail> SalesOrderDetail { get; set; }
+        public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; set; }
     }
 }

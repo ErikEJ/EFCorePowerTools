@@ -8,19 +8,22 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Cross-reference table mapping sales orders to sales reason codes.
     /// </summary>
-    public partial class Salesorderheadersalesreason
+    public partial class SalesOrderHeaderSalesReason
     {
         /// <summary>
         /// Primary key. Foreign key to SalesOrderHeader.SalesOrderID.
         /// </summary>
-        public int Salesorderid { get; set; }
+        public int SalesOrderId { get; set; }
         /// <summary>
         /// Primary key. Foreign key to SalesReason.SalesReasonID.
         /// </summary>
-        public int Salesreasonid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public int SalesReasonId { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Salesorderheader Salesorder { get; set; }
-        public virtual Salesreason Salesreason { get; set; }
+        public virtual SalesOrderHeader SalesOrder { get; set; }
+        public virtual SalesReason SalesReason { get; set; }
     }
 }

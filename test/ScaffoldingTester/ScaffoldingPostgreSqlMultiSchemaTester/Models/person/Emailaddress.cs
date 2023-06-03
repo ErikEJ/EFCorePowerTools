@@ -8,23 +8,29 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Where to send a person email.
     /// </summary>
-    public partial class Emailaddress
+    public partial class EmailAddress
     {
         /// <summary>
         /// Primary key. Person associated with this email address.  Foreign key to Person.BusinessEntityID
         /// </summary>
-        public int Businessentityid { get; set; }
+        public int BusinessEntityId { get; set; }
         /// <summary>
         /// Primary key. ID of this email address.
         /// </summary>
-        public int Emailaddressid { get; set; }
+        public int EmailAddressId { get; set; }
         /// <summary>
         /// E-mail address for the person.
         /// </summary>
-        public string Emailaddress1 { get; set; }
+        public string EmailAddress1 { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Person Businessentity { get; set; }
+        public virtual Person BusinessEntity { get; set; }
     }
 }

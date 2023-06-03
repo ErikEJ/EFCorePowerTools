@@ -8,44 +8,47 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Items required to make bicycles and bicycle subassemblies. It identifies the heirarchical relationship between a parent product and its components.
     /// </summary>
-    public partial class Billofmaterials
+    public partial class BillOfMaterials
     {
         /// <summary>
         /// Primary key for BillOfMaterials records.
         /// </summary>
-        public int Billofmaterialsid { get; set; }
+        public int BillOfMaterialsId { get; set; }
         /// <summary>
         /// Parent product identification number. Foreign key to Product.ProductID.
         /// </summary>
-        public int? Productassemblyid { get; set; }
+        public int? ProductAssemblyId { get; set; }
         /// <summary>
         /// Component identification number. Foreign key to Product.ProductID.
         /// </summary>
-        public int Componentid { get; set; }
+        public int ComponentId { get; set; }
         /// <summary>
         /// Date the component started being used in the assembly item.
         /// </summary>
-        public DateTime Startdate { get; set; }
+        public DateTime StartDate { get; set; }
         /// <summary>
         /// Date the component stopped being used in the assembly item.
         /// </summary>
-        public DateTime? Enddate { get; set; }
+        public DateTime? EndDate { get; set; }
         /// <summary>
         /// Standard code identifying the unit of measure for the quantity.
         /// </summary>
-        public string Unitmeasurecode { get; set; }
+        public string UnitMeasureCode { get; set; }
         /// <summary>
         /// Indicates the depth the component is from its parent (AssemblyID).
         /// </summary>
-        public int Bomlevel { get; set; }
+        public short Bomlevel { get; set; }
         /// <summary>
         /// Quantity of the component needed to create the assembly.
         /// </summary>
-        public decimal Perassemblyqty { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public decimal PerAssemblyQty { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual Product Component { get; set; }
-        public virtual Product Productassembly { get; set; }
-        public virtual Unitmeasure UnitmeasurecodeNavigation { get; set; }
+        public virtual Product ProductAssembly { get; set; }
+        public virtual UnitMeasure UnitMeasureCodeNavigation { get; set; }
     }
 }

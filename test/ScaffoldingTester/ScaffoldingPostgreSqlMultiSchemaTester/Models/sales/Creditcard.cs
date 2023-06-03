@@ -8,37 +8,40 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Customer credit card information.
     /// </summary>
-    public partial class Creditcard
+    public partial class CreditCard
     {
-        public Creditcard()
+        public CreditCard()
         {
-            Personcreditcard = new HashSet<Personcreditcard>();
-            Salesorderheader = new HashSet<Salesorderheader>();
+            PersonCreditCard = new HashSet<PersonCreditCard>();
+            SalesOrderHeader = new HashSet<SalesOrderHeader>();
         }
 
         /// <summary>
         /// Primary key for CreditCard records.
         /// </summary>
-        public int Creditcardid { get; set; }
+        public int CreditCardId { get; set; }
         /// <summary>
         /// Credit card name.
         /// </summary>
-        public string Cardtype { get; set; }
+        public string CardType { get; set; }
         /// <summary>
         /// Credit card number.
         /// </summary>
-        public string Cardnumber { get; set; }
+        public string CardNumber { get; set; }
         /// <summary>
         /// Credit card expiration month.
         /// </summary>
-        public int Expmonth { get; set; }
+        public byte ExpMonth { get; set; }
         /// <summary>
         /// Credit card expiration year.
         /// </summary>
-        public int Expyear { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public short ExpYear { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Personcreditcard> Personcreditcard { get; set; }
-        public virtual ICollection<Salesorderheader> Salesorderheader { get; set; }
+        public virtual ICollection<PersonCreditCard> PersonCreditCard { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeader { get; set; }
     }
 }

@@ -12,23 +12,26 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Currency()
         {
-            Countryregioncurrency = new HashSet<Countryregioncurrency>();
-            CurrencyrateFromcurrencycodeNavigation = new HashSet<Currencyrate>();
-            CurrencyrateTocurrencycodeNavigation = new HashSet<Currencyrate>();
+            CountryRegionCurrency = new HashSet<CountryRegionCurrency>();
+            CurrencyRateFromCurrencyCodeNavigation = new HashSet<CurrencyRate>();
+            CurrencyRateToCurrencyCodeNavigation = new HashSet<CurrencyRate>();
         }
 
         /// <summary>
         /// The ISO code for the Currency.
         /// </summary>
-        public string Currencycode { get; set; }
+        public string CurrencyCode { get; set; }
         /// <summary>
         /// Currency name.
         /// </summary>
         public string Name { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Countryregioncurrency> Countryregioncurrency { get; set; }
-        public virtual ICollection<Currencyrate> CurrencyrateFromcurrencycodeNavigation { get; set; }
-        public virtual ICollection<Currencyrate> CurrencyrateTocurrencycodeNavigation { get; set; }
+        public virtual ICollection<CountryRegionCurrency> CountryRegionCurrency { get; set; }
+        public virtual ICollection<CurrencyRate> CurrencyRateFromCurrencyCodeNavigation { get; set; }
+        public virtual ICollection<CurrencyRate> CurrencyRateToCurrencyCodeNavigation { get; set; }
     }
 }

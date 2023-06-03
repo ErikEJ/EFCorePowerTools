@@ -8,9 +8,9 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Product subcategories. See ProductCategory table.
     /// </summary>
-    public partial class Productsubcategory
+    public partial class ProductSubcategory
     {
-        public Productsubcategory()
+        public ProductSubcategory()
         {
             Product = new HashSet<Product>();
         }
@@ -18,19 +18,25 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Primary key for ProductSubcategory records.
         /// </summary>
-        public int Productsubcategoryid { get; set; }
+        public int ProductSubcategoryId { get; set; }
         /// <summary>
         /// Product category identification number. Foreign key to ProductCategory.ProductCategoryID.
         /// </summary>
-        public int Productcategoryid { get; set; }
+        public int ProductCategoryId { get; set; }
         /// <summary>
         /// Subcategory description.
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Productcategory Productcategory { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<Product> Product { get; set; }
     }
 }

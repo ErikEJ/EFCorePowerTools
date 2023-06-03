@@ -12,14 +12,14 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Location()
         {
-            Productinventory = new HashSet<Productinventory>();
-            Workorderrouting = new HashSet<Workorderrouting>();
+            ProductInventory = new HashSet<ProductInventory>();
+            WorkOrderRouting = new HashSet<WorkOrderRouting>();
         }
 
         /// <summary>
         /// Primary key for Location records.
         /// </summary>
-        public int Locationid { get; set; }
+        public short LocationId { get; set; }
         /// <summary>
         /// Location description.
         /// </summary>
@@ -27,14 +27,17 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Standard hourly cost of the manufacturing location.
         /// </summary>
-        public decimal Costrate { get; set; }
+        public decimal CostRate { get; set; }
         /// <summary>
         /// Work capacity (in hours) of the manufacturing location.
         /// </summary>
         public decimal Availability { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Productinventory> Productinventory { get; set; }
-        public virtual ICollection<Workorderrouting> Workorderrouting { get; set; }
+        public virtual ICollection<ProductInventory> ProductInventory { get; set; }
+        public virtual ICollection<WorkOrderRouting> WorkOrderRouting { get; set; }
     }
 }

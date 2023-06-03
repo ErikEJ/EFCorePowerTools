@@ -8,19 +8,19 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Product model classification.
     /// </summary>
-    public partial class Productmodel
+    public partial class ProductModel
     {
-        public Productmodel()
+        public ProductModel()
         {
             Product = new HashSet<Product>();
-            Productmodelillustration = new HashSet<Productmodelillustration>();
-            Productmodelproductdescriptionculture = new HashSet<Productmodelproductdescriptionculture>();
+            ProductModelIllustration = new HashSet<ProductModelIllustration>();
+            ProductModelProductDescriptionCulture = new HashSet<ProductModelProductDescriptionCulture>();
         }
 
         /// <summary>
         /// Primary key for ProductModel records.
         /// </summary>
-        public int Productmodelid { get; set; }
+        public int ProductModelId { get; set; }
         /// <summary>
         /// Product model description.
         /// </summary>
@@ -28,16 +28,22 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Detailed product catalog information in xml format.
         /// </summary>
-        public string Catalogdescription { get; set; }
+        public string CatalogDescription { get; set; }
         /// <summary>
         /// Manufacturing instructions in xml format.
         /// </summary>
         public string Instructions { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
         public virtual ICollection<Product> Product { get; set; }
-        public virtual ICollection<Productmodelillustration> Productmodelillustration { get; set; }
-        public virtual ICollection<Productmodelproductdescriptionculture> Productmodelproductdescriptionculture { get; set; }
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; set; }
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; set; }
     }
 }

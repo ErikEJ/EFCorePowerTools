@@ -8,35 +8,38 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Product images.
     /// </summary>
-    public partial class Productphoto
+    public partial class ProductPhoto
     {
-        public Productphoto()
+        public ProductPhoto()
         {
-            Productproductphoto = new HashSet<Productproductphoto>();
+            ProductProductPhoto = new HashSet<ProductProductPhoto>();
         }
 
         /// <summary>
         /// Primary key for ProductPhoto records.
         /// </summary>
-        public int Productphotoid { get; set; }
+        public int ProductPhotoId { get; set; }
         /// <summary>
         /// Small image of the product.
         /// </summary>
-        public byte[] Thumbnailphoto { get; set; }
+        public byte[] ThumbNailPhoto { get; set; }
         /// <summary>
         /// Small image file name.
         /// </summary>
-        public string Thumbnailphotofilename { get; set; }
+        public string ThumbnailPhotoFileName { get; set; }
         /// <summary>
         /// Large image of the product.
         /// </summary>
-        public byte[] Largephoto { get; set; }
+        public byte[] LargePhoto { get; set; }
         /// <summary>
         /// Large image file name.
         /// </summary>
-        public string Largephotofilename { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public string LargePhotoFileName { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Productproductphoto> Productproductphoto { get; set; }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; set; }
     }
 }

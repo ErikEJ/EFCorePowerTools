@@ -12,74 +12,74 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Employee()
         {
-            Document = new HashSet<Document>();
-            Employeedepartmenthistory = new HashSet<Employeedepartmenthistory>();
-            Employeepayhistory = new HashSet<Employeepayhistory>();
-            Jobcandidate = new HashSet<Jobcandidate>();
-            Purchaseorderheader = new HashSet<Purchaseorderheader>();
+            EmployeeDepartmentHistory = new HashSet<EmployeeDepartmentHistory>();
+            EmployeePayHistory = new HashSet<EmployeePayHistory>();
+            JobCandidate = new HashSet<JobCandidate>();
+            PurchaseOrderHeader = new HashSet<PurchaseOrderHeader>();
         }
 
         /// <summary>
         /// Primary key for Employee records.  Foreign key to BusinessEntity.BusinessEntityID.
         /// </summary>
-        public int Businessentityid { get; set; }
+        public int BusinessEntityId { get; set; }
         /// <summary>
         /// Unique national identification number such as a social security number.
         /// </summary>
-        public string Nationalidnumber { get; set; }
+        public string NationalIdnumber { get; set; }
         /// <summary>
         /// Network login.
         /// </summary>
-        public string Loginid { get; set; }
+        public string LoginId { get; set; }
         /// <summary>
         /// Work title such as Buyer or Sales Representative.
         /// </summary>
-        public string Jobtitle { get; set; }
+        public string JobTitle { get; set; }
         /// <summary>
         /// Date of birth.
         /// </summary>
-        public DateOnly Birthdate { get; set; }
+        public DateTime BirthDate { get; set; }
         /// <summary>
         /// M = Married, S = Single
         /// </summary>
-        public char Maritalstatus { get; set; }
+        public string MaritalStatus { get; set; }
         /// <summary>
         /// M = Male, F = Female
         /// </summary>
-        public char Gender { get; set; }
+        public string Gender { get; set; }
         /// <summary>
         /// Employee hired on this date.
         /// </summary>
-        public DateOnly Hiredate { get; set; }
+        public DateTime HireDate { get; set; }
         /// <summary>
         /// Job classification. 0 = Hourly, not exempt from collective bargaining. 1 = Salaried, exempt from collective bargaining.
         /// </summary>
-        public bool? Salariedflag { get; set; }
+        public bool? SalariedFlag { get; set; }
         /// <summary>
         /// Number of available vacation hours.
         /// </summary>
-        public int Vacationhours { get; set; }
+        public short VacationHours { get; set; }
         /// <summary>
         /// Number of available sick leave hours.
         /// </summary>
-        public int Sickleavehours { get; set; }
+        public short SickLeaveHours { get; set; }
         /// <summary>
         /// 0 = Inactive, 1 = Active
         /// </summary>
-        public bool? Currentflag { get; set; }
-        public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public bool? CurrentFlag { get; set; }
         /// <summary>
-        /// Where the employee is located in corporate hierarchy.
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
         /// </summary>
-        public string Organizationnode { get; set; }
+        public Guid Rowguid { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Person Businessentity { get; set; }
-        public virtual Salesperson Salesperson { get; set; }
-        public virtual ICollection<Document> Document { get; set; }
-        public virtual ICollection<Employeedepartmenthistory> Employeedepartmenthistory { get; set; }
-        public virtual ICollection<Employeepayhistory> Employeepayhistory { get; set; }
-        public virtual ICollection<Jobcandidate> Jobcandidate { get; set; }
-        public virtual ICollection<Purchaseorderheader> Purchaseorderheader { get; set; }
+        public virtual Person BusinessEntity { get; set; }
+        public virtual SalesPerson SalesPerson { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistory { get; set; }
+        public virtual ICollection<EmployeePayHistory> EmployeePayHistory { get; set; }
+        public virtual ICollection<JobCandidate> JobCandidate { get; set; }
+        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeader { get; set; }
     }
 }

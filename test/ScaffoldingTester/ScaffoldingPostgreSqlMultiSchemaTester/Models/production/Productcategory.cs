@@ -8,24 +8,30 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// High-level product categorization.
     /// </summary>
-    public partial class Productcategory
+    public partial class ProductCategory
     {
-        public Productcategory()
+        public ProductCategory()
         {
-            Productsubcategory = new HashSet<Productsubcategory>();
+            ProductSubcategory = new HashSet<ProductSubcategory>();
         }
 
         /// <summary>
         /// Primary key for ProductCategory records.
         /// </summary>
-        public int Productcategoryid { get; set; }
+        public int ProductCategoryId { get; set; }
         /// <summary>
         /// Category description.
         /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Productsubcategory> Productsubcategory { get; set; }
+        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; set; }
     }
 }

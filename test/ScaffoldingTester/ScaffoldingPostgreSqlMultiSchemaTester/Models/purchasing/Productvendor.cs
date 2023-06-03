@@ -8,52 +8,55 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Cross-reference table mapping vendors with the products they supply.
     /// </summary>
-    public partial class Productvendor
+    public partial class ProductVendor
     {
         /// <summary>
         /// Primary key. Foreign key to Product.ProductID.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
         /// <summary>
         /// Primary key. Foreign key to Vendor.BusinessEntityID.
         /// </summary>
-        public int Businessentityid { get; set; }
+        public int BusinessEntityId { get; set; }
         /// <summary>
         /// The average span of time (in days) between placing an order with the vendor and receiving the purchased product.
         /// </summary>
-        public int Averageleadtime { get; set; }
+        public int AverageLeadTime { get; set; }
         /// <summary>
-        /// The vendor&apos;s usual selling price.
+        /// The vendor&apos;&apos;s usual selling price.
         /// </summary>
-        public decimal Standardprice { get; set; }
+        public decimal StandardPrice { get; set; }
         /// <summary>
         /// The selling price when last purchased.
         /// </summary>
-        public decimal? Lastreceiptcost { get; set; }
+        public decimal? LastReceiptCost { get; set; }
         /// <summary>
         /// Date the product was last received by the vendor.
         /// </summary>
-        public DateTime? Lastreceiptdate { get; set; }
+        public DateTime? LastReceiptDate { get; set; }
         /// <summary>
         /// The maximum quantity that should be ordered.
         /// </summary>
-        public int Minorderqty { get; set; }
+        public int MinOrderQty { get; set; }
         /// <summary>
         /// The minimum quantity that should be ordered.
         /// </summary>
-        public int Maxorderqty { get; set; }
+        public int MaxOrderQty { get; set; }
         /// <summary>
         /// The quantity currently on order.
         /// </summary>
-        public int? Onorderqty { get; set; }
+        public int? OnOrderQty { get; set; }
         /// <summary>
-        /// The product&apos;s unit of measure.
+        /// The product&apos;&apos;s unit of measure.
         /// </summary>
-        public string Unitmeasurecode { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public string UnitMeasureCode { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Vendor Businessentity { get; set; }
+        public virtual Vendor BusinessEntity { get; set; }
         public virtual Product Product { get; set; }
-        public virtual Unitmeasure UnitmeasurecodeNavigation { get; set; }
+        public virtual UnitMeasure UnitMeasureCodeNavigation { get; set; }
     }
 }

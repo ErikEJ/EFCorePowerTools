@@ -12,13 +12,13 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Department()
         {
-            Employeedepartmenthistory = new HashSet<Employeedepartmenthistory>();
+            EmployeeDepartmentHistory = new HashSet<EmployeeDepartmentHistory>();
         }
 
         /// <summary>
         /// Primary key for Department records.
         /// </summary>
-        public int Departmentid { get; set; }
+        public short DepartmentId { get; set; }
         /// <summary>
         /// Name of the department.
         /// </summary>
@@ -26,9 +26,12 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Name of the group to which the department belongs.
         /// </summary>
-        public string Groupname { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public string GroupName { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Employeedepartmenthistory> Employeedepartmenthistory { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistory { get; set; }
     }
 }

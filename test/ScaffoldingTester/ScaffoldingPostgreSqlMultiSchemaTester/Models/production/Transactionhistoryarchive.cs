@@ -8,32 +8,32 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Transactions for previous years.
     /// </summary>
-    public partial class Transactionhistoryarchive
+    public partial class TransactionHistoryArchive
     {
         /// <summary>
         /// Primary key for TransactionHistoryArchive records.
         /// </summary>
-        public int Transactionid { get; set; }
+        public int TransactionId { get; set; }
         /// <summary>
         /// Product identification number. Foreign key to Product.ProductID.
         /// </summary>
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
         /// <summary>
         /// Purchase order, sales order, or work order identification number.
         /// </summary>
-        public int Referenceorderid { get; set; }
+        public int ReferenceOrderId { get; set; }
         /// <summary>
         /// Line number associated with the purchase order, sales order, or work order.
         /// </summary>
-        public int Referenceorderlineid { get; set; }
+        public int ReferenceOrderLineId { get; set; }
         /// <summary>
         /// Date and time of the transaction.
         /// </summary>
-        public DateTime Transactiondate { get; set; }
+        public DateTime TransactionDate { get; set; }
         /// <summary>
         /// W = Work Order, S = Sales Order, P = Purchase Order
         /// </summary>
-        public char Transactiontype { get; set; }
+        public string TransactionType { get; set; }
         /// <summary>
         /// Product quantity.
         /// </summary>
@@ -41,7 +41,10 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Product cost.
         /// </summary>
-        public decimal Actualcost { get; set; }
-        public DateTime Modifieddate { get; set; }
+        public decimal ActualCost { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
     }
 }

@@ -19,3356 +19,3297 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         }
 
         public virtual DbSet<Address> Address { get; set; }
-        public virtual DbSet<Addresstype> Addresstype { get; set; }
-        public virtual DbSet<Billofmaterials> Billofmaterials { get; set; }
-        public virtual DbSet<Businessentity> Businessentity { get; set; }
-        public virtual DbSet<Businessentityaddress> Businessentityaddress { get; set; }
-        public virtual DbSet<Businessentitycontact> Businessentitycontact { get; set; }
-        public virtual DbSet<Contacttype> Contacttype { get; set; }
-        public virtual DbSet<Countryregion> Countryregion { get; set; }
-        public virtual DbSet<Countryregioncurrency> Countryregioncurrency { get; set; }
-        public virtual DbSet<Creditcard> Creditcard { get; set; }
+        public virtual DbSet<AddressType> AddressType { get; set; }
+        public virtual DbSet<AwbuildVersion> AwbuildVersion { get; set; }
+        public virtual DbSet<BillOfMaterials> BillOfMaterials { get; set; }
+        public virtual DbSet<BusinessEntity> BusinessEntity { get; set; }
+        public virtual DbSet<BusinessEntityAddress> BusinessEntityAddress { get; set; }
+        public virtual DbSet<BusinessEntityContact> BusinessEntityContact { get; set; }
+        public virtual DbSet<ContactType> ContactType { get; set; }
+        public virtual DbSet<CountryRegion> CountryRegion { get; set; }
+        public virtual DbSet<CountryRegionCurrency> CountryRegionCurrency { get; set; }
+        public virtual DbSet<CreditCard> CreditCard { get; set; }
         public virtual DbSet<Culture> Culture { get; set; }
         public virtual DbSet<Currency> Currency { get; set; }
-        public virtual DbSet<Currencyrate> Currencyrate { get; set; }
+        public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<DatabaseLog> DatabaseLog { get; set; }
         public virtual DbSet<Department> Department { get; set; }
-        public virtual DbSet<Document> Document { get; set; }
-        public virtual DbSet<Emailaddress> Emailaddress { get; set; }
+        public virtual DbSet<EmailAddress> EmailAddress { get; set; }
         public virtual DbSet<Employee> Employee { get; set; }
-        public virtual DbSet<Employeedepartmenthistory> Employeedepartmenthistory { get; set; }
-        public virtual DbSet<Employeepayhistory> Employeepayhistory { get; set; }
+        public virtual DbSet<EmployeeDepartmentHistory> EmployeeDepartmentHistory { get; set; }
+        public virtual DbSet<EmployeePayHistory> EmployeePayHistory { get; set; }
+        public virtual DbSet<ErrorLog> ErrorLog { get; set; }
         public virtual DbSet<Illustration> Illustration { get; set; }
-        public virtual DbSet<Jobcandidate> Jobcandidate { get; set; }
+        public virtual DbSet<JobCandidate> JobCandidate { get; set; }
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Password> Password { get; set; }
         public virtual DbSet<Person> Person { get; set; }
-        public virtual DbSet<Personcreditcard> Personcreditcard { get; set; }
-        public virtual DbSet<Personphone> Personphone { get; set; }
-        public virtual DbSet<Phonenumbertype> Phonenumbertype { get; set; }
+        public virtual DbSet<PersonCreditCard> PersonCreditCard { get; set; }
+        public virtual DbSet<PersonPhone> PersonPhone { get; set; }
+        public virtual DbSet<PhoneNumberType> PhoneNumberType { get; set; }
         public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<Productcategory> Productcategory { get; set; }
-        public virtual DbSet<Productcosthistory> Productcosthistory { get; set; }
-        public virtual DbSet<Productdescription> Productdescription { get; set; }
-        public virtual DbSet<Productdocument> Productdocument { get; set; }
-        public virtual DbSet<Productinventory> Productinventory { get; set; }
-        public virtual DbSet<Productlistpricehistory> Productlistpricehistory { get; set; }
-        public virtual DbSet<Productmodel> Productmodel { get; set; }
-        public virtual DbSet<Productmodelillustration> Productmodelillustration { get; set; }
-        public virtual DbSet<Productmodelproductdescriptionculture> Productmodelproductdescriptionculture { get; set; }
-        public virtual DbSet<Productphoto> Productphoto { get; set; }
-        public virtual DbSet<Productproductphoto> Productproductphoto { get; set; }
-        public virtual DbSet<Productreview> Productreview { get; set; }
-        public virtual DbSet<Productsubcategory> Productsubcategory { get; set; }
-        public virtual DbSet<Productvendor> Productvendor { get; set; }
-        public virtual DbSet<Purchaseorderdetail> Purchaseorderdetail { get; set; }
-        public virtual DbSet<Purchaseorderheader> Purchaseorderheader { get; set; }
-        public virtual DbSet<Salesorderdetail> Salesorderdetail { get; set; }
-        public virtual DbSet<Salesorderheader> Salesorderheader { get; set; }
-        public virtual DbSet<Salesorderheadersalesreason> Salesorderheadersalesreason { get; set; }
-        public virtual DbSet<Salesperson> Salesperson { get; set; }
-        public virtual DbSet<Salespersonquotahistory> Salespersonquotahistory { get; set; }
-        public virtual DbSet<Salesreason> Salesreason { get; set; }
-        public virtual DbSet<Salestaxrate> Salestaxrate { get; set; }
-        public virtual DbSet<Salesterritory> Salesterritory { get; set; }
-        public virtual DbSet<Salesterritoryhistory> Salesterritoryhistory { get; set; }
-        public virtual DbSet<Scrapreason> Scrapreason { get; set; }
+        public virtual DbSet<ProductCategory> ProductCategory { get; set; }
+        public virtual DbSet<ProductCostHistory> ProductCostHistory { get; set; }
+        public virtual DbSet<ProductDescription> ProductDescription { get; set; }
+        public virtual DbSet<ProductInventory> ProductInventory { get; set; }
+        public virtual DbSet<ProductListPriceHistory> ProductListPriceHistory { get; set; }
+        public virtual DbSet<ProductModel> ProductModel { get; set; }
+        public virtual DbSet<ProductModelIllustration> ProductModelIllustration { get; set; }
+        public virtual DbSet<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; set; }
+        public virtual DbSet<ProductPhoto> ProductPhoto { get; set; }
+        public virtual DbSet<ProductProductPhoto> ProductProductPhoto { get; set; }
+        public virtual DbSet<ProductReview> ProductReview { get; set; }
+        public virtual DbSet<ProductSubcategory> ProductSubcategory { get; set; }
+        public virtual DbSet<ProductVendor> ProductVendor { get; set; }
+        public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetail { get; set; }
+        public virtual DbSet<PurchaseOrderHeader> PurchaseOrderHeader { get; set; }
+        public virtual DbSet<SalesOrderDetail> SalesOrderDetail { get; set; }
+        public virtual DbSet<SalesOrderHeader> SalesOrderHeader { get; set; }
+        public virtual DbSet<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason { get; set; }
+        public virtual DbSet<SalesPerson> SalesPerson { get; set; }
+        public virtual DbSet<SalesPersonQuotaHistory> SalesPersonQuotaHistory { get; set; }
+        public virtual DbSet<SalesReason> SalesReason { get; set; }
+        public virtual DbSet<SalesTaxRate> SalesTaxRate { get; set; }
+        public virtual DbSet<SalesTerritory> SalesTerritory { get; set; }
+        public virtual DbSet<SalesTerritoryHistory> SalesTerritoryHistory { get; set; }
+        public virtual DbSet<ScrapReason> ScrapReason { get; set; }
         public virtual DbSet<Shift> Shift { get; set; }
-        public virtual DbSet<Shipmethod> Shipmethod { get; set; }
-        public virtual DbSet<Shoppingcartitem> Shoppingcartitem { get; set; }
-        public virtual DbSet<Specialoffer> Specialoffer { get; set; }
-        public virtual DbSet<Specialofferproduct> Specialofferproduct { get; set; }
-        public virtual DbSet<Stateprovince> Stateprovince { get; set; }
+        public virtual DbSet<ShipMethod> ShipMethod { get; set; }
+        public virtual DbSet<ShoppingCartItem> ShoppingCartItem { get; set; }
+        public virtual DbSet<SpecialOffer> SpecialOffer { get; set; }
+        public virtual DbSet<SpecialOfferProduct> SpecialOfferProduct { get; set; }
+        public virtual DbSet<StateProvince> StateProvince { get; set; }
         public virtual DbSet<Store> Store { get; set; }
-        public virtual DbSet<Transactionhistory> Transactionhistory { get; set; }
-        public virtual DbSet<Transactionhistoryarchive> Transactionhistoryarchive { get; set; }
-        public virtual DbSet<Unitmeasure> Unitmeasure { get; set; }
+        public virtual DbSet<TransactionHistory> TransactionHistory { get; set; }
+        public virtual DbSet<TransactionHistoryArchive> TransactionHistoryArchive { get; set; }
+        public virtual DbSet<UnitMeasure> UnitMeasure { get; set; }
         public virtual DbSet<Vendor> Vendor { get; set; }
-        public virtual DbSet<Workorder> Workorder { get; set; }
-        public virtual DbSet<Workorderrouting> Workorderrouting { get; set; }
+        public virtual DbSet<WorkOrder> WorkOrder { get; set; }
+        public virtual DbSet<WorkOrderRouting> WorkOrderRouting { get; set; }
+
+        // Unable to generate entity type for table 'Production.Document' since its primary key could not be scaffolded. Please see the warning messages.
+        // Unable to generate entity type for table 'Production.ProductDocument' since its primary key could not be scaffolded. Please see the warning messages.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("tablefunc")
-                .HasPostgresExtension("uuid-ossp");
+            modelBuilder.HasAnnotation("Scaffolding:ConnectionString", "Data Source=(local);Initial Catalog=AdventureWorks2014;Integrated Security=true");
 
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.ToTable("address", "person");
+                entity.ToTable("Address", "Person");
 
                 entity.HasComment("Street address information for customers, employees, and vendors.");
 
-                entity.Property(e => e.Addressid)
-                    .HasColumnName("addressid")
+                entity.HasIndex(e => e.Rowguid, "AK_Address_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.AddressLine1, e.AddressLine2, e.City, e.StateProvinceId, e.PostalCode }, "IX_Address_AddressLine1_AddressLine2_City_StateProvinceID_PostalCode")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.StateProvinceId, "IX_Address_StateProvinceID");
+
+                entity.Property(e => e.AddressId)
+                    .HasColumnName("AddressID")
                     .HasComment("Primary key for Address records.");
 
-                entity.Property(e => e.Addressline1)
+                entity.Property(e => e.AddressLine1)
                     .IsRequired()
                     .HasMaxLength(60)
-                    .HasColumnName("addressline1")
                     .HasComment("First street address line.");
 
-                entity.Property(e => e.Addressline2)
+                entity.Property(e => e.AddressLine2)
                     .HasMaxLength(60)
-                    .HasColumnName("addressline2")
                     .HasComment("Second street address line.");
 
                 entity.Property(e => e.City)
                     .IsRequired()
                     .HasMaxLength(30)
-                    .HasColumnName("city")
                     .HasComment("Name of the city.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Postalcode)
+                entity.Property(e => e.PostalCode)
                     .IsRequired()
                     .HasMaxLength(15)
-                    .HasColumnName("postalcode")
                     .HasComment("Postal code for the street address.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Spatiallocation)
-                    .HasMaxLength(44)
-                    .HasColumnName("spatiallocation")
-                    .HasComment("Latitude and longitude of this address.");
-
-                entity.Property(e => e.Stateprovinceid)
-                    .HasColumnName("stateprovinceid")
+                entity.Property(e => e.StateProvinceId)
+                    .HasColumnName("StateProvinceID")
                     .HasComment("Unique identification number for the state or province. Foreign key to StateProvince table.");
 
-                entity.HasOne(d => d.Stateprovince)
+                entity.HasOne(d => d.StateProvince)
                     .WithMany(p => p.Address)
-                    .HasForeignKey(d => d.Stateprovinceid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Address_StateProvince_StateProvinceID");
+                    .HasForeignKey(d => d.StateProvinceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Addresstype>(entity =>
+            modelBuilder.Entity<AddressType>(entity =>
             {
-                entity.ToTable("addresstype", "person");
+                entity.ToTable("AddressType", "Person");
 
-                entity.HasComment("Types of addresses stored in the Address table.");
+                entity.HasComment("Types of addresses stored in the Address table. ");
 
-                entity.Property(e => e.Addresstypeid)
-                    .HasColumnName("addresstypeid")
+                entity.HasIndex(e => e.Name, "AK_AddressType_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_AddressType_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.AddressTypeId)
+                    .HasColumnName("AddressTypeID")
                     .HasComment("Primary key for AddressType records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Address type description. For example, Billing, Home, or Shipping.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
             });
 
-            modelBuilder.Entity<Billofmaterials>(entity =>
+            modelBuilder.Entity<AwbuildVersion>(entity =>
             {
-                entity.ToTable("billofmaterials", "production");
+                entity.HasKey(e => e.SystemInformationId)
+                    .HasName("PK_AWBuildVersion_SystemInformationID");
+
+                entity.ToTable("AWBuildVersion");
+
+                entity.HasComment("Current version number of the AdventureWorks 2014 sample database. ");
+
+                entity.Property(e => e.SystemInformationId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("SystemInformationID")
+                    .HasComment("Primary key for AWBuildVersion records.");
+
+                entity.Property(e => e.DatabaseVersion)
+                    .IsRequired()
+                    .HasMaxLength(25)
+                    .HasColumnName("Database Version")
+                    .HasComment("Version number of the database in 9.yy.mm.dd.00 format.");
+
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
+
+                entity.Property(e => e.VersionDate)
+                    .HasColumnType("datetime")
+                    .HasComment("Date and time the record was last updated.");
+            });
+
+            modelBuilder.Entity<BillOfMaterials>(entity =>
+            {
+                entity.HasKey(e => e.BillOfMaterialsId)
+                    .HasName("PK_BillOfMaterials_BillOfMaterialsID")
+                    .IsClustered(false);
+
+                entity.ToTable("BillOfMaterials", "Production");
 
                 entity.HasComment("Items required to make bicycles and bicycle subassemblies. It identifies the heirarchical relationship between a parent product and its components.");
 
-                entity.Property(e => e.Billofmaterialsid)
-                    .HasColumnName("billofmaterialsid")
+                entity.HasIndex(e => new { e.ProductAssemblyId, e.ComponentId, e.StartDate }, "AK_BillOfMaterials_ProductAssemblyID_ComponentID_StartDate")
+                    .IsUnique()
+                    .IsClustered();
+
+                entity.HasIndex(e => e.UnitMeasureCode, "IX_BillOfMaterials_UnitMeasureCode");
+
+                entity.Property(e => e.BillOfMaterialsId)
+                    .HasColumnName("BillOfMaterialsID")
                     .HasComment("Primary key for BillOfMaterials records.");
 
                 entity.Property(e => e.Bomlevel)
-                    .HasColumnName("bomlevel")
+                    .HasColumnName("BOMLevel")
                     .HasComment("Indicates the depth the component is from its parent (AssemblyID).");
 
-                entity.Property(e => e.Componentid)
-                    .HasColumnName("componentid")
+                entity.Property(e => e.ComponentId)
+                    .HasColumnName("ComponentID")
                     .HasComment("Component identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the component stopped being used in the assembly item.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Perassemblyqty)
-                    .HasPrecision(8, 2)
-                    .HasColumnName("perassemblyqty")
+                entity.Property(e => e.PerAssemblyQty)
+                    .HasColumnType("decimal(8, 2)")
                     .HasDefaultValueSql("1.00")
                     .HasComment("Quantity of the component needed to create the assembly.");
 
-                entity.Property(e => e.Productassemblyid)
-                    .HasColumnName("productassemblyid")
+                entity.Property(e => e.ProductAssemblyId)
+                    .HasColumnName("ProductAssemblyID")
                     .HasComment("Parent product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("startdate")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Date the component started being used in the assembly item.");
 
-                entity.Property(e => e.Unitmeasurecode)
+                entity.Property(e => e.UnitMeasureCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("unitmeasurecode")
                     .IsFixedLength()
                     .HasComment("Standard code identifying the unit of measure for the quantity.");
 
                 entity.HasOne(d => d.Component)
-                    .WithMany(p => p.BillofmaterialsComponent)
-                    .HasForeignKey(d => d.Componentid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BillOfMaterials_Product_ComponentID");
+                    .WithMany(p => p.BillOfMaterialsComponent)
+                    .HasForeignKey(d => d.ComponentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Productassembly)
-                    .WithMany(p => p.BillofmaterialsProductassembly)
-                    .HasForeignKey(d => d.Productassemblyid)
-                    .HasConstraintName("FK_BillOfMaterials_Product_ProductAssemblyID");
+                entity.HasOne(d => d.ProductAssembly)
+                    .WithMany(p => p.BillOfMaterialsProductAssembly)
+                    .HasForeignKey(d => d.ProductAssemblyId);
 
-                entity.HasOne(d => d.UnitmeasurecodeNavigation)
-                    .WithMany(p => p.Billofmaterials)
-                    .HasForeignKey(d => d.Unitmeasurecode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BillOfMaterials_UnitMeasure_UnitMeasureCode");
+                entity.HasOne(d => d.UnitMeasureCodeNavigation)
+                    .WithMany(p => p.BillOfMaterials)
+                    .HasForeignKey(d => d.UnitMeasureCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Businessentity>(entity =>
+            modelBuilder.Entity<BusinessEntity>(entity =>
             {
-                entity.ToTable("businessentity", "person");
+                entity.ToTable("BusinessEntity", "Person");
 
                 entity.HasComment("Source of the ID that connects vendors, customers, and employees with address and contact information.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.Rowguid, "AK_BusinessEntity_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key for all customers, vendors, and employees.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
             });
 
-            modelBuilder.Entity<Businessentityaddress>(entity =>
+            modelBuilder.Entity<BusinessEntityAddress>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Addressid, e.Addresstypeid })
-                    .HasName("PK_BusinessEntityAddress_BusinessEntityID_AddressID_AddressType");
+                entity.HasKey(e => new { e.BusinessEntityId, e.AddressId, e.AddressTypeId })
+                    .HasName("PK_BusinessEntityAddress_BusinessEntityID_AddressID_AddressTypeID");
 
-                entity.ToTable("businessentityaddress", "person");
+                entity.ToTable("BusinessEntityAddress", "Person");
 
                 entity.HasComment("Cross-reference table mapping customers, vendors, and employees to their addresses.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.Rowguid, "AK_BusinessEntityAddress_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.AddressId, "IX_BusinessEntityAddress_AddressID");
+
+                entity.HasIndex(e => e.AddressTypeId, "IX_BusinessEntityAddress_AddressTypeID");
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key. Foreign key to BusinessEntity.BusinessEntityID.");
 
-                entity.Property(e => e.Addressid)
-                    .HasColumnName("addressid")
+                entity.Property(e => e.AddressId)
+                    .HasColumnName("AddressID")
                     .HasComment("Primary key. Foreign key to Address.AddressID.");
 
-                entity.Property(e => e.Addresstypeid)
-                    .HasColumnName("addresstypeid")
+                entity.Property(e => e.AddressTypeId)
+                    .HasColumnName("AddressTypeID")
                     .HasComment("Primary key. Foreign key to AddressType.AddressTypeID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
                 entity.HasOne(d => d.Address)
-                    .WithMany(p => p.Businessentityaddress)
-                    .HasForeignKey(d => d.Addressid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BusinessEntityAddress_Address_AddressID");
+                    .WithMany(p => p.BusinessEntityAddress)
+                    .HasForeignKey(d => d.AddressId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Addresstype)
-                    .WithMany(p => p.Businessentityaddress)
-                    .HasForeignKey(d => d.Addresstypeid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BusinessEntityAddress_AddressType_AddressTypeID");
+                entity.HasOne(d => d.AddressType)
+                    .WithMany(p => p.BusinessEntityAddress)
+                    .HasForeignKey(d => d.AddressTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Businessentityaddress)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BusinessEntityAddress_BusinessEntity_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.BusinessEntityAddress)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Businessentitycontact>(entity =>
+            modelBuilder.Entity<BusinessEntityContact>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Personid, e.Contacttypeid })
-                    .HasName("PK_BusinessEntityContact_BusinessEntityID_PersonID_ContactTypeI");
+                entity.HasKey(e => new { e.BusinessEntityId, e.PersonId, e.ContactTypeId })
+                    .HasName("PK_BusinessEntityContact_BusinessEntityID_PersonID_ContactTypeID");
 
-                entity.ToTable("businessentitycontact", "person");
+                entity.ToTable("BusinessEntityContact", "Person");
 
                 entity.HasComment("Cross-reference table mapping stores, vendors, and employees to people");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.Rowguid, "AK_BusinessEntityContact_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.ContactTypeId, "IX_BusinessEntityContact_ContactTypeID");
+
+                entity.HasIndex(e => e.PersonId, "IX_BusinessEntityContact_PersonID");
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key. Foreign key to BusinessEntity.BusinessEntityID.");
 
-                entity.Property(e => e.Personid)
-                    .HasColumnName("personid")
+                entity.Property(e => e.PersonId)
+                    .HasColumnName("PersonID")
                     .HasComment("Primary key. Foreign key to Person.BusinessEntityID.");
 
-                entity.Property(e => e.Contacttypeid)
-                    .HasColumnName("contacttypeid")
+                entity.Property(e => e.ContactTypeId)
+                    .HasColumnName("ContactTypeID")
                     .HasComment("Primary key.  Foreign key to ContactType.ContactTypeID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Businessentitycontact)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BusinessEntityContact_BusinessEntity_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.BusinessEntityContact)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Contacttype)
-                    .WithMany(p => p.Businessentitycontact)
-                    .HasForeignKey(d => d.Contacttypeid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BusinessEntityContact_ContactType_ContactTypeID");
+                entity.HasOne(d => d.ContactType)
+                    .WithMany(p => p.BusinessEntityContact)
+                    .HasForeignKey(d => d.ContactTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Person)
-                    .WithMany(p => p.Businessentitycontact)
-                    .HasForeignKey(d => d.Personid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_BusinessEntityContact_Person_PersonID");
+                    .WithMany(p => p.BusinessEntityContact)
+                    .HasForeignKey(d => d.PersonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Contacttype>(entity =>
+            modelBuilder.Entity<ContactType>(entity =>
             {
-                entity.ToTable("contacttype", "person");
+                entity.ToTable("ContactType", "Person");
 
                 entity.HasComment("Lookup table containing the types of business entity contacts.");
 
-                entity.Property(e => e.Contacttypeid)
-                    .HasColumnName("contacttypeid")
+                entity.HasIndex(e => e.Name, "AK_ContactType_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.ContactTypeId)
+                    .HasColumnName("ContactTypeID")
                     .HasComment("Primary key for ContactType records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Contact type description.");
             });
 
-            modelBuilder.Entity<Countryregion>(entity =>
+            modelBuilder.Entity<CountryRegion>(entity =>
             {
-                entity.HasKey(e => e.Countryregioncode)
+                entity.HasKey(e => e.CountryRegionCode)
                     .HasName("PK_CountryRegion_CountryRegionCode");
 
-                entity.ToTable("countryregion", "person");
+                entity.ToTable("CountryRegion", "Person");
 
                 entity.HasComment("Lookup table containing the ISO standard codes for countries and regions.");
 
-                entity.Property(e => e.Countryregioncode)
+                entity.HasIndex(e => e.Name, "AK_CountryRegion_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.CountryRegionCode)
                     .HasMaxLength(3)
-                    .HasColumnName("countryregioncode")
                     .HasComment("ISO standard code for countries and regions.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Country or region name.");
             });
 
-            modelBuilder.Entity<Countryregioncurrency>(entity =>
+            modelBuilder.Entity<CountryRegionCurrency>(entity =>
             {
-                entity.HasKey(e => new { e.Countryregioncode, e.Currencycode })
+                entity.HasKey(e => new { e.CountryRegionCode, e.CurrencyCode })
                     .HasName("PK_CountryRegionCurrency_CountryRegionCode_CurrencyCode");
 
-                entity.ToTable("countryregioncurrency", "sales");
+                entity.ToTable("CountryRegionCurrency", "Sales");
 
                 entity.HasComment("Cross-reference table mapping ISO currency codes to a country or region.");
 
-                entity.Property(e => e.Countryregioncode)
+                entity.HasIndex(e => e.CurrencyCode, "IX_CountryRegionCurrency_CurrencyCode");
+
+                entity.Property(e => e.CountryRegionCode)
                     .HasMaxLength(3)
-                    .HasColumnName("countryregioncode")
                     .HasComment("ISO code for countries and regions. Foreign key to CountryRegion.CountryRegionCode.");
 
-                entity.Property(e => e.Currencycode)
+                entity.Property(e => e.CurrencyCode)
                     .HasMaxLength(3)
-                    .HasColumnName("currencycode")
                     .IsFixedLength()
                     .HasComment("ISO standard currency code. Foreign key to Currency.CurrencyCode.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.HasOne(d => d.CountryregioncodeNavigation)
-                    .WithMany(p => p.Countryregioncurrency)
-                    .HasForeignKey(d => d.Countryregioncode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CountryRegionCurrency_CountryRegion_CountryRegionCode");
+                entity.HasOne(d => d.CountryRegionCodeNavigation)
+                    .WithMany(p => p.CountryRegionCurrency)
+                    .HasForeignKey(d => d.CountryRegionCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.CurrencycodeNavigation)
-                    .WithMany(p => p.Countryregioncurrency)
-                    .HasForeignKey(d => d.Currencycode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CountryRegionCurrency_Currency_CurrencyCode");
+                entity.HasOne(d => d.CurrencyCodeNavigation)
+                    .WithMany(p => p.CountryRegionCurrency)
+                    .HasForeignKey(d => d.CurrencyCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Creditcard>(entity =>
+            modelBuilder.Entity<CreditCard>(entity =>
             {
-                entity.ToTable("creditcard", "sales");
+                entity.ToTable("CreditCard", "Sales");
 
                 entity.HasComment("Customer credit card information.");
 
-                entity.Property(e => e.Creditcardid)
-                    .HasColumnName("creditcardid")
+                entity.HasIndex(e => e.CardNumber, "AK_CreditCard_CardNumber")
+                    .IsUnique();
+
+                entity.Property(e => e.CreditCardId)
+                    .HasColumnName("CreditCardID")
                     .HasComment("Primary key for CreditCard records.");
 
-                entity.Property(e => e.Cardnumber)
+                entity.Property(e => e.CardNumber)
                     .IsRequired()
                     .HasMaxLength(25)
-                    .HasColumnName("cardnumber")
                     .HasComment("Credit card number.");
 
-                entity.Property(e => e.Cardtype)
+                entity.Property(e => e.CardType)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("cardtype")
                     .HasComment("Credit card name.");
 
-                entity.Property(e => e.Expmonth)
-                    .HasColumnName("expmonth")
-                    .HasComment("Credit card expiration month.");
+                entity.Property(e => e.ExpMonth).HasComment("Credit card expiration month.");
 
-                entity.Property(e => e.Expyear)
-                    .HasColumnName("expyear")
-                    .HasComment("Credit card expiration year.");
+                entity.Property(e => e.ExpYear).HasComment("Credit card expiration year.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
             });
 
             modelBuilder.Entity<Culture>(entity =>
             {
-                entity.ToTable("culture", "production");
+                entity.ToTable("Culture", "Production");
 
                 entity.HasComment("Lookup table containing the languages in which some AdventureWorks data is stored.");
 
-                entity.Property(e => e.Cultureid)
+                entity.HasIndex(e => e.Name, "AK_Culture_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.CultureId)
                     .HasMaxLength(6)
-                    .HasColumnName("cultureid")
+                    .HasColumnName("CultureID")
                     .IsFixedLength()
                     .HasComment("Primary key for Culture records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Culture description.");
             });
 
             modelBuilder.Entity<Currency>(entity =>
             {
-                entity.HasKey(e => e.Currencycode)
+                entity.HasKey(e => e.CurrencyCode)
                     .HasName("PK_Currency_CurrencyCode");
 
-                entity.ToTable("currency", "sales");
+                entity.ToTable("Currency", "Sales");
 
                 entity.HasComment("Lookup table containing standard ISO currencies.");
 
-                entity.Property(e => e.Currencycode)
+                entity.HasIndex(e => e.Name, "AK_Currency_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.CurrencyCode)
                     .HasMaxLength(3)
-                    .HasColumnName("currencycode")
                     .IsFixedLength()
                     .HasComment("The ISO code for the Currency.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Currency name.");
             });
 
-            modelBuilder.Entity<Currencyrate>(entity =>
+            modelBuilder.Entity<CurrencyRate>(entity =>
             {
-                entity.ToTable("currencyrate", "sales");
+                entity.ToTable("CurrencyRate", "Sales");
 
                 entity.HasComment("Currency exchange rates.");
 
-                entity.Property(e => e.Currencyrateid)
-                    .HasColumnName("currencyrateid")
+                entity.HasIndex(e => new { e.CurrencyRateDate, e.FromCurrencyCode, e.ToCurrencyCode }, "AK_CurrencyRate_CurrencyRateDate_FromCurrencyCode_ToCurrencyCode")
+                    .IsUnique();
+
+                entity.Property(e => e.CurrencyRateId)
+                    .HasColumnName("CurrencyRateID")
                     .HasComment("Primary key for CurrencyRate records.");
 
-                entity.Property(e => e.Averagerate)
-                    .HasColumnName("averagerate")
+                entity.Property(e => e.AverageRate)
+                    .HasColumnType("money")
                     .HasComment("Average exchange rate for the day.");
 
-                entity.Property(e => e.Currencyratedate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("currencyratedate")
+                entity.Property(e => e.CurrencyRateDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date and time the exchange rate was obtained.");
 
-                entity.Property(e => e.Endofdayrate)
-                    .HasColumnName("endofdayrate")
+                entity.Property(e => e.EndOfDayRate)
+                    .HasColumnType("money")
                     .HasComment("Final exchange rate for the day.");
 
-                entity.Property(e => e.Fromcurrencycode)
+                entity.Property(e => e.FromCurrencyCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("fromcurrencycode")
                     .IsFixedLength()
                     .HasComment("Exchange rate was converted from this currency code.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Tocurrencycode)
+                entity.Property(e => e.ToCurrencyCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("tocurrencycode")
                     .IsFixedLength()
                     .HasComment("Exchange rate was converted to this currency code.");
 
-                entity.HasOne(d => d.FromcurrencycodeNavigation)
-                    .WithMany(p => p.CurrencyrateFromcurrencycodeNavigation)
-                    .HasForeignKey(d => d.Fromcurrencycode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CurrencyRate_Currency_FromCurrencyCode");
+                entity.HasOne(d => d.FromCurrencyCodeNavigation)
+                    .WithMany(p => p.CurrencyRateFromCurrencyCodeNavigation)
+                    .HasForeignKey(d => d.FromCurrencyCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.TocurrencycodeNavigation)
-                    .WithMany(p => p.CurrencyrateTocurrencycodeNavigation)
-                    .HasForeignKey(d => d.Tocurrencycode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CurrencyRate_Currency_ToCurrencyCode");
+                entity.HasOne(d => d.ToCurrencyCodeNavigation)
+                    .WithMany(p => p.CurrencyRateToCurrencyCodeNavigation)
+                    .HasForeignKey(d => d.ToCurrencyCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.ToTable("customer", "sales");
+                entity.ToTable("Customer", "Sales");
 
                 entity.HasComment("Current customer information. Also see the Person and Store tables.");
 
-                entity.Property(e => e.Customerid)
-                    .HasColumnName("customerid")
+                entity.HasIndex(e => e.Rowguid, "AK_Customer_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.TerritoryId, "IX_Customer_TerritoryID");
+
+                entity.Property(e => e.CustomerId)
+                    .HasColumnName("CustomerID")
                     .HasComment("Primary key.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Personid)
-                    .HasColumnName("personid")
+                entity.Property(e => e.PersonId)
+                    .HasColumnName("PersonID")
                     .HasComment("Foreign key to Person.BusinessEntityID");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Storeid)
-                    .HasColumnName("storeid")
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("StoreID")
                     .HasComment("Foreign key to Store.BusinessEntityID");
 
-                entity.Property(e => e.Territoryid)
-                    .HasColumnName("territoryid")
+                entity.Property(e => e.TerritoryId)
+                    .HasColumnName("TerritoryID")
                     .HasComment("ID of the territory in which the customer is located. Foreign key to SalesTerritory.SalesTerritoryID.");
 
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.Customer)
-                    .HasForeignKey(d => d.Personid)
-                    .HasConstraintName("FK_Customer_Person_PersonID");
+                    .HasForeignKey(d => d.PersonId);
 
                 entity.HasOne(d => d.Store)
                     .WithMany(p => p.Customer)
-                    .HasForeignKey(d => d.Storeid)
-                    .HasConstraintName("FK_Customer_Store_StoreID");
+                    .HasForeignKey(d => d.StoreId);
 
                 entity.HasOne(d => d.Territory)
                     .WithMany(p => p.Customer)
-                    .HasForeignKey(d => d.Territoryid)
-                    .HasConstraintName("FK_Customer_SalesTerritory_TerritoryID");
+                    .HasForeignKey(d => d.TerritoryId);
+            });
+
+            modelBuilder.Entity<DatabaseLog>(entity =>
+            {
+                entity.HasKey(e => e.DatabaseLogId)
+                    .HasName("PK_DatabaseLog_DatabaseLogID")
+                    .IsClustered(false);
+
+                entity.HasComment("Audit table tracking all DDL changes made to the AdventureWorks database. Data is captured by the database trigger ddlDatabaseTriggerLog.");
+
+                entity.Property(e => e.DatabaseLogId)
+                    .HasColumnName("DatabaseLogID")
+                    .HasComment("Primary key for DatabaseLog records.");
+
+                entity.Property(e => e.PostTime)
+                    .HasColumnType("datetime")
+                    .HasComment("The date and time the DDL change occurred.");
+
+                entity.Property(e => e.Tsql)
+                    .IsRequired()
+                    .HasColumnName("TSQL")
+                    .HasComment("The exact Transact-SQL statement that was executed.");
+
+                entity.Property(e => e.XmlEvent)
+                    .IsRequired()
+                    .HasColumnType("xml")
+                    .HasComment("The raw XML data generated by database trigger.");
             });
 
             modelBuilder.Entity<Department>(entity =>
             {
-                entity.ToTable("department", "humanresources");
+                entity.ToTable("Department", "HumanResources");
 
                 entity.HasComment("Lookup table containing the departments within the Adventure Works Cycles company.");
 
-                entity.Property(e => e.Departmentid)
-                    .HasColumnName("departmentid")
+                entity.HasIndex(e => e.Name, "AK_Department_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.DepartmentId)
+                    .HasColumnName("DepartmentID")
                     .HasComment("Primary key for Department records.");
 
-                entity.Property(e => e.Groupname)
+                entity.Property(e => e.GroupName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("groupname")
                     .HasComment("Name of the group to which the department belongs.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Name of the department.");
             });
 
-            modelBuilder.Entity<Document>(entity =>
+            modelBuilder.Entity<EmailAddress>(entity =>
             {
-                entity.HasKey(e => e.Documentnode)
-                    .HasName("PK_Document_DocumentNode");
-
-                entity.ToTable("document", "production");
-
-                entity.HasComment("Product maintenance documents.");
-
-                entity.HasIndex(e => e.Rowguid, "document_rowguid_key")
-                    .IsUnique();
-
-                entity.Property(e => e.Documentnode)
-                    .HasColumnType("character varying")
-                    .HasColumnName("documentnode")
-                    .HasDefaultValueSql("'/'::character varying")
-                    .HasComment("Primary key for Document records.");
-
-                entity.Property(e => e.Changenumber)
-                    .HasColumnName("changenumber")
-                    .HasComment("Engineering change approval number.");
-
-                entity.Property(e => e.Document1)
-                    .HasColumnName("document")
-                    .HasComment("Complete document.");
-
-                entity.Property(e => e.Documentsummary)
-                    .HasColumnName("documentsummary")
-                    .HasComment("Document abstract.");
-
-                entity.Property(e => e.Fileextension)
-                    .HasMaxLength(8)
-                    .HasColumnName("fileextension")
-                    .HasComment("File extension indicating the document type. For example, .doc or .txt.");
-
-                entity.Property(e => e.Filename)
-                    .IsRequired()
-                    .HasMaxLength(400)
-                    .HasColumnName("filename")
-                    .HasComment("File name of the document");
-
-                entity.Property(e => e.Folderflag)
-                    .HasColumnName("folderflag")
-                    .HasComment("0 = This is a folder, 1 = This is a document.");
-
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
-
-                entity.Property(e => e.Owner)
-                    .HasColumnName("owner")
-                    .HasComment("Employee who controls the document.  Foreign key to Employee.BusinessEntityID");
-
-                entity.Property(e => e.Revision)
-                    .IsRequired()
-                    .HasMaxLength(5)
-                    .HasColumnName("revision")
-                    .IsFixedLength()
-                    .HasComment("Revision number of the document.");
-
-                entity.Property(e => e.Rowguid)
-                    .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()")
-                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Required for FileStream.");
-
-                entity.Property(e => e.Status)
-                    .HasColumnName("status")
-                    .HasComment("1 = Pending approval, 2 = Approved, 3 = Obsolete");
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("title")
-                    .HasComment("Title of the document.");
-
-                entity.HasOne(d => d.OwnerNavigation)
-                    .WithMany(p => p.Document)
-                    .HasForeignKey(d => d.Owner)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Document_Employee_Owner");
-            });
-
-            modelBuilder.Entity<Emailaddress>(entity =>
-            {
-                entity.HasKey(e => new { e.Businessentityid, e.Emailaddressid })
+                entity.HasKey(e => new { e.BusinessEntityId, e.EmailAddressId })
                     .HasName("PK_EmailAddress_BusinessEntityID_EmailAddressID");
 
-                entity.ToTable("emailaddress", "person");
+                entity.ToTable("EmailAddress", "Person");
 
                 entity.HasComment("Where to send a person email.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.EmailAddress1, "IX_EmailAddress_EmailAddress");
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key. Person associated with this email address.  Foreign key to Person.BusinessEntityID");
 
-                entity.Property(e => e.Emailaddressid)
+                entity.Property(e => e.EmailAddressId)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("emailaddressid")
+                    .HasColumnName("EmailAddressID")
                     .HasComment("Primary key. ID of this email address.");
 
-                entity.Property(e => e.Emailaddress1)
+                entity.Property(e => e.EmailAddress1)
                     .HasMaxLength(50)
-                    .HasColumnName("emailaddress")
+                    .HasColumnName("EmailAddress")
                     .HasComment("E-mail address for the person.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Emailaddress)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmailAddress_Person_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.EmailAddress)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Employee>(entity =>
             {
-                entity.HasKey(e => e.Businessentityid)
+                entity.HasKey(e => e.BusinessEntityId)
                     .HasName("PK_Employee_BusinessEntityID");
 
-                entity.ToTable("employee", "humanresources");
+                entity.ToTable("Employee", "HumanResources");
 
                 entity.HasComment("Employee information such as salary, department, and title.");
 
-                entity.Property(e => e.Businessentityid)
+                entity.HasIndex(e => e.LoginId, "AK_Employee_LoginID")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.NationalIdnumber, "AK_Employee_NationalIDNumber")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_Employee_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.BusinessEntityId)
                     .ValueGeneratedNever()
-                    .HasColumnName("businessentityid")
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key for Employee records.  Foreign key to BusinessEntity.BusinessEntityID.");
 
-                entity.Property(e => e.Birthdate)
-                    .HasColumnName("birthdate")
+                entity.Property(e => e.BirthDate)
+                    .HasColumnType("date")
                     .HasComment("Date of birth.");
 
-                entity.Property(e => e.Currentflag)
+                entity.Property(e => e.CurrentFlag)
                     .IsRequired()
-                    .HasColumnName("currentflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = Inactive, 1 = Active");
 
                 entity.Property(e => e.Gender)
+                    .IsRequired()
                     .HasMaxLength(1)
-                    .HasColumnName("gender")
+                    .IsFixedLength()
                     .HasComment("M = Male, F = Female");
 
-                entity.Property(e => e.Hiredate)
-                    .HasColumnName("hiredate")
+                entity.Property(e => e.HireDate)
+                    .HasColumnType("date")
                     .HasComment("Employee hired on this date.");
 
-                entity.Property(e => e.Jobtitle)
+                entity.Property(e => e.JobTitle)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("jobtitle")
                     .HasComment("Work title such as Buyer or Sales Representative.");
 
-                entity.Property(e => e.Loginid)
+                entity.Property(e => e.LoginId)
                     .IsRequired()
                     .HasMaxLength(256)
-                    .HasColumnName("loginid")
+                    .HasColumnName("LoginID")
                     .HasComment("Network login.");
 
-                entity.Property(e => e.Maritalstatus)
+                entity.Property(e => e.MaritalStatus)
+                    .IsRequired()
                     .HasMaxLength(1)
-                    .HasColumnName("maritalstatus")
+                    .IsFixedLength()
                     .HasComment("M = Married, S = Single");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Nationalidnumber)
+                entity.Property(e => e.NationalIdnumber)
                     .IsRequired()
                     .HasMaxLength(15)
-                    .HasColumnName("nationalidnumber")
+                    .HasColumnName("NationalIDNumber")
                     .HasComment("Unique national identification number such as a social security number.");
-
-                entity.Property(e => e.Organizationnode)
-                    .HasColumnType("character varying")
-                    .HasColumnName("organizationnode")
-                    .HasDefaultValueSql("'/'::character varying")
-                    .HasComment("Where the employee is located in corporate hierarchy.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Salariedflag)
+                entity.Property(e => e.SalariedFlag)
                     .IsRequired()
-                    .HasColumnName("salariedflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("Job classification. 0 = Hourly, not exempt from collective bargaining. 1 = Salaried, exempt from collective bargaining.");
 
-                entity.Property(e => e.Sickleavehours)
-                    .HasColumnName("sickleavehours")
-                    .HasComment("Number of available sick leave hours.");
+                entity.Property(e => e.SickLeaveHours).HasComment("Number of available sick leave hours.");
 
-                entity.Property(e => e.Vacationhours)
-                    .HasColumnName("vacationhours")
-                    .HasComment("Number of available vacation hours.");
+                entity.Property(e => e.VacationHours).HasComment("Number of available vacation hours.");
 
-                entity.HasOne(d => d.Businessentity)
+                entity.HasOne(d => d.BusinessEntity)
                     .WithOne(p => p.Employee)
-                    .HasForeignKey<Employee>(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Employee_Person_BusinessEntityID");
+                    .HasForeignKey<Employee>(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Employeedepartmenthistory>(entity =>
+            modelBuilder.Entity<EmployeeDepartmentHistory>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Startdate, e.Departmentid, e.Shiftid })
-                    .HasName("PK_EmployeeDepartmentHistory_BusinessEntityID_StartDate_Departm");
+                entity.HasKey(e => new { e.BusinessEntityId, e.StartDate, e.DepartmentId, e.ShiftId })
+                    .HasName("PK_EmployeeDepartmentHistory_BusinessEntityID_StartDate_DepartmentID");
 
-                entity.ToTable("employeedepartmenthistory", "humanresources");
+                entity.ToTable("EmployeeDepartmentHistory", "HumanResources");
 
                 entity.HasComment("Employee department transfers.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.DepartmentId, "IX_EmployeeDepartmentHistory_DepartmentID");
+
+                entity.HasIndex(e => e.ShiftId, "IX_EmployeeDepartmentHistory_ShiftID");
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Employee identification number. Foreign key to Employee.BusinessEntityID.");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnName("startdate")
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("date")
                     .HasComment("Date the employee started work in the department.");
 
-                entity.Property(e => e.Departmentid)
-                    .HasColumnName("departmentid")
+                entity.Property(e => e.DepartmentId)
+                    .HasColumnName("DepartmentID")
                     .HasComment("Department in which the employee worked including currently. Foreign key to Department.DepartmentID.");
 
-                entity.Property(e => e.Shiftid)
-                    .HasColumnName("shiftid")
+                entity.Property(e => e.ShiftId)
+                    .HasColumnName("ShiftID")
                     .HasComment("Identifies which 8-hour shift the employee works. Foreign key to Shift.Shift.ID.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("date")
                     .HasComment("Date the employee left the department. NULL = Current department.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Employeedepartmenthistory)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmployeeDepartmentHistory_Employee_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.EmployeeDepartmentHistory)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Department)
-                    .WithMany(p => p.Employeedepartmenthistory)
-                    .HasForeignKey(d => d.Departmentid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmployeeDepartmentHistory_Department_DepartmentID");
+                    .WithMany(p => p.EmployeeDepartmentHistory)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Shift)
-                    .WithMany(p => p.Employeedepartmenthistory)
-                    .HasForeignKey(d => d.Shiftid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmployeeDepartmentHistory_Shift_ShiftID");
+                    .WithMany(p => p.EmployeeDepartmentHistory)
+                    .HasForeignKey(d => d.ShiftId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Employeepayhistory>(entity =>
+            modelBuilder.Entity<EmployeePayHistory>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Ratechangedate })
+                entity.HasKey(e => new { e.BusinessEntityId, e.RateChangeDate })
                     .HasName("PK_EmployeePayHistory_BusinessEntityID_RateChangeDate");
 
-                entity.ToTable("employeepayhistory", "humanresources");
+                entity.ToTable("EmployeePayHistory", "HumanResources");
 
                 entity.HasComment("Employee pay history.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Employee identification number. Foreign key to Employee.BusinessEntityID.");
 
-                entity.Property(e => e.Ratechangedate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("ratechangedate")
+                entity.Property(e => e.RateChangeDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the change in pay is effective");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Payfrequency)
-                    .HasColumnName("payfrequency")
-                    .HasComment("1 = Salary received monthly, 2 = Salary received biweekly");
+                entity.Property(e => e.PayFrequency).HasComment("1 = Salary received monthly, 2 = Salary received biweekly");
 
                 entity.Property(e => e.Rate)
-                    .HasColumnName("rate")
+                    .HasColumnType("money")
                     .HasComment("Salary hourly rate.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Employeepayhistory)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EmployeePayHistory_Employee_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.EmployeePayHistory)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ErrorLog>(entity =>
+            {
+                entity.HasComment("Audit table tracking errors in the the AdventureWorks database that are caught by the CATCH block of a TRY...CATCH construct. Data is inserted by stored procedure dbo.uspLogError when it is executed from inside the CATCH block of a TRY...CATCH construct.");
+
+                entity.Property(e => e.ErrorLogId)
+                    .HasColumnName("ErrorLogID")
+                    .HasComment("Primary key for ErrorLog records.");
+
+                entity.Property(e => e.ErrorLine).HasComment("The line number at which the error occurred.");
+
+                entity.Property(e => e.ErrorMessage)
+                    .IsRequired()
+                    .HasMaxLength(4000)
+                    .HasComment("The message text of the error that occurred.");
+
+                entity.Property(e => e.ErrorNumber).HasComment("The error number of the error that occurred.");
+
+                entity.Property(e => e.ErrorProcedure)
+                    .HasMaxLength(126)
+                    .HasComment("The name of the stored procedure or trigger where the error occurred.");
+
+                entity.Property(e => e.ErrorSeverity).HasComment("The severity of the error that occurred.");
+
+                entity.Property(e => e.ErrorState).HasComment("The state number of the error that occurred.");
+
+                entity.Property(e => e.ErrorTime)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("The date and time at which the error occurred.");
             });
 
             modelBuilder.Entity<Illustration>(entity =>
             {
-                entity.ToTable("illustration", "production");
+                entity.ToTable("Illustration", "Production");
 
                 entity.HasComment("Bicycle assembly diagrams.");
 
-                entity.Property(e => e.Illustrationid)
-                    .HasColumnName("illustrationid")
+                entity.Property(e => e.IllustrationId)
+                    .HasColumnName("IllustrationID")
                     .HasComment("Primary key for Illustration records.");
 
                 entity.Property(e => e.Diagram)
                     .HasColumnType("xml")
-                    .HasColumnName("diagram")
                     .HasComment("Illustrations used in manufacturing instructions. Stored as XML.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
             });
 
-            modelBuilder.Entity<Jobcandidate>(entity =>
+            modelBuilder.Entity<JobCandidate>(entity =>
             {
-                entity.ToTable("jobcandidate", "humanresources");
+                entity.ToTable("JobCandidate", "HumanResources");
 
-                entity.HasComment("RÃ©sumÃ©s submitted to Human Resources by job applicants.");
+                entity.HasComment("Résumés submitted to Human Resources by job applicants.");
 
-                entity.Property(e => e.Jobcandidateid)
-                    .HasColumnName("jobcandidateid")
+                entity.HasIndex(e => e.BusinessEntityId, "IX_JobCandidate_BusinessEntityID");
+
+                entity.Property(e => e.JobCandidateId)
+                    .HasColumnName("JobCandidateID")
                     .HasComment("Primary key for JobCandidate records.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Employee identification number if applicant was hired. Foreign key to Employee.BusinessEntityID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Resume)
                     .HasColumnType("xml")
-                    .HasColumnName("resume")
-                    .HasComment("RÃ©sumÃ© in XML format.");
+                    .HasComment("Résumé in XML format.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Jobcandidate)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .HasConstraintName("FK_JobCandidate_Employee_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.JobCandidate)
+                    .HasForeignKey(d => d.BusinessEntityId);
             });
 
             modelBuilder.Entity<Location>(entity =>
             {
-                entity.ToTable("location", "production");
+                entity.ToTable("Location", "Production");
 
                 entity.HasComment("Product inventory and manufacturing locations.");
 
-                entity.Property(e => e.Locationid)
-                    .HasColumnName("locationid")
+                entity.HasIndex(e => e.Name, "AK_Location_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.LocationId)
+                    .HasColumnName("LocationID")
                     .HasComment("Primary key for Location records.");
 
                 entity.Property(e => e.Availability)
-                    .HasPrecision(8, 2)
-                    .HasColumnName("availability")
+                    .HasColumnType("decimal(8, 2)")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Work capacity (in hours) of the manufacturing location.");
 
-                entity.Property(e => e.Costrate)
-                    .HasColumnName("costrate")
+                entity.Property(e => e.CostRate)
+                    .HasColumnType("smallmoney")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Standard hourly cost of the manufacturing location.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Location description.");
             });
 
             modelBuilder.Entity<Password>(entity =>
             {
-                entity.HasKey(e => e.Businessentityid)
+                entity.HasKey(e => e.BusinessEntityId)
                     .HasName("PK_Password_BusinessEntityID");
 
-                entity.ToTable("password", "person");
+                entity.ToTable("Password", "Person");
 
                 entity.HasComment("One way hashed authentication information");
 
-                entity.Property(e => e.Businessentityid)
+                entity.Property(e => e.BusinessEntityId)
                     .ValueGeneratedNever()
-                    .HasColumnName("businessentityid");
+                    .HasColumnName("BusinessEntityID");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Passwordhash)
+                entity.Property(e => e.PasswordHash)
                     .IsRequired()
                     .HasMaxLength(128)
-                    .HasColumnName("passwordhash")
+                    .IsUnicode(false)
                     .HasComment("Password for the e-mail account.");
 
-                entity.Property(e => e.Passwordsalt)
+                entity.Property(e => e.PasswordSalt)
                     .IsRequired()
                     .HasMaxLength(10)
-                    .HasColumnName("passwordsalt")
+                    .IsUnicode(false)
                     .HasComment("Random value concatenated with the password string before the password is hashed.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.HasOne(d => d.Businessentity)
+                entity.HasOne(d => d.BusinessEntity)
                     .WithOne(p => p.Password)
-                    .HasForeignKey<Password>(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Password_Person_BusinessEntityID");
+                    .HasForeignKey<Password>(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.HasKey(e => e.Businessentityid)
+                entity.HasKey(e => e.BusinessEntityId)
                     .HasName("PK_Person_BusinessEntityID");
 
-                entity.ToTable("person", "person");
+                entity.ToTable("Person", "Person");
 
                 entity.HasComment("Human beings involved with AdventureWorks: employees, customer contacts, and vendor contacts.");
 
-                entity.Property(e => e.Businessentityid)
+                entity.HasIndex(e => e.Rowguid, "AK_Person_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.LastName, e.FirstName, e.MiddleName }, "IX_Person_LastName_FirstName_MiddleName");
+
+                entity.Property(e => e.BusinessEntityId)
                     .ValueGeneratedNever()
-                    .HasColumnName("businessentityid")
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key for Person records.");
 
-                entity.Property(e => e.Additionalcontactinfo)
+                entity.Property(e => e.AdditionalContactInfo)
                     .HasColumnType("xml")
-                    .HasColumnName("additionalcontactinfo")
-                    .HasComment("Additional contact information about the person stored in xml format.");
+                    .HasComment("Additional contact information about the person stored in xml format. ");
 
                 entity.Property(e => e.Demographics)
                     .HasColumnType("xml")
-                    .HasColumnName("demographics")
                     .HasComment("Personal information such as hobbies, and income collected from online shoppers. Used for sales analysis.");
 
-                entity.Property(e => e.Emailpromotion)
-                    .HasColumnName("emailpromotion")
-                    .HasComment("0 = Contact does not wish to receive e-mail promotions, 1 = Contact does wish to receive e-mail promotions from AdventureWorks, 2 = Contact does wish to receive e-mail promotions from AdventureWorks and selected partners.");
+                entity.Property(e => e.EmailPromotion).HasComment("0 = Contact does not wish to receive e-mail promotions, 1 = Contact does wish to receive e-mail promotions from AdventureWorks, 2 = Contact does wish to receive e-mail promotions from AdventureWorks and selected partners. ");
 
-                entity.Property(e => e.Firstname)
+                entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("firstname")
                     .HasComment("First name of the person.");
 
-                entity.Property(e => e.Lastname)
+                entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("lastname")
                     .HasComment("Last name of the person.");
 
-                entity.Property(e => e.Middlename)
+                entity.Property(e => e.MiddleName)
                     .HasMaxLength(50)
-                    .HasColumnName("middlename")
                     .HasComment("Middle name or middle initial of the person.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Namestyle)
-                    .HasColumnName("namestyle")
-                    .HasComment("0 = The data in FirstName and LastName are stored in western style (first name, last name) order.  1 = Eastern style (last name, first name) order.");
+                entity.Property(e => e.NameStyle).HasComment("0 = The data in FirstName and LastName are stored in western style (first name, last name) order.  1 = Eastern style (last name, first name) order.");
 
-                entity.Property(e => e.Persontype)
+                entity.Property(e => e.PersonType)
                     .IsRequired()
                     .HasMaxLength(2)
-                    .HasColumnName("persontype")
                     .IsFixedLength()
                     .HasComment("Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
                 entity.Property(e => e.Suffix)
                     .HasMaxLength(10)
-                    .HasColumnName("suffix")
                     .HasComment("Surname suffix. For example, Sr. or Jr.");
 
                 entity.Property(e => e.Title)
                     .HasMaxLength(8)
-                    .HasColumnName("title")
                     .HasComment("A courtesy title. For example, Mr. or Ms.");
 
-                entity.HasOne(d => d.Businessentity)
+                entity.HasOne(d => d.BusinessEntity)
                     .WithOne(p => p.Person)
-                    .HasForeignKey<Person>(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Person_BusinessEntity_BusinessEntityID");
+                    .HasForeignKey<Person>(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Personcreditcard>(entity =>
+            modelBuilder.Entity<PersonCreditCard>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Creditcardid })
+                entity.HasKey(e => new { e.BusinessEntityId, e.CreditCardId })
                     .HasName("PK_PersonCreditCard_BusinessEntityID_CreditCardID");
 
-                entity.ToTable("personcreditcard", "sales");
+                entity.ToTable("PersonCreditCard", "Sales");
 
-                entity.HasComment("Cross-reference table mapping people to their credit card information in the CreditCard table.");
+                entity.HasComment("Cross-reference table mapping people to their credit card information in the CreditCard table. ");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Business entity identification number. Foreign key to Person.BusinessEntityID.");
 
-                entity.Property(e => e.Creditcardid)
-                    .HasColumnName("creditcardid")
+                entity.Property(e => e.CreditCardId)
+                    .HasColumnName("CreditCardID")
                     .HasComment("Credit card identification number. Foreign key to CreditCard.CreditCardID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Personcreditcard)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PersonCreditCard_Person_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.PersonCreditCard)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Creditcard)
-                    .WithMany(p => p.Personcreditcard)
-                    .HasForeignKey(d => d.Creditcardid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PersonCreditCard_CreditCard_CreditCardID");
+                entity.HasOne(d => d.CreditCard)
+                    .WithMany(p => p.PersonCreditCard)
+                    .HasForeignKey(d => d.CreditCardId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Personphone>(entity =>
+            modelBuilder.Entity<PersonPhone>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Phonenumber, e.Phonenumbertypeid })
+                entity.HasKey(e => new { e.BusinessEntityId, e.PhoneNumber, e.PhoneNumberTypeId })
                     .HasName("PK_PersonPhone_BusinessEntityID_PhoneNumber_PhoneNumberTypeID");
 
-                entity.ToTable("personphone", "person");
+                entity.ToTable("PersonPhone", "Person");
 
                 entity.HasComment("Telephone number and type of a person.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.PhoneNumber, "IX_PersonPhone_PhoneNumber");
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Business entity identification number. Foreign key to Person.BusinessEntityID.");
 
-                entity.Property(e => e.Phonenumber)
+                entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(25)
-                    .HasColumnName("phonenumber")
                     .HasComment("Telephone number identification number.");
 
-                entity.Property(e => e.Phonenumbertypeid)
-                    .HasColumnName("phonenumbertypeid")
+                entity.Property(e => e.PhoneNumberTypeId)
+                    .HasColumnName("PhoneNumberTypeID")
                     .HasComment("Kind of phone number. Foreign key to PhoneNumberType.PhoneNumberTypeID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Personphone)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PersonPhone_Person_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.PersonPhone)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Phonenumbertype)
-                    .WithMany(p => p.Personphone)
-                    .HasForeignKey(d => d.Phonenumbertypeid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PersonPhone_PhoneNumberType_PhoneNumberTypeID");
+                entity.HasOne(d => d.PhoneNumberType)
+                    .WithMany(p => p.PersonPhone)
+                    .HasForeignKey(d => d.PhoneNumberTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Phonenumbertype>(entity =>
+            modelBuilder.Entity<PhoneNumberType>(entity =>
             {
-                entity.ToTable("phonenumbertype", "person");
+                entity.ToTable("PhoneNumberType", "Person");
 
                 entity.HasComment("Type of phone number of a person.");
 
-                entity.Property(e => e.Phonenumbertypeid)
-                    .HasColumnName("phonenumbertypeid")
+                entity.Property(e => e.PhoneNumberTypeId)
+                    .HasColumnName("PhoneNumberTypeID")
                     .HasComment("Primary key for telephone number type records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Name of the telephone number type");
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.ToTable("product", "production");
+                entity.ToTable("Product", "Production");
 
                 entity.HasComment("Products sold or used in the manfacturing of sold products.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.HasIndex(e => e.Name, "AK_Product_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.ProductNumber, "AK_Product_ProductNumber")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_Product_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Primary key for Product records.");
 
                 entity.Property(e => e.Class)
                     .HasMaxLength(2)
-                    .HasColumnName("class")
                     .IsFixedLength()
                     .HasComment("H = High, M = Medium, L = Low");
 
                 entity.Property(e => e.Color)
                     .HasMaxLength(15)
-                    .HasColumnName("color")
                     .HasComment("Product color.");
 
-                entity.Property(e => e.Daystomanufacture)
-                    .HasColumnName("daystomanufacture")
-                    .HasComment("Number of days required to manufacture the product.");
+                entity.Property(e => e.DaysToManufacture).HasComment("Number of days required to manufacture the product.");
 
-                entity.Property(e => e.Discontinueddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("discontinueddate")
+                entity.Property(e => e.DiscontinuedDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the product was discontinued.");
 
-                entity.Property(e => e.Finishedgoodsflag)
+                entity.Property(e => e.FinishedGoodsFlag)
                     .IsRequired()
-                    .HasColumnName("finishedgoodsflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = Product is not a salable item. 1 = Product is salable.");
 
-                entity.Property(e => e.Listprice)
-                    .HasColumnName("listprice")
+                entity.Property(e => e.ListPrice)
+                    .HasColumnType("money")
                     .HasComment("Selling price.");
 
-                entity.Property(e => e.Makeflag)
+                entity.Property(e => e.MakeFlag)
                     .IsRequired()
-                    .HasColumnName("makeflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = Product is purchased, 1 = Product is manufactured in-house.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Name of the product.");
 
-                entity.Property(e => e.Productline)
+                entity.Property(e => e.ProductLine)
                     .HasMaxLength(2)
-                    .HasColumnName("productline")
                     .IsFixedLength()
                     .HasComment("R = Road, M = Mountain, T = Touring, S = Standard");
 
-                entity.Property(e => e.Productmodelid)
-                    .HasColumnName("productmodelid")
+                entity.Property(e => e.ProductModelId)
+                    .HasColumnName("ProductModelID")
                     .HasComment("Product is a member of this product model. Foreign key to ProductModel.ProductModelID.");
 
-                entity.Property(e => e.Productnumber)
+                entity.Property(e => e.ProductNumber)
                     .IsRequired()
                     .HasMaxLength(25)
-                    .HasColumnName("productnumber")
                     .HasComment("Unique product identification number.");
 
-                entity.Property(e => e.Productsubcategoryid)
-                    .HasColumnName("productsubcategoryid")
-                    .HasComment("Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID.");
+                entity.Property(e => e.ProductSubcategoryId)
+                    .HasColumnName("ProductSubcategoryID")
+                    .HasComment("Product is a member of this product subcategory. Foreign key to ProductSubCategory.ProductSubCategoryID. ");
 
-                entity.Property(e => e.Reorderpoint)
-                    .HasColumnName("reorderpoint")
-                    .HasComment("Inventory level that triggers a purchase order or work order.");
+                entity.Property(e => e.ReorderPoint).HasComment("Inventory level that triggers a purchase order or work order. ");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Safetystocklevel)
-                    .HasColumnName("safetystocklevel")
-                    .HasComment("Minimum inventory quantity.");
+                entity.Property(e => e.SafetyStockLevel).HasComment("Minimum inventory quantity. ");
 
-                entity.Property(e => e.Sellenddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("sellenddate")
+                entity.Property(e => e.SellEndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the product was no longer available for sale.");
 
-                entity.Property(e => e.Sellstartdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("sellstartdate")
+                entity.Property(e => e.SellStartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the product was available for sale.");
 
                 entity.Property(e => e.Size)
                     .HasMaxLength(5)
-                    .HasColumnName("size")
                     .HasComment("Product size.");
 
-                entity.Property(e => e.Sizeunitmeasurecode)
+                entity.Property(e => e.SizeUnitMeasureCode)
                     .HasMaxLength(3)
-                    .HasColumnName("sizeunitmeasurecode")
                     .IsFixedLength()
                     .HasComment("Unit of measure for Size column.");
 
-                entity.Property(e => e.Standardcost)
-                    .HasColumnName("standardcost")
+                entity.Property(e => e.StandardCost)
+                    .HasColumnType("money")
                     .HasComment("Standard cost of the product.");
 
                 entity.Property(e => e.Style)
                     .HasMaxLength(2)
-                    .HasColumnName("style")
                     .IsFixedLength()
                     .HasComment("W = Womens, M = Mens, U = Universal");
 
                 entity.Property(e => e.Weight)
-                    .HasPrecision(8, 2)
-                    .HasColumnName("weight")
+                    .HasColumnType("decimal(8, 2)")
                     .HasComment("Product weight.");
 
-                entity.Property(e => e.Weightunitmeasurecode)
+                entity.Property(e => e.WeightUnitMeasureCode)
                     .HasMaxLength(3)
-                    .HasColumnName("weightunitmeasurecode")
                     .IsFixedLength()
                     .HasComment("Unit of measure for Weight column.");
 
-                entity.HasOne(d => d.Productmodel)
+                entity.HasOne(d => d.ProductModel)
                     .WithMany(p => p.Product)
-                    .HasForeignKey(d => d.Productmodelid)
-                    .HasConstraintName("FK_Product_ProductModel_ProductModelID");
+                    .HasForeignKey(d => d.ProductModelId);
 
-                entity.HasOne(d => d.Productsubcategory)
+                entity.HasOne(d => d.ProductSubcategory)
                     .WithMany(p => p.Product)
-                    .HasForeignKey(d => d.Productsubcategoryid)
-                    .HasConstraintName("FK_Product_ProductSubcategory_ProductSubcategoryID");
+                    .HasForeignKey(d => d.ProductSubcategoryId);
 
-                entity.HasOne(d => d.SizeunitmeasurecodeNavigation)
-                    .WithMany(p => p.ProductSizeunitmeasurecodeNavigation)
-                    .HasForeignKey(d => d.Sizeunitmeasurecode)
-                    .HasConstraintName("FK_Product_UnitMeasure_SizeUnitMeasureCode");
+                entity.HasOne(d => d.SizeUnitMeasureCodeNavigation)
+                    .WithMany(p => p.ProductSizeUnitMeasureCodeNavigation)
+                    .HasForeignKey(d => d.SizeUnitMeasureCode);
 
-                entity.HasOne(d => d.WeightunitmeasurecodeNavigation)
-                    .WithMany(p => p.ProductWeightunitmeasurecodeNavigation)
-                    .HasForeignKey(d => d.Weightunitmeasurecode)
-                    .HasConstraintName("FK_Product_UnitMeasure_WeightUnitMeasureCode");
+                entity.HasOne(d => d.WeightUnitMeasureCodeNavigation)
+                    .WithMany(p => p.ProductWeightUnitMeasureCodeNavigation)
+                    .HasForeignKey(d => d.WeightUnitMeasureCode);
             });
 
-            modelBuilder.Entity<Productcategory>(entity =>
+            modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.ToTable("productcategory", "production");
+                entity.ToTable("ProductCategory", "Production");
 
                 entity.HasComment("High-level product categorization.");
 
-                entity.Property(e => e.Productcategoryid)
-                    .HasColumnName("productcategoryid")
+                entity.HasIndex(e => e.Name, "AK_ProductCategory_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_ProductCategory_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.ProductCategoryId)
+                    .HasColumnName("ProductCategoryID")
                     .HasComment("Primary key for ProductCategory records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Category description.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
             });
 
-            modelBuilder.Entity<Productcosthistory>(entity =>
+            modelBuilder.Entity<ProductCostHistory>(entity =>
             {
-                entity.HasKey(e => new { e.Productid, e.Startdate })
+                entity.HasKey(e => new { e.ProductId, e.StartDate })
                     .HasName("PK_ProductCostHistory_ProductID_StartDate");
 
-                entity.ToTable("productcosthistory", "production");
+                entity.ToTable("ProductCostHistory", "Production");
 
                 entity.HasComment("Changes in the cost of a product over time.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("startdate")
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Product cost start date.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Product cost end date.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Standardcost)
-                    .HasColumnName("standardcost")
+                entity.Property(e => e.StandardCost)
+                    .HasColumnType("money")
                     .HasComment("Standard cost of the product.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productcosthistory)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductCostHistory_Product_ProductID");
+                    .WithMany(p => p.ProductCostHistory)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productdescription>(entity =>
+            modelBuilder.Entity<ProductDescription>(entity =>
             {
-                entity.ToTable("productdescription", "production");
+                entity.ToTable("ProductDescription", "Production");
 
                 entity.HasComment("Product descriptions in several languages.");
 
-                entity.Property(e => e.Productdescriptionid)
-                    .HasColumnName("productdescriptionid")
+                entity.HasIndex(e => e.Rowguid, "AK_ProductDescription_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.ProductDescriptionId)
+                    .HasColumnName("ProductDescriptionID")
                     .HasComment("Primary key for ProductDescription records.");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(400)
-                    .HasColumnName("description")
                     .HasComment("Description of the product.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
             });
 
-            modelBuilder.Entity<Productdocument>(entity =>
+            modelBuilder.Entity<ProductInventory>(entity =>
             {
-                entity.HasKey(e => new { e.Productid, e.Documentnode })
-                    .HasName("PK_ProductDocument_ProductID_DocumentNode");
-
-                entity.ToTable("productdocument", "production");
-
-                entity.HasComment("Cross-reference table mapping products to related product documents.");
-
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
-                    .HasComment("Product identification number. Foreign key to Product.ProductID.");
-
-                entity.Property(e => e.Documentnode)
-                    .HasColumnType("character varying")
-                    .HasColumnName("documentnode")
-                    .HasDefaultValueSql("'/'::character varying")
-                    .HasComment("Document identification number. Foreign key to Document.DocumentNode.");
-
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
-
-                entity.HasOne(d => d.DocumentnodeNavigation)
-                    .WithMany(p => p.Productdocument)
-                    .HasForeignKey(d => d.Documentnode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductDocument_Document_DocumentNode");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productdocument)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductDocument_Product_ProductID");
-            });
-
-            modelBuilder.Entity<Productinventory>(entity =>
-            {
-                entity.HasKey(e => new { e.Productid, e.Locationid })
+                entity.HasKey(e => new { e.ProductId, e.LocationId })
                     .HasName("PK_ProductInventory_ProductID_LocationID");
 
-                entity.ToTable("productinventory", "production");
+                entity.ToTable("ProductInventory", "Production");
 
                 entity.HasComment("Product inventory information.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Locationid)
-                    .HasColumnName("locationid")
-                    .HasComment("Inventory location identification number. Foreign key to Location.LocationID.");
+                entity.Property(e => e.LocationId)
+                    .HasColumnName("LocationID")
+                    .HasComment("Inventory location identification number. Foreign key to Location.LocationID. ");
 
-                entity.Property(e => e.Bin)
-                    .HasColumnName("bin")
-                    .HasComment("Storage container on a shelf in an inventory location.");
+                entity.Property(e => e.Bin).HasComment("Storage container on a shelf in an inventory location.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Quantity)
-                    .HasColumnName("quantity")
-                    .HasComment("Quantity of products in the inventory location.");
+                entity.Property(e => e.Quantity).HasComment("Quantity of products in the inventory location.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
                 entity.Property(e => e.Shelf)
                     .IsRequired()
                     .HasMaxLength(10)
-                    .HasColumnName("shelf")
                     .HasComment("Storage compartment within an inventory location.");
 
                 entity.HasOne(d => d.Location)
-                    .WithMany(p => p.Productinventory)
-                    .HasForeignKey(d => d.Locationid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductInventory_Location_LocationID");
+                    .WithMany(p => p.ProductInventory)
+                    .HasForeignKey(d => d.LocationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productinventory)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductInventory_Product_ProductID");
+                    .WithMany(p => p.ProductInventory)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productlistpricehistory>(entity =>
+            modelBuilder.Entity<ProductListPriceHistory>(entity =>
             {
-                entity.HasKey(e => new { e.Productid, e.Startdate })
+                entity.HasKey(e => new { e.ProductId, e.StartDate })
                     .HasName("PK_ProductListPriceHistory_ProductID_StartDate");
 
-                entity.ToTable("productlistpricehistory", "production");
+                entity.ToTable("ProductListPriceHistory", "Production");
 
                 entity.HasComment("Changes in the list price of a product over time.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("startdate")
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
                     .HasComment("List price start date.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
                     .HasComment("List price end date");
 
-                entity.Property(e => e.Listprice)
-                    .HasColumnName("listprice")
+                entity.Property(e => e.ListPrice)
+                    .HasColumnType("money")
                     .HasComment("Product list price.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productlistpricehistory)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductListPriceHistory_Product_ProductID");
+                    .WithMany(p => p.ProductListPriceHistory)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productmodel>(entity =>
+            modelBuilder.Entity<ProductModel>(entity =>
             {
-                entity.ToTable("productmodel", "production");
+                entity.ToTable("ProductModel", "Production");
 
                 entity.HasComment("Product model classification.");
 
-                entity.Property(e => e.Productmodelid)
-                    .HasColumnName("productmodelid")
+                entity.HasIndex(e => e.Name, "AK_ProductModel_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_ProductModel_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.ProductModelId)
+                    .HasColumnName("ProductModelID")
                     .HasComment("Primary key for ProductModel records.");
 
-                entity.Property(e => e.Catalogdescription)
+                entity.Property(e => e.CatalogDescription)
                     .HasColumnType("xml")
-                    .HasColumnName("catalogdescription")
                     .HasComment("Detailed product catalog information in xml format.");
 
                 entity.Property(e => e.Instructions)
                     .HasColumnType("xml")
-                    .HasColumnName("instructions")
                     .HasComment("Manufacturing instructions in xml format.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Product model description.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
             });
 
-            modelBuilder.Entity<Productmodelillustration>(entity =>
+            modelBuilder.Entity<ProductModelIllustration>(entity =>
             {
-                entity.HasKey(e => new { e.Productmodelid, e.Illustrationid })
+                entity.HasKey(e => new { e.ProductModelId, e.IllustrationId })
                     .HasName("PK_ProductModelIllustration_ProductModelID_IllustrationID");
 
-                entity.ToTable("productmodelillustration", "production");
+                entity.ToTable("ProductModelIllustration", "Production");
 
                 entity.HasComment("Cross-reference table mapping product models and illustrations.");
 
-                entity.Property(e => e.Productmodelid)
-                    .HasColumnName("productmodelid")
+                entity.Property(e => e.ProductModelId)
+                    .HasColumnName("ProductModelID")
                     .HasComment("Primary key. Foreign key to ProductModel.ProductModelID.");
 
-                entity.Property(e => e.Illustrationid)
-                    .HasColumnName("illustrationid")
+                entity.Property(e => e.IllustrationId)
+                    .HasColumnName("IllustrationID")
                     .HasComment("Primary key. Foreign key to Illustration.IllustrationID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.HasOne(d => d.Illustration)
-                    .WithMany(p => p.Productmodelillustration)
-                    .HasForeignKey(d => d.Illustrationid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductModelIllustration_Illustration_IllustrationID");
+                    .WithMany(p => p.ProductModelIllustration)
+                    .HasForeignKey(d => d.IllustrationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Productmodel)
-                    .WithMany(p => p.Productmodelillustration)
-                    .HasForeignKey(d => d.Productmodelid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductModelIllustration_ProductModel_ProductModelID");
+                entity.HasOne(d => d.ProductModel)
+                    .WithMany(p => p.ProductModelIllustration)
+                    .HasForeignKey(d => d.ProductModelId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productmodelproductdescriptionculture>(entity =>
+            modelBuilder.Entity<ProductModelProductDescriptionCulture>(entity =>
             {
-                entity.HasKey(e => new { e.Productmodelid, e.Productdescriptionid, e.Cultureid })
-                    .HasName("PK_ProductModelProductDescriptionCulture_ProductModelID_Product");
+                entity.HasKey(e => new { e.ProductModelId, e.ProductDescriptionId, e.CultureId })
+                    .HasName("PK_ProductModelProductDescriptionCulture_ProductModelID_ProductDescriptionID_CultureID");
 
-                entity.ToTable("productmodelproductdescriptionculture", "production");
+                entity.ToTable("ProductModelProductDescriptionCulture", "Production");
 
                 entity.HasComment("Cross-reference table mapping product descriptions and the language the description is written in.");
 
-                entity.Property(e => e.Productmodelid)
-                    .HasColumnName("productmodelid")
+                entity.Property(e => e.ProductModelId)
+                    .HasColumnName("ProductModelID")
                     .HasComment("Primary key. Foreign key to ProductModel.ProductModelID.");
 
-                entity.Property(e => e.Productdescriptionid)
-                    .HasColumnName("productdescriptionid")
+                entity.Property(e => e.ProductDescriptionId)
+                    .HasColumnName("ProductDescriptionID")
                     .HasComment("Primary key. Foreign key to ProductDescription.ProductDescriptionID.");
 
-                entity.Property(e => e.Cultureid)
+                entity.Property(e => e.CultureId)
                     .HasMaxLength(6)
-                    .HasColumnName("cultureid")
+                    .HasColumnName("CultureID")
                     .IsFixedLength()
                     .HasComment("Culture identification number. Foreign key to Culture.CultureID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.HasOne(d => d.Culture)
-                    .WithMany(p => p.Productmodelproductdescriptionculture)
-                    .HasForeignKey(d => d.Cultureid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductModelProductDescriptionCulture_Culture_CultureID");
+                    .WithMany(p => p.ProductModelProductDescriptionCulture)
+                    .HasForeignKey(d => d.CultureId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Productdescription)
-                    .WithMany(p => p.Productmodelproductdescriptionculture)
-                    .HasForeignKey(d => d.Productdescriptionid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductModelProductDescriptionCulture_ProductDescription_Pro");
+                entity.HasOne(d => d.ProductDescription)
+                    .WithMany(p => p.ProductModelProductDescriptionCulture)
+                    .HasForeignKey(d => d.ProductDescriptionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Productmodel)
-                    .WithMany(p => p.Productmodelproductdescriptionculture)
-                    .HasForeignKey(d => d.Productmodelid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductModelProductDescriptionCulture_ProductModel_ProductMo");
+                entity.HasOne(d => d.ProductModel)
+                    .WithMany(p => p.ProductModelProductDescriptionCulture)
+                    .HasForeignKey(d => d.ProductModelId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productphoto>(entity =>
+            modelBuilder.Entity<ProductPhoto>(entity =>
             {
-                entity.ToTable("productphoto", "production");
+                entity.ToTable("ProductPhoto", "Production");
 
                 entity.HasComment("Product images.");
 
-                entity.Property(e => e.Productphotoid)
-                    .HasColumnName("productphotoid")
+                entity.Property(e => e.ProductPhotoId)
+                    .HasColumnName("ProductPhotoID")
                     .HasComment("Primary key for ProductPhoto records.");
 
-                entity.Property(e => e.Largephoto)
-                    .HasColumnName("largephoto")
-                    .HasComment("Large image of the product.");
+                entity.Property(e => e.LargePhoto).HasComment("Large image of the product.");
 
-                entity.Property(e => e.Largephotofilename)
+                entity.Property(e => e.LargePhotoFileName)
                     .HasMaxLength(50)
-                    .HasColumnName("largephotofilename")
                     .HasComment("Large image file name.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Thumbnailphoto)
-                    .HasColumnName("thumbnailphoto")
-                    .HasComment("Small image of the product.");
+                entity.Property(e => e.ThumbNailPhoto).HasComment("Small image of the product.");
 
-                entity.Property(e => e.Thumbnailphotofilename)
+                entity.Property(e => e.ThumbnailPhotoFileName)
                     .HasMaxLength(50)
-                    .HasColumnName("thumbnailphotofilename")
                     .HasComment("Small image file name.");
             });
 
-            modelBuilder.Entity<Productproductphoto>(entity =>
+            modelBuilder.Entity<ProductProductPhoto>(entity =>
             {
-                entity.HasKey(e => new { e.Productid, e.Productphotoid })
-                    .HasName("PK_ProductProductPhoto_ProductID_ProductPhotoID");
+                entity.HasKey(e => new { e.ProductId, e.ProductPhotoId })
+                    .HasName("PK_ProductProductPhoto_ProductID_ProductPhotoID")
+                    .IsClustered(false);
 
-                entity.ToTable("productproductphoto", "production");
+                entity.ToTable("ProductProductPhoto", "Production");
 
                 entity.HasComment("Cross-reference table mapping products and product photos.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Productphotoid)
-                    .HasColumnName("productphotoid")
+                entity.Property(e => e.ProductPhotoId)
+                    .HasColumnName("ProductPhotoID")
                     .HasComment("Product photo identification number. Foreign key to ProductPhoto.ProductPhotoID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Primary)
-                    .HasColumnName("primary")
-                    .HasComment("0 = Photo is not the principal image. 1 = Photo is the principal image.");
+                entity.Property(e => e.Primary).HasComment("0 = Photo is not the principal image. 1 = Photo is the principal image.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productproductphoto)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductProductPhoto_Product_ProductID");
+                    .WithMany(p => p.ProductProductPhoto)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Productphoto)
-                    .WithMany(p => p.Productproductphoto)
-                    .HasForeignKey(d => d.Productphotoid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductProductPhoto_ProductPhoto_ProductPhotoID");
+                entity.HasOne(d => d.ProductPhoto)
+                    .WithMany(p => p.ProductProductPhoto)
+                    .HasForeignKey(d => d.ProductPhotoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productreview>(entity =>
+            modelBuilder.Entity<ProductReview>(entity =>
             {
-                entity.ToTable("productreview", "production");
+                entity.ToTable("ProductReview", "Production");
 
                 entity.HasComment("Customer reviews of products they have purchased.");
 
-                entity.Property(e => e.Productreviewid)
-                    .HasColumnName("productreviewid")
+                entity.HasIndex(e => new { e.ProductId, e.ReviewerName }, "IX_ProductReview_ProductID_Name");
+
+                entity.Property(e => e.ProductReviewId)
+                    .HasColumnName("ProductReviewID")
                     .HasComment("Primary key for ProductReview records.");
 
                 entity.Property(e => e.Comments)
                     .HasMaxLength(3850)
-                    .HasColumnName("comments")
-                    .HasComment("Reviewer's comments");
+                    .HasComment("Reviewer''s comments");
 
-                entity.Property(e => e.Emailaddress)
+                entity.Property(e => e.EmailAddress)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("emailaddress")
-                    .HasComment("Reviewer's e-mail address.");
+                    .HasComment("Reviewer''s e-mail address.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Rating)
-                    .HasColumnName("rating")
-                    .HasComment("Product rating given by the reviewer. Scale is 1 to 5 with 5 as the highest rating.");
+                entity.Property(e => e.Rating).HasComment("Product rating given by the reviewer. Scale is 1 to 5 with 5 as the highest rating.");
 
-                entity.Property(e => e.Reviewdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("reviewdate")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.ReviewDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Date review was submitted.");
 
-                entity.Property(e => e.Reviewername)
+                entity.Property(e => e.ReviewerName)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("reviewername")
                     .HasComment("Name of the reviewer.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productreview)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductReview_Product_ProductID");
+                    .WithMany(p => p.ProductReview)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productsubcategory>(entity =>
+            modelBuilder.Entity<ProductSubcategory>(entity =>
             {
-                entity.ToTable("productsubcategory", "production");
+                entity.ToTable("ProductSubcategory", "Production");
 
                 entity.HasComment("Product subcategories. See ProductCategory table.");
 
-                entity.Property(e => e.Productsubcategoryid)
-                    .HasColumnName("productsubcategoryid")
+                entity.HasIndex(e => e.Name, "AK_ProductSubcategory_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_ProductSubcategory_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.ProductSubcategoryId)
+                    .HasColumnName("ProductSubcategoryID")
                     .HasComment("Primary key for ProductSubcategory records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Subcategory description.");
 
-                entity.Property(e => e.Productcategoryid)
-                    .HasColumnName("productcategoryid")
+                entity.Property(e => e.ProductCategoryId)
+                    .HasColumnName("ProductCategoryID")
                     .HasComment("Product category identification number. Foreign key to ProductCategory.ProductCategoryID.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.HasOne(d => d.Productcategory)
-                    .WithMany(p => p.Productsubcategory)
-                    .HasForeignKey(d => d.Productcategoryid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductSubcategory_ProductCategory_ProductCategoryID");
+                entity.HasOne(d => d.ProductCategory)
+                    .WithMany(p => p.ProductSubcategory)
+                    .HasForeignKey(d => d.ProductCategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Productvendor>(entity =>
+            modelBuilder.Entity<ProductVendor>(entity =>
             {
-                entity.HasKey(e => new { e.Productid, e.Businessentityid })
+                entity.HasKey(e => new { e.ProductId, e.BusinessEntityId })
                     .HasName("PK_ProductVendor_ProductID_BusinessEntityID");
 
-                entity.ToTable("productvendor", "purchasing");
+                entity.ToTable("ProductVendor", "Purchasing");
 
                 entity.HasComment("Cross-reference table mapping vendors with the products they supply.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.HasIndex(e => e.BusinessEntityId, "IX_ProductVendor_BusinessEntityID");
+
+                entity.HasIndex(e => e.UnitMeasureCode, "IX_ProductVendor_UnitMeasureCode");
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Primary key. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key. Foreign key to Vendor.BusinessEntityID.");
 
-                entity.Property(e => e.Averageleadtime)
-                    .HasColumnName("averageleadtime")
-                    .HasComment("The average span of time (in days) between placing an order with the vendor and receiving the purchased product.");
+                entity.Property(e => e.AverageLeadTime).HasComment("The average span of time (in days) between placing an order with the vendor and receiving the purchased product.");
 
-                entity.Property(e => e.Lastreceiptcost)
-                    .HasColumnName("lastreceiptcost")
+                entity.Property(e => e.LastReceiptCost)
+                    .HasColumnType("money")
                     .HasComment("The selling price when last purchased.");
 
-                entity.Property(e => e.Lastreceiptdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("lastreceiptdate")
+                entity.Property(e => e.LastReceiptDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the product was last received by the vendor.");
 
-                entity.Property(e => e.Maxorderqty)
-                    .HasColumnName("maxorderqty")
-                    .HasComment("The minimum quantity that should be ordered.");
+                entity.Property(e => e.MaxOrderQty).HasComment("The minimum quantity that should be ordered.");
 
-                entity.Property(e => e.Minorderqty)
-                    .HasColumnName("minorderqty")
-                    .HasComment("The maximum quantity that should be ordered.");
+                entity.Property(e => e.MinOrderQty).HasComment("The maximum quantity that should be ordered.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Onorderqty)
-                    .HasColumnName("onorderqty")
-                    .HasComment("The quantity currently on order.");
+                entity.Property(e => e.OnOrderQty).HasComment("The quantity currently on order.");
 
-                entity.Property(e => e.Standardprice)
-                    .HasColumnName("standardprice")
-                    .HasComment("The vendor's usual selling price.");
+                entity.Property(e => e.StandardPrice)
+                    .HasColumnType("money")
+                    .HasComment("The vendor''s usual selling price.");
 
-                entity.Property(e => e.Unitmeasurecode)
+                entity.Property(e => e.UnitMeasureCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("unitmeasurecode")
                     .IsFixedLength()
-                    .HasComment("The product's unit of measure.");
+                    .HasComment("The product''s unit of measure.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Productvendor)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductVendor_Vendor_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.ProductVendor)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productvendor)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductVendor_Product_ProductID");
+                    .WithMany(p => p.ProductVendor)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.UnitmeasurecodeNavigation)
-                    .WithMany(p => p.Productvendor)
-                    .HasForeignKey(d => d.Unitmeasurecode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ProductVendor_UnitMeasure_UnitMeasureCode");
+                entity.HasOne(d => d.UnitMeasureCodeNavigation)
+                    .WithMany(p => p.ProductVendor)
+                    .HasForeignKey(d => d.UnitMeasureCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Purchaseorderdetail>(entity =>
+            modelBuilder.Entity<PurchaseOrderDetail>(entity =>
             {
-                entity.HasKey(e => new { e.Purchaseorderid, e.Purchaseorderdetailid })
+                entity.HasKey(e => new { e.PurchaseOrderId, e.PurchaseOrderDetailId })
                     .HasName("PK_PurchaseOrderDetail_PurchaseOrderID_PurchaseOrderDetailID");
 
-                entity.ToTable("purchaseorderdetail", "purchasing");
+                entity.ToTable("PurchaseOrderDetail", "Purchasing");
 
                 entity.HasComment("Individual products associated with a specific purchase order. See PurchaseOrderHeader.");
 
-                entity.Property(e => e.Purchaseorderid)
-                    .HasColumnName("purchaseorderid")
+                entity.HasIndex(e => e.ProductId, "IX_PurchaseOrderDetail_ProductID");
+
+                entity.Property(e => e.PurchaseOrderId)
+                    .HasColumnName("PurchaseOrderID")
                     .HasComment("Primary key. Foreign key to PurchaseOrderHeader.PurchaseOrderID.");
 
-                entity.Property(e => e.Purchaseorderdetailid)
+                entity.Property(e => e.PurchaseOrderDetailId)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("purchaseorderdetailid")
+                    .HasColumnName("PurchaseOrderDetailID")
                     .HasComment("Primary key. One line number per purchased product.");
 
-                entity.Property(e => e.Duedate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("duedate")
+                entity.Property(e => e.DueDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the product is expected to be received.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Orderqty)
-                    .HasColumnName("orderqty")
-                    .HasComment("Quantity ordered.");
+                entity.Property(e => e.OrderQty).HasComment("Quantity ordered.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Receivedqty)
-                    .HasPrecision(8, 2)
-                    .HasColumnName("receivedqty")
+                entity.Property(e => e.ReceivedQty)
+                    .HasColumnType("decimal(8, 2)")
                     .HasComment("Quantity actually received from the vendor.");
 
-                entity.Property(e => e.Rejectedqty)
-                    .HasPrecision(8, 2)
-                    .HasColumnName("rejectedqty")
+                entity.Property(e => e.RejectedQty)
+                    .HasColumnType("decimal(8, 2)")
                     .HasComment("Quantity rejected during inspection.");
 
-                entity.Property(e => e.Unitprice)
-                    .HasColumnName("unitprice")
-                    .HasComment("Vendor's selling price of a single product.");
+                entity.Property(e => e.UnitPrice)
+                    .HasColumnType("money")
+                    .HasComment("Vendor''s selling price of a single product.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Purchaseorderdetail)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PurchaseOrderDetail_Product_ProductID");
+                    .WithMany(p => p.PurchaseOrderDetail)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Purchaseorder)
-                    .WithMany(p => p.Purchaseorderdetail)
-                    .HasForeignKey(d => d.Purchaseorderid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PurchaseOrderDetail_PurchaseOrderHeader_PurchaseOrderID");
+                entity.HasOne(d => d.PurchaseOrder)
+                    .WithMany(p => p.PurchaseOrderDetail)
+                    .HasForeignKey(d => d.PurchaseOrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Purchaseorderheader>(entity =>
+            modelBuilder.Entity<PurchaseOrderHeader>(entity =>
             {
-                entity.HasKey(e => e.Purchaseorderid)
+                entity.HasKey(e => e.PurchaseOrderId)
                     .HasName("PK_PurchaseOrderHeader_PurchaseOrderID");
 
-                entity.ToTable("purchaseorderheader", "purchasing");
+                entity.ToTable("PurchaseOrderHeader", "Purchasing");
 
                 entity.HasComment("General purchase order information. See PurchaseOrderDetail.");
 
-                entity.Property(e => e.Purchaseorderid)
-                    .HasColumnName("purchaseorderid")
+                entity.HasIndex(e => e.EmployeeId, "IX_PurchaseOrderHeader_EmployeeID");
+
+                entity.HasIndex(e => e.VendorId, "IX_PurchaseOrderHeader_VendorID");
+
+                entity.Property(e => e.PurchaseOrderId)
+                    .HasColumnName("PurchaseOrderID")
                     .HasComment("Primary key.");
 
-                entity.Property(e => e.Employeeid)
-                    .HasColumnName("employeeid")
+                entity.Property(e => e.EmployeeId)
+                    .HasColumnName("EmployeeID")
                     .HasComment("Employee who created the purchase order. Foreign key to Employee.BusinessEntityID.");
 
                 entity.Property(e => e.Freight)
-                    .HasColumnName("freight")
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Shipping cost.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Orderdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("orderdate")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.OrderDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Purchase order creation date.");
 
-                entity.Property(e => e.Revisionnumber)
-                    .HasColumnName("revisionnumber")
-                    .HasComment("Incremental number to track changes to the purchase order over time.");
+                entity.Property(e => e.RevisionNumber).HasComment("Incremental number to track changes to the purchase order over time.");
 
-                entity.Property(e => e.Shipdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("shipdate")
+                entity.Property(e => e.ShipDate)
+                    .HasColumnType("datetime")
                     .HasComment("Estimated shipment date from the vendor.");
 
-                entity.Property(e => e.Shipmethodid)
-                    .HasColumnName("shipmethodid")
+                entity.Property(e => e.ShipMethodId)
+                    .HasColumnName("ShipMethodID")
                     .HasComment("Shipping method. Foreign key to ShipMethod.ShipMethodID.");
 
                 entity.Property(e => e.Status)
-                    .HasColumnName("status")
                     .HasDefaultValueSql("1")
                     .HasComment("Order current status. 1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete");
 
-                entity.Property(e => e.Subtotal)
-                    .HasColumnName("subtotal")
+                entity.Property(e => e.SubTotal)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Purchase order subtotal. Computed as SUM(PurchaseOrderDetail.LineTotal)for the appropriate PurchaseOrderID.");
 
-                entity.Property(e => e.Taxamt)
-                    .HasColumnName("taxamt")
+                entity.Property(e => e.TaxAmt)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Tax amount.");
 
-                entity.Property(e => e.Vendorid)
-                    .HasColumnName("vendorid")
+                entity.Property(e => e.VendorId)
+                    .HasColumnName("VendorID")
                     .HasComment("Vendor with whom the purchase order is placed. Foreign key to Vendor.BusinessEntityID.");
 
                 entity.HasOne(d => d.Employee)
-                    .WithMany(p => p.Purchaseorderheader)
-                    .HasForeignKey(d => d.Employeeid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PurchaseOrderHeader_Employee_EmployeeID");
+                    .WithMany(p => p.PurchaseOrderHeader)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Shipmethod)
-                    .WithMany(p => p.Purchaseorderheader)
-                    .HasForeignKey(d => d.Shipmethodid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PurchaseOrderHeader_ShipMethod_ShipMethodID");
+                entity.HasOne(d => d.ShipMethod)
+                    .WithMany(p => p.PurchaseOrderHeader)
+                    .HasForeignKey(d => d.ShipMethodId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Vendor)
-                    .WithMany(p => p.Purchaseorderheader)
-                    .HasForeignKey(d => d.Vendorid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PurchaseOrderHeader_Vendor_VendorID");
+                    .WithMany(p => p.PurchaseOrderHeader)
+                    .HasForeignKey(d => d.VendorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Salesorderdetail>(entity =>
+            modelBuilder.Entity<SalesOrderDetail>(entity =>
             {
-                entity.HasKey(e => new { e.Salesorderid, e.Salesorderdetailid })
+                entity.HasKey(e => new { e.SalesOrderId, e.SalesOrderDetailId })
                     .HasName("PK_SalesOrderDetail_SalesOrderID_SalesOrderDetailID");
 
-                entity.ToTable("salesorderdetail", "sales");
+                entity.ToTable("SalesOrderDetail", "Sales");
 
                 entity.HasComment("Individual products associated with a specific sales order. See SalesOrderHeader.");
 
-                entity.Property(e => e.Salesorderid)
-                    .HasColumnName("salesorderid")
+                entity.HasIndex(e => e.Rowguid, "AK_SalesOrderDetail_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.ProductId, "IX_SalesOrderDetail_ProductID");
+
+                entity.Property(e => e.SalesOrderId)
+                    .HasColumnName("SalesOrderID")
                     .HasComment("Primary key. Foreign key to SalesOrderHeader.SalesOrderID.");
 
-                entity.Property(e => e.Salesorderdetailid)
+                entity.Property(e => e.SalesOrderDetailId)
                     .ValueGeneratedOnAdd()
-                    .HasColumnName("salesorderdetailid")
+                    .HasColumnName("SalesOrderDetailID")
                     .HasComment("Primary key. One incremental unique number per product sold.");
 
-                entity.Property(e => e.Carriertrackingnumber)
+                entity.Property(e => e.CarrierTrackingNumber)
                     .HasMaxLength(25)
-                    .HasColumnName("carriertrackingnumber")
                     .HasComment("Shipment tracking number supplied by the shipper.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Orderqty)
-                    .HasColumnName("orderqty")
-                    .HasComment("Quantity ordered per product.");
+                entity.Property(e => e.OrderQty).HasComment("Quantity ordered per product.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product sold to customer. Foreign key to Product.ProductID.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Specialofferid)
-                    .HasColumnName("specialofferid")
+                entity.Property(e => e.SpecialOfferId)
+                    .HasColumnName("SpecialOfferID")
                     .HasComment("Promotional code. Foreign key to SpecialOffer.SpecialOfferID.");
 
-                entity.Property(e => e.Unitprice)
-                    .HasColumnName("unitprice")
+                entity.Property(e => e.UnitPrice)
+                    .HasColumnType("money")
                     .HasComment("Selling price of a single product.");
 
-                entity.Property(e => e.Unitpricediscount)
-                    .HasColumnName("unitpricediscount")
+                entity.Property(e => e.UnitPriceDiscount)
+                    .HasColumnType("money")
                     .HasComment("Discount amount.");
 
-                entity.HasOne(d => d.Salesorder)
-                    .WithMany(p => p.Salesorderdetail)
-                    .HasForeignKey(d => d.Salesorderid)
-                    .HasConstraintName("FK_SalesOrderDetail_SalesOrderHeader_SalesOrderID");
+                entity.HasOne(d => d.SalesOrder)
+                    .WithMany(p => p.SalesOrderDetail)
+                    .HasForeignKey(d => d.SalesOrderId);
+
+                entity.HasOne(d => d.SpecialOfferProduct)
+                    .WithMany(p => p.SalesOrderDetail)
+                    .HasForeignKey(d => new { d.SpecialOfferId, d.ProductId })
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SalesOrderDetail_SpecialOfferProduct_SpecialOfferIDProductID");
             });
 
-            modelBuilder.Entity<Salesorderheader>(entity =>
+            modelBuilder.Entity<SalesOrderHeader>(entity =>
             {
-                entity.HasKey(e => e.Salesorderid)
+                entity.HasKey(e => e.SalesOrderId)
                     .HasName("PK_SalesOrderHeader_SalesOrderID");
 
-                entity.ToTable("salesorderheader", "sales");
+                entity.ToTable("SalesOrderHeader", "Sales");
 
                 entity.HasComment("General sales order information.");
 
-                entity.Property(e => e.Salesorderid)
-                    .HasColumnName("salesorderid")
+                entity.HasIndex(e => e.Rowguid, "AK_SalesOrderHeader_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.CustomerId, "IX_SalesOrderHeader_CustomerID");
+
+                entity.HasIndex(e => e.SalesPersonId, "IX_SalesOrderHeader_SalesPersonID");
+
+                entity.Property(e => e.SalesOrderId)
+                    .HasColumnName("SalesOrderID")
                     .HasComment("Primary key.");
 
-                entity.Property(e => e.Accountnumber)
+                entity.Property(e => e.AccountNumber)
                     .HasMaxLength(15)
-                    .HasColumnName("accountnumber")
                     .HasComment("Financial accounting number reference.");
 
-                entity.Property(e => e.Billtoaddressid)
-                    .HasColumnName("billtoaddressid")
+                entity.Property(e => e.BillToAddressId)
+                    .HasColumnName("BillToAddressID")
                     .HasComment("Customer billing address. Foreign key to Address.AddressID.");
 
                 entity.Property(e => e.Comment)
                     .HasMaxLength(128)
-                    .HasColumnName("comment")
                     .HasComment("Sales representative comments.");
 
-                entity.Property(e => e.Creditcardapprovalcode)
+                entity.Property(e => e.CreditCardApprovalCode)
                     .HasMaxLength(15)
-                    .HasColumnName("creditcardapprovalcode")
+                    .IsUnicode(false)
                     .HasComment("Approval code provided by the credit card company.");
 
-                entity.Property(e => e.Creditcardid)
-                    .HasColumnName("creditcardid")
+                entity.Property(e => e.CreditCardId)
+                    .HasColumnName("CreditCardID")
                     .HasComment("Credit card identification number. Foreign key to CreditCard.CreditCardID.");
 
-                entity.Property(e => e.Currencyrateid)
-                    .HasColumnName("currencyrateid")
+                entity.Property(e => e.CurrencyRateId)
+                    .HasColumnName("CurrencyRateID")
                     .HasComment("Currency exchange rate used. Foreign key to CurrencyRate.CurrencyRateID.");
 
-                entity.Property(e => e.Customerid)
-                    .HasColumnName("customerid")
+                entity.Property(e => e.CustomerId)
+                    .HasColumnName("CustomerID")
                     .HasComment("Customer identification number. Foreign key to Customer.BusinessEntityID.");
 
-                entity.Property(e => e.Duedate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("duedate")
+                entity.Property(e => e.DueDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the order is due to the customer.");
 
                 entity.Property(e => e.Freight)
-                    .HasColumnName("freight")
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Shipping cost.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Onlineorderflag)
+                entity.Property(e => e.OnlineOrderFlag)
                     .IsRequired()
-                    .HasColumnName("onlineorderflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = Order placed by sales person. 1 = Order placed online by customer.");
 
-                entity.Property(e => e.Orderdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("orderdate")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.OrderDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Dates the sales order was created.");
 
-                entity.Property(e => e.Purchaseordernumber)
+                entity.Property(e => e.PurchaseOrderNumber)
                     .HasMaxLength(25)
-                    .HasColumnName("purchaseordernumber")
-                    .HasComment("Customer purchase order number reference.");
+                    .HasComment("Customer purchase order number reference. ");
 
-                entity.Property(e => e.Revisionnumber)
-                    .HasColumnName("revisionnumber")
-                    .HasComment("Incremental number to track changes to the sales order over time.");
+                entity.Property(e => e.RevisionNumber).HasComment("Incremental number to track changes to the sales order over time.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Salespersonid)
-                    .HasColumnName("salespersonid")
+                entity.Property(e => e.SalesPersonId)
+                    .HasColumnName("SalesPersonID")
                     .HasComment("Sales person who created the sales order. Foreign key to SalesPerson.BusinessEntityID.");
 
-                entity.Property(e => e.Shipdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("shipdate")
+                entity.Property(e => e.ShipDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the order was shipped to the customer.");
 
-                entity.Property(e => e.Shipmethodid)
-                    .HasColumnName("shipmethodid")
+                entity.Property(e => e.ShipMethodId)
+                    .HasColumnName("ShipMethodID")
                     .HasComment("Shipping method. Foreign key to ShipMethod.ShipMethodID.");
 
-                entity.Property(e => e.Shiptoaddressid)
-                    .HasColumnName("shiptoaddressid")
+                entity.Property(e => e.ShipToAddressId)
+                    .HasColumnName("ShipToAddressID")
                     .HasComment("Customer shipping address. Foreign key to Address.AddressID.");
 
                 entity.Property(e => e.Status)
-                    .HasColumnName("status")
                     .HasDefaultValueSql("1")
                     .HasComment("Order current status. 1 = In process; 2 = Approved; 3 = Backordered; 4 = Rejected; 5 = Shipped; 6 = Cancelled");
 
-                entity.Property(e => e.Subtotal)
-                    .HasColumnName("subtotal")
+                entity.Property(e => e.SubTotal)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Sales subtotal. Computed as SUM(SalesOrderDetail.LineTotal)for the appropriate SalesOrderID.");
 
-                entity.Property(e => e.Taxamt)
-                    .HasColumnName("taxamt")
+                entity.Property(e => e.TaxAmt)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Tax amount.");
 
-                entity.Property(e => e.Territoryid)
-                    .HasColumnName("territoryid")
+                entity.Property(e => e.TerritoryId)
+                    .HasColumnName("TerritoryID")
                     .HasComment("Territory in which the sale was made. Foreign key to SalesTerritory.SalesTerritoryID.");
 
-                entity.Property(e => e.Totaldue)
-                    .HasColumnName("totaldue")
-                    .HasComment("Total due from customer. Computed as Subtotal + TaxAmt + Freight.");
+                entity.HasOne(d => d.BillToAddress)
+                    .WithMany(p => p.SalesOrderHeaderBillToAddress)
+                    .HasForeignKey(d => d.BillToAddressId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Billtoaddress)
-                    .WithMany(p => p.SalesorderheaderBilltoaddress)
-                    .HasForeignKey(d => d.Billtoaddressid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesOrderHeader_Address_BillToAddressID");
+                entity.HasOne(d => d.CreditCard)
+                    .WithMany(p => p.SalesOrderHeader)
+                    .HasForeignKey(d => d.CreditCardId);
 
-                entity.HasOne(d => d.Creditcard)
-                    .WithMany(p => p.Salesorderheader)
-                    .HasForeignKey(d => d.Creditcardid)
-                    .HasConstraintName("FK_SalesOrderHeader_CreditCard_CreditCardID");
-
-                entity.HasOne(d => d.Currencyrate)
-                    .WithMany(p => p.Salesorderheader)
-                    .HasForeignKey(d => d.Currencyrateid)
-                    .HasConstraintName("FK_SalesOrderHeader_CurrencyRate_CurrencyRateID");
+                entity.HasOne(d => d.CurrencyRate)
+                    .WithMany(p => p.SalesOrderHeader)
+                    .HasForeignKey(d => d.CurrencyRateId);
 
                 entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.Salesorderheader)
-                    .HasForeignKey(d => d.Customerid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesOrderHeader_Customer_CustomerID");
+                    .WithMany(p => p.SalesOrderHeader)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Salesperson)
-                    .WithMany(p => p.Salesorderheader)
-                    .HasForeignKey(d => d.Salespersonid)
-                    .HasConstraintName("FK_SalesOrderHeader_SalesPerson_SalesPersonID");
+                entity.HasOne(d => d.SalesPerson)
+                    .WithMany(p => p.SalesOrderHeader)
+                    .HasForeignKey(d => d.SalesPersonId);
 
-                entity.HasOne(d => d.Shipmethod)
-                    .WithMany(p => p.Salesorderheader)
-                    .HasForeignKey(d => d.Shipmethodid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesOrderHeader_ShipMethod_ShipMethodID");
+                entity.HasOne(d => d.ShipMethod)
+                    .WithMany(p => p.SalesOrderHeader)
+                    .HasForeignKey(d => d.ShipMethodId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Shiptoaddress)
-                    .WithMany(p => p.SalesorderheaderShiptoaddress)
-                    .HasForeignKey(d => d.Shiptoaddressid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesOrderHeader_Address_ShipToAddressID");
+                entity.HasOne(d => d.ShipToAddress)
+                    .WithMany(p => p.SalesOrderHeaderShipToAddress)
+                    .HasForeignKey(d => d.ShipToAddressId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Territory)
-                    .WithMany(p => p.Salesorderheader)
-                    .HasForeignKey(d => d.Territoryid)
-                    .HasConstraintName("FK_SalesOrderHeader_SalesTerritory_TerritoryID");
+                    .WithMany(p => p.SalesOrderHeader)
+                    .HasForeignKey(d => d.TerritoryId);
             });
 
-            modelBuilder.Entity<Salesorderheadersalesreason>(entity =>
+            modelBuilder.Entity<SalesOrderHeaderSalesReason>(entity =>
             {
-                entity.HasKey(e => new { e.Salesorderid, e.Salesreasonid })
+                entity.HasKey(e => new { e.SalesOrderId, e.SalesReasonId })
                     .HasName("PK_SalesOrderHeaderSalesReason_SalesOrderID_SalesReasonID");
 
-                entity.ToTable("salesorderheadersalesreason", "sales");
+                entity.ToTable("SalesOrderHeaderSalesReason", "Sales");
 
                 entity.HasComment("Cross-reference table mapping sales orders to sales reason codes.");
 
-                entity.Property(e => e.Salesorderid)
-                    .HasColumnName("salesorderid")
+                entity.Property(e => e.SalesOrderId)
+                    .HasColumnName("SalesOrderID")
                     .HasComment("Primary key. Foreign key to SalesOrderHeader.SalesOrderID.");
 
-                entity.Property(e => e.Salesreasonid)
-                    .HasColumnName("salesreasonid")
+                entity.Property(e => e.SalesReasonId)
+                    .HasColumnName("SalesReasonID")
                     .HasComment("Primary key. Foreign key to SalesReason.SalesReasonID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.HasOne(d => d.Salesorder)
-                    .WithMany(p => p.Salesorderheadersalesreason)
-                    .HasForeignKey(d => d.Salesorderid)
-                    .HasConstraintName("FK_SalesOrderHeaderSalesReason_SalesOrderHeader_SalesOrderID");
+                entity.HasOne(d => d.SalesOrder)
+                    .WithMany(p => p.SalesOrderHeaderSalesReason)
+                    .HasForeignKey(d => d.SalesOrderId);
 
-                entity.HasOne(d => d.Salesreason)
-                    .WithMany(p => p.Salesorderheadersalesreason)
-                    .HasForeignKey(d => d.Salesreasonid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesOrderHeaderSalesReason_SalesReason_SalesReasonID");
+                entity.HasOne(d => d.SalesReason)
+                    .WithMany(p => p.SalesOrderHeaderSalesReason)
+                    .HasForeignKey(d => d.SalesReasonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Salesperson>(entity =>
+            modelBuilder.Entity<SalesPerson>(entity =>
             {
-                entity.HasKey(e => e.Businessentityid)
+                entity.HasKey(e => e.BusinessEntityId)
                     .HasName("PK_SalesPerson_BusinessEntityID");
 
-                entity.ToTable("salesperson", "sales");
+                entity.ToTable("SalesPerson", "Sales");
 
                 entity.HasComment("Sales representative current information.");
 
-                entity.Property(e => e.Businessentityid)
+                entity.HasIndex(e => e.Rowguid, "AK_SalesPerson_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.BusinessEntityId)
                     .ValueGeneratedNever()
-                    .HasColumnName("businessentityid")
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key for SalesPerson records. Foreign key to Employee.BusinessEntityID");
 
                 entity.Property(e => e.Bonus)
-                    .HasColumnName("bonus")
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Bonus due if quota is met.");
 
-                entity.Property(e => e.Commissionpct)
-                    .HasColumnName("commissionpct")
+                entity.Property(e => e.CommissionPct)
+                    .HasColumnType("smallmoney")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Commision percent received per sale.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Saleslastyear)
-                    .HasColumnName("saleslastyear")
+                entity.Property(e => e.SalesLastYear)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Sales total of previous year.");
 
-                entity.Property(e => e.Salesquota)
-                    .HasColumnName("salesquota")
+                entity.Property(e => e.SalesQuota)
+                    .HasColumnType("money")
                     .HasComment("Projected yearly sales.");
 
-                entity.Property(e => e.Salesytd)
-                    .HasColumnName("salesytd")
+                entity.Property(e => e.SalesYtd)
+                    .HasColumnType("money")
+                    .HasColumnName("SalesYTD")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Sales total year to date.");
 
-                entity.Property(e => e.Territoryid)
-                    .HasColumnName("territoryid")
+                entity.Property(e => e.TerritoryId)
+                    .HasColumnName("TerritoryID")
                     .HasComment("Territory currently assigned to. Foreign key to SalesTerritory.SalesTerritoryID.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithOne(p => p.Salesperson)
-                    .HasForeignKey<Salesperson>(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesPerson_Employee_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithOne(p => p.SalesPerson)
+                    .HasForeignKey<SalesPerson>(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Territory)
-                    .WithMany(p => p.Salesperson)
-                    .HasForeignKey(d => d.Territoryid)
-                    .HasConstraintName("FK_SalesPerson_SalesTerritory_TerritoryID");
+                    .WithMany(p => p.SalesPerson)
+                    .HasForeignKey(d => d.TerritoryId);
             });
 
-            modelBuilder.Entity<Salespersonquotahistory>(entity =>
+            modelBuilder.Entity<SalesPersonQuotaHistory>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Quotadate })
+                entity.HasKey(e => new { e.BusinessEntityId, e.QuotaDate })
                     .HasName("PK_SalesPersonQuotaHistory_BusinessEntityID_QuotaDate");
 
-                entity.ToTable("salespersonquotahistory", "sales");
+                entity.ToTable("SalesPersonQuotaHistory", "Sales");
 
                 entity.HasComment("Sales performance tracking.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.Rowguid, "AK_SalesPersonQuotaHistory_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Sales person identification number. Foreign key to SalesPerson.BusinessEntityID.");
 
-                entity.Property(e => e.Quotadate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("quotadate")
+                entity.Property(e => e.QuotaDate)
+                    .HasColumnType("datetime")
                     .HasComment("Sales quota date.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Salesquota)
-                    .HasColumnName("salesquota")
+                entity.Property(e => e.SalesQuota)
+                    .HasColumnType("money")
                     .HasComment("Sales quota amount.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Salespersonquotahistory)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesPersonQuotaHistory_SalesPerson_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.SalesPersonQuotaHistory)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Salesreason>(entity =>
+            modelBuilder.Entity<SalesReason>(entity =>
             {
-                entity.ToTable("salesreason", "sales");
+                entity.ToTable("SalesReason", "Sales");
 
                 entity.HasComment("Lookup table of customer purchase reasons.");
 
-                entity.Property(e => e.Salesreasonid)
-                    .HasColumnName("salesreasonid")
+                entity.Property(e => e.SalesReasonId)
+                    .HasColumnName("SalesReasonID")
                     .HasComment("Primary key for SalesReason records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Sales reason description.");
 
-                entity.Property(e => e.Reasontype)
+                entity.Property(e => e.ReasonType)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("reasontype")
                     .HasComment("Category the sales reason belongs to.");
             });
 
-            modelBuilder.Entity<Salestaxrate>(entity =>
+            modelBuilder.Entity<SalesTaxRate>(entity =>
             {
-                entity.ToTable("salestaxrate", "sales");
+                entity.ToTable("SalesTaxRate", "Sales");
 
                 entity.HasComment("Tax rate lookup table.");
 
-                entity.Property(e => e.Salestaxrateid)
-                    .HasColumnName("salestaxrateid")
+                entity.HasIndex(e => new { e.StateProvinceId, e.TaxType }, "AK_SalesTaxRate_StateProvinceID_TaxType")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_SalesTaxRate_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.SalesTaxRateId)
+                    .HasColumnName("SalesTaxRateID")
                     .HasComment("Primary key for SalesTaxRate records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Tax rate description.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Stateprovinceid)
-                    .HasColumnName("stateprovinceid")
+                entity.Property(e => e.StateProvinceId)
+                    .HasColumnName("StateProvinceID")
                     .HasComment("State, province, or country/region the sales tax applies to.");
 
-                entity.Property(e => e.Taxrate)
-                    .HasColumnName("taxrate")
+                entity.Property(e => e.TaxRate)
+                    .HasColumnType("smallmoney")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Tax rate amount.");
 
-                entity.Property(e => e.Taxtype)
-                    .HasColumnName("taxtype")
-                    .HasComment("1 = Tax applied to retail transactions, 2 = Tax applied to wholesale transactions, 3 = Tax applied to all sales (retail and wholesale) transactions.");
+                entity.Property(e => e.TaxType).HasComment("1 = Tax applied to retail transactions, 2 = Tax applied to wholesale transactions, 3 = Tax applied to all sales (retail and wholesale) transactions.");
 
-                entity.HasOne(d => d.Stateprovince)
-                    .WithMany(p => p.Salestaxrate)
-                    .HasForeignKey(d => d.Stateprovinceid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesTaxRate_StateProvince_StateProvinceID");
+                entity.HasOne(d => d.StateProvince)
+                    .WithMany(p => p.SalesTaxRate)
+                    .HasForeignKey(d => d.StateProvinceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Salesterritory>(entity =>
+            modelBuilder.Entity<SalesTerritory>(entity =>
             {
-                entity.HasKey(e => e.Territoryid)
+                entity.HasKey(e => e.TerritoryId)
                     .HasName("PK_SalesTerritory_TerritoryID");
 
-                entity.ToTable("salesterritory", "sales");
+                entity.ToTable("SalesTerritory", "Sales");
 
                 entity.HasComment("Sales territory lookup table.");
 
-                entity.Property(e => e.Territoryid)
-                    .HasColumnName("territoryid")
+                entity.HasIndex(e => e.Name, "AK_SalesTerritory_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_SalesTerritory_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.TerritoryId)
+                    .HasColumnName("TerritoryID")
                     .HasComment("Primary key for SalesTerritory records.");
 
-                entity.Property(e => e.Costlastyear)
-                    .HasColumnName("costlastyear")
+                entity.Property(e => e.CostLastYear)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Business costs in the territory the previous year.");
 
-                entity.Property(e => e.Costytd)
-                    .HasColumnName("costytd")
+                entity.Property(e => e.CostYtd)
+                    .HasColumnType("money")
+                    .HasColumnName("CostYTD")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Business costs in the territory year to date.");
 
-                entity.Property(e => e.Countryregioncode)
+                entity.Property(e => e.CountryRegionCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("countryregioncode")
-                    .HasComment("ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.");
+                    .HasComment("ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode. ");
 
                 entity.Property(e => e.Group)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("group")
                     .HasComment("Geographic area to which the sales territory belong.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Sales territory description");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Saleslastyear)
-                    .HasColumnName("saleslastyear")
+                entity.Property(e => e.SalesLastYear)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Sales in the territory the previous year.");
 
-                entity.Property(e => e.Salesytd)
-                    .HasColumnName("salesytd")
+                entity.Property(e => e.SalesYtd)
+                    .HasColumnType("money")
+                    .HasColumnName("SalesYTD")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Sales in the territory year to date.");
 
-                entity.HasOne(d => d.CountryregioncodeNavigation)
-                    .WithMany(p => p.Salesterritory)
-                    .HasForeignKey(d => d.Countryregioncode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesTerritory_CountryRegion_CountryRegionCode");
+                entity.HasOne(d => d.CountryRegionCodeNavigation)
+                    .WithMany(p => p.SalesTerritory)
+                    .HasForeignKey(d => d.CountryRegionCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Salesterritoryhistory>(entity =>
+            modelBuilder.Entity<SalesTerritoryHistory>(entity =>
             {
-                entity.HasKey(e => new { e.Businessentityid, e.Startdate, e.Territoryid })
+                entity.HasKey(e => new { e.BusinessEntityId, e.StartDate, e.TerritoryId })
                     .HasName("PK_SalesTerritoryHistory_BusinessEntityID_StartDate_TerritoryID");
 
-                entity.ToTable("salesterritoryhistory", "sales");
+                entity.ToTable("SalesTerritoryHistory", "Sales");
 
                 entity.HasComment("Sales representative transfers to other sales territories.");
 
-                entity.Property(e => e.Businessentityid)
-                    .HasColumnName("businessentityid")
+                entity.HasIndex(e => e.Rowguid, "AK_SalesTerritoryHistory_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.BusinessEntityId)
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key. The sales rep.  Foreign key to SalesPerson.BusinessEntityID.");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("startdate")
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Primary key. Date the sales representive started work in the territory.");
 
-                entity.Property(e => e.Territoryid)
-                    .HasColumnName("territoryid")
+                entity.Property(e => e.TerritoryId)
+                    .HasColumnName("TerritoryID")
                     .HasComment("Primary key. Territory identification number. Foreign key to SalesTerritory.SalesTerritoryID.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Date the sales representative left work in the territory.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.HasOne(d => d.Businessentity)
-                    .WithMany(p => p.Salesterritoryhistory)
-                    .HasForeignKey(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesTerritoryHistory_SalesPerson_BusinessEntityID");
+                entity.HasOne(d => d.BusinessEntity)
+                    .WithMany(p => p.SalesTerritoryHistory)
+                    .HasForeignKey(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Territory)
-                    .WithMany(p => p.Salesterritoryhistory)
-                    .HasForeignKey(d => d.Territoryid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SalesTerritoryHistory_SalesTerritory_TerritoryID");
+                    .WithMany(p => p.SalesTerritoryHistory)
+                    .HasForeignKey(d => d.TerritoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Scrapreason>(entity =>
+            modelBuilder.Entity<ScrapReason>(entity =>
             {
-                entity.ToTable("scrapreason", "production");
+                entity.ToTable("ScrapReason", "Production");
 
                 entity.HasComment("Manufacturing failure reasons lookup table.");
 
-                entity.Property(e => e.Scrapreasonid)
-                    .HasColumnName("scrapreasonid")
+                entity.HasIndex(e => e.Name, "AK_ScrapReason_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.ScrapReasonId)
+                    .HasColumnName("ScrapReasonID")
                     .HasComment("Primary key for ScrapReason records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Failure description.");
             });
 
             modelBuilder.Entity<Shift>(entity =>
             {
-                entity.ToTable("shift", "humanresources");
+                entity.ToTable("Shift", "HumanResources");
 
                 entity.HasComment("Work shift lookup table.");
 
-                entity.Property(e => e.Shiftid)
-                    .HasColumnName("shiftid")
+                entity.HasIndex(e => e.Name, "AK_Shift_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.StartTime, e.EndTime }, "AK_Shift_StartTime_EndTime")
+                    .IsUnique();
+
+                entity.Property(e => e.ShiftId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ShiftID")
                     .HasComment("Primary key for Shift records.");
 
-                entity.Property(e => e.Endtime)
-                    .HasColumnName("endtime")
-                    .HasComment("Shift end time.");
+                entity.Property(e => e.EndTime).HasComment("Shift end time.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Shift description.");
 
-                entity.Property(e => e.Starttime)
-                    .HasColumnName("starttime")
-                    .HasComment("Shift start time.");
+                entity.Property(e => e.StartTime).HasComment("Shift start time.");
             });
 
-            modelBuilder.Entity<Shipmethod>(entity =>
+            modelBuilder.Entity<ShipMethod>(entity =>
             {
-                entity.ToTable("shipmethod", "purchasing");
+                entity.ToTable("ShipMethod", "Purchasing");
 
                 entity.HasComment("Shipping company lookup table.");
 
-                entity.Property(e => e.Shipmethodid)
-                    .HasColumnName("shipmethodid")
+                entity.HasIndex(e => e.Name, "AK_ShipMethod_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_ShipMethod_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.ShipMethodId)
+                    .HasColumnName("ShipMethodID")
                     .HasComment("Primary key for ShipMethod records.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Shipping company name.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Shipbase)
-                    .HasColumnName("shipbase")
+                entity.Property(e => e.ShipBase)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Minimum shipping charge.");
 
-                entity.Property(e => e.Shiprate)
-                    .HasColumnName("shiprate")
+                entity.Property(e => e.ShipRate)
+                    .HasColumnType("money")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Shipping charge per pound.");
             });
 
-            modelBuilder.Entity<Shoppingcartitem>(entity =>
+            modelBuilder.Entity<ShoppingCartItem>(entity =>
             {
-                entity.ToTable("shoppingcartitem", "sales");
+                entity.ToTable("ShoppingCartItem", "Sales");
 
                 entity.HasComment("Contains online customer orders until the order is submitted or cancelled.");
 
-                entity.Property(e => e.Shoppingcartitemid)
-                    .HasColumnName("shoppingcartitemid")
+                entity.HasIndex(e => new { e.ShoppingCartId, e.ProductId }, "IX_ShoppingCartItem_ShoppingCartID_ProductID");
+
+                entity.Property(e => e.ShoppingCartItemId)
+                    .HasColumnName("ShoppingCartItemID")
                     .HasComment("Primary key for ShoppingCartItem records.");
 
-                entity.Property(e => e.Datecreated)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("datecreated")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.DateCreated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Date the time the record was created.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product ordered. Foreign key to Product.ProductID.");
 
                 entity.Property(e => e.Quantity)
-                    .HasColumnName("quantity")
                     .HasDefaultValueSql("1")
                     .HasComment("Product quantity ordered.");
 
-                entity.Property(e => e.Shoppingcartid)
+                entity.Property(e => e.ShoppingCartId)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("shoppingcartid")
+                    .HasColumnName("ShoppingCartID")
                     .HasComment("Shopping cart identification number.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Shoppingcartitem)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ShoppingCartItem_Product_ProductID");
+                    .WithMany(p => p.ShoppingCartItem)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Specialoffer>(entity =>
+            modelBuilder.Entity<SpecialOffer>(entity =>
             {
-                entity.ToTable("specialoffer", "sales");
+                entity.ToTable("SpecialOffer", "Sales");
 
                 entity.HasComment("Sale discounts lookup table.");
 
-                entity.Property(e => e.Specialofferid)
-                    .HasColumnName("specialofferid")
+                entity.HasIndex(e => e.Rowguid, "AK_SpecialOffer_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.SpecialOfferId)
+                    .HasColumnName("SpecialOfferID")
                     .HasComment("Primary key for SpecialOffer records.");
 
                 entity.Property(e => e.Category)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("category")
                     .HasComment("Group the discount applies to such as Reseller or Customer.");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(255)
-                    .HasColumnName("description")
                     .HasComment("Discount description.");
 
-                entity.Property(e => e.Discountpct)
-                    .HasColumnName("discountpct")
+                entity.Property(e => e.DiscountPct)
+                    .HasColumnType("smallmoney")
                     .HasDefaultValueSql("0.00")
                     .HasComment("Discount precentage.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Discount end date.");
 
-                entity.Property(e => e.Maxqty)
-                    .HasColumnName("maxqty")
-                    .HasComment("Maximum discount percent allowed.");
+                entity.Property(e => e.MaxQty).HasComment("Maximum discount percent allowed.");
 
-                entity.Property(e => e.Minqty)
-                    .HasColumnName("minqty")
-                    .HasComment("Minimum discount percent allowed.");
+                entity.Property(e => e.MinQty).HasComment("Minimum discount percent allowed.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("startdate")
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Discount start date.");
 
                 entity.Property(e => e.Type)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("type")
                     .HasComment("Discount type category.");
             });
 
-            modelBuilder.Entity<Specialofferproduct>(entity =>
+            modelBuilder.Entity<SpecialOfferProduct>(entity =>
             {
-                entity.HasKey(e => new { e.Specialofferid, e.Productid })
+                entity.HasKey(e => new { e.SpecialOfferId, e.ProductId })
                     .HasName("PK_SpecialOfferProduct_SpecialOfferID_ProductID");
 
-                entity.ToTable("specialofferproduct", "sales");
+                entity.ToTable("SpecialOfferProduct", "Sales");
 
                 entity.HasComment("Cross-reference table mapping products to special offer discounts.");
 
-                entity.Property(e => e.Specialofferid)
-                    .HasColumnName("specialofferid")
+                entity.HasIndex(e => e.Rowguid, "AK_SpecialOfferProduct_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.ProductId, "IX_SpecialOfferProduct_ProductID");
+
+                entity.Property(e => e.SpecialOfferId)
+                    .HasColumnName("SpecialOfferID")
                     .HasComment("Primary key for SpecialOfferProduct records.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Specialofferproduct)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SpecialOfferProduct_Product_ProductID");
+                    .WithMany(p => p.SpecialOfferProduct)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Specialoffer)
-                    .WithMany(p => p.Specialofferproduct)
-                    .HasForeignKey(d => d.Specialofferid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SpecialOfferProduct_SpecialOffer_SpecialOfferID");
+                entity.HasOne(d => d.SpecialOffer)
+                    .WithMany(p => p.SpecialOfferProduct)
+                    .HasForeignKey(d => d.SpecialOfferId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Stateprovince>(entity =>
+            modelBuilder.Entity<StateProvince>(entity =>
             {
-                entity.ToTable("stateprovince", "person");
+                entity.ToTable("StateProvince", "Person");
 
                 entity.HasComment("State and province lookup table.");
 
-                entity.Property(e => e.Stateprovinceid)
-                    .HasColumnName("stateprovinceid")
+                entity.HasIndex(e => e.Name, "AK_StateProvince_Name")
+                    .IsUnique();
+
+                entity.HasIndex(e => new { e.StateProvinceCode, e.CountryRegionCode }, "AK_StateProvince_StateProvinceCode_CountryRegionCode")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Rowguid, "AK_StateProvince_rowguid")
+                    .IsUnique();
+
+                entity.Property(e => e.StateProvinceId)
+                    .HasColumnName("StateProvinceID")
                     .HasComment("Primary key for StateProvince records.");
 
-                entity.Property(e => e.Countryregioncode)
+                entity.Property(e => e.CountryRegionCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("countryregioncode")
-                    .HasComment("ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode.");
+                    .HasComment("ISO standard country or region code. Foreign key to CountryRegion.CountryRegionCode. ");
 
-                entity.Property(e => e.Isonlystateprovinceflag)
+                entity.Property(e => e.IsOnlyStateProvinceFlag)
                     .IsRequired()
-                    .HasColumnName("isonlystateprovinceflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = StateProvinceCode exists. 1 = StateProvinceCode unavailable, using CountryRegionCode.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("State or province description.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Stateprovincecode)
+                entity.Property(e => e.StateProvinceCode)
                     .IsRequired()
                     .HasMaxLength(3)
-                    .HasColumnName("stateprovincecode")
                     .IsFixedLength()
                     .HasComment("ISO standard state or province code.");
 
-                entity.Property(e => e.Territoryid)
-                    .HasColumnName("territoryid")
+                entity.Property(e => e.TerritoryId)
+                    .HasColumnName("TerritoryID")
                     .HasComment("ID of the territory in which the state or province is located. Foreign key to SalesTerritory.SalesTerritoryID.");
 
-                entity.HasOne(d => d.CountryregioncodeNavigation)
-                    .WithMany(p => p.Stateprovince)
-                    .HasForeignKey(d => d.Countryregioncode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_StateProvince_CountryRegion_CountryRegionCode");
+                entity.HasOne(d => d.CountryRegionCodeNavigation)
+                    .WithMany(p => p.StateProvince)
+                    .HasForeignKey(d => d.CountryRegionCode)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.Territory)
-                    .WithMany(p => p.Stateprovince)
-                    .HasForeignKey(d => d.Territoryid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_StateProvince_SalesTerritory_TerritoryID");
+                    .WithMany(p => p.StateProvince)
+                    .HasForeignKey(d => d.TerritoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Store>(entity =>
             {
-                entity.HasKey(e => e.Businessentityid)
+                entity.HasKey(e => e.BusinessEntityId)
                     .HasName("PK_Store_BusinessEntityID");
 
-                entity.ToTable("store", "sales");
+                entity.ToTable("Store", "Sales");
 
                 entity.HasComment("Customers (resellers) of Adventure Works products.");
 
-                entity.Property(e => e.Businessentityid)
+                entity.HasIndex(e => e.Rowguid, "AK_Store_rowguid")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.SalesPersonId, "IX_Store_SalesPersonID");
+
+                entity.Property(e => e.BusinessEntityId)
                     .ValueGeneratedNever()
-                    .HasColumnName("businessentityid")
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key. Foreign key to Customer.BusinessEntityID.");
 
                 entity.Property(e => e.Demographics)
                     .HasColumnType("xml")
-                    .HasColumnName("demographics")
                     .HasComment("Demographic informationg about the store such as the number of employees, annual sales and store type.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Name of the store.");
 
                 entity.Property(e => e.Rowguid)
                     .HasColumnName("rowguid")
-                    .HasDefaultValueSql("uuid_generate_v1()");
+                    .HasDefaultValueSql("newid()")
+                    .HasComment("ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.");
 
-                entity.Property(e => e.Salespersonid)
-                    .HasColumnName("salespersonid")
+                entity.Property(e => e.SalesPersonId)
+                    .HasColumnName("SalesPersonID")
                     .HasComment("ID of the sales person assigned to the customer. Foreign key to SalesPerson.BusinessEntityID.");
 
-                entity.HasOne(d => d.Businessentity)
+                entity.HasOne(d => d.BusinessEntity)
                     .WithOne(p => p.Store)
-                    .HasForeignKey<Store>(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Store_BusinessEntity_BusinessEntityID");
+                    .HasForeignKey<Store>(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Salesperson)
+                entity.HasOne(d => d.SalesPerson)
                     .WithMany(p => p.Store)
-                    .HasForeignKey(d => d.Salespersonid)
-                    .HasConstraintName("FK_Store_SalesPerson_SalesPersonID");
+                    .HasForeignKey(d => d.SalesPersonId);
             });
 
-            modelBuilder.Entity<Transactionhistory>(entity =>
+            modelBuilder.Entity<TransactionHistory>(entity =>
             {
-                entity.HasKey(e => e.Transactionid)
+                entity.HasKey(e => e.TransactionId)
                     .HasName("PK_TransactionHistory_TransactionID");
 
-                entity.ToTable("transactionhistory", "production");
+                entity.ToTable("TransactionHistory", "Production");
 
                 entity.HasComment("Record of each purchase order, sales order, or work order transaction year to date.");
 
-                entity.Property(e => e.Transactionid)
-                    .HasColumnName("transactionid")
+                entity.HasIndex(e => e.ProductId, "IX_TransactionHistory_ProductID");
+
+                entity.HasIndex(e => new { e.ReferenceOrderId, e.ReferenceOrderLineId }, "IX_TransactionHistory_ReferenceOrderID_ReferenceOrderLineID");
+
+                entity.Property(e => e.TransactionId)
+                    .HasColumnName("TransactionID")
                     .HasComment("Primary key for TransactionHistory records.");
 
-                entity.Property(e => e.Actualcost)
-                    .HasColumnName("actualcost")
+                entity.Property(e => e.ActualCost)
+                    .HasColumnType("money")
                     .HasComment("Product cost.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Quantity)
-                    .HasColumnName("quantity")
-                    .HasComment("Product quantity.");
+                entity.Property(e => e.Quantity).HasComment("Product quantity.");
 
-                entity.Property(e => e.Referenceorderid)
-                    .HasColumnName("referenceorderid")
+                entity.Property(e => e.ReferenceOrderId)
+                    .HasColumnName("ReferenceOrderID")
                     .HasComment("Purchase order, sales order, or work order identification number.");
 
-                entity.Property(e => e.Referenceorderlineid)
-                    .HasColumnName("referenceorderlineid")
+                entity.Property(e => e.ReferenceOrderLineId)
+                    .HasColumnName("ReferenceOrderLineID")
                     .HasComment("Line number associated with the purchase order, sales order, or work order.");
 
-                entity.Property(e => e.Transactiondate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("transactiondate")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.TransactionDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Date and time of the transaction.");
 
-                entity.Property(e => e.Transactiontype)
+                entity.Property(e => e.TransactionType)
+                    .IsRequired()
                     .HasMaxLength(1)
-                    .HasColumnName("transactiontype")
+                    .IsFixedLength()
                     .HasComment("W = WorkOrder, S = SalesOrder, P = PurchaseOrder");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Transactionhistory)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TransactionHistory_Product_ProductID");
+                    .WithMany(p => p.TransactionHistory)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Transactionhistoryarchive>(entity =>
+            modelBuilder.Entity<TransactionHistoryArchive>(entity =>
             {
-                entity.HasKey(e => e.Transactionid)
+                entity.HasKey(e => e.TransactionId)
                     .HasName("PK_TransactionHistoryArchive_TransactionID");
 
-                entity.ToTable("transactionhistoryarchive", "production");
+                entity.ToTable("TransactionHistoryArchive", "Production");
 
                 entity.HasComment("Transactions for previous years.");
 
-                entity.Property(e => e.Transactionid)
+                entity.HasIndex(e => e.ProductId, "IX_TransactionHistoryArchive_ProductID");
+
+                entity.HasIndex(e => new { e.ReferenceOrderId, e.ReferenceOrderLineId }, "IX_TransactionHistoryArchive_ReferenceOrderID_ReferenceOrderLineID");
+
+                entity.Property(e => e.TransactionId)
                     .ValueGeneratedNever()
-                    .HasColumnName("transactionid")
+                    .HasColumnName("TransactionID")
                     .HasComment("Primary key for TransactionHistoryArchive records.");
 
-                entity.Property(e => e.Actualcost)
-                    .HasColumnName("actualcost")
+                entity.Property(e => e.ActualCost)
+                    .HasColumnType("money")
                     .HasComment("Product cost.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Quantity)
-                    .HasColumnName("quantity")
-                    .HasComment("Product quantity.");
+                entity.Property(e => e.Quantity).HasComment("Product quantity.");
 
-                entity.Property(e => e.Referenceorderid)
-                    .HasColumnName("referenceorderid")
+                entity.Property(e => e.ReferenceOrderId)
+                    .HasColumnName("ReferenceOrderID")
                     .HasComment("Purchase order, sales order, or work order identification number.");
 
-                entity.Property(e => e.Referenceorderlineid)
-                    .HasColumnName("referenceorderlineid")
+                entity.Property(e => e.ReferenceOrderLineId)
+                    .HasColumnName("ReferenceOrderLineID")
                     .HasComment("Line number associated with the purchase order, sales order, or work order.");
 
-                entity.Property(e => e.Transactiondate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("transactiondate")
-                    .HasDefaultValueSql("now()")
+                entity.Property(e => e.TransactionDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
                     .HasComment("Date and time of the transaction.");
 
-                entity.Property(e => e.Transactiontype)
+                entity.Property(e => e.TransactionType)
+                    .IsRequired()
                     .HasMaxLength(1)
-                    .HasColumnName("transactiontype")
+                    .IsFixedLength()
                     .HasComment("W = Work Order, S = Sales Order, P = Purchase Order");
             });
 
-            modelBuilder.Entity<Unitmeasure>(entity =>
+            modelBuilder.Entity<UnitMeasure>(entity =>
             {
-                entity.HasKey(e => e.Unitmeasurecode)
+                entity.HasKey(e => e.UnitMeasureCode)
                     .HasName("PK_UnitMeasure_UnitMeasureCode");
 
-                entity.ToTable("unitmeasure", "production");
+                entity.ToTable("UnitMeasure", "Production");
 
                 entity.HasComment("Unit of measure lookup table.");
 
-                entity.Property(e => e.Unitmeasurecode)
+                entity.HasIndex(e => e.Name, "AK_UnitMeasure_Name")
+                    .IsUnique();
+
+                entity.Property(e => e.UnitMeasureCode)
                     .HasMaxLength(3)
-                    .HasColumnName("unitmeasurecode")
                     .IsFixedLength()
                     .HasComment("Primary key.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Unit of measure description.");
             });
 
             modelBuilder.Entity<Vendor>(entity =>
             {
-                entity.HasKey(e => e.Businessentityid)
+                entity.HasKey(e => e.BusinessEntityId)
                     .HasName("PK_Vendor_BusinessEntityID");
 
-                entity.ToTable("vendor", "purchasing");
+                entity.ToTable("Vendor", "Purchasing");
 
                 entity.HasComment("Companies from whom Adventure Works Cycles purchases parts or other goods.");
 
-                entity.Property(e => e.Businessentityid)
+                entity.HasIndex(e => e.AccountNumber, "AK_Vendor_AccountNumber")
+                    .IsUnique();
+
+                entity.Property(e => e.BusinessEntityId)
                     .ValueGeneratedNever()
-                    .HasColumnName("businessentityid")
+                    .HasColumnName("BusinessEntityID")
                     .HasComment("Primary key for Vendor records.  Foreign key to BusinessEntity.BusinessEntityID");
 
-                entity.Property(e => e.Accountnumber)
+                entity.Property(e => e.AccountNumber)
                     .IsRequired()
                     .HasMaxLength(15)
-                    .HasColumnName("accountnumber")
                     .HasComment("Vendor account (identification) number.");
 
-                entity.Property(e => e.Activeflag)
+                entity.Property(e => e.ActiveFlag)
                     .IsRequired()
-                    .HasColumnName("activeflag")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = Vendor no longer used. 1 = Vendor is actively used.");
 
-                entity.Property(e => e.Creditrating)
-                    .HasColumnName("creditrating")
-                    .HasComment("1 = Superior, 2 = Excellent, 3 = Above average, 4 = Average, 5 = Below average");
+                entity.Property(e => e.CreditRating).HasComment("1 = Superior, 2 = Excellent, 3 = Above average, 4 = Average, 5 = Below average");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("name")
                     .HasComment("Company name.");
 
-                entity.Property(e => e.Preferredvendorstatus)
+                entity.Property(e => e.PreferredVendorStatus)
                     .IsRequired()
-                    .HasColumnName("preferredvendorstatus")
-                    .HasDefaultValueSql("true")
+                    .HasDefaultValueSql("1")
                     .HasComment("0 = Do not use if another vendor is available. 1 = Preferred over other vendors supplying the same product.");
 
-                entity.Property(e => e.Purchasingwebserviceurl)
+                entity.Property(e => e.PurchasingWebServiceUrl)
                     .HasMaxLength(1024)
-                    .HasColumnName("purchasingwebserviceurl")
+                    .HasColumnName("PurchasingWebServiceURL")
                     .HasComment("Vendor URL.");
 
-                entity.HasOne(d => d.Businessentity)
+                entity.HasOne(d => d.BusinessEntity)
                     .WithOne(p => p.Vendor)
-                    .HasForeignKey<Vendor>(d => d.Businessentityid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Vendor_BusinessEntity_BusinessEntityID");
+                    .HasForeignKey<Vendor>(d => d.BusinessEntityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
-            modelBuilder.Entity<Workorder>(entity =>
+            modelBuilder.Entity<WorkOrder>(entity =>
             {
-                entity.ToTable("workorder", "production");
+                entity.ToTable("WorkOrder", "Production");
 
                 entity.HasComment("Manufacturing work orders.");
 
-                entity.Property(e => e.Workorderid)
-                    .HasColumnName("workorderid")
+                entity.HasIndex(e => e.ProductId, "IX_WorkOrder_ProductID");
+
+                entity.HasIndex(e => e.ScrapReasonId, "IX_WorkOrder_ScrapReasonID");
+
+                entity.Property(e => e.WorkOrderId)
+                    .HasColumnName("WorkOrderID")
                     .HasComment("Primary key for WorkOrder records.");
 
-                entity.Property(e => e.Duedate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("duedate")
+                entity.Property(e => e.DueDate)
+                    .HasColumnType("datetime")
                     .HasComment("Work order due date.");
 
-                entity.Property(e => e.Enddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("enddate")
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Work order end date.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Orderqty)
-                    .HasColumnName("orderqty")
-                    .HasComment("Product quantity to build.");
+                entity.Property(e => e.OrderQty).HasComment("Product quantity to build.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Product identification number. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Scrappedqty)
-                    .HasColumnName("scrappedqty")
-                    .HasComment("Quantity that failed inspection.");
-
-                entity.Property(e => e.Scrapreasonid)
-                    .HasColumnName("scrapreasonid")
+                entity.Property(e => e.ScrapReasonId)
+                    .HasColumnName("ScrapReasonID")
                     .HasComment("Reason for inspection failure.");
 
-                entity.Property(e => e.Startdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("startdate")
+                entity.Property(e => e.ScrappedQty).HasComment("Quantity that failed inspection.");
+
+                entity.Property(e => e.StartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Work order start date.");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Workorder)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_WorkOrder_Product_ProductID");
+                    .WithMany(p => p.WorkOrder)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Scrapreason)
-                    .WithMany(p => p.Workorder)
-                    .HasForeignKey(d => d.Scrapreasonid)
-                    .HasConstraintName("FK_WorkOrder_ScrapReason_ScrapReasonID");
+                entity.HasOne(d => d.ScrapReason)
+                    .WithMany(p => p.WorkOrder)
+                    .HasForeignKey(d => d.ScrapReasonId);
             });
 
-            modelBuilder.Entity<Workorderrouting>(entity =>
+            modelBuilder.Entity<WorkOrderRouting>(entity =>
             {
-                entity.HasKey(e => new { e.Workorderid, e.Productid, e.Operationsequence })
+                entity.HasKey(e => new { e.WorkOrderId, e.ProductId, e.OperationSequence })
                     .HasName("PK_WorkOrderRouting_WorkOrderID_ProductID_OperationSequence");
 
-                entity.ToTable("workorderrouting", "production");
+                entity.ToTable("WorkOrderRouting", "Production");
 
                 entity.HasComment("Work order details.");
 
-                entity.Property(e => e.Workorderid)
-                    .HasColumnName("workorderid")
+                entity.HasIndex(e => e.ProductId, "IX_WorkOrderRouting_ProductID");
+
+                entity.Property(e => e.WorkOrderId)
+                    .HasColumnName("WorkOrderID")
                     .HasComment("Primary key. Foreign key to WorkOrder.WorkOrderID.");
 
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("ProductID")
                     .HasComment("Primary key. Foreign key to Product.ProductID.");
 
-                entity.Property(e => e.Operationsequence)
-                    .HasColumnName("operationsequence")
-                    .HasComment("Primary key. Indicates the manufacturing process sequence.");
+                entity.Property(e => e.OperationSequence).HasComment("Primary key. Indicates the manufacturing process sequence.");
 
-                entity.Property(e => e.Actualcost)
-                    .HasColumnName("actualcost")
+                entity.Property(e => e.ActualCost)
+                    .HasColumnType("money")
                     .HasComment("Actual manufacturing cost.");
 
-                entity.Property(e => e.Actualenddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("actualenddate")
+                entity.Property(e => e.ActualEndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Actual end date.");
 
-                entity.Property(e => e.Actualresourcehrs)
-                    .HasPrecision(9, 4)
-                    .HasColumnName("actualresourcehrs")
+                entity.Property(e => e.ActualResourceHrs)
+                    .HasColumnType("decimal(9, 4)")
                     .HasComment("Number of manufacturing hours used.");
 
-                entity.Property(e => e.Actualstartdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("actualstartdate")
+                entity.Property(e => e.ActualStartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Actual start date.");
 
-                entity.Property(e => e.Locationid)
-                    .HasColumnName("locationid")
+                entity.Property(e => e.LocationId)
+                    .HasColumnName("LocationID")
                     .HasComment("Manufacturing location where the part is processed. Foreign key to Location.LocationID.");
 
-                entity.Property(e => e.Modifieddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("modifieddate")
-                    .HasDefaultValueSql("now()");
+                entity.Property(e => e.ModifiedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("getdate()")
+                    .HasComment("Date and time the record was last updated.");
 
-                entity.Property(e => e.Plannedcost)
-                    .HasColumnName("plannedcost")
+                entity.Property(e => e.PlannedCost)
+                    .HasColumnType("money")
                     .HasComment("Estimated manufacturing cost.");
 
-                entity.Property(e => e.Scheduledenddate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("scheduledenddate")
+                entity.Property(e => e.ScheduledEndDate)
+                    .HasColumnType("datetime")
                     .HasComment("Planned manufacturing end date.");
 
-                entity.Property(e => e.Scheduledstartdate)
-                    .HasColumnType("timestamp without time zone")
-                    .HasColumnName("scheduledstartdate")
+                entity.Property(e => e.ScheduledStartDate)
+                    .HasColumnType("datetime")
                     .HasComment("Planned manufacturing start date.");
 
                 entity.HasOne(d => d.Location)
-                    .WithMany(p => p.Workorderrouting)
-                    .HasForeignKey(d => d.Locationid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_WorkOrderRouting_Location_LocationID");
+                    .WithMany(p => p.WorkOrderRouting)
+                    .HasForeignKey(d => d.LocationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.Workorder)
-                    .WithMany(p => p.Workorderrouting)
-                    .HasForeignKey(d => d.Workorderid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_WorkOrderRouting_WorkOrder_WorkOrderID");
+                entity.HasOne(d => d.WorkOrder)
+                    .WithMany(p => p.WorkOrderRouting)
+                    .HasForeignKey(d => d.WorkOrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             OnModelCreatingPartial(modelBuilder);

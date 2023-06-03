@@ -12,19 +12,22 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Culture()
         {
-            Productmodelproductdescriptionculture = new HashSet<Productmodelproductdescriptionculture>();
+            ProductModelProductDescriptionCulture = new HashSet<ProductModelProductDescriptionCulture>();
         }
 
         /// <summary>
         /// Primary key for Culture records.
         /// </summary>
-        public string Cultureid { get; set; }
+        public string CultureId { get; set; }
         /// <summary>
         /// Culture description.
         /// </summary>
         public string Name { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Productmodelproductdescriptionculture> Productmodelproductdescriptionculture { get; set; }
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; set; }
     }
 }

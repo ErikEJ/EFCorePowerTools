@@ -8,18 +8,18 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     /// <summary>
     /// Shipping company lookup table.
     /// </summary>
-    public partial class Shipmethod
+    public partial class ShipMethod
     {
-        public Shipmethod()
+        public ShipMethod()
         {
-            Purchaseorderheader = new HashSet<Purchaseorderheader>();
-            Salesorderheader = new HashSet<Salesorderheader>();
+            PurchaseOrderHeader = new HashSet<PurchaseOrderHeader>();
+            SalesOrderHeader = new HashSet<SalesOrderHeader>();
         }
 
         /// <summary>
         /// Primary key for ShipMethod records.
         /// </summary>
-        public int Shipmethodid { get; set; }
+        public int ShipMethodId { get; set; }
         /// <summary>
         /// Shipping company name.
         /// </summary>
@@ -27,15 +27,21 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Minimum shipping charge.
         /// </summary>
-        public decimal Shipbase { get; set; }
+        public decimal ShipBase { get; set; }
         /// <summary>
         /// Shipping charge per pound.
         /// </summary>
-        public decimal Shiprate { get; set; }
+        public decimal ShipRate { get; set; }
+        /// <summary>
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
+        /// </summary>
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Purchaseorderheader> Purchaseorderheader { get; set; }
-        public virtual ICollection<Salesorderheader> Salesorderheader { get; set; }
+        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeader { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeader { get; set; }
     }
 }

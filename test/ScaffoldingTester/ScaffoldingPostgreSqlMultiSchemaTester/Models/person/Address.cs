@@ -12,23 +12,23 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
     {
         public Address()
         {
-            Businessentityaddress = new HashSet<Businessentityaddress>();
-            SalesorderheaderBilltoaddress = new HashSet<Salesorderheader>();
-            SalesorderheaderShiptoaddress = new HashSet<Salesorderheader>();
+            BusinessEntityAddress = new HashSet<BusinessEntityAddress>();
+            SalesOrderHeaderBillToAddress = new HashSet<SalesOrderHeader>();
+            SalesOrderHeaderShipToAddress = new HashSet<SalesOrderHeader>();
         }
 
         /// <summary>
         /// Primary key for Address records.
         /// </summary>
-        public int Addressid { get; set; }
+        public int AddressId { get; set; }
         /// <summary>
         /// First street address line.
         /// </summary>
-        public string Addressline1 { get; set; }
+        public string AddressLine1 { get; set; }
         /// <summary>
         /// Second street address line.
         /// </summary>
-        public string Addressline2 { get; set; }
+        public string AddressLine2 { get; set; }
         /// <summary>
         /// Name of the city.
         /// </summary>
@@ -36,21 +36,23 @@ namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
         /// <summary>
         /// Unique identification number for the state or province. Foreign key to StateProvince table.
         /// </summary>
-        public int Stateprovinceid { get; set; }
+        public int StateProvinceId { get; set; }
         /// <summary>
         /// Postal code for the street address.
         /// </summary>
-        public string Postalcode { get; set; }
+        public string PostalCode { get; set; }
         /// <summary>
-        /// Latitude and longitude of this address.
+        /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
         /// </summary>
-        public string Spatiallocation { get; set; }
         public Guid Rowguid { get; set; }
-        public DateTime Modifieddate { get; set; }
+        /// <summary>
+        /// Date and time the record was last updated.
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
 
-        public virtual Stateprovince Stateprovince { get; set; }
-        public virtual ICollection<Businessentityaddress> Businessentityaddress { get; set; }
-        public virtual ICollection<Salesorderheader> SalesorderheaderBilltoaddress { get; set; }
-        public virtual ICollection<Salesorderheader> SalesorderheaderShiptoaddress { get; set; }
+        public virtual StateProvince StateProvince { get; set; }
+        public virtual ICollection<BusinessEntityAddress> BusinessEntityAddress { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaderBillToAddress { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaderShipToAddress { get; set; }
     }
 }
