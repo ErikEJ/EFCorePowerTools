@@ -1,0 +1,309 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "AdventureworksContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "ScaffoldingPostgreSqlMultiSchemaTester",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "humanresources.department",
+         "ObjectType": 0
+      },
+      {
+         "Name": "humanresources.employee",
+         "ObjectType": 0
+      },
+      {
+         "Name": "humanresources.employeedepartmenthistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "humanresources.employeepayhistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "humanresources.jobcandidate",
+         "ObjectType": 0
+      },
+      {
+         "Name": "humanresources.shift",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.address",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.addresstype",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.businessentity",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.businessentityaddress",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.businessentitycontact",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.contacttype",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.countryregion",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.emailaddress",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.password",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.person",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.personphone",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.phonenumbertype",
+         "ObjectType": 0
+      },
+      {
+         "Name": "person.stateprovince",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.billofmaterials",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.culture",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.document",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.illustration",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.location",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.product",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productcategory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productcosthistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productdescription",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productdocument",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productinventory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productlistpricehistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productmodel",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productmodelillustration",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productmodelproductdescriptionculture",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productphoto",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productproductphoto",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productreview",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.productsubcategory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.scrapreason",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.transactionhistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.transactionhistoryarchive",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.unitmeasure",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.workorder",
+         "ObjectType": 0
+      },
+      {
+         "Name": "production.workorderrouting",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchasing.productvendor",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchasing.purchaseorderdetail",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchasing.purchaseorderheader",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchasing.shipmethod",
+         "ObjectType": 0
+      },
+      {
+         "Name": "purchasing.vendor",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.countryregioncurrency",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.creditcard",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.currency",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.currencyrate",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.customer",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.personcreditcard",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesorderdetail",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesorderheader",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesorderheadersalesreason",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesperson",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salespersonquotahistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesreason",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salestaxrate",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesterritory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.salesterritoryhistory",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.shoppingcartitem",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.specialoffer",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.specialofferproduct",
+         "ObjectType": 0
+      },
+      {
+         "Name": "sales.store",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": ".Adventureworks",
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": true,
+   "UseSpatial": false,
+   "UseT4": false
+}

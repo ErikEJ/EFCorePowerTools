@@ -1,0 +1,2 @@
+This project is using the sample database "AdventureWorks" from this repo:
+https://github.com/rasputino/postgresDBSamples
