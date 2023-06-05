@@ -4,6 +4,13 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.HumanResourcesNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PersonNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.ProductionNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PurchasingNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesNs;
+
 
 namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
 {
