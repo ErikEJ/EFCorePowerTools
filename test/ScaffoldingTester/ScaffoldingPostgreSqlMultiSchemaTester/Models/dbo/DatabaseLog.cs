@@ -2,8 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.HumanResourcesNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PersonNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.ProductionNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PurchasingNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesNs;
 
-namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
+
+namespace ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs
 {
     /// <summary>
     /// Audit table tracking all DDL changes made to the AdventureWorks database. Data is captured by the database trigger ddlDatabaseTriggerLog.

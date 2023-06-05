@@ -2,8 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.HumanResourcesNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PersonNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.ProductionNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PurchasingNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesNs;
 
-namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
+
+namespace ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesNs
 {
     /// <summary>
     /// Cross-reference table mapping sales orders to sales reason codes.

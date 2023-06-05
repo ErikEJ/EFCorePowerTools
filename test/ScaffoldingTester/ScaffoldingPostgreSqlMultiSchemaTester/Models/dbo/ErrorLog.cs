@@ -2,8 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.HumanResourcesNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PersonNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.ProductionNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PurchasingNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesNs;
 
-namespace ScaffoldingPostgreSqlMultiSchemaTester.Models
+
+namespace ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs
 {
     /// <summary>
     /// Audit table tracking errors in the the AdventureWorks database that are caught by the CATCH block of a TRY...CATCH construct. Data is inserted by stored procedure dbo.uspLogError when it is executed from inside the CATCH block of a TRY...CATCH construct.
