@@ -310,13 +310,15 @@ namespace RevEng.Core
             return newName;
         }
 
-        private static void AppendSchemaFolders(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders)
+        private static void AppendSchemaFoldersAndNamespace(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders, IEnumerable<string> schemas)
         {
             // Tables and views only
             if (!useSchemaFolders)
             {
                 return;
             }
+
+            scaffoldedModel.ContextFile.Code = AppendSchemaNamespace(string.Empty, scaffoldedModel.ContextFile.Code, schemas);
 
             foreach (var entityType in scaffoldedModel.AdditionalFiles)
             {
@@ -333,8 +335,56 @@ namespace RevEng.Core
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {
                     entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
+                    entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas);
                 }
             }
+        }
+
+        private static string AppendSchemaNamespace(string entityTypeSchema, string code, IEnumerable<string> schemas)
+        {
+            var nameSpaceSuffix = "Ns";
+            var entityTypeSchemaWithSuffix = entityTypeSchema + nameSpaceSuffix;
+            var namespaceKeyWord = "namespace ";
+            var usingKeyWord = "using ";
+            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var originalNameSpaceLine = codeLines.Where(l => l.StartsWith(namespaceKeyWord)).Single();
+            var newNameSpaceLine = originalNameSpaceLine;
+            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";");
+            if (cSharp10NameSpaceStyle) { newNameSpaceLine = newNameSpaceLine.Substring(0, newNameSpaceLine.Length - 1); }
+            var originalLastUsing = codeLines.Where(l => l.StartsWith(usingKeyWord)).Last();
+            var regexStartsWithNameSpace = new Regex(Regex.Escape(namespaceKeyWord));
+            var newUsings = new StringBuilder(originalLastUsing);
+            newUsings.AppendLine();
+            foreach (var schema in schemas.Where(s => s != entityTypeSchemaWithSuffix))
+            {
+                var newUsing = regexStartsWithNameSpace.Replace(newNameSpaceLine, usingKeyWord, 1);
+                newUsings.Append(newUsing);
+                newUsings.Append('.');
+                newUsings.Append(schema);
+                newUsings.Append(nameSpaceSuffix);
+                newUsings.AppendLine(";");
+            }
+
+            newNameSpaceLine = newNameSpaceLine + $".{entityTypeSchemaWithSuffix}";
+            if (cSharp10NameSpaceStyle) { newNameSpaceLine += ";"; }
+            var sb = new StringBuilder();
+            foreach (var codeLine in codeLines)
+            {
+                if (codeLine.Equals(originalNameSpaceLine) && !string.IsNullOrEmpty(entityTypeSchema))
+                {
+                    sb.AppendLine(newNameSpaceLine);
+                }
+                else if (codeLine.Equals(originalLastUsing))
+                {
+                    sb.AppendLine(newUsings.ToString());
+                }
+                else
+                {
+                    sb.AppendLine(codeLine);
+                }
+            }
+
+            return sb.ToString();
         }
 
         private ScaffoldedModel ScaffoldModel(
@@ -392,7 +442,7 @@ namespace RevEng.Core
                 codeModel.AdditionalFiles.Clear();
             }
 
-            AppendSchemaFolders(model, codeModel, useSchemaFolders);
+            AppendSchemaFoldersAndNamespace(model, codeModel, useSchemaFolders, databaseModel.Tables.Select(t => t.Schema).Distinct());
 
             return codeModel;
         }

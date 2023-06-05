@@ -233,6 +233,11 @@ namespace RevEng.Core.Procedures
                 $"using {scaffolderOptions.ModelNamespace}",
             };
 
+            if (scaffolderOptions.UseSchemaFolders)
+            {
+                model.Routines.Select(r => r.Schema).Distinct().ToList().ForEach(schema => usings.Add($"using {scaffolderOptions.ModelNamespace}.{schema}"));
+            }
+
             if (model.Routines.Any(r => r.SupportsMultipleResultSet))
             {
                 usings.AddRange(new List<string>()
