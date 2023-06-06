@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ScaffoldingPostgreSqlMultiSchemaTester.Models.dboNs;
-using ScaffoldingPostgreSqlMultiSchemaTester.Models.HumanResourcesNs;
-using ScaffoldingPostgreSqlMultiSchemaTester.Models.PersonNs;
-using ScaffoldingPostgreSqlMultiSchemaTester.Models.ProductionNs;
-using ScaffoldingPostgreSqlMultiSchemaTester.Models.PurchasingNs;
-using ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesNs;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.dboSchema;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.HumanResourcesSchema;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PersonSchema;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.ProductionSchema;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.PurchasingSchema;
+using ScaffoldingPostgreSqlMultiSchemaTester.Models.SalesSchema;
 
 
 namespace ScaffoldingPostgreSqlMultiSchemaTester.Models

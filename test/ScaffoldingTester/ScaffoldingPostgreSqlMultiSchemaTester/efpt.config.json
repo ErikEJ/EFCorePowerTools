@@ -316,6 +316,7 @@
    "UseNodaTime": false,
    "UseNullableReferences": false,
    "UseSchemaFolders": true,
+   "UseSchemaNamespaces": true,
    "UseSpatial": false,
    "UseT4": false
 }
