@@ -121,6 +121,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
             Model.UseDateOnlyTimeOnly = presets.UseDateOnlyTimeOnly;
+            Model.UseSchemaNamespaces = presets.UseSchemaNamespaces;
 
             Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
         }
@@ -201,6 +202,7 @@ namespace EFCorePowerTools.ViewModels
             Model.ContextNamespace = advancedModelingOptionsResult.Payload.ContextNamespace;
             Model.OutputContextPath = advancedModelingOptionsResult.Payload.OutputContextPath;
             Model.ModelNamespace = advancedModelingOptionsResult.Payload.ModelNamespace;
+            Model.UseSchemaNamespaces = advancedModelingOptionsResult.Payload.UseSchemaNamespaces;
         }
     }
 }

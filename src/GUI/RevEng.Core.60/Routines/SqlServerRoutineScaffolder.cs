@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -334,7 +334,7 @@ namespace RevEng.Core.Modules
                 Sb.AppendLine();
             }
 
-            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaFolders ? $".{schemaName}" : string.Empty)}");
+            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaNamespaces ? $".{schemaName}" : string.Empty)}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())

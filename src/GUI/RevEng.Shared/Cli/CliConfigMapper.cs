@@ -99,6 +99,7 @@ namespace RevEng.Common.Cli
             options.OutputPath = config.FileLayout.OutputPath;
             options.OutputContextPath = config.FileLayout.OutputDbContextPath;
             options.UseSchemaFolders = config.FileLayout.UseSchemaFoldersPreview;
+            options.UseSchemaNamespaces = config.FileLayout.UseSchemaNamespacesPreview;
             options.UseDbContextSplitting = config.FileLayout.SplitDbContextPreview;
 
             return options;

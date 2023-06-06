@@ -98,6 +98,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseAsyncCalls = AdvancedOptions.Instance.PreferAsyncCalls,
                 PreserveCasingWithRegex = options.PreserveCasingWithRegex,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
+                UseSchemaNamespaces = options.UseSchemaNamespaces,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

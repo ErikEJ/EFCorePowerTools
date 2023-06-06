@@ -48,7 +48,7 @@ namespace RevEng.Core.Functions
             Sb.AppendLine("using System.Linq;");
             Sb.AppendLine($"using {scaffolderOptions.ModelNamespace};");
 
-            if (scaffolderOptions.UseSchemaFolders)
+            if (scaffolderOptions.UseSchemaNamespaces)
             {
                 model.Routines.Select(r => r.Schema).Distinct().ToList().ForEach(schema => Sb.AppendLine($"using {scaffolderOptions.ModelNamespace}.{schema}"));
             }

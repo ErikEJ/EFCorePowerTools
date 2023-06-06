@@ -17,6 +17,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string OptionsPath { get; set; }
         public string OutputContextPath { get; set; }
         public bool UseSchemaFolders { get; set; }
+        public bool UseSchemaNamespaces { get; set; }
         public string ProjectRootNamespace { get; set; }
         public string ModelNamespace { get; set; }
         public string ContextNamespace { get; set; }
@@ -56,5 +57,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool InstallNuGetPackage { get; set; }
         public bool PreserveCasingWithRegex { get; set; } = true;
         public bool UseDateOnlyTimeOnly { get; set; }
+
     }
 }

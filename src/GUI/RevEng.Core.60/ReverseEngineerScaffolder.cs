@@ -107,7 +107,8 @@ namespace RevEng.Core
                     options.UseBoolPropertiesWithoutDefaultSql,
                     options.SelectedToBeGenerated == 1, // DbContext only
                     options.SelectedToBeGenerated == 2, // Entities only
-                    options.UseSchemaFolders);
+                    options.UseSchemaFolders,
+                    options.UseSchemaNamespaces);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -217,6 +218,7 @@ namespace RevEng.Core
                     NullableReferences = options.UseNullableReferences,
                     UseSchemaFolders = options.UseSchemaFolders,
                     UseAsyncCalls = options.UseAsyncCalls,
+                    UseSchemaNamespaces = options.UseSchemaNamespaces,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
@@ -310,15 +312,18 @@ namespace RevEng.Core
             return newName;
         }
 
-        private static void AppendSchemaFoldersAndNamespace(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders, IEnumerable<string> schemas)
+        private static void AppendSchemaFoldersAndNamespace(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders, bool useSchemaNamespaces, IEnumerable<string> schemas)
         {
             // Tables and views only
-            if (!useSchemaFolders)
+            if (!useSchemaFolders && !useSchemaNamespaces)
             {
                 return;
             }
 
-            scaffoldedModel.ContextFile.Code = AppendSchemaNamespace(string.Empty, scaffoldedModel.ContextFile.Code, schemas);
+            if (useSchemaNamespaces)
+            {
+                scaffoldedModel.ContextFile.Code = AppendSchemaNamespace(string.Empty, scaffoldedModel.ContextFile.Code, schemas);
+            }
 
             foreach (var entityType in scaffoldedModel.AdditionalFiles)
             {
@@ -334,15 +339,15 @@ namespace RevEng.Core
 #endif
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {
-                    entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
-                    entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas);
+                    if (useSchemaFolders) { entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension); }
+                    if (useSchemaNamespaces) { entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas); }
                 }
             }
         }
 
         private static string AppendSchemaNamespace(string entityTypeSchema, string code, IEnumerable<string> schemas)
         {
-            var nameSpaceSuffix = "Ns";
+            var nameSpaceSuffix = "Schema";
             var entityTypeSchemaWithSuffix = entityTypeSchema + nameSpaceSuffix;
             var namespaceKeyWord = "namespace ";
             var usingKeyWord = "using ";
@@ -395,7 +400,8 @@ namespace RevEng.Core
             bool removeNullableBoolDefaults,
             bool dbContextOnly,
             bool entitiesOnly,
-            bool useSchemaFolders)
+            bool useSchemaFolders,
+            bool useSchemaNamespaces)
         {
             var databaseModel = databaseModelFactory.Create(connectionString, databaseOptions);
 
@@ -442,7 +448,7 @@ namespace RevEng.Core
                 codeModel.AdditionalFiles.Clear();
             }
 
-            AppendSchemaFoldersAndNamespace(model, codeModel, useSchemaFolders, databaseModel.Tables.Select(t => t.Schema).Distinct());
+            AppendSchemaFoldersAndNamespace(model, codeModel, useSchemaFolders, useSchemaNamespaces, databaseModel.Tables.Select(t => t.Schema).Distinct());
 
             return codeModel;
         }
