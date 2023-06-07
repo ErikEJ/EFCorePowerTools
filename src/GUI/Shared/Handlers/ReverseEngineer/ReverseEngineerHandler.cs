@@ -220,8 +220,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             await VS.StatusBar.ClearAsync();
                             return;
                         }
-
-                        VerifySQLServerRightsAndVersion(options);
                     }
 
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
@@ -652,34 +650,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
-        }
-
-        private void VerifySQLServerRightsAndVersion(ReverseEngineerOptions options)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (options.DatabaseType == DatabaseType.SQLServer && string.IsNullOrEmpty(options.Dacpac)
-                && !string.IsNullOrEmpty(options.ConnectionString))
-            {
-                if (options.ConnectionString.ToLowerInvariant().Contains("active directory")
-                    || options.ConnectionString.ToLowerInvariant().Contains("activedirectory")
-                    || options.ConnectionString.ToLowerInvariant().Contains("encrypt=strict"))
-                {
-                    return;
-                }
-
-                var rightsAndVersion = reverseEngineerHelper.HasSqlServerViewDefinitionRightsAndVersion(options.ConnectionString);
-
-                if (!rightsAndVersion.Item1)
-                {
-                    VSHelper.ShowMessage(ReverseEngineerLocale.SqlServerNoViewDefinitionRights);
-                }
-
-                if (rightsAndVersion.Item2.Major < 11)
-                {
-                    VSHelper.ShowMessage(string.Format(ReverseEngineerLocale.SQLServerVersionNotSupported, rightsAndVersion.Item2));
-                }
-            }
         }
 
         private async Task ApplyNavigationRenamersAsync(Project project, string referenceRenamingPath, ReverseEngineerOptions options)
