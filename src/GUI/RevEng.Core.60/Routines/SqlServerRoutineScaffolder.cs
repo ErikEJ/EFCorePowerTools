@@ -366,16 +366,9 @@ namespace RevEng.Core.Modules
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 
-                if (property.StoreType == "decimal")
+                if (!string.IsNullOrEmpty(propertyNames.Item2))
                 {
-                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(propertyNames.Item2))
-                    {
-                        Sb.AppendLine(propertyNames.Item2);
-                    }
+                    Sb.AppendLine(propertyNames.Item2);
                 }
 
                 var propertyType = property.ClrType();
