@@ -60,33 +60,6 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public Tuple<bool, Version> HasSqlServerViewDefinitionRightsAndVersion(string connectionString)
-        {
-            var hasRights = false;
-            Version version;
-
-            connectionString = new SqlConnectionStringBuilderHelper().GetBuilder(connectionString).ConnectionString;
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand("SELECT HAS_PERMS_BY_NAME(QUOTENAME(DB_NAME()), 'DATABASE', 'VIEW DEFINITION');", connection))
-                {
-                    var result = (int)command.ExecuteScalar();
-                    hasRights = Convert.ToBoolean(result);
-                }
-
-                using (var command = new SqlCommand("SELECT SERVERPROPERTY('ProductVersion');", connection))
-                {
-                    var result = (string)command.ExecuteScalar();
-                    version = new Version(result);
-                }
-            }
-
-            return new Tuple<bool, Version>(hasRights, version);
-        }
-
         public void DropT4Templates(string projectPath)
         {
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);

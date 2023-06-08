@@ -93,7 +93,7 @@ public static class Program
     {
         displayService.Title("EF Core Power Tools");
         displayService.MarkupLine(
-            $"EF Core Power Tools CLI {PackageService.CurrentPackageVersion()} for EF Core {(int)Constants.EFCoreVersion}",
+            $"EF Core Power Tools CLI {PackageService.CurrentPackageVersion()} for EF Core {Constants.Version}",
             Color.Cyan1);
         displayService.MarkupLine("https://github.com/ErikEJ/EFCorePowerTools", Color.Blue, DisplayService.Link);
         displayService.MarkupLine();
