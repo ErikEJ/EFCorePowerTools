@@ -472,7 +472,7 @@
                 "output-dbcontext-path": "Context",
                 "split-dbcontext-preview": false,
                 "use-schema-folders-preview": false,
-                "use-schema-namespaces-preview": false,
+                "use-schema-namespaces-preview": false
             }]
         },
         "type-mappings": {
@@ -617,7 +617,7 @@
             "output-dbcontext-path": null,
             "split-dbcontext-preview": false,
             "use-schema-folders-preview": false,
-            "use-schema-namespaces-preview": false,
+            "use-schema-namespaces-preview": false
         },
         "type-mappings": {
             "use-DateOnly-TimeOnly": false,
