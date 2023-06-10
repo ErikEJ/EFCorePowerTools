@@ -339,8 +339,15 @@ namespace RevEng.Core
 #endif
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {
-                    if (useSchemaFolders) { entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension); }
-                    if (useSchemaNamespaces) { entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas); }
+                    if (useSchemaFolders)
+                    {
+                        entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
+                    }
+
+                    if (useSchemaNamespaces)
+                    {
+                        entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas);
+                    }
                 }
             }
         }
@@ -352,15 +359,19 @@ namespace RevEng.Core
             var namespaceKeyWord = "namespace ";
             var usingKeyWord = "using ";
             var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
-            var originalNameSpaceLine = codeLines.Where(l => l.StartsWith(namespaceKeyWord)).Single();
+            var originalNameSpaceLine = codeLines.Single(l => l.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
             var newNameSpaceLine = originalNameSpaceLine;
-            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";");
-            if (cSharp10NameSpaceStyle) { newNameSpaceLine = newNameSpaceLine.Substring(0, newNameSpaceLine.Length - 1); }
-            var originalLastUsing = codeLines.Where(l => l.StartsWith(usingKeyWord)).Last();
+            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";", StringComparison.Ordinal);
+            if (cSharp10NameSpaceStyle)
+            {
+                newNameSpaceLine = newNameSpaceLine.Substring(0, newNameSpaceLine.Length - 1);
+            }
+
+            var originalLastUsing = codeLines.Last(l => l.StartsWith(usingKeyWord, StringComparison.Ordinal));
             var regexStartsWithNameSpace = new Regex(Regex.Escape(namespaceKeyWord));
             var newUsings = new StringBuilder(originalLastUsing);
             newUsings.AppendLine();
-            foreach (var schema in schemas.Where(s => s != entityTypeSchemaWithSuffix))
+            foreach (var schema in schemas.Where(s => s != entityTypeSchemaWithSuffix).OrderBy(s => s))
             {
                 var newUsing = regexStartsWithNameSpace.Replace(newNameSpaceLine, usingKeyWord, 1);
                 newUsings.Append(newUsing);
@@ -371,15 +382,19 @@ namespace RevEng.Core
             }
 
             newNameSpaceLine = newNameSpaceLine + $".{entityTypeSchemaWithSuffix}";
-            if (cSharp10NameSpaceStyle) { newNameSpaceLine += ";"; }
+            if (cSharp10NameSpaceStyle)
+            {
+                newNameSpaceLine += ";";
+            }
+
             var sb = new StringBuilder();
             foreach (var codeLine in codeLines)
             {
-                if (codeLine.Equals(originalNameSpaceLine) && !string.IsNullOrEmpty(entityTypeSchema))
+                if (codeLine.Equals(originalNameSpaceLine, StringComparison.Ordinal) && !string.IsNullOrEmpty(entityTypeSchema))
                 {
                     sb.AppendLine(newNameSpaceLine);
                 }
-                else if (codeLine.Equals(originalLastUsing))
+                else if (codeLine.Equals(originalLastUsing, StringComparison.Ordinal))
                 {
                     sb.AppendLine(newUsings.ToString());
                 }

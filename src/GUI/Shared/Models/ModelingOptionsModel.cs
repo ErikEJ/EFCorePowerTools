@@ -39,7 +39,6 @@ namespace EFCorePowerTools.Common.Models
         private bool useDateOnlyTimeOnly;
         private bool useSchemaNamespaces;
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool UseDataAnnotations
