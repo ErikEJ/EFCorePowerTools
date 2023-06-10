@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -21,12 +22,12 @@ namespace RevEng.Core.Functions
             FileNameSuffix = ".Functions";
         }
 
-        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             return null;
         }
 
-        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             if (scaffolderOptions is null)
             {
@@ -50,7 +51,7 @@ namespace RevEng.Core.Functions
 
             if (scaffolderOptions.UseSchemaNamespaces)
             {
-                model.Routines.Select(r => r.Schema).Distinct().ToList().ForEach(schema => Sb.AppendLine($"using {scaffolderOptions.ModelNamespace}.{schema}"));
+                schemas.Distinct().OrderBy(s => s).ToList().ForEach(schema => Sb.AppendLine($"using {scaffolderOptions.ModelNamespace}.{schema}"));
             }
 
             if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))

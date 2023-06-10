@@ -98,10 +98,10 @@ namespace RevEng.Core
             if (options.SelectedToBeGenerated != 2)
             {
                 bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
-                procedurePaths = scaffolder.GenerateStoredProcedures(options, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
+                procedurePaths = scaffolder.GenerateStoredProcedures(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 
                 bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
-                functionPaths = scaffolder.GenerateFunctions(options, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
+                functionPaths = scaffolder.GenerateFunctions(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
 
                 if (functionPaths != null || procedurePaths != null)
                 {

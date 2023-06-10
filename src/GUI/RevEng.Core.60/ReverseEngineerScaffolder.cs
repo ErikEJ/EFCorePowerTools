@@ -118,6 +118,7 @@ namespace RevEng.Core
 
         public SavedModelFiles GenerateFunctions(
             ReverseEngineerCommandOptions options,
+            List<string> schemas,
             ref List<string> errors,
             string outputContextDir,
             string modelNamespace,
@@ -155,7 +156,7 @@ namespace RevEng.Core
                     UseAsyncCalls = options.UseAsyncCalls,
                 };
 
-                var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, ref errors);
+                var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);
 
                 if (functionScaffoldedModel != null)
                 {
@@ -172,6 +173,7 @@ namespace RevEng.Core
 
         public SavedModelFiles GenerateStoredProcedures(
             ReverseEngineerCommandOptions options,
+            List<string> schemas,
             ref List<string> errors,
             string outputContextDir,
             string modelNamespace,
@@ -221,7 +223,7 @@ namespace RevEng.Core
                     UseSchemaNamespaces = options.UseSchemaNamespaces,
                 };
 
-                var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
+                var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);
 
                 if (procedureScaffoldedModel != null)
                 {

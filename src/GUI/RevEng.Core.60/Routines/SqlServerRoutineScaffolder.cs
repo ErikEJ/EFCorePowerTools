@@ -155,7 +155,7 @@ namespace RevEng.Core.Modules
             return new SavedModelFiles(contextPath, additionalFiles);
         }
 
-        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
         {
             if (model == null)
             {
@@ -207,7 +207,7 @@ namespace RevEng.Core.Modules
                 }
             }
 
-            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model);
+            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model, schemas);
 
             if (!string.IsNullOrEmpty(dbContextInterface))
             {
@@ -218,7 +218,7 @@ namespace RevEng.Core.Modules
                 });
             }
 
-            var dbContext = WriteDbContext(scaffolderOptions, model);
+            var dbContext = WriteDbContext(scaffolderOptions, model, schemas);
 
             result.ContextFile = new ScaffoldedFile
             {
@@ -244,9 +244,9 @@ namespace RevEng.Core.Modules
             return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
         }
 
-        protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
+        protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas);
 
-        protected abstract string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
+        protected abstract string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas);
 
         private static Tuple<string, string> CreateIdentifier(string name)
         {
