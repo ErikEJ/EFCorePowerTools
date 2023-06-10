@@ -457,13 +457,22 @@
                     "examples": [
                         false
                     ]
+                },
+                "use-schema-namespaces-preview": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Use schema namespaces (preview)",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{
                 "output-path": "Models",
                 "output-dbcontext-path": "Context",
                 "split-dbcontext-preview": false,
-                "use-schema-folders-preview": false
+                "use-schema-folders-preview": false,
+				"use-schema-namespaces-preview": false,
             }]
         },
         "type-mappings": {
@@ -607,7 +616,8 @@
             "output-path": "Models",
             "output-dbcontext-path": null,
             "split-dbcontext-preview": false,
-            "use-schema-folders-preview": false
+            "use-schema-folders-preview": false,
+			"use-schema-namespaces-preview": false,
         },
         "type-mappings": {
             "use-DateOnly-TimeOnly": false,
