@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 #if CORE60ONLY
 using FirebirdSql.Data.FirebirdClient;
 #endif
@@ -8,6 +9,7 @@ using Microsoft.Data.Sqlite;
 using MySqlConnector;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
+using RevEng.Common;
 
 namespace RevEng.Core
 {
@@ -88,8 +90,18 @@ namespace RevEng.Core
                 // Ignore
             }
 #endif
-
             return aliases;
+        }
+
+        public string Redact()
+        {
+            var builder = new DbConnectionStringBuilder();
+            builder.ConnectionString = connectionString;
+            builder.Remove("Password");
+            builder.Remove("User ID");
+            builder.Remove("Username");
+
+            return builder.ToString();
         }
 #pragma warning restore CA1031
     }

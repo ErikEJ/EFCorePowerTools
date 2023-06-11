@@ -68,7 +68,7 @@ internal sealed class ScaffoldHostedService : HostedService
             scaffoldOptions.ConfigFile.FullName);
         displayService.MarkupLine();
 
-        if (commandOptions.UseT4 && (int)Constants.EFCoreVersion > 6)
+        if (commandOptions.UseT4 && Constants.Version > 6)
         {
             var t4Result = T4Helper.DropT4Templates(commandOptions.ProjectPath);
             if (!string.IsNullOrEmpty(t4Result))
@@ -94,7 +94,9 @@ internal sealed class ScaffoldHostedService : HostedService
         ShowErrors(result);
         ShowWarnings(result);
 
-        var readmePath = Providers.CreateReadme(scaffoldOptions.Provider, commandOptions, Constants.EFCoreVersion);
+        var redactedConnectionString = new ConnectionStringResolver(commandOptions.ConnectionString).Redact();
+
+        var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
         var fileUri = new Uri(new Uri("file://"), readmePath);
 
         displayService.MarkupLine(

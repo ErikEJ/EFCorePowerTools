@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using System;
@@ -84,7 +84,10 @@ namespace RevEng.Core
 
             var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
 
-            SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
+            try
+            {
+
+                SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
 
 #if CORE70
             if (options.UseT4)
@@ -103,90 +106,106 @@ namespace RevEng.Core
                 bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
                 functionPaths = scaffolder.GenerateFunctions(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
 
-                if (functionPaths != null || procedurePaths != null)
-                {
-                    var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
-                    if (procedurePaths != null)
+                    if (functionPaths != null || procedurePaths != null)
                     {
-                        var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
-                        if (index != -1)
+                        var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
+                        if (procedurePaths != null)
                         {
+                            var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
+                            if (index != -1)
+                            {
 #if CORE70
                             dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
 #else
-                            dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
+                                dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
 #endif
+                            }
                         }
-                    }
 
-                    if (functionPaths != null)
-                    {
-                        var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
-                        if (index != -1)
+                        if (functionPaths != null)
                         {
+                            var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
+                            if (index != -1)
+                            {
 #if CORE70
                             dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
 #else
-                            dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
+                                dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
 #endif
+                            }
                         }
+
+                        RetryFileWrite(filePaths.ContextFile, dbContextLines);
                     }
 
-                    RetryFileWrite(filePaths.ContextFile, dbContextLines);
+                    RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
+                    if (!options.UseHandleBars && !options.UseT4)
+                    {
+                        PostProcess(filePaths.ContextFile, options.UseNullableReferences);
+                    }
+
+                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
+                }
+                else if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                    || options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction))
+                {
+                    warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
 
-                RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
                 if (!options.UseHandleBars && !options.UseT4)
                 {
-                    PostProcess(filePaths.ContextFile, options.UseNullableReferences);
+                    foreach (var file in filePaths.AdditionalFiles)
+                    {
+                        PostProcess(file, options.UseNullableReferences);
+                    }
                 }
 
-                entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
-            }
-            else if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                || options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction))
-            {
-                warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
-            }
-
-            if (!options.UseHandleBars && !options.UseT4)
-            {
-                foreach (var file in filePaths.AdditionalFiles)
+                if (options.RunCleanup)
                 {
-                    PostProcess(file, options.UseNullableReferences);
+                    var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
+
+                    CleanUp(cleanUpPaths, entityTypeConfigurationPaths, outputDir);
                 }
+
+                var allfiles = filePaths.AdditionalFiles.ToList();
+                if (procedurePaths != null)
+                {
+                    allfiles.AddRange(procedurePaths.AdditionalFiles);
+                    allfiles.Add(procedurePaths.ContextFile);
+                }
+
+                if (functionPaths != null)
+                {
+                    allfiles.AddRange(functionPaths.AdditionalFiles);
+                    allfiles.Add(functionPaths.ContextFile);
+                }
+
+                var result = new ReverseEngineerResult
+                {
+                    EntityErrors = errors,
+                    EntityWarnings = warnings,
+                    EntityTypeFilePaths = allfiles,
+                    ContextFilePath = filePaths.ContextFile,
+                    ContextConfigurationFilePaths = entityTypeConfigurationPaths,
+                };
+
+                return result;
             }
-
-            if (options.RunCleanup)
+            catch (Exception ex)
             {
-                var cleanUpPaths = CreateCleanupPaths(procedurePaths, functionPaths, filePaths);
+                errors.Add(ex.Message);
 
-                CleanUp(cleanUpPaths, entityTypeConfigurationPaths, outputDir);
+                var result = new ReverseEngineerResult
+                {
+                    EntityErrors = errors,
+                    EntityWarnings = warnings,
+                    EntityTypeFilePaths = Array.Empty<string>(),
+                    ContextFilePath = string.Empty,
+                    ContextConfigurationFilePaths = Array.Empty<string>(),
+                };
+
+                return result;
             }
-
-            var allfiles = filePaths.AdditionalFiles.ToList();
-            if (procedurePaths != null)
-            {
-                allfiles.AddRange(procedurePaths.AdditionalFiles);
-                allfiles.Add(procedurePaths.ContextFile);
-            }
-
-            if (functionPaths != null)
-            {
-                allfiles.AddRange(functionPaths.AdditionalFiles);
-                allfiles.Add(functionPaths.ContextFile);
-            }
-
-            var result = new ReverseEngineerResult
-            {
-                EntityErrors = errors,
-                EntityWarnings = warnings,
-                EntityTypeFilePaths = allfiles,
-                ContextFilePath = filePaths.ContextFile,
-                ContextConfigurationFilePaths = entityTypeConfigurationPaths,
-            };
-
-            return result;
         }
 
         public static void RetryFileWrite(string path, List<string> finalLines)

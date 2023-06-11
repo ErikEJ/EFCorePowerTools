@@ -4,7 +4,9 @@ Cross platform command line tool for advanced EF Core reverse engineering. See t
 
 ## Getting started
 
-The tool runs on any operating system with the .NET 6.0 runtime installed.
+The tool runs on any operating system with the .NET 6.0 runtime installed. 
+
+For a quick intro you can watch [this 2 minute demo video](https://www.youtube.com/watch?v=mtz-O6VXAc0&t=56s).
 
 ### Installing the tool
 

@@ -43,3 +43,4 @@ goto end
 echo Build error
 
 :end
+pause

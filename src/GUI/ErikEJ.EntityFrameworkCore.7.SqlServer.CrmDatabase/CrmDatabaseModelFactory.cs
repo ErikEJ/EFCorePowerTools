@@ -599,7 +599,7 @@ AND "
 WHERE "
             + viewFilter;
 
-        command.CommandText = SupportsViewsAndIndexes() ? commandText + viewCommandText : commandText;
+        command.CommandText = SupportsViews() ? commandText + viewCommandText : commandText;
 
         using (var reader = command.ExecuteReader())
         {
@@ -654,13 +654,17 @@ WHERE "
         // This is done separately due to MARS property may be turned off
         GetColumns(connection, tables, filter, viewFilter, typeAliases, databaseCollation);
 
-        if (SupportsViewsAndIndexes())
+        if (SupportsIndexes())
         {
             GetIndexes(connection, tables, filter);
         }
 
         GetForeignKeys(connection, tables, filter);
-        GetTriggers(connection, tables, filter);
+
+        if (SupportsTriggers())
+        {
+            GetTriggers(connection, tables, filter);
+        }
 
         foreach (var table in tables)
         {
@@ -698,7 +702,7 @@ SELECT
     [c].[is_sparse]
 FROM
 (";
-        if (SupportsViewsAndIndexes())
+        if (SupportsViews())
         {
             commandText += @"
     SELECT[v].[name], [v].[object_id], [v].[schema_id]
@@ -1363,8 +1367,14 @@ ORDER BY [table_schema], [table_name], [tr].[name]";
     private bool SupportsSequences()
         => _compatibilityLevel >= 110 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
 
-    private bool SupportsViewsAndIndexes()
+    private bool SupportsIndexes()
         => _engineEdition != 1000;
+
+    private bool SupportsViews()
+        => _engineEdition != 1000;
+
+    private bool SupportsTriggers()
+        => _engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000;
 
     private static string DisplayName(string? schema, string name)
         => (!string.IsNullOrEmpty(schema) ? schema + "." : "") + name;

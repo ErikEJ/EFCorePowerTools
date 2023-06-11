@@ -145,7 +145,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             int ordinal = 0;
-            foreach (var column in metaProc.Selects.FirstOrDefault()?.Columns)
+            foreach (var column in metaProc.Selects.First().Columns)
             {
                 result.Add(new ModuleResultElement
                 {
