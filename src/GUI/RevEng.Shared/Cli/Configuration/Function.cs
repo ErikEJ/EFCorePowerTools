@@ -2,7 +2,9 @@
 
 namespace RevEng.Common.Cli.Configuration
 {
+#pragma warning disable CA1716 // Identifiers should not match keywords
     public class Function : IEntity
+#pragma warning restore CA1716 // Identifiers should not match keywords
     {
         [JsonPropertyName("name")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

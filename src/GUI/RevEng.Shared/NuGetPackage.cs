@@ -9,6 +9,8 @@ namespace RevEng.Common
         public string UseMethodName { get; set; }
         public bool Installed { get; set; }
         public bool IsMainProviderPackage { get; set; }
-        public List<DatabaseType> DatabaseTypes { get; set; }
+#pragma warning disable CA2227 // Collection properties should be read only
+        public IList<DatabaseType> DatabaseTypes { get; set; }
+#pragma warning restore CA2227 // Collection properties should be read only
     }
 }
