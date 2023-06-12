@@ -47,7 +47,7 @@ namespace RevEng.Core.Procedures
             return files;
         }
 
-        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             if (scaffolderOptions is null)
             {
@@ -63,7 +63,7 @@ namespace RevEng.Core.Procedures
 
             Sb.AppendLine(PathHelper.Header);
 
-            var usings = CreateUsings(scaffolderOptions, model);
+            var usings = CreateUsings(scaffolderOptions, model, schemas);
 
             foreach (var statement in usings)
             {
@@ -157,7 +157,7 @@ namespace RevEng.Core.Procedures
             return Sb.ToString();
         }
 
-        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             if (scaffolderOptions is null)
             {
@@ -173,7 +173,7 @@ namespace RevEng.Core.Procedures
 
             Sb.AppendLine(PathHelper.Header);
 
-            var usings = CreateUsings(scaffolderOptions, model);
+            var usings = CreateUsings(scaffolderOptions, model, schemas);
 
             foreach (var statement in usings)
             {
@@ -219,7 +219,7 @@ namespace RevEng.Core.Procedures
             return reader.ReadToEnd();
         }
 
-        private static List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model)
+        private static List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             var usings = new List<string>()
             {
@@ -232,6 +232,11 @@ namespace RevEng.Core.Procedures
                 "using System.Threading.Tasks",
                 $"using {scaffolderOptions.ModelNamespace}",
             };
+
+            if (scaffolderOptions.UseSchemaNamespaces)
+            {
+                schemas.Distinct().OrderBy(s => s).ToList().ForEach(schema => usings.Add($"using {scaffolderOptions.ModelNamespace}.{schema}"));
+            }
 
             if (model.Routines.Any(r => r.SupportsMultipleResultSet))
             {

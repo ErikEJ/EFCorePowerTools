@@ -17,5 +17,9 @@ namespace RevEng.Common.Cli.Configuration
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("use-schema-folders-preview")]
         public bool UseSchemaFoldersPreview { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("use-schema-namespaces-preview")]
+        public bool UseSchemaNamespacesPreview { get; set; }
     }
 }

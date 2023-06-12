@@ -109,7 +109,7 @@ namespace RevEng.Core.Modules
             "while",
         };
 
-        protected SqlServerRoutineScaffolder([NotNull] ICSharpHelper code)
+        protected SqlServerRoutineScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
         {
             if (code == null)
             {
@@ -155,7 +155,7 @@ namespace RevEng.Core.Modules
             return new SavedModelFiles(contextPath, additionalFiles);
         }
 
-        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
         {
             if (model == null)
             {
@@ -195,7 +195,7 @@ namespace RevEng.Core.Modules
 
                     var typeName = GenerateIdentifierName(routine, model) + "Result" + suffix;
 
-                    var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName);
+                    var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
 
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
@@ -207,7 +207,7 @@ namespace RevEng.Core.Modules
                 }
             }
 
-            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model);
+            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model, schemas);
 
             if (!string.IsNullOrEmpty(dbContextInterface))
             {
@@ -218,7 +218,7 @@ namespace RevEng.Core.Modules
                 });
             }
 
-            var dbContext = WriteDbContext(scaffolderOptions, model);
+            var dbContext = WriteDbContext(scaffolderOptions, model, schemas);
 
             result.ContextFile = new ScaffoldedFile
             {
@@ -244,9 +244,9 @@ namespace RevEng.Core.Modules
             return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
         }
 
-        protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
+        protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas);
 
-        protected abstract string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model);
+        protected abstract string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas);
 
         private static Tuple<string, string> CreateIdentifier(string name)
         {
@@ -310,7 +310,7 @@ namespace RevEng.Core.Modules
             return CreateIdentifier(propertyName);
         }
 
-        private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name)
+        private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name, string schemaName)
         {
             var @namespace = options.ModelNamespace;
 
@@ -334,7 +334,7 @@ namespace RevEng.Core.Modules
                 Sb.AppendLine();
             }
 
-            Sb.AppendLine($"namespace {@namespace}");
+            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaNamespaces ? $".{schemaName}" : string.Empty)}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())

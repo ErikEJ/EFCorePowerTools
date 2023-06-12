@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using System;
@@ -98,13 +98,13 @@ namespace RevEng.Core
                 }
             }
 #endif
-                if (options.SelectedToBeGenerated != 2)
-                {
-                    bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
-                    procedurePaths = scaffolder.GenerateStoredProcedures(options, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
+            if (options.SelectedToBeGenerated != 2)
+            {
+                bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
+                procedurePaths = scaffolder.GenerateStoredProcedures(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 
-                    bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
-                    functionPaths = scaffolder.GenerateFunctions(options, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
+                bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
+                functionPaths = scaffolder.GenerateFunctions(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
 
                     if (functionPaths != null || procedurePaths != null)
                     {

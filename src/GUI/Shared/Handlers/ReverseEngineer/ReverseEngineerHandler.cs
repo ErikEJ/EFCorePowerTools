@@ -511,6 +511,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
+                UseSchemaNamespaces = options.UseSchemaNamespaces,
             };
 
             var modelDialog = package.GetView<IModelingOptionsDialog>()
@@ -555,6 +556,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
             options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
             options.UseDateOnlyTimeOnly = modelingOptionsResult.Payload.UseDateOnlyTimeOnly;
+            options.UseSchemaNamespaces = modelingOptionsResult.Payload.UseSchemaNamespaces;
 
             return true;
         }

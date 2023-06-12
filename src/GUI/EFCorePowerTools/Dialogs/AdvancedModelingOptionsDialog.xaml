@@ -13,7 +13,7 @@
                  ResizeMode="NoResize"
                  SizeToContent="WidthAndHeight"
                  WindowStartupLocation="CenterOwner"
-                 mc:Ignorable="d" Height="600">
+                 mc:Ignorable="d" Height="615">
 
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
@@ -91,9 +91,13 @@
                       IsChecked="{Binding Model.UseSchemaFolders}"
                       Style="{StaticResource MarginCheckBlockStyle}"
                       TabIndex="11" />
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaNamespaces}"
+                        IsChecked="{Binding Model.UseSchemaNamespaces}"
+                        Style="{StaticResource MarginCheckBlockStyle}"
+                        TabIndex="11" />
                     <dw:LiveTextBlock 
                           Text="{x:Static locale:ReverseEngineerLocale.EntityTypesSubNamespace}"/>
-                        <TextBox Grid.Row="7"
+                    <TextBox Grid.Row="7"
                          TabIndex="12"
                          Style="{StaticResource TextInputStyle}"
                          Text="{Binding Model.ModelNamespace, Mode=TwoWay}"/>
@@ -111,7 +115,7 @@
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
                 </StackPanel>
-                
+
             </GroupBox>
 
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.Mapping}">
@@ -127,7 +131,7 @@
                           IsChecked="{Binding Model.MapHierarchyId}"
                           Style="{StaticResource MarginCheckBlockStyle}"
                           TabIndex="21" />
-                    
+
                     <CheckBox Content="Map DateOnly and TimeOnly"
                           x:Name="chkDateAndTime"                                
                           IsChecked="{Binding Model.UseDateOnlyTimeOnly}"
