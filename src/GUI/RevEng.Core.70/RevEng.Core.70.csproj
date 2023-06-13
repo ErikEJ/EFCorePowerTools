@@ -26,7 +26,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
-    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="7.0.0-beta1" />
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="7.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="7.0.0" />
     <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
     <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="7.0.4" />
