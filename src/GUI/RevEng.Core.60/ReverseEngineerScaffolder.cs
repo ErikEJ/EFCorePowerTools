@@ -107,7 +107,8 @@ namespace RevEng.Core
                     options.UseBoolPropertiesWithoutDefaultSql,
                     options.SelectedToBeGenerated == 1, // DbContext only
                     options.SelectedToBeGenerated == 2, // Entities only
-                    options.UseSchemaFolders);
+                    options.UseSchemaFolders,
+                    options.UseSchemaNamespaces);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -117,6 +118,7 @@ namespace RevEng.Core
 
         public SavedModelFiles GenerateFunctions(
             ReverseEngineerCommandOptions options,
+            List<string> schemas,
             ref List<string> errors,
             string outputContextDir,
             string modelNamespace,
@@ -154,7 +156,7 @@ namespace RevEng.Core
                     UseAsyncCalls = options.UseAsyncCalls,
                 };
 
-                var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, ref errors);
+                var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);
 
                 if (functionScaffoldedModel != null)
                 {
@@ -171,6 +173,7 @@ namespace RevEng.Core
 
         public SavedModelFiles GenerateStoredProcedures(
             ReverseEngineerCommandOptions options,
+            List<string> schemas,
             ref List<string> errors,
             string outputContextDir,
             string modelNamespace,
@@ -217,9 +220,10 @@ namespace RevEng.Core
                     NullableReferences = options.UseNullableReferences,
                     UseSchemaFolders = options.UseSchemaFolders,
                     UseAsyncCalls = options.UseAsyncCalls,
+                    UseSchemaNamespaces = options.UseSchemaNamespaces,
                 };
 
-                var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, ref errors);
+                var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);
 
                 if (procedureScaffoldedModel != null)
                 {
@@ -310,12 +314,17 @@ namespace RevEng.Core
             return newName;
         }
 
-        private static void AppendSchemaFolders(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders)
+        private static void AppendSchemaFoldersAndNamespace(IModel databaseModel, ScaffoldedModel scaffoldedModel, bool useSchemaFolders, bool useSchemaNamespaces, IEnumerable<string> schemas)
         {
             // Tables and views only
-            if (!useSchemaFolders)
+            if (!useSchemaFolders && !useSchemaNamespaces)
             {
                 return;
+            }
+
+            if (useSchemaNamespaces)
+            {
+                scaffoldedModel.ContextFile.Code = AppendSchemaNamespace(string.Empty, scaffoldedModel.ContextFile.Code, schemas);
             }
 
             foreach (var entityType in scaffoldedModel.AdditionalFiles)
@@ -332,9 +341,72 @@ namespace RevEng.Core
 #endif
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {
-                    entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
+                    if (useSchemaFolders)
+                    {
+                        entityType.Path = Path.Combine(entityTypeSchema, entityTypeName + entityTypeExtension);
+                    }
+
+                    if (useSchemaNamespaces)
+                    {
+                        entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas);
+                    }
                 }
             }
+        }
+
+        private static string AppendSchemaNamespace(string entityTypeSchema, string code, IEnumerable<string> schemas)
+        {
+            var nameSpaceSuffix = "Schema";
+            var entityTypeSchemaWithSuffix = entityTypeSchema + nameSpaceSuffix;
+            var namespaceKeyWord = "namespace ";
+            var usingKeyWord = "using ";
+            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var originalNameSpaceLine = codeLines.Single(l => l.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
+            var newNameSpaceLine = originalNameSpaceLine;
+            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";", StringComparison.Ordinal);
+            if (cSharp10NameSpaceStyle)
+            {
+                newNameSpaceLine = newNameSpaceLine.Substring(0, newNameSpaceLine.Length - 1);
+            }
+
+            var originalLastUsing = codeLines.Last(l => l.StartsWith(usingKeyWord, StringComparison.Ordinal));
+            var regexStartsWithNameSpace = new Regex(Regex.Escape(namespaceKeyWord));
+            var newUsings = new StringBuilder(originalLastUsing);
+            newUsings.AppendLine();
+            foreach (var schema in schemas.Where(s => s != entityTypeSchemaWithSuffix).OrderBy(s => s))
+            {
+                var newUsing = regexStartsWithNameSpace.Replace(newNameSpaceLine, usingKeyWord, 1);
+                newUsings.Append(newUsing);
+                newUsings.Append('.');
+                newUsings.Append(schema);
+                newUsings.Append(nameSpaceSuffix);
+                newUsings.AppendLine(";");
+            }
+
+            newNameSpaceLine = newNameSpaceLine + $".{entityTypeSchemaWithSuffix}";
+            if (cSharp10NameSpaceStyle)
+            {
+                newNameSpaceLine += ";";
+            }
+
+            var sb = new StringBuilder();
+            foreach (var codeLine in codeLines)
+            {
+                if (codeLine.Equals(originalNameSpaceLine, StringComparison.Ordinal) && !string.IsNullOrEmpty(entityTypeSchema))
+                {
+                    sb.AppendLine(newNameSpaceLine);
+                }
+                else if (codeLine.Equals(originalLastUsing, StringComparison.Ordinal))
+                {
+                    sb.AppendLine(newUsings.ToString());
+                }
+                else
+                {
+                    sb.AppendLine(codeLine);
+                }
+            }
+
+            return sb.ToString();
         }
 
         private ScaffoldedModel ScaffoldModel(
@@ -345,7 +417,8 @@ namespace RevEng.Core
             bool removeNullableBoolDefaults,
             bool dbContextOnly,
             bool entitiesOnly,
-            bool useSchemaFolders)
+            bool useSchemaFolders,
+            bool useSchemaNamespaces)
         {
             var databaseModel = databaseModelFactory.Create(connectionString, databaseOptions);
 
@@ -392,7 +465,7 @@ namespace RevEng.Core
                 codeModel.AdditionalFiles.Clear();
             }
 
-            AppendSchemaFolders(model, codeModel, useSchemaFolders);
+            AppendSchemaFoldersAndNamespace(model, codeModel, useSchemaFolders, useSchemaNamespaces, databaseModel.Tables.Select(t => t.Schema).Distinct());
 
             return codeModel;
         }

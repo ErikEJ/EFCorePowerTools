@@ -25,13 +25,14 @@ namespace RevEng.Core
         }
 
 #pragma warning disable CA1031
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "Part of logic")]
         public IList<string> ResolveAlias()
         {
             var aliases = new List<string>();
 
             try
             {
-                var _ = new SqlConnectionStringBuilder(connectionString);
+                var a = new SqlConnectionStringBuilder(connectionString);
                 aliases.Add("mssql");
             }
             catch
@@ -41,7 +42,7 @@ namespace RevEng.Core
 
             try
             {
-                var _ = new NpgsqlConnectionStringBuilder(connectionString);
+                var a = new NpgsqlConnectionStringBuilder(connectionString);
                 aliases.Add("postgres");
             }
             catch
@@ -51,7 +52,7 @@ namespace RevEng.Core
 
             try
             {
-                var _ = new SqliteConnectionStringBuilder(connectionString);
+                var a = new SqliteConnectionStringBuilder(connectionString);
                 aliases.Add("sqlite");
             }
             catch
@@ -61,7 +62,7 @@ namespace RevEng.Core
 
             try
             {
-                var _ = new MySqlConnectionStringBuilder(connectionString);
+                var a = new MySqlConnectionStringBuilder(connectionString);
                 aliases.Add("mysql");
             }
             catch
@@ -71,7 +72,7 @@ namespace RevEng.Core
 
             try
             {
-                var _ = new OracleConnectionStringBuilder(connectionString);
+                var a = new OracleConnectionStringBuilder(connectionString);
                 aliases.Add("oracle");
             }
             catch
@@ -82,7 +83,7 @@ namespace RevEng.Core
 #if CORE60ONLY
             try
             {
-                var _ = new FbConnectionStringBuilder(connectionString);
+                var a = new FbConnectionStringBuilder(connectionString);
                 aliases.Add("oracle");
             }
             catch

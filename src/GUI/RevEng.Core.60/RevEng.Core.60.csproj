@@ -1,50 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<NoWarn>$(NoWarn);EF1001</NoWarn>
-		<RootNamespace>RevEng.Core</RootNamespace>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <RootNamespace>RevEng.Core</RootNamespace>
     <Nullable>warnings</Nullable>
   </PropertyGroup>
 
-	<PropertyGroup>
-		<DefineConstants>TRACE;CORE60;CORE60ONLY</DefineConstants>
-	</PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>TRACE;CORE60;CORE60ONLY</DefineConstants>
+  </PropertyGroup>
 
-	<ItemGroup>
-	  <Compile Remove="SharedTypeExtensions.cs" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="SharedTypeExtensions.cs" />
+  </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="DbContextExtensions" />
     <EmbeddedResource Include="DbContextExtensions.Sync" />
-	</ItemGroup>
+  </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
-		<PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="6.0.3" />
-		<PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0" />
-		<PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="3.0.1" />
-		<PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="6.0.2" />
-		<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.1.1" />
-		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.16" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.16" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.8" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.8" />
-		<PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.90" />
-		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="6.0.2" />
-		<PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="6.0.1" />
-		<PackageReference Include="System.CodeDom" Version="6.0.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="6.0.3" />
+    <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="6.0.0" />
+    <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="3.0.1" />
+    <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="6.0.5" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.1.1" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.16" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="6.0.8" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="6.0.8" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.90" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="6.0.2" />
+    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="6.0.1" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
-		<ProjectReference Include="..\ErikEJ.EntityFramworkCore.SqlServer.CrmDataModelfactory\ErikEJ.EntityFrameworkCore.6.SqlServer.CrmDatabase.csproj" />
-		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
-		<ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\ErikEJ.EntityFramworkCore.SqlServer.CrmDataModelfactory\ErikEJ.EntityFrameworkCore.6.SqlServer.CrmDatabase.csproj" />
+    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -37,6 +37,7 @@ namespace EFCorePowerTools.Common.Models
         private bool useNoObjectFilter;
         private bool useManyToManyEntity;
         private bool useDateOnlyTimeOnly;
+        private bool useSchemaNamespaces;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -111,6 +112,21 @@ namespace EFCorePowerTools.Common.Models
                 }
 
                 useSchemaFolders = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseSchemaNamespaces
+        {
+            get => useSchemaNamespaces;
+            set
+            {
+                if (value == useSchemaNamespaces)
+                {
+                    return;
+                }
+
+                useSchemaNamespaces = value;
                 OnPropertyChanged();
             }
         }

@@ -13,7 +13,7 @@ namespace RevEng.Core.Procedures
             throw new NotSupportedException();
         }
 
-        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, ref List<string> errors)
+        public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
         {
             throw new NotSupportedException();
         }
