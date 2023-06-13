@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Handlers.ReverseEngineer;
@@ -14,6 +15,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Common;
 using RevEng.Common.Cli;
+using VSLangProj150;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -213,36 +215,32 @@ namespace EFCorePowerTools.Extensions
             return project.IsCapabilityMatch("CSharp & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
-        public static async Task<bool> IsLegacyAsync(this Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            return await IsNetFrameworkAsync(project) || await IsNetStandard20Async(project);
-        }
-
         public static async Task<bool> IsNet60OrHigherIncluding70Async(this Project project)
         {
-            return await IsNet60Async(project) || await IsNet70Async(project);
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet60(targetFrameworkMonikers) || IsNet70(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNet60OrHigherAsync(this Project project)
         {
-            return await IsNet60Async(project) || await IsNet70Async(project) || await IsNet80Async(project);
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet60(targetFrameworkMonikers) || IsNet70(targetFrameworkMonikers) || IsNet80(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNet70OnlyAsync(this Project project)
         {
-            return await IsNet70Async(project);
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet70(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNetStandardAsync(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.") ?? false;
-        }
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
-        public static async Task<bool> IsNetStandard21Async(this Project project)
-        {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.1") ?? false;
+            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.") ?? false;
         }
 
         public static async Task<bool> IsInstalledAsync(this Project project, NuGetPackage package)
@@ -301,6 +299,44 @@ namespace EFCorePowerTools.Extensions
             return list;
         }
 
+        private static async Task<string> GetTargetFrameworkMonikersAsync(Project project)
+        {
+            string result = null;
+
+            project.GetItemInfo(out IVsHierarchy hierarchy, out uint itemId, out _);
+
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var vsProject = (IVsProject)hierarchy;
+
+            if (vsProject != null)
+            {
+                var props = vsProject.ToProject().Properties;
+                result = props.Item("TargetFrameworkMonikers")?.Value?.ToString();
+            }
+
+            if (string.IsNullOrEmpty(result))
+            {
+                result = await project.GetAttributeAsync("TargetFrameworkMoniker");
+            }
+
+            return result;
+        }
+
+        private static EnvDTE.Project ToProject(this IVsProject vsProject)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var vsHierarchy = (IVsHierarchy)vsProject;
+            var hr = vsHierarchy.GetProperty(
+                (uint)VSConstants.VSITEMID.Root,
+                (int)__VSHPROPID.VSHPROPID_ExtObject,
+                out var project);
+            Marshal.ThrowExceptionForHR(hr);
+
+            return (EnvDTE.Project)project;
+        }
+
         private static async Task IsInstalledAsync(Project project, List<NuGetPackage> packages)
         {
             var projectAssetsFile = await project.GetAttributeAsync("ProjectAssetsFile");
@@ -356,31 +392,33 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
-        private static async Task<bool> IsNetFrameworkAsync(this Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETFramework,") ?? false;
-        }
-
         private static async Task<bool> IsNetStandard20Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETStandard,Version=v2.0") ?? false;
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.0") ?? false;
         }
 
-        private static async Task<bool> IsNet60Async(this Project project)
+        private static async Task<bool> IsNetStandard21Async(this Project project)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v6.0") ?? false;
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.1") ?? false;
         }
 
-        private static async Task<bool> IsNet70Async(this Project project)
+        private static bool IsNet60(string targetFrameworkMonikers)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v6.0") ?? false;
         }
 
-        private static async Task<bool> IsNet80Async(this Project project)
+        private static bool IsNet70(string targetFrameworkMonikers)
         {
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETCoreApp,Version=v8.0") ?? false;
+            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+        }
+
+        private static bool IsNet80(string targetFrameworkMonikers)
+        {
+            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v8.0") ?? false;
         }
 
         private static async Task<string> GetOutputPathAsync(Project project)

@@ -159,11 +159,11 @@ namespace RevEng.Common.Cli
 
                 if (useDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.3";
+                    pkgVersion = "7.0.5";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.3";
+                            pkgVersion = "6.0.5";
                             break;
                     }
 

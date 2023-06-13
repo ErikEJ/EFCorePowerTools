@@ -86,25 +86,24 @@ namespace RevEng.Core
 
             try
             {
-
                 SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
 
 #if CORE70
-            if (options.UseT4)
-            {
-                foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
+                if (options.UseT4)
                 {
-                    scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
+                    foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
+                    {
+                        scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
+                    }
                 }
-            }
 #endif
-            if (options.SelectedToBeGenerated != 2)
-            {
-                bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
-                procedurePaths = scaffolder.GenerateStoredProcedures(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
+                if (options.SelectedToBeGenerated != 2)
+                {
+                    bool supportsRoutines = options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer;
+                    procedurePaths = scaffolder.GenerateStoredProcedures(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsRoutines);
 
-                bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
-                functionPaths = scaffolder.GenerateFunctions(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
+                    bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
+                    functionPaths = scaffolder.GenerateFunctions(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
 
                     if (functionPaths != null || procedurePaths != null)
                     {
@@ -115,7 +114,7 @@ namespace RevEng.Core
                             if (index != -1)
                             {
 #if CORE70
-                            dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
+                                dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
 #endif
@@ -128,7 +127,7 @@ namespace RevEng.Core
                             if (index != -1)
                             {
 #if CORE70
-                            dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
+                                dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
 #endif
@@ -191,6 +190,7 @@ namespace RevEng.Core
 
                 return result;
             }
+#pragma warning disable CA1031
             catch (Exception ex)
             {
                 errors.Add(ex.Message);
@@ -206,6 +206,7 @@ namespace RevEng.Core
 
                 return result;
             }
+#pragma warning restore CA1031
         }
 
         public static void RetryFileWrite(string path, List<string> finalLines)
