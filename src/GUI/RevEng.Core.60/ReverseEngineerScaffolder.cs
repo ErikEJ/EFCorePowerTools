@@ -322,11 +322,7 @@ namespace RevEng.Core
                 return;
             }
 
-            if (useSchemaNamespaces)
-            {
-                scaffoldedModel.ContextFile.Code = AppendSchemaNamespace(string.Empty, scaffoldedModel.ContextFile.Code, schemas);
-            }
-
+            HashSet<string> codeFileNamespaces = null;
             foreach (var entityType in scaffoldedModel.AdditionalFiles)
             {
                 var entityTypeName = Path.GetFileNameWithoutExtension(entityType.Path);
@@ -348,13 +344,58 @@ namespace RevEng.Core
 
                     if (useSchemaNamespaces)
                     {
-                        entityType.Code = AppendSchemaNamespace(entityTypeSchema, entityType.Code, schemas);
+                        entityType.Code = AppendSchemaNamespaceToModel(entityTypeSchema, entityType.Code, schemas);
+                        codeFileNamespaces ??= new HashSet<string>();
+                        var fileNamespace = GetFileNamespace(entityType.Code);
+                        codeFileNamespaces.Add(fileNamespace);
                     }
                 }
             }
+
+            if (useSchemaNamespaces)
+            {
+                scaffoldedModel.ContextFile.Code = AppendSchemaNamespaceToDbcontext(scaffoldedModel.ContextFile.Code, codeFileNamespaces);
+            }
         }
 
-        private static string AppendSchemaNamespace(string entityTypeSchema, string code, IEnumerable<string> schemas)
+        private static string GetFileNamespace(string code)
+        {
+            var namespaceKeyWord = "namespace ";
+            var fileNamespace = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None)
+                                 .First(lc => lc.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
+            return fileNamespace.Substring(namespaceKeyWord.Length);
+        }
+
+        private static string AppendSchemaNamespaceToDbcontext(string code, HashSet<string> codeFileNamespaces)
+        {
+            var usingKeyWord = "using ";
+            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var originalLastUsing = codeLines.Last(l => l.StartsWith(usingKeyWord, StringComparison.Ordinal));
+
+            var sb = new StringBuilder();
+            foreach (var codeLine in codeLines)
+            {
+                if (codeLine.Equals(originalLastUsing, StringComparison.Ordinal))
+                {
+                    sb.AppendLine(originalLastUsing);
+
+                    foreach (var codeFileNamespace in codeFileNamespaces)
+                    {
+                        sb.Append(usingKeyWord);
+                        sb.Append(codeFileNamespace);
+                        sb.AppendLine(";");
+                    }
+                }
+                else
+                {
+                    sb.AppendLine(codeLine);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private static string AppendSchemaNamespaceToModel(string entityTypeSchema, string code, IEnumerable<string> schemas)
         {
             var nameSpaceSuffix = "Schema";
             var entityTypeSchemaWithSuffix = entityTypeSchema + nameSpaceSuffix;
