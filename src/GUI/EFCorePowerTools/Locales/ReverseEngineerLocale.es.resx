@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Añadir...</value>
+  </data>
+  <data name="AddAdhocConnection" xml:space="preserve">
+    <value>Agregar conexión personalizada</value>
+  </data>
+  <data name="AddAdhocDatabaseConnection" xml:space="preserve">
+    <value>Agregar conexión personalizada</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>Agregar conexión definida manualmente</value>
+  </data>
+  <data name="AddDatabaseConnection" xml:space="preserve">
+    <value>Agregar conexión de base de datos</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>Agregar conexión del Explorador de Servidores (DDEX)</value>
+  </data>
+  <data name="AddExternalDacPac" xml:space="preserve">
+    <value>Agregar archivo .dacpac</value>
+  </data>
+  <data name="AddSchemasToFilter" xml:space="preserve">
+    <value>Agregar esquemas para filtrar</value>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>Avanzado...</value>
+  </data>
+  <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
+    <value>Incluir siempre todos los objetos de base de datos</value>
+  </data>
+  <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
+    <value>No se puede generar código durante la depuración</value>
+  </data>
+  <data name="CannotUncheckPrimaryKey" xml:space="preserve">
+    <value>Esta columna forma parte de la clave principal y no se puede desmarcar si la tabla está seleccionada.</value>
+  </data>
+  <data name="CheckOutputWindowForErrors" xml:space="preserve">
+    <value>Consulte la ventana de salida «Extensiones» para comprobar si hay problemas</value>
+  </data>
+  <data name="CheckOutputWindowForWarnings" xml:space="preserve">
+    <value>Consulte la ventana de salida «Extensiones» para comprobar las advertencias</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Elija el archivo de configuración</value>
+  </data>
+  <data name="ChooseDatabaseConnection" xml:space="preserve">
+    <value>Elija la conexión de datos</value>
+  </data>
+  <data name="ChooseDatabaseObjects" xml:space="preserve">
+    <value>Elija los objetos de base de datos</value>
+  </data>
+  <data name="ChooseSchemas" xml:space="preserve">
+    <value>Elija sus esquemas</value>
+  </data>
+  <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
+    <value>Elegir el proyecto de base de datos de SQL Server</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>Generación de código</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="ConnectionSample" xml:space="preserve">
+    <value>Ejemplo</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Cadena de conexión</value>
+  </data>
+  <data name="ContextName" xml:space="preserve">
+    <value>Nombre del contexto</value>
+  </data>
+  <data name="ContextNameRequired" xml:space="preserve">
+    <value>El nombre de contexto es obligatorio</value>
+  </data>
+  <data name="CustomizeUsingHandlebars" xml:space="preserve">
+    <value>Personalizar código mediante plantillas</value>
+  </data>
+  <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
+    <value>No se encontró la conexión de base de datos, no se puede actualizar</value>
+  </data>
+  <data name="DbContextOnly" xml:space="preserve">
+    <value>Sólo DbContext</value>
+  </data>
+  <data name="DbContextPath" xml:space="preserve">
+    <value>Ruta de acceso al DbContext (por ejemplo, Datos) - opcional</value>
+  </data>
+  <data name="DbContextSubNamespace" xml:space="preserve">
+    <value>Subespacio de nombres DbContext (reemplaza la ruta) - opcional</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>Instale DDEX Provider para una mejor experiencia</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>Elija la versión de EF Core</value>
+  </data>
+  <data name="EntityTypesAndContext" xml:space="preserve">
+    <value>EntityTypes y DbContext</value>
+  </data>
+  <data name="EntityTypesOnly" xml:space="preserve">
+    <value>Sólo EntityTypes</value>
+  </data>
+  <data name="EntityTypesPath" xml:space="preserve">
+    <value>Ruta de acceso EntityTypes (por ejemplo, Modelos) - opcional</value>
+  </data>
+  <data name="EntityTypesSubNamespace" xml:space="preserve">
+    <value>Subespacio de nombres EntityTypes (sobrescribe la ruta de acceso) - opcional</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>Archivo de diseño</value>
+  </data>
+  <data name="FilterSchemas" xml:space="preserve">
+    <value>Filtrar esquemas</value>
+  </data>
+  <data name="Functions" xml:space="preserve">
+    <value>Funciones</value>
+  </data>
+  <data name="GenerateEFCoreModelInProject" xml:space="preserve">
+    <value>Elija la configuración del proyecto {0}</value>
+  </data>
+  <data name="GeneratingCode" xml:space="preserve">
+    <value>Generando código...</value>
+  </data>
+  <data name="GettingReadyToConnect" xml:space="preserve">
+    <value>Preparándose para conectarse...</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ayuda</value>
+  </data>
+  <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
+    <value>Incluir cadena de conexión en el código generado</value>
+  </data>
+  <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
+    <value>Instalar el paquete del proveedor de EF Core en el proyecto</value>
+  </data>
+  <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
+    <value>Instalación del paquete de proveedor de EF Core</value>
+  </data>
+  <data name="LoadingDatabaseObjects" xml:space="preserve">
+    <value>Cargando objetos de base de datos...</value>
+  </data>
+  <data name="LoadingOptions" xml:space="preserve">
+    <value>Opciones de carga...</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>Mapa jerárquico de ids «hierarchyid»</value>
+  </data>
+  <data name="MapNodaTimeTypes" xml:space="preserve">
+    <value>Mapa de tipos Noda Time</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>Mapeo</value>
+  </data>
+  <data name="MapSpatialTypes" xml:space="preserve">
+    <value>Mapear tipos geográficos «spatial»</value>
+  </data>
+  <data name="ModelGeneratedSuccesfully" xml:space="preserve">
+    <value>Modelo generado correctamente.</value>
+  </data>
+  <data name="Namespace" xml:space="preserve">
+    <value>Namespace</value>
+  </data>
+  <data name="NamespaceRequired" xml:space="preserve">
+    <value>El espacio de nombres «namespace» es obligatorio</value>
+  </data>
+  <data name="Naming" xml:space="preserve">
+    <value>Nombramiento</value>
+  </data>
+  <data name="NewNameCannotBeEmpty" xml:space="preserve">
+    <value>El nuevo nombre no puede estar vacío</value>
+  </data>
+  <data name="NoPrimaryKey" xml:space="preserve">
+    <value>Esta tabla no tiene ninguna clave principal definida.</value>
+  </data>
+  <data name="PackageNotFoundInProject" xml:space="preserve">
+    <value>El paquete NuGet «{0}» no se encontró en el proyecto, debe instalarse para compilarlo.</value>
+  </data>
+  <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
+    <value>Pluralizar o singularizar nombres de los objetos generados (inglés)</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>Entidades POCO</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ Vote</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>Hágame saber si le gusta esta herramienta gratuita</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>Notas de versión</value>
+  </data>
+  <data name="RemoveConstructorFromEntities" xml:space="preserve">
+    <value>Eliminar constructor de clases de entidad (experimental)</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>Eliminar el constructor predeterminado de DbContext</value>
+  </data>
+  <data name="RemoveNavigationsFromEntities" xml:space="preserve">
+    <value>Eliminar relaciones «navigations» de las clases de entidad (experimental)</value>
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value>Eliminar conexión seleccionada</value>
+  </data>
+  <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
+    <value>Eliminar el valor predeterminado de SQL de las columnas bool</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>Renombrando relaciones «navigations»</value>
+  </data>
+  <data name="ReportingResult" xml:space="preserve">
+    <value>Resultado del informe...</value>
+  </data>
+  <data name="ReverseEngineerCompleted" xml:space="preserve">
+    <value>Ingeniería inversa completada en {0}</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="SearchForObjects" xml:space="preserve">
+    <value>Buscar objetos</value>
+  </data>
+  <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
+    <value>Dividir DbContext en clases de configuración (vista previa)</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>Mejore su experiencia SQLite</value>
+  </data>
+  <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
+    <value>Las credenciales en uso no tienen derechos de «VER DEFINICIÓN», por lo que la funcionalidad puede estar degradada o defectuosa.</value>
+  </data>
+  <data name="SQLServerVersionNotSupported" xml:space="preserve">
+    <value>Es posible que la versión {0} de SQL Server no esté soportada.</value>
+  </data>
+  <data name="StoredProcedures" xml:space="preserve">
+    <value>Procedimientos almacenados</value>
+  </data>
+  <data name="StoredProceduresReturnList" xml:space="preserve">
+    <value>Los procedimientos almacenados devuelven List (arreglo predeterminado)</value>
+  </data>
+  <data name="Tables" xml:space="preserve">
+    <value>Tablas</value>
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value>No se puede agregar la conexión, es posible que el proveedor no sea compatible</value>
+  </data>
+  <data name="UnableToAddToList" xml:space="preserve">
+    <value>No se puede agregar a la lista</value>
+  </data>
+  <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
+    <value>No se puede generar el proyecto de base de datos seleccionado</value>
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value>No se puede eliminar la conexión</value>
+  </data>
+  <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
+    <value>Si está desmarcada, se usará EF Core 3.1</value>
+  </data>
+  <data name="UncheckingFileRemoved" xml:space="preserve">
+    <value>Si desmarca un elemento, es posible que se elimine el archivo relacionado</value>
+  </data>
+  <data name="UnsupportedProvider" xml:space="preserve">
+    <value>Proveedor no admitido</value>
+  </data>
+  <data name="UseDataAnnotations" xml:space="preserve">
+    <value>Usar atributos DataAnnotation para configurar el modelo</value>
+  </data>
+  <data name="UseEF6Pluralizer" xml:space="preserve">
+    <value>Usar el pluralizador EF6</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Usar entidades de muchos a muchos (EF Core 6 y versiones posteriores)</value>
+  </data>
+  <data name="UseNamesFromDatabase" xml:space="preserve">
+    <value>Usar nombres de tablas y columnas directamente desde la base de datos</value>
+  </data>
+  <data name="UseNullableReferenceTypes" xml:space="preserve">
+    <value>Usar tipos de referencia que admiten valores NULL (experimental)</value>
+  </data>
+  <data name="UseRegularExpression" xml:space="preserve">
+    <value>Usar expresión regular</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Guía del usuario</value>
+  </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>Usar separación de carpetas por cada esquema (experimental)</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>Usar separación de espacios de nombres «namespaces» por cada esquema (experimental)</value>
+  </data>
+  <data name="UseTextSearch" xml:space="preserve">
+    <value>Usar la búsqueda de texto</value>
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value>Vistas</value>
+  </data>
+  <data name="WhatToGenerate" xml:space="preserve">
+    <value>Qué generar</value>
+  </data>
+</root>
