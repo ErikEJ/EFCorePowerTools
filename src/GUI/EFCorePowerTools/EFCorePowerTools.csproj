@@ -455,7 +455,7 @@
     <VSCTCompile Include="EFCorePowerToolsPackage.zh-Hans.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
-    <VSCTCompile Include="EFCorePowerToolsPackage.es-ES.vsct">
+    <VSCTCompile Include="EFCorePowerToolsPackage.es.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
