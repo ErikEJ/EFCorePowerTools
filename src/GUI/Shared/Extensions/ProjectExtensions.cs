@@ -307,12 +307,19 @@ namespace EFCorePowerTools.Extensions
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var vsProject = (IVsProject)hierarchy;
-
-            if (vsProject != null)
+            try
             {
-                var props = vsProject.ToProject().Properties;
-                result = props.Item("TargetFrameworkMonikers")?.Value?.ToString();
+                var vsProject = (IVsProject)hierarchy;
+
+                if (vsProject != null)
+                {
+                    var props = vsProject.ToProject().Properties;
+                    result = props.Item("TargetFrameworkMonikers")?.Value?.ToString();
+                }
+            }
+            catch
+            {
+                // Ignore
             }
 
             if (string.IsNullOrEmpty(result))
