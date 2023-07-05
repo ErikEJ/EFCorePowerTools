@@ -3499,10 +3499,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get { return this.TableLockOnBulkLoad; }
         }
-        IEnumerable<TSqlObject> ISql90TSqlTable.TemporalTable
-        {
-            get { return this.TemporalTable; }
-        }
         Int32 ISql90TSqlTable.TextInRowSize
         {
             get { return this.TextInRowSize; }
@@ -8231,10 +8227,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         Boolean ISql100TSqlTable.TableLockOnBulkLoad
         {
             get { return this.TableLockOnBulkLoad; }
-        }
-        IEnumerable<TSqlObject> ISql100TSqlTable.TemporalTable
-        {
-            get { return this.TemporalTable; }
         }
         Int32 ISql100TSqlTable.TextInRowSize
         {
@@ -15331,10 +15323,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get { return this.TableLockOnBulkLoad; }
         }
-        IEnumerable<TSqlObject> ISql110TSqlTable.TemporalTable
-        {
-            get { return this.TemporalTable; }
-        }
         Int32 ISql110TSqlTable.TextInRowSize
         {
             get { return this.TextInRowSize; }
@@ -20831,10 +20819,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get { return this.TableLockOnBulkLoad; }
         }
-        IEnumerable<TSqlObject> ISql120TSqlTable.TemporalTable
-        {
-            get { return this.TemporalTable; }
-        }
         Int32 ISql120TSqlTable.TextInRowSize
         {
             get { return this.TextInRowSize; }
@@ -24367,10 +24351,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         Boolean ISqlAzureV12TSqlTable.TableLockOnBulkLoad
         {
             get { return this.TableLockOnBulkLoad; }
-        }
-        IEnumerable<TSqlObject> ISqlAzureV12TSqlTable.TemporalTable
-        {
-            get { return this.TemporalTable; }
         }
         Int32 ISqlAzureV12TSqlTable.TextInRowSize
         {

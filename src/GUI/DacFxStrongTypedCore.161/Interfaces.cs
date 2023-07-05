@@ -3027,10 +3027,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get;
         }
-        IEnumerable<TSqlObject> TemporalTable
-        {
-            get;
-        }
         Int32 TextInRowSize
         {
             get;
@@ -7091,10 +7087,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get;
         }
-        IEnumerable<TSqlObject> TemporalTable
-        {
-            get;
-        }
         Int32 TextInRowSize
         {
             get;
@@ -9660,10 +9652,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
             get;
         }
         Boolean TableLockOnBulkLoad
-        {
-            get;
-        }
-        IEnumerable<TSqlObject> TemporalTable
         {
             get;
         }
@@ -13685,10 +13673,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
             get;
         }
         Boolean TableLockOnBulkLoad
-        {
-            get;
-        }
-        IEnumerable<TSqlObject> TemporalTable
         {
             get;
         }
@@ -18125,10 +18109,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         {
             get;
         }
-        IEnumerable<TSqlObject> TemporalTable
-        {
-            get;
-        }
         Int32 TextInRowSize
         {
             get;
@@ -21394,10 +21374,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
             get;
         }
         Boolean TableLockOnBulkLoad
-        {
-            get;
-        }
-        IEnumerable<TSqlObject> TemporalTable
         {
             get;
         }

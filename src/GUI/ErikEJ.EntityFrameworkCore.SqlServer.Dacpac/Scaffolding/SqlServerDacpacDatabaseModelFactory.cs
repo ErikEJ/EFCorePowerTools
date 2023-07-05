@@ -110,11 +110,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 dbTable.Comment = FixExtendedPropertyValue(description?.Value);
 
-                if (item.TemporalTable != null && item.TemporalTable.Any())
+                var temporal = item.GetReferenced(Table.TemporalSystemVersioningHistoryTable).ToArray();
+
+                if (temporal.Any())
                 {
                     dbTable[SqlServerAnnotationNames.IsTemporal] = true;
-                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = item.TemporalTable.First().Name.Parts[1];
-                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = item.TemporalTable.First().Name.Parts[0];
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = temporal.First().Name.Parts[1];
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = temporal.First().Name.Parts[0];
 
                     foreach (var col in dbTable.Columns)
                     {
@@ -416,12 +418,14 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     dbColumn["ConcurrencyToken"] = true;
                 }
 
-                if (col.GeneratedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
+                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
                 {
                     dbColumn["DacFX:RowStart"] = true;
                 }
 
-                if (col.GeneratedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+                if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
                 {
                     dbColumn["DacFX:RowEnd"] = true;
                 }

@@ -680,14 +680,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 			get { return (String)Element.GetProperty(Column.Expression);}
 		}
 
-        ///
-        /// Property wrapper for <see cref="M:Column.GenrateAlwaysType"/>
-        /// <see href="http://msdn.microsoft.com/en-us/library/microsoft.sqlserver.dac.model.column.generatedalwaystype.aspx">Column.GeneratedAlwaysType</see>
-        ///
-        public ColumnGeneratedAlwaysType GeneratedAlwaysType
-        {
-            get { return Element.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType); }
-        }
 
         ///
         /// Property wrapper for <see cref="M:Column.IdentityIncrement"/>
@@ -18279,11 +18271,6 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
 		{
 			get { return Element.GetProperty<Boolean>(Table.TableLockOnBulkLoad);}
 		}
-
-        public IEnumerable<TSqlObject> TemporalTable
-        {
-            get { return Element.GetReferenced(Table.TemporalSystemVersioningHistoryTable); }
-        }
 
         ///
         /// Property wrapper for <see cref="M:Table.TextInRowSize"/>
