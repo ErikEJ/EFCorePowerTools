@@ -12,10 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\DacFxStrongTypedCore\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.0.52" />
   </ItemGroup>
 
