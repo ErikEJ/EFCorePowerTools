@@ -12,6 +12,7 @@
     <None Remove="Chinook.dacpac" />
     <None Remove="ChinookContext.txt" />
     <None Remove="Dacpac\Issue1262.dacpac" />
+    <None Remove="Dacpac\Temporal.dacpac" />
     <None Remove="Identity.txt" />
     <None Remove="Issue208.dacpac" />
     <None Remove="Issue210.dacpac" />
@@ -31,6 +32,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Issue1262.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\Temporal.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dgml\Aw2014Person.txt">
@@ -89,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
-    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
   </ItemGroup>
 

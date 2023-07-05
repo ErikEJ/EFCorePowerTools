@@ -88,11 +88,11 @@ namespace RevEng.Common.Cli
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.5";
+                var pkgVersion = "7.0.8";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.16";
+                        pkgVersion = "6.0.18";
                         break;
                 }
 
@@ -199,11 +199,11 @@ namespace RevEng.Common.Cli
 
             if (databaseType == DatabaseType.SQLite)
             {
-                var pkgVersion = "7.0.5";
+                var pkgVersion = "7.0.8";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.16";
+                        pkgVersion = "6.0.18";
                         break;
                 }
 
@@ -239,7 +239,7 @@ namespace RevEng.Common.Cli
 
             if (databaseType == DatabaseType.Npgsql)
             {
-                var pkgVersion = "7.0.3";
+                var pkgVersion = "7.0.4";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -94,7 +95,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 if (item.MemoryOptimized)
                 {
-                    dbTable["SqlServer:MemoryOptimized"] = true;
+                    dbTable[SqlServerAnnotationNames.MemoryOptimized] = true;
                 }
 
                 GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList(), model);
@@ -108,6 +109,28 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     .FirstOrDefault(p => p.Name.Parts[3] == "MS_Description");
 
                 dbTable.Comment = FixExtendedPropertyValue(description?.Value);
+
+                if (item.TemporalTable != null && item.TemporalTable.Any())
+                {
+                    dbTable[SqlServerAnnotationNames.IsTemporal] = true;
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = item.TemporalTable.First().Name.Parts[1];
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = item.TemporalTable.First().Name.Parts[0];
+
+                    foreach (var col in dbTable.Columns)
+                    {
+                        var startAnnotation = col.FindAnnotation("DacFX:RowStart");
+                        if (startAnnotation != null)
+                        {
+                            dbTable[SqlServerAnnotationNames.TemporalPeriodStartPropertyName] = col.Name;
+                        }
+
+                        var endAnnotation = col.FindAnnotation("DacFX:RowEnd");
+                        if (endAnnotation != null)
+                        {
+                            dbTable[SqlServerAnnotationNames.TemporalPeriodEndPropertyName] = col.Name;
+                        }
+                    }
+                }
 
                 dbModel.Tables.Add(dbTable);
             }
@@ -391,6 +414,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 if (storeType == "rowversion")
                 {
                     dbColumn["ConcurrencyToken"] = true;
+                }
+
+                if (col.GeneratedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
+                {
+                    dbColumn["DacFX:RowStart"] = true;
+                }
+
+                if (col.GeneratedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+                {
+                    dbColumn["DacFX:RowEnd"] = true;
                 }
 
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)

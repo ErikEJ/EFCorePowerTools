@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -199,6 +200,21 @@ namespace UnitTests
             Assert.AreEqual(2, dbModel.Tables.Count());
             Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
             Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+        }
+
+        [Test]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>")]
+        public void Temporal_Support()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory(null);
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            // Act
+            var dbModel = factory.Create(TestPath("Temporal.dacpac"), options);
+
+            // Assert
+            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal));
         }
 
         private string TestPath(string file)
