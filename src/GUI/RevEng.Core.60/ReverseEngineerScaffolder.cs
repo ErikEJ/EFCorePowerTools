@@ -383,7 +383,14 @@ namespace RevEng.Core
                     {
                         sb.Append(usingKeyWord);
                         sb.Append(codeFileNamespace);
-                        sb.AppendLine(";");
+                        var usingEndLineCharacter = ";";
+                        var cSharp10UsingStyle = codeFileNamespace.EndsWith(';');
+                        if (cSharp10UsingStyle)
+                        {
+                            usingEndLineCharacter = string.Empty;
+                        }
+
+                        sb.AppendLine(usingEndLineCharacter);
                     }
                 }
                 else
