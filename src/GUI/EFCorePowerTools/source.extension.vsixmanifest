@@ -16,7 +16,9 @@ About - Displays version and other diagnostic information about your Visual Stud
         <License>Resources\license.txt</License>
         <Icon>db.png</Icon>
         <PreviewImage>Resources\pt.png</PreviewImage>
-        <Tags>sql sqlite sqlce entityframework efcore codegeneration database</Tags>
+        <GettingStartedGuide>https://github.com/ErikEJ/EFCorePowerTools/wiki</GettingStartedGuide>
+        <ReleaseNotes>https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes</ReleaseNotes>
+        <Tags>sql sqlserver entityframework efcore codegeneration database</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
