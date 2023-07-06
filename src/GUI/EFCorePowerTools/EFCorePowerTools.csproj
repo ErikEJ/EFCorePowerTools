@@ -163,20 +163,12 @@
       <Link>efreveng60.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\lib\efreveng60arm.exe.zip">
-      <Link>efreveng60arm.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efpt70.exe.zip">
       <Link>efpt70.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\lib\efreveng70.exe.zip">
       <Link>efreveng70.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efreveng70arm.exe.zip">
-      <Link>efreveng70arm.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\lib\T4_703.zip">

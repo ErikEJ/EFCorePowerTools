@@ -19,6 +19,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     {
+        private const string RowStart = "DacFX:RowStart";
+        private const string RowEnd = "DacFX:RowEnd";
+
         private static readonly ISet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
 
         private static readonly ISet<string> MaxLengthRequiredTypes
@@ -120,15 +123,17 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                     foreach (var col in dbTable.Columns)
                     {
-                        var startAnnotation = col.FindAnnotation("DacFX:RowStart");
+                        var startAnnotation = col.FindAnnotation(RowStart);
                         if (startAnnotation != null)
                         {
+                            col.RemoveAnnotation(RowStart);
                             dbTable[SqlServerAnnotationNames.TemporalPeriodStartPropertyName] = col.Name;
                         }
 
-                        var endAnnotation = col.FindAnnotation("DacFX:RowEnd");
+                        var endAnnotation = col.FindAnnotation(RowEnd);
                         if (endAnnotation != null)
                         {
+                            col.RemoveAnnotation(RowEnd);
                             dbTable[SqlServerAnnotationNames.TemporalPeriodEndPropertyName] = col.Name;
                         }
                     }
@@ -422,12 +427,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
                 {
-                    dbColumn["DacFX:RowStart"] = true;
+                    dbColumn[RowStart] = true;
                 }
 
                 if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
                 {
-                    dbColumn["DacFX:RowEnd"] = true;
+                    dbColumn[RowEnd] = true;
                 }
 
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
