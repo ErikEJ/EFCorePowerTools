@@ -19,9 +19,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     {
-        private const string RowStart = "DacFX:RowStart";
-        private const string RowEnd = "DacFX:RowEnd";
-
         private static readonly ISet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
 
         private static readonly ISet<string> MaxLengthRequiredTypes
@@ -101,7 +98,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     dbTable[SqlServerAnnotationNames.MemoryOptimized] = true;
                 }
 
-                GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList(), model);
+                var tableColumns = GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList(), model);
                 GetPrimaryKey(item, dbTable);
 
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
@@ -121,20 +118,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = temporal.First().Name.Parts[1];
                     dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = temporal.First().Name.Parts[0];
 
-                    foreach (var col in dbTable.Columns)
+                    foreach (var col in tableColumns)
                     {
-                        var startAnnotation = col.FindAnnotation(RowStart);
-                        if (startAnnotation != null)
+                        var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                        if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
                         {
-                            col.RemoveAnnotation(RowStart);
-                            dbTable[SqlServerAnnotationNames.TemporalPeriodStartPropertyName] = col.Name;
+                            dbTable[SqlServerAnnotationNames.TemporalPeriodStartPropertyName] = col.Name.Parts[2];
                         }
 
-                        var endAnnotation = col.FindAnnotation(RowEnd);
-                        if (endAnnotation != null)
+                        if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
                         {
-                            col.RemoveAnnotation(RowEnd);
-                            dbTable[SqlServerAnnotationNames.TemporalPeriodEndPropertyName] = col.Name;
+                            dbTable[SqlServerAnnotationNames.TemporalPeriodEndPropertyName] = col.Name.Parts[2];
                         }
                     }
                 }
@@ -368,11 +363,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #endif
         }
 
-        private static void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
-                .Where(i => !i.GetProperty<bool>(Column.IsHidden)
-                && i.ColumnType != ColumnType.ColumnSet
+                .Where(i => i.ColumnType != ColumnType.ColumnSet
 
                 // Computed columns not supported for now
                 // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
@@ -422,19 +416,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     dbColumn["ConcurrencyToken"] = true;
                 }
-
-                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
-
-                if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
-                {
-                    dbColumn[RowStart] = true;
-                }
-
-                if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
-                {
-                    dbColumn[RowEnd] = true;
-                }
-
+                
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
                     .Where(p => p.Name.Parts.Count == 5)
                     .Where(p => p.Name.Parts[0] == "SqlColumn")
@@ -445,8 +427,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
 
-                dbTable.Columns.Add(dbColumn);
+                if (!col.GetProperty<bool>(Column.IsHidden))
+                {
+                    dbTable.Columns.Add(dbColumn);
+                }
             }
+
+            return tableColumns;
         }
 
         private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases)

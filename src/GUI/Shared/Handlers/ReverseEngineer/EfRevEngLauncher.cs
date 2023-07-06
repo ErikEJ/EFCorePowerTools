@@ -276,17 +276,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Directory.CreateDirectory(toDir);
-            var cpuArch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm" : string.Empty;
 
             string zipName;
 
             switch (codeGenerationMode)
             {
                 case CodeGenerationMode.EFCore6:
-                    zipName = $"efreveng60{cpuArch}.exe.zip";
+                    zipName = $"efreveng60.exe.zip";
                     break;
                 case CodeGenerationMode.EFCore7:
-                    zipName = $"efreveng70{cpuArch}.exe.zip";
+                    zipName = $"efreveng70.exe.zip";
                     break;
                 default:
                     throw new NotSupportedException();

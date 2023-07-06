@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore.Scaffolding;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using System;
@@ -193,7 +193,7 @@ namespace RevEng.Core
 #pragma warning disable CA1031
             catch (Exception ex)
             {
-                errors.Add(ex.Message);
+                errors.Add(ex.ToString());
 
                 var result = new ReverseEngineerResult
                 {
