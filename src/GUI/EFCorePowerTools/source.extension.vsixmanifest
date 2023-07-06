@@ -13,11 +13,11 @@ View DbContext Model SQL DDL - View a SQL DDL script from your DbContext Model.
 About - Displays version and other diagnostic information about your Visual Studio instance. 
         </Description>
         <MoreInfo>https://github.com/ErikEJ/EFCorePowerTools/wiki/</MoreInfo>
-        <License>Resources\license.txt</License>
-        <Icon>db.png</Icon>
-        <PreviewImage>Resources\pt.png</PreviewImage>
+        <License>Resources\license.txt</License>      
         <GettingStartedGuide>https://github.com/ErikEJ/EFCorePowerTools/wiki</GettingStartedGuide>
         <ReleaseNotes>https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes</ReleaseNotes>
+        <Icon>db.png</Icon>        
+        <PreviewImage>Resources\pt.png</PreviewImage>     
         <Tags>sql sqlserver entityframework efcore codegeneration database</Tags>
     </Metadata>
     <Installation>
