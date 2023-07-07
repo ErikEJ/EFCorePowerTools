@@ -427,7 +427,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
 
-                if (!col.GetProperty<bool>(Column.IsHidden))
+                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
                 {
                     dbTable.Columns.Add(dbColumn);
                 }
