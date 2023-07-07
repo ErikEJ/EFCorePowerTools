@@ -11,7 +11,7 @@ namespace ErikEJ.EFCorePowerTools.HostedServices;
 
 internal static class RegisterDependentServices
 {
-    public static IHostBuilder RegisterServices(this IHostBuilder builder, DisplayService displayService, IFileSystem fileSystem, ScaffoldOptions scaffoldOptions)
+    public static IHostBuilder RegisterServices(this IHostBuilder builder, IFileSystem fileSystem, ScaffoldOptions scaffoldOptions)
     {
         var databaseType = scaffoldOptions.Provider.ToDatabaseType(scaffoldOptions.IsDacpac);
         var reverseOptions = new ReverseEngineerCommandOptions
@@ -26,11 +26,9 @@ internal static class RegisterDependentServices
             {
                 serviceCollection.AddEfpt(reverseOptions, new List<string>(), new List<string>(), new List<string>())
                     .AddSingleton(fileSystem)
-                    .AddSingleton(displayService)
                     .AddSingleton(scaffoldOptions)
                     .AddSingleton(reverseOptions)
                     .AddSingleton<TableListBuilder>()
-                    .AddSingleton<PackageService>()
                     .AddSingleton(Array.Empty<SchemaInfo>())
                     .AddHostedService<ScaffoldHostedService>();
             });
@@ -40,7 +38,7 @@ internal static class RegisterDependentServices
             return hostBuilder;
         }
 
-        displayService.Error($"Unknown provider '{scaffoldOptions.Provider}' - valid values are: mssql, sqlserver, postgres, postgresql, sqlite, oracle, mysql, firebird");
+        DisplayService.Error($"Unknown provider '{scaffoldOptions.Provider}' - valid values are: mssql, sqlserver, postgres, postgresql, sqlite, oracle, mysql, firebird");
         Environment.ExitCode = 1;
 
         return hostBuilder;

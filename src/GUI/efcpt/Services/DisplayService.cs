@@ -5,14 +5,14 @@ using Spectre.Console;
 
 namespace ErikEJ.EFCorePowerTools.Services;
 
-internal sealed class DisplayService
+internal static class DisplayService
 {
     public static string Link(string link)
     {
         return $"[link]{link}[/]";
     }
 
-    public void Title(string message)
+    public static void Title(string message)
     {
         AnsiConsole.Write(
             new FigletText(message)
@@ -20,17 +20,17 @@ internal sealed class DisplayService
                 .Color(Color.Aqua));
     }
 
-    public void MarkupLine(string message, Color color, [CanBeNull] Func<string, string> format)
+    public static void MarkupLine(string message, Color color, [CanBeNull] Func<string, string> format)
     {
         AnsiConsole.MarkupLine($"[{color}]{format?.Invoke(message) ?? message}[/]");
     }
 
-    public void MarkupLine(string message, Color color)
+    public static void MarkupLine(string message, Color color)
     {
         MarkupLine(message, color, null);
     }
 
-    public void MarkupLine(params Func<string>[] messages)
+    public static void MarkupLine(params Func<string>[] messages)
     {
         if (messages?.Length < 1)
         {
@@ -41,18 +41,18 @@ internal sealed class DisplayService
         AnsiConsole.MarkupLine(string.Join(' ', messages!.Select(func => func())));
     }
 
-    public string Markup<TEnum>(string message, TEnum decoration)
+    public static string Markup<TEnum>(string message, TEnum decoration)
         where TEnum : struct
     {
         return $"[{decoration}]{message}[/]";
     }
 
-    public void Error(string message)
+    public static void Error(string message)
     {
         MarkupLine(() => Markup("error:", Color.Red), () => message);
     }
 
-    public T Wait<T>(string message, [NotNull] Func<T> doFunc)
+    public static T Wait<T>(string message, [NotNull] Func<T> doFunc)
     {
         T result = default;
         AnsiConsole.Status()

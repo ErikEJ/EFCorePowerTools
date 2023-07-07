@@ -32,38 +32,36 @@ public static class Program
 
     public static async Task<int> MainAsync(string[] args)
     {
-        var parserResult = new Parser(c => c.HelpWriter = null)
-            .ParseArguments<ScaffoldOptions>(args);
+        using var parser = new Parser(c => c.HelpWriter = null);
 
-        var displayService = new DisplayService();
+        var parserResult = parser.ParseArguments<ScaffoldOptions>(args);
 
         var result = parserResult
             .MapResult(
                 async options =>
                 {
-                    ResolveProvider(options, displayService);
+                    ResolveProvider(options);
 
                     var fileSystem = new FileSystem();
 
                     options.ConfigFile = options.ConfigFile ?? new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
 
-                    DisplayHeader(options, displayService);
+                    DisplayHeader(options);
                     var hostBuilder = new HostBuilder();
                     await hostBuilder.Configure()
-                        .RegisterServices(displayService, fileSystem, options)
+                        .RegisterServices(fileSystem, options)
                         .StartAsync()
                         .ConfigureAwait(false);
                     return Environment.ExitCode;
                 },
                 async _ => await DisplayHelpAsync(parserResult).ConfigureAwait(false));
 
-        var packageService = new PackageService(displayService);
-        await packageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
+        await PackageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
 
         return await result.ConfigureAwait(false);
     }
 
-    private static void ResolveProvider(ScaffoldOptions options, DisplayService displayService)
+    private static void ResolveProvider(ScaffoldOptions options)
     {
         if (string.IsNullOrEmpty(options.Provider))
         {
@@ -77,11 +75,11 @@ public static class Program
 
             if (providers.Count != 1)
             {
-                displayService.Error("Unable to resolve provider based on connection string, please specify the 'provider'");
-                displayService.Error("Supported providers: mssql, postgres, sqlite, oracle, mysql, firebird");
+                DisplayService.Error("Unable to resolve provider based on connection string, please specify the 'provider'");
+                DisplayService.Error("Supported providers: mssql, postgres, sqlite, oracle, mysql, firebird");
                 if (providers.Count > 1)
                 {
-                    displayService.Error($"Potential providers: '{string.Join(", ", providers)}'");
+                    DisplayService.Error($"Potential providers: '{string.Join(", ", providers)}'");
                 }
 
                 Environment.Exit(1);
@@ -89,18 +87,18 @@ public static class Program
         }
     }
 
-    private static void DisplayHeader(ScaffoldOptions options, DisplayService displayService)
+    private static void DisplayHeader(ScaffoldOptions options)
     {
-        displayService.Title("EF Core Power Tools");
-        displayService.MarkupLine(
+        DisplayService.Title("EF Core Power Tools");
+        DisplayService.MarkupLine(
             $"EF Core Power Tools CLI {PackageService.CurrentPackageVersion()} for EF Core {Constants.Version}",
             Color.Cyan1);
-        displayService.MarkupLine("https://github.com/ErikEJ/EFCorePowerTools", Color.Blue, DisplayService.Link);
-        displayService.MarkupLine();
-        displayService.MarkupLine(
-            () => displayService.Markup("config file:", Color.Green),
-            () => displayService.Markup(options.ConfigFile.FullName, Decoration.Bold));
-        displayService.MarkupLine();
+        DisplayService.MarkupLine("https://github.com/ErikEJ/EFCorePowerTools", Color.Blue, DisplayService.Link);
+        DisplayService.MarkupLine();
+        DisplayService.MarkupLine(
+            () => DisplayService.Markup("config file:", Color.Green),
+            () => DisplayService.Markup(options.ConfigFile.FullName, Decoration.Bold));
+        DisplayService.MarkupLine();
     }
 
     private static Task<int> DisplayHelpAsync(ParserResult<ScaffoldOptions> parserResult)

@@ -4,6 +4,7 @@ using CommandLine;
 
 namespace ErikEJ.EFCorePowerTools;
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
 internal sealed class ScaffoldOptions
 {
     [Value(
@@ -30,3 +31,4 @@ internal sealed class ScaffoldOptions
 
     public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
 }
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes

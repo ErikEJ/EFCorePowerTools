@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using RevEng.Common.Cli.Configuration;
 
 namespace RevEng.Common.Cli
