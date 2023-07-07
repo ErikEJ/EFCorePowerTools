@@ -416,7 +416,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     dbColumn["ConcurrencyToken"] = true;
                 }
-                
+
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
                     .Where(p => p.Name.Parts.Count == 5)
                     .Where(p => p.Name.Parts[0] == "SqlColumn")

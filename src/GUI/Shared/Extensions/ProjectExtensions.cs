@@ -14,8 +14,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Common;
-using RevEng.Common.Cli;
-using VSLangProj150;
 
 namespace EFCorePowerTools.Extensions
 {

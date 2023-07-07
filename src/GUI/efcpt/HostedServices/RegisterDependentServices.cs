@@ -5,7 +5,6 @@ using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RevEng.Common;
-using RevEng.Common.Cli;
 using RevEng.Core;
 
 namespace ErikEJ.EFCorePowerTools.HostedServices;

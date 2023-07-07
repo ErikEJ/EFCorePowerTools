@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace RevEng.Common.Cli
+namespace RevEng.Common
 {
     public static class Providers
     {
@@ -181,15 +181,12 @@ namespace RevEng.Common.Cli
                     }
                 }
 
-                if (hasProcedures
-                    && (codeGenerationMode == CodeGenerationMode.EFCore6
-                        || codeGenerationMode == CodeGenerationMode.EFCore7)
-                    && discoverMultipleResultSets)
+                if (hasProcedures && discoverMultipleResultSets)
                 {
                     packages.Add(new NuGetPackage
                     {
                         PackageId = "Dapper",
-                        Version = "2.0.123",
+                        Version = "2.0.143",
                         DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
                         IsMainProviderPackage = false,
                         UseMethodName = null,

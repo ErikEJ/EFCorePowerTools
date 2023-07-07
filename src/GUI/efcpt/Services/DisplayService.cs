@@ -7,6 +7,11 @@ namespace ErikEJ.EFCorePowerTools.Services;
 
 internal sealed class DisplayService
 {
+    public static string Link(string link)
+    {
+        return $"[link]{link}[/]";
+    }
+
     public void Title(string message)
     {
         AnsiConsole.Write(
@@ -40,11 +45,6 @@ internal sealed class DisplayService
         where TEnum : struct
     {
         return $"[{decoration}]{message}[/]";
-    }
-
-    public static string Link(string link)
-    {
-        return $"[link]{link}[/]";
     }
 
     public void Error(string message)
