@@ -12,10 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="SharedTypeExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="DbContextExtensions" />
     <EmbeddedResource Include="DbContextExtensions.Sync" />
   </ItemGroup>
@@ -42,7 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\ErikEJ.EntityFramworkCore.SqlServer.CrmDataModelfactory\ErikEJ.EntityFrameworkCore.6.SqlServer.CrmDatabase.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />
   </ItemGroup>

@@ -4,7 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>
 		<RootNamespace>RevEng.Core</RootNamespace>
-        <Nullable>warnings</Nullable>
+    <Nullable>warnings</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -17,6 +17,11 @@
 		<Compile Include="..\RevEng.Core.60\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
 		<Compile Include="..\RevEng.Core.60\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
     <Compile Include="..\RevEng.Core.60\Dgml\*.cs" Link="Dgml\%(Filename)%(Extension)" />    
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="..\RevEng.Core.60\CrmDatabaseModelFactory.cs" />
+	  <Compile Remove="..\RevEng.Core.60\PatchedSqlServerDatabaseModelFactory.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,7 +48,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase\ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase.csproj" />
 		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj" />
 		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
 		<ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />

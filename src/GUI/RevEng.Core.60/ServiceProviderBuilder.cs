@@ -101,6 +101,8 @@ namespace RevEng.Core
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
+
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     serviceCollection.AddSqlServerFunctionDesignTimeServices();
 
