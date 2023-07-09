@@ -22,9 +22,9 @@ using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 
-namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+namespace RevEng.Core;
 
-public class CrmDatabaseModelFactory : DatabaseModelFactory
+public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 {
     private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
 
@@ -73,18 +73,18 @@ public class CrmDatabaseModelFactory : DatabaseModelFactory
     private byte? _compatibilityLevel;
     private int? _engineEdition;
 
-    public CrmDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
+    public PatchedSqlServerDatabaseModelFactory(IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger)
     {
         _logger = logger;
     }
 
-    public override DatabaseModel Create(string connectionString, DatabaseModelFactoryOptions options)
+    public DatabaseModel Create(string connectionString, DatabaseModelFactoryOptions options)
     {
         using var connection = new SqlConnection(connectionString);
         return Create(connection, options);
     }
 
-    public override DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
+    public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
     {
         var databaseModel = new DatabaseModel();
 
@@ -987,8 +987,6 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]";
                             TypeDesc: ddr.GetValueOrDefault<string>("type_desc")))
                 .ToArray();
 
-            //Check.DebugAssert(primaryKeyGroups.Length == 0 || primaryKeyGroups.Length == 1, "Multiple primary keys found");
-
             if (primaryKeyGroups.Length == 1)
             {
                 if (TryGetPrimaryKey(primaryKeyGroups[0], out var primaryKey))
@@ -1247,7 +1245,6 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                     var column = table.Columns.FirstOrDefault(c => c.Name == columnName)
                         ?? table.Columns.FirstOrDefault(
                             c => c.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
-                    //Check.DebugAssert(column != null, "column is null.");
 
                     var principalColumnName = dataRecord.GetValueOrDefault<string>("referenced_column_name");
                     var principalColumn = foreignKey.PrincipalTable.Columns.FirstOrDefault(c => c.Name == principalColumnName)
@@ -1281,6 +1278,7 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                         var duplicated = table.ForeignKeys
                             .FirstOrDefault(
                                 k => k.Columns.SequenceEqual(foreignKey.Columns)
+                                    && k.PrincipalColumns.SequenceEqual(foreignKey.PrincipalColumns)
                                     && k.PrincipalTable.Equals(foreignKey.PrincipalTable));
                         if (duplicated != null)
                         {
@@ -1338,22 +1336,16 @@ ORDER BY [table_schema], [table_name], [tr].[name]";
     }
 
     private bool SupportsTemporalTable()
-        => _compatibilityLevel >= 130 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
+        => _compatibilityLevel >= 130 && _engineEdition != 6;
 
     private bool SupportsMemoryOptimizedTable()
-        => _compatibilityLevel >= 120 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
+        => _compatibilityLevel >= 120 && _engineEdition != 6;
 
     private bool SupportsSequences()
-        => _compatibilityLevel >= 110 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
-
-    private bool SupportsIndexes()
-        => _engineEdition != 1000;
-
-    private bool SupportsViews()
-        => _engineEdition != 1000;
+        => _compatibilityLevel >= 110 && _engineEdition != 6;
 
     private bool SupportsTriggers()
-        => _engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000;
+        => _engineEdition != 6;
 
     private static string DisplayName(string? schema, string name)
         => (!string.IsNullOrEmpty(schema) ? schema + "." : "") + name;
