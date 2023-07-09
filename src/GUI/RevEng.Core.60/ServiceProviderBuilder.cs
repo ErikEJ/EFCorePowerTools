@@ -112,13 +112,6 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-                    var builder = new SqlConnectionStringBuilder(options.ConnectionString);
-                    if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
-                        || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
-                    {
-                        serviceCollection.AddSingleton<IDatabaseModelFactory, CrmDatabaseModelFactory>();
-                    }
-
                     if (options.UseHierarchyId)
                     {
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();

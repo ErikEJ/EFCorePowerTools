@@ -973,8 +973,6 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]";
                                 TypeDesc: ddr.GetValueOrDefault<string>("type_desc")))
                     .ToArray();
 
-                //Check.DebugAssert(primaryKeyGroups.Length == 0 || primaryKeyGroups.Length == 1, "Multiple primary keys found");
-
                 if (primaryKeyGroups.Length == 1)
                 {
                     if (TryGetPrimaryKey(primaryKeyGroups[0], out var primaryKey))
