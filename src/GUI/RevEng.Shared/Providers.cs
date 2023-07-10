@@ -330,9 +330,15 @@ namespace RevEng.Common
                 });
             }
 
-            if (databaseType == DatabaseType.Firebird && codeGenerationMode == CodeGenerationMode.EFCore6)
+            if (databaseType == DatabaseType.Firebird)
             {
-                var pkgVersion = "9.1.1";
+                var pkgVersion = "9.2.0-alpha1";
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore6:
+                        pkgVersion = "9.1.1";
+                        break;
+                }
 
                 packages.Add(new NuGetPackage
                 {
