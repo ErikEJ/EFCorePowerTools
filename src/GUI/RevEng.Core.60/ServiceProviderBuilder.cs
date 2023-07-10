@@ -1,10 +1,8 @@
-﻿#if !CORE70
-using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Humanizer.Inflections;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
@@ -207,12 +205,12 @@ namespace RevEng.Core
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-#if !CORE70
+
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-#endif
+
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
