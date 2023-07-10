@@ -126,9 +126,9 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             GetTables(connection, databaseModel, tableFilter, typeAliases, databaseCollation);
 
             foreach (var schema in schemaList
-                         .Except(
-                             databaseModel.Sequences.Select(s => s.Schema)
-                                 .Concat(databaseModel.Tables.Select(t => t.Schema))))
+                .Except(
+                    databaseModel.Sequences.Select(s => s.Schema)
+                        .Concat(databaseModel.Tables.Select(t => t.Schema))))
             {
                 _logger.MissingSchemaWarning(schema);
             }
@@ -137,9 +137,9 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             {
                 var (parsedSchema, parsedTableName) = Parse(table);
                 if (!databaseModel.Tables.Any(
-                        t => !string.IsNullOrEmpty(parsedSchema)
-                            && t.Schema == parsedSchema
-                            || t.Name == parsedTableName))
+                    t => !string.IsNullOrEmpty(parsedSchema)
+                        && t.Schema == parsedSchema
+                        || t.Name == parsedTableName))
                 {
                     _logger.MissingTableWarning(table);
                 }
@@ -681,17 +681,18 @@ SELECT
     [c].[is_sparse]
 FROM
 (";
+
         if (SupportsViews())
         {
             commandText += @"
-    SELECT[v].[name], [v].[object_id], [v].[schema_id]
-    FROM [sys].[views] v WHERE ";
-
+   SELECT[v].[name], [v].[object_id], [v].[schema_id]
+   FROM [sys].[views] v WHERE ";
             commandText += viewFilter;
 
             commandText += @"
 UNION ALL";
         }
+
         commandText += @"
     SELECT [t].[name], [t].[object_id], [t].[schema_id]
     FROM [sys].[tables] t WHERE ";
