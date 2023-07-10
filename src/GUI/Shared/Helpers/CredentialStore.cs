@@ -49,7 +49,7 @@ namespace EFCorePowerTools.Helpers
         {
             var existingConnections = GetStoredDatabaseConnections();
 
-            var duplicate = existingConnections.FirstOrDefault(c => Root + c.ConnectionName == Root + connectionModel.ConnectionName);
+            var duplicate = existingConnections.Find(c => Root + c.ConnectionName == Root + connectionModel.ConnectionName);
 
             if (duplicate != null)
             {

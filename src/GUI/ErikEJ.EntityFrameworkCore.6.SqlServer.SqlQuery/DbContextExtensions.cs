@@ -114,8 +114,10 @@ namespace Microsoft.EntityFrameworkCore
         }
 
 #pragma warning disable CA1812
+#pragma warning disable CA1852
         internal class ValueReturn<T>
 #pragma warning restore CA1812
+#pragma warning restore CA1852
         {
             public T Value { get; private set; }
         }

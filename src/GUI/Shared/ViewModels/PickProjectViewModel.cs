@@ -52,7 +52,7 @@ namespace EFCorePowerTools.ViewModels
         {
             if (Projects.Any())
             {
-                SelectedProject = Projects.First();
+                SelectedProject = Projects[0];
             }
         }
 

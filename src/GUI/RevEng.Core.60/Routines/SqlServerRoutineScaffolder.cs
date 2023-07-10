@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using NetTopologySuite.Geometries;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-
-#if CORE60
-using Microsoft.EntityFrameworkCore.Infrastructure;
-#else
-using Microsoft.EntityFrameworkCore.Internal;
-#endif
 
 namespace RevEng.Core.Modules
 {
@@ -318,7 +312,7 @@ namespace RevEng.Core.Modules
 
             Sb.AppendLine(PathHelper.Header);
 
-            if (resultElements.Any(p => p.ClrType() == typeof(Geometry)))
+            if (resultElements.Exists(p => p.ClrType() == typeof(Geometry)))
             {
                 Sb.AppendLine("using NetTopologySuite.Geometries;");
             }

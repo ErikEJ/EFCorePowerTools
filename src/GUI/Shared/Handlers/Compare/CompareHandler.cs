@@ -218,7 +218,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
             var modelResults = processLauncher.BuildModelResult(processResult);
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<CompareLogModel>>(modelResults.First().Item2);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<CompareLogModel>>(modelResults[0].Item2);
         }
     }
 }

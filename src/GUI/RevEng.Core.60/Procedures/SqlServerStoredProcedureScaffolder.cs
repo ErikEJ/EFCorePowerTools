@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using NetTopologySuite.Geometries;
 using RevEng.Common;
@@ -144,7 +143,7 @@ namespace RevEng.Core.Procedures
                     GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls);
                 }
 
-                if (model.Routines.Any(r => r.SupportsMultipleResultSet))
+                if (model.Routines.Exists(r => r.SupportsMultipleResultSet))
                 {
                     GenerateDapperSupport(scaffolderOptions.UseAsyncCalls);
                 }
@@ -437,7 +436,7 @@ namespace RevEng.Core.Procedures
 
             var outParams = allOutParams.SkipLast(1).ToList();
 
-            var retValueName = allOutParams.Last().Name;
+            var retValueName = allOutParams[allOutParams.Count - 1].Name;
 
             var outParamStrings = outParams
                 .Select(p => $"OutputParameter<{Code.Reference(p.ClrType())}> {Code.Identifier(p.Name)}")

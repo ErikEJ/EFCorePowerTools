@@ -36,7 +36,7 @@ namespace SqlSharpener.Model
             }
 
             // Get the name.
-            this.Name = tSqlObject.Name.Parts.Last();
+            this.Name = tSqlObject.Name.Parts[tSqlObject.Name.Parts.Count - 1];
 
             // Get the columns
             var columns = new List<Column>();

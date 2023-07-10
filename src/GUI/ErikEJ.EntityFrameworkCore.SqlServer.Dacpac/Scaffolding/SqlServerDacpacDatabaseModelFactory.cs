@@ -115,8 +115,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 if (temporal.Any())
                 {
                     dbTable[SqlServerAnnotationNames.IsTemporal] = true;
-                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = temporal.First().Name.Parts[1];
-                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = temporal.First().Name.Parts[0];
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = temporal[0].Name.Parts[1];
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = temporal[0].Name.Parts[0];
 
                     foreach (var col in tableColumns)
                     {

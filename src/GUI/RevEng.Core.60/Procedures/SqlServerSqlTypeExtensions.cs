@@ -130,21 +130,19 @@ namespace RevEng.Core
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
                 case SqlDbType.Date:
-#if CORE60
                     if (useDateOnlyTimeOnly)
                     {
                         return isNullable ? typeof(DateOnly?) : typeof(DateOnly);
                     }
-#endif
+
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
                 case SqlDbType.Time:
-#if CORE60
                     if (useDateOnlyTimeOnly)
                     {
                         return isNullable ? typeof(TimeOnly?) : typeof(TimeOnly);
                     }
-#endif
+
                     return isNullable ? typeof(TimeSpan?) : typeof(TimeSpan);
 
                 case SqlDbType.Decimal:

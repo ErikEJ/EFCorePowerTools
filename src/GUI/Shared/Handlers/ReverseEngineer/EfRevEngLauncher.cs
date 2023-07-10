@@ -49,7 +49,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode, Project project)
         {
             var databaseObjects = options.Tables;
-            if (!databaseObjects.Any(t => t.ObjectType == ObjectType.Table))
+            if (!databaseObjects.Exists(t => t.ObjectType == ObjectType.Table))
             {
                 // No tables selected, so add a dummy table in order to generate an empty DbContext
                 databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null));

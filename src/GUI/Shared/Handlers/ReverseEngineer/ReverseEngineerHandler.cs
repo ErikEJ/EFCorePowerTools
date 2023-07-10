@@ -39,7 +39,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var project = candidateProjects.First();
+            var project = candidateProjects[0];
 
             if (candidateProjects.Count > 1)
             {
@@ -59,7 +59,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var optionsPaths = project.GetConfigFiles();
-            var optionsPath = optionsPaths.First();
+            var optionsPath = optionsPaths[0];
 
             if (File.Exists(optionsPath))
             {
@@ -101,7 +101,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var projectPath = project.FullPath;
                 var optionsPaths = project.GetConfigFiles();
-                var optionsPath = optionsPaths.First();
+                var optionsPath = optionsPaths[0];
 
                 if (optionsPaths.Count > 1)
                 {
@@ -233,7 +233,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
-                    options.InstallNuGetPackage = neededPackages.Any(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+                    options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
 
                     options.CustomPropertyReplacers = propertyNamingModel;
 

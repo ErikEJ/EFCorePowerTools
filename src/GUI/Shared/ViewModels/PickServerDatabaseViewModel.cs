@@ -172,7 +172,7 @@ namespace EFCorePowerTools.ViewModels
                     }
                 }
 
-                SelectedDatabaseConnection = DatabaseConnections.First();
+                SelectedDatabaseConnection = DatabaseConnections[0];
                 return;
             }
 
@@ -182,7 +182,7 @@ namespace EFCorePowerTools.ViewModels
                 SelectedDatabaseConnection = PreSelectDatabaseDefinition(UiHint);
                 if (SelectedDatabaseConnection is null && DatabaseConnections.Any())
                 {
-                    SelectedDatabaseConnection = DatabaseConnections.First();
+                    SelectedDatabaseConnection = DatabaseConnections[0];
                 }
             }
         }

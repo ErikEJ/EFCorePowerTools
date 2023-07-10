@@ -157,7 +157,7 @@ namespace EFCorePowerTools.Extensions
                 options.UseDateOnlyTimeOnly,
                 options.UseHierarchyId,
                 AdvancedOptions.Instance.DiscoverMultipleResultSets,
-                options.Tables?.Any(t => t.ObjectType == ObjectType.Procedure) ?? false,
+                options.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
                 options.CodeGenerationMode);
 
             await IsInstalledAsync(project, neededPackages);

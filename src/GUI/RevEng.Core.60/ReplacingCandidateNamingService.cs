@@ -43,7 +43,7 @@ namespace RevEng.Core
 
             var newTableName = string.Empty;
 
-            if (schema.Tables != null && schema.Tables.Any(t => t.Name == originalTable.Name))
+            if (schema.Tables != null && schema.Tables.Exists(t => t.Name == originalTable.Name))
             {
                 newTableName = schema.Tables.SingleOrDefault(t => t.Name == originalTable.Name)?.NewName;
             }
@@ -181,7 +181,6 @@ namespace RevEng.Core
         }
 
         private Schema GetSchema(string originalSchema)
-            => customNameOptions?
-                    .FirstOrDefault(x => x.SchemaName == originalSchema);
+            => customNameOptions?.Find(x => x.SchemaName == originalSchema);
     }
 }

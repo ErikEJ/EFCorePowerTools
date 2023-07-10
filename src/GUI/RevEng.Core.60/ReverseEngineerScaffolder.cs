@@ -69,9 +69,7 @@ namespace RevEng.Core
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = options.UseDatabaseNames,
-#if CORE60
                 NoPluralize = !options.UseInflector,
-#endif
             };
 
             var codeOptions = new ModelCodeGenerationOptions
@@ -86,12 +84,8 @@ namespace RevEng.Core
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = options.ConnectionString,
-#if CORE60
                 SuppressOnConfiguring = !options.IncludeConnectionString,
-#endif
-#if CORE60
                 UseNullableReferenceTypes = options.UseNullableReferences,
-#endif
 #if CORE70
                 ProjectDir = options.UseT4 ? projectPath : null,
 #endif
@@ -133,7 +127,7 @@ namespace RevEng.Core
             var functionModelScaffolder = functionScaffolder;
             if (functionModelScaffolder != null
                 && supportsFunctions
-                && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
+                && (options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction)
                     || !options.Tables.Any()))
             {
                 var modelFactoryOptions = new ModuleModelFactoryOptions
@@ -188,7 +182,7 @@ namespace RevEng.Core
             var procedureModelScaffolder = procedureModelFactory;
             if (procedureModelScaffolder != null
                 && supportsProcedures
-                && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
+                && (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
                     || !options.Tables.Any()))
             {
                 var procedureModelFactoryOptions = new ModuleModelFactoryOptions
@@ -281,12 +275,11 @@ namespace RevEng.Core
 
             foreach (var sqlObject in sqlObjects)
             {
-                var schema = renamers
-                    .FirstOrDefault(x => x.SchemaName == sqlObject.Schema);
+                var schema = renamers.Find(x => x.SchemaName == sqlObject.Schema);
 
                 if (schema != null)
                 {
-                    if (schema.Tables != null && schema.Tables.Any(t => t.Name == sqlObject.Name))
+                    if (schema.Tables != null && schema.Tables.Exists(t => t.Name == sqlObject.Name))
                     {
                         sqlObject.NewName = schema.Tables.SingleOrDefault(t => t.Name == sqlObject.Name)?.NewName;
                     }
@@ -329,12 +322,12 @@ namespace RevEng.Core
                 var entityTypeExtension = Path.GetExtension(entityType.Path);
                 var entityMatch = databaseModel.GetEntityTypes().FirstOrDefault(x => x.Name == entityTypeName);
                 var entityTypeSchema = entityMatch?.GetSchema();
-#if CORE60
+
                 if (entityMatch?.GetViewName() != null)
                 {
                     entityTypeSchema = entityMatch?.GetViewSchema();
                 }
-#endif
+
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {
                     if (useSchemaFolders)
@@ -488,11 +481,8 @@ namespace RevEng.Core
                 }
             }
 
-#if CORE60
             var model = factory.Create(databaseModel, modelOptions);
-#else
-            var model = factory.Create(databaseModel, modelOptions.UseDatabaseNames);
-#endif
+
             if (model == null)
             {
                 throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");

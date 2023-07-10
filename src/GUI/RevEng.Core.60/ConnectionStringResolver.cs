@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-#if CORE60ONLY
 using FirebirdSql.Data.FirebirdClient;
-#endif
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using MySqlConnector;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
-using RevEng.Common;
 
 namespace RevEng.Core
 {
@@ -80,7 +77,6 @@ namespace RevEng.Core
                 // Ignore
             }
 
-#if CORE60ONLY
             try
             {
                 var a = new FbConnectionStringBuilder(connectionString);
@@ -90,7 +86,7 @@ namespace RevEng.Core
             {
                 // Ignore
             }
-#endif
+
             return aliases;
         }
 

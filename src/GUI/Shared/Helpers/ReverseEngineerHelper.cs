@@ -39,13 +39,13 @@ namespace EFCorePowerTools.Helpers
             if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
                 || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
             {
-                if (!options.UseHierarchyId && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
+                if (!options.UseHierarchyId && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
                     && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
                 {
                     result.Add("Your database schema contains one or more 'hierarchyid' columns, but you have not enabled them to be mapped.");
                 }
 
-                if (!options.UseSpatial && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
+                if (!options.UseSpatial && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
                 {
                     result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
                 }
@@ -168,7 +168,7 @@ namespace EFCorePowerTools.Helpers
 
             var firstMode = list.Select(i => i.Key).First();
 
-            if (!list.Any(i => i.Key == (int)codeGenerationMode))
+            if (!list.Exists(i => i.Key == (int)codeGenerationMode))
             {
                 codeGenerationMode = (CodeGenerationMode)firstMode;
             }

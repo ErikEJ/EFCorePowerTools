@@ -18,14 +18,12 @@ namespace RevEng.Core
     {
         private readonly List<SerializationTableModel> tables;
         private readonly DatabaseType databaseType;
-#if CORE60
         private readonly bool ignoreManyToMany;
-#endif
 
-#if CORE60 && !CORE70
+#if !CORE70
         public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
             : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions, modelRuntimeInitializer)
-#elif CORE70
+#else
         public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
             : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, modelRuntimeInitializer)
 #endif
@@ -55,7 +53,7 @@ namespace RevEng.Core
             }
 
             var excludedColumns = new List<DatabaseColumn>();
-            var tableDefinition = tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var tableDefinition = tables.Find(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
             {
                 foreach (var column in tableDefinition?.ExcludedColumns!)
@@ -92,7 +90,6 @@ namespace RevEng.Core
             return base.VisitTable(modelBuilder, table);
         }
 
-#if CORE60
         protected override ModelBuilder VisitForeignKeys(ModelBuilder modelBuilder, IList<DatabaseForeignKey> foreignKeys)
         {
             ArgumentNullException.ThrowIfNull(foreignKeys);
@@ -119,6 +116,5 @@ namespace RevEng.Core
 
             return base.VisitForeignKeys(modelBuilder, foreignKeys);
         }
-#endif
     }
 }

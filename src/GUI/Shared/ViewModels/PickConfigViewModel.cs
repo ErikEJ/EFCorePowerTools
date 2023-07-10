@@ -55,7 +55,7 @@ namespace EFCorePowerTools.ViewModels
             // Database first
             if (Configurations.Any())
             {
-                SelectedConfiguration = Configurations.First();
+                SelectedConfiguration = Configurations[0];
             }
         }
 

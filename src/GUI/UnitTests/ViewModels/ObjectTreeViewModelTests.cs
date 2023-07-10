@@ -202,7 +202,7 @@ namespace UnitTests.ViewModels
             vm.AddObjects(GetDatabaseObjects(), null);
 
             // Act
-            var selectedObjects = GetSelectedObjects();
+            var selectedObjects = GetSelectedObjects().ToList();
             vm.SelectObjects(selectedObjects);
 
             // Assert
@@ -210,7 +210,7 @@ namespace UnitTests.ViewModels
             for (var i = 0; i < vm.GetSelectedObjects().Count(); i++)
             {
                 var a = vm.GetSelectedObjects().ElementAt(i);
-                var b = selectedObjects.ElementAt(i);
+                var b = selectedObjects[i];
 
                 Assert.AreEqual(a.Name, b.Name);
                 Assert.AreEqual(a.ObjectType, b.ObjectType);
@@ -326,7 +326,7 @@ namespace UnitTests.ViewModels
             vm.AddObjects(databaseObjects, null);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                item.Objects.First().SetSelectedCommand.Execute(true);
+                item.Objects[0].SetSelectedCommand.Execute(true);
             }
 
             // Act
@@ -337,7 +337,7 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(6, result.Length);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                Assert.IsTrue(result.Any(c => c.Name == item.Objects.First().ModelDisplayName));
+                Assert.IsTrue(result.Any(c => c.Name == item.Objects[0].ModelDisplayName));
             }
         }
 

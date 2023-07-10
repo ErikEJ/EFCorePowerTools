@@ -65,7 +65,7 @@ namespace RevEng.Common
                 commandOptions.UseDateOnlyTimeOnly,
                 commandOptions.UseHierarchyId,
                 commandOptions.UseMultipleSprocResultSets,
-                commandOptions.Tables?.Any(t => t.ObjectType == ObjectType.Procedure) ?? false,
+                commandOptions.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
                 codeGenerationMode);
 
             var readmeName = "efcpt-readme.md";
@@ -372,7 +372,7 @@ namespace RevEng.Common
                 packageText.AppendLine($"  <PackageReference Include=\"{package.PackageId}\" Version=\"{package.Version}\" />");
             }
 
-            var mainPackage = packages.FirstOrDefault(p => p.IsMainProviderPackage);
+            var mainPackage = packages.Find(p => p.IsMainProviderPackage);
 
             return content.Replace("[ProviderName]", mainPackage?.UseMethodName ?? string.Empty)
                 .Replace("[ConnectionString]", redactedConnectionString.Replace(@"\", @"\\"))
