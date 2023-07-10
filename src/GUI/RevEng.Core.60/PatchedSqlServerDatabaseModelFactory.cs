@@ -23,8 +23,12 @@ using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Utilities;
 
+#nullable enable
+
 namespace RevEng.Core;
 
+[SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Hand crafted")]
+[SuppressMessage("Major Code Smell", "S1066:Collapsible \"if\" statements should be merged", Justification = "It's OK")]
 public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 {
     private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
@@ -630,7 +634,12 @@ WHERE "
 
         // This is done separately due to MARS property may be turned off
         GetColumns(connection, tables, filter, viewFilter, typeAliases, databaseCollation);
-        GetIndexes(connection, tables, filter);
+
+        if (SupportsIndexes())
+        {
+            GetIndexes(connection, tables, filter);
+        }
+        
         GetForeignKeys(connection, tables, filter);
 
         foreach (var table in tables)

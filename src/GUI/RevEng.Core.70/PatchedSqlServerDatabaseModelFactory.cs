@@ -22,8 +22,12 @@ using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 
+#nullable enable
+
 namespace RevEng.Core;
 
+[SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Hand crafted")]
+[SuppressMessage("Major Code Smell", "S1066:Collapsible \"if\" statements should be merged", Justification = "<Pending>")]
 public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 {
     private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
