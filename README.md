@@ -50,7 +50,7 @@ Ensure you always have the latest daily build (if you are brave) by installing [
 
 ## Cross platform command line tool - efcpt
 
-A cross platform dotnet global tool is currently in preview, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/GUI/efcpt/readme.md)
+If you do not use Visual Studio, a cross platform dotnet tool for reverse engineering is currently in preview, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/GUI/efcpt/readme.md)
 
 ## Related NuGet packages
 
