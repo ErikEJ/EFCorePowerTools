@@ -237,7 +237,7 @@ namespace RevEng.Core.Procedures
                 schemas.Distinct().OrderBy(s => s).ToList().ForEach(schema => usings.Add($"using {scaffolderOptions.ModelNamespace}.{schema}"));
             }
 
-            if (model.Routines.Any(r => r.SupportsMultipleResultSet))
+            if (model.Routines.Exists(r => r.SupportsMultipleResultSet))
             {
                 usings.AddRange(new List<string>()
                 {

@@ -374,7 +374,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             foreach (var col in tableColumns)
             {
-                var def = defaultConstraints.FirstOrDefault(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
+                var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
                 string storeType = null;
                 string systemTypeName = null;
 
