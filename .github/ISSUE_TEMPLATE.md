@@ -1,8 +1,8 @@
-Describe what is not working as expected.
+Create a bug report to help improve the tools, propose a new feature, or just ask a question.
 
 ### Provide steps to reproduce
 
-Please include a **complete** description of the issue or project that I can redo/run to reproduce the issue.
+Please include a **complete** description of the issue or link to a project that I can run to reproduce the issue.
 
 If you do **NOT** provide sufficient repro details or share a repro project, I cannot provide free support, and your issue will be closed immediately.
 
