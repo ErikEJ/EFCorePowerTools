@@ -455,7 +455,7 @@
     <PackageReference Include="AdysTech.CredentialManager" Version="2.6.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Community.VisualStudio.Toolkit.17">
-      <Version>17.0.492</Version>
+      <Version>17.0.507</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.5.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.5.0" />

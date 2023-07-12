@@ -31,6 +31,9 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("use-t4")]
         public bool UseT4 { get; set; }
 
+        [JsonPropertyName("t4-template-path")]
+        public string T4TemplatePath { get; set; }
+
         [JsonPropertyName("remove-defaultsql-from-bool-properties")]
         public bool RemoveDefaultSqlFromBoolProperties { get; set; }
 

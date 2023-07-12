@@ -30,6 +30,7 @@ namespace RevEng.Common
         public bool UseInflector { get; set; }
         public bool UseHandleBars { get; set; }
         public bool UseT4 { get; set; }
+        public string T4TemplatePath { get; set; }
         public int SelectedHandlebarsLanguage { get; set; }
         public bool IncludeConnectionString { get; set; }
         public int SelectedToBeGenerated { get; set; }

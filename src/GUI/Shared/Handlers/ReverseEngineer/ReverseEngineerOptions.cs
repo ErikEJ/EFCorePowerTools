@@ -57,5 +57,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool InstallNuGetPackage { get; set; }
         public bool PreserveCasingWithRegex { get; set; } = true;
         public bool UseDateOnlyTimeOnly { get; set; }
+        public string T4TemplatePath { get; set; }
     }
 }

@@ -60,6 +60,7 @@ namespace RevEng.Common.Cli
                 UseDatabaseNames = config.CodeGeneration.UseDatabaseNames,
                 UseInflector = config.CodeGeneration.UseInflector,
                 UseT4 = config.CodeGeneration.UseT4,
+                T4TemplatePath = config.CodeGeneration.T4TemplatePath,
                 IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
                 SelectedToBeGenerated = selectedToBeGenerated,
                 Dacpac = isDacpac ? connectionString : null,

@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
@@ -87,7 +86,7 @@ namespace RevEng.Core
                 SuppressOnConfiguring = !options.IncludeConnectionString,
                 UseNullableReferenceTypes = options.UseNullableReferences,
 #if CORE70
-                ProjectDir = options.UseT4 ? projectPath : null,
+                ProjectDir = options.UseT4 ? (options.T4TemplatePath ?? projectPath) : null,
 #endif
             };
 
