@@ -30,7 +30,7 @@ namespace Dgml
                     var props = line.Trim().Split(' ').ToList();
                     if (props.Count > 0)
                     {
-                        changeTrackingStrategy = props.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
+                        changeTrackingStrategy = props.Find(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
                         if (string.IsNullOrEmpty(changeTrackingStrategy))
                         {
                             changeTrackingStrategy = "ChangeTrackingStrategy.Snapshot";
@@ -154,7 +154,7 @@ namespace Dgml
 
                         string propertyAccesMode = GetPropertyAccessMode(props);
 
-                        var maxLength = props.FirstOrDefault(p => p.StartsWith("MaxLength", StringComparison.Ordinal));
+                        var maxLength = props.Find(p => p.StartsWith("MaxLength", StringComparison.Ordinal));
                         if (string.IsNullOrEmpty(maxLength))
                         {
                             maxLength = "None";
@@ -164,7 +164,7 @@ namespace Dgml
                             maxLength = maxLength.Replace("MaxLength", string.Empty);
                         }
 
-                        var valueGenerated = props.FirstOrDefault(p => p.StartsWith("ValueGenerated.", StringComparison.Ordinal)) ?? "None";
+                        var valueGenerated = props.Find(p => p.StartsWith("ValueGenerated.", StringComparison.Ordinal)) ?? "None";
                         var category = "Property Required";
                         if (!isRequired)
                         {
@@ -239,7 +239,7 @@ namespace Dgml
                         baseClass = parts[parts.IndexOf("Base:") + 1];
                     }
 
-                    changeTrackingStrategy = parts.FirstOrDefault(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
+                    changeTrackingStrategy = parts.Find(p => p.StartsWith("ChangeTrackingStrategy.", StringComparison.Ordinal));
                 }
 
                 if (string.IsNullOrEmpty(changeTrackingStrategy))

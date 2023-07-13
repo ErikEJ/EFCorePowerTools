@@ -326,11 +326,11 @@ namespace EFCorePowerTools.ViewModels
         {
             var subset = DatabaseConnections
                 .Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
-                .ToArray();
+                .ToList();
+
             if (!string.IsNullOrEmpty(uiHint) && uiHint.EndsWith(".sqlproj"))
             {
-                var candidate = subset
-                    .FirstOrDefault(m => m.FilePath.Equals(uiHint));
+                var candidate = subset.Find(m => m.FilePath.Equals(uiHint));
 
                 if (candidate != null)
                 {

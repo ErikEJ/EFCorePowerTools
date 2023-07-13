@@ -248,7 +248,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
-                var missingProviderPackage = neededPackages.FirstOrDefault(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
                 if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
                 {
                     missingProviderPackage = null;
@@ -567,7 +567,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
 
-            var startTime = DateTime.Now;
+            var stopWatch = Stopwatch.StartNew();
 
             if (options.UseHandleBars || options.UseT4)
             {
@@ -636,11 +636,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await ApplyNavigationRenamersAsync(project, referenceRenamingPath, options);
 
-            var duration = DateTime.Now - startTime;
+            stopWatch.Stop();
 
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
+            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {

@@ -50,7 +50,7 @@ namespace EFCorePowerTools.Helpers
                     result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
                 }
 
-                if (!options.UseDateOnlyTimeOnly && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
+                if (!options.UseDateOnlyTimeOnly && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
                     && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
                 {
                     result.Add("Your database schema contains one or more 'date' or 'time' columns, but you have not enabled them to be mapped to TimeOnly/DateOnly.");

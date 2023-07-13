@@ -354,7 +354,7 @@ namespace EFCorePowerTools.Extensions
                 {
                     foreach (var lib in lockFile.Libraries)
                     {
-                        var package = packages.FirstOrDefault(p => p.PackageId == lib.Name);
+                        var package = packages.Find(p => p.PackageId == lib.Name);
 
                         if (package != null)
                         {

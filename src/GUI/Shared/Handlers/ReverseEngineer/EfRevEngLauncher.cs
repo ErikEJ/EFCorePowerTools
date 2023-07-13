@@ -248,9 +248,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 return false;
             }
 
-            var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            return sdks.Any(s => s.StartsWith($"Microsoft.NETCore.App {version}.", StringComparison.OrdinalIgnoreCase));
+            return sdks.Exists(s => s.StartsWith($"Microsoft.NETCore.App {version}.", StringComparison.OrdinalIgnoreCase));
         }
 
         private string DropNetCoreFiles()
