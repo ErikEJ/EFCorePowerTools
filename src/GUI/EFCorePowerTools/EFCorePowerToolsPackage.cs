@@ -338,6 +338,12 @@ namespace EFCorePowerTools
                 return;
             }
 
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
+            {
+                menuCommand.Visible = await project.IsNet60OrHigherIncluding70Async() || await project.IsNetStandardAsync();
+                return;
+            }
+
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
