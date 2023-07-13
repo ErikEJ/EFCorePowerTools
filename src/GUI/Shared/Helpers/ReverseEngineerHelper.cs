@@ -163,7 +163,7 @@ namespace EFCorePowerTools.Helpers
 
             if (!list.Any())
             {
-                throw new InvalidOperationException("no supported target frameworks found in project");
+                throw new InvalidOperationException(".NET 5 and earlier projects are no longer supported");
             }
 
             var firstMode = list.Select(i => i.Key).First();

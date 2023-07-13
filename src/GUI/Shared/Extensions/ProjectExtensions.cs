@@ -179,14 +179,9 @@ namespace EFCorePowerTools.Extensions
         {
             var version = new Version(3, 0);
 
-            if (await project.IsNetStandard20Async())
+            if (await project.IsNetStandardAsync())
             {
                 version = new Version(2, 0);
-            }
-
-            if (await project.IsNetStandard21Async())
-            {
-                version = new Version(2, 1);
             }
 
             if (await project.IsNet60OrHigherAsync())
@@ -395,20 +390,6 @@ namespace EFCorePowerTools.Extensions
             }
 
             return new Tuple<bool, string>(hasDesign, coreVersion);
-        }
-
-        private static async Task<bool> IsNetStandard20Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.0") ?? false;
-        }
-
-        private static async Task<bool> IsNetStandard21Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.1") ?? false;
         }
 
         private static bool IsNet60(string targetFrameworkMonikers)
