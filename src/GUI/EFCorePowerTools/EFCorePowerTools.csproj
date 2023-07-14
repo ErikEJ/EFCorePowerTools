@@ -459,10 +459,10 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.6.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.5.33428.388" />
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.6.36389" />
+    <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.4.33103.184" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>17.6.2164</Version>
+      <Version>17.5.4074</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
