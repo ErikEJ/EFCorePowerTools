@@ -111,4 +111,4 @@ or
 dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
 ```
 
-[Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the '+CLI' designation.
+[Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the `+CLI` label.
