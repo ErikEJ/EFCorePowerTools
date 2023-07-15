@@ -2,6 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 using EFCorePowerTools.Handlers.ReverseEngineer;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -86,13 +87,7 @@ namespace EFCorePowerTools.Extensions
                 return uiHint;
             }
 
-            if (!Path.IsPathRooted(uiHint))
-            {
-                string sqlProjPath = Path.Combine(projectDirectory, uiHint);
-                return Path.GetFullPath(sqlProjPath);
-            }
-
-            return uiHint;
+            return PathHelper.GetAbsPath(uiHint, projectDirectory);
         }
 
         private static bool TryRead<T>(string optionsPath, out T deserialized)

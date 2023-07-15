@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
@@ -78,7 +77,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseFluentApiOnly = options.UseFluentApiOnly,
                 UseHandleBars = options.UseHandleBars,
                 UseT4 = options.UseT4,
-                T4TemplatePath = options.T4TemplatePath,
+                T4TemplatePath = options.T4TemplatePath != null ? PathHelper.GetAbsPath(options.T4TemplatePath, options.ProjectPath) : null,
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UncountableWords = options.UncountableWords,
