@@ -63,7 +63,7 @@ internal sealed class ScaffoldHostedService : HostedService
         var commandOptions = config.ToOptions(
             scaffoldOptions.ConnectionString,
             reverseEngineerCommandOptions.DatabaseType,
-            Directory.GetCurrentDirectory(),
+            scaffoldOptions.Output ?? Directory.GetCurrentDirectory(),
             scaffoldOptions.IsDacpac,
             scaffoldOptions.ConfigFile.FullName);
         DisplayService.MarkupLine();
