@@ -322,8 +322,8 @@
                     ]
                 },
                 "t4-template-path": {
-                    "type": "string",
-                    "default": "all",
+                    "type": [ "string", "null" ] ,
+                    "default": null,
                     "title": "Global path to T4 templates"
                 },
                 "remove-defaultsql-from-bool-properties": {
