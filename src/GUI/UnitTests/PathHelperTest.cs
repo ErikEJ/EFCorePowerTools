@@ -66,6 +66,5 @@ namespace UnitTests
             // Assert
             Assert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test", result);
         }
-
     }
 }

@@ -8,8 +8,8 @@
     <Description>Entity Framework Core Power Tools command line tool</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageVersion>7.0.0-rc.5</PackageVersion>
-    <InformationalVersion>7.0.0-rc.5</InformationalVersion>
+    <PackageVersion>7.0.0-rc.6</PackageVersion>
+    <InformationalVersion>7.0.0-rc.6</InformationalVersion>
     <Version>7.0.0</Version>
     <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
@@ -19,7 +19,7 @@
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
     <PackageReleaseNotes>early preview</PackageReleaseNotes>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
