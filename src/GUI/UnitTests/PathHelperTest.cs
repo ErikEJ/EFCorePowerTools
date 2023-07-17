@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using EFCorePowerTools.Extensions;
+using NUnit.Framework;
 using RevEng.Common;
 
 namespace UnitTests
@@ -45,5 +46,26 @@ namespace UnitTests
             // Assert
             Assert.AreEqual(@"C:\temp\data\folder", result);
         }
+
+        [Test]
+        public void GetRelativePath1()
+        {
+            // Act
+            var result = PathHelper.GetAbsPath("..\\", "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground");
+
+            // Assert
+            Assert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test\Ef7Playground", result);
+        }
+
+        [Test]
+        public void GetRelativePath2()
+        {
+            // Act
+            var result = PathHelper.GetAbsPath("..\\..\\", "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground");
+
+            // Assert
+            Assert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test", result);
+        }
+
     }
 }
