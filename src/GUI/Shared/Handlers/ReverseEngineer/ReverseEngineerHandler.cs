@@ -569,9 +569,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var stopWatch = Stopwatch.StartNew();
 
-            if (options.UseHandleBars || options.UseT4)
+            if (options.UseHandleBars || (options.UseT4 && string.IsNullOrEmpty(options.T4TemplatePath)))
             {
-                var result = reverseEngineerHelper.DropTemplates(options.OptionsPath, options.T4TemplatePath ?? options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
+                var result = reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
                 if (!string.IsNullOrEmpty(result))
                 {
                     await VS.MessageBox.ShowAsync(
