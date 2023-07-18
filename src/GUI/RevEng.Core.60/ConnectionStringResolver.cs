@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using MySqlConnector;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
@@ -19,6 +21,12 @@ namespace RevEng.Core
             ArgumentNullException.ThrowIfNull(connectionString);
 
             this.connectionString = connectionString;
+
+            if (connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
+            {
+                var database = Path.GetFileNameWithoutExtension(connectionString);
+                this.connectionString = $"Data Source=(local);Initial Catalog={database};Integrated Security=true";
+            }
         }
 
 #pragma warning disable CA1031
