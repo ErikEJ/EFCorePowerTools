@@ -313,9 +313,7 @@ namespace EFCorePowerTools
         private async void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            var menuCommand = sender as MenuCommand;
-
-            if (menuCommand == null)
+            if (!(sender is MenuCommand menuCommand))
             {
                 return;
             }
@@ -325,6 +323,11 @@ namespace EFCorePowerTools
             var project = await VS.Solutions.GetActiveProjectAsync();
 
             if (project == null)
+            {
+                return;
+            }
+
+            if (await project.IsNetFrameworkAsync())
             {
                 return;
             }
