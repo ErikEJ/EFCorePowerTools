@@ -39,10 +39,18 @@ namespace EFCorePowerTools
     [Guid(GuidList.guidDbContextPackagePkgString)]
     [ProvideOptionPage(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
     [ProvideProfile(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
-    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideUIContextRule(
+        UIContextGuid,
+        name: "Auto load based on rules",
+        expression: "(SingleProject | MultipleProjects) & CSharpConfig",
+        termNames: new[] { "SingleProject", "MultipleProjects", "CSharpConfig" },
+        termValues: new[] { VSConstants.UICONTEXT.SolutionHasSingleProject_string, VSConstants.UICONTEXT.SolutionHasMultipleProjects_string, "ActiveProjectCapability:CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript" })]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class EFCorePowerToolsPackage : AsyncPackage
     {
+        public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
+
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;

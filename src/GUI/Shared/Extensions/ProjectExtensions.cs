@@ -205,7 +205,7 @@ namespace EFCorePowerTools.Extensions
             ////var capabilities = (value ?? string.Empty).Split(' ');
 
             // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            return project.IsCapabilityMatch("CSharp & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
+            return project.IsCapabilityMatch("CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
         public static async Task<bool> IsNetFrameworkAsync(this Project project)

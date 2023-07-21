@@ -52,6 +52,7 @@
       
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core 工具</CommandName>
           <ButtonText>EF Core 工具</ButtonText>
@@ -60,6 +61,7 @@
 
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools</CommandName>
           <ButtonText>EF Core 工具</ButtonText>
@@ -68,6 +70,7 @@
 
       <Menu guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" priority="0x0100" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
           <ButtonText>EF Core 工具 - 反向工程</ButtonText>
