@@ -351,7 +351,7 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
-                menuCommand.Visible = await project.IsNet60OrHigherIncluding70Async() || await project.IsNetStandardAsync();
+                menuCommand.Visible = await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync();
                 return;
             }
 
@@ -370,13 +370,6 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
                 menuCommand.Visible = await project.IsNet60OrHigherAsync();
-                return;
-            }
-
-            var path = await project.GetMsBuildSqlProjOutPutAssemblyPathAsync();
-            if (!string.IsNullOrEmpty(path))
-            {
-                menuCommand.Visible = false;
             }
         }
 

@@ -74,30 +74,6 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
-        public static async Task<string> GetMsBuildSqlProjOutPutAssemblyPathAsync(this Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            var assemblyName = await project.GetAttributeAsync("AssemblyName");
-
-            var assemblyNameExe = assemblyName + ".dacpac";
-            var assemblyNameDll = assemblyName + ".deps.json";
-
-            var outputPath = await GetOutputPathAsync(project);
-
-            if (string.IsNullOrEmpty(outputPath))
-            {
-                return null;
-            }
-
-            if (File.Exists(Path.Combine(outputPath, assemblyNameExe)) && File.Exists(Path.Combine(outputPath, assemblyNameDll)))
-            {
-                return Path.Combine(outputPath, assemblyNameExe);
-            }
-
-            return null;
-        }
-
         public static List<string> GetConfigFiles(this Project project)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
