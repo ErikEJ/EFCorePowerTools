@@ -40,10 +40,6 @@ namespace RevEng.Core.Procedures
             {
                 var sql = new StringBuilder();
                 sql.AppendLine(RoutineSql);
-#if CORE31
-                // Filters out table-valued functions without filtering out stored procedures
-                sql.AppendLine("AND COALESCE(DATA_TYPE, '') != 'TABLE'");
-#endif
                 sql.AppendLine("ORDER BY ROUTINE_NAME;");
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
@@ -59,6 +55,16 @@ namespace RevEng.Core.Procedures
                         }
                     }
                 }
+
+                if (found.Count == 0)
+                {
+                    return new RoutineModel
+                    {
+                        Routines = result,
+                        Errors = new List<string>(),
+                    };
+                }
+
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
                 var allParameters = options.FullModel ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
