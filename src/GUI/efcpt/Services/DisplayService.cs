@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Spectre.Console;
@@ -49,7 +50,7 @@ internal static class DisplayService
 
     public static void Error(string message)
     {
-        MarkupLine(() => Markup("error:", Color.Red), () => message);
+        AnsiConsole.MarkupLineInterpolated(CultureInfo.InvariantCulture, $"[red]error: {message}[/]");
     }
 
     public static T Wait<T>(string message, [NotNull] Func<T> doFunc)
