@@ -40,7 +40,6 @@ namespace RevEng.Core.Procedures
             {
                 var sql = new StringBuilder();
                 sql.AppendLine(RoutineSql);
-                sql.AppendLine("ORDER BY ROUTINE_NAME;");
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                 using (var command = new SqlCommand(sql.ToString(), connection))
@@ -55,19 +54,9 @@ namespace RevEng.Core.Procedures
                         }
                     }
                 }
-
-                if (found.Count == 0)
-                {
-                    return new RoutineModel
-                    {
-                        Routines = result,
-                        Errors = new List<string>(),
-                    };
-                }
-
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
-                var allParameters = options.FullModel ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
+                var allParameters = options.FullModel && found.Any() ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
 
                 foreach (var foundModule in found)
                 {

@@ -35,7 +35,8 @@ AND (
                 class = 1 and 
                 name = N'microsoft_database_tools_support'
         ) IS NULL 
-AND ROUTINE_TYPE = N'PROCEDURE'";
+AND ROUTINE_TYPE = N'PROCEDURE' 
+ORDER BY ROUTINE_NAME;";
         }
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
