@@ -179,6 +179,8 @@ namespace RevEng.Core
                     allfiles.Add(functionPaths.ContextFile);
                 }
 
+                var sku = SkuHelper.GetSkuInfo(options.ConnectionString, options.DatabaseType);
+
                 var result = new ReverseEngineerResult
                 {
                     EntityErrors = errors,
@@ -186,6 +188,8 @@ namespace RevEng.Core
                     EntityTypeFilePaths = allfiles,
                     ContextFilePath = filePaths.ContextFile,
                     ContextConfigurationFilePaths = entityTypeConfigurationPaths,
+                    DatabaseEdition = sku.Edition,
+                    DatabaseVersion = sku.Version,
                 };
 
                 return result;

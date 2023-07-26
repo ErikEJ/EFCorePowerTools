@@ -660,6 +660,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
+            Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion);
         }
 
         private async Task ApplyNavigationRenamersAsync(Project project, string referenceRenamingPath, ReverseEngineerOptions options)

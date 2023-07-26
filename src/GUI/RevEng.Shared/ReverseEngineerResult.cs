@@ -12,6 +12,8 @@ namespace RevEng.Common
         public IList<string> ContextConfigurationFilePaths { get; set; }
         public List<string> EntityErrors { get; set; }
         public List<string> EntityWarnings { get; set; }
+        public int DatabaseEdition { get; set; }
+        public int DatabaseVersion { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
         [IgnoreDataMember]
         public bool HasIssues => EntityErrors.Any() || EntityWarnings.Any();

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.ApplicationInsights;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
@@ -45,6 +47,22 @@ namespace EFCorePowerTools.Helpers
             if (Enabled && telemetry != null)
             {
                 telemetry.TrackEvent($"{prefix}:{codeGenerationMode}");
+                telemetry.Flush();
+            }
+#endif
+        }
+
+        public static void TrackEngineUse(DatabaseType databaseType, int databaseEdition, int databaseVersion)
+        {
+#if !DEBUG
+            if (Enabled && telemetry != null)
+            {
+                telemetry.TrackEvent("EngineUse", new Dictionary<string, string>()
+                {
+                    { "databaseType", databaseType.ToString() },
+                    { "databaseEdition", databaseEdition.ToString(CultureInfo.InvariantCulture) },
+                    { "databaseVersion", databaseVersion.ToString(CultureInfo.InvariantCulture) },
+                });
                 telemetry.Flush();
             }
 #endif
