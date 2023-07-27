@@ -190,6 +190,7 @@ namespace RevEng.Core
                     ContextConfigurationFilePaths = entityTypeConfigurationPaths,
                     DatabaseEdition = sku.Edition,
                     DatabaseVersion = sku.Version,
+                    DatabaseLevel = sku.Level,
                 };
 
                 return result;
