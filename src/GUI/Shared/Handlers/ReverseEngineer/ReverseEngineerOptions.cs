@@ -50,7 +50,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseNoObjectFilter { get; set; }
         public bool UseNoDefaultConstructor { get; set; }
         public bool UseManyToManyEntity { get; set; }
-        public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore6;
+        public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore7;
         public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
         [IgnoreDataMember]
