@@ -13,6 +13,7 @@
    "Schemas": null,
    "SelectedHandlebarsLanguage": 2,
    "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
    "Tables": [
       {
          "Name": "[dbo].[__MigrationHistory]",
@@ -199,7 +200,7 @@
          "ObjectType": 2
       }
    ],
-   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Northwind",
+   "UiHint": "dg-pf2wppld\\sqlexpress.Northwind.dbo",
    "UncountableWords": [
       "Status",
       "Data"
@@ -219,6 +220,7 @@
    "UseNodaTime": false,
    "UseNullableReferences": true,
    "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
    "UseSpatial": true,
    "UseT4": true
 }

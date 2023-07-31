@@ -35,8 +35,14 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
 
+    /// <summary>
+    /// Orders table
+    /// </summary>
     public virtual DbSet<Order> Orders { get; set; }
 
+    /// <summary>
+    /// OrderDetails table
+    /// </summary>
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<OrderDetailsExtended> OrderDetailsExtendeds { get; set; }
@@ -110,7 +116,9 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(15);
-            entity.Property(e => e.Description).HasColumnType("ntext");
+            entity.Property(e => e.Description)
+                .HasComment("Obsolete")
+                .HasColumnType("ntext");
             entity.Property(e => e.Picture).HasColumnType("image");
         });
 
@@ -310,6 +318,8 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
+            entity.ToTable(tb => tb.HasComment("Orders table"));
+
             entity.HasIndex(e => e.CustomerId, "CustomerID");
 
             entity.HasIndex(e => e.CustomerId, "CustomersOrders");
@@ -362,7 +372,7 @@ public partial class NorthwindContext : DbContext
         {
             entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("PK_Order_Details");
 
-            entity.ToTable("Order Details");
+            entity.ToTable("Order Details", tb => tb.HasComment("OrderDetails table"));
 
             entity.HasIndex(e => e.OrderId, "OrderID");
 
