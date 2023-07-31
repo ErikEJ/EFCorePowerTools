@@ -18,12 +18,12 @@ namespace RevEng.Core
 
         protected override RelationalTypeMapping FindMapping(in RelationalTypeMappingInfo mappingInfo)
         {
-            if (!useDateOnlyTimeOnly && (mappingInfo.ClrType == typeof(DateOnly)))
+            if (!useDateOnlyTimeOnly && (mappingInfo.StoreTypeName == "date"))
             {
                 return new SqlServerDateTimeTypeMapping("date", DbType.Date);
             }
 
-            if (!useDateOnlyTimeOnly && (mappingInfo.ClrType == typeof(TimeOnly)))
+            if (!useDateOnlyTimeOnly && (mappingInfo.StoreTypeName == "time"))
             {
                 return new SqlServerTimeSpanTypeMapping("time");
             }
