@@ -19,6 +19,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly CodeGenerationMode codeGenerationMode;
         private readonly string revengFolder;
         private readonly string revengRoot;
+        private readonly string exeName;
+        private readonly string zipName;
         private readonly ResultDeserializer resultDeserializer;
 
         public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
@@ -27,17 +29,29 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             this.codeGenerationMode = codeGenerationMode;
             var versionSuffix = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion;
 
+            string revengVersion;
+
             switch (codeGenerationMode)
             {
                 case CodeGenerationMode.EFCore6:
-                    revengFolder = "efreveng6.";
+                    revengVersion = "6";
                     break;
+
                 case CodeGenerationMode.EFCore7:
-                    revengFolder = "efreveng7.";
+                    revengVersion = "7";
                     break;
+
+                case CodeGenerationMode.EFCore8:
+                    revengVersion = "8";
+                    break;
+
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException("Unsupported code generation mode");
             }
+
+            revengFolder = $"efreveng{revengVersion}.";
+            exeName = $"efreveng{revengVersion}0.dll";
+            zipName = $"efreveng{revengVersion}0.exe.zip";
 
             revengRoot = revengFolder;
 
@@ -184,10 +198,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<ProcessStartInfo> CreateStartInfoAsync(string arguments)
         {
-            string version = "3.1";
+            string version = "6.0";
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore6 || codeGenerationMode == CodeGenerationMode.EFCore7)
+            if (codeGenerationMode == CodeGenerationMode.EFCore8)
             {
+                // TODO Target .NET 8.0 soon
                 version = "6.0";
             }
 
@@ -261,7 +276,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
-            var fullPath = Path.Combine(toDir, GetExeName());
+            var fullPath = Path.Combine(toDir, exeName);
 
             if (Directory.Exists(toDir)
                 && File.Exists(fullPath)
@@ -276,20 +291,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Directory.CreateDirectory(toDir);
-
-            string zipName;
-
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore6:
-                    zipName = $"efreveng60.exe.zip";
-                    break;
-                case CodeGenerationMode.EFCore7:
-                    zipName = $"efreveng70.exe.zip";
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
 
             using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
             {
@@ -319,19 +320,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             return fullPath;
-        }
-
-        private string GetExeName()
-        {
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore6:
-                    return "efreveng60.dll";
-                case CodeGenerationMode.EFCore7:
-                    return "efreveng70.dll";
-                default:
-                    throw new NotSupportedException("Unsupported code generation mode");
-            }
         }
     }
 }

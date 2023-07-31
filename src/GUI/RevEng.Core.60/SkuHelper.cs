@@ -49,10 +49,12 @@ FROM sys.databases WHERE name = @p1;";
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                         }
                     }
+#pragma warning disable CA1031 // Do not catch general exception types
                     catch
                     {
                         // Ignore
                     }
+#pragma warning restore CA1031 // Do not catch general exception types
 
                     break;
                 case DatabaseType.SQLite:

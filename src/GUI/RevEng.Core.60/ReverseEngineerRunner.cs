@@ -88,7 +88,7 @@ namespace RevEng.Core
             {
                 SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
 
-#if CORE70
+#if CORE70 || CORE80
                 if (options.UseT4)
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
@@ -113,7 +113,7 @@ namespace RevEng.Core
                             var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                             if (index != -1)
                             {
-#if CORE70
+#if CORE70 || CORE80
                                 dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
@@ -126,7 +126,7 @@ namespace RevEng.Core
                             var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                             if (index != -1)
                             {
-#if CORE70
+#if CORE70 || CORE80
                                 dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
@@ -246,7 +246,7 @@ namespace RevEng.Core
             }
         }
 
-#if CORE70
+#if CORE70 || CORE80
         private static List<(string Path, string OutputPath)> GetAlternateCodeTemplatePaths(string projectPath)
         {
             var result = new List<(string Path, string OutputPath)>();
