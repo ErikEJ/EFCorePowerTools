@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using EntityFrameworkCore.Scaffolding.Handlebars;
+using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Humanizer.Inflections;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -12,15 +10,23 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
-using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-using Oracle.EntityFrameworkCore.Design.Internal;
-using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
+
+#if !CORE80
+using EntityFrameworkCore.Scaffolding.Handlebars;
+using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.SqlServer.Design;
+using Oracle.EntityFrameworkCore.Design.Internal;
+using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+#endif
 
 namespace RevEng.Core
 {
@@ -31,6 +37,11 @@ namespace RevEng.Core
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
+            }
+
+            if (serviceCollection == null)
+            {
+                throw new ArgumentNullException(nameof(serviceCollection));
             }
 
             var reporter = new OperationReporter(
@@ -62,6 +73,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
+#if !CORE80
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -72,7 +84,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
-
+#endif
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)
@@ -99,7 +111,16 @@ namespace RevEng.Core
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
+#if !CORE80
                     serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
+#else
+                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                        provider => new RevEng.Core.SqlServerTypeMappingSource(
+                            provider.GetService<TypeMappingSourceDependencies>(),
+                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                            provider.GetService<ISqlServerSingletonOptions>(),
+                            options.UseDateOnlyTimeOnly));
+#endif
 
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     serviceCollection.AddSqlServerFunctionDesignTimeServices();
@@ -116,6 +137,7 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+#if !CORE80
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
@@ -127,7 +149,7 @@ namespace RevEng.Core
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 case DatabaseType.SQLServerDacpac:
@@ -156,7 +178,7 @@ namespace RevEng.Core
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if !CORE80
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
@@ -168,7 +190,7 @@ namespace RevEng.Core
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 case DatabaseType.Npgsql:
@@ -189,6 +211,7 @@ namespace RevEng.Core
 
                     break;
 
+#if !CORE80
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -210,17 +233,18 @@ namespace RevEng.Core
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-
+#endif
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
+#if !CORE80
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 default:

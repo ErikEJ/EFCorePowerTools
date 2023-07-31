@@ -85,7 +85,7 @@ namespace RevEng.Core
                 ConnectionString = options.ConnectionString,
                 SuppressOnConfiguring = !options.IncludeConnectionString,
                 UseNullableReferenceTypes = options.UseNullableReferences,
-#if CORE70
+#if CORE70 || CORE80
                 ProjectDir = options.UseT4 ? (options.T4TemplatePath ?? projectPath) : null,
 #endif
             };
@@ -486,7 +486,7 @@ namespace RevEng.Core
             {
                 throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
             }
-#if CORE70
+#if CORE70 || CORE80
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions);
 #else
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);

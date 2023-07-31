@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
-using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
+using Npgsql;
+
+#if !CORE80
+using FirebirdSql.Data.FirebirdClient;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using MySqlConnector;
-using Npgsql;
 using Oracle.ManagedDataAccess.Client;
+#endif
 
 namespace RevEng.Core
 {
@@ -65,6 +68,7 @@ namespace RevEng.Core
                 // Ignore
             }
 
+#if !CORE80
             try
             {
                 var a = new MySqlConnectionStringBuilder(connectionString);
@@ -94,6 +98,7 @@ namespace RevEng.Core
             {
                 // Ignore
             }
+#endif
 
             return aliases;
         }

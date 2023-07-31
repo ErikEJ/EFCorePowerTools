@@ -9,5 +9,6 @@ namespace RevEng.Common
         // Do not re-use 0 or 1!
         EFCore6 = 2,
         EFCore7 = 3,
+        EFCore8 = 4,
     }
 }
