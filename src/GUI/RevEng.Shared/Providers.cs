@@ -94,6 +94,9 @@ namespace RevEng.Common
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.20";
                         break;
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.0-preview.6.23329.4";
+                        break;
                 }
 
                 packages.Add(new NuGetPackage
@@ -117,7 +120,7 @@ namespace RevEng.Common
                     });
                 }
 
-                if (useNodaTime)
+                if (useNodaTime && codeGenerationMode != CodeGenerationMode.EFCore8)
                 {
                     pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
@@ -145,19 +148,36 @@ namespace RevEng.Common
                         case CodeGenerationMode.EFCore6:
                             pkgVersion = "3.0.1";
                             break;
+                        case CodeGenerationMode.EFCore8:
+                            pkgVersion = "8.0.0-preview.6.23329.4";
+                            break;
                     }
 
-                    packages.Add(new NuGetPackage
+                    if (codeGenerationMode == CodeGenerationMode.EFCore8)
                     {
-                        PackageId = "EntityFrameworkCore.SqlServer.HierarchyId",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "HierarchyId",
-                    });
+                        packages.Add(new NuGetPackage
+                        {
+                            PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
+                            Version = pkgVersion,
+                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                            IsMainProviderPackage = false,
+                            UseMethodName = "HierarchyId",
+                        });
+                    }
+                    else
+                    {
+                        packages.Add(new NuGetPackage
+                        {
+                            PackageId = "EntityFrameworkCore.SqlServer.HierarchyId",
+                            Version = pkgVersion,
+                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                            IsMainProviderPackage = false,
+                            UseMethodName = "HierarchyId",
+                        });
+                    }
                 }
 
-                if (useDateOnlyTimeOnly)
+                if (useDateOnlyTimeOnly && codeGenerationMode != CodeGenerationMode.EFCore8)
                 {
                     pkgVersion = "7.0.5";
                     switch (codeGenerationMode)
@@ -202,6 +222,9 @@ namespace RevEng.Common
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.20";
                         break;
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.0-preview.6.23329.4";
+                        break;
                 }
 
                 packages.Add(new NuGetPackage
@@ -213,7 +236,7 @@ namespace RevEng.Common
                     UseMethodName = "Sqlite",
                 });
 
-                if (useNodaTime)
+                if (useNodaTime && codeGenerationMode != CodeGenerationMode.EFCore8)
                 {
                     pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
@@ -241,6 +264,9 @@ namespace RevEng.Common
                 {
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.8";
+                        break;
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.0-preview.4";
                         break;
                 }
 

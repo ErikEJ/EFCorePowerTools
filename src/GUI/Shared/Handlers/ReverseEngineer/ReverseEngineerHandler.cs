@@ -155,6 +155,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
 
+                var newOptions = false;
+
                 if (options == null)
                 {
                     options = new ReverseEngineerOptions
@@ -162,6 +164,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
                         OutputPath = "Models",
                     };
+                    newOptions = true;
                 }
 
                 legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
@@ -209,6 +212,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         {
                             await VS.StatusBar.ClearAsync();
                             return;
+                        }
+
+                        if (newOptions)
+                        {
+                            options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
                         }
 
                         await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
