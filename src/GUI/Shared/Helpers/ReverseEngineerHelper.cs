@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -36,25 +35,21 @@ namespace EFCorePowerTools.Helpers
         {
             var result = new List<string>();
 
-            if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
-                || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
+            if (!options.UseHierarchyId && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
+                && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
             {
-                if (!options.UseHierarchyId && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
-                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
-                {
-                    result.Add("Your database schema contains one or more 'hierarchyid' columns, but you have not enabled them to be mapped.");
-                }
+                result.Add("Your database schema contains one or more 'hierarchyid' columns, but you have not enabled them to be mapped.");
+            }
 
-                if (!options.UseSpatial && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
-                {
-                    result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
-                }
+            if (!options.UseSpatial && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
+            {
+                result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
+            }
 
-                if (!options.UseDateOnlyTimeOnly && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
-                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
-                {
-                    result.Add("Your database schema contains one or more 'date' or 'time' columns, but you have not enabled them to be mapped to TimeOnly/DateOnly.");
-                }
+            if (!options.UseDateOnlyTimeOnly && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
+                && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
+            {
+                result.Add("Your database schema contains one or more 'date' or 'time' columns, but you have not enabled them to be mapped to TimeOnly/DateOnly.");
             }
 
             return result;
@@ -68,8 +63,7 @@ namespace EFCorePowerTools.Helpers
         public string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
-
-            const string T4Version = "703";
+            string t4Version = "703";
 
             if (useHandlebars)
             {
@@ -87,14 +81,19 @@ namespace EFCorePowerTools.Helpers
             }
             else
             {
-                if (codeGenerationMode == CodeGenerationMode.EFCore7)
+                switch (codeGenerationMode)
                 {
-                    zipName = $"T4_{T4Version}.zip";
+                    case CodeGenerationMode.EFCore7:
+                        t4Version = "703";
+                        break;
+                    case CodeGenerationMode.EFCore8:
+                        t4Version = "800";
+                        break;
+                    default:
+                        throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
                 }
-                else
-                {
-                    throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
-                }
+
+                zipName = $"T4_{t4Version}.zip";
             }
 
             var defaultZip = "CodeTemplates.zip";
@@ -124,8 +123,8 @@ namespace EFCorePowerTools.Helpers
 
             if (!useHandlebars && Directory.Exists(toDir))
             {
-                var error = $"The latest T4 template version could not be found, looking for 'Template version: {T4Version}' in the T4 file - please update your T4 templates, for example by renaming the CodeTemplates folder.";
-                var check = $"Template version: {T4Version}";
+                var error = $"The latest T4 template version could not be found, looking for 'Template version: {t4Version}' in the T4 file - please update your T4 templates, for example by renaming the CodeTemplates folder.";
+                var check = $"Template version: {t4Version}";
 
                 var target = Path.Combine(toDir, "EFCore", "EntityType.t4");
                 if (File.Exists(target))

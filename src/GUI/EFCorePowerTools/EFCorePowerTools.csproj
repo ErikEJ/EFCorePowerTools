@@ -187,6 +187,10 @@
       <Link>efreveng80.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="..\lib\T4_800.zip">
+      <Link>T4_800.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="app.config" />
     <Content Include="CodeTemplates600.zip">
       <IncludeInVSIX>true</IncludeInVSIX>

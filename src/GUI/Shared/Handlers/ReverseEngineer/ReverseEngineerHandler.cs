@@ -596,6 +596,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode, project);
 
+            revEngResult.EntityWarnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToList();
+
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
@@ -660,11 +662,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 package.LogError(revEngResult.EntityErrors, null);
             }
 
-            var warnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToList();
-
-            if (warnings.Any())
+            if (revEngResult.EntityWarnings.Any())
             {
-                package.LogError(warnings, null);
+                package.LogError(revEngResult.EntityWarnings, null);
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
