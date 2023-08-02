@@ -10,6 +10,12 @@ For a quick intro you can watch [this 2 minute demo video](https://www.youtube.c
 
 ### Installing the tool
 
+EF Core 8:
+
+```bash
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-*
+```
+
 EF Core 7:
 
 ```bash
@@ -103,12 +109,6 @@ In the example above, Users and Messages tables will be selected.
 
 ```bash
 dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
-```
-
-or
-
-```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
 ```
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the `+CLI` label.
