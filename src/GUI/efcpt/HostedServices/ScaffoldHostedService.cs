@@ -70,7 +70,7 @@ internal sealed class ScaffoldHostedService : HostedService
 
         if (commandOptions.UseT4 && Constants.Version > 6)
         {
-            var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath);
+            var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath, Constants.CodeGeneration);
             if (!string.IsNullOrEmpty(t4Result))
             {
                 DisplayService.MarkupLine(t4Result, Color.Default);
