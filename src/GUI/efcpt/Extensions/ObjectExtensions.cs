@@ -5,7 +5,7 @@ namespace ErikEJ.EFCorePowerTools.Extensions;
 
 internal static class ObjectExtensions
 {
-    internal static void CopyTo<T>([NotNull]this T source, [NotNull] T destination)
+    internal static void CopyTo<T>(this T source, T destination)
         where T : class
     {
         var properties = source.GetType().GetProperties().Where(p => p.CanWrite);
