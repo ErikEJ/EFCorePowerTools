@@ -181,6 +181,13 @@ namespace RevEng.Core
 
                 var sku = SkuHelper.GetSkuInfo(options.ConnectionString, options.DatabaseType);
 
+                if ((options.DatabaseType == DatabaseType.SQLServer
+                    || options.DatabaseType == DatabaseType.SQLServerDacpac)
+                    && sku.Version > 12 && sku.Level > 0 && sku.Level < 130)
+                {
+                    warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database enginer features.");
+                }
+
                 var result = new ReverseEngineerResult
                 {
                     EntityErrors = errors,
