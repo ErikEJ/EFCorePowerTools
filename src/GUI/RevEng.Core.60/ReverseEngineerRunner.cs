@@ -184,7 +184,7 @@ namespace RevEng.Core
                 if ((options.DatabaseType == DatabaseType.SQLServer)
                     && sku.Version > 12 && sku.Level > 0 && sku.Level < 130)
                 {
-                    warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database enginer features.");
+                    warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database engine features.");
                 }
 
                 var result = new ReverseEngineerResult
