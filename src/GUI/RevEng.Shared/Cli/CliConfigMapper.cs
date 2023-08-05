@@ -107,7 +107,7 @@ namespace RevEng.Common.Cli
             return options;
         }
 
-        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out CliConfig config)
+        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config)
         {
             if (File.Exists(fullPath))
             {
@@ -123,6 +123,14 @@ namespace RevEng.Common.Cli
                         RootNamespace = GetRootNamespaceSuggestion(fullPath),
                     },
                 };
+
+                if (codeGenerationMode == CodeGenerationMode.EFCore8)
+                {
+                    config.TypeMappings = new TypeMappings
+                    {
+                        UseDateOnlyTimeOnly = true,
+                    };
+                }
             }
 
             config.Tables = Add(objects, config.Tables);

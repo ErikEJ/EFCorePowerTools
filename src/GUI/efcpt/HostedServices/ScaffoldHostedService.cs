@@ -54,6 +54,7 @@ internal sealed class ScaffoldHostedService : HostedService
                 scaffoldOptions.ConnectionString,
                 reverseEngineerCommandOptions.DatabaseType,
                 tableModels,
+                Constants.CodeGeneration,
                 out var config))
         {
             Environment.ExitCode = 1;
@@ -99,6 +100,7 @@ internal sealed class ScaffoldHostedService : HostedService
         var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
         var fileUri = new Uri(new Uri("file://"), readmePath);
 
+        DisplayService.MarkupLine();
         DisplayService.MarkupLine(
             "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
         DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
