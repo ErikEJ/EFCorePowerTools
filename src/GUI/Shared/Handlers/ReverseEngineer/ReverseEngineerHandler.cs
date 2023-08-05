@@ -25,7 +25,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
-        private List<string> missingTypeWarnings = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
@@ -464,8 +463,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 preselectedTables.AddRange(normalizedTables);
             }
 
-            missingTypeWarnings = reverseEngineerHelper.AddSuggestedMappings(options, predefinedTables);
-
             await VS.StatusBar.ClearAsync();
 
             var ptd = package.GetView<IPickTablesDialog>()
@@ -595,8 +592,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode, project);
-
-            revEngResult.EntityWarnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToList();
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 

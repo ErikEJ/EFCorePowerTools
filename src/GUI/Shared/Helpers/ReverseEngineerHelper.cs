@@ -31,30 +31,6 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public List<string> AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
-        {
-            var result = new List<string>();
-
-            if (!options.UseHierarchyId && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
-                && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
-            {
-                result.Add("Your database schema contains one or more 'hierarchyid' columns, but you have not enabled them to be mapped.");
-            }
-
-            if (!options.UseSpatial && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
-            {
-                result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
-            }
-
-            if (!options.UseDateOnlyTimeOnly && tables.Exists(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
-                && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
-            {
-                result.Add("Your database schema contains one or more 'date' or 'time' columns, but you have not enabled them to be mapped to TimeOnly/DateOnly.");
-            }
-
-            return result;
-        }
-
         public void DropT4Templates(string projectPath)
         {
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);

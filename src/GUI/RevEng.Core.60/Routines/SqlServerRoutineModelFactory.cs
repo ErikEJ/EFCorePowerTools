@@ -124,7 +124,7 @@ namespace RevEng.Core.Procedures
                                 && func.Parameters.Count > 0
                                 && func.Parameters.Exists(p => p.StoreType == "table type"))
                             {
-                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.{Environment.NewLine}");
+                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.");
                                 continue;
                             }
 
@@ -139,13 +139,13 @@ namespace RevEng.Core.Procedures
                                 if (duplicates.Any())
                                 {
                                     dupesFound = true;
-                                    errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.{Environment.NewLine}");
+                                    errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.");
                                 }
                             }
 
                             if (module.UnnamedColumnCount > 0)
                             {
-                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} un-named columns.{Environment.NewLine}");
+                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} un-named columns.");
                             }
 
                             if (dupesFound)
