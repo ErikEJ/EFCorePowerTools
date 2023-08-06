@@ -1,6 +1,6 @@
 Create a bug report, feature proposal, or ask a question.
 
-**NOTCE**:  A bug report without sufficient technical and repro details and version information **will be closed immediately**.
+NOTICE: A bug report without sufficient technical and repro details and version information WILL BE CLOSED WITHOUT ANY FURTHER ACTION.
 
 ### Provide steps to reproduce a bug
 
