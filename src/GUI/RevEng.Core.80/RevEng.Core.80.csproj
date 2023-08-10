@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>
 		<RootNamespace>RevEng.Core</RootNamespace>
     <Nullable>warnings</Nullable>
@@ -33,13 +33,13 @@
 	<ItemGroup>
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <!--<PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="7.0.0" />-->
-    <!--<PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="7.0.0" />-->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.0-preview.6.23329.4" />
+    <!--<PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="7.0.0" />-->    
     <!--<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.2.0-alpha1" />-->    
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.6.23329.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.0-preview.6.23329.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.7.23375.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.7.23375.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.0-preview.7.23375.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.0-preview.7.23375.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="8.0.0-preview.4" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="8.0.0-preview.4" />
     <!--<PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.9" />-->

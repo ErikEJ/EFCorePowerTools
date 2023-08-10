@@ -19,7 +19,7 @@
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
     <PackageReleaseNotes>early preview for EF Core 6</PackageReleaseNotes>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>

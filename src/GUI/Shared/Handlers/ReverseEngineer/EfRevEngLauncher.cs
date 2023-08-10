@@ -202,8 +202,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (codeGenerationMode == CodeGenerationMode.EFCore8)
             {
-                // TODO Target .NET 8.0 soon
-                version = "6.0";
+                version = "8.0";
             }
 
             if (!await IsDotnetInstalledAsync(version))
