@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>efpt</AssemblyName>
 		<RootNamespace>Modelling</RootNamespace>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>
@@ -27,7 +27,7 @@
 	</ItemGroup>
 
    <ItemGroup>
-     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4" />
+     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.7.23375.4" />
    </ItemGroup>
 
 </Project>
