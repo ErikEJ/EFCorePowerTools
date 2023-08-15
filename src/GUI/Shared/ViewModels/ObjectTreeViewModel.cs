@@ -101,15 +101,22 @@ namespace EFCorePowerTools.ViewModels
                         .SelectMany(a => a.Tables.Where(t => t.Columns != null && t.Name == obj.Name))
                         .ToList();
 
-                    var ignoredReplacers = originalReplacers
+                    var ignoredColumnReplacers = originalReplacers
                         .SelectMany(o => o.Columns.Where(c => c.Name != null && c.Name.Equals(c.NewName)))
                         .ToList();
 
-                    if (objectIsRenamed || renamedColumns.Any() || ignoredReplacers.Any())
+                    var ignoredTableReplacers = originalReplacers
+                        .Where(c => c.Name != null && c.Name.Equals(c.NewName) && (!c.Columns?.Any() ?? false))
+                        .ToList();
+
+                    if (objectIsRenamed
+                        || renamedColumns.Any()
+                        || ignoredColumnReplacers.Any()
+                        || ignoredTableReplacers.Any())
                     {
                         var columnRenamers = renamedColumns
                             .Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName })
-                            .Concat(ignoredReplacers);
+                            .Concat(ignoredColumnReplacers);
 
                         if (replacingSchema.Tables == null)
                         {
