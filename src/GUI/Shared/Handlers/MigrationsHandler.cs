@@ -40,7 +40,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!await project.IsNet60OrHigherIncluding70Async())
+                if (!await project.IsNet60OrHigherAsync())
                 {
                     VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;

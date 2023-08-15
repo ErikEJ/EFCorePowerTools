@@ -290,7 +290,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
-                && (await project.IsNet60OrHigherIncluding70Async() || await project.IsNetStandardAsync()))
+                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync()))
             {
                 var packages = await project.GetNeededPackagesAsync(options);
 

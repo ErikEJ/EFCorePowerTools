@@ -362,7 +362,7 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                menuCommand.Visible = await project.IsNet60OrHigherIncluding70Async()
+                menuCommand.Visible = await project.IsNet60OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
                 return;
             }
