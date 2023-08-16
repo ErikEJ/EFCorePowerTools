@@ -19,9 +19,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     {
-        private static readonly ISet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
+        private static readonly HashSet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
 
-        private static readonly ISet<string> MaxLengthRequiredTypes
+        private static readonly HashSet<string> MaxLengthRequiredTypes
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
@@ -42,10 +42,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         public DatabaseModel Create(string connectionString, DatabaseModelFactoryOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -112,7 +109,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var temporal = item.GetReferenced(Table.TemporalSystemVersioningHistoryTable).ToArray();
 
-                if (temporal.Any())
+                if (temporal.Length != 0)
                 {
                     dbTable[SqlServerAnnotationNames.IsTemporal] = true;
                     dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = temporal[0].Name.Parts[1];
@@ -173,7 +170,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas)
             => throw new NotImplementedException();
 
-        private static IReadOnlyDictionary<string, (string A, string B)> GetTypeAliases(TSqlTypedModel model)
+        private static Dictionary<string, (string A, string B)> GetTypeAliases(TSqlTypedModel model)
         {
             var items = model.GetObjects<TSqlDataType>(DacQueryScopes.UserDefined)
                 .ToList();
@@ -211,8 +208,14 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             foreach (var pkCol in pk.Columns)
             {
-                var dbCol = dbTable.Columns
-                    .Single(c => c.Name == pkCol.Name.Parts[2]);
+                var dbCol = dbTable.Columns.FirstOrDefault(c => c.Name == pkCol.Name.Parts[2])
+                        ?? dbTable.Columns.FirstOrDefault(
+                            c => c.Name.Equals(pkCol.Name.Parts[2], StringComparison.OrdinalIgnoreCase));
+
+                if (dbCol == null)
+                {
+                    return;
+                }
 
                 primaryKey.Columns.Add(dbCol);
             }
@@ -356,14 +359,14 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #if CORE70
             var triggers = table.Triggers.ToList();
 
-            if (triggers.Any())
+            if (triggers.Count != 0)
             {
                 dbTable.Triggers.Add(new DatabaseTrigger { Name = "trigger" });
             }
 #endif
         }
 
-        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
                 .Where(i => i.ColumnType != ColumnType.ColumnSet
@@ -438,7 +441,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return tableColumns;
         }
 
-        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases)
+        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
