@@ -125,7 +125,11 @@ internal sealed class ScaffoldHostedService : HostedService
         {
             DisplayService.MarkupLine(
                 () => DisplayService.Markup("warning:", Color.Yellow),
-                () => DisplayService.Markup(warning, Decoration.None));
+                () => DisplayService.Markup(
+                    warning
+                    .Replace("[", "[[", StringComparison.OrdinalIgnoreCase)
+                    .Replace("]", "]]", StringComparison.OrdinalIgnoreCase),
+                    Decoration.None));
         }
     }
 

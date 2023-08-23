@@ -32,10 +32,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 throw new ArgumentException($"Dacpac file not found: {connectionString}");
             }
 
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             return GetStoredProcedures(connectionString, options, dacpacOptions.MergeDacpacs);
         }
@@ -108,6 +105,29 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             foreach (var parameter in proc.Parameters)
             {
+                var storeType = parameter.DataType.First().Name.Parts[0];
+
+                var dtReference = parameter.DataType.First() as TSqlDataTypeReference;
+
+#pragma warning disable S2219 // Runtime type checking should be simplified
+                if (dtReference != null
+                    && dtReference.Type != null
+                    && dtReference.Type.Any()
+                    && dtReference.Type.First() is TSqlDataTypeReference)
+                {
+                    storeType = dtReference.Type.First().Name.Parts[0];
+                }
+
+                var udtReference = parameter.DataType.First() as TSqlUserDefinedTypeReference;
+
+#pragma warning disable S2219 // Runtime type checking should be simplified
+                if (udtReference != null)
+                {
+                    storeType = udtReference.Name.Parts[1];
+                }
+
+#pragma warning restore S2219 // Runtime type checking should be simplified
+
                 var newParameter = new ModuleParameter()
                 {
                     Length = parameter.Length,
@@ -115,7 +135,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Output = parameter.IsOutput,
                     Precision = parameter.Precision,
                     Scale = parameter.Scale,
-                    StoreType = parameter.DataType.First().Name.Parts[0],
+                    StoreType = storeType,
                     Nullable = true,
                 };
 
@@ -147,13 +167,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             int ordinal = 0;
             foreach (var column in metaProc.Selects.First().Columns)
             {
-                result.Add(new ModuleResultElement
+                if (column.DataTypes != null)
                 {
-                    Name = column.Name,
-                    Nullable = column.IsNullable,
-                    StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
-                    Ordinal = ordinal++,
-                });
+                    result.Add(new ModuleResultElement
+                    {
+                        Name = column.Name,
+                        Nullable = column.IsNullable,
+                        StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
+                        Ordinal = ordinal++,
+                    });
+                }
             }
 
             return result;

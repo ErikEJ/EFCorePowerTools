@@ -29,10 +29,7 @@ namespace RevEng.Core.Procedures
 
         public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
-            if (scaffoldedModel == null)
-            {
-                throw new ArgumentNullException(nameof(scaffoldedModel));
-            }
+            ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
             var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls);
 
@@ -48,15 +45,9 @@ namespace RevEng.Core.Procedures
 
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
-            if (scaffolderOptions is null)
-            {
-                throw new ArgumentNullException(nameof(scaffolderOptions));
-            }
+            ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             Sb = new IndentedStringBuilder();
 
@@ -158,15 +149,9 @@ namespace RevEng.Core.Procedures
 
         protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
-            if (scaffolderOptions is null)
-            {
-                throw new ArgumentNullException(nameof(scaffolderOptions));
-            }
+            ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             Sb = new IndentedStringBuilder();
 
@@ -342,7 +327,7 @@ namespace RevEng.Core.Procedures
             var lineStart = signatureOnly ? string.Empty : $"public virtual {(useAsyncCalls ? "async " : string.Empty)}";
             var line = $"{lineStart}{returnType} {identifier}{(useAsyncCalls ? "Async" : string.Empty)}({string.Join(", ", paramStrings)}";
 
-            if (outParams.Any())
+            if (outParams.Count > 0)
             {
                 if (paramStrings.Any())
                 {

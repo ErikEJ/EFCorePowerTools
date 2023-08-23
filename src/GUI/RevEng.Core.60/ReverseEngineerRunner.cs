@@ -14,10 +14,7 @@ namespace RevEng.Core
     {
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             var errors = new List<string>();
             var warnings = new List<string>();
