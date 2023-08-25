@@ -20,6 +20,8 @@ namespace RevEng.Core
 {
     public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
     {
+        private static readonly string[] Separator = new string[] { "\r\n", "\r" };
+
         private readonly IDatabaseModelFactory databaseModelFactory;
         private readonly IScaffoldingModelFactory factory;
         private readonly ICSharpHelper code;
@@ -59,10 +61,7 @@ namespace RevEng.Core
             string projectPath,
             string outputPath)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             SavedModelFiles filePaths;
             var modelOptions = new ModelReverseEngineerOptions
@@ -118,16 +117,13 @@ namespace RevEng.Core
             string contextNamespace,
             bool supportsFunctions)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             var functionModelScaffolder = functionScaffolder;
             if (functionModelScaffolder != null
                 && supportsFunctions
                 && (options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction)
-                    || !options.Tables.Any()))
+                    || options.Tables.Count == 0))
             {
                 var modelFactoryOptions = new ModuleModelFactoryOptions
                 {
@@ -173,16 +169,13 @@ namespace RevEng.Core
             string contextNamespace,
             bool supportsProcedures)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             var procedureModelScaffolder = procedureModelFactory;
             if (procedureModelScaffolder != null
                 && supportsProcedures
                 && (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
-                    || !options.Tables.Any()))
+                    || options.Tables.Count == 0))
             {
                 var procedureModelFactoryOptions = new ModuleModelFactoryOptions
                 {
@@ -267,7 +260,7 @@ namespace RevEng.Core
 
         private static void ApplyRenamers(IEnumerable<SqlObjectBase> sqlObjects, List<Schema> renamers)
         {
-            if (renamers == null || !renamers.Any())
+            if (renamers == null || renamers.Count == 0)
             {
                 return;
             }
@@ -353,7 +346,7 @@ namespace RevEng.Core
         private static string GetFileNamespace(string code)
         {
             var namespaceKeyWord = "namespace ";
-            var fileNamespace = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None)
+            var fileNamespace = code.Split(Separator, StringSplitOptions.None)
                                  .First(lc => lc.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
             return fileNamespace.Substring(namespaceKeyWord.Length);
         }
@@ -361,7 +354,7 @@ namespace RevEng.Core
         private static string AppendSchemaNamespaceToDbcontext(string code, HashSet<string> codeFileNamespaces)
         {
             var usingKeyWord = "using ";
-            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var codeLines = code.Split(Separator, StringSplitOptions.None);
             var originalLastUsing = codeLines.Last(l => l.StartsWith(usingKeyWord, StringComparison.Ordinal));
 
             var sb = new StringBuilder();
@@ -400,7 +393,7 @@ namespace RevEng.Core
             var entityTypeSchemaWithSuffix = entityTypeSchema + nameSpaceSuffix;
             var namespaceKeyWord = "namespace ";
             var usingKeyWord = "using ";
-            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var codeLines = code.Split(Separator, StringSplitOptions.None);
             var originalNameSpaceLine = codeLines.Single(l => l.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
             var newNameSpaceLine = originalNameSpaceLine;
             var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";", StringComparison.Ordinal);
