@@ -61,7 +61,7 @@ namespace RevEng.Common.Cli
                 UseInflector = config.CodeGeneration.UseInflector,
                 UseT4 = config.CodeGeneration.UseT4,
                 T4TemplatePath = config.CodeGeneration.T4TemplatePath != null ? PathHelper.GetAbsPath(config.CodeGeneration.T4TemplatePath, projectPath) : null,
-                IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
+                IncludeConnectionString = !isDacpac && config.CodeGeneration.EnableOnConfiguring,
                 SelectedToBeGenerated = selectedToBeGenerated,
                 Dacpac = isDacpac ? connectionString : null,
                 CustomReplacers = GetNamingOptions(configPath),
@@ -71,7 +71,6 @@ namespace RevEng.Common.Cli
                 UseHierarchyId = typeMappings.UseHierarchyId,
                 UseNodaTime = typeMappings.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
-                UseNoDefaultConstructor = true, // TBD for EF Core 6
                 RunCleanup = config.CodeGeneration.SoftDeleteObsoleteFiles,
                 UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
                 UseMultipleSprocResultSets = config.CodeGeneration.DiscoverMultipleStoredProcedureResultsetsPreview,
@@ -82,6 +81,7 @@ namespace RevEng.Common.Cli
                 ProjectRootNamespace = names.RootNamespace,
 
                 // Not supported/implemented:
+                UseNoDefaultConstructor = false,
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it
