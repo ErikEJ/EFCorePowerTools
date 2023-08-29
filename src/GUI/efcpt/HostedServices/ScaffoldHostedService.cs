@@ -69,6 +69,8 @@ internal sealed class ScaffoldHostedService : HostedService
             scaffoldOptions.ConfigFile.FullName);
         DisplayService.MarkupLine();
 
+#pragma warning disable S2589 // Boolean expressions should not be gratuitous
+#pragma warning disable S2583 // Conditionally executed code should be reachable
         if (commandOptions.UseT4 && Constants.Version > 6)
         {
             var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath, Constants.CodeGeneration);
@@ -77,6 +79,8 @@ internal sealed class ScaffoldHostedService : HostedService
                 DisplayService.MarkupLine(t4Result, Color.Default);
             }
         }
+#pragma warning restore S2583 // Conditionally executed code should be reachable
+#pragma warning restore S2589 // Boolean expressions should not be gratuitous
 
         sw = Stopwatch.StartNew();
         var result = DisplayService.Wait(
