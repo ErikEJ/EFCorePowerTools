@@ -26,10 +26,7 @@ namespace RevEng.Core
             IDatabaseModelFactory databaseModelFactory,
             SchemaInfo[] schemas)
         {
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             this.procedureModelFactory = procedureModelFactory;
             this.functionModelFactory = functionModelFactory;

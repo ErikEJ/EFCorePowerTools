@@ -219,7 +219,7 @@ namespace RevEng.Core
 
         public static void RetryFileWrite(string path, List<string> finalLines)
         {
-            for (int i = 1; i <= 3; ++i)
+            for (int i = 1; i <= 4; ++i)
             {
                 try
                 {
@@ -235,7 +235,7 @@ namespace RevEng.Core
 
         public static void RetryFileWrite(string path, string finalText)
         {
-            for (int i = 1; i <= 3; ++i)
+            for (int i = 1; i <= 4; ++i)
             {
                 try
                 {

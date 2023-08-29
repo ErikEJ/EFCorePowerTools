@@ -20,10 +20,7 @@ namespace Modelling
 
         public static List<Tuple<string, string>> GenerateSchemaCompareResult(string outputPath, string startupOutputPath, string connectionString, string dbContexts)
         {
-            if (dbContexts == null)
-            {
-                throw new ArgumentNullException(nameof(dbContexts));
-            }
+            ArgumentNullException.ThrowIfNull(dbContexts);
 
             return GetCompareResult(outputPath, startupOutputPath ?? outputPath, connectionString, dbContexts);
         }

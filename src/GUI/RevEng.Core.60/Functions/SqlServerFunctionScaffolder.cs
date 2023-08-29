@@ -28,15 +28,9 @@ namespace RevEng.Core.Functions
 
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
-            if (scaffolderOptions is null)
-            {
-                throw new ArgumentNullException(nameof(scaffolderOptions));
-            }
+            ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
-            if (model is null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             Sb = new IndentedStringBuilder();
 
@@ -143,7 +137,7 @@ namespace RevEng.Core.Functions
 
                 var parameters = string.Empty;
 
-                if (function.Parameters.Any())
+                if (function.Parameters.Count != 0)
                 {
                     parameters = string.Join(", ", paramStrings);
                 }

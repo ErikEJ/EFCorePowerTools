@@ -34,15 +34,9 @@ namespace RevEng.Core
     {
         public static IServiceCollection AddEfpt(this IServiceCollection serviceCollection, ReverseEngineerCommandOptions options, List<string> errors, List<string> warnings, List<string> info)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
-            if (serviceCollection == null)
-            {
-                throw new ArgumentNullException(nameof(serviceCollection));
-            }
+            ArgumentNullException.ThrowIfNull(serviceCollection);
 
             var reporter = new OperationReporter(
                 new OperationReportHandler(

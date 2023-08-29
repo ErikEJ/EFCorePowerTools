@@ -23,10 +23,7 @@ namespace RevEng.Core.Procedures
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly;
 
@@ -56,7 +53,7 @@ namespace RevEng.Core.Procedures
                 }
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
-                var allParameters = options.FullModel && found.Any() ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
+                var allParameters = options.FullModel && found.Count != 0 ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
 
                 foreach (var foundModule in found)
                 {
@@ -136,7 +133,7 @@ namespace RevEng.Core.Procedures
                                     .Select(y => y.Key)
                                     .ToList();
 
-                                if (duplicates.Any())
+                                if (duplicates.Count != 0)
                                 {
                                     dupesFound = true;
                                     errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.");

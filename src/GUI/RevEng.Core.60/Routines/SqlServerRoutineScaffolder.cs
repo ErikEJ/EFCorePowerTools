@@ -105,10 +105,7 @@ namespace RevEng.Core.Modules
 
         protected SqlServerRoutineScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
         {
-            if (code == null)
-            {
-                throw new ArgumentNullException(nameof(code));
-            }
+            ArgumentNullException.ThrowIfNull(code);
 
             this.Code = code;
         }
@@ -296,10 +293,7 @@ namespace RevEng.Core.Modules
 
         private static Tuple<string, string> GeneratePropertyName(string propertyName)
         {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
+            ArgumentNullException.ThrowIfNull(propertyName);
 
             return CreateIdentifier(propertyName);
         }

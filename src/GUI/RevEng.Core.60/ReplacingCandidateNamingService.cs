@@ -77,10 +77,7 @@ namespace RevEng.Core
 
         public override string GenerateCandidateIdentifier(DatabaseColumn originalColumn)
         {
-            if (originalColumn is null)
-            {
-                throw new ArgumentNullException(nameof(originalColumn));
-            }
+            ArgumentNullException.ThrowIfNull(originalColumn);
 
             var candidateStringBuilder = new StringBuilder();
 

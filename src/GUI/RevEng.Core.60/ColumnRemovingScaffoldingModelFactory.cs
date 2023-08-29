@@ -35,10 +35,7 @@ namespace RevEng.Core
 
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)
         {
-            if (table is null)
-            {
-                throw new ArgumentNullException(nameof(table));
-            }
+            ArgumentNullException.ThrowIfNull(table);
 
             string name;
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)

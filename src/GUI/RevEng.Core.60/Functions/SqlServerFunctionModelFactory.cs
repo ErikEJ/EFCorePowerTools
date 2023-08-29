@@ -45,10 +45,7 @@ ORDER BY ROUTINE_NAME;";
 
         protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
         {
-            if (module is null)
-            {
-                throw new ArgumentNullException(nameof(module));
-            }
+            ArgumentNullException.ThrowIfNull(module);
 
             using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
