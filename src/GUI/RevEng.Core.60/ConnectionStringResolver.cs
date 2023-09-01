@@ -28,7 +28,7 @@ namespace RevEng.Core
             if (connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
             {
                 var database = Path.GetFileNameWithoutExtension(connectionString);
-                this.connectionString = $"Data Source=(local);Initial Catalog={database};Integrated Security=true";
+                this.connectionString = $"Data Source=(local);Initial Catalog={database};Integrated Security=true;Encrypt=false";
             }
         }
 
@@ -92,7 +92,7 @@ namespace RevEng.Core
             try
             {
                 var a = new FbConnectionStringBuilder(connectionString);
-                aliases.Add("oracle");
+                aliases.Add("firebird");
             }
             catch
             {
