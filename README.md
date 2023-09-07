@@ -1,6 +1,6 @@
 # EF Core Power Tools
 
-Reverse engineering, model visualization and migrations UI for EF Core in Visual Studio 2022.
+Reverse engineering, model visualization and migrations UI for EF Core in Visual Studio 2022 (amd64)  - and reverse engineering from command line.
 
 Aims to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineering of an existing database, creating migrations and visualizing your DbContext model.
 
@@ -32,7 +32,7 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 ## Requirements 
 
-.NET Framework 4.8 or later is required. For EF Core reverse engineering, the .NET 6.0 x64 runtime must be installed.
+.NET Framework 4.8 or later is required. For EF Core reverse engineering, the .NET 6.0 or .NET 8.0 x64 runtime must be installed.
 
 ## Release
 
@@ -78,3 +78,4 @@ To build and debug, run latest version of Visual Studio as Administrator with th
 You can smoke test changes to reverse engineering. Launch one of the efreveng console apps in the debugger using the name of a file in the TestFiles folder as parameter.
 
 In the ScaffoldingTester solution there are scripts to populate Northwind and Chinook databases with the required objects.
+
