@@ -33,7 +33,7 @@ namespace EFCorePowerTools.Helpers
                     continue;
                 }
 
-                if (item.IsCSharpProject() && !string.IsNullOrEmpty(await item.GetAttributeAsync("SqlServerVersion")))
+                if (item.IsMsBuildSqlProjProject())
                 {
                     AddFiles(result, Path.GetDirectoryName(item.FullPath), "*.dacpac");
                 }

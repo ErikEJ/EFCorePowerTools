@@ -180,8 +180,17 @@ namespace EFCorePowerTools.Extensions
             ////Microsoft.Internal.VisualStudio.PlatformUI.HierarchyUtilities.TryGetHierarchyProperty<string>(h, itemId, (int)__VSHPROPID5.VSHPROPID_ProjectCapabilities, out string value);
             ////var capabilities = (value ?? string.Empty).Split(' ');
 
-            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
             return project.IsCapabilityMatch("CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
+        }
+
+        public static bool IsMsBuildSqlProjProject(this Project project)
+        {
+            if (project == null)
+            {
+                return false;
+            }
+
+            return project.IsCapabilityMatch("CSharp & CPS & MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
         public static async Task<bool> IsNetFrameworkAsync(this Project project)
