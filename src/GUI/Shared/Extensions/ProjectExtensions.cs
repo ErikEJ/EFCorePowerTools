@@ -183,6 +183,16 @@ namespace EFCorePowerTools.Extensions
             return project.IsCapabilityMatch("CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
+        public static bool IsCSharpProjectPlain(this Project project)
+        {
+            if (project == null)
+            {
+                return false;
+            }
+
+            return project.IsCapabilityMatch("CSharp & CPS");
+        }
+
         public static bool IsMsBuildSqlProjProject(this Project project)
         {
             if (project == null)
