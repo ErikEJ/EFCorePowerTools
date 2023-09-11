@@ -39,7 +39,7 @@ namespace EFCorePowerTools.Extensions
 
         private static void RetryFileWrite(ZipArchiveEntry entry, string completeFileName)
         {
-            for (int i = 1; i <= 3; ++i)
+            for (int i = 1; i <= 4; ++i)
             {
                 try
                 {

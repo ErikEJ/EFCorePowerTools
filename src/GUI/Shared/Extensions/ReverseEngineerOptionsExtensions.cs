@@ -2,7 +2,7 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 using EFCorePowerTools.Handlers.ReverseEngineer;
-using RevEng.Common;
+using EFCorePowerTools.Helpers;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -25,7 +25,7 @@ namespace EFCorePowerTools.Extensions
             {
                 if (!string.IsNullOrEmpty(deserialized.UiHint))
                 {
-                    deserialized.UiHint = GetFullPathForSqlProj(deserialized.UiHint, projectDirectory);
+                    deserialized.UiHint = SqlProjHelper.GetFullPathForSqlProj(deserialized.UiHint, projectDirectory);
                 }
 
                 return deserialized;
@@ -36,9 +36,11 @@ namespace EFCorePowerTools.Extensions
 
         public static string Write(this ReverseEngineerOptions options, string projectDirectory)
         {
-            if (!string.IsNullOrEmpty(options.UiHint))
+            if (!string.IsNullOrEmpty(options.UiHint)
+                && (options.UiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase)
+                    || options.UiHint.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase)))
             {
-                options.UiHint = SetRelativePathForSqlProj(options.UiHint, projectDirectory);
+                options.UiHint = SqlProjHelper.SetRelativePathForSqlProj(options.UiHint, projectDirectory);
             }
 
             using (var ms = new MemoryStream())
@@ -53,41 +55,6 @@ namespace EFCorePowerTools.Extensions
                 var json = ms.ToArray();
                 return Encoding.UTF8.GetString(json, 0, json.Length);
             }
-        }
-
-        private static string SetRelativePathForSqlProj(string uiHint, string projectDirectory)
-        {
-            if (string.IsNullOrEmpty(projectDirectory))
-            {
-                return uiHint;
-            }
-
-            if (!uiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return uiHint;
-            }
-
-            if (Path.IsPathRooted(uiHint))
-            {
-                return PathExtensions.GetRelativePath(projectDirectory, uiHint);
-            }
-
-            return uiHint;
-        }
-
-        private static string GetFullPathForSqlProj(string uiHint, string projectDirectory)
-        {
-            if (string.IsNullOrEmpty(projectDirectory))
-            {
-                return uiHint;
-            }
-
-            if (!uiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return uiHint;
-            }
-
-            return PathHelper.GetAbsPath(uiHint, projectDirectory);
         }
 
         private static bool TryRead<T>(string optionsPath, out T deserialized)

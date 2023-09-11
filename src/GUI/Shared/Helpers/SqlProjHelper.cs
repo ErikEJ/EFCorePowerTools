@@ -6,11 +6,42 @@ using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Extensions;
 using Microsoft.VisualStudio.Shell;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Helpers
 {
-    internal static class SqlProjHelper
+    public static class SqlProjHelper
     {
+        public static string SetRelativePathForSqlProj(string uiHint, string projectDirectory)
+        {
+            if (Path.IsPathRooted(uiHint))
+            {
+                return PathExtensions.GetRelativePath(projectDirectory, uiHint);
+            }
+
+            if (Path.IsPathRooted(uiHint) || uiHint.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            return uiHint;
+        }
+
+        public static string GetFullPathForSqlProj(string uiHint, string projectDirectory)
+        {
+            if (string.IsNullOrEmpty(projectDirectory))
+            {
+                return uiHint;
+            }
+
+            if (uiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return PathHelper.GetAbsPath(uiHint, projectDirectory);
+            }
+
+            return uiHint;
+        }
+
         public static async Task<string[]> GetDacpacFilesInActiveSolutionAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
