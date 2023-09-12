@@ -16,10 +16,10 @@ namespace EFCorePowerTools.Helpers
         {
             if (Path.IsPathRooted(uiHint))
             {
-                return PathExtensions.GetRelativePath(projectDirectory, uiHint);
+                uiHint = PathExtensions.GetRelativePath(projectDirectory, uiHint);
             }
 
-            if (Path.IsPathRooted(uiHint) || uiHint.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase))
+            if (Path.IsPathRooted(uiHint) || uiHint.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }

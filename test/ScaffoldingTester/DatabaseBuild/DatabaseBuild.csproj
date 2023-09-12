@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\Database\dbo\Tables\Table1.sql" Link="Table1.sql" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="..\Database\dbo\**\*.sql" />
+	</ItemGroup>
 
 </Project>
