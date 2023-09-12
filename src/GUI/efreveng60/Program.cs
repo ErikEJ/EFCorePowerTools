@@ -81,7 +81,7 @@ namespace EfReveng
                         return 1;
                     }
 
-                    var options = ReverseEngineerOptionsExtensions.TryDeserialize(File.ReadAllText(args[0], System.Text.Encoding.UTF8));
+                    var options = ReverseEngineerOptionsExtensions.TryDeserialize(await File.ReadAllTextAsync(args[0], Encoding.UTF8));
 
                     if (options == null)
                     {

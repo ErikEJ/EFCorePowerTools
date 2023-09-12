@@ -17,6 +17,6 @@ namespace RevEng.Common
         public int DatabaseLevel { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
         [IgnoreDataMember]
-        public bool HasIssues => EntityErrors.Any() || EntityWarnings.Any();
+        public bool HasIssues => EntityErrors.Count != 0 || EntityWarnings.Count != 0;
     }
 }

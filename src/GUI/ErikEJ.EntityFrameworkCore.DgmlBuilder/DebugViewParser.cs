@@ -347,7 +347,7 @@ namespace Dgml
             return new Tuple<IEnumerable<string>, IEnumerable<string>>(properties, links);
         }
 
-        private static IEnumerable<string> ParseForeignKeys(List<string> foreignKeysFragments)
+        private static List<string> ParseForeignKeys(List<string> foreignKeysFragments)
         {
             var links = new List<string>();
             int i = 0;
