@@ -114,10 +114,7 @@ namespace RevEng.Core.Modules
 
         public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
-            if (scaffoldedModel == null)
-            {
-                throw new ArgumentNullException(nameof(scaffoldedModel));
-            }
+            ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
             Directory.CreateDirectory(outputDir);
 
@@ -148,20 +145,11 @@ namespace RevEng.Core.Modules
 
         public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
-            if (errors == null)
-            {
-                throw new ArgumentNullException(nameof(errors));
-            }
+            ArgumentNullException.ThrowIfNull(errors);
 
-            if (scaffolderOptions == null)
-            {
-                throw new ArgumentNullException(nameof(scaffolderOptions));
-            }
+            ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             var result = new ScaffoldedModel();
 
@@ -222,15 +210,9 @@ namespace RevEng.Core.Modules
 
         protected static string GenerateIdentifierName(Routine routine, RoutineModel model)
         {
-            if (routine == null)
-            {
-                throw new ArgumentNullException(nameof(routine));
-            }
+            ArgumentNullException.ThrowIfNull(routine);
 
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
         }
