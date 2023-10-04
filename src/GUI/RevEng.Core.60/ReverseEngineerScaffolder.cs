@@ -317,7 +317,7 @@ namespace RevEng.Core
 
                 if (entityMatch?.GetViewName() != null)
                 {
-                    entityTypeSchema = entityMatch?.GetViewSchema();
+                    entityTypeSchema = entityMatch.GetViewSchema();
                 }
 
                 if (!string.IsNullOrEmpty(entityTypeSchema))
@@ -396,7 +396,7 @@ namespace RevEng.Core
             var codeLines = code.Split(Separator, StringSplitOptions.None);
             var originalNameSpaceLine = codeLines.Single(l => l.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
             var newNameSpaceLine = originalNameSpaceLine;
-            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";", StringComparison.Ordinal);
+            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(';');
             if (cSharp10NameSpaceStyle)
             {
                 newNameSpaceLine = newNameSpaceLine.Substring(0, newNameSpaceLine.Length - 1);

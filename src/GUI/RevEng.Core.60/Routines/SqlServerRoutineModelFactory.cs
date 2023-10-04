@@ -201,7 +201,7 @@ SELECT
                 if (par != null)
                 {
                     var parameterName = par["Parameter"].ToString();
-                    if (parameterName!.StartsWith("@", StringComparison.Ordinal))
+                    if (parameterName!.StartsWith('@'))
                     {
                         parameterName = parameterName.Substring(1);
                     }

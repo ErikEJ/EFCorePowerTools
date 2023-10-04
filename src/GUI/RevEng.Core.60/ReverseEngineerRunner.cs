@@ -140,7 +140,7 @@ namespace RevEng.Core
                         PostProcess(filePaths.ContextFile, options.UseNullableReferences);
                     }
 
-                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
+                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName);
                 }
                 else if (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
                     || options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction))
@@ -303,14 +303,14 @@ namespace RevEng.Core
             return cleanUpPaths;
         }
 
-        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable)
+        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable, string dbContextName)
         {
             if (!useDbContextSplitting)
             {
                 return new List<string>();
             }
 
-            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable);
+            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName);
         }
 
         private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor)
