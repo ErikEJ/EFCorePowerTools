@@ -278,7 +278,7 @@ namespace RevEng.Common.Cli
             var newItems = models.Where(o => o.ObjectType == objectType).ToList();
             if (newItems.Count == 0)
             {
-                return entities;
+                return new List<T>();
             }
 
             var result = entities ?? new List<T>();
