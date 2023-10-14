@@ -37,12 +37,12 @@
     <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="7.0.5" />
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.2.0-beta1" />    
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.12" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="7.0.11" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.11" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.11" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.12" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="7.0.0" />
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="7.1.0" />
 		<PackageReference Include="System.CodeDom" Version="6.0.0" />

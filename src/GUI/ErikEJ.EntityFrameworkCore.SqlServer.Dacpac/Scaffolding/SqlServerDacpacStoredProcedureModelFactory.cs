@@ -44,8 +44,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             if (mergeDacpacs && dacpacPath != null)
             {
-                var consolidator = new DacpacConsolidator();
-                dacpacPath = consolidator.Consolidate(dacpacPath);
+                dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
             }
 
             using var model = new TSqlTypedModel(dacpacPath);

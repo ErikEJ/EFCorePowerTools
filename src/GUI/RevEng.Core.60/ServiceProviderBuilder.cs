@@ -107,15 +107,14 @@ namespace RevEng.Core
 
 #if !CORE80
                     serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
-#else
+#endif
+#if CORE80
                     serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
                         provider => new RevEng.Core.SqlServerTypeMappingSource(
                             provider.GetService<TypeMappingSourceDependencies>(),
                             provider.GetService<RelationalTypeMappingSourceDependencies>(),
-                            provider.GetService<ISqlServerSingletonOptions>(),
                             options.UseDateOnlyTimeOnly));
 #endif
-
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     serviceCollection.AddSqlServerFunctionDesignTimeServices();
 

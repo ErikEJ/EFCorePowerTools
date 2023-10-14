@@ -49,6 +49,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseNullableReferences { get; set; }
         public bool UseNoObjectFilter { get; set; }
         public bool UseNoDefaultConstructor { get; set; }
+        public bool UseNoNavigations { get; set; }
         public bool UseManyToManyEntity { get; set; }
         public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore7;
         public string UiHint { get; set; }

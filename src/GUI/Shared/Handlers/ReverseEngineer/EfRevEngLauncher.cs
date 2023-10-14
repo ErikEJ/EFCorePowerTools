@@ -102,6 +102,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                UseNoNavigations = options.UseNoNavigations,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 RunCleanup = AdvancedOptions.Instance.RunCleanup,

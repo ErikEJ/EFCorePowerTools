@@ -67,8 +67,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             if (dacpacOptions?.MergeDacpacs ?? false)
             {
-                var consolidator = new DacpacConsolidator();
-                connectionString = consolidator.Consolidate(connectionString);
+                connectionString = DacpacConsolidator.Consolidate(connectionString);
             }
 
             using var model = new TSqlTypedModel(connectionString);
@@ -587,7 +586,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private static string StripParentheses(string defaultValue)
         {
-            if (defaultValue.StartsWith("(", StringComparison.OrdinalIgnoreCase) && defaultValue.EndsWith(")", StringComparison.OrdinalIgnoreCase))
+            if (defaultValue.StartsWith('(') && defaultValue.EndsWith(')'))
             {
                 defaultValue = defaultValue.Substring(1, defaultValue.Length - 2);
                 return StripParentheses(defaultValue);
@@ -629,7 +628,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 value = value.Substring(2);
             }
 
-            if (value.EndsWith("'", StringComparison.OrdinalIgnoreCase))
+            if (value.EndsWith('\''))
             {
                 value = value.Remove(value.Length - 1, 1);
             }

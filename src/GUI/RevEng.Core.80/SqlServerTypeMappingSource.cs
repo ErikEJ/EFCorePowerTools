@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data;
-using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
+﻿using System.Data;
 using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -10,8 +8,8 @@ namespace RevEng.Core
     {
         private readonly bool useDateOnlyTimeOnly;
 
-        public SqlServerTypeMappingSource(TypeMappingSourceDependencies dependencies, RelationalTypeMappingSourceDependencies relationalDependencies, ISqlServerSingletonOptions singletonOptions, bool useDateOnlyTimeOnly)
-            : base(dependencies, relationalDependencies, singletonOptions)
+        public SqlServerTypeMappingSource(TypeMappingSourceDependencies dependencies, RelationalTypeMappingSourceDependencies relationalDependencies, bool useDateOnlyTimeOnly)
+            : base(dependencies, relationalDependencies)
         {
             this.useDateOnlyTimeOnly = useDateOnlyTimeOnly;
         }

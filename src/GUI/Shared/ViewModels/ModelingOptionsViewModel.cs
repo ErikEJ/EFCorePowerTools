@@ -117,6 +117,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
             Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
+            Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
@@ -196,6 +197,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoDefaultConstructor = advancedModelingOptionsResult.Payload.UseNoDefaultConstructor;
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
+            Model.UseNoNavigations = advancedModelingOptionsResult.Payload.UseNoNavigations;
             Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
             Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
             Model.UseDateOnlyTimeOnly = advancedModelingOptionsResult.Payload.UseDateOnlyTimeOnly;

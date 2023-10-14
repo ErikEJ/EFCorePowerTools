@@ -513,6 +513,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                UseNoNavigations = options.UseNoNavigations,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
@@ -558,6 +559,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
             options.UseNullableReferences = modelingOptionsResult.Payload.UseNullableReferences;
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
+            options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
             options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
             options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
             options.UseDateOnlyTimeOnly = modelingOptionsResult.Payload.UseDateOnlyTimeOnly;

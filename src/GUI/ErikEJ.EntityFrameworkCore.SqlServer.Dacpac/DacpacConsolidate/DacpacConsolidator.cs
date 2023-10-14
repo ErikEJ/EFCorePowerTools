@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace GOEddie.Dacpac.References
 {
-    public class DacpacConsolidator
+    public static class DacpacConsolidator
     {
-        public string Consolidate(string dacpacPath)
+        public static string Consolidate(string dacpacPath)
         {
             var fileNames = GetAllReferences(dacpacPath, true);
 
@@ -25,7 +25,7 @@ namespace GOEddie.Dacpac.References
             return target;
         }
 
-        private List<string> GetAllReferences(string dacpacPath, bool isRootDacpac)
+        private static List<string> GetAllReferences(string dacpacPath, bool isRootDacpac)
         {
             if (!isRootDacpac && !File.Exists(dacpacPath))
             {

@@ -34,6 +34,7 @@ namespace EFCorePowerTools.Common.Models
         private bool useBoolPropertiesWithoutDefaultSql;
         private bool useNullableReferences;
         private bool useNoDefaultConstructor;
+        private bool useNoNavigations;
         private bool useNoObjectFilter;
         private bool useManyToManyEntity;
         private bool useDateOnlyTimeOnly;
@@ -442,6 +443,21 @@ namespace EFCorePowerTools.Common.Models
                 }
 
                 useNoDefaultConstructor = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool UseNoNavigations
+        {
+            get => useNoNavigations;
+            set
+            {
+                if (value == useNoNavigations)
+                {
+                    return;
+                }
+
+                useNoNavigations = value;
                 OnPropertyChanged();
             }
         }
