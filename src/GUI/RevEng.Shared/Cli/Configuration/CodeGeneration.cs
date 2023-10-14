@@ -40,10 +40,15 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("soft-delete-obsolete-files")]
         public bool SoftDeleteObsoleteFiles { get; set; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("discover-multiple-stored-procedure-resultsets-preview")]
         public bool DiscoverMultipleStoredProcedureResultsetsPreview { get; set; }
 
         [JsonPropertyName("use-alternate-stored-procedure-resultset-discovery")]
         public bool UseAlternateStoredProcedureResultsetDiscovery { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("use-no-navigations-preview")]
+        public bool UseNoNavigationsPreview { get; set; }
     }
 }

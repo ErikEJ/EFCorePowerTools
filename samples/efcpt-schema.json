@@ -244,7 +244,6 @@
                 "use-t4",
                 "remove-defaultsql-from-bool-properties",
                 "soft-delete-obsolete-files",
-                "discover-multiple-stored-procedure-resultsets-preview",
                 "use-alternate-stored-procedure-resultset-discovery"
             ],
             "properties": {
@@ -357,6 +356,14 @@
                     "examples": [
                         false
                     ]
+                },
+                "use-no-navigations-preview": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Remove all navigation properties from the generated code (preview)",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{
@@ -372,7 +379,8 @@
                 "remove-defaultsql-from-bool-properties": false,
                 "soft-delete-obsolete-files": false,
                 "discover-multiple-stored-procedure-resultsets-preview": false,
-                "use-alternate-stored-procedure-resultset-discovery": false
+                "use-alternate-stored-procedure-resultset-discovery": false,
+                "use-no-navigations-preview": false
             }]
         },
         "names": {

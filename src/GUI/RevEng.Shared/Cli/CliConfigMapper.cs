@@ -71,6 +71,7 @@ namespace RevEng.Common.Cli
                 UseHierarchyId = typeMappings.UseHierarchyId,
                 UseNodaTime = typeMappings.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
+                UseNoNavigations = config.CodeGeneration.UseNoNavigationsPreview,
                 RunCleanup = config.CodeGeneration.SoftDeleteObsoleteFiles,
                 UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
                 UseMultipleSprocResultSets = config.CodeGeneration.DiscoverMultipleStoredProcedureResultsetsPreview,
