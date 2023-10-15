@@ -335,20 +335,6 @@ namespace EFCorePowerTools
                 return;
             }
 
-            if (await project.IsNetFrameworkAsync())
-            {
-                return;
-            }
-
-            var isCsharpProject = project.IsCSharpProject();
-
-            menuCommand.Visible = isCsharpProject;
-
-            if (!isCsharpProject)
-            {
-                return;
-            }
-
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
             {
                 menuCommand.Visible = await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync();

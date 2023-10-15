@@ -203,13 +203,6 @@ namespace EFCorePowerTools.Extensions
             return project.IsCapabilityMatch("CSharp & CPS & MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
-        public static async Task<bool> IsNetFrameworkAsync(this Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            return (await project.GetAttributeAsync("TargetFrameworkMoniker"))?.Contains(".NETFramework,") ?? false;
-        }
-
         public static async Task<bool> IsNet60OrHigherIncluding70Async(this Project project)
         {
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
