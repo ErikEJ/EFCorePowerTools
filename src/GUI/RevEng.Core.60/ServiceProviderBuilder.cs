@@ -16,13 +16,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Procedures;
+using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 
 #if !CORE80
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Oracle.EntityFrameworkCore.Design.Internal;
-using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #endif
 
 namespace RevEng.Core
@@ -127,13 +127,12 @@ namespace RevEng.Core
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-#if !CORE80
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if !CORE80
                     if (options.UseDateOnlyTimeOnly)
                     {
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
@@ -168,13 +167,13 @@ namespace RevEng.Core
                         var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
                         hierachyId.ConfigureDesignTimeServices(serviceCollection);
                     }
-#if !CORE80
+
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if !CORE80
                     if (options.UseDateOnlyTimeOnly)
                     {
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();

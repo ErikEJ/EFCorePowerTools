@@ -280,7 +280,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (Directory.Exists(toDir)
                 && File.Exists(fullPath)
-                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 106)
+                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 97)
             {
                 return fullPath;
             }
