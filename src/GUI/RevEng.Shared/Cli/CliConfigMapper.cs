@@ -139,7 +139,9 @@ namespace RevEng.Common.Cli
             config.StoredProcedures = Add(objects, config.StoredProcedures);
             config.Functions = Add(objects, config.Functions);
 
+#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             var options = new JsonSerializerOptions { WriteIndented = true };
+#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
 
             return true;
