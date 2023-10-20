@@ -203,13 +203,6 @@ namespace EFCorePowerTools.Extensions
             return project.IsCapabilityMatch("CSharp & CPS & MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
-        public static async Task<bool> IsNet60OrHigherIncluding70Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return IsNet60(targetFrameworkMonikers) || IsNet70(targetFrameworkMonikers);
-        }
-
         public static async Task<bool> IsNet60OrHigherAsync(this Project project)
         {
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
@@ -389,17 +382,22 @@ namespace EFCorePowerTools.Extensions
 
         private static bool IsNet60(string targetFrameworkMonikers)
         {
-            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v6.0") ?? false;
+            return FrameworkCheck(targetFrameworkMonikers, "6");
         }
 
         private static bool IsNet70(string targetFrameworkMonikers)
         {
-            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+            return FrameworkCheck(targetFrameworkMonikers, "7");
         }
 
         private static bool IsNet80(string targetFrameworkMonikers)
         {
-            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v8.0") ?? false;
+            return FrameworkCheck(targetFrameworkMonikers, "8");
+        }
+
+        private static bool FrameworkCheck(string targetFrameworkMonikers, string version)
+        {
+            return targetFrameworkMonikers?.Contains($".NETCoreApp,Version=v{version}.0") ?? false;
         }
 
         private static async Task<string> GetOutputPathAsync(Project project)
