@@ -328,6 +328,12 @@ namespace EFCorePowerTools
 
             menuCommand.Visible = false;
 
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml)
+            {
+                menuCommand.Visible = true;
+                return;
+            }
+
             var project = await VS.Solutions.GetActiveProjectAsync();
 
             if (project == null)

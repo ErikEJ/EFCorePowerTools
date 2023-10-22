@@ -6,6 +6,7 @@ using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
+using NuGet.Versioning;
 
 namespace EFCorePowerTools.Handlers
 {
@@ -65,8 +66,8 @@ namespace EFCorePowerTools.Handlers
                 if (!result.Item1)
                 {
                     var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, version);
-                    VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, version));
+                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(result.Item2));
+                    VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, new NuGetVersion(result.Item2)));
                     return;
                 }
 

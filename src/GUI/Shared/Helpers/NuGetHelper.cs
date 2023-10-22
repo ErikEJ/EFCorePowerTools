@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using Community.VisualStudio.Toolkit;
+using NuGet.Versioning;
 
 namespace EFCorePowerTools.Helpers
 {
     public class NuGetHelper
     {
-        public void InstallPackage(string packageId, Project project, Version version = null)
+        public void InstallPackage(string packageId, Project project, NuGetVersion version = null)
         {
             var args = $"add \"{project.FullPath}\" package {packageId} ";
             if (version != null)
             {
-                args += "-v " + version.ToString(3);
+                args += "-v " + version.ToString();
             }
 
             var startInfo = new ProcessStartInfo

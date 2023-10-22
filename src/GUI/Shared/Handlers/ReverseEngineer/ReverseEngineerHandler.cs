@@ -15,6 +15,7 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
+using NuGet.Versioning;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
@@ -305,7 +306,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 foreach (var nuGetPackage in packagesToInstall)
                 {
-                    nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
+                    nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new NuGetVersion(nuGetPackage.Version));
                 }
             }
         }

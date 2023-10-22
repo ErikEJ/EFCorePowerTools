@@ -88,14 +88,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.9";
+                var pkgVersion = "7.0.12";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.20";
+                        pkgVersion = "6.0.23";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.0-preview.6.23329.4";
+                        pkgVersion = "8.0.0-rc.2.23480.1";
                         break;
                 }
 
@@ -149,7 +149,7 @@ namespace RevEng.Common
                             pkgVersion = "3.0.1";
                             break;
                         case CodeGenerationMode.EFCore8:
-                            pkgVersion = "8.0.0-preview.6.23329.4";
+                            pkgVersion = "8.0.0-rc.2.23480.1";
                             break;
                     }
 
@@ -216,14 +216,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLite)
             {
-                var pkgVersion = "7.0.9";
+                var pkgVersion = "7.0.12";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.20";
+                        pkgVersion = "6.0.23";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.0-preview.6.23329.4";
+                        pkgVersion = "8.0.0-rc.2.23480.1";
                         break;
                 }
 
@@ -259,14 +259,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Npgsql)
             {
-                var pkgVersion = "7.0.4";
+                var pkgVersion = "7.0.11";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.8";
+                        pkgVersion = "6.0.22";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.0-preview.4";
+                        pkgVersion = "8.0.0-rc.2";
                         break;
                 }
 
@@ -311,6 +311,10 @@ namespace RevEng.Common
                 {
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.2";
+                        break;
+
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.0-beta.1";
                         break;
                 }
 
