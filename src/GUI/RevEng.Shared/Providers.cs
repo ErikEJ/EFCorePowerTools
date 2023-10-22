@@ -120,13 +120,17 @@ namespace RevEng.Common
                     });
                 }
 
-                if (useNodaTime && codeGenerationMode != CodeGenerationMode.EFCore8)
+                if (useNodaTime)
                 {
                     pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
                             pkgVersion = "6.0.1";
+                            break;
+
+                        case CodeGenerationMode.EFCore8:
+                            pkgVersion = "8.0.0-rc.2.23480.1";
                             break;
                     }
 
