@@ -616,7 +616,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
 
-                finalText = AddResultToFinalText(finalText, revEngResult);
+                finalText = reverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
 
                 File.WriteAllText(readmePath, finalText, Encoding.UTF8);
 
@@ -696,30 +696,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     package.LogError(new List<string>(), ex);
                 }
             }
-        }
-
-        private string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
-        {
-            if (revEngResult.HasIssues)
-            {
-                var warningText = new StringBuilder();
-
-                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
-
-                foreach (var errorItem in revEngResult.EntityErrors)
-                {
-                    warningText.AppendLine(errorItem);
-                }
-
-                foreach (var warningItem in revEngResult.EntityWarnings)
-                {
-                    warningText.AppendLine(warningItem);
-                }
-
-                finalText = finalText + Environment.NewLine + warningText.ToString();
-            }
-
-            return finalText;
         }
 
         private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)

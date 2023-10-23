@@ -203,6 +203,33 @@ namespace EFCorePowerTools.Helpers
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
+        public string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
+        {
+            if (revEngResult.HasIssues)
+            {
+                var warningText = new StringBuilder();
+
+                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
+                warningText.AppendLine();
+
+                foreach (var errorItem in revEngResult.EntityErrors)
+                {
+                    warningText.AppendLine(errorItem);
+                    warningText.AppendLine();
+                }
+
+                foreach (var warningItem in revEngResult.EntityWarnings)
+                {
+                    warningText.AppendLine(warningItem);
+                    warningText.AppendLine();
+                }
+
+                finalText = finalText + Environment.NewLine + warningText.ToString();
+            }
+
+            return finalText;
+        }
+
         public bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
