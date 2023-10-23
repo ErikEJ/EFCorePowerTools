@@ -8,8 +8,8 @@
     <Description>Entity Framework Core Power Tools command line tool</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageVersion>7.0.0-rc.12</PackageVersion>
-    <InformationalVersion>7.0.0-rc.12</InformationalVersion>
+    <PackageVersion>7.0.0-rc.13</PackageVersion>
+    <InformationalVersion>7.0.0-rc.13</InformationalVersion>
     <Version>7.0.0</Version>
     <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
