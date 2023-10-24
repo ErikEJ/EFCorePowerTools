@@ -328,7 +328,8 @@ namespace EFCorePowerTools
 
             menuCommand.Visible = false;
 
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml)
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
             {
                 menuCommand.Visible = true;
                 return;
@@ -341,7 +342,8 @@ namespace EFCorePowerTools
                 return;
             }
 
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
                 menuCommand.Visible = await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync();
                 return;
@@ -357,11 +359,6 @@ namespace EFCorePowerTools
                 menuCommand.Visible = await project.IsNet60OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
                 return;
-            }
-
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
-            {
-                menuCommand.Visible = await project.IsNet60OrHigherAsync();
             }
         }
 
