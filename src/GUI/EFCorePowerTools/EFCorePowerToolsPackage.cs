@@ -358,7 +358,6 @@ namespace EFCorePowerTools
             {
                 menuCommand.Visible = await project.IsNet60OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
-                return;
             }
         }
 

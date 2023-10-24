@@ -51,7 +51,7 @@ namespace EFCorePowerTools.Helpers
                 // found it
                 var model = await document.GetSemanticModelAsync();
                 var propSymbol = model.GetDeclaredSymbol(propSyntax) ??
-                                 throw new Exception("Property symbol not found");
+                                 throw new InvalidOperationException("Property symbol not found");
 
                 // rename all references to the property
                 var newSolution = await Renamer.RenameSymbolAsync(
@@ -73,7 +73,7 @@ namespace EFCorePowerTools.Helpers
             var saveCount = 0;
             foreach (var document in documents)
             {
-                var path = document.FilePath ?? throw new Exception("Path unknown for document " + document.Name);
+                var path = document.FilePath ?? throw new InvalidOperationException("Path unknown for document " + document.Name);
                 var text = string.Join(
                     Environment.NewLine,
                     (await document.GetTextAsync()).Lines.Select(o => o.ToString())).Trim();

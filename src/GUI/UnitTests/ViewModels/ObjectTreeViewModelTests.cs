@@ -575,7 +575,7 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(a.ObjectType, b.ObjectType);
             for (var i = 0; i < a.Columns.Count(); i++)
             {
-                Assert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns.ElementAt(i).Name);
+                Assert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns[i].Name);
             }
         }
     }
