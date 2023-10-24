@@ -194,7 +194,6 @@
             </Label>
             <dw:DialogButton IsTabStop="False"
                              Content="{x:Static locale:ReverseEngineerLocale.Advanced}"
-                             IsDefault="True"
                              Command="{Binding AdvancedCommand}"/>
             <dw:DialogButton TabIndex="20"
                              Content="{x:Static locale:SharedLocale.Ok}"

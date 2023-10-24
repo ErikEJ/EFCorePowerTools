@@ -126,6 +126,7 @@
         </DataGrid>
         <dw:DialogButton Content="{x:Static locale:CompareLocale.Close}"
                          Grid.Row="2"
+                         IsDefault="True"
                          HorizontalAlignment="Right"
                          Command="{Binding CloseCommand}"
                          Margin="0, 12, 0, 0"></dw:DialogButton>
