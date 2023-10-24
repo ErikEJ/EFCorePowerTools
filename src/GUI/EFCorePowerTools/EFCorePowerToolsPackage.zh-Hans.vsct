@@ -114,6 +114,17 @@
         </Strings>
       </Button>
 
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidOptions" priority="0x0700" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="Settings" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidOptions</CommandName>
+          <ButtonText>Options</ButtonText>
+        </Strings>
+      </Button>
+      
       <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0250" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="Template" />
@@ -274,6 +285,7 @@
       <IDSymbol name="cmdidEdmProjectMenu" value="0x0003" />
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
+      <IDSymbol name="cmdidOptions" value="0x0010" />
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
       <IDSymbol name="cmdidDbCompare" value="0x0008" />
       <IDSymbol name="cmdidDbDgml" value="0x0009" />

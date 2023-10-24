@@ -233,6 +233,16 @@ namespace EFCorePowerTools
                         menuCommandId14);
                     oleMenuCommandService.AddCommand(menuItem14);
 
+                    var menuCommandId15 = new CommandID(
+                        GuidList.GuidDbContextPackageCmdSet,
+                        (int)PkgCmdIDList.cmdidOptions);
+                    var menuItem15 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId15);
+                    oleMenuCommandService.AddCommand(menuItem15);
+
                     var menuCommandId1101 = new CommandID(
                         GuidList.GuidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerEdit);
@@ -329,7 +339,8 @@ namespace EFCorePowerTools
             menuCommand.Visible = false;
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions)
             {
                 menuCommand.Visible = true;
                 return;
@@ -524,6 +535,10 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
                 {
                     aboutHandler.ShowDialog();
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions)
+                {
+                    ShowOptionPage(typeof(OptionsProvider.AdvancedOptions));
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {
