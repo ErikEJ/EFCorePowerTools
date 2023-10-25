@@ -134,6 +134,10 @@ namespace EFCorePowerTools.Helpers
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
+            }
+
+            if (minimumVersion.Major == 8)
+            {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8 (preview)" });
             }
 

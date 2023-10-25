@@ -356,7 +356,8 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
-                menuCommand.Visible = await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync();
+                menuCommand.Visible = (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync())
+                    && !project.IsMsBuildSqlProjProject();
                 return;
             }
 

@@ -165,6 +165,11 @@ namespace EFCorePowerTools.Extensions
                 version = new Version(6, 0);
             }
 
+            if (await project.IsNet80Async())
+            {
+                version = new Version(8, 0);
+            }
+
             return version;
         }
 
@@ -215,6 +220,13 @@ namespace EFCorePowerTools.Extensions
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
             return IsNet70(targetFrameworkMonikers);
+        }
+
+        public static async Task<bool> IsNet80Async(this Project project)
+        {
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet80(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNetStandardAsync(this Project project)
