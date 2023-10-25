@@ -146,16 +146,19 @@
 
         <StackPanel Orientation="Horizontal"
                     Grid.Row="9">
-            <CheckBox TabIndex="11"
+            <CheckBox TabIndex="10"
                       Name="UseHandlebarsCheckbox"
                       Content="{x:Static locale:ReverseEngineerLocale.CustomizeUsingHandlebars}"
                       IsChecked="{Binding Model.UseHandlebars}"
                       Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-            <ComboBox TabIndex="11"
-                      ItemsSource="{Binding HandlebarsLanguageList}"
-                      Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
-                      SelectedIndex="{Binding Model.SelectedHandlebarsLanguage, Mode=TwoWay}" Margin="12,0,0,0"
-                      IsEnabled="{Binding IsChecked, ElementName=UseHandlebarsCheckbox}" />
+            <ComboBox
+                  TabIndex="11"
+                  Margin="12,0,0,0"
+                  Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
+                  ItemsSource="{Binding TemplateTypeList, Mode=OneWay}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Value"
+                  SelectedValue="{Binding SelectedTemplateType, Mode=TwoWay}" />
         </StackPanel>
 
         <CheckBox Grid.Row="10"

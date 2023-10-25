@@ -524,6 +524,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var modelDialog = package.GetView<IModelingOptionsDialog>()
                                           .ApplyPresets(presets);
 
+            var allowedTemplates = reverseEngineerHelper.CalculateAllowedTemplates(options.CodeGenerationMode);
+
+            modelDialog.PublishTemplateTypes(
+                new Contracts.ViewModels.TemplateTypeItem { Key = options.SelectedHandlebarsLanguage },
+                allowedTemplates);
+
             await VS.StatusBar.ClearAsync();
 
             var modelingOptionsResult = modelDialog.ShowAndAwaitUserResponse(true);

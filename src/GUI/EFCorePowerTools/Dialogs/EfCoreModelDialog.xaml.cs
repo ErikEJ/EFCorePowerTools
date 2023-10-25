@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
@@ -13,6 +14,7 @@ namespace EFCorePowerTools.Dialogs
     {
         private readonly Func<ModelingOptionsModel> getDialogResult;
         private readonly Action<ModelingOptionsModel> applyPresets;
+        private readonly Action<TemplateTypeItem, IList<TemplateTypeItem>> setTemplateTypes;
 
         public EfCoreModelDialog(
             ITelemetryAccess telemetryAccess,
@@ -28,6 +30,15 @@ namespace EFCorePowerTools.Dialogs
             };
             getDialogResult = () => viewModel.Model;
             applyPresets = viewModel.ApplyPresets;
+            setTemplateTypes = (templateType, templateTypes) =>
+            {
+                foreach (var item in templateTypes)
+                {
+                    viewModel.TemplateTypeList.Add(item);
+                }
+
+                viewModel.SelectedTemplateType = templateType.Key;
+            };
 
             Loaded += Window_Loaded;
 
@@ -54,6 +65,11 @@ namespace EFCorePowerTools.Dialogs
         {
             applyPresets(presets);
             return this;
+        }
+
+        public void PublishTemplateTypes(TemplateTypeItem templateType, IList<TemplateTypeItem> allowedTemplateTypes)
+        {
+            setTemplateTypes(templateType, allowedTemplateTypes);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

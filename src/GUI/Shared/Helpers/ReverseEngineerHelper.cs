@@ -152,6 +152,31 @@ namespace EFCorePowerTools.Helpers
             return (codeGenerationMode, list);
         }
 
+        public IList<TemplateTypeItem> CalculateAllowedTemplates(CodeGenerationMode codeGenerationMode)
+        {
+            var list = new List<TemplateTypeItem>();
+
+            if (codeGenerationMode == CodeGenerationMode.EFCore7)
+            {
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
+                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
+            }
+            else if (codeGenerationMode == CodeGenerationMode.EFCore6)
+            {
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
+            }
+            else if (codeGenerationMode == CodeGenerationMode.EFCore8)
+            {
+                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
+                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
+            }
+
+            return list;
+        }
+
         public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
         {
             var errors = new StringBuilder();
