@@ -43,9 +43,9 @@ namespace EFCorePowerTools
     [ProvideUIContextRule(
         UIContextGuid,
         name: "Auto load based on rules",
-        expression: "(SingleProject | MultipleProjects) & CSharpConfig",
-        termNames: new[] { "SingleProject", "MultipleProjects", "CSharpConfig" },
-        termValues: new[] { VSConstants.UICONTEXT.SolutionHasSingleProject_string, VSConstants.UICONTEXT.SolutionHasMultipleProjects_string, "ActiveProjectCapability:CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript" })]
+        expression: "CSharpConfig & (SingleProject | MultipleProjects) ",
+        termNames: new[] { "CSharpConfig", "SingleProject", "MultipleProjects" },
+        termValues: new[] { "ActiveProjectCapability:CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript", VSConstants.UICONTEXT.SolutionHasSingleProject_string, VSConstants.UICONTEXT.SolutionHasMultipleProjects_string })]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class EFCorePowerToolsPackage : AsyncPackage
     {

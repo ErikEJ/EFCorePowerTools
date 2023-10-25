@@ -6,7 +6,6 @@
     <Icon>WizardItemTemplate.ico</Icon>
     <TemplateID>46304267-cec1-41fc-b025-6f81d12695ac</TemplateID>
     <AppliesTo>CSharp + CPS</AppliesTo>
-    <ProjectType>CSharp</ProjectType>
     <SortOrder>90</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
     <LanguageTag>csharp</LanguageTag>
