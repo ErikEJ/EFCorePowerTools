@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +14,9 @@ namespace RevEng.Core
     {
         private readonly string connectionString;
         private readonly ServiceProvider serviceProvider;
+        private readonly List<string> schemas = Enumerable.Empty<string>().ToList();
 
-        public DgmlBuilder(int databaseType, string connectionString)
+        public DgmlBuilder(int databaseType, string connectionString, List<string> schemas)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -28,6 +30,8 @@ namespace RevEng.Core
                 DatabaseType = (DatabaseType)databaseType,
                 ConnectionString = connectionString,
             };
+
+            this.schemas = schemas;
 
             serviceProvider = new ServiceCollection().AddEfpt(options, new List<string>(), new List<string>(), new List<string>()).BuildServiceProvider();
         }
@@ -48,7 +52,7 @@ namespace RevEng.Core
         {
             var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
-            var dbModelOptions = new DatabaseModelFactoryOptions();
+            var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas);
             var dbModel = dbModelFactory!.Create(connectionString, dbModelOptions);
 
             return dbModel;

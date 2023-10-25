@@ -132,9 +132,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await GetTablesInternalAsync(arguments);
         }
 
-        public async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType)
+        public async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType, List<string> schemaList)
         {
-            var arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+            var arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
+
+            if (schemaList.Count == 0)
+            {
+                arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+            }
 
             var filePath = await GetDgmlInternalAsync(arguments);
 

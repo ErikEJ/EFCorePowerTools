@@ -67,7 +67,6 @@ namespace EFCorePowerTools.Dialogs
                 {
                     grdRow1.Height = new GridLength(0);
                     grdRow2.Height = new GridLength(0);
-                    grdRow3.Height = new GridLength(0);
                 }
 
                 viewModel.CodeGenerationMode = (int)codeGeneration;

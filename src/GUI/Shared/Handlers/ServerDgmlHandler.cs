@@ -30,22 +30,22 @@ namespace EFCorePowerTools.Handlers
 
             try
             {
-                var connection = await ChooseDataBaseConnectionAsync();
+                var info = await ChooseDataBaseConnectionAsync();
 
-                if (connection == null)
+                if (info.DatabaseModel == null)
                 {
                     return;
                 }
 
-                var connectionString = connection.ConnectionString;
+                var connectionString = info.DatabaseModel.ConnectionString;
 
-                if (connection.DataConnection != null)
+                if (info.DatabaseModel.DataConnection != null)
                 {
-                    connection.DataConnection.Open();
-                    connectionString = DataProtection.DecryptString(connection.DataConnection.EncryptedConnectionString);
+                    info.DatabaseModel.DataConnection.Open();
+                    connectionString = DataProtection.DecryptString(info.DatabaseModel.DataConnection.EncryptedConnectionString);
                 }
 
-                var dgmlPath = await GetDgmlAsync(connectionString, connection.DatabaseType);
+                var dgmlPath = await GetDgmlAsync(connectionString, info.DatabaseModel.DatabaseType, info.Schemas);
 
                 await ShowDgmlAsync(dgmlPath);
 
@@ -57,7 +57,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private async Task<DatabaseConnectionModel> ChooseDataBaseConnectionAsync()
+        private async Task<(DatabaseConnectionModel DatabaseModel, SchemaInfo[] Schemas)> ChooseDataBaseConnectionAsync()
         {
             var vsDataHelper = new VsDataHelper();
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
@@ -90,16 +90,22 @@ namespace EFCorePowerTools.Handlers
             var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
             if (!pickDataSourceResult.ClosedByOK)
             {
-                return null;
+                return (null, null);
             }
 
-            return pickDataSourceResult.Payload.Connection;
+            return (pickDataSourceResult.Payload.Connection, pickDataSourceResult.Payload.Schemas);
         }
 
-        private async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType)
+        private async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
+            var schemaList = Enumerable.Empty<string>().ToList();
+            if (schemas != null)
+            {
+                schemaList = schemas.Select(s => s.Name).ToList();
+            }
+
             var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore6);
-            return await launcher.GetDgmlAsync(connectionString, databaseType);
+            return await launcher.GetDgmlAsync(connectionString, databaseType, schemaList);
         }
 
         private async Task ShowDgmlAsync(string path)
