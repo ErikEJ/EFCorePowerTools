@@ -189,7 +189,7 @@
                     <Hyperlink.Style>
                         <Style TargetType="{x:Type Hyperlink}"
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
-                            <Setter Property="Foreground" Value="LawnGreen"/>
+                            <Setter Property="Foreground" Value="ForestGreen"/>
                         </Style>
                     </Hyperlink.Style>
                     <Run Text="{x:Static locale:ReverseEngineerLocale.Rate}"/>

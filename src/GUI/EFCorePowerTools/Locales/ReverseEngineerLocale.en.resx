@@ -313,7 +313,7 @@
     <value>Remove constructor from entity classes (experimental)</value>
   </data>
   <data name="RemoveDefaultConstructor" xml:space="preserve">
-    <value>Remove default DbContext constructor</value>
+    <value>Remove default DbContext constructor (EF Core 6 only)</value>
   </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
     <value>Remove navigations from entity classes (experimental)</value>
@@ -385,16 +385,16 @@
     <value>Use DataAnnotation attributes to configure the model</value>
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
-    <value>Use EF6 pluralizer</value>
+    <value>Use EF6 "Classic" pluralizer</value>
   </data>
   <data name="UseManyToManyEntity" xml:space="preserve">
-    <value>Use many to many entity (EF Core 6 and later)</value>
+    <value>Use many to many entity</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Use table and column names directly from the database</value>
   </data>
   <data name="UseNullableReferenceTypes" xml:space="preserve">
-    <value>Use nullable reference types (experimental)</value>
+    <value>Use nullable reference types</value>
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
     <value>Use regular expression</value>
