@@ -91,10 +91,12 @@ namespace EFCorePowerTools.Extensions
             result.AddRange(files
                 .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\")));
 
+#pragma warning disable S2583 // Conditionally executed code should be reachable
             if (result.Count == 0)
             {
                 result.Add(Path.Combine(projectPath, "efpt.config.json"));
             }
+#pragma warning restore S2583 // Conditionally executed code should be reachable
 
             return result.OrderBy(s => s).ToList();
         }

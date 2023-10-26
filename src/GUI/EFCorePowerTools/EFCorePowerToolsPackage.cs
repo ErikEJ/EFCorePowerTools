@@ -108,6 +108,11 @@ namespace EFCorePowerTools
             return extensionServices.GetService<TView>();
         }
 
+        internal async Task<Version> VisualStudioVersionAsync()
+        {
+            return await VS.Shell.GetVsVersionAsync();
+        }
+
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
@@ -290,11 +295,6 @@ namespace EFCorePowerTools
             return itemName != null &&
                 itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
                 itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
-        }
-
-        private async Task<Version> VisualStudioVersionAsync()
-        {
-            return await VS.Shell.GetVsVersionAsync();
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods

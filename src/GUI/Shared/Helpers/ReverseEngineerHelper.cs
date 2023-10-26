@@ -126,7 +126,7 @@ namespace EFCorePowerTools.Helpers
             return string.Empty;
         }
 
-        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
+        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion, Version vsVersion)
         {
             var list = new List<CodeGenerationItem>();
 
@@ -136,14 +136,14 @@ namespace EFCorePowerTools.Helpers
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
             }
 
-            if (minimumVersion.Major == 8)
+            if (minimumVersion.Major == 8 && vsVersion >= new Version(17, 8))
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8 (preview)" });
             }
 
             if (!list.Any())
             {
-                throw new InvalidOperationException(".NET 5 and earlier projects are no longer supported");
+                return (codeGenerationMode, list);
             }
 
             var firstMode = list.Select(i => i.Key).First();

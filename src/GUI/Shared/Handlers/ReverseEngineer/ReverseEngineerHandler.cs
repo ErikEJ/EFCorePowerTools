@@ -377,7 +377,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 psd.PublishSchemas(options.Schemas);
             }
 
-            var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+            var vsVersion = await package.VisualStudioVersionAsync();
+
+            var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync(), vsVersion);
+
+            if (!allowedVersions.Any())
+            {
+                VSHelper.ShowError($".NET 5 and earlier is not supported, and EF Core 8 requires Visual Studio 17.8 or later");
+                return false;
+            }
 
             psd.PublishCodeGenerationMode(usedMode, allowedVersions);
 
