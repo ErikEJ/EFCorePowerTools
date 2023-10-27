@@ -50,5 +50,8 @@ namespace RevEng.Common.Cli.Configuration
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("use-no-navigations-preview")]
         public bool UseNoNavigationsPreview { get; set; }
+
+        [JsonPropertyName("merge-dacpacs")]
+        public bool MergeDacpacs { get; set; }
     }
 }

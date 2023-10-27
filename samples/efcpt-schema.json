@@ -364,6 +364,14 @@
                     "examples": [
                         false
                     ]
+                },
+                "merge-dacpacs": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Merge .dacpac files (when using .dacpac references)",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{
@@ -380,7 +388,8 @@
                 "soft-delete-obsolete-files": false,
                 "discover-multiple-stored-procedure-resultsets-preview": false,
                 "use-alternate-stored-procedure-resultset-discovery": false,
-                "use-no-navigations-preview": false
+                "use-no-navigations-preview": false,
+                "merge-dacpacs": false
             }]
         },
         "names": {

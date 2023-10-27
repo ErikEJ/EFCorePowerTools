@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using RevEng.Common.Cli.Configuration;
 
 namespace RevEng.Common.Cli
@@ -80,13 +79,15 @@ namespace RevEng.Common.Cli
                 UseDateOnlyTimeOnly = typeMappings.UseDateOnlyTimeOnly,
                 UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,
                 ProjectRootNamespace = names.RootNamespace,
+                MergeDacpacs = config.CodeGeneration.MergeDacpacs,
 
-                // Not supported/implemented:
-                UseNoDefaultConstructor = false,
+                // Not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it
-                MergeDacpacs = false, // not implemented, will consider if asked for
+
+                // Not implemented:
+                UseNoDefaultConstructor = false, // not implemented, will consider if asked for
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
                 UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
                 UseAsyncCalls = true, // not implemented, will consider if asked for
