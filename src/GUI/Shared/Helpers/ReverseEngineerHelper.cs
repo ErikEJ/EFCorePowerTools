@@ -126,7 +126,7 @@ namespace EFCorePowerTools.Helpers
             return string.Empty;
         }
 
-        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion, Version vsVersion)
+        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
         {
             var list = new List<CodeGenerationItem>();
 
@@ -136,9 +136,9 @@ namespace EFCorePowerTools.Helpers
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
             }
 
-            if (minimumVersion.Major == 8 && vsVersion >= new Version(17, 8))
+            if (minimumVersion.Major == 8)
             {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8 (preview)" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8 (rc)" });
             }
 
             if (!list.Any())
