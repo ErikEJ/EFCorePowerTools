@@ -383,7 +383,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                VSHelper.ShowError($".NET 5 and earlier is not supported, and EF Core 8 requires Visual Studio 17.8 or later");
+                VSHelper.ShowError($".NET 5 and earlier is not supported, and EF Core 8 requires Visual Studio 2022 version 17.8 or later");
                 return false;
             }
 
