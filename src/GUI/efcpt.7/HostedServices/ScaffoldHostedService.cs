@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
 using RevEng.Common;
 using RevEng.Common.Cli;
+using RevEng.Common.Cli.VsCode;
 using RevEng.Core;
 using Spectre.Console;
 
@@ -100,6 +101,8 @@ internal sealed class ScaffoldHostedService : HostedService
         ShowWarnings(result);
 
         var redactedConnectionString = new ConnectionStringResolver(commandOptions.ConnectionString).Redact();
+
+        VsCodeTaskHelper.GenerateTaskPayload(commandOptions.ProjectPath, Constants.Version, redactedConnectionString);
 
         var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
         var fileUri = new Uri(new Uri("file://"), readmePath);

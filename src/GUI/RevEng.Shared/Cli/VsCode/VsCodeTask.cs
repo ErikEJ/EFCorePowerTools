@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+
+namespace RevEng.Common.Cli.VsCode
+{
+    internal class VsCodeTask
+    {
+        public string version { get; set; }
+        public List<TaskItem> tasks { get; set; }
+        public List<Input> inputs { get; set; }
+    }
+}
