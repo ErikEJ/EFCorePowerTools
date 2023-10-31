@@ -29,6 +29,23 @@ namespace RevEng.Common.Cli.VsCode
                 {
                     new TaskItem
                     {
+                        label = "EF Core Power Tools: Edit Configuration",
+                        command = "code",
+                        type = "shell",
+                        args = new System.Collections.Generic.List<string>
+                        {
+                            "-r",
+                            "${workspaceFolder}/efcpt-config.json",
+                        },
+                        presentation = new Presentation
+                        {
+                            reveal = "never",
+                        },
+                        group = "none",
+                        problemMatcher = "$msCompile",
+                    },
+                    new TaskItem
+                    {
                         label = "EF Core Power Tools: Reverse Engineer",
                         command = "efcpt",
                         type = "shell",
@@ -37,11 +54,11 @@ namespace RevEng.Common.Cli.VsCode
                             "${input:connection}",
                             "mssql",
                         },
-                        group = "none",
                         presentation = new Presentation
                         {
                             reveal = "always",
                         },
+                        group = "none",
                         problemMatcher = "$msCompile",
                     },
                     new TaskItem
@@ -57,11 +74,11 @@ namespace RevEng.Common.Cli.VsCode
                             "--version",
                             $"{version}.0.*-*",
                         },
-                        group = "none",
                         presentation = new Presentation
                         {
                             reveal = "always",
                         },
+                        group = "none",
                         problemMatcher = "$msCompile",
                     },
                 },
