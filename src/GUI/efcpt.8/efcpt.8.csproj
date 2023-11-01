@@ -18,6 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
     <Company>ErikEJ</Company>
+    <PackageTags>Entity Framework Core entity-framework-core EF Data O/RM EntityFramework EntityFrameworkCore EFCore</PackageTags>
     <PackageReleaseNotes>early preview for EF Core 8</PackageReleaseNotes>
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
