@@ -112,3 +112,19 @@ dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
 ```
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the `+CLI` label.
+
+### Integration with Visual Studio Code
+
+The tool adds a number of project specific task in a `.vscode/tasks.json` file.
+
+Theses tasks can be run from the command palette in VS Code. Select `Tasks: Run Task` and then select the task you want to run.
+
+The tasks are: 
+
+- `EF Core Power Tools: Reverse engineer` - runs the tool with the current provider and connection string.
+- `EF Core Power Tools: Edit Configuration` - opens the configuration file in the editor.
+- `EF Core Power Tools: Update` - updates the tool to the latest version.
+
+In addition, when editing the configuration file, you get tooltips, IntelliSense suggestions and validation of the file format.
+
+![](https://github.com/ErikEJ/EFCorePowerTools/blob/master/img/efcpt-vscode.png)
