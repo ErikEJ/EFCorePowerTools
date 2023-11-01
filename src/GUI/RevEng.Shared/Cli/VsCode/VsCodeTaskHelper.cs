@@ -71,6 +71,7 @@ namespace RevEng.Common.Cli.VsCode
                             "tool",
                             "update",
                             "-g",
+                            "ErikEJ.EFCorePowerTools.Cli",
                             "--version",
                             $"{version}.0.*-*",
                         },
