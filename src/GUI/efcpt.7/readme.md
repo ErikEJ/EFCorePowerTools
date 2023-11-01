@@ -127,4 +127,4 @@ The tasks are:
 
 In addition, when editing the configuration file, you get tooltips, IntelliSense suggestions and validation of the file format.
 
-![](https://github.com/ErikEJ/EFCorePowerTools/blob/master/img/efcpt-vscode.png)
+![Screenshot](https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/img/efcpt-vscode.png)
