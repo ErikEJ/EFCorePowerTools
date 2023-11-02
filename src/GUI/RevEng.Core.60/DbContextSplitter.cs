@@ -122,10 +122,10 @@ namespace RevEng.Core
 
                 result.Add(configurationFilePath);
 
+                configurationLines.Add($"{new string(' ', 8)}modelBuilder.ApplyConfiguration(new Configurations.{entityName}Configuration());");
+
                 index++;
             }
-
-            configurationLines.Add($"{new string(' ', 8)}modelBuilder.ApplyConfigurationsFromAssembly(typeof({dbContextName}).Assembly);");
 
             var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
 
