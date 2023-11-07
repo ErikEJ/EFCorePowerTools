@@ -20,7 +20,7 @@ namespace RevEng.Common.Cli.Configuration
         public bool UseNullableReferenceTypes { get; set; } = true;
 
         [JsonPropertyName("use-inflector")]
-        public bool UseInflector { get; set; }
+        public bool UseInflector { get; set; } = true;
 
         [JsonPropertyName("use-legacy-inflector")]
         public bool UseLegacyInflector { get; set; }
