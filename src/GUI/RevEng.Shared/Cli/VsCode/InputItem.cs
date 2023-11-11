@@ -1,6 +1,6 @@
 ﻿namespace RevEng.Common.Cli.VsCode
 {
-    public class Input
+    internal sealed class InputItem
     {
         public string type { get; set; }
         public string id { get; set; }

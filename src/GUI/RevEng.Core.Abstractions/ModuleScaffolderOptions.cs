@@ -12,5 +12,6 @@ namespace RevEng.Core.Abstractions
         public virtual bool UseSchemaFolders { get; set; }
         public virtual bool UseAsyncCalls { get; set; }
         public virtual bool UseSchemaNamespaces { get; set; }
+        public virtual bool UseDecimalDataAnnotation { get; set; }
     }
 }

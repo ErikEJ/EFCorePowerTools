@@ -56,6 +56,7 @@ namespace RevEng.Common
         public bool MergeDacpacs { get; set; }
         public bool UseLegacyResultSetDiscovery { get; set; }
         public bool UseAsyncCalls { get; set; }
+        public bool UseDecimalDataAnnotation { get; set; }
         public bool PreserveCasingWithRegex { get; set; }
         public bool UseDateOnlyTimeOnly { get; set; }
     }

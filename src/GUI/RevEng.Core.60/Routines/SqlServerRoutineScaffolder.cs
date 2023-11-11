@@ -309,7 +309,7 @@ namespace RevEng.Core.Modules
 
             using (Sb.Indent())
             {
-                GenerateClass(resultElements, name, options.NullableReferences);
+                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation);
             }
 
             Sb.AppendLine("}");
@@ -317,28 +317,35 @@ namespace RevEng.Core.Modules
             return Sb.ToString();
         }
 
-        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences)
+        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation)
         {
             Sb.AppendLine($"public partial class {name}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())
             {
-                GenerateProperties(resultElements, nullableReferences);
+                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation);
             }
 
             Sb.AppendLine("}");
         }
 
-        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences)
+        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation)
         {
             foreach (var property in resultElements.OrderBy(e => e.Ordinal))
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 
-                if (!string.IsNullOrEmpty(propertyNames.Item2))
+                if (property.StoreType == "decimal" && useDecimalDataAnnotation)
                 {
-                    Sb.AppendLine(propertyNames.Item2);
+                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(propertyNames.Item2))
+                    {
+                        Sb.AppendLine(propertyNames.Item2);
+                    }
                 }
 
                 var propertyType = property.ClrType();

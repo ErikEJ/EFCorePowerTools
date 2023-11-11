@@ -53,5 +53,8 @@ namespace RevEng.Common.Cli.Configuration
 
         [JsonPropertyName("merge-dacpacs")]
         public bool MergeDacpacs { get; set; }
+
+        [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
+        public bool UseDecimalDataAnnotation { get; set; } = true;
     }
 }

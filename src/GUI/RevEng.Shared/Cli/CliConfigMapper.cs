@@ -80,6 +80,7 @@ namespace RevEng.Common.Cli
                 UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,
                 ProjectRootNamespace = names.RootNamespace,
                 MergeDacpacs = config.CodeGeneration.MergeDacpacs,
+                UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
 
                 // Not supported:
                 UseHandleBars = false,

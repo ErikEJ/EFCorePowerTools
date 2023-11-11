@@ -83,9 +83,9 @@ namespace RevEng.Common.Cli.VsCode
                         problemMatcher = "$msCompile",
                     },
                 },
-                inputs = new System.Collections.Generic.List<Input>
+                inputs = new System.Collections.Generic.List<InputItem>
                 {
-                    new Input
+                    new InputItem
                     {
                         type = "promptString",
                         id = "connection",

@@ -1,6 +1,6 @@
 ﻿namespace RevEng.Common.Cli.VsCode
 {
-    public class Presentation
+    internal sealed class Presentation
     {
         public string reveal { get; set; }
     }

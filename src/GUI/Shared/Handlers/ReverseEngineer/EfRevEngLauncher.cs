@@ -114,6 +114,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 PreserveCasingWithRegex = options.PreserveCasingWithRegex,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
+                UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

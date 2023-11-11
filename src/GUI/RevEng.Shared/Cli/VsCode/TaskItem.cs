@@ -2,7 +2,7 @@
 
 namespace RevEng.Common.Cli.VsCode
 {
-    internal class TaskItem
+    internal sealed class TaskItem
     {
         public string label { get; set; }
         public string command { get; set; }

@@ -208,6 +208,7 @@ namespace RevEng.Core
                     UseSchemaFolders = options.UseSchemaFolders,
                     UseAsyncCalls = options.UseAsyncCalls,
                     UseSchemaNamespaces = options.UseSchemaNamespaces,
+                    UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);
