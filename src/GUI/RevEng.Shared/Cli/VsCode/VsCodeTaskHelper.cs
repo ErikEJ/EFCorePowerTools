@@ -6,6 +6,11 @@ namespace RevEng.Common.Cli.VsCode
 {
     public static class VsCodeTaskHelper
     {
+        private static readonly JsonSerializerOptions WriteOptions = new()
+        {
+            WriteIndented = true,
+        };
+
         public static void GenerateTaskPayload(string projectPath, int version, string redactedConnectionString)
         {
             var path = Path.Combine(projectPath, ".vscode");
@@ -95,7 +100,7 @@ namespace RevEng.Common.Cli.VsCode
                 },
             };
 
-            File.WriteAllText(path, JsonSerializer.Serialize(vsCodeTask, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
+            File.WriteAllText(path, JsonSerializer.Serialize(vsCodeTask, WriteOptions), Encoding.UTF8);
         }
     }
 }
