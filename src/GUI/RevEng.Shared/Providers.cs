@@ -366,7 +366,7 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Firebird)
             {
-                var pkgVersion = "9.2.0-alpha1";
+                var pkgVersion = "10.0.0";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:

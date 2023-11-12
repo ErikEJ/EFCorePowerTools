@@ -35,7 +35,7 @@
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="7.0.0" />
     <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
     <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="7.0.5" />
-    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.2.0-beta1" />    
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="10.0.0" />    
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.13" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.13" />
