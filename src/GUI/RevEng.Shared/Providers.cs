@@ -88,11 +88,11 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.13";
+                var pkgVersion = "7.0.14";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.24";
+                        pkgVersion = "6.0.25";
                         break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.0";
@@ -220,11 +220,11 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLite)
             {
-                var pkgVersion = "7.0.13";
+                var pkgVersion = "7.0.14";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.24";
+                        pkgVersion = "6.0.25";
                         break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.0";
