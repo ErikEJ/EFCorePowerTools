@@ -105,13 +105,6 @@ namespace RevEng.Core
 #if !CORE80
                     serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
 #endif
-#if CORE80
-                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
-                        provider => new RevEng.Core.SqlServerTypeMappingSource(
-                            provider.GetService<TypeMappingSourceDependencies>(),
-                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
-                            options.UseDateOnlyTimeOnly));
-#endif
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     serviceCollection.AddSqlServerFunctionDesignTimeServices();
 
@@ -132,6 +125,13 @@ namespace RevEng.Core
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
+#if CORE80
+                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                        provider => new RevEng.Core.SqlServerTypeMappingSource(
+                            provider.GetService<TypeMappingSourceDependencies>(),
+                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                            options.UseDateOnlyTimeOnly));
+#endif
 #if !CORE80
                     if (options.UseDateOnlyTimeOnly)
                     {
@@ -150,14 +150,6 @@ namespace RevEng.Core
                         {
                             MergeDacpacs = options.MergeDacpacs,
                         }));
-
-#if CORE80
-                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
-                        provider => new RevEng.Core.SqlServerTypeMappingSource(
-                            provider.GetService<TypeMappingSourceDependencies>(),
-                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
-                            options.UseDateOnlyTimeOnly));
-#endif
 
                     serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
                     {
@@ -181,6 +173,13 @@ namespace RevEng.Core
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
+#if CORE80
+                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                        provider => new RevEng.Core.SqlServerTypeMappingSource(
+                            provider.GetService<TypeMappingSourceDependencies>(),
+                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                            options.UseDateOnlyTimeOnly));
+#endif
 #if !CORE80
                     if (options.UseDateOnlyTimeOnly)
                     {
