@@ -138,7 +138,7 @@ namespace EFCorePowerTools.Helpers
 
             if (minimumVersion.Major == 8)
             {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8 (rc)" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
             }
 
             if (!list.Any())
