@@ -151,6 +151,14 @@ namespace RevEng.Core
                             MergeDacpacs = options.MergeDacpacs,
                         }));
 
+#if CORE80
+                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                        provider => new RevEng.Core.SqlServerTypeMappingSource(
+                            provider.GetService<TypeMappingSourceDependencies>(),
+                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                            options.UseDateOnlyTimeOnly));
+#endif
+
                     serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
                     {
                         MergeDacpacs = options.MergeDacpacs,
