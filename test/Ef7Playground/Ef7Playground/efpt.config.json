@@ -209,6 +209,7 @@
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": true,
    "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": true,
