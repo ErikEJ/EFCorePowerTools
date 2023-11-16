@@ -102,8 +102,6 @@ internal sealed class ScaffoldHostedService : HostedService
 
         var redactedConnectionString = new ConnectionStringResolver(commandOptions.ConnectionString).Redact();
 
-        VsCodeTaskHelper.GenerateTaskPayload(commandOptions.ProjectPath, Constants.Version, redactedConnectionString);
-
         var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
         var fileUri = new Uri(new Uri("file://"), readmePath);
 
