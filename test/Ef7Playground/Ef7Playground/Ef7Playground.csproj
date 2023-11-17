@@ -9,7 +9,7 @@
 
   <ItemGroup>
 	<PackageReference Include="EfCore.SchemaCompare" Version="8.0.0-rc2-0002" />
-	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  <PrivateAssets>all</PrivateAssets>

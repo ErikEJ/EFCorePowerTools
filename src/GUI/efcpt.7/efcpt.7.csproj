@@ -6,7 +6,6 @@
     <ToolCommandName>efcpt</ToolCommandName>
     <PackageId>ErikEJ.EFCorePowerTools.Cli</PackageId>
     <Description>Entity Framework Core Power Tools command line tool</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageVersion>7.0.1</PackageVersion>
     <InformationalVersion>7.0.1</InformationalVersion>
