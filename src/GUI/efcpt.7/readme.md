@@ -108,23 +108,13 @@ In the example above, Users and Messages tables will be selected.
 ### Updating the tool
 
 ```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-*
 ```
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the `+CLI` label.
 
-### Integration with Visual Studio Code
+### Getting the latest daily build
 
-The tool adds a number of project specific task in a `.vscode/tasks.json` file.
-
-Theses tasks can be run from the command palette in VS Code. Select `Tasks: Run Task` and then select the task you want to run.
-
-The tasks are: 
-
-- `EF Core Power Tools: Reverse Engineer` - runs the tool with the current provider and connection string.
-- `EF Core Power Tools: Edit Configuration` - opens the configuration file in the editor.
-- `EF Core Power Tools: Update` - updates the tool to the latest version.
-
-In addition, when editing the configuration file, you get tooltips, IntelliSense suggestions and validation of the file format.
-
-![Screenshot](https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/img/efcpt-vscode.png)
+```bash
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-* --add-source https://ci.appveyor.com/nuget/efcorepowertools
+```
