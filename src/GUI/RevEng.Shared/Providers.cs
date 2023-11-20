@@ -122,7 +122,7 @@ namespace RevEng.Common
 
                 if (useNodaTime)
                 {
-                    pkgVersion = "7.0.0";
+                    pkgVersion = "7.1.0";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
@@ -130,7 +130,7 @@ namespace RevEng.Common
                             break;
 
                         case CodeGenerationMode.EFCore8:
-                            pkgVersion = "8.0.0-rc.2.23480.1";
+                            pkgVersion = "8.0.0";
                             break;
                     }
 
@@ -318,7 +318,7 @@ namespace RevEng.Common
                         break;
 
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.0-beta.1";
+                        pkgVersion = "8.0.0-beta.2";
                         break;
                 }
 
