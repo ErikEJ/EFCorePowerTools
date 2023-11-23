@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
@@ -19,7 +20,6 @@ using RevEng.Core.Procedures;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 
 #if !CORE80
-using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Oracle.EntityFrameworkCore.Design.Internal;
@@ -64,7 +64,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
-#if !CORE80
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -75,7 +74,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
-#endif
+
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)
