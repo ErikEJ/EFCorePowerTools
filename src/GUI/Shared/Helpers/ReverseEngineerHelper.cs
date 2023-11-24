@@ -51,6 +51,9 @@ namespace EFCorePowerTools.Helpers
                     case CodeGenerationMode.EFCore7:
                         zipName = "CodeTemplates700.zip";
                         break;
+                    case CodeGenerationMode.EFCore8:
+                        zipName = "CodeTemplates800.zip";
+                        break;
                     default:
                         throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
                 }
@@ -160,7 +163,8 @@ namespace EFCorePowerTools.Helpers
         {
             var list = new List<TemplateTypeItem>();
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore7)
+            if (codeGenerationMode == CodeGenerationMode.EFCore7
+                || codeGenerationMode == CodeGenerationMode.EFCore8)
             {
                 list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
@@ -171,11 +175,6 @@ namespace EFCorePowerTools.Helpers
             {
                 list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
-            }
-            else if (codeGenerationMode == CodeGenerationMode.EFCore8)
-            {
-                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
-                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
             }
 
             return list;
