@@ -502,6 +502,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 return "rowversion";
             }
 
+            if (dataTypeName == "sysname")
+            {
+                return "nvarchar(128)";
+            }
+
             if (dataTypeName == "decimal"
                 || dataTypeName == "numeric")
             {
