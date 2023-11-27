@@ -107,7 +107,7 @@ public static class Program
         {
             h.AddPostOptionsLine("SAMPLES:");
             h.AddPostOptionsLine(@"  efcpt ""Data Source=.;Initial Catalog=Chinook;User=sa;Pwd=123""");
-            h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac"" Microsoft.EntityFrameworkCore.SqlServer");
+            h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac"" mssql");
             h.AddPostOptionsLine(@"  efcpt ""Server=my.database.windows.net;Authentication=Active Directory Default;Database=myddb;User Id=user@domain.com;"" mssql");
             return h;
         }));

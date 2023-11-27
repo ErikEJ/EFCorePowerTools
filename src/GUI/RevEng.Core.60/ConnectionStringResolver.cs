@@ -8,7 +8,6 @@ using Npgsql;
 
 #if !CORE80
 using FirebirdSql.Data.FirebirdClient;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using MySqlConnector;
 using Oracle.ManagedDataAccess.Client;
 #endif

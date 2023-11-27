@@ -380,17 +380,19 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 string storeType = null;
                 string systemTypeName = null;
 
-                if (col.DataType.First().Name.Parts.Count > 1)
+                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
                 {
-                    if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
-                    {
-                        storeType = value.StoreType;
-                        systemTypeName = value.TypeName;
-                    }
+                    storeType = value.StoreType;
+                    systemTypeName = value.TypeName;
                 }
                 else
                 {
                     var dataTypeName = col.DataType.First().Name.Parts[0];
+                    if (col.DataType.First().Name.Parts.Count > 1)
+                    {
+                        dataTypeName = col.DataType.First().Name.Parts[1];
+                    }
+
                     int maxLength = col.IsMax ? -1 : col.Length;
                     storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
                     systemTypeName = dataTypeName;
