@@ -8,8 +8,7 @@ Add these NuGet packages to your .csproj based on your selections:
 
 ```xml
 <ItemGroup>
-[PackageList]
-</ItemGroup>
+[PackageList]</ItemGroup>
 ```
 
 ### ASP.NET Core:
