@@ -13,7 +13,6 @@
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
 	  <MinClientVersion>5.0</MinClientVersion>	  
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageReadmeFile>readme.md</PackageReadmeFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
