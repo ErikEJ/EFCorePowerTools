@@ -453,10 +453,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
-            var predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
-                                       : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
+            IEnumerable<TableModel> predefinedTables = null;
+
+            try
+            {
+                await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+
+                predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
+                                           ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
+                                           : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
+            }
+            catch (InvalidOperationException ex)
+            {
+                VSHelper.ShowError($"{ex.Message}");
+                return false;
+            }
+            finally
+            {
+                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+            }
 
             var isSqliteToolboxInstalled = options.DatabaseType != DatabaseType.SQLite;
 
