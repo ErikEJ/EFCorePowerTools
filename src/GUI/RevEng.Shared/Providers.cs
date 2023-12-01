@@ -240,13 +240,17 @@ namespace RevEng.Common
                     UseMethodName = "Sqlite",
                 });
 
-                if (useNodaTime && codeGenerationMode != CodeGenerationMode.EFCore8)
+                if (useNodaTime)
                 {
                     pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
                             pkgVersion = "6.0.0";
+                            break;
+
+                        case CodeGenerationMode.EFCore8:
+                            pkgVersion = "8.0.0";
                             break;
                     }
 
