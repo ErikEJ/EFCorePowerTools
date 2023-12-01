@@ -330,14 +330,14 @@ namespace UnitTests.ViewModels
             }
 
             // Act
-            var result = vm.GetSelectedObjects().ToArray();
+            var result = vm.GetSelectedObjects().ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(6, result.Length);
+            Assert.AreEqual(6, result.Count);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                Assert.IsTrue(result.Any(c => c.Name == item.Objects[0].ModelDisplayName));
+                Assert.IsTrue(result.Exists(c => c.Name == item.Objects[0].ModelDisplayName));
             }
         }
 
