@@ -32,7 +32,7 @@
 	<ItemGroup>
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="8.0.0-beta1" />
-    <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="8.0.0" />
+    <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="8.0.1" />
     <!--<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="9.2.0-alpha1" />-->    
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
