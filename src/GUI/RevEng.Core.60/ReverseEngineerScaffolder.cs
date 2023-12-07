@@ -129,6 +129,7 @@ namespace RevEng.Core
                 var modelFactoryOptions = new ModuleModelFactoryOptions
                 {
                     FullModel = true,
+                    UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.ScalarFunction).Select(m => m.Name),
                 };
 

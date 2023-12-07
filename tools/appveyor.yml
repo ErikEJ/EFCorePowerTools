@@ -1,0 +1,108 @@
+version: 2.5.{build}
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - master
+skip_tags: true
+image: Visual Studio 2022
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  version_prefix: '{version}'
+  file_version: '{version}'
+install:
+- ps: >-
+    (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
+
+    Vsix-IncrementVsixVersion | Vsix-UpdateBuildVersion
+
+    Vsix-IncrementVsixVersion C:\projects\efcorepowertools\src\GUI\EFCorePowerTools\source.extension.vsixmanifest
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: >-
+    # cd src\GUI\efreveng80
+
+    # call BuildCmdlineTool.cmd
+
+    # cd %APPVEYOR_BUILD_FOLDER%
+
+
+    # cd src\GUI\efreveng60
+
+    # call BuildCmdlineTool.cmd
+
+    # cd %APPVEYOR_BUILD_FOLDER%
+
+
+    # cd src\GUI\efreveng70
+
+    # call BuildCmdlineTool.cmd
+
+    # cd %APPVEYOR_BUILD_FOLDER%
+
+
+    &powershell -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((iwr -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel LTS -InstallDir c:\dotnet"
+
+
+    [Environment]::SetEnvironmentVariable("DOTNET_ROOT","$HOME\.dotnet", "User")
+
+
+    [Environment]::SetEnvironmentVariable("Path",  "C:\dotnet\;$HOME\.dotnet;$HOME\.dotnet\Tools;" + $env:Path, "Machine")
+
+
+    [Environment]::SetEnvironmentVariable("DOTNET_CLI_TELEMETRY_OPTOUT","1", "Machine")
+
+
+    [Environment]::SetEnvironmentVariable("DOTNET_NOLOGO", "true", "Machine")
+
+
+    [Environment]::SetEnvironmentVariable("DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true", "Machine")
+
+
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
+
+    dotnet --version
+
+
+    .nuget\nuget restore .\src\GUI\EFCorePowerTools.sln -NonInteractive -Verbosity quiet -Source "https://api.nuget.org/v3/index.json"
+
+
+    msbuild src\GUI\EFCorePowerTools.sln /p:configuration=Release  /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+
+
+    dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.0.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=6.0.$($Env:APPVEYOR_BUILD_NUMBER)
+
+
+    dotnet pack src\GUI\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.0.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=7.0.$($Env:APPVEYOR_BUILD_NUMBER)
+
+
+    dotnet pack src\GUI\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.0.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=8.0.$($Env:APPVEYOR_BUILD_NUMBER)
+
+
+    dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj
+
+
+    dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj
+
+
+    dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj
+test:
+  assemblies:
+    only:
+    - NUnitTestCore.dll
+artifacts:
+- path: '**\*.nupkg'
+deploy_script:
+- ps: >-
+    $ErrorActionPreference='Stop'
+
+    Vsix-PushArtifacts | Vsix-PublishToGallery
