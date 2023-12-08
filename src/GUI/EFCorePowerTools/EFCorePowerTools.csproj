@@ -348,25 +348,30 @@
     <EmbeddedResource Include="Resources.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="VSPackage.es.resx" />
-    <EmbeddedResource Include="VSPackage.tr.resx" />
-    <EmbeddedResource Include="VSPackage.fr.resx" />
+    <EmbeddedResource Include="VSPackage.es.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.es.Resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.tr.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.tr.Resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.fr.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.fr.Resources</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.it.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.it.Resources</LogicalName>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.zh-Hans.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.zh-Hans.Resources</LogicalName>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.en.resx">
       <MergeWithCTO>true</MergeWithCTO>
@@ -456,13 +461,13 @@
     <VSCTCompile Include="EFCorePowerToolsPackage.en.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <VSCTCompile Include="EFCorePowerToolsPackage.es.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.it.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.zh-Hans.vsct">
-      <ResourceName>Menus.ctmenu</ResourceName>
-    </VSCTCompile>
-    <VSCTCompile Include="EFCorePowerToolsPackage.es.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
@@ -477,7 +482,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.4.33103.184" />
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>17.5.4074</Version>
+      <Version>17.8.2365</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
