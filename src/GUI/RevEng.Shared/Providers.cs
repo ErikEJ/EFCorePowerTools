@@ -350,11 +350,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Oracle)
             {
-                var pkgVersion = "7.21.9";
+                var pkgVersion = "7.21.12";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.21.90";
+                        pkgVersion = "6.21.120";
+                        break;
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.21.121";
                         break;
                 }
 
