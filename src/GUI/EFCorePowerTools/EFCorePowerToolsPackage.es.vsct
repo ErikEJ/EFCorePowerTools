@@ -121,7 +121,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>Options</ButtonText>
+          <ButtonText>Opciones</ButtonText>
         </Strings>
       </Button>
       
