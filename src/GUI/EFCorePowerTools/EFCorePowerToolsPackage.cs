@@ -39,10 +39,18 @@ namespace EFCorePowerTools
     [Guid(GuidList.guidDbContextPackagePkgString)]
     [ProvideOptionPage(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
     [ProvideProfile(typeof(OptionsProvider.AdvancedOptions), "EF Core Power Tools", "General", 100, 101, true)]
-    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(UIContextGuid, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideUIContextRule(
+        UIContextGuid,
+        name: "Auto load based on rules",
+        expression: "CSharpConfig & (SingleProject | MultipleProjects) ",
+        termNames: new[] { "CSharpConfig", "SingleProject", "MultipleProjects" },
+        termValues: new[] { "ActiveProjectCapability:CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript", VSConstants.UICONTEXT.SolutionHasSingleProject_string, VSConstants.UICONTEXT.SolutionHasMultipleProjects_string })]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class EFCorePowerToolsPackage : AsyncPackage
     {
+        public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
+
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
@@ -98,6 +106,11 @@ namespace EFCorePowerTools
             where TView : IView
         {
             return extensionServices.GetService<TView>();
+        }
+
+        internal async Task<Version> VisualStudioVersionAsync()
+        {
+            return await VS.Shell.GetVsVersionAsync();
         }
 
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
@@ -225,6 +238,16 @@ namespace EFCorePowerTools
                         menuCommandId14);
                     oleMenuCommandService.AddCommand(menuItem14);
 
+                    var menuCommandId15 = new CommandID(
+                        GuidList.GuidDbContextPackageCmdSet,
+                        (int)PkgCmdIDList.cmdidOptions);
+                    var menuItem15 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        menuCommandId15);
+                    oleMenuCommandService.AddCommand(menuItem15);
+
                     var menuCommandId1101 = new CommandID(
                         GuidList.GuidReverseEngineerMenu,
                         (int)PkgCmdIDList.cmdidReverseEngineerEdit);
@@ -274,11 +297,6 @@ namespace EFCorePowerTools
                 itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
-        private async Task<Version> VisualStudioVersionAsync()
-        {
-            return await VS.Shell.GetVsVersionAsync();
-        }
-
 #pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
@@ -305,21 +323,28 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = IsConfigFile(item.Text) && project.IsCSharpProject();
+            menuCommand.Visible = IsConfigFile(item.Text) && project.IsCSharpProject()
+                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync());
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            var menuCommand = sender as MenuCommand;
-
-            if (menuCommand == null)
+            if (!(sender is MenuCommand menuCommand))
             {
                 return;
             }
 
             menuCommand.Visible = false;
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions)
+            {
+                menuCommand.Visible = true;
+                return;
+            }
 
             var project = await VS.Solutions.GetActiveProjectAsync();
 
@@ -328,12 +353,11 @@ namespace EFCorePowerTools
                 return;
             }
 
-            var isCsharpProject = project.IsCSharpProject();
-
-            menuCommand.Visible = isCsharpProject;
-
-            if (!isCsharpProject)
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
+                menuCommand.Visible = (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync())
+                    && !project.IsMsBuildSqlProjProject();
                 return;
             }
 
@@ -344,21 +368,8 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                menuCommand.Visible = await project.IsNet60OrHigherIncluding70Async()
+                menuCommand.Visible = await project.IsNet60OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
-                return;
-            }
-
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
-            {
-                menuCommand.Visible = await project.IsNet60OrHigherAsync();
-                return;
-            }
-
-            var path = await project.GetMsBuildSqlProjOutPutAssemblyPathAsync();
-            if (!string.IsNullOrEmpty(path))
-            {
-                menuCommand.Visible = false;
             }
         }
 
@@ -525,6 +536,10 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
                 {
                     aboutHandler.ShowDialog();
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions)
+                {
+                    ShowOptionPage(typeof(OptionsProvider.AdvancedOptions));
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {

@@ -35,8 +35,14 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
 
+    /// <summary>
+    /// Orders table
+    /// </summary>
     public virtual DbSet<Order> Orders { get; set; }
 
+    /// <summary>
+    /// OrderDetails table
+    /// </summary>
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<OrderDetailsExtended> OrderDetailsExtendeds { get; set; }
@@ -82,10 +88,10 @@ public partial class NorthwindContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Trust Server Certificate=True;Command Timeout=300", x => x
+        => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;Command Timeout=300", x => x
                 .UseNetTopologySuite()
-                .UseHierarchyId()
-                .UseDateOnlyTimeOnly());
+                .UseHierarchyId())
+                .LogTo(Console.WriteLine);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,7 +116,9 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(15);
-            entity.Property(e => e.Description).HasColumnType("ntext");
+            entity.Property(e => e.Description)
+                .HasComment("Obsolete")
+                .HasColumnType("ntext");
             entity.Property(e => e.Picture).HasColumnType("image");
         });
 
@@ -310,6 +318,8 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
+            entity.ToTable(tb => tb.HasComment("Orders table"));
+
             entity.HasIndex(e => e.CustomerId, "CustomerID");
 
             entity.HasIndex(e => e.CustomerId, "CustomersOrders");
@@ -333,7 +343,7 @@ public partial class NorthwindContext : DbContext
                 .HasColumnName("CustomerID");
             entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Freight)
-                .HasDefaultValueSql("((0))")
+                .HasDefaultValue(0m)
                 .HasColumnType("money");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RequiredDate).HasColumnType("datetime");
@@ -362,7 +372,7 @@ public partial class NorthwindContext : DbContext
         {
             entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("PK_Order_Details");
 
-            entity.ToTable("Order Details");
+            entity.ToTable("Order Details", tb => tb.HasComment("OrderDetails table"));
 
             entity.HasIndex(e => e.OrderId, "OrderID");
 
@@ -374,7 +384,7 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
+            entity.Property(e => e.Quantity).HasDefaultValue((short)1);
             entity.Property(e => e.UnitPrice).HasColumnType("money");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
@@ -477,13 +487,13 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.ProductName).HasMaxLength(40);
             entity.Property(e => e.QuantityPerUnit).HasMaxLength(20);
-            entity.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
+            entity.Property(e => e.ReorderLevel).HasDefaultValue((short)0);
             entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
             entity.Property(e => e.UnitPrice)
-                .HasDefaultValueSql("((0))")
+                .HasDefaultValue(0m)
                 .HasColumnType("money");
-            entity.Property(e => e.UnitsInStock).HasDefaultValueSql("((0))");
-            entity.Property(e => e.UnitsOnOrder).HasDefaultValueSql("((0))");
+            entity.Property(e => e.UnitsInStock).HasDefaultValue((short)0);
+            entity.Property(e => e.UnitsOnOrder).HasDefaultValue((short)0);
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)

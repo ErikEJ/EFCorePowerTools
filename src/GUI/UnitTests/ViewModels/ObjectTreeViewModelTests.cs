@@ -165,7 +165,7 @@ namespace UnitTests.ViewModels
             var renamers = vm.GetRenamedObjects().ToList();
 
             // Assert
-            Assert.AreEqual(2, renamers[0].Tables.Count);
+            Assert.AreEqual(3, renamers[0].Tables.Count);
             Assert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
             Assert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
         }
@@ -202,7 +202,7 @@ namespace UnitTests.ViewModels
             vm.AddObjects(GetDatabaseObjects(), null);
 
             // Act
-            var selectedObjects = GetSelectedObjects();
+            var selectedObjects = GetSelectedObjects().ToList();
             vm.SelectObjects(selectedObjects);
 
             // Assert
@@ -210,7 +210,7 @@ namespace UnitTests.ViewModels
             for (var i = 0; i < vm.GetSelectedObjects().Count(); i++)
             {
                 var a = vm.GetSelectedObjects().ElementAt(i);
-                var b = selectedObjects.ElementAt(i);
+                var b = selectedObjects[i];
 
                 Assert.AreEqual(a.Name, b.Name);
                 Assert.AreEqual(a.ObjectType, b.ObjectType);
@@ -326,18 +326,18 @@ namespace UnitTests.ViewModels
             vm.AddObjects(databaseObjects, null);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                item.Objects.First().SetSelectedCommand.Execute(true);
+                item.Objects[0].SetSelectedCommand.Execute(true);
             }
 
             // Act
-            var result = vm.GetSelectedObjects().ToArray();
+            var result = vm.GetSelectedObjects().ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(6, result.Length);
+            Assert.AreEqual(6, result.Count);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                Assert.IsTrue(result.Any(c => c.Name == item.Objects.First().ModelDisplayName));
+                Assert.IsTrue(result.Exists(c => c.Name == item.Objects[0].ModelDisplayName));
             }
         }
 
@@ -575,7 +575,7 @@ namespace UnitTests.ViewModels
             Assert.AreEqual(a.ObjectType, b.ObjectType);
             for (var i = 0; i < a.Columns.Count(); i++)
             {
-                Assert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns.ElementAt(i).Name);
+                Assert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns[i].Name);
             }
         }
     }

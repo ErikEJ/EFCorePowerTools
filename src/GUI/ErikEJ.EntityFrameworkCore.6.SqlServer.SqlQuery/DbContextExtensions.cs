@@ -38,10 +38,7 @@ namespace Microsoft.EntityFrameworkCore
         /// </returns>
         public static async Task<List<T>> SqlQueryValueAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default) // where T : class
         {
-            if (db is null)
-            {
-                throw new ArgumentNullException(nameof(db));
-            }
+            ArgumentNullException.ThrowIfNull(db);
 
             if (parameters is null)
             {
@@ -79,10 +76,7 @@ namespace Microsoft.EntityFrameworkCore
         public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default)
             where T : class
         {
-            if (db is null)
-            {
-                throw new ArgumentNullException(nameof(db));
-            }
+            ArgumentNullException.ThrowIfNull(db);
 
             return await SqlQueryInternalAsync<T>(db, sql, parameters, cancellationToken).ConfigureAwait(false);
         }
@@ -114,8 +108,10 @@ namespace Microsoft.EntityFrameworkCore
         }
 
 #pragma warning disable CA1812
+#pragma warning disable CA1852
         internal class ValueReturn<T>
 #pragma warning restore CA1812
+#pragma warning restore CA1852
         {
             public T Value { get; private set; }
         }

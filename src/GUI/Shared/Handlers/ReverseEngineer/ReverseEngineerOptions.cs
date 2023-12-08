@@ -25,11 +25,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string ContextClassName { get; set; }
         public List<SerializationTableModel> Tables { get; set; }
         public bool UseDatabaseNames { get; set; }
-        public bool UseInflector { get; set; }
+        public bool UseInflector { get; set; } = true;
         public List<string> UncountableWords { get; set; }
         public bool UseHandleBars { get; set; }
         public bool UseT4 { get; set; }
-        public int SelectedHandlebarsLanguage { get; set; }
+        public int SelectedHandlebarsLanguage { get; set; } = 2;
         public bool IncludeConnectionString { get; set; }
         public int SelectedToBeGenerated { get; set; }
         [IgnoreDataMember]
@@ -49,13 +49,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseNullableReferences { get; set; }
         public bool UseNoObjectFilter { get; set; }
         public bool UseNoDefaultConstructor { get; set; }
+        public bool UseNoNavigations { get; set; }
         public bool UseManyToManyEntity { get; set; }
-        public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore6;
+        public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore7;
         public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
         [IgnoreDataMember]
         public bool InstallNuGetPackage { get; set; }
         public bool PreserveCasingWithRegex { get; set; } = true;
         public bool UseDateOnlyTimeOnly { get; set; }
+        public string T4TemplatePath { get; set; }
+        public bool UseDecimalDataAnnotationForSprocResult { get; set; } = true;
     }
 }

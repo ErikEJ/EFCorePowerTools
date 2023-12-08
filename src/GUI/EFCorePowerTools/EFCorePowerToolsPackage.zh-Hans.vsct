@@ -52,6 +52,7 @@
       
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core 工具</CommandName>
           <ButtonText>EF Core 工具</ButtonText>
@@ -60,6 +61,7 @@
 
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMenuGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools</CommandName>
           <ButtonText>EF Core 工具</ButtonText>
@@ -68,6 +70,7 @@
 
       <Menu guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" priority="0x0100" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
           <ButtonText>EF Core 工具 - 反向工程</ButtonText>
@@ -111,6 +114,17 @@
         </Strings>
       </Button>
 
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidOptions" priority="0x0700" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="Settings" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidOptions</CommandName>
+          <ButtonText>Options</ButtonText>
+        </Strings>
+      </Button>
+      
       <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0250" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="Template" />
@@ -271,6 +285,7 @@
       <IDSymbol name="cmdidEdmProjectMenu" value="0x0003" />
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
+      <IDSymbol name="cmdidOptions" value="0x0010" />
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
       <IDSymbol name="cmdidDbCompare" value="0x0008" />
       <IDSymbol name="cmdidDbDgml" value="0x0009" />

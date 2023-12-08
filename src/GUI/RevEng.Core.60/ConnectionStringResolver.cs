@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-#if CORE60ONLY
-using FirebirdSql.Data.FirebirdClient;
-#endif
+using System.IO;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
-using MySqlConnector;
 using Npgsql;
+
+#if !CORE80
+using FirebirdSql.Data.FirebirdClient;
+using MySqlConnector;
 using Oracle.ManagedDataAccess.Client;
-using RevEng.Common;
+#endif
 
 namespace RevEng.Core
 {
@@ -22,6 +23,12 @@ namespace RevEng.Core
             ArgumentNullException.ThrowIfNull(connectionString);
 
             this.connectionString = connectionString;
+
+            if (connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
+            {
+                var database = Path.GetFileNameWithoutExtension(connectionString);
+                this.connectionString = $"Data Source=(local);Initial Catalog={database};Integrated Security=true;Encrypt=false";
+            }
         }
 
 #pragma warning disable CA1031
@@ -60,6 +67,7 @@ namespace RevEng.Core
                 // Ignore
             }
 
+#if !CORE80
             try
             {
                 var a = new MySqlConnectionStringBuilder(connectionString);
@@ -80,17 +88,17 @@ namespace RevEng.Core
                 // Ignore
             }
 
-#if CORE60ONLY
             try
             {
                 var a = new FbConnectionStringBuilder(connectionString);
-                aliases.Add("oracle");
+                aliases.Add("firebird");
             }
             catch
             {
                 // Ignore
             }
 #endif
+
             return aliases;
         }
 

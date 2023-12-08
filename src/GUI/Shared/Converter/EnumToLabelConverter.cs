@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Converter
             var attributes = fi.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
             if (attributes?.Any() ?? false)
             {
-                var attribute = attributes.First();
+                var attribute = attributes[0];
                 if (attribute.ResourceType != null)
                 {
                     return ((ResourceManager)attribute.ResourceType.GetProperty("ResourceManager", BindingFlags.Static | BindingFlags.Public).GetValue(null, null)).GetString(attribute.Name);

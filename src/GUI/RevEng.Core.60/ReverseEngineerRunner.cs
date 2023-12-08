@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore.Scaffolding;
+﻿using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using System;
@@ -14,10 +14,7 @@ namespace RevEng.Core
     {
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             var errors = new List<string>();
             var warnings = new List<string>();
@@ -88,12 +85,12 @@ namespace RevEng.Core
             {
                 SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
 
-#if CORE70
+#if CORE70 || CORE80
                 if (options.UseT4)
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
                     {
-                        scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
+                        scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
                     }
                 }
 #endif
@@ -113,7 +110,7 @@ namespace RevEng.Core
                             var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                             if (index != -1)
                             {
-#if CORE70
+#if CORE70 || CORE80
                                 dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
@@ -126,7 +123,7 @@ namespace RevEng.Core
                             var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                             if (index != -1)
                             {
-#if CORE70
+#if CORE70 || CORE80
                                 dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
@@ -143,10 +140,10 @@ namespace RevEng.Core
                         PostProcess(filePaths.ContextFile, options.UseNullableReferences);
                     }
 
-                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences);
+                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName);
                 }
-                else if (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                    || options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction))
+                else if (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
+                    || options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction))
                 {
                     warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
@@ -179,6 +176,14 @@ namespace RevEng.Core
                     allfiles.Add(functionPaths.ContextFile);
                 }
 
+                var sku = SkuHelper.GetSkuInfo(options.ConnectionString, options.DatabaseType);
+
+                if ((options.DatabaseType == DatabaseType.SQLServer)
+                    && sku.Version > 12 && sku.Level > 0 && sku.Level < 130)
+                {
+                    warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database engine features.");
+                }
+
                 var result = new ReverseEngineerResult
                 {
                     EntityErrors = errors,
@@ -186,6 +191,9 @@ namespace RevEng.Core
                     EntityTypeFilePaths = allfiles,
                     ContextFilePath = filePaths.ContextFile,
                     ContextConfigurationFilePaths = entityTypeConfigurationPaths,
+                    DatabaseEdition = sku.Edition,
+                    DatabaseVersion = sku.Version,
+                    DatabaseLevel = sku.Level,
                 };
 
                 return result;
@@ -193,7 +201,7 @@ namespace RevEng.Core
 #pragma warning disable CA1031
             catch (Exception ex)
             {
-                errors.Add(ex.Message);
+                errors.Add(ex.ToString());
 
                 var result = new ReverseEngineerResult
                 {
@@ -211,7 +219,7 @@ namespace RevEng.Core
 
         public static void RetryFileWrite(string path, List<string> finalLines)
         {
-            for (int i = 1; i <= 3; ++i)
+            for (int i = 1; i <= 4; ++i)
             {
                 try
                 {
@@ -227,7 +235,7 @@ namespace RevEng.Core
 
         public static void RetryFileWrite(string path, string finalText)
         {
-            for (int i = 1; i <= 3; ++i)
+            for (int i = 1; i <= 4; ++i)
             {
                 try
                 {
@@ -241,7 +249,7 @@ namespace RevEng.Core
             }
         }
 
-#if CORE70
+#if CORE70 || CORE80
         private static List<(string Path, string OutputPath)> GetAlternateCodeTemplatePaths(string projectPath)
         {
             var result = new List<(string Path, string OutputPath)>();
@@ -295,14 +303,14 @@ namespace RevEng.Core
             return cleanUpPaths;
         }
 
-        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable)
+        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable, string dbContextName)
         {
             if (!useDbContextSplitting)
             {
                 return new List<string>();
             }
 
-            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable);
+            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName);
         }
 
         private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor)

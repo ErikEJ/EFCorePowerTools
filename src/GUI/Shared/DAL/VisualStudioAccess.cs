@@ -21,10 +21,12 @@ namespace EFCorePowerTools.DAL
                 info = await VsDataHelper.PromptForInfoAsync();
             });
 
+#pragma warning disable S2583 // Conditionally executed code should be reachable
             if (info == null)
             {
                 return null;
             }
+#pragma warning restore S2583 // Conditionally executed code should be reachable
 
             if (info.DatabaseType == DatabaseType.Undefined)
             {

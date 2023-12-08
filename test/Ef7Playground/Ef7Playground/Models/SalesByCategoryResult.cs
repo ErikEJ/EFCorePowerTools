@@ -10,6 +10,7 @@ namespace Ef7Playground.Models
     public partial class SalesByCategoryResult
     {
         public string ProductName { get; set; } = default!;
+        [Column("TotalPurchase", TypeName = "decimal(38,2)")]
         public decimal? TotalPurchase { get; set; }
     }
 }

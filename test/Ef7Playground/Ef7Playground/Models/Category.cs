@@ -9,6 +9,9 @@ public partial class Category
 
     public string CategoryName { get; set; } = null!;
 
+    /// <summary>
+    /// Obsolete
+    /// </summary>
     public string? Description { get; set; }
 
     public byte[]? Picture { get; set; }

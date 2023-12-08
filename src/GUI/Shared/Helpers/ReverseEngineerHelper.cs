@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -32,34 +31,6 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public List<string> AddSuggestedMappings(ReverseEngineerOptions options, List<TableModel> tables)
-        {
-            var result = new List<string>();
-
-            if (options.CodeGenerationMode == CodeGenerationMode.EFCore6
-                || options.CodeGenerationMode == CodeGenerationMode.EFCore7)
-            {
-                if (!options.UseHierarchyId && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "hierarchyid"))
-                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
-                {
-                    result.Add("Your database schema contains one or more 'hierarchyid' columns, but you have not enabled them to be mapped.");
-                }
-
-                if (!options.UseSpatial && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "geometry" || c.StoreType == "geography")))
-                {
-                    result.Add("Your database schema contains one or more 'geometry' or 'geography' columns, but you have not enabled them to be mapped.");
-                }
-
-                if (!options.UseDateOnlyTimeOnly && tables.Any(t => t.Columns != null && t.Columns.Any(c => c.StoreType == "date" || c.StoreType == "time"))
-                    && (options.DatabaseType == DatabaseType.SQLServerDacpac || options.DatabaseType == DatabaseType.SQLServer))
-                {
-                    result.Add("Your database schema contains one or more 'date' or 'time' columns, but you have not enabled them to be mapped to TimeOnly/DateOnly.");
-                }
-            }
-
-            return result;
-        }
-
         public void DropT4Templates(string projectPath)
         {
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);
@@ -68,8 +39,7 @@ namespace EFCorePowerTools.Helpers
         public string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
-
-            const string T4Version = "703";
+            string t4Version = "703";
 
             if (useHandlebars)
             {
@@ -81,20 +51,28 @@ namespace EFCorePowerTools.Helpers
                     case CodeGenerationMode.EFCore7:
                         zipName = "CodeTemplates700.zip";
                         break;
+                    case CodeGenerationMode.EFCore8:
+                        zipName = "CodeTemplates800.zip";
+                        break;
                     default:
                         throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
                 }
             }
             else
             {
-                if (codeGenerationMode == CodeGenerationMode.EFCore7)
+                switch (codeGenerationMode)
                 {
-                    zipName = $"T4_{T4Version}.zip";
+                    case CodeGenerationMode.EFCore7:
+                        t4Version = "703";
+                        break;
+                    case CodeGenerationMode.EFCore8:
+                        t4Version = "800";
+                        break;
+                    default:
+                        throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
                 }
-                else
-                {
-                    throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
-                }
+
+                zipName = $"T4_{t4Version}.zip";
             }
 
             var defaultZip = "CodeTemplates.zip";
@@ -124,8 +102,8 @@ namespace EFCorePowerTools.Helpers
 
             if (!useHandlebars && Directory.Exists(toDir))
             {
-                var error = $"The latest T4 template version could not be found, looking for 'Template version: {T4Version}' in the T4 file - please update your T4 templates, for example by renaming the CodeTemplates folder.";
-                var check = $"Template version: {T4Version}";
+                var error = $"The latest T4 template version could not be found, looking for 'Template version: {t4Version}' in the T4 file - please update your T4 templates, for example by renaming the CodeTemplates folder.";
+                var check = $"Template version: {t4Version}";
 
                 var target = Path.Combine(toDir, "EFCore", "EntityType.t4");
                 if (File.Exists(target))
@@ -161,19 +139,45 @@ namespace EFCorePowerTools.Helpers
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
             }
 
+            if (minimumVersion.Major == 8)
+            {
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
+            }
+
             if (!list.Any())
             {
-                throw new InvalidOperationException("no supported target frameworks found in project");
+                return (codeGenerationMode, list);
             }
 
             var firstMode = list.Select(i => i.Key).First();
 
-            if (!list.Any(i => i.Key == (int)codeGenerationMode))
+            if (!list.Exists(i => i.Key == (int)codeGenerationMode))
             {
                 codeGenerationMode = (CodeGenerationMode)firstMode;
             }
 
             return (codeGenerationMode, list);
+        }
+
+        public IList<TemplateTypeItem> CalculateAllowedTemplates(CodeGenerationMode codeGenerationMode)
+        {
+            var list = new List<TemplateTypeItem>();
+
+            if (codeGenerationMode == CodeGenerationMode.EFCore7
+                || codeGenerationMode == CodeGenerationMode.EFCore8)
+            {
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
+                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
+            }
+            else if (codeGenerationMode == CodeGenerationMode.EFCore6)
+            {
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
+            }
+
+            return list;
         }
 
         public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
@@ -225,6 +229,33 @@ namespace EFCorePowerTools.Helpers
                 .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
                 .Replace("[UseList]", useText)
                 .Replace("[ContextName]", options.ContextClassName);
+        }
+
+        public string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
+        {
+            if (revEngResult.HasIssues)
+            {
+                var warningText = new StringBuilder();
+
+                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
+                warningText.AppendLine();
+
+                foreach (var errorItem in revEngResult.EntityErrors)
+                {
+                    warningText.AppendLine(errorItem);
+                    warningText.AppendLine();
+                }
+
+                foreach (var warningItem in revEngResult.EntityWarnings)
+                {
+                    warningText.AppendLine(warningItem);
+                    warningText.AppendLine();
+                }
+
+                finalText = finalText + Environment.NewLine + warningText.ToString();
+            }
+
+            return finalText;
         }
 
         public bool IsDirectoryEmpty(string path)

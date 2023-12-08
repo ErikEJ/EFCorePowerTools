@@ -12,7 +12,6 @@
 		<PackageReleaseNotes>Initial preview</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>		
 		<PackageTags>DbContext;EntityFramework;SqlServer;EFCore;EntityFrameworkCore</PackageTags>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>		
 		<MinClientVersion>5.0</MinClientVersion>
 		<SignAssembly>true</SignAssembly>

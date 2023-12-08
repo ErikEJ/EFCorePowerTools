@@ -89,11 +89,11 @@ namespace EFCorePowerTools.ViewModels
             {
                 foreach (var entity in ctx.SubLogs)
                 {
-                    entity.SubLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.All(s => s.State == CompareState.Ok));
+                    entity.SubLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.TrueForAll(s => s.State == CompareState.Ok));
                 }
             }
 
-            clonedLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.All(s => s.State == CompareState.Ok && s.SubLogs.All(b => b.State == CompareState.Ok)));
+            clonedLogs.RemoveAll(c => c.State == CompareState.Ok && c.SubLogs.TrueForAll(s => s.State == CompareState.Ok && s.SubLogs.TrueForAll(b => b.State == CompareState.Ok)));
 
             foreach (var ctx in clonedLogs)
             {

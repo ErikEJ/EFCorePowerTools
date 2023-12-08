@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using NetTopologySuite.Geometries;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-
-#if CORE60
-using Microsoft.EntityFrameworkCore.Infrastructure;
-#else
-using Microsoft.EntityFrameworkCore.Internal;
-#endif
 
 namespace RevEng.Core.Modules
 {
@@ -111,10 +105,7 @@ namespace RevEng.Core.Modules
 
         protected SqlServerRoutineScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
         {
-            if (code == null)
-            {
-                throw new ArgumentNullException(nameof(code));
-            }
+            ArgumentNullException.ThrowIfNull(code);
 
             this.Code = code;
         }
@@ -123,10 +114,7 @@ namespace RevEng.Core.Modules
 
         public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
-            if (scaffoldedModel == null)
-            {
-                throw new ArgumentNullException(nameof(scaffoldedModel));
-            }
+            ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
             Directory.CreateDirectory(outputDir);
 
@@ -157,20 +145,11 @@ namespace RevEng.Core.Modules
 
         public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
-            if (errors == null)
-            {
-                throw new ArgumentNullException(nameof(errors));
-            }
+            ArgumentNullException.ThrowIfNull(errors);
 
-            if (scaffolderOptions == null)
-            {
-                throw new ArgumentNullException(nameof(scaffolderOptions));
-            }
+            ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             var result = new ScaffoldedModel();
 
@@ -231,15 +210,9 @@ namespace RevEng.Core.Modules
 
         protected static string GenerateIdentifierName(Routine routine, RoutineModel model)
         {
-            if (routine == null)
-            {
-                throw new ArgumentNullException(nameof(routine));
-            }
+            ArgumentNullException.ThrowIfNull(routine);
 
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
         }
@@ -302,10 +275,7 @@ namespace RevEng.Core.Modules
 
         private static Tuple<string, string> GeneratePropertyName(string propertyName)
         {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
+            ArgumentNullException.ThrowIfNull(propertyName);
 
             return CreateIdentifier(propertyName);
         }
@@ -318,7 +288,7 @@ namespace RevEng.Core.Modules
 
             Sb.AppendLine(PathHelper.Header);
 
-            if (resultElements.Any(p => p.ClrType() == typeof(Geometry)))
+            if (resultElements.Exists(p => p.ClrType() == typeof(Geometry)))
             {
                 Sb.AppendLine("using NetTopologySuite.Geometries;");
             }
@@ -339,7 +309,7 @@ namespace RevEng.Core.Modules
 
             using (Sb.Indent())
             {
-                GenerateClass(resultElements, name, options.NullableReferences);
+                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation);
             }
 
             Sb.AppendLine("}");
@@ -347,28 +317,35 @@ namespace RevEng.Core.Modules
             return Sb.ToString();
         }
 
-        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences)
+        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation)
         {
             Sb.AppendLine($"public partial class {name}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())
             {
-                GenerateProperties(resultElements, nullableReferences);
+                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation);
             }
 
             Sb.AppendLine("}");
         }
 
-        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences)
+        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation)
         {
             foreach (var property in resultElements.OrderBy(e => e.Ordinal))
             {
                 var propertyNames = GeneratePropertyName(property.Name);
 
-                if (!string.IsNullOrEmpty(propertyNames.Item2))
+                if (property.StoreType == "decimal" && useDecimalDataAnnotation)
                 {
-                    Sb.AppendLine(propertyNames.Item2);
+                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(propertyNames.Item2))
+                    {
+                        Sb.AppendLine(propertyNames.Item2);
+                    }
                 }
 
                 var propertyType = property.ClrType();

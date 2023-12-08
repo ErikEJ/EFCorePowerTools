@@ -5,7 +5,7 @@
     <Description>An EF Core Reverse Engineering configuration file.&#xD;&#xA;&#xD;&#xA;You can run database first reverse engineering after schema changes via the context menu of the efpt.config.json file.&#xD;&#xA;&#xD;&#xA;EF Core Power Tools</Description>
     <Icon>WizardItemTemplate.ico</Icon>
     <TemplateID>46304267-cec1-41fc-b025-6f81d12695ac</TemplateID>
-    <AppliesTo>CSharp + CPS</AppliesTo>
+    <AppliesTo>CSharp &amp; CPS</AppliesTo>
     <ProjectType>CSharp</ProjectType>
     <SortOrder>90</SortOrder>
     <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>

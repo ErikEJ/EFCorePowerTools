@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
@@ -21,6 +20,8 @@ namespace RevEng.Core
 {
     public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
     {
+        private static readonly string[] Separator = new string[] { "\r\n", "\r" };
+
         private readonly IDatabaseModelFactory databaseModelFactory;
         private readonly IScaffoldingModelFactory factory;
         private readonly ICSharpHelper code;
@@ -60,18 +61,13 @@ namespace RevEng.Core
             string projectPath,
             string outputPath)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             SavedModelFiles filePaths;
             var modelOptions = new ModelReverseEngineerOptions
             {
                 UseDatabaseNames = options.UseDatabaseNames,
-#if CORE60
                 NoPluralize = !options.UseInflector,
-#endif
             };
 
             var codeOptions = new ModelCodeGenerationOptions
@@ -86,14 +82,10 @@ namespace RevEng.Core
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
                 ConnectionString = options.ConnectionString,
-#if CORE60
                 SuppressOnConfiguring = !options.IncludeConnectionString,
-#endif
-#if CORE60
                 UseNullableReferenceTypes = options.UseNullableReferences,
-#endif
-#if CORE70
-                ProjectDir = options.UseT4 ? projectPath : null,
+#if CORE70 || CORE80
+                ProjectDir = options.UseT4 ? (options.T4TemplatePath ?? projectPath) : null,
 #endif
             };
 
@@ -105,6 +97,7 @@ namespace RevEng.Core
                     modelOptions,
                     codeOptions,
                     options.UseBoolPropertiesWithoutDefaultSql,
+                    options.UseNoNavigations,
                     options.SelectedToBeGenerated == 1, // DbContext only
                     options.SelectedToBeGenerated == 2, // Entities only
                     options.UseSchemaFolders,
@@ -125,20 +118,18 @@ namespace RevEng.Core
             string contextNamespace,
             bool supportsFunctions)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             var functionModelScaffolder = functionScaffolder;
             if (functionModelScaffolder != null
                 && supportsFunctions
-                && (options.Tables.Any(t => t.ObjectType == ObjectType.ScalarFunction)
-                    || !options.Tables.Any()))
+                && (options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction)
+                    || options.Tables.Count == 0))
             {
                 var modelFactoryOptions = new ModuleModelFactoryOptions
                 {
                     FullModel = true,
+                    UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                     Modules = options.Tables.Where(t => t.ObjectType == ObjectType.ScalarFunction).Select(m => m.Name),
                 };
 
@@ -180,16 +171,13 @@ namespace RevEng.Core
             string contextNamespace,
             bool supportsProcedures)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             var procedureModelScaffolder = procedureModelFactory;
             if (procedureModelScaffolder != null
                 && supportsProcedures
-                && (options.Tables.Any(t => t.ObjectType == ObjectType.Procedure)
-                    || !options.Tables.Any()))
+                && (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
+                    || options.Tables.Count == 0))
             {
                 var procedureModelFactoryOptions = new ModuleModelFactoryOptions
                 {
@@ -221,6 +209,7 @@ namespace RevEng.Core
                     UseSchemaFolders = options.UseSchemaFolders,
                     UseAsyncCalls = options.UseAsyncCalls,
                     UseSchemaNamespaces = options.UseSchemaNamespaces,
+                    UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);
@@ -274,19 +263,18 @@ namespace RevEng.Core
 
         private static void ApplyRenamers(IEnumerable<SqlObjectBase> sqlObjects, List<Schema> renamers)
         {
-            if (renamers == null || !renamers.Any())
+            if (renamers == null || renamers.Count == 0)
             {
                 return;
             }
 
             foreach (var sqlObject in sqlObjects)
             {
-                var schema = renamers
-                    .FirstOrDefault(x => x.SchemaName == sqlObject.Schema);
+                var schema = renamers.Find(x => x.SchemaName == sqlObject.Schema);
 
                 if (schema != null)
                 {
-                    if (schema.Tables != null && schema.Tables.Any(t => t.Name == sqlObject.Name))
+                    if (schema.Tables != null && schema.Tables.Exists(t => t.Name == sqlObject.Name))
                     {
                         sqlObject.NewName = schema.Tables.SingleOrDefault(t => t.Name == sqlObject.Name)?.NewName;
                     }
@@ -329,12 +317,12 @@ namespace RevEng.Core
                 var entityTypeExtension = Path.GetExtension(entityType.Path);
                 var entityMatch = databaseModel.GetEntityTypes().FirstOrDefault(x => x.Name == entityTypeName);
                 var entityTypeSchema = entityMatch?.GetSchema();
-#if CORE60
+
                 if (entityMatch?.GetViewName() != null)
                 {
-                    entityTypeSchema = entityMatch?.GetViewSchema();
+                    entityTypeSchema = entityMatch.GetViewSchema();
                 }
-#endif
+
                 if (!string.IsNullOrEmpty(entityTypeSchema))
                 {
                     if (useSchemaFolders)
@@ -361,7 +349,7 @@ namespace RevEng.Core
         private static string GetFileNamespace(string code)
         {
             var namespaceKeyWord = "namespace ";
-            var fileNamespace = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None)
+            var fileNamespace = code.Split(Separator, StringSplitOptions.None)
                                  .First(lc => lc.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
             return fileNamespace.Substring(namespaceKeyWord.Length);
         }
@@ -369,7 +357,7 @@ namespace RevEng.Core
         private static string AppendSchemaNamespaceToDbcontext(string code, HashSet<string> codeFileNamespaces)
         {
             var usingKeyWord = "using ";
-            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var codeLines = code.Split(Separator, StringSplitOptions.None);
             var originalLastUsing = codeLines.Last(l => l.StartsWith(usingKeyWord, StringComparison.Ordinal));
 
             var sb = new StringBuilder();
@@ -408,10 +396,10 @@ namespace RevEng.Core
             var entityTypeSchemaWithSuffix = entityTypeSchema + nameSpaceSuffix;
             var namespaceKeyWord = "namespace ";
             var usingKeyWord = "using ";
-            var codeLines = code.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+            var codeLines = code.Split(Separator, StringSplitOptions.None);
             var originalNameSpaceLine = codeLines.Single(l => l.StartsWith(namespaceKeyWord, StringComparison.Ordinal));
             var newNameSpaceLine = originalNameSpaceLine;
-            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(";", StringComparison.Ordinal);
+            var cSharp10NameSpaceStyle = newNameSpaceLine.EndsWith(';');
             if (cSharp10NameSpaceStyle)
             {
                 newNameSpaceLine = newNameSpaceLine.Substring(0, newNameSpaceLine.Length - 1);
@@ -463,6 +451,7 @@ namespace RevEng.Core
             ModelReverseEngineerOptions modelOptions,
             ModelCodeGenerationOptions codeOptions,
             bool removeNullableBoolDefaults,
+            bool excludeNavigations,
             bool dbContextOnly,
             bool entitiesOnly,
             bool useSchemaFolders,
@@ -488,16 +477,21 @@ namespace RevEng.Core
                 }
             }
 
-#if CORE60
+            if (excludeNavigations)
+            {
+                foreach (var table in databaseModel.Tables)
+                {
+                    table.ForeignKeys.Clear();
+                }
+            }
+
             var model = factory.Create(databaseModel, modelOptions);
-#else
-            var model = factory.Create(databaseModel, modelOptions.UseDatabaseNames);
-#endif
+
             if (model == null)
             {
                 throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
             }
-#if CORE70
+#if CORE70 || CORE80
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions);
 #else
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);

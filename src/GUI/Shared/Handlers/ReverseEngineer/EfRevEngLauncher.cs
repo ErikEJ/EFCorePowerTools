@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
@@ -20,6 +19,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly CodeGenerationMode codeGenerationMode;
         private readonly string revengFolder;
         private readonly string revengRoot;
+        private readonly string exeName;
+        private readonly string zipName;
         private readonly ResultDeserializer resultDeserializer;
 
         public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
@@ -28,17 +29,29 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             this.codeGenerationMode = codeGenerationMode;
             var versionSuffix = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion;
 
+            string revengVersion;
+
             switch (codeGenerationMode)
             {
                 case CodeGenerationMode.EFCore6:
-                    revengFolder = "efreveng6.";
+                    revengVersion = "6";
                     break;
+
                 case CodeGenerationMode.EFCore7:
-                    revengFolder = "efreveng7.";
+                    revengVersion = "7";
                     break;
+
+                case CodeGenerationMode.EFCore8:
+                    revengVersion = "8";
+                    break;
+
                 default:
-                    throw new NotSupportedException();
+                    throw new NotSupportedException("Unsupported code generation mode");
             }
+
+            revengFolder = $"efreveng{revengVersion}.";
+            exeName = $"efreveng{revengVersion}0.dll";
+            zipName = $"efreveng{revengVersion}0.exe.zip";
 
             revengRoot = revengFolder;
 
@@ -49,7 +62,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode, Project project)
         {
             var databaseObjects = options.Tables;
-            if (!databaseObjects.Any(t => t.ObjectType == ObjectType.Table))
+            if (!databaseObjects.Exists(t => t.ObjectType == ObjectType.Table))
             {
                 // No tables selected, so add a dummy table in order to generate an empty DbContext
                 databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null));
@@ -78,6 +91,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseFluentApiOnly = options.UseFluentApiOnly,
                 UseHandleBars = options.UseHandleBars,
                 UseT4 = options.UseT4,
+                T4TemplatePath = options.T4TemplatePath != null ? PathHelper.GetAbsPath(options.T4TemplatePath, options.ProjectPath) : null,
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UncountableWords = options.UncountableWords,
@@ -88,6 +102,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                UseNoNavigations = options.UseNoNavigations,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 RunCleanup = AdvancedOptions.Instance.RunCleanup,
@@ -99,6 +114,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 PreserveCasingWithRegex = options.PreserveCasingWithRegex,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
+                UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
@@ -117,9 +133,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await GetTablesInternalAsync(arguments);
         }
 
-        public async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType)
+        public async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType, List<string> schemaList)
         {
-            var arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+            var arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
+
+            if (schemaList.Count == 0)
+            {
+                arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+            }
 
             var filePath = await GetDgmlInternalAsync(arguments);
 
@@ -184,11 +205,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<ProcessStartInfo> CreateStartInfoAsync(string arguments)
         {
-            string version = "3.1";
+            string version = "6.0";
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore6 || codeGenerationMode == CodeGenerationMode.EFCore7)
+            if (codeGenerationMode == CodeGenerationMode.EFCore8)
             {
-                version = "6.0";
+                version = "8.0";
             }
 
             if (!await IsDotnetInstalledAsync(version))
@@ -248,9 +269,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 return false;
             }
 
-            var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var sdks = result.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            return sdks.Any(s => s.StartsWith($"Microsoft.NETCore.App {version}.", StringComparison.OrdinalIgnoreCase));
+            return sdks.Exists(s => s.StartsWith($"Microsoft.NETCore.App {version}.", StringComparison.OrdinalIgnoreCase));
         }
 
         private string DropNetCoreFiles()
@@ -261,11 +282,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
-            var fullPath = Path.Combine(toDir, GetExeName());
+            var fullPath = Path.Combine(toDir, exeName);
 
             if (Directory.Exists(toDir)
                 && File.Exists(fullPath)
-                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 106)
+                && Directory.EnumerateFiles(toDir, "*", SearchOption.TopDirectoryOnly).Count() >= 97)
             {
                 return fullPath;
             }
@@ -276,21 +297,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             Directory.CreateDirectory(toDir);
-            var cpuArch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm" : string.Empty;
-
-            string zipName;
-
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore6:
-                    zipName = $"efreveng60{cpuArch}.exe.zip";
-                    break;
-                case CodeGenerationMode.EFCore7:
-                    zipName = $"efreveng70{cpuArch}.exe.zip";
-                    break;
-                default:
-                    throw new NotSupportedException();
-            }
 
             using (var archive = ZipFile.Open(Path.Combine(fromDir, zipName), ZipArchiveMode.Read))
             {
@@ -320,19 +326,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             return fullPath;
-        }
-
-        private string GetExeName()
-        {
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore6:
-                    return "efreveng60.dll";
-                case CodeGenerationMode.EFCore7:
-                    return "efreveng70.dll";
-                default:
-                    throw new NotSupportedException("Unsupported code generation mode");
-            }
         }
     }
 }

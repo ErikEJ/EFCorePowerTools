@@ -84,6 +84,7 @@
             <dw:DialogButton TabIndex="5"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="{x:Static locale:SharedLocale.Cancel}"
+                             IsCancel="True"
                              Command="{Binding CancelCommand}"/>
         </StackPanel>
     </Grid>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using dac = Microsoft.SqlServer.Dac.Model;
+using Dac = Microsoft.SqlServer.Dac.Model;
 
 namespace SqlSharpener.Model
 {
@@ -28,19 +28,16 @@ namespace SqlSharpener.Model
         /// <param name="tSqlObject">The TSqlObject representing the table.</param>
         /// <param name="primaryKeys">The primary keys.</param>
         /// <param name="foreignKeys">The foreign keys.</param>
-        public Table(dac.TSqlObject tSqlObject)
+        public Table(Dac.TSqlObject tSqlObject)
         {
-            if (tSqlObject == null)
-            {
-                throw new ArgumentNullException(nameof(tSqlObject));
-            }
+            ArgumentNullException.ThrowIfNull(tSqlObject);
 
             // Get the name.
-            this.Name = tSqlObject.Name.Parts.Last();
+            this.Name = tSqlObject.Name.Parts[tSqlObject.Name.Parts.Count - 1];
 
             // Get the columns
             var columns = new List<Column>();
-            var sqlColumns = tSqlObject.ObjectType.Name == "TableType" ? tSqlObject.GetReferenced(dac.TableType.Columns) : tSqlObject.GetReferenced(dac.Table.Columns);
+            var sqlColumns = tSqlObject.ObjectType.Name == "TableType" ? tSqlObject.GetReferenced(Dac.TableType.Columns) : tSqlObject.GetReferenced(Dac.Table.Columns);
             foreach (var sqlColumn in sqlColumns)
             {
                 var column = new Column(sqlColumn);

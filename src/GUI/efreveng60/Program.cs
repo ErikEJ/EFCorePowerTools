@@ -23,10 +23,7 @@ namespace EfReveng
             {
                 Console.OutputEncoding = Encoding.UTF8;
 
-                if (args == null)
-                {
-                    throw new ArgumentNullException(nameof(args));
-                }
+                ArgumentNullException.ThrowIfNull(args);
 
                 if (args.Length > 0)
                 {
@@ -65,9 +62,16 @@ namespace EfReveng
                         return 0;
                     }
 
-                    if (args.Length == 3 && args[0] == "dgml" && int.TryParse(args[1], out int dbType))
+                    if ((args.Length == 3 || args.Length == 4)
+                        && args[0] == "dgml" && int.TryParse(args[1], out int dbType))
                     {
-                        var builder = new DgmlBuilder(dbType, args[2]);
+                        var schemas = Enumerable.Empty<string>().ToList();
+                        if (args.Length == 4)
+                        {
+                            schemas = args[3].Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s).ToList();
+                        }
+
+                        var builder = new DgmlBuilder(dbType, args[2], schemas);
 
                         var buildResult = builder.GetDgmlFileName();
 
@@ -84,7 +88,7 @@ namespace EfReveng
                         return 1;
                     }
 
-                    var options = ReverseEngineerOptionsExtensions.TryDeserialize(File.ReadAllText(args[0], System.Text.Encoding.UTF8));
+                    var options = ReverseEngineerOptionsExtensions.TryDeserialize(await File.ReadAllTextAsync(args[0], Encoding.UTF8));
 
                     if (options == null)
                     {

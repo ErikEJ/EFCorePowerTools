@@ -16,6 +16,13 @@ namespace RevEng.Common
                 throw new ArgumentNullException(nameof(outputPath));
             }
 
+            if (fullName is null)
+            {
+                throw new ArgumentNullException(nameof(fullName));
+            }
+
+            fullName = AppendDirectorySeparatorChar(fullName);
+
             // ' The output folder can have these patterns:
             // ' 1) "\\server\folder"
             // ' 2) "drive:\folder"
@@ -83,6 +90,18 @@ namespace RevEng.Common
                     subPath.Split(
                         new[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries))
                 : null;
+        }
+
+        private static string AppendDirectorySeparatorChar(string path)
+        {
+            // Append a slash only if the path is a directory and does not have a slash.
+            if (Directory.Exists(path) &&
+                !path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+            {
+                return path + Path.DirectorySeparatorChar;
+            }
+
+            return path;
         }
     }
 }

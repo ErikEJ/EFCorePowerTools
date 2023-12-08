@@ -54,66 +54,77 @@
                     Orientation="Vertical">
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.CodeGeneration}" >
                 <StackPanel>
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveDefaultConstructor}"
-                      IsChecked="{Binding Model.UseNoDefaultConstructor}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="0" />
-
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveSQLDefaultFromBoolColumns}"
-                      IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="1" />
-
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseNullableReferenceTypes}"
-                      IsChecked="{Binding Model.UseNullableReferences}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="2" />
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseManyToManyEntity }"
                       IsChecked="{Binding Model.UseManyToManyEntity}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="3" />
+                      TabIndex="0" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseNullableReferenceTypes}"
+                      IsChecked="{Binding Model.UseNullableReferences}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="1" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveSQLDefaultFromBoolColumns}"
+                        IsChecked="{Binding Model.UseBoolPropertiesWithoutDefaultSql}"
+                        Style="{StaticResource MarginCheckBlockStyle}"
+                        TabIndex="2" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveNavigationsFromEntities}"
+                        IsChecked="{Binding Model.UseNoNavigations}"
+                        Style="{StaticResource MarginCheckBlockStyle}"
+                        TabIndex="3" />
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.RemoveDefaultConstructor}"
+                        IsChecked="{Binding Model.UseNoDefaultConstructor}"
+                        Style="{StaticResource MarginCheckBlockStyle}"
+                        TabIndex="4" />
 
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.AlwaysIncludeAllDatabaseObjects}"
-                          IsChecked="{Binding Model.UseNoObjectFilter}"
-                          Style="{StaticResource MarginCheckBlockStyle}"
-                          TabIndex="4" />
+                        IsChecked="{Binding Model.UseNoObjectFilter}"
+                        Style="{StaticResource MarginCheckBlockStyle}"
+                        TabIndex="5" />
+
                 </StackPanel>
             </GroupBox>
 
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.FileLayout}">
                 <StackPanel>
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
-                          IsChecked="{Binding Model.UseDbContextSplitting}"
-                          Style="{StaticResource MarginCheckBlockStyle}"
-                          TabIndex="10" />
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
-                      IsChecked="{Binding Model.UseSchemaFolders}"
-                      Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="11" />
-                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaNamespaces}"
-                        IsChecked="{Binding Model.UseSchemaNamespaces}"
-                        Style="{StaticResource MarginCheckBlockStyle}"
-                        TabIndex="11" />
                     <dw:LiveTextBlock 
                           Text="{x:Static locale:ReverseEngineerLocale.EntityTypesSubNamespace}"/>
                     <TextBox Grid.Row="7"
-                         TabIndex="12"
+                         TabIndex="10"
                          Style="{StaticResource TextInputStyle}"
                          Text="{Binding Model.ModelNamespace, Mode=TwoWay}"/>
+                    
                     <dw:LiveTextBlock Grid.Row="8"
                           Text="{x:Static locale:ReverseEngineerLocale.DbContextPath}"/>
                     <TextBox 
-                 TabIndex="13"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
+                         TabIndex="11"
+                         Style="{StaticResource TextInputStyle}"
+                         Text="{Binding Model.OutputContextPath, Mode=TwoWay}"/>
 
                     <dw:LiveTextBlock 
                           Text="{x:Static locale:ReverseEngineerLocale.DbContextSubNamespace}"/>
                     <TextBox 
-                 TabIndex="14"
-                 Style="{StaticResource TextInputStyle}"
-                 Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
+                     TabIndex="12"
+                     Style="{StaticResource TextInputStyle}"
+                     Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
+
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
+                          IsChecked="{Binding Model.UseDbContextSplitting}"
+                          Style="{StaticResource MarginCheckBlockStyle}"
+                          TabIndex="13" />
+                    
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
+                      IsChecked="{Binding Model.UseSchemaFolders}"
+                      Style="{StaticResource MarginCheckBlockStyle}"
+                      TabIndex="14" />
+                    
+                    <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaNamespaces}"
+                        IsChecked="{Binding Model.UseSchemaNamespaces}"
+                        Style="{StaticResource MarginCheckBlockStyle}"
+                        TabIndex="15" />
                 </StackPanel>
 
             </GroupBox>

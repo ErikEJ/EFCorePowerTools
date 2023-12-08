@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using dac = Microsoft.SqlServer.Dac.Model;
+using Dac = Microsoft.SqlServer.Dac.Model;
 
 namespace SqlSharpener.Model
 {
@@ -42,31 +42,31 @@ namespace SqlSharpener.Model
         /// <param name="tSqlTable">The table or view this column belongs to.</param>
         /// <param name="primaryKeys">The primary keys.</param>
         /// <param name="foreignKeys">The foreign keys.</param>
-        public Column(dac.TSqlObject tSqlObject)
+        public Column(Dac.TSqlObject tSqlObject)
         {
             this.Name = tSqlObject.Name.Parts.Last();
 
             if (tSqlObject.ObjectType.Name == "TableTypeColumn")
             {
-                var sqlDataTypeName = tSqlObject.GetReferenced(dac.TableTypeColumn.DataType).ToList().First().Name.Parts.Last();
+                var sqlDataTypeName = tSqlObject.GetReferenced(Dac.TableTypeColumn.DataType).ToList().First().Name.Parts.Last();
                 this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, sqlDataTypeName);
-                this.IsIdentity = dac.TableTypeColumn.IsIdentity.GetValue<bool>(tSqlObject);
-                this.IsNullable = dac.TableTypeColumn.Nullable.GetValue<bool>(tSqlObject);
-                this.Precision = dac.TableTypeColumn.Precision.GetValue<int>(tSqlObject);
-                this.Scale = dac.TableTypeColumn.Scale.GetValue<int>(tSqlObject);
-                this.Length = dac.TableTypeColumn.Length.GetValue<int>(tSqlObject);
+                this.IsIdentity = Dac.TableTypeColumn.IsIdentity.GetValue<bool>(tSqlObject);
+                this.IsNullable = Dac.TableTypeColumn.Nullable.GetValue<bool>(tSqlObject);
+                this.Precision = Dac.TableTypeColumn.Precision.GetValue<int>(tSqlObject);
+                this.Scale = Dac.TableTypeColumn.Scale.GetValue<int>(tSqlObject);
+                this.Length = Dac.TableTypeColumn.Length.GetValue<int>(tSqlObject);
             }
             else
             {
-                dac.ColumnType metaType = tSqlObject.GetMetadata<dac.ColumnType>(dac.Column.ColumnType);
+                Dac.ColumnType metaType = tSqlObject.GetMetadata<Dac.ColumnType>(Dac.Column.ColumnType);
 
                 switch (metaType)
                 {
-                    case dac.ColumnType.Column:
-                    case dac.ColumnType.ColumnSet:
+                    case Dac.ColumnType.Column:
+                    case Dac.ColumnType.ColumnSet:
                         SetProperties(tSqlObject);
                         break;
-                    case dac.ColumnType.ComputedColumn:
+                    case Dac.ColumnType.ComputedColumn:
                         // use the referenced column - this works for simple view referenced
                         // column but not for a computed expression like [Name] = [FirstName] + ' ' + [LastName]
                         var referenced = tSqlObject.GetReferenced().ToArray();
@@ -136,15 +136,15 @@ namespace SqlSharpener.Model
         /// </value>
         public int Length { get; private set; }
 
-        private void SetProperties(dac.TSqlObject tSqlObject)
+        private void SetProperties(Dac.TSqlObject tSqlObject)
         {
-            var sqlDataTypeName = tSqlObject.GetReferenced(dac.Column.DataType).ToList().First().Name.Parts.Last();
+            var sqlDataTypeName = tSqlObject.GetReferenced(Dac.Column.DataType).ToList().First().Name.Parts.Last();
             this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, sqlDataTypeName);
-            this.IsIdentity = dac.Column.IsIdentity.GetValue<bool>(tSqlObject);
-            this.IsNullable = dac.Column.Nullable.GetValue<bool>(tSqlObject);
-            this.Precision = dac.Column.Precision.GetValue<int>(tSqlObject);
-            this.Scale = dac.Column.Scale.GetValue<int>(tSqlObject);
-            this.Length = dac.Column.Length.GetValue<int>(tSqlObject);
+            this.IsIdentity = Dac.Column.IsIdentity.GetValue<bool>(tSqlObject);
+            this.IsNullable = Dac.Column.Nullable.GetValue<bool>(tSqlObject);
+            this.Precision = Dac.Column.Precision.GetValue<int>(tSqlObject);
+            this.Scale = Dac.Column.Scale.GetValue<int>(tSqlObject);
+            this.Length = Dac.Column.Length.GetValue<int>(tSqlObject);
         }
     }
 }

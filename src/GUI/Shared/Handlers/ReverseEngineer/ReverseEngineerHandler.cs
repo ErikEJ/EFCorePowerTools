@@ -15,6 +15,7 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
+using NuGet.Versioning;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
@@ -25,7 +26,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
-        private List<string> missingTypeWarnings = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
 
         public ReverseEngineerHandler(EFCorePowerToolsPackage package)
@@ -39,7 +39,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var project = candidateProjects.First();
+            var project = candidateProjects[0];
 
             if (candidateProjects.Count > 1)
             {
@@ -59,7 +59,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var optionsPaths = project.GetConfigFiles();
-            var optionsPath = optionsPaths.First();
+            var optionsPath = optionsPaths[0];
 
             if (File.Exists(optionsPath))
             {
@@ -101,7 +101,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var projectPath = project.FullPath;
                 var optionsPaths = project.GetConfigFiles();
-                var optionsPath = optionsPaths.First();
+                var optionsPath = optionsPaths[0];
 
                 if (optionsPaths.Count > 1)
                 {
@@ -155,6 +155,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
 
+                var newOptions = false;
+
                 if (options == null)
                 {
                     options = new ReverseEngineerOptions
@@ -162,6 +164,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
                         OutputPath = "Models",
                     };
+                    newOptions = true;
                 }
 
                 legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
@@ -211,6 +214,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             return;
                         }
 
+                        if (newOptions)
+                        {
+                            options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
+                        }
+
                         await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
 
                         dbInfo = await GetDatabaseInfoAsync(options);
@@ -233,7 +241,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
-                    options.InstallNuGetPackage = neededPackages.Any(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+                    options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
 
                     options.CustomPropertyReplacers = propertyNamingModel;
 
@@ -248,7 +256,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
-                var missingProviderPackage = neededPackages.FirstOrDefault(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
                 if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
                 {
                     missingProviderPackage = null;
@@ -283,7 +291,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
-                && (await project.IsNet60OrHigherIncluding70Async() || await project.IsNetStandardAsync()))
+                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync()))
             {
                 var packages = await project.GetNeededPackagesAsync(options);
 
@@ -298,7 +306,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 foreach (var nuGetPackage in packagesToInstall)
                 {
-                    nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new Version(nuGetPackage.Version));
+                    nuGetHelper.InstallPackage(nuGetPackage.PackageId, project, new NuGetVersion(nuGetPackage.Version));
                 }
             }
         }
@@ -371,6 +379,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
 
+            if (!allowedVersions.Any())
+            {
+                VSHelper.ShowError($".NET 5 and earlier is not supported.");
+                return false;
+            }
+
             psd.PublishCodeGenerationMode(usedMode, allowedVersions);
 
             if (!string.IsNullOrEmpty(options.UiHint))
@@ -439,10 +453,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
-            var predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
-                                       : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
+            IEnumerable<TableModel> predefinedTables = null;
+
+            try
+            {
+                await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+
+                predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
+                                           ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
+                                           : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
+            }
+            catch (InvalidOperationException ex)
+            {
+                VSHelper.ShowError($"{ex.Message}");
+                return false;
+            }
+            finally
+            {
+                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+            }
 
             var isSqliteToolboxInstalled = options.DatabaseType != DatabaseType.SQLite;
 
@@ -455,8 +484,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 var normalizedTables = reverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
                 preselectedTables.AddRange(normalizedTables);
             }
-
-            missingTypeWarnings = reverseEngineerHelper.AddSuggestedMappings(options, predefinedTables);
 
             await VS.StatusBar.ClearAsync();
 
@@ -508,6 +535,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseBoolPropertiesWithoutDefaultSql = options.UseBoolPropertiesWithoutDefaultSql,
                 UseNullableReferences = options.UseNullableReferences,
                 UseNoObjectFilter = options.UseNoObjectFilter,
+                UseNoNavigations = options.UseNoNavigations,
                 UseNoDefaultConstructor = options.UseNoDefaultConstructor,
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
@@ -516,6 +544,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var modelDialog = package.GetView<IModelingOptionsDialog>()
                                           .ApplyPresets(presets);
+
+            var allowedTemplates = reverseEngineerHelper.CalculateAllowedTemplates(options.CodeGenerationMode);
+
+            modelDialog.PublishTemplateTypes(
+                new Contracts.ViewModels.TemplateTypeItem { Key = options.SelectedHandlebarsLanguage },
+                allowedTemplates);
 
             await VS.StatusBar.ClearAsync();
 
@@ -553,6 +587,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
             options.UseNullableReferences = modelingOptionsResult.Payload.UseNullableReferences;
             options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
+            options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
             options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
             options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
             options.UseDateOnlyTimeOnly = modelingOptionsResult.Payload.UseDateOnlyTimeOnly;
@@ -567,9 +602,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
 
-            var startTime = DateTime.Now;
+            var stopWatch = Stopwatch.StartNew();
 
-            if (options.UseHandleBars || options.UseT4)
+            if (options.UseHandleBars || (options.UseT4 && string.IsNullOrEmpty(options.T4TemplatePath)))
             {
                 var result = reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
                 if (!string.IsNullOrEmpty(result))
@@ -608,7 +643,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
 
-                finalText = AddResultToFinalText(finalText, revEngResult);
+                finalText = reverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
 
                 File.WriteAllText(readmePath, finalText, Encoding.UTF8);
 
@@ -636,11 +671,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await ApplyNavigationRenamersAsync(project, referenceRenamingPath, options);
 
-            var duration = DateTime.Now - startTime;
+            stopWatch.Stop();
 
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, duration.ToString("h\\:mm\\:ss")));
+            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
@@ -652,14 +687,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 package.LogError(revEngResult.EntityErrors, null);
             }
 
-            var warnings = revEngResult.EntityWarnings.Concat(missingTypeWarnings).ToList();
-
-            if (warnings.Any())
+            if (revEngResult.EntityWarnings.Any())
             {
-                package.LogError(warnings, null);
+                package.LogError(revEngResult.EntityWarnings, null);
             }
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
+            Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel);
         }
 
         private async Task ApplyNavigationRenamersAsync(Project project, string referenceRenamingPath, ReverseEngineerOptions options)
@@ -689,30 +723,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     package.LogError(new List<string>(), ex);
                 }
             }
-        }
-
-        private string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
-        {
-            if (revEngResult.HasIssues)
-            {
-                var warningText = new StringBuilder();
-
-                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
-
-                foreach (var errorItem in revEngResult.EntityErrors)
-                {
-                    warningText.AppendLine(errorItem);
-                }
-
-                foreach (var warningItem in revEngResult.EntityWarnings)
-                {
-                    warningText.AppendLine(warningItem);
-                }
-
-                finalText = finalText + Environment.NewLine + warningText.ToString();
-            }
-
-            return finalText;
         }
 
         private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)

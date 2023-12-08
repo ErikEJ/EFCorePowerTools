@@ -13,12 +13,9 @@ namespace RevEng.Core
     public static class DbContextSplitter
     {
         // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
-        public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable)
+        public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable, string dbContextName)
         {
-            if (dbContextPath == null)
-            {
-                throw new ArgumentNullException(nameof(dbContextPath));
-            }
+            ArgumentNullException.ThrowIfNull(dbContextPath);
 
             var dbContextFilePath = Path.GetFullPath(dbContextPath);
 
@@ -71,7 +68,7 @@ namespace RevEng.Core
                 .Where(m => m.Value.Trim().StartsWith("entity", StringComparison.Ordinal))
                 .ToList();
 
-            if (!statementsBlockMatches.Any())
+            if (statementsBlockMatches.Count == 0)
             {
                 return new List<string>();
             }
@@ -125,7 +122,8 @@ namespace RevEng.Core
 
                 result.Add(configurationFilePath);
 
-                configurationLines.Add($"{new string(' ', 12)}modelBuilder.ApplyConfiguration(new Configurations.{entityName}Configuration());");
+                configurationLines.Add($"{new string(' ', 8)}modelBuilder.ApplyConfiguration(new Configurations.{entityName}Configuration());");
+
                 index++;
             }
 

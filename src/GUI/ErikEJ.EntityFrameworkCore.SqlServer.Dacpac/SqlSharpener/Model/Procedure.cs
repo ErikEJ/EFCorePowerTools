@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using dac = Microsoft.SqlServer.Dac.Model;
+using Dac = Microsoft.SqlServer.Dac.Model;
 
 namespace SqlSharpener.Model
 {
@@ -20,7 +20,7 @@ namespace SqlSharpener.Model
         /// Initializes a new instance of the <see cref="Procedure"/> class.
         /// </summary>
         /// <param name="prefix">The prefix used on stored procedure names.</param>
-        public Procedure(dac.TSqlObject tSqlObject)
+        public Procedure(Dac.TSqlObject tSqlObject)
         {
             this.Name = tSqlObject.Name.Parts.Last();
             this.Schema = tSqlObject.Name.Parts.First();
@@ -31,7 +31,7 @@ namespace SqlSharpener.Model
             var selectVisitor = new SqlSharpener.SelectVisitor();
             frag.Accept(selectVisitor);
 
-            var depends = tSqlObject.GetReferenced(dac.Procedure.BodyDependencies)
+            var depends = tSqlObject.GetReferenced(Dac.Procedure.BodyDependencies)
                 .Where(x => x.ObjectType.Name == "Column")
                 .ToList();
 
@@ -44,8 +44,8 @@ namespace SqlSharpener.Model
                         key => string.Join(".", key.Name.Parts),
                         val => new DataType
                         {
-                            Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(dac.Column.DataType).FirstOrDefault()?.Name.Parts.Last()),
-                            Nullable = dac.Column.Nullable.GetValue<bool>(val)
+                            Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(Dac.Column.DataType).FirstOrDefault()?.Name.Parts.Last()),
+                            Nullable = Dac.Column.Nullable.GetValue<bool>(val)
                         },
                         StringComparer.InvariantCultureIgnoreCase);
 

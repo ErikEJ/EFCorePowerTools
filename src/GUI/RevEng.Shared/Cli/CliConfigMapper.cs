@@ -59,7 +59,8 @@ namespace RevEng.Common.Cli
                 UseDatabaseNames = config.CodeGeneration.UseDatabaseNames,
                 UseInflector = config.CodeGeneration.UseInflector,
                 UseT4 = config.CodeGeneration.UseT4,
-                IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
+                T4TemplatePath = config.CodeGeneration.T4TemplatePath != null ? PathHelper.GetAbsPath(config.CodeGeneration.T4TemplatePath, projectPath) : null,
+                IncludeConnectionString = !isDacpac && config.CodeGeneration.EnableOnConfiguring,
                 SelectedToBeGenerated = selectedToBeGenerated,
                 Dacpac = isDacpac ? connectionString : null,
                 CustomReplacers = GetNamingOptions(configPath),
@@ -69,7 +70,7 @@ namespace RevEng.Common.Cli
                 UseHierarchyId = typeMappings.UseHierarchyId,
                 UseNodaTime = typeMappings.UseNodaTime,
                 UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
-                UseNoDefaultConstructor = true, // TBD for EF Core 6
+                UseNoNavigations = config.CodeGeneration.UseNoNavigationsPreview,
                 RunCleanup = config.CodeGeneration.SoftDeleteObsoleteFiles,
                 UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
                 UseMultipleSprocResultSets = config.CodeGeneration.DiscoverMultipleStoredProcedureResultsetsPreview,
@@ -78,12 +79,16 @@ namespace RevEng.Common.Cli
                 UseDateOnlyTimeOnly = typeMappings.UseDateOnlyTimeOnly,
                 UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,
                 ProjectRootNamespace = names.RootNamespace,
+                MergeDacpacs = config.CodeGeneration.MergeDacpacs,
+                UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
 
-                // Not supported/implemented:
+                // Not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it
-                MergeDacpacs = false, // not implemented, will consider if asked for
+
+                // Not implemented:
+                UseNoDefaultConstructor = false, // not implemented, will consider if asked for
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
                 UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
                 UseAsyncCalls = true, // not implemented, will consider if asked for
@@ -105,7 +110,7 @@ namespace RevEng.Common.Cli
             return options;
         }
 
-        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out CliConfig config)
+        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config)
         {
             if (File.Exists(fullPath))
             {
@@ -121,6 +126,14 @@ namespace RevEng.Common.Cli
                         RootNamespace = GetRootNamespaceSuggestion(fullPath),
                     },
                 };
+
+                if (codeGenerationMode == CodeGenerationMode.EFCore8)
+                {
+                    config.TypeMappings = new TypeMappings
+                    {
+                        UseDateOnlyTimeOnly = true,
+                    };
+                }
             }
 
             config.Tables = Add(objects, config.Tables);
@@ -128,7 +141,9 @@ namespace RevEng.Common.Cli
             config.StoredProcedures = Add(objects, config.StoredProcedures);
             config.Functions = Add(objects, config.Functions);
 
+#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             var options = new JsonSerializerOptions { WriteIndented = true };
+#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
 
             return true;
@@ -268,7 +283,7 @@ namespace RevEng.Common.Cli
             var newItems = models.Where(o => o.ObjectType == objectType).ToList();
             if (newItems.Count == 0)
             {
-                return entities;
+                return new List<T>();
             }
 
             var result = entities ?? new List<T>();

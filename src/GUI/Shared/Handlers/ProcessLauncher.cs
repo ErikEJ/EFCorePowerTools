@@ -253,6 +253,10 @@ namespace EFCorePowerTools.Handlers
             {
                 ExtractTool(toDir, fromDir, "efpt60.exe.zip", RevEng.Common.CodeGenerationMode.EFCore6);
             }
+            else if (versionInfo.Item2.StartsWith("8.", StringComparison.OrdinalIgnoreCase))
+            {
+                ExtractTool(toDir, fromDir, "efpt80.exe.zip", RevEng.Common.CodeGenerationMode.EFCore8);
+            }
             else if (!isNet7 && versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt70.exe.zip", RevEng.Common.CodeGenerationMode.EFCore7);

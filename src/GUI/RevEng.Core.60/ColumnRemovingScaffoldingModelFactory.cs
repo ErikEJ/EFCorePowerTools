@@ -18,14 +18,12 @@ namespace RevEng.Core
     {
         private readonly List<SerializationTableModel> tables;
         private readonly DatabaseType databaseType;
-#if CORE60
         private readonly bool ignoreManyToMany;
-#endif
 
-#if CORE60 && !CORE70
+#if !CORE70 && !CORE80
         public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
             : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, loggingDefinitions, modelRuntimeInitializer)
-#elif CORE70
+#else
         public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
             : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, modelRuntimeInitializer)
 #endif
@@ -37,10 +35,7 @@ namespace RevEng.Core
 
         protected override EntityTypeBuilder VisitTable(ModelBuilder modelBuilder, DatabaseTable table)
         {
-            if (table is null)
-            {
-                throw new ArgumentNullException(nameof(table));
-            }
+            ArgumentNullException.ThrowIfNull(table);
 
             string name;
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
@@ -55,10 +50,10 @@ namespace RevEng.Core
             }
 
             var excludedColumns = new List<DatabaseColumn>();
-            var tableDefinition = tables.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var tableDefinition = tables.Find(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
             {
-                foreach (var column in tableDefinition?.ExcludedColumns!)
+                foreach (var column in tableDefinition.ExcludedColumns!)
                 {
                     var columnToRemove = table.Columns.FirstOrDefault(c => c.Name.Equals(column, StringComparison.OrdinalIgnoreCase));
                     if (columnToRemove != null)
@@ -92,7 +87,6 @@ namespace RevEng.Core
             return base.VisitTable(modelBuilder, table);
         }
 
-#if CORE60
         protected override ModelBuilder VisitForeignKeys(ModelBuilder modelBuilder, IList<DatabaseForeignKey> foreignKeys)
         {
             ArgumentNullException.ThrowIfNull(foreignKeys);
@@ -119,6 +113,5 @@ namespace RevEng.Core
 
             return base.VisitForeignKeys(modelBuilder, foreignKeys);
         }
-#endif
     }
 }

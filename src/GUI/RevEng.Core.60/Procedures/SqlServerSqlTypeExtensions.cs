@@ -10,21 +10,21 @@ namespace RevEng.Core
 {
     public static class SqlServerSqlTypeExtensions
     {
-        private static readonly ISet<SqlDbType> ScaleTypes = new HashSet<SqlDbType>
+        private static readonly HashSet<SqlDbType> ScaleTypes = new HashSet<SqlDbType>
         {
             SqlDbType.Decimal,
             SqlDbType.Money,
             SqlDbType.SmallMoney,
         };
 
-        private static readonly ISet<SqlDbType> VarTimeTypes = new HashSet<SqlDbType>
+        private static readonly HashSet<SqlDbType> VarTimeTypes = new HashSet<SqlDbType>
         {
             SqlDbType.DateTimeOffset,
             SqlDbType.DateTime2,
             SqlDbType.Time,
         };
 
-        private static readonly ISet<SqlDbType> LengthRequiredTypes = new HashSet<SqlDbType>
+        private static readonly HashSet<SqlDbType> LengthRequiredTypes = new HashSet<SqlDbType>
         {
             SqlDbType.Binary,
             SqlDbType.VarBinary,
@@ -67,30 +67,21 @@ namespace RevEng.Core
 
         public static Type ClrType(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
         {
-            if (storedProcedureParameter is null)
-            {
-                throw new ArgumentNullException(nameof(storedProcedureParameter));
-            }
+            ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
         }
 
         public static Type ClrType(this ModuleResultElement moduleResultElement)
         {
-            if (moduleResultElement is null)
-            {
-                throw new ArgumentNullException(nameof(moduleResultElement));
-            }
+            ArgumentNullException.ThrowIfNull(moduleResultElement);
 
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
         public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
         {
-            if (storedProcedureParameter is null)
-            {
-                throw new ArgumentNullException(nameof(storedProcedureParameter));
-            }
+            ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
             return GetSqlDbType(storedProcedureParameter.StoreType);
         }
@@ -130,21 +121,19 @@ namespace RevEng.Core
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
                 case SqlDbType.Date:
-#if CORE60
                     if (useDateOnlyTimeOnly)
                     {
                         return isNullable ? typeof(DateOnly?) : typeof(DateOnly);
                     }
-#endif
+
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
                 case SqlDbType.Time:
-#if CORE60
                     if (useDateOnlyTimeOnly)
                     {
                         return isNullable ? typeof(TimeOnly?) : typeof(TimeOnly);
                     }
-#endif
+
                     return isNullable ? typeof(TimeSpan?) : typeof(TimeSpan);
 
                 case SqlDbType.Decimal:

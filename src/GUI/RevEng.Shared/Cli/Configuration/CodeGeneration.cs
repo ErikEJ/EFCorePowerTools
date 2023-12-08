@@ -20,7 +20,7 @@ namespace RevEng.Common.Cli.Configuration
         public bool UseNullableReferenceTypes { get; set; } = true;
 
         [JsonPropertyName("use-inflector")]
-        public bool UseInflector { get; set; }
+        public bool UseInflector { get; set; } = true;
 
         [JsonPropertyName("use-legacy-inflector")]
         public bool UseLegacyInflector { get; set; }
@@ -31,16 +31,30 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("use-t4")]
         public bool UseT4 { get; set; }
 
+        [JsonPropertyName("t4-template-path")]
+        public string T4TemplatePath { get; set; }
+
         [JsonPropertyName("remove-defaultsql-from-bool-properties")]
         public bool RemoveDefaultSqlFromBoolProperties { get; set; }
 
         [JsonPropertyName("soft-delete-obsolete-files")]
         public bool SoftDeleteObsoleteFiles { get; set; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("discover-multiple-stored-procedure-resultsets-preview")]
         public bool DiscoverMultipleStoredProcedureResultsetsPreview { get; set; }
 
         [JsonPropertyName("use-alternate-stored-procedure-resultset-discovery")]
         public bool UseAlternateStoredProcedureResultsetDiscovery { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("use-no-navigations-preview")]
+        public bool UseNoNavigationsPreview { get; set; }
+
+        [JsonPropertyName("merge-dacpacs")]
+        public bool MergeDacpacs { get; set; }
+
+        [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
+        public bool UseDecimalDataAnnotation { get; set; } = true;
     }
 }

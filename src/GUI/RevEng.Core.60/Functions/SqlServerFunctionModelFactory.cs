@@ -1,6 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -36,7 +34,8 @@ AND (
                 class = 1 and 
                 name = N'microsoft_database_tools_support'
         ) IS NULL 
-AND ROUTINE_TYPE = N'FUNCTION'";
+AND ROUTINE_TYPE = N'FUNCTION' 
+ORDER BY ROUTINE_NAME;";
         }
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
@@ -46,10 +45,7 @@ AND ROUTINE_TYPE = N'FUNCTION'";
 
         protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
         {
-            if (module is null)
-            {
-                throw new ArgumentNullException(nameof(module));
-            }
+            ArgumentNullException.ThrowIfNull(module);
 
             using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();

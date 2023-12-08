@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -18,9 +19,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     {
-        private static readonly ISet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
+        private static readonly HashSet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
 
-        private static readonly ISet<string> MaxLengthRequiredTypes
+        private static readonly HashSet<string> MaxLengthRequiredTypes
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
@@ -41,10 +42,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         public DatabaseModel Create(string connectionString, DatabaseModelFactoryOptions options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -69,8 +67,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             if (dacpacOptions?.MergeDacpacs ?? false)
             {
-                var consolidator = new DacpacConsolidator();
-                connectionString = consolidator.Consolidate(connectionString);
+                connectionString = DacpacConsolidator.Consolidate(connectionString);
             }
 
             using var model = new TSqlTypedModel(connectionString);
@@ -94,10 +91,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 if (item.MemoryOptimized)
                 {
-                    dbTable["SqlServer:MemoryOptimized"] = true;
+                    dbTable[SqlServerAnnotationNames.MemoryOptimized] = true;
                 }
 
-                GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList(), model);
+                var tableColumns = GetColumns(item, dbTable, typeAliases, model.GetObjects<TSqlDefaultConstraint>(DacQueryScopes.UserDefined).ToList(), model);
                 GetPrimaryKey(item, dbTable);
 
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
@@ -108,6 +105,30 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     .FirstOrDefault(p => p.Name.Parts[3] == "MS_Description");
 
                 dbTable.Comment = FixExtendedPropertyValue(description?.Value);
+
+                var temporal = item.GetReferenced(Table.TemporalSystemVersioningHistoryTable).ToArray();
+
+                if (temporal.Length != 0)
+                {
+                    dbTable[SqlServerAnnotationNames.IsTemporal] = true;
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableName] = temporal[0].Name.Parts[1];
+                    dbTable[SqlServerAnnotationNames.TemporalHistoryTableSchema] = temporal[0].Name.Parts[0];
+
+                    foreach (var col in tableColumns)
+                    {
+                        var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                        if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart)
+                        {
+                            dbTable[SqlServerAnnotationNames.TemporalPeriodStartPropertyName] = col.Name.Parts[2];
+                        }
+
+                        if (generatedAlwaysType == ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+                        {
+                            dbTable[SqlServerAnnotationNames.TemporalPeriodEndPropertyName] = col.Name.Parts[2];
+                        }
+                    }
+                }
 
                 dbModel.Tables.Add(dbTable);
             }
@@ -148,7 +169,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas)
             => throw new NotImplementedException();
 
-        private static IReadOnlyDictionary<string, (string A, string B)> GetTypeAliases(TSqlTypedModel model)
+        private static Dictionary<string, (string A, string B)> GetTypeAliases(TSqlTypedModel model)
         {
             var items = model.GetObjects<TSqlDataType>(DacQueryScopes.UserDefined)
                 .ToList();
@@ -186,8 +207,14 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             foreach (var pkCol in pk.Columns)
             {
-                var dbCol = dbTable.Columns
-                    .Single(c => c.Name == pkCol.Name.Parts[2]);
+                var dbCol = dbTable.Columns.FirstOrDefault(c => c.Name == pkCol.Name.Parts[2])
+                        ?? dbTable.Columns.FirstOrDefault(
+                            c => c.Name.Equals(pkCol.Name.Parts[2], StringComparison.OrdinalIgnoreCase));
+
+                if (dbCol == null)
+                {
+                    return;
+                }
 
                 primaryKey.Columns.Add(dbCol);
             }
@@ -331,18 +358,17 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #if CORE70
             var triggers = table.Triggers.ToList();
 
-            if (triggers.Any())
+            if (triggers.Count != 0)
             {
                 dbTable.Triggers.Add(new DatabaseTrigger { Name = "trigger" });
             }
 #endif
         }
 
-        private static void GetColumns(TSqlTable item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
-                .Where(i => !i.GetProperty<bool>(Column.IsHidden)
-                && i.ColumnType != ColumnType.ColumnSet
+                .Where(i => i.ColumnType != ColumnType.ColumnSet
 
                 // Computed columns not supported for now
                 // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
@@ -350,21 +376,23 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             foreach (var col in tableColumns)
             {
-                var def = defaultConstraints.FirstOrDefault(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
+                var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
                 string storeType = null;
                 string systemTypeName = null;
 
-                if (col.DataType.First().Name.Parts.Count > 1)
+                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
                 {
-                    if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
-                    {
-                        storeType = value.StoreType;
-                        systemTypeName = value.TypeName;
-                    }
+                    storeType = value.StoreType;
+                    systemTypeName = value.TypeName;
                 }
                 else
                 {
                     var dataTypeName = col.DataType.First().Name.Parts[0];
+                    if (col.DataType.First().Name.Parts.Count > 1)
+                    {
+                        dataTypeName = col.DataType.First().Name.Parts[1];
+                    }
+
                     int maxLength = col.IsMax ? -1 : col.Length;
                     storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
                     systemTypeName = dataTypeName;
@@ -403,11 +431,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
 
-                dbTable.Columns.Add(dbColumn);
+                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+                {
+                    dbTable.Columns.Add(dbColumn);
+                }
             }
+
+            return tableColumns;
         }
 
-        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, IReadOnlyDictionary<string, (string StoreType, string TypeName)> typeAliases)
+        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
@@ -465,6 +500,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             if (dataTypeName == "timestamp")
             {
                 return "rowversion";
+            }
+
+            if (dataTypeName == "sysname")
+            {
+                return "nvarchar(128)";
             }
 
             if (dataTypeName == "decimal"
@@ -553,7 +593,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private static string StripParentheses(string defaultValue)
         {
-            if (defaultValue.StartsWith("(", StringComparison.OrdinalIgnoreCase) && defaultValue.EndsWith(")", StringComparison.OrdinalIgnoreCase))
+            if (defaultValue.StartsWith('(') && defaultValue.EndsWith(')'))
             {
                 defaultValue = defaultValue.Substring(1, defaultValue.Length - 2);
                 return StripParentheses(defaultValue);
@@ -595,7 +635,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 value = value.Substring(2);
             }
 
-            if (value.EndsWith("'", StringComparison.OrdinalIgnoreCase))
+            if (value.EndsWith('\''))
             {
                 value = value.Remove(value.Length - 1, 1);
             }

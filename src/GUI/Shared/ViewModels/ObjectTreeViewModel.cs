@@ -101,15 +101,22 @@ namespace EFCorePowerTools.ViewModels
                         .SelectMany(a => a.Tables.Where(t => t.Columns != null && t.Name == obj.Name))
                         .ToList();
 
-                    var ignoredReplacers = originalReplacers
+                    var ignoredColumnReplacers = originalReplacers
                         .SelectMany(o => o.Columns.Where(c => c.Name != null && c.Name.Equals(c.NewName)))
                         .ToList();
 
-                    if (objectIsRenamed || renamedColumns.Any() || ignoredReplacers.Any())
+                    var ignoredTableReplacers = originalReplacers
+                        .Where(c => c.Name != null && c.Name.Equals(c.NewName) && (!c.Columns?.Any() ?? false))
+                        .ToList();
+
+                    if (objectIsRenamed
+                        || renamedColumns.Any()
+                        || ignoredColumnReplacers.Any()
+                        || ignoredTableReplacers.Any())
                     {
                         var columnRenamers = renamedColumns
                             .Select(c => new ColumnNamer { Name = c.Name, NewName = c.NewName })
-                            .Concat(ignoredReplacers);
+                            .Concat(ignoredColumnReplacers);
 
                         if (replacingSchema.Tables == null)
                         {
@@ -143,7 +150,7 @@ namespace EFCorePowerTools.ViewModels
 
             foreach (var schema in allSchemas)
             {
-                var existingSchema = result.FirstOrDefault(s => s.SchemaName == schema.SchemaName);
+                var existingSchema = result.Find(s => s.SchemaName == schema.SchemaName);
                 if (existingSchema == null)
                 {
                     if (schema.Tables?.Count == 0)
@@ -206,7 +213,7 @@ namespace EFCorePowerTools.ViewModels
 
                     foreach (var obj in schema)
                     {
-                        var objectReplacer = objectReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
+                        var objectReplacer = objectReplacers?.Find(c => c.Name != null && c.Name.Equals(obj.Name, StringComparison.OrdinalIgnoreCase));
                         var tvm = tableInformationViewModelFactory();
                         tvm.Name = obj.Name;
                         tvm.ModelDisplayName = obj.DisplayName;
@@ -221,7 +228,7 @@ namespace EFCorePowerTools.ViewModels
                             {
                                 var cvm = columnInformationViewModelFactory();
                                 cvm.Name = column.Name;
-                                cvm.NewName = columnReplacers?.FirstOrDefault(c => c.Name != null && c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
+                                cvm.NewName = columnReplacers?.Find(c => c.Name != null && c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
                                 cvm.IsPrimaryKey = column.IsPrimaryKey;
                                 cvm.IsForeignKey = column.IsForeignKey;
                                 tvm.Columns.Add(cvm);

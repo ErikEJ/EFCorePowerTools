@@ -2,22 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="EfCore.SchemaCompare" Version="7.0.0" />
-	<PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
-	<PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="7.0.1" />
-	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+	<PackageReference Include="EfCore.SchemaCompare" Version="8.0.0-rc2-0002" />
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.3" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.0" /> 
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">

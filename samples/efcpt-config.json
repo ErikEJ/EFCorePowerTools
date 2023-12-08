@@ -52,7 +52,10 @@
      "remove-defaultsql-from-bool-properties": false,
      "soft-delete-obsolete-files": false,
      "discover-multiple-stored-procedure-resultsets-preview": false,
-     "use-alternate-stored-procedure-resultset-discovery": false
+     "use-alternate-stored-procedure-resultset-discovery": false,
+     "t4-template-path": null,
+     "use-no-navigations-preview": false,
+     "merge-dacpacs": false
   },
   "names":
   {

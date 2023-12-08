@@ -16,10 +16,7 @@ namespace Modelling
             {
                 Console.OutputEncoding = Encoding.UTF8;
 
-                if (args == null)
-                {
-                    throw new ArgumentNullException(nameof(args));
-                }
+                ArgumentNullException.ThrowIfNull(args);
 
                 if (args.Length > 0)
                 {

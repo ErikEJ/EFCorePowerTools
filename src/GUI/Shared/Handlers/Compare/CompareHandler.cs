@@ -12,6 +12,7 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
+using NuGet.Versioning;
 
 namespace EFCorePowerTools.Handlers.Compare
 {
@@ -49,7 +50,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     return;
                 }
 
-                if (!await project.IsNet60OrHigherIncluding70Async())
+                if (!await project.IsNet60OrHigherAsync())
                 {
                     VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
@@ -65,7 +66,7 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    if (version.Major != 6 && version.Major != 7)
+                    if (version.Major != 6 && version.Major != 7 && version.Major != 8)
                     {
                         VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
@@ -74,12 +75,17 @@ namespace EFCorePowerTools.Handlers.Compare
                     var nugetHelper = new NuGetHelper();
                     if (version.Major == 6)
                     {
-                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(6, 0, 0));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(6, 0, 0));
                     }
                     else if (version.Major == 7)
                     {
-                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new Version(7, 0, 0));
-                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new Version(7, 0, 0));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(7, 0, 0));
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(7, 0, 0));
+                    }
+                    else if (version.Major == 8)
+                    {
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 0, 0));
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(8, 0, 0));
                     }
 
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
@@ -218,7 +224,7 @@ namespace EFCorePowerTools.Handlers.Compare
 
             var modelResults = processLauncher.BuildModelResult(processResult);
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<CompareLogModel>>(modelResults.First().Item2);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<CompareLogModel>>(modelResults[0].Item2);
         }
     }
 }

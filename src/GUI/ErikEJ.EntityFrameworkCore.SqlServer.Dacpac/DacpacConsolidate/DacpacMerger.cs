@@ -18,8 +18,11 @@ namespace GOEddie.Dacpac.References
 
         public DacpacMerger(string target, string[] sources)
         {
+            ArgumentNullException.ThrowIfNull(target);
+            ArgumentNullException.ThrowIfNull(sources);
+
             this.sources = sources;
-            first = new TSqlModel(sources.First());
+            first = new TSqlModel(sources[0]);
             var options = first.CopyModelOptions();
 
             this.target = new TSqlModel(first.Version, options);

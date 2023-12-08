@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Ef7Playground.Models;
 
+/// <summary>
+/// Orders table
+/// </summary>
 public partial class Order
 {
     public int OrderId { get; set; }

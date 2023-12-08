@@ -30,6 +30,7 @@ namespace RevEng.Common
         public bool UseInflector { get; set; }
         public bool UseHandleBars { get; set; }
         public bool UseT4 { get; set; }
+        public string T4TemplatePath { get; set; }
         public int SelectedHandlebarsLanguage { get; set; }
         public bool IncludeConnectionString { get; set; }
         public int SelectedToBeGenerated { get; set; }
@@ -45,6 +46,7 @@ namespace RevEng.Common
         public bool UseBoolPropertiesWithoutDefaultSql { get; set; }
         public bool UseNullableReferences { get; set; }
         public bool UseNoObjectFilter { get; set; }
+        public bool UseNoNavigations { get; set; }
         public bool UseNoDefaultConstructor { get; set; }
         public bool FilterSchemas { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
@@ -54,6 +56,7 @@ namespace RevEng.Common
         public bool MergeDacpacs { get; set; }
         public bool UseLegacyResultSetDiscovery { get; set; }
         public bool UseAsyncCalls { get; set; }
+        public bool UseDecimalDataAnnotation { get; set; }
         public bool PreserveCasingWithRegex { get; set; }
         public bool UseDateOnlyTimeOnly { get; set; }
     }

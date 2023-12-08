@@ -4,7 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<NoWarn>$(NoWarn);EF1001</NoWarn>
 		<RootNamespace>RevEng.Core</RootNamespace>
-        <Nullable>warnings</Nullable>
+    <Nullable>warnings</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -20,6 +20,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="..\RevEng.Core.60\CrmDatabaseModelFactory.cs" />
+	  <Compile Remove="..\RevEng.Core.60\PatchedSqlServerDatabaseModelFactory.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<EmbeddedResource Include="..\RevEng.Core.60\DbContextExtensions" Link="DbContextExtensions" />
     <EmbeddedResource Include="..\RevEng.Core.60\DbContextExtensions.Sync" Link="DbContextExtensions.Sync" />
 	</ItemGroup>
@@ -30,20 +35,20 @@
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="7.0.0" />
     <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="4.0.0" />
     <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly" Version="7.0.5" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.7" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.7" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="7.0.4" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.4" />
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.9" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="10.0.0" />    
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="7.0.14" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="7.0.11" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="7.0.11" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.12" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="7.0.0" />
-    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="7.0.0" />
+    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="7.1.0" />
 		<PackageReference Include="System.CodeDom" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase\ErikEJ.EntityFrameworkCore.7.SqlServer.CrmDatabase.csproj" />
 		<ProjectReference Include="..\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj" />
 		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
 		<ProjectReference Include="..\RevEng.Shared\RevEng.Common.csproj" />

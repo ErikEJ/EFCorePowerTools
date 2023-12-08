@@ -13,7 +13,6 @@ namespace Microsoft.EntityFrameworkCore
     /// <summary>
     /// Useful extensions for DbContext.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4457:Parameter validation in \"async\"/\"await\" methods should be wrapped", Justification = "Broken analyzer?")]
     public static class DbContextExtensions
     {
         /// <summary>
@@ -39,10 +38,7 @@ namespace Microsoft.EntityFrameworkCore
         public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default)
             where T : class
         {
-            if (db is null)
-            {
-                throw new ArgumentNullException(nameof(db));
-            }
+            ArgumentNullException.ThrowIfNull(db);
 
             return await SqlQueryInternalAsync<T>(db, sql, parameters, cancellationToken).ConfigureAwait(false);
         }

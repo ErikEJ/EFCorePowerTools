@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using System;
@@ -24,10 +23,7 @@ namespace RevEng.Core.Procedures
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly;
 
@@ -41,11 +37,6 @@ namespace RevEng.Core.Procedures
             {
                 var sql = new StringBuilder();
                 sql.AppendLine(RoutineSql);
-#if CORE31
-                // Filters out table-valued functions without filtering out stored procedures
-                sql.AppendLine("AND COALESCE(DATA_TYPE, '') != 'TABLE'");
-#endif
-                sql.AppendLine("ORDER BY ROUTINE_NAME;");
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                 using (var command = new SqlCommand(sql.ToString(), connection))
@@ -62,7 +53,7 @@ namespace RevEng.Core.Procedures
                 }
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
-                var allParameters = options.FullModel ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
+                var allParameters = options.FullModel && found.Count != 0 ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
 
                 foreach (var foundModule in found)
                 {
@@ -128,9 +119,9 @@ namespace RevEng.Core.Procedures
                             if (module is Function func
                                 && func.IsScalar
                                 && func.Parameters.Count > 0
-                                && func.Parameters.Any(p => p.StoreType == "table type"))
+                                && func.Parameters.Exists(p => p.StoreType == "table type"))
                             {
-                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.{Environment.NewLine}");
+                                errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has TVP parameters.");
                                 continue;
                             }
 
@@ -142,16 +133,16 @@ namespace RevEng.Core.Procedures
                                     .Select(y => y.Key)
                                     .ToList();
 
-                                if (duplicates.Any())
+                                if (duplicates.Count != 0)
                                 {
                                     dupesFound = true;
-                                    errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.{Environment.NewLine}");
+                                    errors.Add($"Unable to scaffold {RoutineType} '{module.Schema}.{module.Name}' as it has duplicate result column names: '{duplicates[0]}'.");
                                 }
                             }
 
                             if (module.UnnamedColumnCount > 0)
                             {
-                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} un-named columns.{Environment.NewLine}");
+                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} un-named columns.");
                             }
 
                             if (dupesFound)
@@ -210,7 +201,7 @@ SELECT
                 if (par != null)
                 {
                     var parameterName = par["Parameter"].ToString();
-                    if (parameterName!.StartsWith("@", StringComparison.Ordinal))
+                    if (parameterName!.StartsWith('@'))
                     {
                         parameterName = parameterName.Substring(1);
                     }

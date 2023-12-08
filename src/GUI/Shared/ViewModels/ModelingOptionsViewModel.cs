@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
@@ -19,6 +20,7 @@ namespace EFCorePowerTools.ViewModels
 
         private string title;
         private bool mayIncludeConnectionString;
+        private int selectedTemplateType;
 
         public ModelingOptionsViewModel(
             IVisualStudioAccess visualStudioAccess,
@@ -36,18 +38,14 @@ namespace EFCorePowerTools.ViewModels
 
             Model = new ModelingOptionsModel();
             Model.PropertyChanged += Model_PropertyChanged;
+
+            TemplateTypeList = new ObservableCollection<TemplateTypeItem>();
+
             GenerationModeList = new[]
             {
                 ReverseEngineerLocale.EntityTypesAndContext,
                 ReverseEngineerLocale.DbContextOnly,
                 ReverseEngineerLocale.EntityTypesOnly,
-            };
-            HandlebarsLanguageList = new[]
-            {
-                "C# - Handlebars",
-                "TypeScript - Handlebars",
-                "C# - T4 (EF7)",
-                "C# - T4 (POCO - EF7)",
             };
         }
 
@@ -60,6 +58,24 @@ namespace EFCorePowerTools.ViewModels
         public ModelingOptionsModel Model { get; }
         public IReadOnlyList<string> GenerationModeList { get; }
         public IReadOnlyList<string> HandlebarsLanguageList { get; }
+
+        public ObservableCollection<TemplateTypeItem> TemplateTypeList { get; }
+
+        public int SelectedTemplateType
+        {
+            get => selectedTemplateType;
+            set
+            {
+                if (value == selectedTemplateType)
+                {
+                    return;
+                }
+
+                selectedTemplateType = value;
+                Model.SelectedHandlebarsLanguage = selectedTemplateType;
+                RaisePropertyChanged();
+            }
+        }
 
         public string Title
         {
@@ -117,6 +133,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
             Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
             Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
+            Model.UseNoNavigations = presets.UseNoNavigations;
             Model.UseNullableReferences = presets.UseNullableReferences;
             Model.UseNoObjectFilter = presets.UseNoObjectFilter;
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
@@ -196,6 +213,7 @@ namespace EFCorePowerTools.ViewModels
             Model.UseNoDefaultConstructor = advancedModelingOptionsResult.Payload.UseNoDefaultConstructor;
             Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
             Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
+            Model.UseNoNavigations = advancedModelingOptionsResult.Payload.UseNoNavigations;
             Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
             Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
             Model.UseDateOnlyTimeOnly = advancedModelingOptionsResult.Payload.UseDateOnlyTimeOnly;

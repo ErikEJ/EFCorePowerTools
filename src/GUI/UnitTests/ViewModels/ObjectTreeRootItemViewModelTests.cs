@@ -87,7 +87,7 @@ namespace UnitTests.ViewModels
             AddObjects(vm);
 
             // Act
-            foreach (var item in vm.Schemas.First().Objects)
+            foreach (var item in vm.Schemas[0].Objects)
             {
                 item.IsVisible = false;
             }

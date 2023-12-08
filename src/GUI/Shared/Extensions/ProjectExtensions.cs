@@ -14,8 +14,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.ProjectModel;
 using RevEng.Common;
-using RevEng.Common.Cli;
-using VSLangProj150;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -76,30 +74,6 @@ namespace EFCorePowerTools.Extensions
             return null;
         }
 
-        public static async Task<string> GetMsBuildSqlProjOutPutAssemblyPathAsync(this Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            var assemblyName = await project.GetAttributeAsync("AssemblyName");
-
-            var assemblyNameExe = assemblyName + ".dacpac";
-            var assemblyNameDll = assemblyName + ".deps.json";
-
-            var outputPath = await GetOutputPathAsync(project);
-
-            if (string.IsNullOrEmpty(outputPath))
-            {
-                return null;
-            }
-
-            if (File.Exists(Path.Combine(outputPath, assemblyNameExe)) && File.Exists(Path.Combine(outputPath, assemblyNameDll)))
-            {
-                return Path.Combine(outputPath, assemblyNameExe);
-            }
-
-            return null;
-        }
-
         public static List<string> GetConfigFiles(this Project project)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -117,10 +91,12 @@ namespace EFCorePowerTools.Extensions
             result.AddRange(files
                 .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\")));
 
+#pragma warning disable S2583 // Conditionally executed code should be reachable
             if (result.Count == 0)
             {
                 result.Add(Path.Combine(projectPath, "efpt.config.json"));
             }
+#pragma warning restore S2583 // Conditionally executed code should be reachable
 
             return result.OrderBy(s => s).ToList();
         }
@@ -159,7 +135,7 @@ namespace EFCorePowerTools.Extensions
                 options.UseDateOnlyTimeOnly,
                 options.UseHierarchyId,
                 AdvancedOptions.Instance.DiscoverMultipleResultSets,
-                options.Tables?.Any(t => t.ObjectType == ObjectType.Procedure) ?? false,
+                options.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
                 options.CodeGenerationMode);
 
             await IsInstalledAsync(project, neededPackages);
@@ -181,19 +157,19 @@ namespace EFCorePowerTools.Extensions
         {
             var version = new Version(3, 0);
 
-            if (await project.IsNetStandard20Async())
+            if (await project.IsNetStandardAsync())
             {
                 version = new Version(2, 0);
-            }
-
-            if (await project.IsNetStandard21Async())
-            {
-                version = new Version(2, 1);
             }
 
             if (await project.IsNet60OrHigherAsync())
             {
                 version = new Version(6, 0);
+            }
+
+            if (await project.IsNet80Async())
+            {
+                version = new Version(8, 0);
             }
 
             return version;
@@ -211,15 +187,27 @@ namespace EFCorePowerTools.Extensions
             ////Microsoft.Internal.VisualStudio.PlatformUI.HierarchyUtilities.TryGetHierarchyProperty<string>(h, itemId, (int)__VSHPROPID5.VSHPROPID_ProjectCapabilities, out string value);
             ////var capabilities = (value ?? string.Empty).Split(' ');
 
-            // https://github.com/VsixCommunity/Community.VisualStudio.Toolkit/issues/160
-            return project.IsCapabilityMatch("CSharp & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
+            return project.IsCapabilityMatch("CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
-        public static async Task<bool> IsNet60OrHigherIncluding70Async(this Project project)
+        public static bool IsCSharpProjectPlain(this Project project)
         {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+            if (project == null)
+            {
+                return false;
+            }
 
-            return IsNet60(targetFrameworkMonikers) || IsNet70(targetFrameworkMonikers);
+            return project.IsCapabilityMatch("CSharp & CPS");
+        }
+
+        public static bool IsMsBuildSqlProjProject(this Project project)
+        {
+            if (project == null)
+            {
+                return false;
+            }
+
+            return project.IsCapabilityMatch("CSharp & CPS & MSBuild.Sdk.SqlProj.BuildTSqlScript");
         }
 
         public static async Task<bool> IsNet60OrHigherAsync(this Project project)
@@ -234,6 +222,13 @@ namespace EFCorePowerTools.Extensions
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
             return IsNet70(targetFrameworkMonikers);
+        }
+
+        public static async Task<bool> IsNet80Async(this Project project)
+        {
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet80(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNetStandardAsync(this Project project)
@@ -356,7 +351,7 @@ namespace EFCorePowerTools.Extensions
                 {
                     foreach (var lib in lockFile.Libraries)
                     {
-                        var package = packages.FirstOrDefault(p => p.PackageId == lib.Name);
+                        var package = packages.Find(p => p.PackageId == lib.Name);
 
                         if (package != null)
                         {
@@ -399,33 +394,24 @@ namespace EFCorePowerTools.Extensions
             return new Tuple<bool, string>(hasDesign, coreVersion);
         }
 
-        private static async Task<bool> IsNetStandard20Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.0") ?? false;
-        }
-
-        private static async Task<bool> IsNetStandard21Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.1") ?? false;
-        }
-
         private static bool IsNet60(string targetFrameworkMonikers)
         {
-            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v6.0") ?? false;
+            return FrameworkCheck(targetFrameworkMonikers, "6");
         }
 
         private static bool IsNet70(string targetFrameworkMonikers)
         {
-            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v7.0") ?? false;
+            return FrameworkCheck(targetFrameworkMonikers, "7");
         }
 
         private static bool IsNet80(string targetFrameworkMonikers)
         {
-            return targetFrameworkMonikers?.Contains(".NETCoreApp,Version=v8.0") ?? false;
+            return FrameworkCheck(targetFrameworkMonikers, "8");
+        }
+
+        private static bool FrameworkCheck(string targetFrameworkMonikers, string version)
+        {
+            return targetFrameworkMonikers?.Contains($".NETCoreApp,Version=v{version}.0") ?? false;
         }
 
         private static async Task<string> GetOutputPathAsync(Project project)

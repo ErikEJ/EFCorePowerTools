@@ -91,6 +91,7 @@
                              Command="{Binding OkCommand}"/>
             <dw:DialogButton Content="{x:Static locale:SharedLocale.Cancel}"
                              Margin="8,0,0,0"
+                             IsCancel="True"
                              Command="{Binding CancelCommand}"/>
         </StackPanel>
     </Grid>

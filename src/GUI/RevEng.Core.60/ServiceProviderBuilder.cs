@@ -1,12 +1,8 @@
-﻿#if !CORE70
-using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
-#endif
-using System;
+﻿using System;
 using System.Collections.Generic;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Humanizer.Inflections;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -14,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
-using Microsoft.EntityFrameworkCore.SqlServer.Design;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
@@ -24,16 +20,20 @@ using RevEng.Common;
 using RevEng.Core.Procedures;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 
+#if !CORE80
+using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Design;
+#endif
+
 namespace RevEng.Core
 {
     public static class ServiceProviderBuilder
     {
         public static IServiceCollection AddEfpt(this IServiceCollection serviceCollection, ReverseEngineerCommandOptions options, List<string> errors, List<string> warnings, List<string> info)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
+
+            ArgumentNullException.ThrowIfNull(serviceCollection);
 
             var reporter = new OperationReporter(
                 new OperationReportHandler(
@@ -101,6 +101,9 @@ namespace RevEng.Core
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
+#if !CORE80
+                    serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
+#endif
                     serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                     serviceCollection.AddSqlServerFunctionDesignTimeServices();
 
@@ -108,13 +111,6 @@ namespace RevEng.Core
                     {
                         var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
-                    }
-
-                    var builder = new SqlConnectionStringBuilder(options.ConnectionString);
-                    if (builder.DataSource.Contains(".dynamics.com", StringComparison.Ordinal)
-                        || builder.DataSource.Contains(".sql.azuresynapse.net", StringComparison.Ordinal))
-                    {
-                        serviceCollection.AddSingleton<IDatabaseModelFactory, CrmDatabaseModelFactory>();
                     }
 
                     if (options.UseHierarchyId)
@@ -128,13 +124,20 @@ namespace RevEng.Core
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if CORE80
+                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                        provider => new RevEng.Core.SqlServerTypeMappingSource(
+                            provider.GetService<TypeMappingSourceDependencies>(),
+                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                            options.UseDateOnlyTimeOnly));
+#endif
+#if !CORE80
                     if (options.UseDateOnlyTimeOnly)
                     {
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 case DatabaseType.SQLServerDacpac:
@@ -169,13 +172,20 @@ namespace RevEng.Core
                         var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#if CORE80
+                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                        provider => new RevEng.Core.SqlServerTypeMappingSource(
+                            provider.GetService<TypeMappingSourceDependencies>(),
+                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                            options.UseDateOnlyTimeOnly));
+#endif
+#if !CORE80
                     if (options.UseDateOnlyTimeOnly)
                     {
                         var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
                         dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 case DatabaseType.Npgsql:
@@ -212,7 +222,7 @@ namespace RevEng.Core
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-#if !CORE70
+#if !CORE80
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);

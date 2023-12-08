@@ -123,14 +123,14 @@ namespace Modelling
 
             var migrations = context.Database.GetMigrations().ToArray();
 
-            if (!migrations.Any())
+            if (migrations.Length == 0)
             {
                 return "NoMigrations";
             }
 
             var pendingMigrations = context.Database.GetPendingMigrations().ToArray();
 
-            if (pendingMigrations.Any())
+            if (pendingMigrations.Length != 0)
             {
                 return "Pending";
             }

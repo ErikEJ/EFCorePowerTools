@@ -16,7 +16,6 @@
         <Dependencies>
           <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.1.0" />
         </Dependencies>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>

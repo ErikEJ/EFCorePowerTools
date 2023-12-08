@@ -10,11 +10,8 @@ namespace UnitTests
         [Ignore("Local only!")]
         public void CanConsolidate_Issue_274()
         {
-            // Arrange
-            var consolidator = new DacpacConsolidator();
-
             // Act
-            var result = consolidator.Consolidate(@"C:\Users\Erik\Downloads\CompositeDatabase\CompositeDatabase\CompositeDatabase\bin\Debug\CompositeDatabase.dacpac");
+            var result = DacpacConsolidator.Consolidate(@"C:\Users\Erik\Downloads\CompositeDatabase\CompositeDatabase\CompositeDatabase\bin\Debug\CompositeDatabase.dacpac");
 
             // Assert
             Assert.IsTrue(result.Contains("\\efpt-"));
@@ -24,11 +21,10 @@ namespace UnitTests
         public void CanConsolidate_Without_References_Issue_274()
         {
             // Arrange
-            var consolidator = new DacpacConsolidator();
             var dacPath = TestPath("Chinook.dacpac");
 
             // Act
-            var result = consolidator.Consolidate(dacPath);
+            var result = DacpacConsolidator.Consolidate(dacPath);
 
             // Assert
             Assert.AreEqual(result, dacPath);

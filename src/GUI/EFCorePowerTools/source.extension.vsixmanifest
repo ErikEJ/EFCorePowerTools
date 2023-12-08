@@ -14,16 +14,15 @@ About - Displays version and other diagnostic information about your Visual Stud
         </Description>
         <MoreInfo>https://github.com/ErikEJ/EFCorePowerTools/wiki/</MoreInfo>
         <License>Resources\license.txt</License>
+        <GettingStartedGuide>https://github.com/ErikEJ/EFCorePowerTools/wiki</GettingStartedGuide>
+        <ReleaseNotes>https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes</ReleaseNotes>
         <Icon>db.png</Icon>
         <PreviewImage>Resources\pt.png</PreviewImage>
-        <Tags>sql sqlite sqlce entityframework efcore codegeneration database</Tags>
+        <Tags>sql sqlserver entityframework efcore codegeneration database</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
-           <ProductArchitecture>amd64</ProductArchitecture>
-        </InstallationTarget>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
-           <ProductArchitecture>arm64</ProductArchitecture>
+            <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
     </Installation>
     <Dependencies>
@@ -31,7 +30,8 @@ About - Displays version and other diagnostic information about your Visual Stud
     </Dependencies>
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
-        <!--<Prerequisite Id="Microsoft.VisualStudio.Component.GraphDocument" Version="[17.0,)" DisplayName="DGML editor" />-->
+        <Prerequisite Id="Microsoft.VisualStudio.Component.GraphDocument" Version="[17.0,)" DisplayName="DGML editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.SQL.DataSources" Version="[17.0,)" DisplayName="Data sources for SQL Server support" />
     </Prerequisites>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
