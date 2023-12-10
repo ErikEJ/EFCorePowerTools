@@ -210,6 +210,9 @@
   <data name="DDEXProviderExperience" xml:space="preserve">
     <value>安装数据设计器获得更好的体验</value>
   </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>选择您的 EF Core 版本</value>
+  </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value>实体和上下文</value>
   </data>
@@ -268,7 +271,7 @@
     <value>映射</value>
   </data>
   <data name="MapSpatialTypes" xml:space="preserve">
-    <value>映射空间数据类型</value>
+    <value>映射 空间数据 类型</value>
   </data>
   <data name="ModelGeneratedSuccesfully" xml:space="preserve">
     <value>模型生成成功</value>
@@ -320,6 +323,9 @@
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
     <value>删除bool列的SQL默认值</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>重命名导航</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>报告结果...</value>
@@ -398,6 +404,9 @@
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
     <value>使用架构文件夹模式(实验性)</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>使用架构命名空间模式(实验性)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>使用文本搜索</value>

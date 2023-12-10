@@ -121,7 +121,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>Options</ButtonText>
+          <ButtonText>配置</ButtonText>
         </Strings>
       </Button>
       
@@ -198,7 +198,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
-          <ButtonText>Visualize Database Schema (preview)</ButtonText>
+          <ButtonText>数据库架构可视化 (预览)</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
@@ -227,7 +227,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Create EF Core DbContext...</ButtonText>
+          <ButtonText>创建 EF Core 数据库上下文中...</ButtonText>
         </Strings>
       </Button>
 
