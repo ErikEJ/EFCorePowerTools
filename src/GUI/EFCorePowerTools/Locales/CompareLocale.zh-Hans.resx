@@ -151,10 +151,10 @@
     <value>属性</value>
   </data>
   <data name="HeaderExpected" xml:space="preserve">
-    <value>上下文</value>
+    <value>期望</value>
   </data>
   <data name="HeaderFound" xml:space="preserve">
-    <value>数据库</value>
+    <value>实际</value>
   </data>
   <data name="HeaderName" xml:space="preserve">
     <value>名称</value>
@@ -193,6 +193,6 @@
     <value>无法删除连接</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>仅支持 EF Core 5 及以上版本</value>
+    <value>仅支持 EF Core 6 及以上版本</value>
   </data>
 </root>
