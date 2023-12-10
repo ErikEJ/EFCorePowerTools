@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>新增...</value>
+  </data>
+  <data name="AddAdhocConnection" xml:space="preserve">
+    <value>新增自訂連線</value>
+  </data>
+  <data name="AddAdhocDatabaseConnection" xml:space="preserve">
+    <value>新增自訂資料庫連線</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>新增手動定義的連線</value>
+  </data>
+  <data name="AddDatabaseConnection" xml:space="preserve">
+    <value>新增資料庫連線</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>新增伺服器總管 (DDEX) 連線</value>
+  </data>
+  <data name="AddExternalDacPac" xml:space="preserve">
+    <value>新增 .dacpac 檔案</value>
+  </data>
+  <data name="AddSchemasToFilter" xml:space="preserve">
+    <value>新增要篩選的結構描述</value>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>進階...</value>
+  </data>
+  <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
+    <value>始終包含所有資料庫物件</value>
+  </data>
+  <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
+    <value>在除錯時無法產生程式碼</value>
+  </data>
+  <data name="CannotUncheckPrimaryKey" xml:space="preserve">
+    <value>此欄位是主鍵的一部分，如果選取了該表格，則無法取消勾選。</value>
+  </data>
+  <data name="CheckOutputWindowForErrors" xml:space="preserve">
+    <value>請檢查「擴充功能」輸出視窗以查看問題</value>
+  </data>
+  <data name="CheckOutputWindowForWarnings" xml:space="preserve">
+    <value>請檢查「擴充功能」輸出視窗以查看警告</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>選擇您的組態檔案</value>
+  </data>
+  <data name="ChooseDatabaseConnection" xml:space="preserve">
+    <value>選擇您的資料庫連線</value>
+  </data>
+  <data name="ChooseDatabaseObjects" xml:space="preserve">
+    <value>選擇您的資料庫物件</value>
+  </data>
+  <data name="ChooseSchemas" xml:space="preserve">
+    <value>選擇您的資料庫模式</value>
+  </data>
+  <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
+    <value>選擇您的 SQL Server 資料庫專案</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>程式碼產生</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>連接名稱</value>
+  </data>
+  <data name="ConnectionSample" xml:space="preserve">
+    <value>連接範例</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>連接字串</value>
+  </data>
+  <data name="ContextName" xml:space="preserve">
+    <value>內容名稱</value>
+  </data>
+  <data name="ContextNameRequired" xml:space="preserve">
+    <value>必須提供內容名稱</value>
+  </data>
+  <data name="CustomizeUsingHandlebars" xml:space="preserve">
+    <value>使用模板自訂程式碼</value>
+  </data>
+  <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
+    <value>找不到資料庫連線，無法重新整理</value>
+  </data>
+  <data name="DbContextOnly" xml:space="preserve">
+    <value>僅 DbContext</value>
+  </data>
+  <data name="DbContextPath" xml:space="preserve">
+    <value>DbContext 路徑（例如：Data）- 可選</value>
+  </data>
+  <data name="DbContextSubNamespace" xml:space="preserve">
+    <value>DbContext 子命名空間（覆寫路徑）- 可選</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>安裝 DDEX 提供者以獲得更好的體驗</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>選擇您的 EF Core 版本</value>
+  </data>
+  <data name="EntityTypesAndContext" xml:space="preserve">
+    <value>實體類型和 DbContext</value>
+  </data>
+  <data name="EntityTypesOnly" xml:space="preserve">
+    <value>僅實體類型</value>
+  </data>
+  <data name="EntityTypesPath" xml:space="preserve">
+    <value>實體類型路徑（例如：Models）- 可選</value>
+  </data>
+  <data name="EntityTypesSubNamespace" xml:space="preserve">
+    <value>實體類型子命名空間（覆寫路徑）- 可選</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>檔案配置</value>
+  </data>
+  <data name="FilterSchemas" xml:space="preserve">
+    <value>篩選模式</value>
+  </data>
+  <data name="Functions" xml:space="preserve">
+    <value>函式</value>
+  </data>
+  <data name="GenerateEFCoreModelInProject" xml:space="preserve">
+    <value>選擇專案 {0} 的設定</value>
+  </data>
+  <data name="GeneratingCode" xml:space="preserve">
+    <value>正在產生程式碼...</value>
+  </data>
+  <data name="GettingReadyToConnect" xml:space="preserve">
+    <value>準備連線中...</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>說明</value>
+  </data>
+  <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
+    <value>在產生的程式碼中包含連線字串</value>
+  </data>
+  <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
+    <value>在專案中安裝 EF Core 提供者套件</value>
+  </data>
+  <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
+    <value>正在安裝 EF Core 提供者套件</value>
+  </data>
+  <data name="LoadingDatabaseObjects" xml:space="preserve">
+    <value>正在載入資料庫物件...</value>
+  </data>
+  <data name="LoadingOptions" xml:space="preserve">
+    <value>正在載入選項...</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>對應 hierarchyid</value>
+  </data>
+  <data name="MapNodaTimeTypes" xml:space="preserve">
+    <value>對應 Noda Time 類型</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>對應</value>
+  </data>
+  <data name="MapSpatialTypes" xml:space="preserve">
+    <value>對應空間類型</value>
+  </data>
+  <data name="ModelGeneratedSuccesfully" xml:space="preserve">
+    <value>模型產生成功。</value>
+  </data>
+  <data name="Namespace" xml:space="preserve">
+    <value>命名空間</value>
+  </data>
+  <data name="NamespaceRequired" xml:space="preserve">
+    <value>必須提供命名空間</value>
+  </data>
+  <data name="Naming" xml:space="preserve">
+    <value>命名</value>
+  </data>
+  <data name="NewNameCannotBeEmpty" xml:space="preserve">
+    <value>新名稱不能為空</value>
+  </data>
+  <data name="NoPrimaryKey" xml:space="preserve">
+    <value>此表格未定義主鍵。</value>
+  </data>
+  <data name="PackageNotFoundInProject" xml:space="preserve">
+    <value>在專案中找不到 "{0}" NuGet 套件 - 必須安裝才能建置。</value>
+  </data>
+  <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
+    <value>對生成的物件名稱進行複數化或單數化處理（英文）</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>POCO 實體</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ 評分</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>如果您喜歡這個免費工具，請讓我知道</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>版本說明</value>
+  </data>
+  <data name="RemoveConstructorFromEntities" xml:space="preserve">
+    <value>從實體類別中移除建構函式（實驗性）</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>移除預設的 DbContext 建構函式</value>
+  </data>
+  <data name="RemoveNavigationsFromEntities" xml:space="preserve">
+    <value>從實體類別中移除導覽屬性（實驗性）</value>
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value>移除選取的連線</value>
+  </data>
+  <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
+    <value>從布林欄位中移除 SQL 預設值</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>重新命名導覽屬性</value>
+  </data>
+  <data name="ReportingResult" xml:space="preserve">
+    <value>正在報告結果...</value>
+  </data>
+  <data name="ReverseEngineerCompleted" xml:space="preserve">
+    <value>反向工程共花費 {0} 完成</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>搜尋</value>
+  </data>
+  <data name="SearchForObjects" xml:space="preserve">
+    <value>搜尋物件</value>
+  </data>
+  <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
+    <value>將 DbContext 拆分為配置類別（預覽版）</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>改善您的 SQLite 體驗</value>
+  </data>
+  <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
+    <value>使用的憑證未被授予「VIEW DEFINITION」權限，因此功能可能降級或故障。</value>
+  </data>
+  <data name="SQLServerVersionNotSupported" xml:space="preserve">
+    <value>可能不支援 SQL Server 版本 {0}。</value>
+  </data>
+  <data name="StoredProcedures" xml:space="preserve">
+    <value>預存程序</value>
+  </data>
+  <data name="StoredProceduresReturnList" xml:space="preserve">
+    <value>預存程序回傳 List（預設為陣列）</value>
+  </data>
+  <data name="Tables" xml:space="preserve">
+    <value>表格</value>
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value>無法新增連線，可能不支援該提供者</value>
+  </data>
+  <data name="UnableToAddToList" xml:space="preserve">
+    <value>無法新增至清單</value>
+  </data>
+  <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
+    <value>無法建置選取的資料庫專案</value>
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value>無法移除連線</value>
+  </data>
+  <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
+    <value>如果取消勾選，將使用 EF Core 3.1</value>
+  </data>
+  <data name="UncheckingFileRemoved" xml:space="preserve">
+    <value>取消勾選項目可能導致相關檔案被移除</value>
+  </data>
+  <data name="UnsupportedProvider" xml:space="preserve">
+    <value>不支援的提供者</value>
+  </data>
+  <data name="UseDataAnnotations" xml:space="preserve">
+    <value>使用 DataAnnotation 屬性配置模型</value>
+  </data>
+  <data name="UseEF6Pluralizer" xml:space="preserve">
+    <value>使用 EF6 "Classic" pluralizer</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>使用多對多實體</value>
+  </data>
+  <data name="UseNamesFromDatabase" xml:space="preserve">
+    <value>直接使用資料庫中的表格和欄位名稱</value>
+  </data>
+  <data name="UseNullableReferenceTypes" xml:space="preserve">
+    <value>使用可為空的參考類型</value>
+  </data>
+  <data name="UseRegularExpression" xml:space="preserve">
+    <value>使用正則表達式</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>使用者指南</value>
+  </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>使用結構描述資料夾分離（實驗性）</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>使用結構描述命名空間分離（實驗性）</value>
+  </data>
+  <data name="UseTextSearch" xml:space="preserve">
+    <value>使用文字搜尋</value>
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value>檢視</value>
+  </data>
+  <data name="WhatToGenerate" xml:space="preserve">
+    <value>要產生的內容</value>
+  </data>
+</root>
