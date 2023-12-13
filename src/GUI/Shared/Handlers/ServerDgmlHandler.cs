@@ -39,6 +39,11 @@ namespace EFCorePowerTools.Handlers
 
                 var connectionString = info.DatabaseModel.ConnectionString;
 
+                if (info.DatabaseModel.DatabaseType == DatabaseType.SQLServerDacpac)
+                {
+                    connectionString = await SqlProjHelper.BuildSqlProjAsync(info.DatabaseModel.FilePath);
+                }
+
                 if (info.DatabaseModel.DataConnection != null)
                 {
                     info.DatabaseModel.DataConnection.Open();
@@ -61,6 +66,7 @@ namespace EFCorePowerTools.Handlers
         {
             var vsDataHelper = new VsDataHelper();
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
+            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
             var psd = package.GetView<IPickServerDatabaseDialog>();
 
@@ -72,6 +78,15 @@ namespace EFCorePowerTools.Handlers
                     ConnectionString = m.Value.ConnectionString,
                     DatabaseType = m.Value.DatabaseType,
                     DataConnection = m.Value.DataConnection,
+                }));
+            }
+
+            if (dacpacList != null && dacpacList.Any())
+            {
+                psd.PublishDefinitions(dacpacList.Select(m => new DatabaseConnectionModel
+                {
+                    FilePath = m,
+                    DatabaseType = DatabaseType.SQLServerDacpac,
                 }));
             }
 
