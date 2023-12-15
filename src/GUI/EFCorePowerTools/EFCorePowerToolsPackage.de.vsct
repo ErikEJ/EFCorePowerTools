@@ -73,7 +73,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
-          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
+          <ButtonText>EF Core Power Tools - Reverse Engineering</ButtonText>
         </Strings>
       </Menu>
       
@@ -88,7 +88,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
-          <ButtonText>Reverse Engineer</ButtonText>
+          <ButtonText>Reverse Engineering</ButtonText>
         </Strings>
       </Button>
 
@@ -99,7 +99,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidMigrationStatus</CommandName>
-          <ButtonText>Migrations Tool (preview)</ButtonText>
+          <ButtonText>Migrationstool (Vorschau)</ButtonText>
         </Strings>
       </Button>
 
@@ -110,7 +110,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidAbout</CommandName>
-          <ButtonText>About</ButtonText>
+          <ButtonText>Über</ButtonText>
         </Strings>
       </Button>
 
@@ -121,7 +121,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>Options</ButtonText>
+          <ButtonText>Optionen</ButtonText>
         </Strings>
       </Button>
       
@@ -132,7 +132,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>Add T4 Scaffolding Templates</ButtonText>
+          <ButtonText>T4-Gerüstvorlagen hinzufügen</ButtonText>
         </Strings>
       </Button>
 
@@ -143,7 +143,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add DbContext Diagram</ButtonText>
+          <ButtonText>DbContext Diagramm hinzufügen</ButtonText>
         </Strings>
       </Button>
       
@@ -154,7 +154,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
-          <ButtonText>View DbContext DDL SQL</ButtonText>
+          <ButtonText>DbContext DDL SQL anzeigen</ButtonText>
         </Strings>
       </Button>
 
@@ -165,7 +165,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
-          <ButtonText>View DbContext as DebugView</ButtonText>
+          <ButtonText>DbContext als Debug-Ansicht anzeigen</ButtonText>
         </Strings>
       </Button>
 
@@ -176,7 +176,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add AsDgml() extension</ButtonText>
+          <ButtonText>AsDgml() Erweiterung hinzufügen</ButtonText>
         </Strings>
       </Button>
       
@@ -187,7 +187,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
-          <ButtonText>Compare DbContext to database</ButtonText>
+          <ButtonText>DbContext mit Datenbank vergleichen</ButtonText>
         </Strings>
       </Button>
 
@@ -198,7 +198,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
-          <ButtonText>Visualize Database Schema (preview)</ButtonText>
+          <ButtonText>Datenbankschema visualisieren (Vorschau)</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
@@ -207,7 +207,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Edit</CommandName>
-          <ButtonText>EF Core Power Tools - Edit</ButtonText>
+          <ButtonText>EF Core Power Tools - Bearbeiten</ButtonText>
         </Strings>
       </Button>
 
@@ -217,7 +217,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Refresh</CommandName>
-          <ButtonText>EF Core Power Tools - Refresh</ButtonText>
+          <ButtonText>EF Core Power Tools - Aktualisieren</ButtonText>
         </Strings>
       </Button>
 
@@ -227,7 +227,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Create EF Core DbContext...</ButtonText>
+          <ButtonText>EF Core DbContext erstellen...</ButtonText>
         </Strings>
       </Button>
 
