@@ -118,36 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>An error occurred. See the"Extensions" Output window for details.</value>
+    <value>Ein Fehler ist aufgetreten. Details dazu sind im Ausgabefenster "Erweiterungen" ersichtlich.</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
-    <value>Build failed. Unable to discover a DbContext class.</value>
+    <value>Der Build ist fehlgeschlagen. Es konnte keine DbContext-Klasse gefunden werden.</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Abbrechen</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Schliessen</value>
   </data>
   <data name="EFCoreVersionNotFound" xml:space="preserve">
-    <value>EF Core 3.1 or later not found in project</value>
+    <value>EF Core in der Version 3.1 oder höher konnte im Projekt nicht gefunden werden.</value>
   </data>
   <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
-    <value>Installing EFCore.Design version {0}, please retry the command</value>
+    <value>Installation von EFCore.Design Version {0}, bitte den Befehl wiederholen</value>
   </data>
   <data name="InvalidName" xml:space="preserve">
-    <value>Invalid name</value>
+    <value>Ungültiger Name</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="SelectedProjectTypeNoTargetFrameworkMoniker" xml:space="preserve">
-    <value>The selected project type has no TargetFrameworkMoniker</value>
+    <value>Der ausgewählte Projekttyp hat kein TargetFrameworkMoniker</value>
   </data>
   <data name="SupportedFramework" xml:space="preserve">
-    <value>Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker</value>
+    <value>Es werden nur .NET Core 3.0+ Projekte unterstützt - TargetFrameworkMoniker</value>
   </data>
   <data name="UnableToLocateProjectAssembly" xml:space="preserve">
-    <value>Unable to locate project assembly</value>
+    <value>Das Projektassembly konnte nicht gefunden werden</value>
   </data>
 </root>
