@@ -118,81 +118,81 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>Add...</value>
+    <value>Hinzufügen...</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
-    <value>Add Database Connection</value>
+    <value>Datenbankverbindung hinzufügen</value>
   </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
-    <value>Cannot compare context to database while debugging</value>
+    <value>Während dem Debugging kann der Kontext nicht mit der Datenbank verglichen werden</value>
   </data>
   <data name="CannotSupportVersion" xml:space="preserve">
-    <value>Cannot support version {0}, notice that previews have limited support. You can try to manually install Microsoft.EntityFrameworkCore.Design preview.</value>
+    <value>Version {0} kann nicht unterstützt werden. Beachte, dass Vorschauversionen (Previews) nur eingeschränkte Unterstützung bieten. Versuche die Vorschauversion (Preview) von Microsoft.EntityFrameworkCore.Design manuell zu installieren.</value>
   </data>
   <data name="ChooseDatabaseContexts" xml:space="preserve">
-    <value>Choose database and contexts</value>
+    <value>Datenbank und Kontexte auswählen</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Schliessen</value>
   </data>
   <data name="CompareCompletedIn" xml:space="preserve">
-    <value>Compare completed in {0}</value>
+    <value>Vergleich abgeschlossen in {0}</value>
   </data>
   <data name="ComparingDatabaseWithContexts" xml:space="preserve">
-    <value>Comparing database with context(s)...</value>
+    <value>Datenbank mit Kontext(en) vergleichen...</value>
   </data>
   <data name="ComparisonResult" xml:space="preserve">
-    <value>Comparison result</value>
+    <value>Vergleichsresultat</value>
   </data>
   <data name="ContextDatabaseMatch" xml:space="preserve">
-    <value>Context(s) and database structure match</value>
+    <value>Kontext(e) und Datenbankstruktur stimmen überein</value>
   </data>
   <data name="HeaderAttribute" xml:space="preserve">
-    <value>Attribute</value>
+    <value>Attribut</value>
   </data>
   <data name="HeaderExpected" xml:space="preserve">
-    <value>Expected</value>
+    <value>Erwartet</value>
   </data>
   <data name="HeaderFound" xml:space="preserve">
-    <value>Found</value>
+    <value>Gefunden</value>
   </data>
   <data name="HeaderName" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="HeaderState" xml:space="preserve">
-    <value>State</value>
+    <value>Status</value>
   </data>
   <data name="HeaderType" xml:space="preserve">
-    <value>Type</value>
+    <value>Typ</value>
   </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
-    <value>Installing EfCore.SchemaCompare, please retry the command</value>
+    <value>Installation von EfCore.SchemaCompare, bitte den Befehl wiederholen</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
-    <value>Loading data</value>
+    <value>Daten laden</value>
   </data>
   <data name="NoContextsSelected" xml:space="preserve">
-    <value>No contexts selected</value>
+    <value>Keine Kontexte ausgewählt</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
-    <value>Remove selected connection</value>
+    <value>Ausgewählte Verbindung entfernen</value>
   </data>
   <data name="ShowDifferencesOnly" xml:space="preserve">
-    <value>Show differences only</value>
+    <value>Nur Unterschiede anzeigen</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>Unable to add connection, maybe the provider is not supported</value>
+    <value>Verbindung kann nicht hinzugefügt werden, möglicherweise wird der Anbieter nicht unterstützt</value>
   </data>
   <data name="UnableToCollectDbContextInformation" xml:space="preserve">
-    <value>Unable to collect DbContext information</value>
+    <value>Es können keine DbContext-Informationen gesammelt werden</value>
   </data>
   <data name="UnableToCollectSchemaCompareInformation" xml:space="preserve">
-    <value>Unable to collect SchemaCompare information</value>
+    <value>Es können keine SchemaCompare-Informationen gesammelt werden</value>
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
-    <value>Unable to remove connection</value>
+    <value>Verbindung kann nicht entfernt werden</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>Only EF Core 6 or later is supported.</value>
+    <value>Es wird nur EF Core 6 oder höher unterstützt.</value>
   </data>
 </root>
