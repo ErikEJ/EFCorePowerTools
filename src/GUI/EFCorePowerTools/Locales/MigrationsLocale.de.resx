@@ -118,59 +118,59 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddMigration" xml:space="preserve">
-    <value>Add migration</value>
+    <value>Migration hinzufügen</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
-    <value>Build failed</value>
+    <value>Build fehlgeschlagen</value>
   </data>
   <data name="CannotSupportVersion" xml:space="preserve">
-    <value>Cannot support version {0}, notice that previews are not supported.</value>
+    <value>Version {0} wird nicht unterstützt, Vorschauversionen (Previews) werden nicht unterstützt.</value>
   </data>
   <data name="ContextName" xml:space="preserve">
-    <value>Context name</value>
+    <value>Kontextname</value>
   </data>
   <data name="CreatingMigrationInDbContext" xml:space="preserve">
-    <value>Creating Migration {0} in DbContext {1}</value>
+    <value>Migration {0} in DbContext {1} erstellen</value>
   </data>
   <data name="DatabaseModelSync" xml:space="preserve">
-    <value>Your database and model are in sync.</value>
+    <value>Datenbank und Modell sind synchron.</value>
   </data>
   <data name="GettingMigrationStatus" xml:space="preserve">
-    <value>Getting Migration Status</value>
+    <value>Migrationsstatus abfragen</value>
   </data>
   <data name="ManageMigrationsInProject" xml:space="preserve">
-    <value>Manage Migrations in Project {0}</value>
+    <value>Migrationen im Projekt {0} verwalten</value>
   </data>
   <data name="MigrationName" xml:space="preserve">
-    <value>Migration name</value>
+    <value>Migrationsname</value>
   </data>
   <data name="MigrationNameRequired" xml:space="preserve">
-    <value>Migration Name required</value>
+    <value>Migrationsname ist erforderlich</value>
   </data>
   <data name="NoMigrationsInProject" xml:space="preserve">
-    <value>No migrations are present in your project, create your initial migration.
-Enter a name for the new migration below.</value>
+    <value>Im Projekt sind keine Migrationen vorhanden, erstelle die initiale Migration.
+Gib unten einen Namen für die neue Migration ein.</value>
   </data>
   <data name="NotAppliedMigrations" xml:space="preserve">
-    <value>There are migrations that have not been applied to the database.</value>
+    <value>Es gibt Migrationen, die noch nicht auf die Datenbank angewendet wurden.</value>
   </data>
   <data name="PendingModelChanges" xml:space="preserve">
-    <value>There are pending model changes, add a migration with the changes.
-Enter a name for the migration below.</value>
+    <value>Es gibt pendente Modelländerungen, füge eine Migration mit den Änderungen hinzu.
+Gib unten einen Namen für die Migration ein.</value>
   </data>
   <data name="ScriptingMigrationsInDbContext" xml:space="preserve">
-    <value>Scripting migrations in DbContext {0}</value>
+    <value>Migrationen in DbContext {0} skripten</value>
   </data>
   <data name="ScriptMigrations" xml:space="preserve">
-    <value>Script migrations</value>
+    <value>Migrationen skripten</value>
   </data>
   <data name="UnableGetMigrationStatus" xml:space="preserve">
-    <value>Unable to get Migration status</value>
+    <value>Migrationsstatus kann nicht abgefragt werden</value>
   </data>
   <data name="UpdateDatabase" xml:space="preserve">
-    <value>Update Database</value>
+    <value>Datenkbank aktualisieren</value>
   </data>
   <data name="UpdatingDatabaseFromMigrationsInDbContext" xml:space="preserve">
-    <value>Updating Database from migrations in DbContext {0}</value>
+    <value>Datenbank auf Basis der Migrationen im DbContext {0} aktualisieren</value>
   </data>
 </root>
