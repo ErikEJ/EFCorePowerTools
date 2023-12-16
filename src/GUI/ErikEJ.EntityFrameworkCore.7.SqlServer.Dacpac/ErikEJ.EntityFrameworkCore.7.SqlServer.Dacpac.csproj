@@ -25,7 +25,11 @@
   <PropertyGroup Condition="'$(CI)' == 'True'">
 	  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-  
+
+  <PropertyGroup>
+    <DefineConstants>TRACE;CORE70</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />

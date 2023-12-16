@@ -181,13 +181,13 @@ namespace RevEng.Common
                     }
                 }
 
-                if (useDateOnlyTimeOnly && codeGenerationMode != CodeGenerationMode.EFCore8)
+                if (useDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.5";
+                    pkgVersion = "7.0.6";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.5";
+                            pkgVersion = "6.0.6";
                             break;
                     }
 
