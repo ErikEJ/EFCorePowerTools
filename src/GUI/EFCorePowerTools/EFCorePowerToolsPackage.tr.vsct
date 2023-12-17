@@ -49,7 +49,7 @@
     </Groups>
 
     <Menus>
-      
+
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -76,7 +76,7 @@
           <ButtonText>EF Core Power Tools - Ters Mühendislik</ButtonText>
         </Strings>
       </Menu>
-      
+
     </Menus>
 
     <Buttons>
@@ -121,10 +121,10 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>Options</ButtonText>
+          <ButtonText>Seçenekler</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0250" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="Template" />
@@ -132,7 +132,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>Add T4 Scaffolding Templates</ButtonText>
+          <ButtonText>T4 Scaffolding Şablonları Ekle</ButtonText>
         </Strings>
       </Button>
 
@@ -146,7 +146,7 @@
           <ButtonText>DbContext diagramı ekle</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidSqlBuild" priority="0x0300" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="SQLQueryChecked" />
@@ -179,7 +179,7 @@
           <ButtonText>AsDgml() eklentisini ekle</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDbCompare" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmCompareMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="CompareSchemas" />
@@ -279,7 +279,7 @@
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0700" />
       <IDSymbol name="cmdidEdmAboutMenuItemsGroup" value="0x0800" />
       <IDSymbol name="cmdidEdmViewMenuItemsGroup" value="0x0900" />
-      
+
       <!-- Project Menu Entries -->
       <IDSymbol name="cmdidReverseEngineerCodeFirst" value="0x0001" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
