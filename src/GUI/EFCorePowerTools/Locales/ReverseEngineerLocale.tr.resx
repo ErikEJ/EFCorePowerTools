@@ -121,13 +121,19 @@
     <value>Ekle...</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>Add ad hoc Connection (preview)</value>
+    <value>Özel bağlantı ekle</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Ad Hoc Connection...</value>
+    <value>Özel bağlantı ekle</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>Manuel olarak bağlantı tanımla</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Veritabanı bağlantısı ekle</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>Server Explorer's (DDEX) bağlantı ekle</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
     <value>Harici .dacpac dosyası ekle</value>
@@ -169,13 +175,13 @@
     <value>SQL Server veritabanı projesini seçin (.dacpac)</value>
   </data>
   <data name="ConnectionName" xml:space="preserve">
-    <value>Name</value>
+    <value>Ad</value>
   </data>
   <data name="ConnectionSample" xml:space="preserve">
-    <value>Sample</value>
+    <value>Örnek</value>
   </data>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Connection String</value>
+    <value>Veritabanı bağlantı dizesi</value>
   </data>
   <data name="ContextName" xml:space="preserve">
     <value>Bağlam adı</value>
@@ -184,7 +190,7 @@
     <value>Bağlam adı gerekli</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>şablonlarını kullanarak kodu özelleştir</value>
+    <value>Şablonlarını kullanarak kodu özelleştir</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>Veritabanı bağlantısı bulunamadı. Yenilenemiyor.</value>
@@ -197,6 +203,12 @@
   </data>
   <data name="DbContextSubNamespace" xml:space="preserve">
     <value>DbContext alt ad alanı (yolu geçersiz kılar) - isteğe bağlı</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>Daha iyi bir deneyim için DDEX sağlayıcısını yükleyin</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>Ef core versiyonu seçiniz</value>
   </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
     <value>Varlık Tipleri &amp; DbContext</value>
@@ -225,6 +237,9 @@
   <data name="GettingReadyToConnect" xml:space="preserve">
     <value>Bağlanmaya hazırlanılıyor...</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>Yardım</value>
+  </data>
   <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
     <value>Oluşturulan koda bağlantı dizesini dahil et</value>
   </data>
@@ -239,6 +254,9 @@
   </data>
   <data name="LoadingOptions" xml:space="preserve">
     <value>Seçenekler yükleniyor...</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>Hiyerarşi Id lerini eşle</value>
   </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>Noda Time tiplerine eşle</value>
@@ -270,6 +288,15 @@
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
     <value>Üretilen nesne adlarını çoğullaştırın veya tekilleştirin (İngilizce)</value>
   </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>POCO objeleri</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>* Değerlendirmek</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>Eğer bu ücretsiz aracı beğendiyseniz, bana bilgi verin.</value>
+  </data>
   <data name="ReleaseNotes" xml:space="preserve">
     <value>Sürüm Notları</value>
   </data>
@@ -284,6 +311,9 @@
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
     <value>SQL varsayılanını bool sütunlarından kaldır</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>Navigasyonalr yeniden adlandırılıyor</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
     <value>Sonuç bildiriliyor...</value>
@@ -341,6 +371,9 @@
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>EF6 çoğullaştırıcı kullan</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Çoka çok ilişkileri kullan</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Doğrudan veritabanındaki tablo ve sütun adlarını kullan</value>
