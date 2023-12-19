@@ -8,10 +8,13 @@
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "ConsoleApp",
+   "RemoveValueGeneratedOnAdd": false,
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
    "Tables": [
       {
          "Name": "[dbo].[Album]",
@@ -56,29 +59,28 @@
       {
          "Name": "[dbo].[Track]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[GetTitles]",
-         "ObjectType": 1
       }
    ],
    "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Chinook",
+   "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": true,
+   "UseDecimalDataAnnotationForSprocResult": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
-   "UseNoConstructor": false,
    "UseNoDefaultConstructor": true,
    "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
    "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
    "UseSpatial": true,
    "UseT4": false
 }
