@@ -244,7 +244,7 @@
                 "use-t4",
                 "remove-defaultsql-from-bool-properties",
                 "soft-delete-obsolete-files",
-                "use-alternate-stored-procedure-resultset-discovery"
+                "use-alternate-stored-procedure-resultset-discovery",
             ],
             "properties": {
                 "enable-on-configuring": {
@@ -372,6 +372,14 @@
                     "examples": [
                         false
                     ]
+                },
+                "remove-valuegeneratedonadd": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Remove ValeGeneratedOnAdd() from entity configuration, useful with Oracle",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{
@@ -389,7 +397,8 @@
                 "discover-multiple-stored-procedure-resultsets-preview": false,
                 "use-alternate-stored-procedure-resultset-discovery": false,
                 "use-no-navigations-preview": false,
-                "merge-dacpacs": false
+                "merge-dacpacs": false,
+                "remove-valuegeneratedonadd": false
             }]
         },
         "names": {

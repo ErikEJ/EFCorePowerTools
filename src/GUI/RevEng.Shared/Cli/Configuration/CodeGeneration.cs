@@ -56,5 +56,8 @@ namespace RevEng.Common.Cli.Configuration
 
         [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
         public bool UseDecimalDataAnnotation { get; set; } = true;
+
+        [JsonPropertyName("remove-valuegeneratedonadd")]
+        public bool RemoveValueGeneratedOnAdd { get; set; }
     }
 }

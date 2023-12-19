@@ -81,6 +81,7 @@ namespace RevEng.Common.Cli
                 ProjectRootNamespace = names.RootNamespace,
                 MergeDacpacs = config.CodeGeneration.MergeDacpacs,
                 UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
+                RemoveValueGeneratedOnAdd = config.CodeGeneration.RemoveValueGeneratedOnAdd,
 
                 // Not supported:
                 UseHandleBars = false,
