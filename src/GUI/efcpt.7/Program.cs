@@ -32,7 +32,11 @@ public static class Program
 
     public static async Task<int> MainAsync(string[] args)
     {
-        using var parser = new Parser(c => c.HelpWriter = null);
+        using var parser = new Parser(c =>
+        {
+            c.HelpWriter = null;
+            c.CaseInsensitiveEnumValues = true;
+        });
 
         var parserResult = parser.ParseArguments<ScaffoldOptions>(args);
 

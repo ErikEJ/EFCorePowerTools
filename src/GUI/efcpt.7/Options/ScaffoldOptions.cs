@@ -29,6 +29,12 @@ internal sealed class ScaffoldOptions
         HelpText = $"Full pathname to the {Constants.ConfigFileName} file, default is '{Constants.ConfigFileName}' in currrent directory")]
     public FileInfo ConfigFile { get; set; }
 
+    [Option(
+        't',
+        "type",
+        HelpText = "Type of output, defaults to C# code, can be 'csharp' or 'diagram'")]
+    public OutputType Type { get; set; }
+
     public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
 }
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
