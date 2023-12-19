@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
 using RevEng.Common;
 using RevEng.Common.Cli;
-using RevEng.Common.Cli.VsCode;
 using RevEng.Core;
 using Spectre.Console;
 
