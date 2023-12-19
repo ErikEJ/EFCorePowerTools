@@ -101,7 +101,8 @@ namespace RevEng.Core
                     options.SelectedToBeGenerated == 1, // DbContext only
                     options.SelectedToBeGenerated == 2, // Entities only
                     options.UseSchemaFolders,
-                    options.UseSchemaNamespaces);
+                    options.UseSchemaNamespaces,
+                    options.RemoveValueGeneratedOnAdd);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -455,7 +456,8 @@ namespace RevEng.Core
             bool dbContextOnly,
             bool entitiesOnly,
             bool useSchemaFolders,
-            bool useSchemaNamespaces)
+            bool useSchemaNamespaces,
+            bool removeValueGeneratedOnAdd)
         {
             var databaseModel = databaseModelFactory.Create(connectionString, databaseOptions);
 
@@ -482,6 +484,20 @@ namespace RevEng.Core
                 foreach (var table in databaseModel.Tables)
                 {
                     table.ForeignKeys.Clear();
+                }
+            }
+
+            if (removeValueGeneratedOnAdd)
+            {
+                foreach (var table in databaseModel.Tables)
+                {
+                    foreach (var column in table.Columns.ToList())
+                    {
+                        if (column.ValueGenerated == ValueGenerated.OnAdd)
+                        {
+                            column.ValueGenerated = null;
+                        }
+                    }
                 }
             }
 

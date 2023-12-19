@@ -115,6 +115,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
                 UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
+                RemoveValueGeneratedOnAdd = options.RemoveValueGeneratedOnAdd,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
