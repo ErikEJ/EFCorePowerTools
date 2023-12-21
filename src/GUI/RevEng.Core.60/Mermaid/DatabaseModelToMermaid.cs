@@ -55,14 +55,22 @@ namespace RevEng.Core.Mermaid
 
                 foreach (var foreignKey in table.ForeignKeys)
                 {
-                    var relationship = "}o--||";
-                    //TODO: detect 1:1, 1:n, n:n
-                    if (foreignKey.Columns.Any(c => c.IsNullable))
+                    var relationship = "}o--|";
+
+                    var dependentIndexes = foreignKey.PrincipalTable.Indexes
+                        .Where(i => i.Columns.SequenceEqual(foreignKey.PrincipalColumns));
+
+                    if (dependentIndexes.Any(i => i.IsUnique))
                     {
-                        relationship = "}o--o|";
+                        relationship = "|o--|";
                     }
 
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {relationship} {foreignKey.PrincipalTable.Name} : {foreignKey.Name}");
+                    if (foreignKey.PrincipalColumns.Any(c => c.IsNullable))
+                    {
+                        relationship = "}o--o";
+                    }
+
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {relationship}| {foreignKey.PrincipalTable.Name} : {foreignKey.Name}");
                 }
             }
 
