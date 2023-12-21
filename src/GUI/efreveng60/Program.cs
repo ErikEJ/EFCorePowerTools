@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Core;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Dgml;
 
 [assembly: CLSCompliant(true)]
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Reviewed")]

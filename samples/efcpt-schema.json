@@ -244,7 +244,7 @@
                 "use-t4",
                 "remove-defaultsql-from-bool-properties",
                 "soft-delete-obsolete-files",
-                "use-alternate-stored-procedure-resultset-discovery",
+                "use-alternate-stored-procedure-resultset-discovery"
             ],
             "properties": {
                 "enable-on-configuring": {

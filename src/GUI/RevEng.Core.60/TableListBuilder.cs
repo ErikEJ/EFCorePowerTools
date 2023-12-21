@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Mermaid;
 
 namespace RevEng.Core
 {
@@ -38,7 +39,9 @@ namespace RevEng.Core
 
         public List<TableModel> GetTableModels()
         {
-            var databaseTables = GetTableDefinitions();
+            var dbModel = GetDatabaseModel();
+
+            var databaseTables = dbModel.Tables.OrderBy(t => t.Schema).ThenBy(t => t.Name).ToList();
 
             var buildResult = new List<TableModel>();
             foreach (var databaseTable in databaseTables)
@@ -57,6 +60,15 @@ namespace RevEng.Core
             }
 
             return buildResult;
+        }
+
+        public string GetMermaidDiagram()
+        {
+            var dbModel = GetDatabaseModel();
+
+            var generator = new DatabaseModelToMermaid(dbModel);
+
+            return generator.CreateMermaid();
         }
 
         public List<TableModel> GetProcedures()
@@ -109,12 +121,10 @@ namespace RevEng.Core
             return result.OrderBy(c => c.DisplayName).ToList();
         }
 
-        private List<DatabaseTable> GetTableDefinitions()
+        private DatabaseModel GetDatabaseModel()
         {
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
-            var dbModel = this.databaseModelFactory!.Create(connectionString, dbModelOptions);
-
-            return dbModel.Tables.OrderBy(t => t.Schema).ThenBy(t => t.Name).ToList();
+            return this.databaseModelFactory!.Create(connectionString, dbModelOptions);
         }
     }
 }

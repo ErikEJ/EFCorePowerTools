@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
@@ -60,6 +61,8 @@ internal sealed class ScaffoldHostedService : HostedService
             Environment.ExitCode = 1;
             return;
         }
+
+        GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
 
         var commandOptions = config.ToOptions(
             scaffoldOptions.ConnectionString,
@@ -153,6 +156,24 @@ internal sealed class ScaffoldHostedService : HostedService
         paths = paths.Concat(result.EntityTypeFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p)).Distinct())
             .ToList();
         return paths;
+    }
+
+    private void GenerateMermaidContent(bool generate)
+    {
+        if (!generate)
+        {
+            return;
+        }
+
+        var content = tableListBuilder.GetMermaidDiagram();
+
+        var file = fileSystem.Path.Combine(scaffoldOptions.Output ?? Directory.GetCurrentDirectory(), "dbdiagram.md");
+
+        File.WriteAllText(file, content, Encoding.UTF8);
+        DisplayService.MarkupLine();
+        DisplayService.MarkupLine("db diagram:", Color.Green);
+        var fileUri = new Uri(new Uri("file://"), file);
+        DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
     }
 
     private List<TableModel> GetTablesAndViews()

@@ -6,9 +6,8 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
-using RevEng.Core.Dgml;
 
-namespace RevEng.Core
+namespace RevEng.Core.Dgml
 {
     public class DgmlBuilder
     {

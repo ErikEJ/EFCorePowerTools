@@ -59,5 +59,9 @@ namespace RevEng.Common.Cli.Configuration
 
         [JsonPropertyName("remove-valuegeneratedonadd")]
         public bool RemoveValueGeneratedOnAdd { get; set; }
+
+        [JsonPropertyName("generate-mermaid-diagram")]
+        public bool GenerateMermaidDiagram { get; set; }
+
     }
 }
