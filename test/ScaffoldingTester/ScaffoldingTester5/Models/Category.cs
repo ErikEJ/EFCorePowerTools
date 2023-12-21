@@ -14,6 +14,9 @@ namespace ScaffoldingTester.Models
 
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        /// <summary>
+        /// Obsolete
+        /// </summary>
         public string Description { get; set; }
         public byte[] Image { get; set; }
 

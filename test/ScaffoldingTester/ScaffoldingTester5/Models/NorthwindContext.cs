@@ -32,6 +32,7 @@ namespace ScaffoldingTester.Models
         public virtual DbSet<OrderDetailsExtended> OrderDetailsExtendeds { get; set; }
         public virtual DbSet<OrderSubtotal> OrderSubtotals { get; set; }
         public virtual DbSet<OrdersQry> OrdersQries { get; set; }
+        public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductSalesFor1997> ProductSalesFor1997s { get; set; }
         public virtual DbSet<ProductsAboveAveragePrice> ProductsAboveAveragePrices { get; set; }
@@ -52,7 +53,7 @@ namespace ScaffoldingTester.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Encrypt=True");
             }
         }
 
@@ -93,7 +94,9 @@ namespace ScaffoldingTester.Models
                     .IsRequired()
                     .HasMaxLength(15);
 
-                entity.Property(e => e.Description).HasColumnType("ntext");
+                entity.Property(e => e.Description)
+                    .HasColumnType("ntext")
+                    .HasComment("Obsolete");
 
                 entity.Property(e => e.Image)
                     .HasColumnType("image")
@@ -155,7 +158,7 @@ namespace ScaffoldingTester.Models
 
                 entity.Property(e => e.ContactTitle).HasMaxLength(30);
 
-                entity.Property(e => e.Country).HasMaxLength(15);
+                entity.Property(e => e.CountryRef).HasMaxLength(15);
 
                 entity.Property(e => e.Fax).HasMaxLength(24);
 
@@ -351,6 +354,8 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Order>(entity =>
             {
+                entity.HasComment("Orders table");
+
                 entity.HasIndex(e => e.CustomerId, "CustomerID");
 
                 entity.HasIndex(e => e.CustomerId, "CustomersOrders");
@@ -399,7 +404,7 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.ShippedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Customer)
-                    .WithMany(p => p.Orders)
+                    .WithMany(p => p.OrderLink)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Orders_Customers");
 
@@ -420,6 +425,8 @@ namespace ScaffoldingTester.Models
                     .HasName("PK_Order_Details");
 
                 entity.ToTable("Order Details");
+
+                entity.HasComment("OrderDetails table");
 
                 entity.HasIndex(e => e.OrderId, "OrderID");
 
@@ -528,6 +535,27 @@ namespace ScaffoldingTester.Models
                 entity.Property(e => e.ShipRegion).HasMaxLength(15);
 
                 entity.Property(e => e.ShippedDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Person>(entity =>
+            {
+                entity.ToTable("Person");
+
+                entity.Property(e => e.Address)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -695,6 +723,8 @@ namespace ScaffoldingTester.Models
 
             modelBuilder.Entity<Shipper>(entity =>
             {
+                entity.HasComment("Shipper table comment");
+
                 entity.Property(e => e.ShipperId).HasColumnName("ShipperID");
 
                 entity.Property(e => e.CompanyName)
@@ -707,6 +737,12 @@ namespace ScaffoldingTester.Models
             modelBuilder.Entity<Special>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Testname)
+                    .HasMaxLength(128)
+                    .HasColumnName("testname");
+
+                entity.Property(e => e.TheDate).HasColumnType("date");
             });
 
             modelBuilder.Entity<SummaryOfSalesByQuarter>(entity =>

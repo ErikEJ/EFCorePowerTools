@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace ScaffoldingTester.Models
 {
+    /// <summary>
+    /// Shipper table comment
+    /// </summary>
     public partial class Shipper
     {
         public Shipper()

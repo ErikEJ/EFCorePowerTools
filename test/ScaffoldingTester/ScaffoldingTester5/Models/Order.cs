@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace ScaffoldingTester.Models
 {
+    /// <summary>
+    /// Orders table
+    /// </summary>
     public partial class Order
     {
         public Order()

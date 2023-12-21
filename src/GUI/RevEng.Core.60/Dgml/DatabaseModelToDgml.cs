@@ -90,17 +90,6 @@ namespace RevEng.Core.Dgml
                         var target = $"{key.PrincipalTable.Name}_{key.PrincipalColumns[0].Name}";
                         dgmlHelper.WriteLink(source, target, key.Name, "Foreign Key");
                     }
-
-                    ////    List<Constraint> foreignKeys = _allForeignKeys.Where(c => c.ConstraintTableName == table).ToList();
-                    ////    foreach (Constraint key in foreignKeys)
-                    ////    {
-                    ////        var col = key.Columns[0];
-                    ////        col = RemoveBrackets(col);
-                    ////        var uniqueCol = key.UniqueColumns[0];
-                    ////        uniqueCol = RemoveBrackets(uniqueCol);
-                    ////        string source = string.Format("{0}_{1}", table, col);
-                    ////        string target = string.Format("{0}_{1}", key.UniqueConstraintTableName, uniqueCol);
-                    ////        dgmlHelper.WriteLink(source, target, key.ConstraintName, "Foreign Key");
                 }
 
                 dgmlHelper.EndElement();

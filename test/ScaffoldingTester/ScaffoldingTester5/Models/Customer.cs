@@ -9,7 +9,7 @@ namespace ScaffoldingTester.Models
     {
         public Customer()
         {
-            Orders = new HashSet<Order>();
+            OrderLink = new HashSet<Order>();
             CustomerTypes = new HashSet<CustomerDemographic>();
         }
 
@@ -21,12 +21,12 @@ namespace ScaffoldingTester.Models
         public string City { get; set; }
         public string Region { get; set; }
         public string PostalCode { get; set; }
-        public string Country { get; set; }
+        public string CountryRef { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
         public int Rating { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> OrderLink { get; set; }
 
         public virtual ICollection<CustomerDemographic> CustomerTypes { get; set; }
     }

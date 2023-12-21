@@ -40,6 +40,7 @@ namespace ScaffoldingTester.Models
             modelBuilder.Entity<CustOrdersOrdersResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<EmployeeSalesbyCountryResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<MultiSetResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<OutputScenariosResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SalesbyYearResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SalesByCategoryResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SpecialTypesResult>().HasNoKey().ToView(null);
@@ -203,7 +204,7 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
-        public virtual async Task<int> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<OutputScenariosResult>> OutputScenariosAsync(short? Year, OutputParameter<int?> ProductCount, OutputParameter<string> Description, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterProductCount = new SqlParameter
             {
@@ -239,7 +240,7 @@ namespace ScaffoldingTester.Models
                 parameterDescription,
                 parameterreturnValue,
             };
-            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[OutputScenarios] @Year, @ProductCount OUTPUT, @Description OUTPUT", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<OutputScenariosResult>("EXEC @returnValue = [dbo].[OutputScenarios] @Year, @ProductCount OUTPUT, @Description OUTPUT", sqlParameters, cancellationToken);
 
             ProductCount.SetValue(parameterProductCount.Value);
             Description.SetValue(parameterDescription.Value);
