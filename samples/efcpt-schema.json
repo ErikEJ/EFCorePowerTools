@@ -380,6 +380,14 @@
                     "examples": [
                         false
                     ]
+                },
+                "generate-mermaid-diagram": {
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Create a markdown file with a Mermaid ER diagram during scaffolding",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{
