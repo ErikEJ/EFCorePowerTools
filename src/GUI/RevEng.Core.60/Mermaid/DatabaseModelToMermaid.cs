@@ -48,7 +48,7 @@ namespace RevEng.Core.Mermaid
                     }
 
                     var nullable = column.IsNullable ? "(NULL)" : string.Empty;
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"    {column.Name} {column.StoreType}{nullable} {pkfk}");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"    {column.Name} {column.StoreType?.Replace(", ", "-", System.StringComparison.OrdinalIgnoreCase)}{nullable} {pkfk}");
                 }
 
                 sb.AppendLine("  }");

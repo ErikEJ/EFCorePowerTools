@@ -194,6 +194,11 @@ namespace EFCorePowerTools.Helpers
 
             if (revEngResult.EntityWarnings.Count > 0)
             {
+                if (revEngResult.EntityWarnings.Exists(w => w.Contains("Could not find type mapping")))
+                {
+                    revEngResult.EntityWarnings.Add("Consider enabling more type mappings via 'Advanced' options.");
+                }
+
                 errors.Append(ReverseEngineerLocale.CheckOutputWindowForWarnings + Environment.NewLine);
             }
 

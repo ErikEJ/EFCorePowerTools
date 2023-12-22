@@ -128,6 +128,11 @@ internal sealed class ScaffoldHostedService : HostedService
 
     private static void ShowWarnings(ReverseEngineerResult result)
     {
+        if (result.EntityWarnings.Exists(w => w.Contains("could not find type mapping", StringComparison.OrdinalIgnoreCase)))
+        {
+            result.EntityWarnings.Add("Consider enabling more mappings in the 'type-mappings' configuration section.");
+        }
+
         foreach (var warning in result.EntityWarnings)
         {
             DisplayService.MarkupLine(
