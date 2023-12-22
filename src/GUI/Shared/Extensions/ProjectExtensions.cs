@@ -411,7 +411,12 @@ namespace EFCorePowerTools.Extensions
 
         private static bool FrameworkCheck(string targetFrameworkMonikers, string version)
         {
-            return targetFrameworkMonikers?.Contains($".NETCoreApp,Version=v{version}.0") ?? false;
+            if (string.IsNullOrEmpty(targetFrameworkMonikers))
+            {
+                return false;
+            }
+
+            return targetFrameworkMonikers.IndexOf($".NETCoreApp,Version=v{version}.0", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static async Task<string> GetOutputPathAsync(Project project)
