@@ -194,7 +194,7 @@ namespace EFCorePowerTools.Helpers
 
             if (revEngResult.EntityWarnings.Count > 0)
             {
-                if (revEngResult.EntityWarnings.Exists(w => w.Contains("Could not find type mapping")))
+                if (revEngResult.EntityWarnings.Exists(w => w.IndexOf("Could not find type mapping", StringComparison.OrdinalIgnoreCase) >= 0))
                 {
                     revEngResult.EntityWarnings.Add("Consider enabling more type mappings via 'Advanced' options.");
                 }

@@ -299,7 +299,7 @@ namespace EFCorePowerTools.ViewModels
                 return;
             }
 
-            if (processResult.Contains("Error:"))
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 visualStudioAccess.ShowError(processResult);
                 return;
@@ -360,7 +360,7 @@ namespace EFCorePowerTools.ViewModels
 
             var result = BuildModelResult(processResult);
 
-            if (processResult.Contains("Error:"))
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 visualStudioAccess.ShowError(processResult);
                 return false;
@@ -385,7 +385,7 @@ namespace EFCorePowerTools.ViewModels
         {
             await visualStudioAccess.SetStatusBarTextAsync(string.Format(MigrationsLocale.UpdatingDatabaseFromMigrationsInDbContext, SelectedStatusKey));
             var processResult = await processLauncher.GetOutputAsync(outputPath, GenerationType.MigrationApply, SelectedStatusKey);
-            if (!processResult.Contains("Error:"))
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) < 0)
             {
                 return true;
             }
@@ -400,7 +400,7 @@ namespace EFCorePowerTools.ViewModels
 
             await visualStudioAccess.SetStatusBarTextAsync(string.Format(MigrationsLocale.ScriptingMigrationsInDbContext, SelectedStatusKey));
             var processResult = await processLauncher.GetOutputAsync(outputPath, GenerationType.MigrationScript, SelectedStatusKey);
-            if (processResult.Contains("Error:"))
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 visualStudioAccess.ShowError(processResult);
                 return false;

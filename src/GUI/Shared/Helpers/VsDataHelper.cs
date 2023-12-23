@@ -18,7 +18,7 @@ namespace EFCorePowerTools.Helpers
     {
         public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
-            if (dbType == DatabaseType.SQLServer && !connectionString.Contains(";Authentication="))
+            if (dbType == DatabaseType.SQLServer && (connectionString.IndexOf(";Authentication=", StringComparison.OrdinalIgnoreCase) < 0))
             {
                 return PathFromConnectionString(connectionString);
             }

@@ -63,7 +63,7 @@ namespace EFCorePowerTools.Handlers
                     continue;
                 }
 
-                if (!context.Contains("DebugView:"))
+                if (context.IndexOf("DebugView:", StringComparison.OrdinalIgnoreCase) < 0)
                 {
                     continue;
                 }

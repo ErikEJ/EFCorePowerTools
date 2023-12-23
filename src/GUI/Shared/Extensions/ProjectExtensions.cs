@@ -89,7 +89,7 @@ namespace EFCorePowerTools.Extensions
 
             var files = Directory.GetFiles(projectPath, "efpt.*config.json", SearchOption.AllDirectories);
             result.AddRange(files
-                .Where(f => !f.Contains("\\bin\\") && !f.Contains("\\obj\\")));
+                .Where(f => (f.IndexOf("\\bin\\", StringComparison.OrdinalIgnoreCase) < 0) && (f.IndexOf("\\obj\\", StringComparison.OrdinalIgnoreCase) < 0)));
 
 #pragma warning disable S2583 // Conditionally executed code should be reachable
             if (result.Count == 0)
@@ -235,7 +235,12 @@ namespace EFCorePowerTools.Extensions
         {
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
-            return targetFrameworkMonikers?.Contains(".NETStandard,Version=v2.") ?? false;
+            if (targetFrameworkMonikers == null)
+            {
+                return false;
+            }
+
+            return targetFrameworkMonikers.IndexOf(".NETStandard,Version=v2.", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         public static async Task<bool> IsInstalledAsync(this Project project, NuGetPackage package)

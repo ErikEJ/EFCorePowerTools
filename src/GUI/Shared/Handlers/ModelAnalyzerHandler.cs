@@ -78,7 +78,7 @@ namespace EFCorePowerTools.Handlers
                     throw new InvalidOperationException(ModelAnalyzerLocale.UnableToCollectModelInformation);
                 }
 
-                if (processResult.Contains("Error:"))
+                if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     throw new InvalidOperationException(processResult);
                 }

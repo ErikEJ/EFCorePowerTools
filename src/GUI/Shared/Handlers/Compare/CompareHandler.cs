@@ -186,7 +186,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new InvalidOperationException(CompareLocale.UnableToCollectDbContextInformation);
             }
 
-            if (processResult.Contains("Error:"))
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 throw new InvalidOperationException(processResult);
             }
@@ -217,7 +217,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new InvalidOperationException(CompareLocale.UnableToCollectSchemaCompareInformation);
             }
 
-            if (processResult.Contains("Error:"))
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 throw new InvalidOperationException(processResult);
             }
