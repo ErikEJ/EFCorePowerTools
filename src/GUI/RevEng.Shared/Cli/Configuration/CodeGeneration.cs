@@ -62,6 +62,5 @@ namespace RevEng.Common.Cli.Configuration
 
         [JsonPropertyName("generate-mermaid-diagram")]
         public bool GenerateMermaidDiagram { get; set; }
-
     }
 }
