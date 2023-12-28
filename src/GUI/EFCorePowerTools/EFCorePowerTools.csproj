@@ -202,8 +202,7 @@
     <Content Include="CodeTemplates800.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="Key.snk" />
-    <Content Include="EFCorePowerToolsPackage.cs.vsct" />
+    <None Include="Key.snk" />    
     <Content Include="PowerToolsReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -379,7 +378,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="VSPackage.cs.resx" />
+    <EmbeddedResource Include="VSPackage.cs.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.cs.Resources</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.de.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.de.Resources</LogicalName>
@@ -497,6 +499,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <VSCTCompile Include="EFCorePowerToolsPackage.cs.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.de.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>

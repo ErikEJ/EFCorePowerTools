@@ -19,6 +19,7 @@ namespace RevEng.Core
         private readonly SchemaInfo[] schemas;
         private readonly DatabaseType databaseType;
         private readonly string connectionString;
+        private DatabaseModel databaseModel;
 
         public TableListBuilder(
             ReverseEngineerCommandOptions options,
@@ -39,7 +40,7 @@ namespace RevEng.Core
 
         public List<TableModel> GetTableModels()
         {
-            var dbModel = GetDatabaseModel();
+            var dbModel = databaseModel ?? GetDatabaseModel();
 
             var databaseTables = dbModel.Tables.OrderBy(t => t.Schema).ThenBy(t => t.Name).ToList();
 
@@ -64,7 +65,7 @@ namespace RevEng.Core
 
         public string GetMermaidDiagram()
         {
-            var dbModel = GetDatabaseModel();
+            var dbModel = databaseModel ?? GetDatabaseModel();
 
             var generator = new DatabaseModelToMermaid(dbModel);
 
@@ -124,7 +125,9 @@ namespace RevEng.Core
         private DatabaseModel GetDatabaseModel()
         {
             var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
-            return this.databaseModelFactory!.Create(connectionString, dbModelOptions);
+
+            databaseModel = this.databaseModelFactory!.Create(connectionString, dbModelOptions);
+            return databaseModel;
         }
     }
 }
