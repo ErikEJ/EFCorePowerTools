@@ -84,6 +84,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -173,19 +174,19 @@
                   Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-
-        <StackPanel Grid.Row="12"
-                    Style="{StaticResource ButtonRowStyle}">
-            <TextBlock              
+        <StackPanel Orientation="Horizontal"
+            Grid.Row="12">
+            <TextBlock 
+                FontSize="18"
                 ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}"
-                Margin="10,5,0,0" Width="36">
+                Margin="0,2,0,4" >
                 <Hyperlink
                     x:Name="DocLink"
                     RequestNavigate="DocLink_RequestNavigate"
                     NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering"><Run Text="{x:Static locale:ReverseEngineerLocale.Help}"/></Hyperlink>
             </TextBlock>
-            <Label Padding="2, 0, 0, 6" ToolTip="{x:Static locale:ReverseEngineerLocale.Rate}" Height="30" Width="70" >
-                <Hyperlink FontSize="20" ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}" Click="Hyperlink_Click" TextDecorations="None" NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
+            <Label Padding="6, 2, 2, 0" ToolTip="{x:Static locale:ReverseEngineerLocale.Rate}" Height="30">
+                <Hyperlink FontSize="18" ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}" Click="Hyperlink_Click" TextDecorations="Underline"  NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
                     <Hyperlink.Style>
                         <Style TargetType="{x:Type Hyperlink}"
                             BasedOn="{StaticResource {x:Type Hyperlink}}">
@@ -195,6 +196,10 @@
                     <Run Text="{x:Static locale:ReverseEngineerLocale.Rate}"/>
                 </Hyperlink>
             </Label>
+        </StackPanel>
+
+        <StackPanel Grid.Row="13"
+                    Style="{StaticResource ButtonRowStyle}">
             <dw:DialogButton IsTabStop="False"
                              Content="{x:Static locale:ReverseEngineerLocale.Advanced}"
                              Command="{Binding AdvancedCommand}"/>
