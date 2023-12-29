@@ -98,62 +98,32 @@ namespace RevEng.Core
             switch (options.DatabaseType)
             {
                 case DatabaseType.SQLServer:
+                case DatabaseType.SQLServerDacpac:
                     var provider = new SqlServerDesignTimeServices();
                     provider.ConfigureDesignTimeServices(serviceCollection);
 
+                    if (options.DatabaseType == DatabaseType.SQLServer)
+                    {
 #if !CORE80
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
+                        serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
 #endif
-                    serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
-                    serviceCollection.AddSqlServerFunctionDesignTimeServices();
-
-                    if (options.UseSpatial)
-                    {
-                        var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
-                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                        serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
+                        serviceCollection.AddSqlServerFunctionDesignTimeServices();
                     }
 
-                    if (options.UseHierarchyId)
+                    if (options.DatabaseType == DatabaseType.SQLServerDacpac)
                     {
-                        var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
-                        hierachyId.ConfigureDesignTimeServices(serviceCollection);
-                    }
+                        serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
+                           provider => new SqlServerDacpacDatabaseModelFactory(new SqlServerDacpacDatabaseModelFactoryOptions
+                           {
+                               MergeDacpacs = options.MergeDacpacs,
+                           }));
 
-                    if (options.UseNodaTime)
-                    {
-                        var nodaTime = new SqlServerNodaTimeDesignTimeServices();
-                        nodaTime.ConfigureDesignTimeServices(serviceCollection);
-                    }
-#if CORE80
-                    serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
-                        provider => new RevEng.Core.SqlServerTypeMappingSource(
-                            provider.GetService<TypeMappingSourceDependencies>(),
-                            provider.GetService<RelationalTypeMappingSourceDependencies>(),
-                            options.UseDateOnlyTimeOnly));
-#endif
-#if !CORE80
-                    if (options.UseDateOnlyTimeOnly)
-                    {
-                        var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
-                        dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
-                    }
-#endif
-                    break;
-
-                case DatabaseType.SQLServerDacpac:
-                    var dacProvider = new SqlServerDesignTimeServices();
-                    dacProvider.ConfigureDesignTimeServices(serviceCollection);
-
-                    serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
-                        provider => new SqlServerDacpacDatabaseModelFactory(new SqlServerDacpacDatabaseModelFactoryOptions
+                        serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
                         {
                             MergeDacpacs = options.MergeDacpacs,
-                        }));
-
-                    serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
-                    {
-                        MergeDacpacs = options.MergeDacpacs,
-                    });
+                        });
+                    }
 
                     if (options.UseSpatial)
                     {
