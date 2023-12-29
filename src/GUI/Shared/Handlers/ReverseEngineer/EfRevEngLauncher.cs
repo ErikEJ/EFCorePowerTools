@@ -5,9 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Extensions;
 using RevEng.Common;
 
@@ -59,7 +57,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             resultDeserializer = new ResultDeserializer();
         }
 
-        public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode, Project project)
+        public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode)
         {
             var databaseObjects = options.Tables;
             if (!databaseObjects.Exists(t => t.ObjectType == ObjectType.Table))
@@ -115,7 +113,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
                 UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
-                RemoveValueGeneratedOnAdd = options.RemoveValueGeneratedOnAdd,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

@@ -101,8 +101,7 @@ namespace RevEng.Core
                     options.SelectedToBeGenerated == 1, // DbContext only
                     options.SelectedToBeGenerated == 2, // Entities only
                     options.UseSchemaFolders,
-                    options.UseSchemaNamespaces,
-                    options.RemoveValueGeneratedOnAdd);
+                    options.UseSchemaNamespaces);
 
             filePaths = Save(
                 scaffoldedModel,
@@ -456,8 +455,7 @@ namespace RevEng.Core
             bool dbContextOnly,
             bool entitiesOnly,
             bool useSchemaFolders,
-            bool useSchemaNamespaces,
-            bool removeValueGeneratedOnAdd)
+            bool useSchemaNamespaces)
         {
             var databaseModel = databaseModelFactory.Create(connectionString, databaseOptions);
 
@@ -487,26 +485,8 @@ namespace RevEng.Core
                 }
             }
 
-            if (removeValueGeneratedOnAdd)
-            {
-                foreach (var table in databaseModel.Tables)
-                {
-                    foreach (var column in table.Columns.ToList())
-                    {
-                        if (column.ValueGenerated == ValueGenerated.OnAdd)
-                        {
-                            column.ValueGenerated = null;
-                        }
-                    }
-                }
-            }
+            var model = factory.Create(databaseModel, modelOptions) ?? throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
 
-            var model = factory.Create(databaseModel, modelOptions);
-
-            if (model == null)
-            {
-                throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
-            }
 #if CORE70 || CORE80
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions);
 #else

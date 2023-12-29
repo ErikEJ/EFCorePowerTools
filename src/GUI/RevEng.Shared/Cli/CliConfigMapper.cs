@@ -81,7 +81,6 @@ namespace RevEng.Common.Cli
                 ProjectRootNamespace = names.RootNamespace,
                 MergeDacpacs = config.CodeGeneration.MergeDacpacs,
                 UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
-                RemoveValueGeneratedOnAdd = config.CodeGeneration.RemoveValueGeneratedOnAdd,
 
                 // Not supported:
                 UseHandleBars = false,
@@ -92,7 +91,7 @@ namespace RevEng.Common.Cli
                 UseNoDefaultConstructor = false, // not implemented, will consider if asked for
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
                 UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
-                UseAsyncCalls = true, // not implemented, will consider if asked for
+                UseAsyncCalls = true, // not implemented
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
             };
