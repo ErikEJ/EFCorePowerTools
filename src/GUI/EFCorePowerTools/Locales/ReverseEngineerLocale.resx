@@ -357,6 +357,9 @@
   <data name="StoredProceduresReturnList" xml:space="preserve">
     <value />
   </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value />
+  </data>
   <data name="Tables" xml:space="preserve">
     <value />
   </data>

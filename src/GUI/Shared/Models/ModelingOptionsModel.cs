@@ -39,6 +39,7 @@ namespace EFCorePowerTools.Common.Models
         private bool useManyToManyEntity;
         private bool useDateOnlyTimeOnly;
         private bool useSchemaNamespaces;
+        private string t4Templatepath;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -488,6 +489,21 @@ namespace EFCorePowerTools.Common.Models
                 }
 
                 useDateOnlyTimeOnly = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string T4TemplatePath
+        {
+            get => t4Templatepath;
+            set
+            {
+                if (value == t4Templatepath)
+                {
+                    return;
+                }
+
+                t4Templatepath = value;
                 OnPropertyChanged();
             }
         }

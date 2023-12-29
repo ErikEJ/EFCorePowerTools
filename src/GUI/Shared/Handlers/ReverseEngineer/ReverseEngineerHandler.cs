@@ -540,6 +540,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
+                T4TemplatePath = options.T4TemplatePath,
             };
 
             var modelDialog = package.GetView<IModelingOptionsDialog>()
@@ -592,6 +593,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
             options.UseDateOnlyTimeOnly = modelingOptionsResult.Payload.UseDateOnlyTimeOnly;
             options.UseSchemaNamespaces = modelingOptionsResult.Payload.UseSchemaNamespaces;
+            options.T4TemplatePath = modelingOptionsResult.Payload.T4TemplatePath;
 
             return true;
         }

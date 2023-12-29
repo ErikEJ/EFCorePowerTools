@@ -44,6 +44,7 @@ namespace EFCorePowerTools.ViewModels
             Model.OutputContextPath = presets.OutputContextPath;
             Model.ModelNamespace = presets.ModelNamespace;
             Model.UseSchemaNamespaces = presets.UseSchemaNamespaces;
+            Model.T4TemplatePath = presets.T4TemplatePath;
         }
 
         private void Ok_Executed()
