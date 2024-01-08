@@ -121,10 +121,10 @@
     <value>Aggiungi</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>Add ad hoc Connection (preview)</value>
+    <value>Agg. connessione ad hoc (preview)</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Ad Hoc Connection...</value>
+    <value>Agg. connessione DB ad hoc </value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>Aggiungi database</value>
@@ -139,7 +139,7 @@
     <value>Avanzate</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Imcludi sempre tutti gli oggetti nel database</value>
+    <value>Includi sempre tutti gli oggetti del database</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>Impossibile generare il codice durante il debug</value>
@@ -276,6 +276,9 @@
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
     <value>Rimuovi il costruttore dalle entità (sperimentale)</value>
   </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>Rimuovi costruttore DbContext di default</value>
+  </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
     <value>Rimuovi proprietà di navigazione dalle entità (sperimentale)</value>
   </data>
@@ -312,6 +315,9 @@
   <data name="StoredProceduresReturnList" xml:space="preserve">
     <value>Stored procedures return List (default array)</value>
   </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value>Percorso del template T4 - opzionale</value>
+  </data>
   <data name="Tables" xml:space="preserve">
     <value>Tabelle</value>
   </data>
@@ -342,6 +348,9 @@
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>Usa pluralizzazione di EF6</value>
   </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Usa entità molti a molti</value>
+  </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Usa nomi di tabelle e colonne direttamente del database</value>
   </data>
@@ -353,6 +362,9 @@
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
     <value>Usa la separazione delle cartelle dello schema (sperimentale)</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>Usa la separazione dei namespace dello schema (sperimentale)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Usa ricerca testuale</value>

@@ -13,7 +13,7 @@
                  ResizeMode="NoResize"
                  SizeToContent="WidthAndHeight"
                  WindowStartupLocation="CenterOwner"
-                 mc:Ignorable="d" Height="615">
+                 mc:Ignorable="d" Height="660">
 
     <dw:DialogWindow.Resources>
         <ResourceDictionary>
@@ -111,20 +111,27 @@
                      Style="{StaticResource TextInputStyle}"
                      Text="{Binding Model.ContextNamespace, Mode=TwoWay}"/>
 
+                    <dw:LiveTextBlock 
+                         Text="{x:Static locale:ReverseEngineerLocale.T4TemplatePath}"/>
+                    <TextBox 
+                    TabIndex="13"
+                    Style="{StaticResource TextInputStyle}"
+                    Text="{Binding Model.T4TemplatePath, Mode=TwoWay}"/>
+
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
                           IsChecked="{Binding Model.UseDbContextSplitting}"
                           Style="{StaticResource MarginCheckBlockStyle}"
-                          TabIndex="13" />
+                          TabIndex="14" />
                     
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
                       IsChecked="{Binding Model.UseSchemaFolders}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="14" />
+                      TabIndex="15" />
                     
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaNamespaces}"
                         IsChecked="{Binding Model.UseSchemaNamespaces}"
                         Style="{StaticResource MarginCheckBlockStyle}"
-                        TabIndex="15" />
+                        TabIndex="16" />
                 </StackPanel>
 
             </GroupBox>

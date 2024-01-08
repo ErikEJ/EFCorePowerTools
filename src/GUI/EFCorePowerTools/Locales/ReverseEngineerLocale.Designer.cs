@@ -783,6 +783,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string T4TemplatePath {
+            get {
+                return ResourceManager.GetString("T4TemplatePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string Tables {
             get {
                 return ResourceManager.GetString("Tables", resourceCulture);
