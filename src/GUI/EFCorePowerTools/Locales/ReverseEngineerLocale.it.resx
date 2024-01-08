@@ -139,7 +139,7 @@
     <value>Avanzate</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Imcludi sempre tutti gli oggetti del database</value>
+    <value>Includi sempre tutti gli oggetti del database</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
     <value>Impossibile generare il codice durante il debug</value>
