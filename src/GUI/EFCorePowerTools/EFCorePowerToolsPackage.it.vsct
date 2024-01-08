@@ -121,7 +121,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>Options</ButtonText>
+          <ButtonText>Opzioni</ButtonText>
         </Strings>
       </Button>
       
@@ -132,7 +132,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>Add T4 Scaffolding Templates</ButtonText>
+          <ButtonText>Aggiungi template T4</ButtonText>
         </Strings>
       </Button>
 
@@ -198,7 +198,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
-          <ButtonText>Visualize Database Schema (preview)</ButtonText>
+          <ButtonText>Visualizza Schema del DB (preview)</ButtonText>
         </Strings>
       </Button>
 
@@ -228,7 +228,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Create EF Core DbContext...</ButtonText>
+          <ButtonText>Creazione Contesto EF Core...</ButtonText>
         </Strings>
       </Button>
 
