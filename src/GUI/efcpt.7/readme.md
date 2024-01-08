@@ -105,6 +105,10 @@ In the example above, only the Users table will be selected.
 ```
 In the example above, Users and Messages tables will be selected.
 
+### Generate a Mermaid ER diagram
+
+The tool can generate a [Mermaid ER diagram](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) during exectution, just set the `code-generation` option `generate-mermaid-diagram` to `true` and a `dbdiagram.md` file will be created in the output folder.
+
 ### Updating the tool
 
 ```bash
