@@ -109,11 +109,6 @@
     <PackageReference Include="NUnit3TestAdapter">
       <Version>4.4.2</Version>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.2.0-beta.435</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="renaming.json">
