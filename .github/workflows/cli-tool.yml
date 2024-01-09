@@ -1,0 +1,51 @@
+name: CLI Tool
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+
+    - name: Package
+      run: dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=6.1.$($Env:APPVEYOR_BUILD_NUMBER)
+
+    - name: Package
+      run: dotnet pack src\GUI\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=7.1.$($Env:APPVEYOR_BUILD_NUMBER)
+  
+    - name: Package
+      run: dotnet pack src\GUI\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=8.1.$($Env:APPVEYOR_BUILD_NUMBER)
+  
+    - name: Package
+      run: dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj
+  
+    - name: Package
+      run: dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj
+  
+    - name: Package
+      run: dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj
+
+    - name: Package
+      run: dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery.csproj
+
+    - name: Package
+      run: dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.7.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.7.SqlServer.SqlQuery.csproj
+    
+    - name: Core test project
+      run: dotnet test src\GUI\NUnitTestCore\NUnitTestCore.csproj
+      continue-on-error: false
+
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: CLI Tool
+        path: |
+          **/*.nupkg

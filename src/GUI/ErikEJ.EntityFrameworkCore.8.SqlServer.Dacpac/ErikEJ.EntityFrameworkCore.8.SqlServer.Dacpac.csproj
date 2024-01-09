@@ -26,6 +26,10 @@
 	  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>  
+
   <PropertyGroup>
     <DefineConstants>TRACE;CORE70</DefineConstants>
   </PropertyGroup>

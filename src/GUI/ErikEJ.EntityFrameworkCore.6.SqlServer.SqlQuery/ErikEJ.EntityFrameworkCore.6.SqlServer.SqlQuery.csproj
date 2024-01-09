@@ -25,8 +25,11 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
 
-	<ItemGroup>
+  <ItemGroup>
 		<None Include="readme.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	
