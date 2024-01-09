@@ -42,6 +42,11 @@ jobs:
       run: msbuild GUI/EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
       working-directory: src
 
+    - name: Move build output
+      run: |
+        mv src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix EFCorePowerTools-${{ env.VERSION }}.vsix
+        mv src/GUI/PowerToolsExtensionPack/bin/Release/PowerToolsExtensionPack.vsix PowerToolsExtensionPack-${{ env.VERSION }}.vsix      
+
     - name: Publish artifacts
       uses: actions/upload-artifact@v4
       with:
