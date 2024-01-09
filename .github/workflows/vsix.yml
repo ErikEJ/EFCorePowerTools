@@ -31,7 +31,7 @@ jobs:
       shell: pwsh
 
     - name: Restore
-      run: dotnet restore VSIX.sln
+      run: dotnet restore GUI/EFCorePowerTools.sln
       working-directory: src
 
     - name: Setup MSBuild.exe
