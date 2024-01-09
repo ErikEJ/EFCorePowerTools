@@ -14,6 +14,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform>AnyCPU</Platform>
+    <RuntimeIdentifier>win</RuntimeIdentifier>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{8C77EC98-0296-4DBE-8064-11C4B4315181}</ProjectGuid>
     <OutputType>Library</OutputType>
