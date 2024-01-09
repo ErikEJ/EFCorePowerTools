@@ -9,6 +9,9 @@ on:
     branches:
       - '*'
 
+env:
+  VERSION: ${{ github.run_number }}      
+
 jobs:
   build:
     runs-on: windows-2022
@@ -17,13 +20,13 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Package
-      run: dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=6.1.$($Env:APPVEYOR_BUILD_NUMBER)
+      run: dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ env.VERSION }} -p:InformationalVersion=6.1.${{ env.VERSION }}
 
     - name: Package
-      run: dotnet pack src\GUI\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=7.1.$($Env:APPVEYOR_BUILD_NUMBER)
+      run: dotnet pack src\GUI\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.1.${{ env.VERSION }} -p:InformationalVersion=7.1.${{ env.VERSION }}
   
     - name: Package
-      run: dotnet pack src\GUI\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=8.1.$($Env:APPVEYOR_BUILD_NUMBER)
+      run: dotnet pack src\GUI\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }} -p:InformationalVersion=8.1.${{ env.VERSION }}
   
     - name: Package
       run: dotnet pack src\GUI\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj
