@@ -14,6 +14,7 @@ jobs:
     runs-on: windows-2022
 
     steps:
+    - uses: actions/checkout@v4
 
     - name: Package
       run: dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.$($Env:APPVEYOR_BUILD_NUMBER) -p:InformationalVersion=6.1.$($Env:APPVEYOR_BUILD_NUMBER)
