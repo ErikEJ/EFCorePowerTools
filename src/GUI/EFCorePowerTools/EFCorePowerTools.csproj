@@ -47,13 +47,13 @@
     <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParser.cs">
+    <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParser.cs">
       <Link>DgmlBuilder\DebugViewParser.cs</Link>
     </Compile>
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParserResult.cs">
+    <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParserResult.cs">
       <Link>DgmlBuilder\DebugViewParserResult.cs</Link>
     </Compile>
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
+    <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
     <Compile Include="Dialogs\AdvancedModelingOptionsDialog.xaml.cs">
@@ -150,7 +150,7 @@
     <Resource Include="Resources\Add.png" />
     <Resource Include="Resources\Remove.png" />
     <Resource Include="Resources\Unicorn.png" />
-    <EmbeddedResource Include="..\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
+    <EmbeddedResource Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
     <Content Include="..\lib\efpt60.exe.zip">

@@ -20,16 +20,16 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Package CLI 6
-      run: dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ env.VERSION }}-nightly -p:InformationalVersion=6.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src\Core\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ env.VERSION }}-nightly -p:InformationalVersion=6.1.${{ env.VERSION }}-nightly
 
     - name: Package CLI 7
-      run: dotnet pack src\GUI\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.1.${{ env.VERSION }}-nightly -p:InformationalVersion=7.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src\Core\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.1.${{ env.VERSION }}-nightly -p:InformationalVersion=7.1.${{ env.VERSION }}-nightly
   
     - name: Package CLI 8
-      run: dotnet pack src\GUI\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
       
     - name: Core test project
-      run: dotnet test src\GUI\NUnitTestCore\NUnitTestCore.csproj
+      run: dotnet test src\Core\NUnitTestCore\NUnitTestCore.csproj
       continue-on-error: false
 
     - name: Publish NuGet
