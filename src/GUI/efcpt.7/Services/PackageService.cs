@@ -28,20 +28,22 @@ internal static class PackageService
 
             using var cache = new SourceCacheContext();
             var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
-            var resource = await repository.GetResourceAsync<FindPackageByIdResource>().ConfigureAwait(false);
+            var resource = await repository.GetResourceAsync<PackageMetadataResource>().ConfigureAwait(false);
 
-            var versions = await resource.GetAllVersionsAsync(
+            var packages = await resource.GetMetadataAsync(
                 "ErikEJ.EFCorePowerTools.Cli",
+                includePrerelease: false,
+                includeUnlisted: false,
                 cache,
                 logger,
                 cancellationToken).ConfigureAwait(false);
 
-            var latestVersion = versions.Where(v => v.Major == Constants.Version).MaxBy(v => v);
+            var latestVersion = packages.Where(v => v.Identity.Version.Major == Constants.Version).Select(v => v.Identity.Version).MaxBy(v => v);
             if (latestVersion > CurrentPackageVersion())
             {
                 DisplayService.MarkupLine("Your are not using the latest version of the tool, please update to get the latest bug fixes, features and support", Color.Yellow);
                 DisplayService.MarkupLine($"Latest version is '{latestVersion}'", Color.Yellow);
-                DisplayService.MarkupLine($"Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {Constants.Version}.0.*-*' to get the latest version.", Color.Yellow);
+                DisplayService.MarkupLine($"Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {Constants.Version}.0.*' to get the latest version.", Color.Yellow);
             }
         }
 #pragma warning disable CA1031

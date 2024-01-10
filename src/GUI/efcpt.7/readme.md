@@ -13,19 +13,19 @@ For a quick intro you can watch [this 2 minute demo video](https://www.youtube.c
 EF Core 8:
 
 ```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-*
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*
 ```
 
 EF Core 7:
 
 ```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*-*
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 7.0.*
 ```
 
 EF Core 6:
 
 ```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*-*
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.0.*
 ```
 
 ### Running the tool 
@@ -112,7 +112,7 @@ The tool can generate a [Mermaid ER diagram](https://mermaid.js.org/syntax/entit
 ### Updating the tool
 
 ```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-*
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*
 ```
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the `+CLI` label.
@@ -120,5 +120,5 @@ dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-*
 ### Getting the latest daily build
 
 ```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-* --add-source https://ci.appveyor.com/nuget/efcorepowertools
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.0.*-*
 ```
