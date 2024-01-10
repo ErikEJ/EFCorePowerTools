@@ -17,9 +17,9 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
-	<PublishRepositoryUrl>true</PublishRepositoryUrl>
-	<EmbedUntrackedSources>true</EmbedUntrackedSources>
-	<DebugType>embedded</DebugType>
+    <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
+	  <EmbedUntrackedSources>true</EmbedUntrackedSources>
+	  <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'True'">

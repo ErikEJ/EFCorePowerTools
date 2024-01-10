@@ -53,3 +53,12 @@ jobs:
         name: CLI Tool
         path: |
           **/*.nupkg
+
+    - name: Set NuGet source
+      if: startsWith(github.ref, 'refs/heads/master')
+      run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/ErikEJ/index.json"
+
+    - name: Publish NuGet
+      if: startsWith(github.ref, 'refs/heads/master')
+      run: dotnet nuget push **\*.nupkg --source "github" --skip-duplicate
+
