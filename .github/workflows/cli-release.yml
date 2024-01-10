@@ -1,0 +1,28 @@
+name: CLI Tool
+
+on:
+  workflow_dispatch:
+
+env:
+  VERSION: ${{ github.run_number }}
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Package CLI 6
+      run: dotnet pack src\GUI\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ env.VERSION }} -p:InformationalVersion=6.1.${{ env.VERSION }}
+
+    - name: Package CLI 7
+      run: dotnet pack src\GUI\efcpt.7\efcpt.7.csproj -p:PackageVersion=7.1.${{ env.VERSION }} -p:InformationalVersion=7.1.${{ env.VERSION }}
+  
+    - name: Package CLI 8
+      run: dotnet pack src\GUI\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }} -p:InformationalVersion=8.1.${{ env.VERSION }}
+
+    - name: Publish NuGet
+      if: startsWith(github.ref, 'refs/heads/master')
+      run: dotnet nuget push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
+      

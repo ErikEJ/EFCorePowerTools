@@ -32,13 +32,6 @@ jobs:
       run: dotnet test src\GUI\NUnitTestCore\NUnitTestCore.csproj
       continue-on-error: false
 
-    - name: Publish artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: CLI Tool
-        path: |
-          **/*.nupkg
-
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet nuget push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
