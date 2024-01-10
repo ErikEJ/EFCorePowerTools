@@ -10,7 +10,7 @@ on:
       - '*'
 
 env:
-  VERSION: ${{ github.run_number }}      
+  VERSION: ${{ github.run_number }}
 
 jobs:
   build:
@@ -60,5 +60,5 @@ jobs:
 
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet nuget push **\*.nupkg --source "github" --skip-duplicate
+      run: dotnet nuget push **\*.nupkg --source https://ci.appveyor.com/nuget/erikej/api/v2/package --api-key ${{ secrets.APPVEYOR_NUGET_TOKEN }} --skip-duplicate
 
