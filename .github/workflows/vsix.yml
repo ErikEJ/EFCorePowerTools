@@ -27,7 +27,7 @@ jobs:
     - name: Update Version
       run: |
         ((Get-Content -Path GUI/EFCorePowerTools/Properties/AssemblyInfo.cs -Raw) -Replace "2.6.0.1", "${{ env.VERSION }}") | Set-Content -Path GUI/EFCorePowerTools/Properties/AssemblyInfo.cs
-        ((Get-Content -Path GUI/PowerToolsExtensionPack/source.extension.vsixmanifest -Raw) -Replace "2.6.0", "${{ env.VERSION }}") | Set-Content -Path GUI/PowerToolsExtensionPack/source.extension.vsixmanifest
+        ((Get-Content -Path GUI/EFCorePowerTools/source.extension.vsixmanifest -Raw) -Replace "2.6.0", "${{ env.VERSION }}") | Set-Content -Path GUI/EFCorePowerTools/source.extension.vsixmanifest
         ((Get-Content -Path GUI/PowerToolsExtensionPack/source.extension.vsixmanifest -Raw) -Replace "2.6.0", "${{ env.VERSION }}") | Set-Content -Path GUI/PowerToolsExtensionPack/source.extension.vsixmanifest        
       working-directory: src
       shell: pwsh
