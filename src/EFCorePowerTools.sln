@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{ACD63354
 		.editorconfig = .editorconfig
 		Directory.Build.Props = Directory.Build.Props
 		NuGet.Config = NuGet.Config
+		..\.github\workflows\vsix.yml = ..\.github\workflows\vsix.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efpt70.core", "Core\efpt70.core\efpt70.core.csproj", "{19CB59D1-7AB7-472B-94B2-7A66E1E101DC}"
