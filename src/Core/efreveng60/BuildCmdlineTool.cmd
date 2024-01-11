@@ -16,7 +16,7 @@ del bin\Release\net6.0\x64\publish\Microsoft.SqlServer.TransactSql.ScriptDom.dll
 
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng60.exe.zip .\bin\Release\net6.0\x64\publish\*
 
-move /Y efreveng60.exe.zip ..\lib\
+move /Y efreveng60.exe.zip ..\..\GUI\lib\
 
 goto end
 
