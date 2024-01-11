@@ -3,6 +3,10 @@ name: CLI Tool
 on:
   workflow_dispatch:
   push:
+    paths-ignore:
+      - '**/*'
+      - '!.github/workflows/cli-tool.yml'
+      - '!src/Core/**/*'
     branches:
       - '*'
   pull_request:
@@ -35,4 +39,3 @@ jobs:
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet nuget push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
-      

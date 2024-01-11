@@ -1,0 +1,34 @@
+name: Nupkg
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Package Dacpac 6
+      run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj
+
+    - name: Package Dacpac 7
+      run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.7.SqlServer.Dacpac.csproj
+  
+    - name: Package Dacpac 8
+      run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj
+
+    - name: Package SqlQuery 6
+      run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery.csproj
+
+    - name: Package SqlQuery 7
+      run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.7.SqlServer.SqlQuery\ErikEJ.EntityFrameworkCore.7.SqlServer.SqlQuery.csproj
+
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Nupkg
+        path: |
+          **/*.nupkg
+      
