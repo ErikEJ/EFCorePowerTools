@@ -36,6 +36,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{ACD63354-5031-4116-AEE9-B38E9F687E2E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\.github\workflows\cli-release.yml = ..\.github\workflows\cli-release.yml
+		..\.github\workflows\cli-tool.yml = ..\.github\workflows\cli-tool.yml
 		Directory.Build.Props = Directory.Build.Props
 		NuGet.Config = NuGet.Config
 		..\.github\workflows\vsix.yml = ..\.github\workflows\vsix.yml
