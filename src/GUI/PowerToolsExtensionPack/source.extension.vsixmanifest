@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="EFCorePowerToolsExtensionPack.b2aaf4e1-5424-4a30-9228-7fe89f03f816" Version="2.5.0" Language="en-US" Publisher="ErikEJ" />
+        <Identity Id="EFCorePowerToolsExtensionPack.b2aaf4e1-5424-4a30-9228-7fe89f03f816" Version="2.6.0" Language="en-US" Publisher="ErikEJ" />
         <DisplayName>EF Core Power Pack</DisplayName>
         <Description xml:space="preserve">A package that contains EF Core Power Tools and some DDEX providers that improve your experience when using EF Core Power Tools.</Description>
         <License>license.txt</License>
