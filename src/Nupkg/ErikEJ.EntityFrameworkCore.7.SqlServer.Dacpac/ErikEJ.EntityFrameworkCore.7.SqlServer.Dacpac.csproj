@@ -63,12 +63,12 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <None Include="...\..\Core\DacFxStrongTypedCore.161\bin\$(Configuration)\netstandard2.1\DacFxStrongTypedCore.161.dll">
+    <None Include="..\..\Core\DacFxStrongTypedCore.161\bin\$(Configuration)\netstandard2.1\DacFxStrongTypedCore.161.dll">
       <Visible>false</Visible>
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)</PackagePath>
     </None>
-    <None Include="...\..\Core\RevEng.Core.Abstractions\bin\$(Configuration)\netstandard2.0\RevEng.Core.Abstractions.dll">
+    <None Include="..\..\Core\RevEng.Core.Abstractions\bin\$(Configuration)\netstandard2.0\RevEng.Core.Abstractions.dll">
       <Visible>false</Visible>
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)</PackagePath>
