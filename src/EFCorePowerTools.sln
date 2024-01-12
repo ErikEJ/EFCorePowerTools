@@ -40,6 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{ACD63354
 		..\.github\workflows\cli-tool.yml = ..\.github\workflows\cli-tool.yml
 		Directory.Build.Props = Directory.Build.Props
 		NuGet.Config = NuGet.Config
+		..\.github\workflows\nupkg-release.yml = ..\.github\workflows\nupkg-release.yml
 		..\.github\workflows\vsix.yml = ..\.github\workflows\vsix.yml
 	EndProjectSection
 EndProject
