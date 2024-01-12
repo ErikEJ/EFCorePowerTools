@@ -48,7 +48,7 @@ You can download the daily build from [Open VSIX Gallery](https://www.vsixgaller
 
 Ensure you always have the latest daily build (if you are brave) by installing [this extension](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.VSIXGallery-nightlybuilds)
 
-## Cross platform command line tool - efcpt
+## EF Core Power Tools CLI - efcpt
 
 If you do not use Visual Studio, but for example Visual Studio Code, a cross platform dotnet tool for reverse engineering is available, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.7/readme.md)
 
