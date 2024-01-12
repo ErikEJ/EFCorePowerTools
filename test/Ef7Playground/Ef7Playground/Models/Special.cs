@@ -18,4 +18,6 @@ public partial class Special
     public DateOnly? TheDate { get; set; }
 
     public TimeOnly? TheTime { get; set; }
+
+    public string? Testname { get; set; }
 }
