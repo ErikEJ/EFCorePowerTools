@@ -78,7 +78,7 @@ You can smoke test changes to reverse engineering. Launch one of the efreveng co
 
 In the ScaffoldingTester solution there are scripts to populate Northwind and Chinook databases with the required objects.
 
-## Sponsors
+# Sponsors
 
 A massive thanks to [AWS](https://github.com/aws), who sponsors EFCorePowerTools from January 2024 via the [.NET on AWS Open Source Software Fund](https://github.com/aws/dotnet-foss).
 
