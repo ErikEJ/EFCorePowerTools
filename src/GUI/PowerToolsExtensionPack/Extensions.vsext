@@ -13,6 +13,10 @@
     {
       "vsixId": "Npgsql.VSIX.07074491-d0c6-4138-9d44-ea3f8920e84b",
       "name": "Npgsql PostgreSQL Integration"
+    },
+    {
+      "vsixId": "DgmlPowerTools._2022.b1034e63-aefd-41f1-87fa-75767c8e2dd1",
+      "name": "DgmlPowerTools 2022"
     }
   ]
 }
