@@ -60,6 +60,6 @@ jobs:
       run: |
         $ErrorActionPreference='Stop'
         (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
-        Vsix-PushArtifacts | Vsix-PublishToGallery 
+        Vsix-PublishToGallery 
       shell: pwsh
       continue-on-error: false
