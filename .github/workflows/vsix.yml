@@ -56,7 +56,7 @@ jobs:
           *.vsix
 
     - name: Publish to Open VSIX Gallery
-      if: github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && github.event_name == 'push'
       run: |
         $ErrorActionPreference='Stop'
         (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
