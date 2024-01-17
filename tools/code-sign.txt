@@ -1,0 +1,16 @@
+1: Log in to SimplySign
+
+2: Export .cer via CertMgr as p7b file
+
+3: Get info from 
+
+certutil -user -store my "thumbprint"
+
+3: Run VsixSignTool
+
+vsixsigntool.exe sign /f C:\temp\cert.p7b /csp "SimplySign CSP" /k xxxx /sha1 xxx /fd sha256 /t http://time.certum.pl "EF Core Power Pack v2.6.64.vsix"
+
+/k = Key container id vist af certutil
+/sha1 = certificate thumbprint vist i Certmgr/SimplySign
+
+4: Upload to MarketPlace
