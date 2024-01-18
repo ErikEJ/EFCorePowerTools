@@ -384,7 +384,7 @@
                 "refresh-object-lists": {
                     "type": "boolean",
                     "default": true,
-                    "title": "Generate the refresh the lists of objects (tables, views, stored procedures, functions) from the database in the config file during scaffolding",
+                    "title": "Refresh the lists of objects (tables, views, stored procedures, functions) from the database in the config file during scaffolding",
                     "examples": [
                         false
                     ]
