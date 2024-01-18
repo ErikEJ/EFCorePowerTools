@@ -380,6 +380,14 @@
                     "examples": [
                         false
                     ]
+                },
+                "refresh-object-lists": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Generate the refresh the lists of objects (tables, views, stored procedures, functions) from the database in the config file during scaffolding",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{
@@ -398,7 +406,8 @@
                 "use-alternate-stored-procedure-resultset-discovery": false,
                 "use-no-navigations-preview": false,
                 "merge-dacpacs": false,
-                "remove-valuegeneratedonadd": false
+                "remove-valuegeneratedonadd": false,
+                "refresh-object-lists": true
             }]
         },
         "names": {
@@ -634,7 +643,8 @@
             "remove-defaultsql-from-bool-properties": false,
             "soft-delete-obsolete-files": false,
             "discover-multiple-stored-procedure-resultsets-preview": false,
-            "use-alternate-stored-procedure-resultset-discovery": false
+            "use-alternate-stored-procedure-resultset-discovery": false,
+            "refresh-object-lists": true
         },
         "names": {
             "root-namespace": "MyProject",

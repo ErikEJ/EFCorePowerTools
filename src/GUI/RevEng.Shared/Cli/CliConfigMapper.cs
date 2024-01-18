@@ -110,7 +110,7 @@ namespace RevEng.Common.Cli
             return options;
         }
 
-        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config)
+        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, Func<List<TableModel>> objectGenerator, CodeGenerationMode codeGenerationMode, out CliConfig config)
         {
             if (File.Exists(fullPath))
             {
@@ -136,10 +136,19 @@ namespace RevEng.Common.Cli
                 }
             }
 
-            config.Tables = Add(objects, config.Tables);
-            config.Views = Add(objects, config.Views);
-            config.StoredProcedures = Add(objects, config.StoredProcedures);
-            config.Functions = Add(objects, config.Functions);
+            if (config.CodeGeneration.RefreshObjectLists)
+            {
+                if (objectGenerator == null)
+                {
+                    throw new ArgumentNullException(nameof(objectGenerator));
+                }
+
+                var objects = objectGenerator.Invoke();
+                config.Tables = Add(objects, config.Tables);
+                config.Views = Add(objects, config.Views);
+                config.StoredProcedures = Add(objects, config.StoredProcedures);
+                config.Functions = Add(objects, config.Functions);
+            }
 
 #pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             var options = new JsonSerializerOptions { WriteIndented = true };
