@@ -14,6 +14,18 @@ namespace UnitTests
     [TestFixture]
     public class CliObjectListTest
     {
+
+        private readonly string cliTestDirectory =
+            Path.Combine(TestContext.CurrentContext.TestDirectory, "CliObjectListTests");
+
+        [SetUp]
+        public void Setup()
+        {
+
+            if (!Directory.Exists(cliTestDirectory))
+                Directory.CreateDirectory(cliTestDirectory);
+        }
+
         [Test]
         public void CanGetConfig()
         {
@@ -238,7 +250,7 @@ namespace UnitTests
 
         private string TestPath(string file)
         {
-            return System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, "Dacpac", file);
+            return System.IO.Path.Combine(cliTestDirectory, file);
         }
 
         private CliConfig GetConfig()
