@@ -42,6 +42,25 @@
                         "examples": [
                             "*"
                         ]
+                    },
+                    "excludedColumns": {
+                        "type": "array",
+                        "default": [],
+                        "title": "Columns to Exclude from code generation",
+                        "items": {
+                            "type": "string",
+                            "title": "Column",
+                            "examples": [
+                                "Name",
+                                "Email"
+                            ]
+                        },
+                        "examples": [
+                            [
+                                "Name",
+                                "Email"
+                            ]
+                        ]
                     }
                 },
                 "examples": [{
@@ -91,6 +110,25 @@
                         "title": "Exclusion pattern with * symbol, use '*' to exclude all by default",
                         "examples": [
                             "*"
+                        ]
+                    },
+                    "excludedColumns": {
+                        "type": "array",
+                        "default": [],
+                        "title": "Columns to Exclude from code generation",
+                        "items": {
+                            "type": "string",
+                            "title": "Column",
+                            "examples": [
+                                "Name",
+                                "Email"
+                            ]
+                        },
+                        "examples": [
+                            [
+                                "Name",
+                                "Email"
+                            ]
                         ]
                     }
                 },
@@ -603,7 +641,8 @@
             "name": "[dbo].[Categories]"
         },
         {
-            "name": "[dbo].[CustomerCustomerDemo]"
+            "name": "[dbo].[CustomerCustomerDemo]",
+            "excludedColumns": ["Name", "Email"]
         },
         {
             "name": "[dbo].[Oldtable]",
@@ -613,7 +652,8 @@
             "name": "[dbo].[Categories]"
         },
         {
-            "name": "[dbo].[CustomerCustomerDemo]"
+            "name": "[dbo].[CustomerCustomerDemo]",
+            "excludedColumns": ["Name", "Email"]
         }],
         "stored-procedures": [{
             "name": "[dbo].[Alphabetical list of products]"
