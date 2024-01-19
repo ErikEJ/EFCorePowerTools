@@ -7,4 +7,6 @@ public interface IEntity
     bool? Exclude { get; set; }
 
     string ExclusionWildcard { get; set; }
+
+    string[] ExcludedColumns { get; set; }
 }

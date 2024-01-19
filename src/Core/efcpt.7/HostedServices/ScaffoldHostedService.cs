@@ -39,11 +39,22 @@ internal sealed class ScaffoldHostedService : HostedService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
+
+        var sw = Stopwatch.StartNew();
+        var tableModels = GetTablesAndViews();
+        GetProcedures(tableModels);
+        GetFunctions(tableModels);
+        sw.Stop();
+
+        DisplayService.MarkupLine();
+        DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
+
+
         if (!CliConfigMapper.TryGetCliConfig(
                 scaffoldOptions.ConfigFile.FullName,
                 scaffoldOptions.ConnectionString,
                 reverseEngineerCommandOptions.DatabaseType,
-                GetModels,
+                tableModels,
                 Constants.CodeGeneration,
                 out var config))
         {
@@ -74,7 +85,7 @@ internal sealed class ScaffoldHostedService : HostedService
 #pragma warning restore S2583 // Conditionally executed code should be reachable
 #pragma warning restore S2589 // Boolean expressions should not be gratuitous
 
-        var sw = Stopwatch.StartNew();
+        sw = Stopwatch.StartNew();
         var result = DisplayService.Wait(
             "Generating EF Core DbContext and entity classes...",
             () => ReverseEngineerRunner.GenerateFiles(commandOptions)) ?? new ReverseEngineerResult();
@@ -103,19 +114,6 @@ internal sealed class ScaffoldHostedService : HostedService
         DisplayService.MarkupLine();
 
         Environment.ExitCode = 0;
-     
-        List<TableModel> GetModels()
-        {
-            var sw = Stopwatch.StartNew();
-            var tableModels = GetTablesAndViews();
-            GetProcedures(tableModels);
-            GetFunctions(tableModels);
-            sw.Stop();
-
-            DisplayService.MarkupLine();
-            DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
-            return tableModels;
-        }
     }
 
     private static void ShowPaths(List<string> paths)

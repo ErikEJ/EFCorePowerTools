@@ -167,43 +167,7 @@ namespace UnitTests
 
                 var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    () => GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore7,
-                    out CliConfig resultConfig);
-
-                Assert.True(fetchedConfigSuccess);
-
-                Assert.NotNull(resultConfig);
-
-                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
-
-                for (var i = 0; i < config.Tables.Count; i++)
-                {
-                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
-                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
-                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
-                }
-            }
-            finally
-            {
-                RemoveConfigFile(testPath);
-            }
-        }
-
-        [Test]
-        public void TryGetCliConfigWithoutRefreshDoesNotRefreshObjectList()
-        {
-            var config = GetConfig();
-            config.Tables.RemoveRange(2,3);
-            config.CodeGeneration.RefreshObjectLists = false;
-            var testPath = TestPath("test.efpcli.json");
-
-            try
-            {
-                WriteConfigFile(config, testPath);
-
-                var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
-                    DatabaseType.SQLServer,
-                    () => throw new Exception(), CodeGenerationMode.EFCore7,
+                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore7,
                     out CliConfig resultConfig);
 
                 Assert.True(fetchedConfigSuccess);
