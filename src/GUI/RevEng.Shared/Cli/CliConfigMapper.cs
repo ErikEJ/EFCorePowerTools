@@ -155,7 +155,7 @@ namespace RevEng.Common.Cli
         }
 
         /// <summary>
-        /// Ensures that any excluded columns for tables are not required
+        /// Ensures that any excluded columns for tables are not required. Removes the invalid columns from the list.
         /// </summary>
         /// <param name="config">Configuration to Validate.</param>
         /// <param name="objects">Table Models to check against.</param>
