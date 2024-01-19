@@ -406,7 +406,6 @@
                 "use-alternate-stored-procedure-resultset-discovery": false,
                 "use-no-navigations-preview": false,
                 "merge-dacpacs": false,
-                "remove-valuegeneratedonadd": false,
                 "refresh-object-lists": true
             }]
         },
