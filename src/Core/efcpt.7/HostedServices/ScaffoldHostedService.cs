@@ -56,7 +56,8 @@ internal sealed class ScaffoldHostedService : HostedService
                 reverseEngineerCommandOptions.DatabaseType,
                 tableModels,
                 Constants.CodeGeneration,
-                out var config))
+                out var config,
+                out var configWarnings))
         {
             Environment.ExitCode = 1;
             return;
@@ -98,6 +99,8 @@ internal sealed class ScaffoldHostedService : HostedService
         var paths = GetPaths(result);
         ShowPaths(paths);
         DisplayService.MarkupLine();
+
+        result.EntityWarnings.AddRange(configWarnings);
 
         ShowErrors(result);
         ShowWarnings(result);

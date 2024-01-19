@@ -110,7 +110,7 @@ namespace RevEng.Common.Cli
             return options;
         }
 
-        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config)
+        public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config, out List<string> warnings)
         {
             if (File.Exists(fullPath))
             {
@@ -144,7 +144,7 @@ namespace RevEng.Common.Cli
                 config.Functions = Add(objects, config.Functions);
             }
 
-            ValidateExcludedColumns(config, objects);
+            warnings = ValidateExcludedColumns(config, objects);
 
 #pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
             var options = new JsonSerializerOptions { WriteIndented = true };
@@ -159,34 +159,30 @@ namespace RevEng.Common.Cli
         /// </summary>
         /// <param name="config">Configuration to Validate.</param>
         /// <param name="objects">Table Models to check against.</param>
-        private static void ValidateExcludedColumns(CliConfig config, List<TableModel> objects)
+        private static List<string> ValidateExcludedColumns(CliConfig config, List<TableModel> objects)
         {
-            StringBuilder errors = new();
+            List<string> warnings = new();
 
-            var objectsToCheck = config.Tables.Where(x => x.ExcludedColumns?.Length > 0)
+            var objectsToCheck = config.Tables.Where(x => x.ExcludedColumns?.Count > 0)
                 .Select(table => table as IEntity)
-                .Union(config.Views.Where(x => x.ExcludedColumns?.Length > 0))
-                .Union(config.StoredProcedures.Where(x => x.ExcludedColumns?.Length > 0))
-                .Union(config.Functions.Where(x => x.ExcludedColumns?.Length > 0));
-
+                .Union(config.Views.Where(x => x.ExcludedColumns?.Count > 0));
 
             foreach (var table in objectsToCheck)
             {
                 var dbTable = objects.Single(x => x.DisplayName == table.Name);
                 var columnsThatCannotBeExcluded = dbTable.Columns.Where(x => x.IsForeignKey || x.IsPrimaryKey).Select(x => x.Name.ToUpperInvariant());
 
-                foreach (var column in columnsThatCannotBeExcluded.Intersect(table.ExcludedColumns.Select(c => c.ToUpperInvariant())))
+                var badExclusions = columnsThatCannotBeExcluded.Intersect(table.ExcludedColumns.Select(c => c.ToUpperInvariant()));
+
+                foreach (var column in badExclusions)
                 {
-                    errors.AppendLine($"{table.Name}.{column} cannot be excluded because it is either a Primary Key or Foreign Key of another Mapped Column");
+                    var originalColumnString = table.ExcludedColumns.Single(x => string.Equals(x, column, StringComparison.InvariantCultureIgnoreCase));
+                    warnings.Add($"{table.Name}.{originalColumnString} cannot be excluded because it is either a Primary Key or Foreign Key of another Mapped Column.  This entry has been removed from the config file.");
+                    table.ExcludedColumns.Remove(originalColumnString);
                 }
             }
 
-            if (errors.Length > 0)
-            {
-                //TODO: What should we do here when we detect problems?  DisplayService isn't available here.
-                throw new Exception(errors.ToString());
-            }
-
+            return warnings;
         }
 
         public static List<SerializationTableModel> BuildObjectList(CliConfig config)
