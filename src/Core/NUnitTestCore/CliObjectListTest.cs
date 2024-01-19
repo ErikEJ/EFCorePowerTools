@@ -35,7 +35,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result.Count);
         }
 
         [Test]
@@ -43,6 +43,7 @@ namespace UnitTests
         {
             var config = GetConfig();
 
+            config.Views.Add(new View { ExclusionWildcard = "*" });
             config.Tables.Add(new Table { ExclusionWildcard = "*" });
 
             var result = CliConfigMapper.BuildObjectList(config);
@@ -63,7 +64,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result.Count);
         }
 
         [Test]
@@ -77,7 +78,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(5, result.Count);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(3, result.Count);
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -123,7 +124,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -153,7 +154,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(5, result.Count);
         }
 
         [Test]
