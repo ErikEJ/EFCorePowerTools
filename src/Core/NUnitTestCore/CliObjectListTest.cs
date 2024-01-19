@@ -1,5 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
 using NUnit.Framework;
+using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
 
@@ -8,6 +14,18 @@ namespace UnitTests
     [TestFixture]
     public class CliObjectListTest
     {
+
+        private readonly string cliTestDirectory =
+            Path.Combine(TestContext.CurrentContext.TestDirectory, "CliObjectListTests");
+
+        [SetUp]
+        public void Setup()
+        {
+
+            if (!Directory.Exists(cliTestDirectory))
+                Directory.CreateDirectory(cliTestDirectory);
+        }
+
         [Test]
         public void CanGetConfig()
         {
@@ -136,6 +154,103 @@ namespace UnitTests
             Assert.NotNull(result);
 
             Assert.AreEqual(4, result.Count);
+        }
+
+        [Test]
+        public void TryGetCliConfigWithExistingFileReturnsExpectedConfig()
+        {
+            var config = GetConfig();
+            var testPath = TestPath("test.efpcli.json");
+            try
+            {
+                WriteConfigFile(config, testPath);
+
+                var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
+                    DatabaseType.SQLServer,
+                    () => GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore7,
+                    out CliConfig resultConfig);
+
+                Assert.True(fetchedConfigSuccess);
+
+                Assert.NotNull(resultConfig);
+
+                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
+
+                for (var i = 0; i < config.Tables.Count; i++)
+                {
+                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
+                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
+                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
+                }
+            }
+            finally
+            {
+                RemoveConfigFile(testPath);
+            }
+        }
+
+        [Test]
+        public void TryGetCliConfigWithoutRefreshDoesNotRefreshObjectList()
+        {
+            var config = GetConfig();
+            config.Tables.RemoveRange(2,3);
+            config.CodeGeneration.RefreshObjectLists = false;
+            var testPath = TestPath("test.efpcli.json");
+
+            try
+            {
+                WriteConfigFile(config, testPath);
+
+                var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
+                    DatabaseType.SQLServer,
+                    () => throw new Exception(), CodeGenerationMode.EFCore7,
+                    out CliConfig resultConfig);
+
+                Assert.True(fetchedConfigSuccess);
+
+                Assert.NotNull(resultConfig);
+
+                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
+
+                for (var i = 0; i < config.Tables.Count; i++)
+                {
+                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
+                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
+                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
+                }
+            }
+            finally
+            {
+                RemoveConfigFile(testPath);
+            }
+        }
+
+        private static List<TableModel> GetDefaultTables(DatabaseType databaseType)
+        {
+            return new List<TableModel>()
+            {
+                new TableModel("Users", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
+                new TableModel("Accounts", "other", databaseType, ObjectType.Table, new List<ColumnModel>()),
+                new TableModel("Extras", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
+                new TableModel("Actors", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
+                new TableModel("Directors", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
+            };
+        }
+
+        private void WriteConfigFile(CliConfig configToWrite, string fullPath)
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            File.WriteAllText(fullPath, JsonSerializer.Serialize(configToWrite, options), Encoding.UTF8);
+        }
+
+        private void RemoveConfigFile(string fullPath)
+        {
+            File.Delete(fullPath);
+        }
+
+        private string TestPath(string file)
+        {
+            return System.IO.Path.Combine(cliTestDirectory, file);
         }
 
         private CliConfig GetConfig()

@@ -55,7 +55,8 @@
      "use-alternate-stored-procedure-resultset-discovery": false,
      "t4-template-path": null,
      "use-no-navigations-preview": false,
-     "merge-dacpacs": false
+     "merge-dacpacs": false,
+     "refresh-object-lists": false
   },
   "names":
   {

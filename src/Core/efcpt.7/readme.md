@@ -52,7 +52,7 @@ If you have updated the configuration file in a way that requires files to be de
 
 ### Excluding objects
 
-The config file will always contain all current database objects. 
+The config file defaults to always contain all current database objects.  If you don't want the objects lists to be refreshed during each scaffolding operation, set the `"refresh-object-lists"` option to `false` in the configuration file.
 
 You can exclude indvidual database objects with `"exclude": true` for the object.
 
