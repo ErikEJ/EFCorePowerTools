@@ -33,7 +33,7 @@ namespace EFCorePowerTools.Helpers
 
         public void DropT4Templates(string projectPath)
         {
-            DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore7, false);
+            DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore8, false);
         }
 
         public string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
