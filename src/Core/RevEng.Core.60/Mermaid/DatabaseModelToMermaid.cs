@@ -35,6 +35,8 @@ namespace RevEng.Core.Mermaid
                 sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {{");
                 foreach (var column in table.Columns)
                 {
+                    var formattedColumnName = column.Name.Replace(" ", string.Empty, System.StringComparison.OrdinalIgnoreCase);
+
                     var pkfk = string.Empty;
 
                     if (table.PrimaryKey?.Columns.Contains(column) ?? false)
@@ -48,7 +50,7 @@ namespace RevEng.Core.Mermaid
                     }
 
                     var nullable = column.IsNullable ? "(NULL)" : string.Empty;
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"    {column.Name} {column.StoreType?.Replace(", ", "-", System.StringComparison.OrdinalIgnoreCase)}{nullable} {pkfk}");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"    {formattedColumnName} {column.StoreType?.Replace(", ", "-", System.StringComparison.OrdinalIgnoreCase)}{nullable} {pkfk}");
                 }
 
                 sb.AppendLine("  }");
