@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Cli.Configuration
 {
@@ -15,5 +16,9 @@ namespace RevEng.Common.Cli.Configuration
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("exclusionWildcard")]
         public string ExclusionWildcard { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("excludedColumns")]
+        public List<string> ExcludedColumns { get; set; } = null;
     }
 }

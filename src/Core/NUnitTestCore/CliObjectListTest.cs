@@ -35,7 +35,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(6, result.Count);
         }
 
         [Test]
@@ -43,6 +43,7 @@ namespace UnitTests
         {
             var config = GetConfig();
 
+            config.Views.Add(new View { ExclusionWildcard = "*" });
             config.Tables.Add(new Table { ExclusionWildcard = "*" });
 
             var result = CliConfigMapper.BuildObjectList(config);
@@ -63,7 +64,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(2, result.Count);
         }
 
         [Test]
@@ -77,7 +78,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(5, result.Count);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(3, result.Count);
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -123,7 +124,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -153,13 +154,14 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            Assert.AreEqual(5, result.Count);
         }
 
         [Test]
         public void TryGetCliConfigWithExistingFileReturnsExpectedConfig()
         {
             var config = GetConfig();
+
             var testPath = TestPath("test.efpcli.json");
             try
             {
@@ -167,8 +169,9 @@ namespace UnitTests
 
                 var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    () => GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore7,
-                    out CliConfig resultConfig);
+                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore7,
+                    out CliConfig resultConfig,
+                    out List<string> warnings);
 
                 Assert.True(fetchedConfigSuccess);
 
@@ -190,21 +193,43 @@ namespace UnitTests
         }
 
         [Test]
-        public void TryGetCliConfigWithoutRefreshDoesNotRefreshObjectList()
+        public void TryGetCliConfigWithExcludedColumnsReturns()
         {
             var config = GetConfig();
-            config.Tables.RemoveRange(2,3);
-            config.CodeGeneration.RefreshObjectLists = false;
-            var testPath = TestPath("test.efpcli.json");
+            var userTable = config.Tables.Single(x => x.Name == "[dbo].[Users]");
+            userTable.ExcludedColumns = new List<string> { "UserId", "AccountId", "Name" };
 
+            var userView = config.Views.Single(x => x.Name == "[dbo].[UsersView]");
+            userView.ExcludedColumns = new List<string> { "UserId", "AccountId", "Name" };
+
+            config.Functions = new List<Function>()
+            {
+                new()
+                {
+                    Name = "TestFunction",
+                    ExcludedColumns = new List<string> { "ColumnA", "ColumnB"}
+                }
+            };
+
+            config.StoredProcedures = new List<StoredProcedure>()
+            {
+                new()
+                {
+                    Name = "TestProcedure",
+                    ExcludedColumns = new List<string> { "ColumnA", "ColumnB"}
+                }
+            };
+
+            var testPath = TestPath("test.efpcli.json");
             try
             {
                 WriteConfigFile(config, testPath);
 
                 var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    () => throw new Exception(), CodeGenerationMode.EFCore7,
-                    out CliConfig resultConfig);
+                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore7,
+                    out CliConfig resultConfig,
+                    out List<string> warnings);
 
                 Assert.True(fetchedConfigSuccess);
 
@@ -218,6 +243,14 @@ namespace UnitTests
                     Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
                     Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
                 }
+
+                Assert.True(warnings.Count == 4);
+                Assert.True(resultConfig.Tables[0].ExcludedColumns.Count == 1);
+                Assert.True(resultConfig.Tables[0].ExcludedColumns[0] == "Name");
+                Assert.True(resultConfig.Views[0].ExcludedColumns.Count == 1);
+                Assert.True(resultConfig.Views[0].ExcludedColumns[0] == "Name");
+                Assert.IsNull(resultConfig.Functions[0].ExcludedColumns);
+                Assert.IsNull(resultConfig.StoredProcedures[0].ExcludedColumns);
             }
             finally
             {
@@ -229,11 +262,34 @@ namespace UnitTests
         {
             return new List<TableModel>()
             {
-                new TableModel("Users", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
+                new TableModel("Users", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()
+                {
+                    new ColumnModel("UserId", "", true, false),
+                    new ColumnModel("AccountId", "", false, true),
+                    new ColumnModel("Name", "", false, false),
+                    new ColumnModel("Email", "", false, false),
+
+                }),
                 new TableModel("Accounts", "other", databaseType, ObjectType.Table, new List<ColumnModel>()),
                 new TableModel("Extras", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
                 new TableModel("Actors", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
                 new TableModel("Directors", "dbo", databaseType, ObjectType.Table, new List<ColumnModel>()),
+                new TableModel("TestFunction", "dbo", databaseType, ObjectType.ScalarFunction, new List<ColumnModel>()
+                {
+                    new ColumnModel("ColumnA", "", false, false),
+                    new ColumnModel("ColumnB", "", false, false)
+                }),
+                new TableModel("TestProcedure", "dbo", databaseType, ObjectType.Procedure, new List<ColumnModel>()
+                {
+                    new ColumnModel("ColumnA", "", false, false),
+                    new ColumnModel("ColumnB", "", false, false)
+                }),
+                new TableModel("UsersView", "dbo", databaseType, ObjectType.View, new List<ColumnModel>()
+                {
+                    new ColumnModel("UserId", "", true, false),
+                    new ColumnModel("AccountId", "", false, true),
+                    new ColumnModel("Name", "", false, false)
+                })
             };
         }
 
@@ -279,6 +335,13 @@ namespace UnitTests
                     {
                         Name = "[dbo].[Directors]",
                     },
+                },
+                Views = new List<View>()
+                {
+                    new View()
+                    {
+                        Name = "[dbo].[UsersView]"
+                    }
                 }
             };
 
