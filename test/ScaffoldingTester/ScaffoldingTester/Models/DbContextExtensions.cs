@@ -22,11 +22,7 @@ namespace ScaffoldingTester.Models
 
             if (typeof(T).GetProperties().Any())
             {
-                using (var db2 = new ContextForQueryType<T>(db.Database.GetDbConnection(), db.Database.CurrentTransaction))
-                {
-                    db2.Database.SetCommandTimeout(db.Database.GetCommandTimeout());
-                    return await db2.Set<T>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken);
-                }
+                return await db.Set<T>().FromSqlRaw(sql, parameters).ToListAsync(cancellationToken);
             }
             else
             {
@@ -34,47 +30,13 @@ namespace ScaffoldingTester.Models
                 return default;
             }
         }
-
-        private class ContextForQueryType<T> : DbContext where T : class
-        {
-            private readonly DbConnection connection;
-            private readonly IDbContextTransaction transaction;
-
-            public ContextForQueryType(DbConnection connection, IDbContextTransaction tran)
-            {
-                this.connection = connection;
-                this.transaction = tran;
-
-                if (tran != null)
-                {
-                    this.Database.UseTransaction((tran as IInfrastructure<DbTransaction>).Instance);
-                }
-            }
-
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            {
-                if (transaction != null)
-                {
-                    optionsBuilder.UseSqlServer(connection);
-                }
-                else
-                {
-                    optionsBuilder.UseSqlServer(connection, options => options.EnableRetryOnFailure());
-                }
-            }
-
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
-            {
-                modelBuilder.Entity<T>().HasNoKey().ToView(null);
-            }
-        }
     }
 
     public class OutputParameter<TValue>
     {
         private bool _valueSet = false;
-        
-        private TValue _value;
+
+        public TValue _value;
 
         public TValue Value
         {

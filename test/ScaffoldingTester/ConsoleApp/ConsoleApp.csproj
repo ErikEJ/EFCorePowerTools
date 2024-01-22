@@ -2,16 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 	<Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-	 <PackageReference Include="EfCore.SchemaCompare" Version="6.0.0" />
+	 <PackageReference Include="EfCore.SchemaCompare" Version="8.0.1" />
 	 <PackageReference Include="EntityFrameworkCore.SqlServer.HierarchyId" Version="3.0.1" />
-	 <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.Dacpac" Version="6.0.1" />
-	 <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="6.0.2" />
-	 <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
+	 <PackageReference Include="ErikEJ.EntityFrameworkCore.SqlServer.Dacpac" Version="8.0.2" />
+	 <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.1" />
+	 <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.1">
 	   <PrivateAssets>all</PrivateAssets>
 	   <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	 </PackageReference>     

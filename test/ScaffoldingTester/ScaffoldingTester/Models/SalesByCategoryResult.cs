@@ -8,6 +8,7 @@ namespace ScaffoldingTester.Models
     public partial class SalesByCategoryResult
     {
         public string ProductName { get; set; }
+        [Column("TotalPurchase", TypeName = "decimal(38,2)")]
         public decimal? TotalPurchase { get; set; }
     }
 }

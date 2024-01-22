@@ -1,5 +1,5 @@
 ﻿{
-   "CodeGenerationMode": 2,
+   "CodeGenerationMode": 4,
    "ContextClassName": "ChinookContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
@@ -10,7 +10,6 @@
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "ConsoleApp",
-   "RemoveValueGeneratedOnAdd": false,
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
@@ -61,7 +60,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "DG-PF2WPPLD\\SQLEXPRESS.Chinook",
+   "UiHint": "dg-pf2wppld\\sqlexpress.Chinook.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

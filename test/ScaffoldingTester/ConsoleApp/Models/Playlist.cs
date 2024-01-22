@@ -3,18 +3,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace ConsoleApp.Models
+namespace ConsoleApp.Models;
+
+public partial class Playlist
 {
-    public partial class Playlist
-    {
-        public Playlist()
-        {
-            Tracks = new HashSet<Track>();
-        }
+    public int PlaylistId { get; set; }
 
-        public int PlaylistId { get; set; }
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public virtual ICollection<Track> Tracks { get; set; }
-    }
+    public virtual ICollection<Track> Tracks { get; set; } = new List<Track>();
 }
