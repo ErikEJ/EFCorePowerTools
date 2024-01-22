@@ -19,6 +19,6 @@ namespace RevEng.Common.Cli.Configuration
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("excludedColumns")]
-        public List<string> ExcludedColumns { get; set; }
+        public List<string> ExcludedColumns { get; set; } = null;
     }
 }
