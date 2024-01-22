@@ -398,9 +398,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     systemTypeName = dataTypeName;
                 }
 
-#pragma warning disable CA1308 // Normalize strings to uppercase
-                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression.ToLowerInvariant()) : null;
-#pragma warning restore CA1308 // Normalize strings to uppercase
+                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression) : null;
 
                 var dbColumn = new DatabaseColumn
                 {
@@ -537,6 +535,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             defaultValue = StripParentheses(defaultValue);
 
             if (defaultValue == null
+                || defaultValue == "NULL"
                 || defaultValue == "null")
             {
                 return null;
