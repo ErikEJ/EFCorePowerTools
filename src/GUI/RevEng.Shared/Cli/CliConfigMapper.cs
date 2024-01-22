@@ -170,13 +170,13 @@ namespace RevEng.Common.Cli
             foreach (var table in objectsToCheck)
             {
                 var dbTable = objects.Single(x => x.DisplayName == table.Name);
-                var columnsThatCannotBeExcluded = dbTable.Columns.Where(x => x.IsForeignKey || x.IsPrimaryKey).Select(x => x.Name.ToUpperInvariant());
+                var columnsThatCannotBeExcluded = dbTable.Columns.Where(x => x.IsForeignKey || x.IsPrimaryKey).Select(x => x.Name);
 
-                var badExclusions = columnsThatCannotBeExcluded.Intersect(table.ExcludedColumns.Select(c => c.ToUpperInvariant()));
+                var badExclusions = columnsThatCannotBeExcluded.Intersect(table.ExcludedColumns);
 
                 foreach (var column in badExclusions)
                 {
-                    var originalColumnString = table.ExcludedColumns.Single(x => string.Equals(x, column, StringComparison.InvariantCultureIgnoreCase));
+                    var originalColumnString = table.ExcludedColumns.Single(x => string.Equals(x, column, StringComparison.Ordinal));
                     warnings.Add($"{table.Name}.{originalColumnString} cannot be excluded because it is either a Primary Key or Foreign Key of another Mapped Column.  This entry has been removed from the config file.");
                     table.ExcludedColumns.Remove(originalColumnString);
                 }
