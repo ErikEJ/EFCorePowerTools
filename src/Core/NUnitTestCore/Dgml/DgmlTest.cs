@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Dgml;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace UnitTests
 {
@@ -29,10 +30,10 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.AreEqual(110, result.Nodes.Count);
-            Assert.AreEqual(122, result.Links.Count);
+            ClassicAssert.AreEqual(110, result.Nodes.Count);
+            ClassicAssert.AreEqual(122, result.Links.Count);
 
-            Assert.AreEqual(2, result.Links.Count(n => n.Contains("IsUnique=\"True\"")));
+            ClassicAssert.AreEqual(2, result.Links.Count(n => n.Contains("IsUnique=\"True\"")));
         }
 
         [Test]
@@ -45,10 +46,10 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.AreEqual(129, result.Nodes.Count);
-            Assert.AreEqual(141, result.Links.Count);
+            ClassicAssert.AreEqual(129, result.Nodes.Count);
+            ClassicAssert.AreEqual(141, result.Links.Count);
 
-            Assert.AreEqual(0, result.Links.Count(n => n.Contains("IsUnique=\"True\"")));
+            ClassicAssert.AreEqual(0, result.Links.Count(n => n.Contains("IsUnique=\"True\"")));
         }
 
         [Test]
@@ -61,8 +62,8 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.AreEqual(160, result.Nodes.Count);
-            Assert.AreEqual(172, result.Links.Count);
+            ClassicAssert.AreEqual(160, result.Nodes.Count);
+            ClassicAssert.AreEqual(172, result.Links.Count);
         }
 
         [Test]
@@ -75,8 +76,8 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.AreEqual(124, result.Nodes.Count);
-            Assert.AreEqual(150, result.Links.Count);
+            ClassicAssert.AreEqual(124, result.Nodes.Count);
+            ClassicAssert.AreEqual(150, result.Links.Count);
         }
 
         [Test]
@@ -86,7 +87,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("ChinookContext.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Chinook.dgml"), result, Encoding.UTF8);
         }
@@ -98,7 +99,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Aw2014Person.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Aw2014Person.dgml"), result, Encoding.UTF8);
         }
@@ -110,7 +111,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Northwind.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"northwind.dgml"), result, Encoding.UTF8);
         }
@@ -122,7 +123,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Pfizer.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"pfizer.dgml"), result, Encoding.UTF8);
         }
@@ -134,7 +135,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("NoFk.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "nofk.dgml"), result, Encoding.UTF8);
         }
@@ -146,7 +147,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("SingleNav.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"singlenav.dgml"), result, Encoding.UTF8);
         }
@@ -158,7 +159,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Samurai.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Samurai.dgml"), result, Encoding.UTF8);
         }
@@ -170,7 +171,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Issue604.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
         }
@@ -182,7 +183,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Issue687.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
         }
@@ -194,7 +195,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("Identity.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Identity.dgml"), result, Encoding.UTF8);
         }
@@ -206,7 +207,7 @@ namespace UnitTests
             var result = DgmlBuilder.Build(ReadAllText("longview50.txt"), "test", template);
 
             // Assert
-            Assert.AreNotEqual(null, result);
+            ClassicAssert.AreNotEqual(null, result);
 
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"LongView50.dgml"), result, Encoding.UTF8);
         }

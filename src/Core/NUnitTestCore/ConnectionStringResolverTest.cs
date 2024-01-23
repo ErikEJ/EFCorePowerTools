@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using MySqlConnector;
 using Npgsql;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Oracle.ManagedDataAccess.Client;
 using RevEng.Core;
 
@@ -23,7 +24,7 @@ namespace UnitTests
 
             var result = resolver.Redact();
 
-            Assert.AreEqual("data source=.", result);
+            ClassicAssert.AreEqual("data source=.", result);
         }
 
 
@@ -39,7 +40,7 @@ namespace UnitTests
 
             var result = resolver.Redact();
 
-            Assert.AreEqual("host=localhost", result);
+            ClassicAssert.AreEqual("host=localhost", result);
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace UnitTests
 
             var result = resolver.Redact();
 
-            Assert.AreEqual("server=localhost", result);
+            ClassicAssert.AreEqual("server=localhost", result);
         }
 
         [Test]
@@ -69,7 +70,7 @@ namespace UnitTests
 
             var result = resolver.Redact();
 
-            Assert.AreEqual("data source=localhost", result);
+            ClassicAssert.AreEqual("data source=localhost", result);
         }
 
         [Test]
@@ -84,7 +85,7 @@ namespace UnitTests
 
             var result = resolver.Redact();
 
-            Assert.AreEqual("data source=localhost", result);
+            ClassicAssert.AreEqual("data source=localhost", result);
         }
     }
 }

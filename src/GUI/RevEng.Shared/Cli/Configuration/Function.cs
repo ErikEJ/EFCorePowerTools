@@ -19,7 +19,7 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("exclusionWildcard")]
         public string ExclusionWildcard { get; set; }
 
-        [JsonIgnore] 
+        [JsonIgnore]
         public List<string> ExcludedColumns { get; set; } = null;
     }
 }

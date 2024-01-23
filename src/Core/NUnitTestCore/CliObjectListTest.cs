@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
@@ -33,9 +34,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
-
-            Assert.AreEqual(6, result.Count);
+            ClassicAssert.NotNull(result);
+            
+            ClassicAssert.AreEqual(6, result.Count);
         }
 
         [Test]
@@ -48,9 +49,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.IsEmpty(result);
+            ClassicAssert.IsEmpty(result);
         }
 
         [Test]
@@ -62,9 +63,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(2, result.Count);
+            ClassicAssert.AreEqual(2, result.Count);
         }
 
         [Test]
@@ -76,9 +77,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(5, result.Count);
+            ClassicAssert.AreEqual(5, result.Count);
         }
 
         [Test]
@@ -92,9 +93,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(3, result.Count);
+            ClassicAssert.AreEqual(3, result.Count);
         }
 
         [Test]
@@ -106,9 +107,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            ClassicAssert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -122,9 +123,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            ClassicAssert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -136,9 +137,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(4, result.Count);
+            ClassicAssert.AreEqual(4, result.Count);
         }
 
         [Test]
@@ -152,9 +153,9 @@ namespace UnitTests
 
             var result = CliConfigMapper.BuildObjectList(config);
 
-            Assert.NotNull(result);
+            ClassicAssert.NotNull(result);
 
-            Assert.AreEqual(5, result.Count);
+            ClassicAssert.AreEqual(5, result.Count);
         }
 
         [Test]
@@ -173,17 +174,17 @@ namespace UnitTests
                     out CliConfig resultConfig,
                     out List<string> warnings);
 
-                Assert.True(fetchedConfigSuccess);
+                ClassicAssert.True(fetchedConfigSuccess);
 
-                Assert.NotNull(resultConfig);
+                ClassicAssert.NotNull(resultConfig);
 
-                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
+                ClassicAssert.True(config.Tables.Count == resultConfig.Tables.Count);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {
-                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
-                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
-                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
+                    ClassicAssert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
+                    ClassicAssert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
+                    ClassicAssert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
                 }
             }
             finally
@@ -231,26 +232,26 @@ namespace UnitTests
                     out CliConfig resultConfig,
                     out List<string> warnings);
 
-                Assert.True(fetchedConfigSuccess);
+                ClassicAssert.True(fetchedConfigSuccess);
 
-                Assert.NotNull(resultConfig);
+                ClassicAssert.NotNull(resultConfig);
 
-                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
+                ClassicAssert.True(config.Tables.Count == resultConfig.Tables.Count);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {
-                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
-                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
-                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
+                    ClassicAssert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
+                    ClassicAssert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
+                    ClassicAssert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
                 }
 
-                Assert.True(warnings.Count == 4);
-                Assert.True(resultConfig.Tables[0].ExcludedColumns.Count == 1);
-                Assert.True(resultConfig.Tables[0].ExcludedColumns[0] == "Name");
-                Assert.True(resultConfig.Views[0].ExcludedColumns.Count == 1);
-                Assert.True(resultConfig.Views[0].ExcludedColumns[0] == "Name");
-                Assert.IsNull(resultConfig.Functions[0].ExcludedColumns);
-                Assert.IsNull(resultConfig.StoredProcedures[0].ExcludedColumns);
+                ClassicAssert.True(warnings.Count == 4);
+                ClassicAssert.True(resultConfig.Tables[0].ExcludedColumns.Count == 1);
+                ClassicAssert.True(resultConfig.Tables[0].ExcludedColumns[0] == "Name");
+                ClassicAssert.True(resultConfig.Views[0].ExcludedColumns.Count == 1);
+                ClassicAssert.True(resultConfig.Views[0].ExcludedColumns[0] == "Name");
+                ClassicAssert.IsNull(resultConfig.Functions[0].ExcludedColumns);
+                ClassicAssert.IsNull(resultConfig.StoredProcedures[0].ExcludedColumns);
             }
             finally
             {

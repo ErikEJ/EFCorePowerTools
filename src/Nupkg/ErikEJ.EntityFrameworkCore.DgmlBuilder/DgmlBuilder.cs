@@ -8,6 +8,7 @@ namespace Dgml
     {
         public static string Build(string debugView, string contextName, string template)
         {
+#pragma warning disable CA1510 // Use ArgumentNullException throw helper
             if (debugView == null)
             {
                 throw new ArgumentNullException(nameof(debugView));
@@ -17,6 +18,7 @@ namespace Dgml
             {
                 throw new ArgumentNullException(nameof(template));
             }
+#pragma warning restore CA1510 // Use ArgumentNullException throw helper
 
             var result = DebugViewParser.Parse(debugView.Split(new[] { Environment.NewLine }, StringSplitOptions.None), contextName);
 

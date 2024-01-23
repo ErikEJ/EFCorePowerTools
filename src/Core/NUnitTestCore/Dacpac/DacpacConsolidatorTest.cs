@@ -1,5 +1,6 @@
 ﻿using GOEddie.Dacpac.References;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace UnitTests
 {
@@ -14,7 +15,7 @@ namespace UnitTests
             var result = DacpacConsolidator.Consolidate(@"C:\Users\Erik\Downloads\CompositeDatabase\CompositeDatabase\CompositeDatabase\bin\Debug\CompositeDatabase.dacpac");
 
             // Assert
-            Assert.IsTrue(result.Contains("\\efpt-"));
+            ClassicAssert.IsTrue(result.Contains("\\efpt-"));
         }
 
         [Test]
@@ -27,7 +28,7 @@ namespace UnitTests
             var result = DacpacConsolidator.Consolidate(dacPath);
 
             // Assert
-            Assert.AreEqual(result, dacPath);
+            ClassicAssert.AreEqual(result, dacPath);
         }
 
         private string TestPath(string file)

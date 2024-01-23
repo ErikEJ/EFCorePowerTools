@@ -2,6 +2,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RevEng.Common;
 using RevEng.Core;
 

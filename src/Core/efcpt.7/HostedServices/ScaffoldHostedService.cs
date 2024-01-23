@@ -39,7 +39,6 @@ internal sealed class ScaffoldHostedService : HostedService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
-
         var sw = Stopwatch.StartNew();
         var tableModels = GetTablesAndViews();
         GetProcedures(tableModels);
@@ -48,7 +47,6 @@ internal sealed class ScaffoldHostedService : HostedService
 
         DisplayService.MarkupLine();
         DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
-
 
         if (!CliConfigMapper.TryGetCliConfig(
                 scaffoldOptions.ConfigFile.FullName,

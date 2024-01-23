@@ -154,6 +154,23 @@ namespace RevEng.Common.Cli
             return true;
         }
 
+        public static List<SerializationTableModel> BuildObjectList(CliConfig config)
+        {
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            var objects = new List<SerializationTableModel>();
+
+            ToSerializationModel(config.Tables, objects.AddRange);
+            ToSerializationModel(config.Views, objects.AddRange);
+            ToSerializationModel(config.StoredProcedures, objects.AddRange);
+            ToSerializationModel(config.Functions, objects.AddRange);
+
+            return objects;
+        }
+
         /// <summary>
         /// Ensures that any excluded columns for tables are not required. Removes the invalid columns from the list.
         /// </summary>
@@ -183,23 +200,6 @@ namespace RevEng.Common.Cli
             }
 
             return warnings;
-        }
-
-        public static List<SerializationTableModel> BuildObjectList(CliConfig config)
-        {
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
-            var objects = new List<SerializationTableModel>();
-
-            ToSerializationModel(config.Tables, objects.AddRange);
-            ToSerializationModel(config.Views, objects.AddRange);
-            ToSerializationModel(config.StoredProcedures, objects.AddRange);
-            ToSerializationModel(config.Functions, objects.AddRange);
-
-            return objects;
         }
 
         private static void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
