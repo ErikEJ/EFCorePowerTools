@@ -3,6 +3,7 @@
 namespace UnitTests.Models
 {
     using EFCorePowerTools.Common.Models;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class DatabaseDefinitionModelTests
@@ -19,8 +20,8 @@ namespace UnitTests.Models
             ddm.FilePath = null;
 
             // Assert
-            Assert.AreEqual(0, invokes);
-            Assert.IsNull(ddm.FilePath);
+            ClassicAssert.AreEqual(0, invokes);
+            ClassicAssert.IsNull(ddm.FilePath);
         }
 
         [Test]
@@ -36,8 +37,8 @@ namespace UnitTests.Models
             ddm.FilePath = filePath;
 
             // Assert
-            Assert.AreEqual(1, invokes);
-            Assert.AreEqual(filePath, ddm.FilePath);
+            ClassicAssert.AreEqual(1, invokes);
+            ClassicAssert.AreEqual(filePath, ddm.FilePath);
         }
     }
 }

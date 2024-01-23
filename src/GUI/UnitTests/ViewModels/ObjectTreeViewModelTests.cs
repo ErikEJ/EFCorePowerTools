@@ -9,6 +9,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
+    using NUnit.Framework.Legacy;
     using RevEng.Common;
 
     [TestFixture]
@@ -23,7 +24,7 @@ namespace UnitTests.ViewModels
             Func<IColumnInformationViewModel> c = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(s, t, c));
+            ClassicAssert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(s, t, c));
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace UnitTests.ViewModels
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
-            Assert.IsNotNull(vm.Types);
+            ClassicAssert.IsNotNull(vm.Types);
         }
 
         [Test]
@@ -44,7 +45,7 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            Assert.Throws<ArgumentNullException>(() => vm.AddObjects(null, null));
+            ClassicAssert.Throws<ArgumentNullException>(() => vm.AddObjects(null, null));
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace UnitTests.ViewModels
             vm.AddObjects(objectsToAdd, null);
 
             // Assert
-            Assert.IsEmpty(vm.Types.SelectMany(t => t.Schemas));
+            ClassicAssert.IsEmpty(vm.Types.SelectMany(t => t.Schemas));
         }
 
         [Test]
@@ -74,12 +75,12 @@ namespace UnitTests.ViewModels
             var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).OrderBy(c => c.Schema).ThenBy(c => c.Name).ToArray();
 
             // Assert
-            Assert.IsNotEmpty(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects));
-            Assert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).Count());
+            ClassicAssert.IsNotEmpty(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects));
+            ClassicAssert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).Count());
             for (var i = 0; i < objects.Count(); i++)
             {
                 AreObjectsEqual(objects[i], vmobjects[i]);
-                Assert.IsFalse(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).ElementAt(i).IsSelected);
+                ClassicAssert.IsFalse(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).ElementAt(i).IsSelected);
             }
         }
 
@@ -98,17 +99,17 @@ namespace UnitTests.ViewModels
             var renamers = vm.GetRenamedObjects();
 
             // Assert
-            Assert.AreEqual(replacers.Length, renamers.Count());
+            ClassicAssert.AreEqual(replacers.Length, renamers.Count());
 
             foreach (var replacerSchema in replacers)
             {
                 foreach (var table in replacerSchema.Tables)
                 {
                     var vmobject = vmobjects.First(o => o.Schema == replacerSchema.SchemaName && o.Name.Equals(table.Name, StringComparison.OrdinalIgnoreCase));
-                    Assert.AreEqual(vmobject.NewName, table.NewName);
+                    ClassicAssert.AreEqual(vmobject.NewName, table.NewName);
                     foreach (var column in table.Columns)
                     {
-                        Assert.AreEqual(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
+                        ClassicAssert.AreEqual(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
                     }
                 }
             }
@@ -165,9 +166,9 @@ namespace UnitTests.ViewModels
             var renamers = vm.GetRenamedObjects().ToList();
 
             // Assert
-            Assert.AreEqual(3, renamers[0].Tables.Count);
-            Assert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
-            Assert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
+            ClassicAssert.AreEqual(3, renamers[0].Tables.Count);
+            ClassicAssert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
+            ClassicAssert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
         }
 
         [Test]
@@ -177,7 +178,7 @@ namespace UnitTests.ViewModels
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act and assert
-            Assert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
+            ClassicAssert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
         }
 
         [Test]
@@ -191,7 +192,7 @@ namespace UnitTests.ViewModels
             vm.SelectObjects(selectedTables);
 
             // Assert
-            Assert.IsEmpty(vm.GetSelectedObjects());
+            ClassicAssert.IsEmpty(vm.GetSelectedObjects());
         }
 
         [Test]
@@ -206,17 +207,17 @@ namespace UnitTests.ViewModels
             vm.SelectObjects(selectedObjects);
 
             // Assert
-            Assert.AreEqual(GetSelectedObjects().Count(), vm.GetSelectedObjects().Count());
+            ClassicAssert.AreEqual(GetSelectedObjects().Count(), vm.GetSelectedObjects().Count());
             for (var i = 0; i < vm.GetSelectedObjects().Count(); i++)
             {
                 var a = vm.GetSelectedObjects().ElementAt(i);
                 var b = selectedObjects[i];
 
-                Assert.AreEqual(a.Name, b.Name);
-                Assert.AreEqual(a.ObjectType, b.ObjectType);
+                ClassicAssert.AreEqual(a.Name, b.Name);
+                ClassicAssert.AreEqual(a.ObjectType, b.ObjectType);
                 for (var j = 0; j < a.ExcludedColumns?.Count(); j++)
                 {
-                    Assert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
+                    ClassicAssert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
                 }
             }
         }
@@ -234,9 +235,9 @@ namespace UnitTests.ViewModels
             vm.Search("ref", SearchMode.Text);
 
             // Assert
-            Assert.AreEqual(databaseObjects.Length, preFilter.Count());
+            ClassicAssert.AreEqual(databaseObjects.Length, preFilter.Count());
             var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
-            Assert.AreEqual(2, postFilter.Count());
+            ClassicAssert.AreEqual(2, postFilter.Count());
         }
 
         [Test]
@@ -251,7 +252,7 @@ namespace UnitTests.ViewModels
             vm.Search("ref", SearchMode.Text);
 
             // Assert
-            Assert.That(
+            ClassicAssert.That(
                 () =>
                 {
                     var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
@@ -270,8 +271,8 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsEmpty(result);
+            ClassicAssert.IsNotNull(result);
+            ClassicAssert.IsEmpty(result);
         }
 
         [Test]
@@ -285,8 +286,8 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsEmpty(result);
+            ClassicAssert.IsNotNull(result);
+            ClassicAssert.IsEmpty(result);
         }
 
         [Test]
@@ -305,16 +306,16 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects().OrderBy(c => c.Name).ToArray();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(11, result.Count());
+            ClassicAssert.IsNotNull(result);
+            ClassicAssert.AreEqual(11, result.Count());
             for (var i = 0; i < result.Length - 1; i++)
             {
-                Assert.AreEqual(databaseObjects[i + 1].DisplayName, result[i].Name);
+                ClassicAssert.AreEqual(databaseObjects[i + 1].DisplayName, result[i].Name);
             }
 
             // Act
             var renamed = vm.GetRenamedObjects();
-            Assert.AreEqual(0, renamed.Count());
+            ClassicAssert.AreEqual(0, renamed.Count());
         }
 
         [Test]
@@ -333,11 +334,11 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects().ToList();
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(6, result.Count);
+            ClassicAssert.IsNotNull(result);
+            ClassicAssert.AreEqual(6, result.Count);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                Assert.IsTrue(result.Exists(c => c.Name == item.Objects[0].ModelDisplayName));
+                ClassicAssert.IsTrue(result.Exists(c => c.Name == item.Objects[0].ModelDisplayName));
             }
         }
 
@@ -356,7 +357,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsTrue(vm.GetSelectionState());
+            ClassicAssert.IsTrue(vm.GetSelectionState());
         }
 
         [Test]
@@ -374,7 +375,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsFalse(vm.GetSelectionState());
+            ClassicAssert.IsFalse(vm.GetSelectionState());
         }
 
         [Test]
@@ -392,7 +393,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsNull(vm.GetSelectionState());
+            ClassicAssert.IsNull(vm.GetSelectionState());
         }
 
         [Test]
@@ -409,11 +410,11 @@ namespace UnitTests.ViewModels
             // Assert
             if (selected)
             {
-                Assert.AreEqual(databaseObjects.Length, vm.GetSelectedObjects().Count());
+                ClassicAssert.AreEqual(databaseObjects.Length, vm.GetSelectedObjects().Count());
             }
             else
             {
-                Assert.AreEqual(0, vm.GetSelectedObjects().Count());
+                ClassicAssert.AreEqual(0, vm.GetSelectedObjects().Count());
             }
         }
 
@@ -438,12 +439,12 @@ namespace UnitTests.ViewModels
 
             // Assert
             var renamedObjects = vm.GetRenamedObjects();
-            Assert.IsNotNull(renamedObjects);
-            Assert.AreSame("NewTableName", renamedObjects.First().Tables[0].NewName);
-            Assert.AreSame("NewColumnName", renamedObjects.First().Tables[0].Columns[0].NewName);
+            ClassicAssert.IsNotNull(renamedObjects);
+            ClassicAssert.AreSame("NewTableName", renamedObjects.First().Tables[0].NewName);
+            ClassicAssert.AreSame("NewColumnName", renamedObjects.First().Tables[0].Columns[0].NewName);
 
-            Assert.AreSame("DepartmentDetail", renamedObjects.Last().Tables[0].NewName);
-            Assert.AreSame("DepartmentName", renamedObjects.Last().Tables[0].Columns[0].NewName);
+            ClassicAssert.AreSame("DepartmentDetail", renamedObjects.Last().Tables[0].NewName);
+            ClassicAssert.AreSame("DepartmentName", renamedObjects.Last().Tables[0].Columns[0].NewName);
         }
 
         private static TableModel[] GetDatabaseObjects()
@@ -570,12 +571,12 @@ namespace UnitTests.ViewModels
 
         private static void AreObjectsEqual(TableModel a, ITableInformationViewModel b)
         {
-            Assert.AreEqual(a.Name, b.Name);
-            Assert.AreEqual(a.Schema, b.Schema);
-            Assert.AreEqual(a.ObjectType, b.ObjectType);
+            ClassicAssert.AreEqual(a.Name, b.Name);
+            ClassicAssert.AreEqual(a.Schema, b.Schema);
+            ClassicAssert.AreEqual(a.ObjectType, b.ObjectType);
             for (var i = 0; i < a.Columns.Count(); i++)
             {
-                Assert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns[i].Name);
+                ClassicAssert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns[i].Name);
             }
         }
     }

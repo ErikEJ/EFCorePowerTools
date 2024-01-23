@@ -1,6 +1,7 @@
 ﻿using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Helpers;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RevEng.Common;
 
 namespace UnitTests.BLL
@@ -23,18 +24,18 @@ namespace UnitTests.BLL
 
             var saved = credentialStore.SaveCredential(databaseConnection);
 
-            Assert.IsTrue(saved);
+            ClassicAssert.IsTrue(saved);
 
             var connections = credentialStore.GetStoredDatabaseConnections();
 
-            Assert.AreEqual(1, connections.Count);
-            Assert.AreEqual("test", connections[0].ConnectionName);
-            Assert.AreEqual("Data Source=test", connections[0].ConnectionString);
-            Assert.AreEqual(DatabaseType.SQLite, connections[0].DatabaseType);
+            ClassicAssert.AreEqual(1, connections.Count);
+            ClassicAssert.AreEqual("test", connections[0].ConnectionName);
+            ClassicAssert.AreEqual("Data Source=test", connections[0].ConnectionString);
+            ClassicAssert.AreEqual(DatabaseType.SQLite, connections[0].DatabaseType);
 
             var deleted = credentialStore.DeleteCredential("test");
 
-            Assert.IsTrue(deleted);
+            ClassicAssert.IsTrue(deleted);
         }
     }
 }

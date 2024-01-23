@@ -8,6 +8,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Common.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class AboutViewModelTests
@@ -21,7 +22,7 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
         [Test]
@@ -45,7 +46,7 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
         [Test]
@@ -57,10 +58,10 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
         [Test]
@@ -75,10 +76,10 @@ namespace UnitTests.ViewModels
             var avm = new AboutViewModel(aem, evs, osa);
 
             // Assert
-            Assert.IsNotNull(avm.LoadedCommand);
-            Assert.IsNotNull(avm.OkCommand);
-            Assert.IsNotNull(avm.OpenSourcesCommand);
-            Assert.IsNotNull(avm.OpenMarketplaceCommand);
+            ClassicAssert.IsNotNull(avm.LoadedCommand);
+            ClassicAssert.IsNotNull(avm.OkCommand);
+            ClassicAssert.IsNotNull(avm.OpenSourcesCommand);
+            ClassicAssert.IsNotNull(avm.OpenMarketplaceCommand);
         }
 
         [Test]
@@ -94,7 +95,7 @@ namespace UnitTests.ViewModels
             var canExecute = avm.LoadedCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -113,7 +114,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             evsMock.Verify(m => m.SetExtensionVersion(aem), Times.Once);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(avm.Version));
+            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(avm.Version));
         }
 
         [Test]
@@ -134,7 +135,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             evsMock.Verify(m => m.SetExtensionVersion(aem), Times.Never);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(avm.Version));
+            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(avm.Version));
         }
 
         [Test]
@@ -150,7 +151,7 @@ namespace UnitTests.ViewModels
             var canExecute = avm.OkCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -168,7 +169,7 @@ namespace UnitTests.ViewModels
             avm.OkCommand.Execute(null);
 
             // Assert
-            Assert.IsTrue(closeRequested);
+            ClassicAssert.IsTrue(closeRequested);
         }
 
         [Test]
@@ -184,7 +185,7 @@ namespace UnitTests.ViewModels
             var canExecute = avm.OpenSourcesCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -200,7 +201,7 @@ namespace UnitTests.ViewModels
             var canExecute = avm.OpenMarketplaceCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]

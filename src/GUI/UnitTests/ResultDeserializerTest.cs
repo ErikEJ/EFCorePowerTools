@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace UnitTests
 {
@@ -20,8 +21,8 @@ namespace UnitTests
             var parsed = parser.BuildTableResult(result);
 
             // Assert
-            Assert.IsNotNull(parsed);
-            Assert.AreEqual(29, parsed.Count);
+            ClassicAssert.IsNotNull(parsed);
+            ClassicAssert.AreEqual(29, parsed.Count);
         }
 
         [Test]
@@ -35,8 +36,8 @@ namespace UnitTests
             var parsed = parser.BuildTableResult(result);
 
             // Assert
-            Assert.IsNotNull(parsed);
-            Assert.AreEqual(29, parsed.Count);
+            ClassicAssert.IsNotNull(parsed);
+            ClassicAssert.AreEqual(29, parsed.Count);
         }
 
         [Test]

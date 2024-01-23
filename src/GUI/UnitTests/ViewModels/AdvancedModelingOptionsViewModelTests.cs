@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.ViewModels;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace UnitTests.ViewModels
 {
@@ -13,8 +14,8 @@ namespace UnitTests.ViewModels
             var vm = new AdvancedModelingOptionsViewModel();
 
             // Assert
-            Assert.IsNotNull(vm.OkCommand);
-            Assert.IsNotNull(vm.CancelCommand);
+            ClassicAssert.IsNotNull(vm.OkCommand);
+            ClassicAssert.IsNotNull(vm.CancelCommand);
         }
     }
 }

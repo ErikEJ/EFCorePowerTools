@@ -7,6 +7,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class ObjectTreeRootItemViewModelTests
@@ -25,7 +26,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsTrue(vm.IsSelected);
+            ClassicAssert.IsTrue(vm.IsSelected);
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsFalse(vm.IsSelected);
+            ClassicAssert.IsFalse(vm.IsSelected);
         }
 
         [Test]
@@ -59,7 +60,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsNull(vm.IsSelected);
+            ClassicAssert.IsNull(vm.IsSelected);
         }
 
         [Test]
@@ -76,7 +77,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsFalse(vm.IsVisible);
+            ClassicAssert.IsFalse(vm.IsVisible);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            Assert.IsTrue(vm.IsVisible);
+            ClassicAssert.IsTrue(vm.IsVisible);
         }
 
         [Test]
@@ -109,7 +110,7 @@ namespace UnitTests.ViewModels
             vm.Text = "Tables";
 
             // Assert
-            Assert.IsFalse(propertyChangedInvoked);
+            ClassicAssert.IsFalse(propertyChangedInvoked);
         }
 
         [Test]
@@ -125,7 +126,7 @@ namespace UnitTests.ViewModels
             vm.Text = "Views";
 
             // Assert
-            Assert.IsTrue(propertyChangedInvoked);
+            ClassicAssert.IsTrue(propertyChangedInvoked);
         }
 
         private static void AddObjects(ObjectTreeRootItemViewModel vm)

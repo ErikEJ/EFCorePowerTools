@@ -6,6 +6,7 @@ namespace UnitTests.ViewModels
 {
     using System.Linq;
     using EFCorePowerTools.ViewModels;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class SchemaInformationViewModelTests
@@ -25,7 +26,7 @@ namespace UnitTests.ViewModels
             vm.Name = "dbo";
 
             // Assert
-            Assert.IsFalse(propertyChangedInvoked);
+            ClassicAssert.IsFalse(propertyChangedInvoked);
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(false);
 
             // Assert
-            Assert.IsFalse(propertyChangedInvoked);
+            ClassicAssert.IsFalse(propertyChangedInvoked);
         }
 
         [Test]
@@ -61,7 +62,7 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(true);
 
             // Assert
-            Assert.IsTrue(propertyChangedInvoked);
+            ClassicAssert.IsTrue(propertyChangedInvoked);
         }
 
         [Test]
@@ -80,7 +81,7 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(isSelected);
 
             // Assert
-            Assert.IsTrue(vm.Objects.All(c => c.IsSelected == isSelected));
+            ClassicAssert.IsTrue(vm.Objects.All(c => c.IsSelected == isSelected));
         }
 
         [Test]
@@ -99,7 +100,7 @@ namespace UnitTests.ViewModels
             vm.Objects[0].SetSelectedCommand.Execute(true);
 
             // Assert
-            Assert.IsNull(vm.IsSelected);
+            ClassicAssert.IsNull(vm.IsSelected);
         }
 
         private TableInformationViewModel CreateTable(string name)

@@ -5,6 +5,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class ColumnInformationViewModelTests
@@ -22,7 +23,7 @@ namespace UnitTests.ViewModels
             vm.Name = "column1";
 
             // Assert
-            Assert.IsFalse(propertyChangedInvoked);
+            ClassicAssert.IsFalse(propertyChangedInvoked);
         }
 
         [Test]
@@ -39,7 +40,7 @@ namespace UnitTests.ViewModels
             vm.IsPrimaryKey = true;
 
             // Assert
-            Assert.IsFalse(propertyChangedInvoked);
+            ClassicAssert.IsFalse(propertyChangedInvoked);
         }
 
         [Test]
@@ -55,7 +56,7 @@ namespace UnitTests.ViewModels
             vm.Name = "column2";
 
             // Assert
-            Assert.IsTrue(propertyChangedInvoked);
+            ClassicAssert.IsTrue(propertyChangedInvoked);
         }
 
         [Test]
@@ -72,7 +73,7 @@ namespace UnitTests.ViewModels
             vm.IsPrimaryKey = false;
 
             // Assert
-            Assert.IsTrue(propertyChangedInvoked);
+            ClassicAssert.IsTrue(propertyChangedInvoked);
         }
 
         [Test]
@@ -88,7 +89,7 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(true);
 
             // Assert
-            Assert.IsFalse(vm.IsSelected);
+            ClassicAssert.IsFalse(vm.IsSelected);
         }
 
         [Test]
@@ -106,7 +107,7 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(false);
 
             // Assert
-            Assert.IsTrue(vm.IsSelected);
+            ClassicAssert.IsTrue(vm.IsSelected);
         }
 
         [Test]
@@ -122,7 +123,7 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(true);
 
             // Assert
-            Assert.IsTrue(vm.IsSelected);
+            ClassicAssert.IsTrue(vm.IsSelected);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace UnitTests.ViewModels
             vm.NewName = "newname";
 
             // Assert
-            Assert.AreEqual("newname - (column1)", vm.DisplayName);
+            ClassicAssert.AreEqual("newname - (column1)", vm.DisplayName);
         }
 
         [Test]
@@ -152,7 +153,7 @@ namespace UnitTests.ViewModels
             vm.NewName = "column1";
 
             // Assert
-            Assert.AreEqual("column1", vm.DisplayName);
+            ClassicAssert.AreEqual("column1", vm.DisplayName);
         }
 
         [Test]
@@ -166,7 +167,7 @@ namespace UnitTests.ViewModels
             vm.StartEditCommand.Execute(null);
 
             // Assert
-            Assert.IsTrue(vm.IsEditing);
+            ClassicAssert.IsTrue(vm.IsEditing);
         }
 
         [Test]
@@ -182,8 +183,8 @@ namespace UnitTests.ViewModels
             vm.ConfirmEditCommand.Execute(null);
 
             // Assert
-            Assert.IsFalse(vm.IsEditing);
-            Assert.AreNotSame(vm.Name, vm.NewName);
+            ClassicAssert.IsFalse(vm.IsEditing);
+            ClassicAssert.AreNotSame(vm.Name, vm.NewName);
         }
 
         [Test]
@@ -199,8 +200,8 @@ namespace UnitTests.ViewModels
             vm.CancelEditCommand.Execute(null);
 
             // Assert
-            Assert.IsFalse(vm.IsEditing);
-            Assert.AreSame(vm.Name, vm.NewName);
+            ClassicAssert.IsFalse(vm.IsEditing);
+            ClassicAssert.AreSame(vm.Name, vm.NewName);
         }
 
         private ColumnInformationViewModel CreateViewModel()

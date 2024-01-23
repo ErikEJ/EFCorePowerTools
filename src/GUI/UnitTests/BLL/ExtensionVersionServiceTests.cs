@@ -8,6 +8,7 @@ namespace UnitTests.BLL
     using EFCorePowerTools.Common.DAL;
     using EFCorePowerTools.Common.Models;
     using Moq;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class ExtensionVersionServiceTests
@@ -19,7 +20,7 @@ namespace UnitTests.BLL
             IDotNetAccess dna = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new ExtensionVersionService(dna));
+            ClassicAssert.Throws<ArgumentNullException>(() => new ExtensionVersionService(dna));
         }
 
         [Test]
@@ -30,7 +31,7 @@ namespace UnitTests.BLL
             IExtensionVersionService evs = new ExtensionVersionService(dna);
 
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => evs.SetExtensionVersion(null));
+            ClassicAssert.Throws<ArgumentNullException>(() => evs.SetExtensionVersion(null));
         }
 
         [Test]
@@ -47,7 +48,7 @@ namespace UnitTests.BLL
             evs.SetExtensionVersion(aem);
 
             // Assert
-            Assert.AreSame(version, aem.ExtensionVersion);
+            ClassicAssert.AreSame(version, aem.ExtensionVersion);
         }
     }
 }

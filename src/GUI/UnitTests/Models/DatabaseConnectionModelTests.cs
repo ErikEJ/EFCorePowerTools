@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Common.Models;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RevEng.Common;
 
 namespace UnitTests.Models
@@ -21,10 +22,10 @@ namespace UnitTests.Models
             dcm.DatabaseType = DatabaseType.Undefined;
 
             // Assert
-            Assert.AreEqual(0, invokes);
-            Assert.IsNull(dcm.ConnectionName);
-            Assert.IsNull(dcm.ConnectionString);
-            Assert.AreEqual(DatabaseType.Undefined, dcm.DatabaseType);
+            ClassicAssert.AreEqual(0, invokes);
+            ClassicAssert.IsNull(dcm.ConnectionName);
+            ClassicAssert.IsNull(dcm.ConnectionString);
+            ClassicAssert.AreEqual(DatabaseType.Undefined, dcm.DatabaseType);
         }
 
         [Test]
@@ -44,10 +45,10 @@ namespace UnitTests.Models
             dcm.DatabaseType = dbType;
 
             // Assert
-            Assert.AreEqual(3, invokes);
-            Assert.AreEqual(connectionName, dcm.ConnectionName);
-            Assert.AreEqual(connectionString, dcm.ConnectionString);
-            Assert.AreEqual(dbType, dcm.DatabaseType);
+            ClassicAssert.AreEqual(3, invokes);
+            ClassicAssert.AreEqual(connectionName, dcm.ConnectionName);
+            ClassicAssert.AreEqual(connectionString, dcm.ConnectionString);
+            ClassicAssert.AreEqual(dbType, dcm.DatabaseType);
         }
     }
 }

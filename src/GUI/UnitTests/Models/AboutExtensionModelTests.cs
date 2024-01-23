@@ -3,6 +3,7 @@
 namespace UnitTests.Models
 {
     using EFCorePowerTools.Common.Models;
+    using NUnit.Framework.Legacy;
 
     [TestFixture]
     public class AboutExtensionModelTests
@@ -15,7 +16,7 @@ namespace UnitTests.Models
             var sourceCodeUrl = AboutExtensionModel.SourceCodeUrl;
 
             // Assert
-            Assert.IsFalse(string.IsNullOrWhiteSpace(sourceCodeUrl));
+            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(sourceCodeUrl));
         }
 
         [Test]
@@ -26,7 +27,7 @@ namespace UnitTests.Models
             var marketplaceUrl = AboutExtensionModel.MarketplaceUrl;
 
             // Assert
-            Assert.IsFalse(string.IsNullOrWhiteSpace(marketplaceUrl));
+            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(marketplaceUrl));
         }
     }
 }

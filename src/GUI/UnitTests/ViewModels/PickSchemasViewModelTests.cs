@@ -2,6 +2,7 @@
 {
     using EFCorePowerTools.ViewModels;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using RevEng.Common;
 
     [TestFixture]
@@ -14,10 +15,10 @@
             var vm = new PickSchemasViewModel();
 
             // Assert
-            Assert.IsNotNull(vm.OkCommand);
-            Assert.IsNotNull(vm.CancelCommand);
-            Assert.IsNotNull(vm.AddCommand);
-            Assert.IsNotNull(vm.RemoveCommand);
+            ClassicAssert.IsNotNull(vm.OkCommand);
+            ClassicAssert.IsNotNull(vm.CancelCommand);
+            ClassicAssert.IsNotNull(vm.AddCommand);
+            ClassicAssert.IsNotNull(vm.RemoveCommand);
         }
 
         [Test]
@@ -27,8 +28,8 @@
             var vm = new PickSchemasViewModel();
 
             // Assert
-            Assert.IsNotNull(vm.Schemas);
-            Assert.IsEmpty(vm.Schemas);
+            ClassicAssert.IsNotNull(vm.Schemas);
+            ClassicAssert.IsEmpty(vm.Schemas);
         }
 
         [Test]
@@ -41,7 +42,7 @@
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            Assert.IsFalse(canExecute);
+            ClassicAssert.IsFalse(canExecute);
         }
 
         [Test]
@@ -55,7 +56,7 @@
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -71,7 +72,7 @@
             vm.OkCommand.Execute(null);
 
             // Assert
-            Assert.AreEqual(1, vm.Schemas.Count);
+            ClassicAssert.AreEqual(1, vm.Schemas.Count);
         }
 
         [Test]
@@ -84,7 +85,7 @@
             var canExecute = vm.CancelCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -97,7 +98,7 @@
             vm.AddCommand.Execute(null);
 
             // Assert
-            Assert.AreEqual(1, vm.Schemas.Count);
+            ClassicAssert.AreEqual(1, vm.Schemas.Count);
         }
 
         [Test]
@@ -110,7 +111,7 @@
             var canExecute = vm.RemoveCommand.CanExecute(null);
 
             // Assert
-            Assert.IsFalse(canExecute);
+            ClassicAssert.IsFalse(canExecute);
         }
 
         [Test]
@@ -128,7 +129,7 @@
             var canExecute = vm.RemoveCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -144,8 +145,8 @@
             vm.RemoveCommand.Execute(null);
 
             // Assert
-            Assert.AreEqual(0, vm.Schemas.Count);
-            Assert.IsNull(vm.SelectedSchema);
+            ClassicAssert.AreEqual(0, vm.Schemas.Count);
+            ClassicAssert.IsNull(vm.SelectedSchema);
         }
     }
 }

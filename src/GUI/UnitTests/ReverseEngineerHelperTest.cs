@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Helpers;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RevEng.Common;
 using System.Collections.Generic;
 
@@ -26,11 +27,11 @@ namespace UnitTests
             var result = helper.NormalizeTables(tables, true);
 
             // Assert
-            Assert.AreEqual(4, result.Count);
-            Assert.AreEqual("[dbo].[table]", result[0].Name);
-            Assert.AreEqual("[dbo].[table.crazy]", result[1].Name);
-            Assert.AreEqual("[dbo].[table]", result[2].Name);
-            Assert.AreEqual("[dbo].[table.mad]", result[3].Name);
+            ClassicAssert.AreEqual(4, result.Count);
+            ClassicAssert.AreEqual("[dbo].[table]", result[0].Name);
+            ClassicAssert.AreEqual("[dbo].[table.crazy]", result[1].Name);
+            ClassicAssert.AreEqual("[dbo].[table]", result[2].Name);
+            ClassicAssert.AreEqual("[dbo].[table.mad]", result[3].Name);
         }
 
         [Test]
@@ -50,10 +51,10 @@ namespace UnitTests
             var result = helper.NormalizeTables(tables, false);
 
             // Assert
-            Assert.AreEqual(5, result.Count);
+            ClassicAssert.AreEqual(5, result.Count);
             for (int i = 0; i < 5; i++)
             {
-                Assert.AreEqual(result[i].Name, tables[i].Name);
+                ClassicAssert.AreEqual(result[i].Name, tables[i].Name);
             }
         }
     }

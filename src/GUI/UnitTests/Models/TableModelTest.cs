@@ -2,6 +2,7 @@
 {
     using System;
     using NUnit.Framework;
+    using NUnit.Framework.Legacy;
     using RevEng.Common;
 
     [TestFixture]
@@ -14,7 +15,7 @@
             string table = null;
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => new TableModel(table, null, DatabaseType.SQLServer, ObjectType.Table, null));
+            ClassicAssert.Throws<ArgumentException>(() => new TableModel(table, null, DatabaseType.SQLServer, ObjectType.Table, null));
         }
 
         [Test]
@@ -24,11 +25,11 @@
             var ti = new TableModel("Album", "dbo", DatabaseType.Npgsql, ObjectType.Table, null);
 
             // Assert
-            Assert.AreEqual("dbo.Album", ti.DisplayName);
-            Assert.AreEqual("Album", ti.Name);
-            Assert.AreEqual("dbo", ti.Schema);
-            Assert.AreEqual(ObjectType.Table, ti.ObjectType);
-            Assert.AreEqual(DatabaseType.Npgsql, ti.DatabaseType);
+            ClassicAssert.AreEqual("dbo.Album", ti.DisplayName);
+            ClassicAssert.AreEqual("Album", ti.Name);
+            ClassicAssert.AreEqual("dbo", ti.Schema);
+            ClassicAssert.AreEqual(ObjectType.Table, ti.ObjectType);
+            ClassicAssert.AreEqual(DatabaseType.Npgsql, ti.DatabaseType);
         }
 
         [Test]
@@ -38,11 +39,11 @@
             var ti = new TableModel("Album", "dbo", DatabaseType.SQLServer, ObjectType.Table, null);
 
             // Assert
-            Assert.AreEqual("[dbo].[Album]", ti.DisplayName);
-            Assert.AreEqual("Album", ti.Name);
-            Assert.AreEqual("dbo", ti.Schema);
-            Assert.AreEqual(ObjectType.Table, ti.ObjectType);
-            Assert.AreEqual(DatabaseType.SQLServer, ti.DatabaseType);
+            ClassicAssert.AreEqual("[dbo].[Album]", ti.DisplayName);
+            ClassicAssert.AreEqual("Album", ti.Name);
+            ClassicAssert.AreEqual("dbo", ti.Schema);
+            ClassicAssert.AreEqual(ObjectType.Table, ti.ObjectType);
+            ClassicAssert.AreEqual(DatabaseType.SQLServer, ti.DatabaseType);
         }
 
         [Test]
@@ -52,11 +53,11 @@
             var ti = new TableModel("Album", "dbo", DatabaseType.SQLServerDacpac, ObjectType.Table, null);
 
             // Assert
-            Assert.AreEqual("[dbo].[Album]", ti.DisplayName);
-            Assert.AreEqual("Album", ti.Name);
-            Assert.AreEqual("dbo", ti.Schema);
-            Assert.AreEqual(ObjectType.Table, ti.ObjectType);
-            Assert.AreEqual(DatabaseType.SQLServerDacpac, ti.DatabaseType);
+            ClassicAssert.AreEqual("[dbo].[Album]", ti.DisplayName);
+            ClassicAssert.AreEqual("Album", ti.Name);
+            ClassicAssert.AreEqual("dbo", ti.Schema);
+            ClassicAssert.AreEqual(ObjectType.Table, ti.ObjectType);
+            ClassicAssert.AreEqual(DatabaseType.SQLServerDacpac, ti.DatabaseType);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using EFCorePowerTools.Helpers;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace UnitTests
 {
@@ -14,7 +15,7 @@ namespace UnitTests
             var result = RenamingRulesSerializer.TryRead(Path.Combine(TestContext.CurrentContext.TestDirectory, "renaming.json"));
 
             // Assert
-            Assert.IsNotNull(result);
+            ClassicAssert.IsNotNull(result);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EFCorePowerTools.Extensions;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using RevEng.Common;
 
 namespace UnitTests
@@ -14,7 +15,7 @@ namespace UnitTests
             var result = PathHelper.GetAbsPath("..\\..\\folder", "C:\\temp\\data\\");
 
             // Assert
-            Assert.AreEqual(@"C:\folder", result);
+            ClassicAssert.AreEqual(@"C:\folder", result);
         }
 
         [Test]
@@ -24,7 +25,7 @@ namespace UnitTests
             var result = PathHelper.GetAbsPath("D:\\folder", "C:\\temp\\data\\");
 
             // Assert
-            Assert.AreEqual(@"D:\folder", result);
+            ClassicAssert.AreEqual(@"D:\folder", result);
         }
 
         [Test]
@@ -34,7 +35,7 @@ namespace UnitTests
             var result = PathHelper.GetAbsPath("\\server\\folder", "C:\\temp\\data\\");
 
             // Assert
-            Assert.AreEqual(@"\server\folder", result);
+            ClassicAssert.AreEqual(@"\server\folder", result);
         }
 
         [Test]
@@ -44,7 +45,7 @@ namespace UnitTests
             var result = PathHelper.GetAbsPath("folder", "C:\\temp\\data\\");
 
             // Assert
-            Assert.AreEqual(@"C:\temp\data\folder", result);
+            ClassicAssert.AreEqual(@"C:\temp\data\folder", result);
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace UnitTests
             var result = PathHelper.GetAbsPath("..\\", "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground");
 
             // Assert
-            Assert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test\Ef7Playground", result);
+            ClassicAssert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test\Ef7Playground", result);
         }
 
         [Test]
@@ -64,7 +65,7 @@ namespace UnitTests
             var result = PathHelper.GetAbsPath("..\\..\\", "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground");
 
             // Assert
-            Assert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test", result);
+            ClassicAssert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test", result);
         }
     }
 }

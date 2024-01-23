@@ -6,6 +6,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using Moq;
+    using NUnit.Framework.Legacy;
     using RevEng.Common;
 
     [TestFixture]
@@ -19,8 +20,8 @@ namespace UnitTests.ViewModels
             var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
-            Assert.IsNotNull(vm.OkCommand);
-            Assert.IsNotNull(vm.CancelCommand);
+            ClassicAssert.IsNotNull(vm.OkCommand);
+            ClassicAssert.IsNotNull(vm.CancelCommand);
         }
 
         [Test]
@@ -32,7 +33,7 @@ namespace UnitTests.ViewModels
             var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
-            Assert.IsNotNull(vm.ObjectTree);
+            ClassicAssert.IsNotNull(vm.ObjectTree);
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace UnitTests.ViewModels
             var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
-            Assert.IsNull(vm.TableSelectionThreeState);
+            ClassicAssert.IsNull(vm.TableSelectionThreeState);
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace UnitTests.ViewModels
             var vm = new PickTablesViewModel(CreateObjectTreeViewModelMock().Object);
 
             // Assert
-            Assert.AreEqual(string.Empty, vm.SearchText);
+            ClassicAssert.AreEqual(string.Empty, vm.SearchText);
         }
 
         [Test]
@@ -67,7 +68,7 @@ namespace UnitTests.ViewModels
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            Assert.IsFalse(canExecute);
+            ClassicAssert.IsFalse(canExecute);
         }
 
         [Test]
@@ -80,7 +81,7 @@ namespace UnitTests.ViewModels
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -101,9 +102,9 @@ namespace UnitTests.ViewModels
             vm.OkCommand.Execute(null);
 
             // Assert
-            Assert.IsTrue(closeRequested);
-            Assert.IsTrue(dialogResult);
-            Assert.IsNotEmpty(vm.GetSelectedObjects());
+            ClassicAssert.IsTrue(closeRequested);
+            ClassicAssert.IsTrue(dialogResult);
+            ClassicAssert.IsNotEmpty(vm.GetSelectedObjects());
         }
 
         [Test]
@@ -116,7 +117,7 @@ namespace UnitTests.ViewModels
             var canExecute = vm.CancelCommand.CanExecute(null);
 
             // Assert
-            Assert.IsTrue(canExecute);
+            ClassicAssert.IsTrue(canExecute);
         }
 
         [Test]
@@ -137,8 +138,8 @@ namespace UnitTests.ViewModels
             vm.CancelCommand.Execute(null);
 
             // Assert
-            Assert.IsTrue(closeRequested);
-            Assert.IsFalse(dialogResult);
+            ClassicAssert.IsTrue(closeRequested);
+            ClassicAssert.IsFalse(dialogResult);
         }
 
         [Test]
@@ -150,7 +151,7 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.AddObjects(null, null));
+            ClassicAssert.DoesNotThrow(() => vm.AddObjects(null, null));
         }
 
         [Test]
@@ -164,7 +165,7 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.AddObjects(databaseObjects, replacingSchemas));
+            ClassicAssert.DoesNotThrow(() => vm.AddObjects(databaseObjects, replacingSchemas));
             otvm.Verify(c => c.AddObjects(databaseObjects, replacingSchemas), Times.Once);
         }
 
@@ -177,7 +178,7 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.SelectObjects(null));
+            ClassicAssert.DoesNotThrow(() => vm.SelectObjects(null));
         }
 
         [Test]
@@ -190,7 +191,7 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            Assert.DoesNotThrow(() => vm.SelectObjects(databaseObjects));
+            ClassicAssert.DoesNotThrow(() => vm.SelectObjects(databaseObjects));
             otvm.Verify(c => c.SelectObjects(databaseObjects), Times.Once);
         }
 
@@ -207,7 +208,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             otvm.Verify(s => s.SetSelectionState(true), Times.Once);
-            Assert.AreEqual(string.Empty, vm.SearchText);
+            ClassicAssert.AreEqual(string.Empty, vm.SearchText);
         }
 
         [Test]
@@ -223,7 +224,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             otvm.Verify(s => s.SetSelectionState(false), Times.Once);
-            Assert.AreEqual(string.Empty, vm.SearchText);
+            ClassicAssert.AreEqual(string.Empty, vm.SearchText);
         }
 
         [Test]
