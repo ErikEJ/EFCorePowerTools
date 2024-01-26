@@ -155,6 +155,8 @@ namespace RevEng.Core.Modules
 
             errors.AddRange(model.Errors);
 
+            schemas = schemas ?? new List<string>();
+
             foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
                 int i = 1;
@@ -175,6 +177,11 @@ namespace RevEng.Core.Modules
                     var typeName = GenerateIdentifierName(routine, model) + "Result" + suffix;
 
                     var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
+
+                    if (!string.IsNullOrEmpty(routine.Schema))
+                    {
+                        schemas.Add(routine.Schema);
+                    }
 
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
@@ -197,7 +204,7 @@ namespace RevEng.Core.Modules
                 });
             }
 
-            var dbContext = WriteDbContext(scaffolderOptions, model, schemas);
+            var dbContext = WriteDbContext(scaffolderOptions, model, schemas.Distinct().ToList());
 
             result.ContextFile = new ScaffoldedFile
             {
