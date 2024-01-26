@@ -180,7 +180,7 @@ namespace RevEng.Core.Modules
 
                     if (!string.IsNullOrEmpty(routine.Schema))
                     {
-                        schemas.Add(routine.Schema);
+                        schemas.Add($"{routine.Schema}Schema");
                     }
 
                     result.AdditionalFiles.Add(new ScaffoldedFile
@@ -193,7 +193,7 @@ namespace RevEng.Core.Modules
                 }
             }
 
-            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model, schemas);
+            var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model, schemas.Distinct().ToList());
 
             if (!string.IsNullOrEmpty(dbContextInterface))
             {
@@ -311,7 +311,7 @@ namespace RevEng.Core.Modules
                 Sb.AppendLine();
             }
 
-            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaNamespaces ? $".{schemaName}" : string.Empty)}");
+            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaNamespaces ? $".{schemaName}Schema" : string.Empty)}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())
