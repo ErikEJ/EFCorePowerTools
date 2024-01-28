@@ -86,8 +86,11 @@ namespace RevEng.Core
             {
                 var entityName = blockMatch.Groups["EntityName"].Value;
                 var entityParameterName = blockMatch.Groups["EntityParameterName"].Value;
+#if !CORE80
                 var statements = configBlocks[index].Replace(new string(' ', 16), new string(' ', 12), StringComparison.OrdinalIgnoreCase);
-
+#else
+                var statements = configBlocks[index];
+#endif
                 var sb = new StringBuilder();
                 sb.AppendLine(PathHelper.Header);
                 sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
