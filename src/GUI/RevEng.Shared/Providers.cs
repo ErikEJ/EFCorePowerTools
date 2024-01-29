@@ -83,7 +83,7 @@ namespace RevEng.Common
 
         public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
         {
-            // TODO Update versions here when adding provider updates
+            // TODO Update versions here when adding provider and other updates
             var packages = new List<NuGetPackage>();
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
