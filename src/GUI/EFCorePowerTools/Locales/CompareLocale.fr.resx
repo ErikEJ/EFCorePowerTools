@@ -193,6 +193,6 @@
     <value>Impossible de supprimer la connexion</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>Seul EF Core 5 est pris en charge.</value>
+    <value>Seul EF Core 6 ou ultérieur est pris en charge.</value>
   </data>
 </root>

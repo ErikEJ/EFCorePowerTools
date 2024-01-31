@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>Une erreur s'est produite. Voir la fenêtre Sortie pour plus de détails.</value>
+    <value>Une erreur s'est produite. Voir la fenêtre de sortie "Extensions" pour plus de détails.</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
     <value>Échec de la génération. Impossible de découvrir une classe DbContext.</value>
