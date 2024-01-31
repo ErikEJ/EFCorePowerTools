@@ -270,6 +270,7 @@
     <EmbeddedResource Include="Locales\AboutLocale.de.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.es.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.ru.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.tr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.resx">
@@ -285,6 +286,7 @@
     <EmbeddedResource Include="Locales\CompareLocale.de.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.es.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.ru.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.tr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.fr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.resx">
@@ -300,6 +302,7 @@
     <EmbeddedResource Include="Locales\DgmlLocale.de.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.es.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.ru.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.tr.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.fr.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.resx">
@@ -314,6 +317,7 @@
     <EmbeddedResource Include="Locales\MigrationsLocale.de.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.es.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.ru.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.tr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.fr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.resx">
