@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
@@ -99,7 +99,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidMigrationStatus</CommandName>
-          <ButtonText>Migrations Tool (preview)</ButtonText>
+          <ButtonText>Outil de migrations (preversion)</ButtonText>
         </Strings>
       </Button>
 
@@ -110,7 +110,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidAbout</CommandName>
-          <ButtonText>About</ButtonText>
+          <ButtonText>A propos</ButtonText>
         </Strings>
       </Button>
 
@@ -132,7 +132,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>Add T4 Scaffolding Templates</ButtonText>
+          <ButtonText>Ajouter Templates T4</ButtonText>
         </Strings>
       </Button>
 
@@ -143,7 +143,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add DbContext Diagram</ButtonText>
+          <ButtonText>Ajouter Diagramme DbContext</ButtonText>
         </Strings>
       </Button>
       
@@ -154,7 +154,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
-          <ButtonText>View DbContext DDL SQL</ButtonText>
+          <ButtonText>Afficher le DbContext DDL SQL</ButtonText>
         </Strings>
       </Button>
 
@@ -165,7 +165,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
-          <ButtonText>View DbContext as DebugView</ButtonText>
+          <ButtonText>Afficher le DbContext en tant que DebugView</ButtonText>
         </Strings>
       </Button>
 
@@ -176,7 +176,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Add AsDgml() extension</ButtonText>
+          <ButtonText>Ajouter l'extension AsDgml()</ButtonText>
         </Strings>
       </Button>
       
@@ -187,7 +187,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
-          <ButtonText>Compare DbContext to database</ButtonText>
+          <ButtonText>Comparer le DbContext à la base de données</ButtonText>
         </Strings>
       </Button>
 
@@ -198,7 +198,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
-          <ButtonText>Visualize Database Schema (preview)</ButtonText>
+          <ButtonText>Visualiser le Schéma de base de données (preversion)</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
@@ -207,7 +207,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Edit</CommandName>
-          <ButtonText>EF Core Power Tools - Edit</ButtonText>
+          <ButtonText>EF Core Power Tools - Editer</ButtonText>
         </Strings>
       </Button>
 
@@ -217,7 +217,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Refresh</CommandName>
-          <ButtonText>EF Core Power Tools - Refresh</ButtonText>
+          <ButtonText>EF Core Power Tools - Rafraîchir</ButtonText>
         </Strings>
       </Button>
 
@@ -227,7 +227,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Create EF Core DbContext...</ButtonText>
+          <ButtonText>Créer un DbContext EF Core ...</ButtonText>
         </Strings>
       </Button>
 
