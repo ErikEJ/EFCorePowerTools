@@ -262,7 +262,7 @@
     <value>Loading options...</value>
   </data>
   <data name="MapHierarchyId" xml:space="preserve">
-    <value>Map hierarchyid</value>
+    <value>Map HierarchyId</value>
   </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>Map Noda Time types</value>
