@@ -269,10 +269,10 @@
     <EmbeddedResource Include="Locales\AboutLocale.cs.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.de.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.es.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />   
     <EmbeddedResource Include="Locales\AboutLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.ru.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.tr.resx" />
-    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
@@ -348,23 +348,19 @@
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.de.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.ru.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.tr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hant.resx" />   
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hant.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.cs.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.de.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.ru.resx" />
@@ -372,14 +368,15 @@
     <EmbeddedResource Include="Locales\SharedLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.tr.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.fr.resx" />
-    <EmbeddedResource Include="Locales\SharedLocale.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Locales\SharedLocale.it.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.en.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.zh-Hant.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    
     <EmbeddedResource Include="Resources.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
