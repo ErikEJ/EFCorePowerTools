@@ -165,7 +165,7 @@
     <value>Сценарий миграции</value>
   </data>
   <data name="UnableGetMigrationStatus" xml:space="preserve">
-    <value>Немогу получить статус миграции</value>
+    <value>Не могу получить статус миграции</value>
   </data>
   <data name="UpdateDatabase" xml:space="preserve">
     <value>Обновить базу данных</value>
