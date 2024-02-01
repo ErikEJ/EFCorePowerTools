@@ -157,7 +157,7 @@
     <value>Choisissez votre fichier de configuration</value>
   </data>
   <data name="ChooseDatabaseConnection" xml:space="preserve">
-    <value>Choisissez votre connexion de données</value>
+    <value>Choisissez votre connexion à la base de données</value>
   </data>
   <data name="ChooseDatabaseObjects" xml:space="preserve">
     <value>Choisissez vos objets de base de données</value>
@@ -211,7 +211,7 @@
     <value>Sous espace de noms pour les EntityTypes (remplace le chemin) - facultatif</value>
   </data>
   <data name="FilterSchemas" xml:space="preserve">
-    <value>Filter les schemas</value>
+    <value>Filtrer les schemas</value>
   </data>
   <data name="Functions" xml:space="preserve">
     <value>Fonctions</value>
@@ -256,7 +256,7 @@
     <value>L'espace de nom est requis</value>
   </data>
   <data name="Naming" xml:space="preserve">
-    <value>Nommnage</value>
+    <value>Nommage</value>
   </data>
   <data name="NewNameCannotBeEmpty" xml:space="preserve">
     <value>Le nouveau nom ne peut pas être vide</value>
@@ -419,5 +419,62 @@
   </data>
   <data name="UseSchemaNamespaces" xml:space="preserve">
     <value>Utiliser la séparation des dossiers par l'espace de nom des schémas (expérimental)</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>Ajouter une connexion définie manuellement</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>Ajouter une connexion Explorateur de serveur (DDEX)</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>Génération de code</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>Installer le fournisseur DDEX pour un meilleure expérience</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>Choisissez votre version d'EF Core</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>Layout du fichier</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>Mapper les types hierarchyid</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>Mapping</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>Entités POCO</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>* Noter</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>Dites-moi si vous aimez cet outil gratuit</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>Supprimer le constructeur par défaut du DbContext</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>Renommage des propriétés de navigation</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>Améliorer l'expérience SQLite</value>
+  </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value>Chemin du template T4 - optionnel</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Utiliser les entités many to many</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Guide utilisateur</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>Utiliser la séparation des espaces de noms de schéma (expérimental)</value>
   </data>
 </root>
