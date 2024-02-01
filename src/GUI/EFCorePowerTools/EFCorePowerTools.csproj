@@ -424,6 +424,10 @@
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.zh-Hant.Resources</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.ru.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.ru.Resources</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.en.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.en.Resources</LogicalName>
