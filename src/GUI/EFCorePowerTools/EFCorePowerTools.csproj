@@ -534,6 +534,9 @@
     <VSCTCompile Include="EFCorePowerToolsPackage.pt-BR.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <VSCTCompile Include="EFCorePowerToolsPackage.ru.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
