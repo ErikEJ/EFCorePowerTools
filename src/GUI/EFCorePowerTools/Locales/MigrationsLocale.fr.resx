@@ -121,7 +121,7 @@
     <value>Ajouter une migration</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
-    <value>La compilation à échouée</value>
+    <value>La compilation a échoué</value>
   </data>
   <data name="CannotSupportVersion" xml:space="preserve">
     <value>Impossible de prendre en charge la version {0}, notez que les préversions ne sont pas pris en charge.</value>
