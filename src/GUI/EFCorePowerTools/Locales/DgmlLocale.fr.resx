@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InstallingPackage" xml:space="preserve">
-    <value>Installation du package d'extension DbContext Dgml</value>
+    <value>Installation du paquet d'extension DbContext Dgml</value>
   </data>
   <data name="PackageInstalled" xml:space="preserve">
-    <value>Package Dgml installé</value>
+    <value>Paquet Dgml installé</value>
   </data>
 </root>

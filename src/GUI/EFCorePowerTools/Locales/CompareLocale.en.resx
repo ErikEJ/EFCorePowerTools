@@ -166,7 +166,7 @@
     <value>Type</value>
   </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
-    <value>Installing EfCore.SchemaCompare, please retry the command</value>
+    <value>Installing EFCore.SchemaCompare, please retry the command</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>Loading data</value>
