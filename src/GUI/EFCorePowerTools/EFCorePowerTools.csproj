@@ -286,9 +286,7 @@
     <EmbeddedResource Include="Locales\CompareLocale.de.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.es.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.pt-BR.resx" />
-    <EmbeddedResource Include="Locales\CompareLocale.ru.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\CompareLocale.ru.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.tr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.fr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.resx">
@@ -319,9 +317,7 @@
     <EmbeddedResource Include="Locales\MigrationsLocale.de.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.es.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.pt-BR.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.ru.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\MigrationsLocale.ru.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.tr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.fr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.resx">
@@ -351,9 +347,7 @@
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh-Hant.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.de.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.ru.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.ru.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.tr.resx" />
