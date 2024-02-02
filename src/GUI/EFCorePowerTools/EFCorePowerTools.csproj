@@ -204,7 +204,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
-    <Content Include="EFCorePowerToolsPackage.jp.vsct" />
     <Content Include="PowerToolsReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -271,7 +270,7 @@
     <EmbeddedResource Include="Locales\AboutLocale.de.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.es.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.jp.resx" />
-    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />   
+    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.ru.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.tr.resx" />
@@ -362,7 +361,7 @@
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.tr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hant.resx" />   
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hant.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
@@ -384,7 +383,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    
     <EmbeddedResource Include="Resources.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
@@ -408,6 +406,7 @@
     <EmbeddedResource Include="VSPackage.jp.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.jp.Resources</LogicalName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.pt-BR.resx">
       <MergeWithCTO>true</MergeWithCTO>
