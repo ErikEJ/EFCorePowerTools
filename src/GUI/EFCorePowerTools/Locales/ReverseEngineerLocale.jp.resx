@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>追加...</value>
+  </data>
+  <data name="AddAdhocConnection" xml:space="preserve">
+    <value>カスタム接続追加</value>
+  </data>
+  <data name="AddAdhocDatabaseConnection" xml:space="preserve">
+    <value>カスタム接続追加</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>手動設定接続を追加する</value>
+  </data>
+  <data name="AddDatabaseConnection" xml:space="preserve">
+    <value>データベース接続追加</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>サーバーエクスプローラー(DDEX)接続追加</value>
+  </data>
+  <data name="AddExternalDacPac" xml:space="preserve">
+    <value>.dacpacファイル追加</value>
+  </data>
+  <data name="AddSchemasToFilter" xml:space="preserve">
+    <value>フィルターにスキーマ追加</value>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>詳細...</value>
+  </data>
+  <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
+    <value>常に全てのデータベースオブジェクトを含めます</value>
+  </data>
+  <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
+    <value>デバッグ中はコードを生成できません。</value>
+  </data>
+  <data name="CannotUncheckPrimaryKey" xml:space="preserve">
+    <value>このカラムはプライマリキーの一部であり、テーブル選択時はチェックを外すことができません。</value>
+  </data>
+  <data name="CheckOutputWindowForErrors" xml:space="preserve">
+    <value>拡張出力ウィンドウで問題をチェックしてください。</value>
+  </data>
+  <data name="CheckOutputWindowForWarnings" xml:space="preserve">
+    <value>拡張出力ウィンドウでワーニングをチェックしてください。</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>コンフィグレーションファイルを選択してください。</value>
+  </data>
+  <data name="ChooseDatabaseConnection" xml:space="preserve">
+    <value>データ接続を選択してください。</value>
+  </data>
+  <data name="ChooseDatabaseObjects" xml:space="preserve">
+    <value>データベースオブジェクトを選択してください。</value>
+  </data>
+  <data name="ChooseSchemas" xml:space="preserve">
+    <value>スキーマを選択してください。</value>
+  </data>
+  <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
+    <value>SQLサーバーデータベースプロジェクトを選択してください。</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>コード生成</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="ConnectionSample" xml:space="preserve">
+    <value>サンプル</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>接続文字列</value>
+  </data>
+  <data name="ContextName" xml:space="preserve">
+    <value>コンテキスト名</value>
+  </data>
+  <data name="ContextNameRequired" xml:space="preserve">
+    <value>コンテキスト名が必要です。</value>
+  </data>
+  <data name="CustomizeUsingHandlebars" xml:space="preserve">
+    <value>テンプレートを使ってコードをカスタマイズします。</value>
+  </data>
+  <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
+    <value>データベース接続が見つからないためリフレッシュできません。</value>
+  </data>
+  <data name="DbContextOnly" xml:space="preserve">
+    <value>DbContextのみ</value>
+  </data>
+  <data name="DbContextPath" xml:space="preserve">
+    <value>DbContextパス(Dataなど) - 任意</value>
+  </data>
+  <data name="DbContextSubNamespace" xml:space="preserve">
+    <value>DbContextサブ名前空間(パス上書き) - 任意</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>エクスペリエンス向上としてDDEXプロバイダーをインストールします。</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>EF Coreバージョンを選択します。</value>
+  </data>
+  <data name="EntityTypesAndContext" xml:space="preserve">
+    <value>エンティティ型およびDbContext</value>
+  </data>
+  <data name="EntityTypesOnly" xml:space="preserve">
+    <value>エンティティ型のみ</value>
+  </data>
+  <data name="EntityTypesPath" xml:space="preserve">
+    <value>エンティティ型パス(Modelsなど) - 任意</value>
+  </data>
+  <data name="EntityTypesSubNamespace" xml:space="preserve">
+    <value>エンティティ型サブ名前空間(パス上書き) - 任意</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>ファイルレイアウト</value>
+  </data>
+  <data name="FilterSchemas" xml:space="preserve">
+    <value>フィルタースキーマ</value>
+  </data>
+  <data name="Functions" xml:space="preserve">
+    <value>ファンクション</value>
+  </data>
+  <data name="GenerateEFCoreModelInProject" xml:space="preserve">
+    <value>プロジェクト {0} 設定を選択します。</value>
+  </data>
+  <data name="GeneratingCode" xml:space="preserve">
+    <value>コード生成中...</value>
+  </data>
+  <data name="GettingReadyToConnect" xml:space="preserve">
+    <value>接続準備中...</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
+    <value>生成コードに接続文字列を含めます。</value>
+  </data>
+  <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
+    <value>EF Coreプロバイダーパッケージをプロジェクトにインストールします。</value>
+  </data>
+  <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
+    <value>EF Coreプロバイダーパッケージインストール</value>
+  </data>
+  <data name="LoadingDatabaseObjects" xml:space="preserve">
+    <value>データベースオブジェクトロード中...</value>
+  </data>
+  <data name="LoadingOptions" xml:space="preserve">
+    <value>オプションロード中...</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>hierarchyidマップ</value>
+  </data>
+  <data name="MapNodaTimeTypes" xml:space="preserve">
+    <value>Noda Time型マップ</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>マッピング</value>
+  </data>
+  <data name="MapSpatialTypes" xml:space="preserve">
+    <value>空間データ型マップ</value>
+  </data>
+  <data name="ModelGeneratedSuccesfully" xml:space="preserve">
+    <value>モデル生成に成功しました。</value>
+  </data>
+  <data name="Namespace" xml:space="preserve">
+    <value>名前空間</value>
+  </data>
+  <data name="NamespaceRequired" xml:space="preserve">
+    <value>名前空間が必要です。</value>
+  </data>
+  <data name="Naming" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="NewNameCannotBeEmpty" xml:space="preserve">
+    <value>新しい名前は空にすることができません。</value>
+  </data>
+  <data name="NoPrimaryKey" xml:space="preserve">
+    <value>このテーブルにはプライマリキーが定義されていません。</value>
+  </data>
+  <data name="PackageNotFoundInProject" xml:space="preserve">
+    <value>プロジェクトでNuGetパッケージ "{0}" が見つかりませんでした。ビルドをするにはインストールされている必要があります。</value>
+  </data>
+  <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
+    <value>生成されたオブジェクト名(英語)を複数形または単数形にします。</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>POCOエンティティ</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ 評価</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>この無料ツールを気に入ったら教えてください。</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>リリースノート</value>
+  </data>
+  <data name="RemoveConstructorFromEntities" xml:space="preserve">
+    <value>エンティティクラスからコンストラクターを削除します。 (試験的)</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>デフォルトDbContextコンストラクターを削除します。</value>
+  </data>
+  <data name="RemoveNavigationsFromEntities" xml:space="preserve">
+    <value>エンティティクラスからのナビゲーションを削除します。 (試験的)</value>
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value>選択された接続を削除します。</value>
+  </data>
+  <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
+    <value>boolカラムからSQLデフォルトを削除します。</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>ナビゲーションリネーム</value>
+  </data>
+  <data name="ReportingResult" xml:space="preserve">
+    <value>結果リポート中...</value>
+  </data>
+  <data name="ReverseEngineerCompleted" xml:space="preserve">
+    <value>{0} でリバースエンジニアリングが完了しました。</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="SearchForObjects" xml:space="preserve">
+    <value>オブジェクト検索</value>
+  </data>
+  <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
+    <value>コンフィグレーションクラスに分けます (試験的)</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>SQLiteエクスペリエンスを向上します。</value>
+  </data>
+  <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
+    <value>使用中の権限に 'VIEW DEFINITION'権限が付与されていないため、機能が低下または不完全になる可能性があります。</value>
+  </data>
+  <data name="SQLServerVersionNotSupported" xml:space="preserve">
+    <value>SQLサーバーバージョン {0} がサポートされない可能性があります。</value>
+  </data>
+  <data name="StoredProcedures" xml:space="preserve">
+    <value>ストアドプロシージャ</value>
+  </data>
+  <data name="StoredProceduresReturnList" xml:space="preserve">
+    <value>ストアドプロシージャリスト (デフォルト配列)</value>
+  </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value>T4テンプレートパス - 任意</value>
+  </data>
+  <data name="Tables" xml:space="preserve">
+    <value>テーブル</value>
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value>接続を追加することができません。プロバイダーがサポートされていない可能性があります。</value>
+  </data>
+  <data name="UnableToAddToList" xml:space="preserve">
+    <value>リストに追加することができません。</value>
+  </data>
+  <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
+    <value>選択されているデータベースプロジェクトをビルドできません。</value>
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value>接続を削除できません。</value>
+  </data>
+  <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
+    <value>チェックされていない場合にはEF Core 3.1が使用されます。</value>
+  </data>
+  <data name="UncheckingFileRemoved" xml:space="preserve">
+    <value>アイテムのチェックを外すと関連ファイルが削除される可能性があります。</value>
+  </data>
+  <data name="UnsupportedProvider" xml:space="preserve">
+    <value>サポートされていないプロバイダー</value>
+  </data>
+  <data name="UseDataAnnotations" xml:space="preserve">
+    <value>モデル構成にDataAnnotation属性を使用する</value>
+  </data>
+  <data name="UseEF6Pluralizer" xml:space="preserve">
+    <value>EF6 "Classic" pluralizerを使用する</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>多対多エンティティを使用する</value>
+  </data>
+  <data name="UseNamesFromDatabase" xml:space="preserve">
+    <value>データベースの名前を直接テーブルとカラムに使用する</value>
+  </data>
+  <data name="UseNullableReferenceTypes" xml:space="preserve">
+    <value>NULL許容値を使用する</value>
+  </data>
+  <data name="UseRegularExpression" xml:space="preserve">
+    <value>正規表現を使用する</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>ガイドを使用する</value>
+  </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>スキーマフォルダー分けを使用する (試験的)</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>スキーマ名前空間分けを使用する (試験的)</value>
+  </data>
+  <data name="UseTextSearch" xml:space="preserve">
+    <value>テキスト検索を使用する</value>
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="WhatToGenerate" xml:space="preserve">
+    <value>生成内容</value>
+  </data>
+</root>

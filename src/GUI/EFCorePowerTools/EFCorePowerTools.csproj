@@ -204,6 +204,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Key.snk" />
+    <Content Include="EFCorePowerToolsPackage.jp.vsct" />
     <Content Include="PowerToolsReadMe.md">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -269,6 +270,7 @@
     <EmbeddedResource Include="Locales\AboutLocale.cs.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.de.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.es.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.jp.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />   
     <EmbeddedResource Include="Locales\AboutLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.ru.resx" />
@@ -285,6 +287,7 @@
     <EmbeddedResource Include="Locales\CompareLocale.cs.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.de.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.es.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.jp.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.ru.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.tr.resx" />
@@ -301,6 +304,7 @@
     <EmbeddedResource Include="Locales\DgmlLocale.cs.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.de.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.es.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.jp.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.ru.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.tr.resx" />
@@ -316,6 +320,7 @@
     <EmbeddedResource Include="Locales\MigrationsLocale.cs.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.de.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.es.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.jp.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.ru.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.tr.resx" />
@@ -333,6 +338,7 @@
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.de.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.ru.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.es.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.jp.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.tr.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.fr.resx" />
@@ -350,6 +356,7 @@
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.ru.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.jp.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.tr.resx" />
@@ -365,6 +372,7 @@
     <EmbeddedResource Include="Locales\SharedLocale.de.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.ru.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.es.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.jp.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.tr.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.fr.resx" />
@@ -396,6 +404,10 @@
     <EmbeddedResource Include="VSPackage.es.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.es.Resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.jp.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.jp.Resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.pt-BR.resx">
       <MergeWithCTO>true</MergeWithCTO>
