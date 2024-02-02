@@ -121,13 +121,13 @@
     <value>Ajouter...</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
-    <value>Ajouter une connexion de base de données...</value>
+    <value>Ajouter une connexion de base de données</value>
   </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
     <value>Impossible de comparer le contexte à la base de données lors du débogage</value>
   </data>
   <data name="CannotSupportVersion" xml:space="preserve">
-    <value>Impossible de prendre en charge la version {0}, notez que les préversions ont une prise en charge limitée. Vous pouvez essayer d'installer manuellement la préversion de Microsoft.EntityFrameworkCore.Design.</value>
+    <value>Impossible de prendre en charge la version {0}. Veuillez noter que les versions préliminaires bénéficient d'une prise en charge limitée. Vous pouvez essayer d’installer manuellement la version préliminaire de Microsoft.EntityFrameworkCore.Design.</value>
   </data>
   <data name="ChooseDatabaseContexts" xml:space="preserve">
     <value>Choisissez la base de données et les contextes</value>
@@ -136,10 +136,10 @@
     <value>Fermer</value>
   </data>
   <data name="CompareCompletedIn" xml:space="preserve">
-    <value>Comparaison effectuée en {0}</value>
+    <value>Comparaison terminée en {0}</value>
   </data>
   <data name="ComparingDatabaseWithContexts" xml:space="preserve">
-    <value>Comparaison de la base de données et du(des) contexte(s)</value>
+    <value>Comparaison de la base de données avec le(s) contexte(s)...</value>
   </data>
   <data name="ComparisonResult" xml:space="preserve">
     <value>Résultat de la comparaison</value>
@@ -160,13 +160,13 @@
     <value>Nom</value>
   </data>
   <data name="HeaderState" xml:space="preserve">
-    <value>Etat</value>
+    <value>État</value>
   </data>
   <data name="HeaderType" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
-    <value>Installation de Ef Core.Schema Compare version 5.1.3, veuillez réessayer la commande</value>
+    <value>Installation de EFCore.SchemaCompare, veuillez réessayer la commande</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>Chargement des données</value>
@@ -193,6 +193,6 @@
     <value>Impossible de supprimer la connexion</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
-    <value>Seul EF Core 5 est pris en charge.</value>
+    <value>Seul EF Core 6 ou ultérieur est pris en charge.</value>
   </data>
 </root>

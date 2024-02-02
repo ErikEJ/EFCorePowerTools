@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
@@ -73,7 +73,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
-          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
+          <ButtonText>EF Core Power Tools - реконструировать</ButtonText>
         </Strings>
       </Menu>
       
@@ -88,7 +88,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
-          <ButtonText>Reverse Engineer</ButtonText>
+          <ButtonText>Реконструировать</ButtonText>
         </Strings>
       </Button>
 
@@ -99,7 +99,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidMigrationStatus</CommandName>
-          <ButtonText>Outil de migrations (preversion)</ButtonText>
+          <ButtonText>Инструменты миграций (предварительная версия)</ButtonText>
         </Strings>
       </Button>
 
@@ -110,7 +110,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidAbout</CommandName>
-          <ButtonText>A propos</ButtonText>
+          <ButtonText>О программе</ButtonText>
         </Strings>
       </Button>
 
@@ -121,7 +121,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>Options</ButtonText>
+          <ButtonText>Параметры</ButtonText>
         </Strings>
       </Button>
       
@@ -132,7 +132,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>Ajouter Templates T4</ButtonText>
+          <ButtonText>Добавьте шаблоны генерации T4</ButtonText>
         </Strings>
       </Button>
 
@@ -143,7 +143,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Ajouter Diagramme DbContext</ButtonText>
+          <ButtonText>Добавить диаграмму контекста БД</ButtonText>
         </Strings>
       </Button>
       
@@ -154,7 +154,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
-          <ButtonText>Afficher le DbContext DDL SQL</ButtonText>
+          <ButtonText>Просмотр SQL выражений описания данных для контекста БД</ButtonText>
         </Strings>
       </Button>
 
@@ -165,7 +165,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
-          <ButtonText>Afficher le DbContext en tant que DebugView</ButtonText>
+          <ButtonText>Просмотр класса контекста БД как DebugView</ButtonText>
         </Strings>
       </Button>
 
@@ -176,7 +176,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>Ajouter l'extension AsDgml()</ButtonText>
+          <ButtonText>Добавьте расширение AsDgml()</ButtonText>
         </Strings>
       </Button>
       
@@ -187,7 +187,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
-          <ButtonText>Comparer le DbContext à la base de données</ButtonText>
+          <ButtonText>Сравнить контекст БД с базой данных</ButtonText>
         </Strings>
       </Button>
 
@@ -198,7 +198,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
-          <ButtonText>Visualiser le Schéma de base de données (preversion)</ButtonText>
+          <ButtonText>Диаграмма схемы базы данных (предварительная версия)</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
@@ -207,7 +207,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Edit</CommandName>
-          <ButtonText>EF Core Power Tools - Editer</ButtonText>
+          <ButtonText>EF Core Power Tools - Редактировать</ButtonText>
         </Strings>
       </Button>
 
@@ -217,7 +217,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Refresh</CommandName>
-          <ButtonText>EF Core Power Tools - Rafraîchir</ButtonText>
+          <ButtonText>EF Core Power Tools - Обновить</ButtonText>
         </Strings>
       </Button>
 
@@ -227,7 +227,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Créer un DbContext EF Core ...</ButtonText>
+          <ButtonText>Создать класс EF Core контекст БД...</ButtonText>
         </Strings>
       </Button>
 

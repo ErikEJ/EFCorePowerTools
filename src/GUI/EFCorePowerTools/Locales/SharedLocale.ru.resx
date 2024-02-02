@@ -117,10 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CurrentEFCoreVersion" xml:space="preserve">
-    <value>Vous utilisez EF Core version {0}, notez que les versions préliminaires bénéficient d'une prise en charge limitée. Vous pouvez essayer d’installer manuellement la version préliminaire de Microsoft.EntityFrameworkCore.Design.</value>
+  <data name="AnErrorOccurred" xml:space="preserve">
+    <value>Произошла ошибка. Смотрите окно вывода «Расширения» с описанием шибки.</value>
   </data>
-  <data name="UnableToCollectModelInformation" xml:space="preserve">
-    <value>Impossible de collecter les informations de modèle</value>
+  <data name="BuildFailed" xml:space="preserve">
+    <value>Сборка не удалась. Не удалось найти класс DbContext.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="EFCoreVersionNotFound" xml:space="preserve">
+    <value>EF Core  3.1 или более поздний не найден в проекте</value>
+  </data>
+  <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
+    <value>Устанавливаю EFCore.Design версии {0}, пожалуста повторите команду еще раз</value>
+  </data>
+  <data name="InvalidName" xml:space="preserve">
+    <value>Неверное имя</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="SelectedProjectTypeNoTargetFrameworkMoniker" xml:space="preserve">
+    <value>Выбранный тип проекта не имеет TargetFrameworkMoniker.</value>
+  </data>
+  <data name="SupportedFramework" xml:space="preserve">
+    <value>Поддерживаются только проекты .NET Core 3.0+ — TargetFrameworkMoniker</value>
+  </data>
+  <data name="UnableToLocateProjectAssembly" xml:space="preserve">
+    <value>Не удалось найти сборку проекта</value>
   </data>
 </root>

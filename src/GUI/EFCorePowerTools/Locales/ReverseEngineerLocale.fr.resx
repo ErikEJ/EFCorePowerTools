@@ -121,16 +121,16 @@
     <value>Ajouter...</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>Add ad hoc Connection (preview)</value>
+    <value>Ajouter une connexion personnalisée</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Ad Hoc Connection...</value>
+    <value>Ajouter une connexion personnalisée</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
-    <value>Ajouter une connexion à la base de données</value>
+    <value>Ajouter une connexion de base de données</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
-    <value>Ajouter un lien vers un fichier .dacpac</value>
+    <value>Ajouter un fichier .dacpac</value>
   </data>
   <data name="AddSchemasToFilter" xml:space="preserve">
     <value>Ajouter des schémas à filtrer</value>
@@ -139,43 +139,43 @@
     <value>Avancé...</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Toujours inclure tous les objets de la base de données</value>
+    <value>Toujours inclure tous les objets de base de données</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
-    <value>Impossible de générer du code lors du débogage</value>
+    <value>Impossible de générer du code pendant le débogage</value>
   </data>
   <data name="CannotUncheckPrimaryKey" xml:space="preserve">
     <value>Cette colonne fait partie de la clé primaire et ne peut pas être décochée si la table est sélectionnée.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>Veuillez vérifier la fenêtre de sortie pour les erreurs</value>
+    <value>Veuillez vérifier la fenêtre de sortie des extensions pour les erreurs</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
-    <value>Veuillez vérifier la fenêtre de sortie pour les avertissements</value>
+    <value>Veuillez vérifier la fenêtre de sortie des extensions pour les avertissements</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
-    <value>Choisissez le fichier de configuration</value>
+    <value>Choisissez votre fichier de configuration</value>
   </data>
   <data name="ChooseDatabaseConnection" xml:space="preserve">
-    <value>Choisissez la connexion à la base de données</value>
+    <value>Choisissez votre connexion à la base de données</value>
   </data>
   <data name="ChooseDatabaseObjects" xml:space="preserve">
-    <value>Choisissez des objets de base de données</value>
+    <value>Choisissez vos objets de base de données</value>
   </data>
   <data name="ChooseSchemas" xml:space="preserve">
-    <value>Choisissez des schémas</value>
+    <value>Choisissez vos schémas</value>
   </data>
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
-    <value>Choisissez le projet de base de données SQL Server (.dacpac)</value>
+    <value>Choisissez votre projet de base de données SQL Server</value>
   </data>
   <data name="ConnectionName" xml:space="preserve">
-    <value>Name</value>
+    <value>Nom</value>
   </data>
   <data name="ConnectionSample" xml:space="preserve">
-    <value>Sample</value>
+    <value>Échantillon</value>
   </data>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Connection String</value>
+    <value>Chaîne de connexion</value>
   </data>
   <data name="ContextName" xml:space="preserve">
     <value>Nom du contexte</value>
@@ -193,13 +193,13 @@
     <value>DbContext uniquement</value>
   </data>
   <data name="DbContextPath" xml:space="preserve">
-    <value>Chemin du DbContext (f.ex. Data) - optionnel</value>
+    <value>Chemin DbContext (p.ex. Data) - facultatif</value>
   </data>
   <data name="DbContextSubNamespace" xml:space="preserve">
-    <value>Sous espace de nommage du DbContext (remplace le chemin) - optionnel</value>
+    <value>Sous espace de noms du DbContext (remplace le chemin) - facultatif</value>
   </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
-    <value>EntityTypes &amp; DbContext</value>
+    <value>EntityTypes et DbContext</value>
   </data>
   <data name="EntityTypesOnly" xml:space="preserve">
     <value>EntityTypes uniquement</value>
@@ -208,16 +208,16 @@
     <value>Chemin pour les EntityTypes (p.ex. Models) - optionnel</value>
   </data>
   <data name="EntityTypesSubNamespace" xml:space="preserve">
-    <value>Sous espace de nommage pour les EntityTypes (remplace le chemin) - optionnel</value>
+    <value>Sous espace de noms pour les EntityTypes (remplace le chemin) - facultatif</value>
   </data>
   <data name="FilterSchemas" xml:space="preserve">
-    <value>Filter les schemas</value>
+    <value>Filtrer les schemas</value>
   </data>
   <data name="Functions" xml:space="preserve">
     <value>Fonctions</value>
   </data>
   <data name="GenerateEFCoreModelInProject" xml:space="preserve">
-    <value>Générer un modèle de base EF dans le projet {0}</value>
+    <value>Choisissez vos paramètres pour le projet {0}</value>
   </data>
   <data name="GeneratingCode" xml:space="preserve">
     <value>Génération du code ...</value>
@@ -229,10 +229,10 @@
     <value>Inclure la chaîne de connexion dans le code généré</value>
   </data>
   <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
-    <value>Installez le package du fournisseur EF Core dans le projet</value>
+    <value>Installez le paquet du fournisseur EF Core dans le projet</value>
   </data>
   <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
-    <value>Installation du package du fournisseur EF Core</value>
+    <value>Installation du paquet de fournisseur EF Core</value>
   </data>
   <data name="LoadingDatabaseObjects" xml:space="preserve">
     <value>Chargement des objets de base de données...</value>
@@ -241,22 +241,22 @@
     <value>Chargement des options...</value>
   </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
-    <value>Mette en correspondance les types Noda Time </value>
+    <value>Mettre en correspondance les types de Noda Time </value>
   </data>
   <data name="MapSpatialTypes" xml:space="preserve">
-    <value>Mette en correspondance les types de données spatiales</value>
+    <value>Mettre en correspondance les types spatiales</value>
   </data>
   <data name="ModelGeneratedSuccesfully" xml:space="preserve">
     <value>Modèle généré avec succès.</value>
   </data>
   <data name="Namespace" xml:space="preserve">
-    <value>Espace de nommage</value>
+    <value>Espace de nom</value>
   </data>
   <data name="NamespaceRequired" xml:space="preserve">
     <value>L'espace de nom est requis</value>
   </data>
   <data name="Naming" xml:space="preserve">
-    <value>Nommnage</value>
+    <value>Nommage</value>
   </data>
   <data name="NewNameCannotBeEmpty" xml:space="preserve">
     <value>Le nouveau nom ne peut pas être vide</value>
@@ -265,7 +265,7 @@
     <value>Cette table n'a pas de clé primaire définie.</value>
   </data>
   <data name="PackageNotFoundInProject" xml:space="preserve">
-    <value>Le package NuGet "{0}" est introuvable dans le projet. Il doit être installé pour la compilation.</value>
+    <value>Le paquet NuGet "{0}" est introuvable dans le projet. Il doit être installé pour la compilation.</value>
   </data>
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
     <value>Pluraliser ou singulariser les noms d'objets générés (anglais)</value>
@@ -286,22 +286,22 @@
     <value>Supprimer la valeur SQL par défaut des colonnes booléennes</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
-    <value>Rapport de résultats...</value>
+    <value>Communication des résultats...</value>
   </data>
   <data name="ReverseEngineerCompleted" xml:space="preserve">
-    <value>Rétro-ingénierie terminée en {0}</value>
+    <value>Ingénierie inverse terminée en {0}</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Recherche</value>
+    <value>Rechercher</value>
   </data>
   <data name="SearchForObjects" xml:space="preserve">
     <value>Rechercher des objets</value>
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
-    <value>Séparer le DbContext en classes de configuration (préversion)</value>
+    <value>Séparer le DbContext en classes de configuration (préliminaire)</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
-    <value>L'utilisateur SQL Server ne dispose pas des droits «VIEW DEFINITION», les contraintes par défaut peuvent ne pas être disponibles.</value>
+    <value>Les informations d'identification utilisées n'ont pas reçu les droits « VIEW DEFINITION », la fonctionnalité peut donc être dégradée ou défectueuse.</value>
   </data>
   <data name="SQLServerVersionNotSupported" xml:space="preserve">
     <value>La version {0} de SQL Server n'est peut-être pas prise en charge.</value>
@@ -310,7 +310,7 @@
     <value>Procédures stockées</value>
   </data>
   <data name="StoredProceduresReturnList" xml:space="preserve">
-    <value>Stored procedures return List (default array)</value>
+    <value>Procédures stockées retourne List (tableau par défaut)</value>
   </data>
   <data name="Tables" xml:space="preserve">
     <value>Tables</value>
@@ -319,7 +319,7 @@
     <value>Impossible d'ajouter la connexion, peut-être que le fournisseur n'est pas pris en charge</value>
   </data>
   <data name="UnableToAddToList" xml:space="preserve">
-    <value>Impossible de faire un ajout à la liste</value>
+    <value>Impossible d'ajouter à la liste</value>
   </data>
   <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
     <value>Impossible de générer le projet de base de données sélectionné</value>
@@ -340,19 +340,19 @@
     <value>Utilisez les attributs DataAnnotation pour configurer le modèle</value>
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
-    <value>Utiliser le pluraliseur EF6</value>
+    <value>Utiliser le pluraliseur EF6 classique</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>Utilisez les noms de table et de colonne directement à partir de la base de données</value>
   </data>
   <data name="UseNullableReferenceTypes" xml:space="preserve">
-    <value>Utiliser des types de référence Nullable (préversion)</value>
+    <value>Utiliser des types de référence nullable (préliminaire)</value>
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
     <value>Utiliser une expression régulière</value>
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
-    <value>Utiliser la séparation des dossiers de schéma (expérimental)</value>
+    <value>Utiliser la séparation des dossiers par schéma (expérimental)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>Utiliser la recherche textuelle</value>
@@ -361,6 +361,120 @@
     <value>Vues</value>
   </data>
   <data name="WhatToGenerate" xml:space="preserve">
-    <value>Que générer</value>
+    <value>Quoi générer</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>Ajouter une connexion définie manuellement</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>Ajouter une connexion à l'explorateur de serveur (DDEX)</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>Génération de code</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>Installez le fournisseur DDEX pour une meilleure expérience</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>Choisissez votre version de EF Core</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>Disposition du fichier</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>Mettre en correspondance le HierarchyId</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>Correspondance</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>Entités POCO</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ Évaluez</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>Faites-moi savoir si vous aimez cet outil gratuit</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>Supprimer le constructeur par défaut du DbContext</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>Renommage des navigations</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>Améliorez votre expérience de SQLite</value>
+  </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value>Chemin du modèle T4 - facultatif</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Utiliser les entités plusieurs à plusieurs</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Guide de l'utilisateur</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>Utiliser la séparation des dossiers par l'espace de nom des schémas (expérimental)</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>Ajouter une connexion définie manuellement</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>Ajouter une connexion Explorateur de serveur (DDEX)</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>Génération de code</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>Installer le fournisseur DDEX pour un meilleure expérience</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>Choisissez votre version d'EF Core</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>Layout du fichier</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>Mapper les types hierarchyid</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>Mapping</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>Entités POCO</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>* Noter</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>Dites-moi si vous aimez cet outil gratuit</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>Supprimer le constructeur par défaut du DbContext</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>Renommage des propriétés de navigation</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>Améliorer l'expérience SQLite</value>
+  </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value>Chemin du template T4 - optionnel</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>Utiliser les entités many to many</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>Guide utilisateur</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>Utiliser la séparation des espaces de noms de schéma (expérimental)</value>
   </data>
 </root>

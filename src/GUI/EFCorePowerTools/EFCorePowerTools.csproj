@@ -271,9 +271,10 @@
     <EmbeddedResource Include="Locales\AboutLocale.de.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.es.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.jp.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />   
     <EmbeddedResource Include="Locales\AboutLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.ru.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.tr.resx" />
-    <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
@@ -288,6 +289,7 @@
     <EmbeddedResource Include="Locales\CompareLocale.es.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.jp.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.ru.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.tr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.fr.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.resx">
@@ -304,6 +306,7 @@
     <EmbeddedResource Include="Locales\DgmlLocale.es.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.jp.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.ru.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.tr.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.fr.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.resx">
@@ -319,6 +322,7 @@
     <EmbeddedResource Include="Locales\MigrationsLocale.es.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.jp.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.pt-BR.resx" />
+    <EmbeddedResource Include="Locales\MigrationsLocale.ru.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.tr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.fr.resx" />
     <EmbeddedResource Include="Locales\MigrationsLocale.resx">
@@ -332,6 +336,7 @@
     <EmbeddedResource Include="Locales\MigrationsLocale.zh-Hant.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.de.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.ru.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.jp.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.pt-BR.resx" />
@@ -348,39 +353,38 @@
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.zh-Hant.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.de.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.ru.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.jp.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.tr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hant.resx" />   
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ReverseEngineerLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hans.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.zh-Hant.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.cs.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.de.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.ru.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.es.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.jp.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.tr.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.fr.resx" />
-    <EmbeddedResource Include="Locales\SharedLocale.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Locales\SharedLocale.it.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.en.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.zh-Hans.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.zh-Hant.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SharedLocale.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    
     <EmbeddedResource Include="Resources.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.en.Designer.cs</LastGenOutput>
@@ -428,6 +432,10 @@
     <EmbeddedResource Include="VSPackage.zh-Hant.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.zh-Hant.Resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.ru.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.ru.Resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.en.resx">
       <MergeWithCTO>true</MergeWithCTO>
@@ -533,6 +541,9 @@
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.pt-BR.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
+    <VSCTCompile Include="EFCorePowerToolsPackage.ru.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.tr.vsct">

@@ -121,10 +121,10 @@
     <value>Ajouter une migration</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
-    <value>La compilation à échouée</value>
+    <value>La compilation a échoué</value>
   </data>
   <data name="CannotSupportVersion" xml:space="preserve">
-    <value>Impossible de prendre en charge la version {0}, notez que les préversions ne sont pas pris en charge.</value>
+    <value>Impossible de prendre en charge la version {0}. Veuillez noter que les versions préliminaires bénéficient d'une prise en charge limitée.</value>
   </data>
   <data name="ContextName" xml:space="preserve">
     <value>Nom du contexte</value>
@@ -152,17 +152,17 @@
 Entrez un nom pour la nouvelle migration ci-dessous.</value>
   </data>
   <data name="NotAppliedMigrations" xml:space="preserve">
-    <value>Certaines migrations n'ont pas été appliquées à la base de données.</value>
+    <value>Il y a des migrations qui n'ont pas été appliquées à la base de données.</value>
   </data>
   <data name="PendingModelChanges" xml:space="preserve">
     <value>Il y a des changements de modèle en attente, ajoutez une migration avec les changements.
 Entrez un nom pour la migration ci-dessous.</value>
   </data>
   <data name="ScriptingMigrationsInDbContext" xml:space="preserve">
-    <value>Ajout de script de migrations dans le DbContext {0}</value>
+    <value>Scriptage des migrations dans le DbContext {0}</value>
   </data>
   <data name="ScriptMigrations" xml:space="preserve">
-    <value>Script de migrations</value>
+    <value>Scripter les migrations</value>
   </data>
   <data name="UnableGetMigrationStatus" xml:space="preserve">
     <value>Impossible d'obtenir l'état de la migration</value>

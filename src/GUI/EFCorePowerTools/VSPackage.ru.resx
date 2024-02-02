@@ -117,10 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CurrentEFCoreVersion" xml:space="preserve">
-    <value>Vous utilisez EF Core version {0}, notez que les versions préliminaires bénéficient d'une prise en charge limitée. Vous pouvez essayer d’installer manuellement la version préliminaire de Microsoft.EntityFrameworkCore.Design.</value>
+  <data name="100" xml:space="preserve">
+    <value>EF Core Power Tools</value>
   </data>
-  <data name="UnableToCollectModelInformation" xml:space="preserve">
-    <value>Impossible de collecter les informations de modèle</value>
+  <data name="101" xml:space="preserve">
+    <value>В целом</value>
+  </data>
+  <data name="110" xml:space="preserve">
+    <value>Entity Framework Core Power Tools</value>
+  </data>
+  <data name="112" xml:space="preserve">
+    <value>Добавляет полезные во время разработки инструменты для класса EF Core DbContext в контекстное меню обозревателя решений Visual Studio.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

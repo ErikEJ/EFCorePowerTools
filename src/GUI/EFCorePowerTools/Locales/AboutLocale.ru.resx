@@ -117,10 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CurrentEFCoreVersion" xml:space="preserve">
-    <value>Vous utilisez EF Core version {0}, notez que les versions préliminaires bénéficient d'une prise en charge limitée. Vous pouvez essayer d’installer manuellement la version préliminaire de Microsoft.EntityFrameworkCore.Design.</value>
+  <data name="About" xml:space="preserve">
+    <value>О программе</value>
   </data>
-  <data name="UnableToCollectModelInformation" xml:space="preserve">
-    <value>Impossible de collecter les informations de modèle</value>
+  <data name="AddinFreeDisclaimer" xml:space="preserve">
+    <value>Это расширение БЕСПЛАТНОЕ, я буду благодарен за вашу рецензию</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="SupportFeedbackSourceCode" xml:space="preserve">
+    <value>Для получения поддержки, обратной связи и полного исходного кода перейдите по адресу</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="VersionNotAvailable" xml:space="preserve">
+    <value>Версия НЕИЗВЕСТНА</value>
   </data>
 </root>

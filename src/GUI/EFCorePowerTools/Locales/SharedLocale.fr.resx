@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>Une erreur s'est produite. Voir la fenêtre Sortie pour plus de détails.</value>
+    <value>Une erreur s'est produite. Voir la fenêtre sortie des extensions pour plus de détails.</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
-    <value>Échec de la génération. Impossible de découvrir une classe DbContext.</value>
+    <value>Échec de la compilation. Impossible de découvrir une classe DbContext.</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
@@ -136,7 +136,7 @@
     <value>Installation de EFCore.Design version {0}, veuillez réessayer la commande</value>
   </data>
   <data name="InvalidName" xml:space="preserve">
-    <value>Nom incorrect</value>
+    <value>Nom invalide</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>

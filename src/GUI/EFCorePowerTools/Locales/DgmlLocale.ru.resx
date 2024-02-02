@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CurrentEFCoreVersion" xml:space="preserve">
-    <value>Vous utilisez EF Core version {0}, notez que les versions préliminaires bénéficient d'une prise en charge limitée. Vous pouvez essayer d’installer manuellement la version préliminaire de Microsoft.EntityFrameworkCore.Design.</value>
+  <data name="InstallingPackage" xml:space="preserve">
+    <value>Устанавливаю пакет расширения DbContext Dgml</value>
   </data>
-  <data name="UnableToCollectModelInformation" xml:space="preserve">
-    <value>Impossible de collecter les informations de modèle</value>
+  <data name="PackageInstalled" xml:space="preserve">
+    <value>Пакет Dgml установлен</value>
   </data>
 </root>

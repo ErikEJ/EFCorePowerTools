@@ -118,306 +118,307 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>Add...</value>
+    <value>Добавить...</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>Add Custom Connection</value>
+    <value>Добавить настраиваемое подключение</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>Add Custom Connection</value>
+    <value>Добавить настраиваемое подключение к БД</value>
   </data>
   <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
-    <value>Add manually defined connection</value>
+    <value>Добавить подключение к БД, настраиваемое вручную</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
-    <value>Add Database Connection</value>
+    <value>Добавить подключение к базе данных</value>
   </data>
   <data name="AddDatabaseConnectionTip" xml:space="preserve">
-    <value>Add Server Explorer (DDEX) connection</value>
+    <value>Добавить подключение к проводнику серверов (DDEX)</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
-    <value>Add .dacpac file</value>
+    <value>Добавить .dacpac файл</value>
   </data>
   <data name="AddSchemasToFilter" xml:space="preserve">
-    <value>Add Schemas to filter</value>
+    <value>Добавить схемы фильтрации</value>
   </data>
   <data name="Advanced" xml:space="preserve">
-    <value>Advanced...</value>
+    <value>Дополнительные...</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Always include all database objects</value>
+    <value>Всегда включать все объекты базы данных</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
-    <value>Cannot generate code while debugging</value>
+    <value>Не могу создать код во время отладки</value>
   </data>
   <data name="CannotUncheckPrimaryKey" xml:space="preserve">
-    <value>This column is part of the primary key and cannot be unchecked if the table is selected.</value>
+    <value>Это поле часть первичного ключа, его невозможно не выбрать, когда выбрана таблица.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>Please check the 'Extensions' output window for issues</value>
+    <value>Пожалуйста, проверьте окно вывода «Расширения» на наличие проблем</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
-    <value>Please check the 'Extensions' output window for warnings</value>
+    <value>Пожалуйста, проверьте окно вывода «Расширения» на наличие предупреждений</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
-    <value>Choose Your Configuration File</value>
+    <value>Выберите файл конфигурации</value>
   </data>
   <data name="ChooseDatabaseConnection" xml:space="preserve">
-    <value>Choose Your Data Connection</value>
+    <value>Выберите подключение к БД</value>
   </data>
   <data name="ChooseDatabaseObjects" xml:space="preserve">
-    <value>Choose Your Database Objects</value>
+    <value>Выберите объекты базы данных</value>
   </data>
   <data name="ChooseSchemas" xml:space="preserve">
-    <value>Choose Your Schemas</value>
+    <value>Выберите схемы БД</value>
   </data>
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
-    <value>Choose Your SQL Server Database project</value>
+    <value>Выберите проект БД SQL Server</value>
   </data>
   <data name="CodeGeneration" xml:space="preserve">
-    <value>Code generation</value>
+    <value>Генерация кода</value>
   </data>
   <data name="ConnectionName" xml:space="preserve">
-    <value>Name</value>
+    <value>Имя</value>
   </data>
   <data name="ConnectionSample" xml:space="preserve">
-    <value>Sample</value>
+    <value>Пример</value>
   </data>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Connection String</value>
+    <value>Строка подключения</value>
   </data>
   <data name="ContextName" xml:space="preserve">
-    <value>Context name</value>
+    <value>Имя контекста</value>
   </data>
   <data name="ContextNameRequired" xml:space="preserve">
-    <value>Context name is required</value>
+    <value>Укажите имя контекста</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>Customize code using templates</value>
+    <value>Настройка кода с помощью шаблонов</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
-    <value>Database connection not found, cannot refresh</value>
+    <value>Подключение к БД не найдено, не могу обновить данные</value>
   </data>
   <data name="DbContextOnly" xml:space="preserve">
-    <value>DbContext only</value>
+    <value>Только контекст БД</value>
   </data>
   <data name="DbContextPath" xml:space="preserve">
-    <value>DbContext path (f.ex. Data) - optional</value>
+    <value>Путь к контексту БД (например, Data) — необязательно</value>
   </data>
   <data name="DbContextSubNamespace" xml:space="preserve">
-    <value>DbContext sub-namespace (overrides path) - optional</value>
+    <value>Подпространство имен контекста БД (переопределяет путь) – необязательно</value>
   </data>
   <data name="DDEXProviderExperience" xml:space="preserve">
-    <value>Install DDEX Provider for better experience</value>
+    <value>Установите DDEX поставщика для лучшей фукциональности</value>
   </data>
   <data name="EFCoreVersionTip" xml:space="preserve">
-    <value>Choose Your EF Core version</value>
+    <value>Выберите вашу версию EF Core</value>
   </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
-    <value>EntityTypes &amp; DbContext</value>
+    <value>Типы сущностей и контекст БД</value>
   </data>
   <data name="EntityTypesOnly" xml:space="preserve">
-    <value>EntityTypes only</value>
+    <value>Только типы сущностей</value>
   </data>
   <data name="EntityTypesPath" xml:space="preserve">
-    <value>EntityTypes path (f.ex. Models) - optional</value>
+    <value>Путь к типам сущностей (например, Models) — необязательно</value>
   </data>
   <data name="EntityTypesSubNamespace" xml:space="preserve">
-    <value>EntityTypes sub-namespace (overrides path) - optional</value>
+    <value>Подпространство типов сущностей (переопределяет путь) – необязательно</value>
   </data>
   <data name="FileLayout" xml:space="preserve">
-    <value>File layout</value>
+    <value>Макет файла</value>
   </data>
   <data name="FilterSchemas" xml:space="preserve">
-    <value>Filter schemas</value>
+    <value>Схемы фильтров</value>
   </data>
   <data name="Functions" xml:space="preserve">
-    <value>Functions</value>
+    <value>Функции</value>
   </data>
   <data name="GenerateEFCoreModelInProject" xml:space="preserve">
-    <value>Choose Your Settings for Project {0}</value>
+    <value>Выберите настройки для проекта {0}</value>
   </data>
   <data name="GeneratingCode" xml:space="preserve">
-    <value>Generating code...</value>
+    <value>Генерация кода...</value>
   </data>
   <data name="GettingReadyToConnect" xml:space="preserve">
-    <value>Getting ready to connect...</value>
+    <value>Подготовка к подключению...</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>Справка</value>
   </data>
   <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
-    <value>Include connection string in generated code</value>
+    <value>Включать строку подключения в сгенерированный код</value>
   </data>
   <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
-    <value>Install the EF Core provider package in the project</value>
+    <value>Установите пакет с EF Core поставщиком в проект</value>
   </data>
   <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
-    <value>Installing EF Core provider package</value>
+    <value>Установка пакета с EF Core поставщиком</value>
   </data>
   <data name="LoadingDatabaseObjects" xml:space="preserve">
-    <value>Loading database objects...</value>
+    <value>Загрузка объектов базы данных...</value>
   </data>
   <data name="LoadingOptions" xml:space="preserve">
-    <value>Loading options...</value>
+    <value>Загрузка настроек...</value>
   </data>
   <data name="MapHierarchyId" xml:space="preserve">
-    <value>Map HierarchyId</value>
+    <value>Map hierarchyid</value>
   </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
     <value>Map Noda Time types</value>
   </data>
   <data name="Mapping" xml:space="preserve">
-    <value>Mapping</value>
+    <value>Сопоставления</value>
   </data>
   <data name="MapSpatialTypes" xml:space="preserve">
-    <value>Map spatial types</value>
+    <value>Сопоставление пространственных типов</value>
   </data>
   <data name="ModelGeneratedSuccesfully" xml:space="preserve">
-    <value>Model generated successfully.</value>
+    <value>Модель успешно создана.</value>
   </data>
   <data name="Namespace" xml:space="preserve">
-    <value>Namespace</value>
+    <value>Пространство имен</value>
   </data>
   <data name="NamespaceRequired" xml:space="preserve">
-    <value>Namespace is required</value>
+    <value>Пространство имен должно быть задано</value>
   </data>
   <data name="Naming" xml:space="preserve">
-    <value>Naming</value>
+    <value>Именование</value>
   </data>
   <data name="NewNameCannotBeEmpty" xml:space="preserve">
-    <value>New name cannot be empty</value>
+    <value>Новое имя не может быть пустым</value>
   </data>
   <data name="NoPrimaryKey" xml:space="preserve">
-    <value>This table has no primary key defined.</value>
+    <value>В таблице не задан первичный ключ.</value>
   </data>
   <data name="PackageNotFoundInProject" xml:space="preserve">
-    <value>The "{0}" NuGet package was not found in the project - it must be installed in order to build.</value>
+    <value>NuGet пакет "{0}" не найден в проекте — он должен быть установлен для сборки.</value>
   </data>
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
-    <value>Pluralize or singularize generated object names (English)</value>
+    <value>Задавайте имена объектов во множественном или единственном числе (на английском)</value>
   </data>
   <data name="POCOEntities" xml:space="preserve">
-    <value>POCO entities</value>
+    <value>POCO сущности</value>
   </data>
   <data name="Rate" xml:space="preserve">
-    <value>⭐ Rate</value>
+    <value>⭐ Оценить</value>
   </data>
   <data name="RateTip" xml:space="preserve">
-    <value>Let me know if you like this free tool</value>
+    <value>Дайте мне знать, если вам нравится этот бесплатный инструмент</value>
   </data>
   <data name="ReleaseNotes" xml:space="preserve">
-    <value>Release Notes</value>
+    <value>Примечания к выпуску</value>
   </data>
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
-    <value>Remove constructor from entity classes (experimental)</value>
+    <value>Удалить конструктор из классов сущностей (экспериментальная функция)</value>
   </data>
   <data name="RemoveDefaultConstructor" xml:space="preserve">
-    <value>Remove default DbContext constructor</value>
+    <value>Удалить конструктор по умолчанию у контекста БД</value>
   </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
-    <value>Remove navigations from entity classes (experimental)</value>
+    <value>Удалить навигации из классов сущностей (экспериментальная функция)</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
-    <value>Remove selected connection</value>
+    <value>Удалить выбранное подключение</value>
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
-    <value>Remove SQL default from bool columns</value>
+    <value>Удалить SQL по умолчанию из логических полей</value>
   </data>
   <data name="RenamingNavigations" xml:space="preserve">
-    <value>Renaming navigations</value>
+    <value>Переименование навигаций</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
-    <value>Reporting result...</value>
+    <value>Отчет о результате...</value>
   </data>
   <data name="ReverseEngineerCompleted" xml:space="preserve">
-    <value>Reverse engineer completed in {0}</value>
+    <value>Реверс-инжиниринг завершен в {0}</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>Поиск</value>
   </data>
   <data name="SearchForObjects" xml:space="preserve">
-    <value>Search for objects</value>
+    <value>Поиск объектов</value>
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
-    <value>Split DbContext into Configuration classes (preview)</value>
+    <value>Разделение контекста БД на классы конфигураций (предварительная функция)</value>
   </data>
   <data name="SQLiteExperience" xml:space="preserve">
-    <value>Improve your SQLite experience</value>
+    <value>Улучшите свой опыт работы с SQLite</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
-    <value>The credentials in use has not been granted 'VIEW DEFINITION' rights, so functionality may be degraded or faulty.</value>
+    <value>Используемым учетным данным не предоставлены права «ПРОСМОТР ОПРЕДЕЛЕНИЙ», поэтому функциональность может быть ухудшена или неисправна.</value>
   </data>
   <data name="SQLServerVersionNotSupported" xml:space="preserve">
-    <value>SQL Server version {0} may not be supported.</value>
+    <value>SQL Server версии {0} может не поддерживаться.</value>
   </data>
   <data name="StoredProcedures" xml:space="preserve">
-    <value>Stored procedures</value>
+    <value>Хранимые процедуры</value>
   </data>
   <data name="StoredProceduresReturnList" xml:space="preserve">
-    <value>Stored procedures return List (default array)</value>
+    <value>Хранимые процедуры возвращают список (массив по умолчанию)</value>
   </data>
   <data name="T4TemplatePath" xml:space="preserve">
-    <value>T4 Template path - optional</value>
+    <value>Путь к шаблону T4 – необязательно</value>
   </data>
   <data name="Tables" xml:space="preserve">
-    <value>Tables</value>
+    <value>Таблицы</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>Unable to add connection, maybe the provider is not supported</value>
+    <value>Не могу добавить подключение, возможно поставщик не поддерживается</value>
   </data>
   <data name="UnableToAddToList" xml:space="preserve">
-    <value>Unable to add to list</value>
+    <value>Не могу добавить в список</value>
   </data>
   <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
-    <value>Unable to build selected Database Project</value>
+    <value>Не могу построить выбранный проект базы данных</value>
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
-    <value>Unable to remove connection</value>
+    <value>Не могу удалить подключение</value>
   </data>
   <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
-    <value>If unchecked, EF Core 3.1 will be used</value>
+    <value>Если флажок снят, будет использоваться EF Core 3.1</value>
   </data>
   <data name="UncheckingFileRemoved" xml:space="preserve">
-    <value>Unchecking an item may cause the related file to be removed</value>
+    <value>Снятие флажка с элемента может привести к удалению связанного файла.</value>
   </data>
   <data name="UnsupportedProvider" xml:space="preserve">
-    <value>Unsupported provider</value>
+    <value>Неподдерживаемый поставщик</value>
   </data>
   <data name="UseDataAnnotations" xml:space="preserve">
-    <value>Use DataAnnotation attributes to configure the model</value>
+    <value>Использовать атрибуты описания данных для настройки модели</value>
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
-    <value>Use EF6 "Classic" pluralizer</value>
+    <value>Использовать «Классическое» EF6 пребразование множественного числа</value>
   </data>
   <data name="UseManyToManyEntity" xml:space="preserve">
-    <value>Use many to many entity</value>
+    <value>Использовать отношение «многие ко многим»</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
-    <value>Use table and column names directly from the database</value>
+    <value>Использовать имена таблиц и полей непосредственно из базы данных</value>
   </data>
   <data name="UseNullableReferenceTypes" xml:space="preserve">
-    <value>Use nullable reference types</value>
+    <value>Использовать ссылочные типы, допускающие значение NULL</value>
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
-    <value>Use regular expression</value>
+    <value>Использовать регулярные выражения</value>
   </data>
   <data name="UserGuide" xml:space="preserve">
-    <value>User Guide</value>
+    <value>Руководство пользователя</value>
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
-    <value>Use schema folder separation (experimental)</value>
+    <value>Use schema folder separation (experimental)
+Использовать разделение папок схемы (экспериментальная функция)</value>
   </data>
   <data name="UseSchemaNamespaces" xml:space="preserve">
-    <value>Use schema namespaces separation (experimental)</value>
+    <value>Использовать разделение пространств имен схемы (экспериментальная функция)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
-    <value>Use text search</value>
+    <value>Использовать поиск текста</value>
   </data>
   <data name="Views" xml:space="preserve">
-    <value>Views</value>
+    <value>Виды</value>
   </data>
   <data name="WhatToGenerate" xml:space="preserve">
-    <value>What to generate</value>
+    <value>Объекты генерации</value>
   </data>
 </root>
