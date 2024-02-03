@@ -24,6 +24,8 @@
     var renames = new List<(string EntityTypeName, string DependentToPrinicpalName, string PrincipalToDependentName, string? NewDependentToPrincipalName, string? NewPrincipalToDependentName)>
     {
         ("MyEntity", "MyEntity", "MyEntities", "FromEntity", "FromEntities"),
+        ("PlatformIdentifierMapping", "PlatformPlatformType", "PlatformIdentifierMappingPlatformPlatformTypes", "DestinationPlatform", "PlatformIdentifierMappingPlatformPlatformTypes"),
+        ("PlatformIdentifierMapping", "PlatformPlatformTypeNavigation", "PlatformIdentifierMappingPlatformPlatformTypeNavigations", "SourcePlatform", "PlatformIdentifierMappingPlatformPlatformTypeNavigations"),
     };
 
     var services = (IServiceProvider)Host;

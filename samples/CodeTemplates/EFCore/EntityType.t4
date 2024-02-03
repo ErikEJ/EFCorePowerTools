@@ -24,6 +24,8 @@
     var renames = new List<(string EntityTypeName, string PropertyName, string NewPropertyName)>
     {
         ("MyEntity", "OldPropertyName", "NewPropertyEntity"),
+        ("PlatformIdentifierMapping", "PlatformPlatformType", "DestinationPlatform"),
+        ("PlatformIdentifierMapping", "PlatformPlatformTypeNavigation", "SourcePlatform"),
     };
 
     var enumList = new List<(string EntityTypeName, string PropertyName, string? EnumType)>();
@@ -133,7 +135,7 @@ public partial class <#= EntityType.Name #>
         }
 
         var targetType = navigation.TargetEntityType.Name;
-        var renameTuple = renames.SingleOrDefault(t => t.EntityTypeName == targetType && t.PropertyName == navigation.Name);
+        var renameTuple = renames.SingleOrDefault(t => t.EntityTypeName == EntityType.Name && t.PropertyName == navigation.Name);
         var navigationName = renameTuple.NewPropertyName ?? navigation.Name;
         if (navigation.IsCollection)
         {
