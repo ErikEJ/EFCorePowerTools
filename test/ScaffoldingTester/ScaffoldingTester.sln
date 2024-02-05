@@ -17,7 +17,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseBuild", "DatabaseBuild\DatabaseBuild.csproj", "{FEE94626-03BA-474A-9329-9FD63D055CA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScaffoldingPostgreSqlMultiSchemaTester", "ScaffoldingPostgreSqlMultiSchemaTester\ScaffoldingPostgreSqlMultiSchemaTester.csproj", "{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScaffoldingPostgreSqlMultiSchemaTester", "ScaffoldingPostgreSqlMultiSchemaTester\ScaffoldingPostgreSqlMultiSchemaTester.csproj", "{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
