@@ -227,7 +227,7 @@ namespace EFCorePowerTools.Handlers
 
             try
             {
-                File.WriteAllText(Path.Combine(Path.GetTempPath(), "efptparams.txt"), startInfo.Arguments);
+                File.WriteAllText(Path.Combine(Path.GetTempPath(), "efptparams.txt"), startInfo.Arguments, Encoding.UTF8);
             }
             catch
             {

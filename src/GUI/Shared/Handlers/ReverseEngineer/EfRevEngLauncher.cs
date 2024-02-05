@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using EFCorePowerTools.Extensions;
 using RevEng.Common;
@@ -195,7 +196,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private async Task<ReverseEngineerResult> GetOutputAsync()
         {
             var path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()) + ".json";
-            File.WriteAllText(path, options.Write());
+            File.WriteAllText(path, options.Write(), Encoding.UTF8);
 
             var launchPath = DropNetCoreFiles();
 

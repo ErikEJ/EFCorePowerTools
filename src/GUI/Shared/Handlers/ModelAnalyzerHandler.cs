@@ -92,7 +92,7 @@ namespace EFCorePowerTools.Handlers
                         Telemetry.TrackEvent("PowerTools.GenerateModelDgml");
                         break;
                     case GenerationType.Ddl:
-                        var files = project.GenerateFiles(modelResult, ".sql");
+                        var files = project.GenerateFiles(modelResult, ".sql", addToProject: true);
                         foreach (var file in files)
                         {
                             await VS.Documents.OpenAsync(file);

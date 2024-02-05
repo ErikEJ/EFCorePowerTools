@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Handlers.ReverseEngineer;
@@ -266,7 +267,7 @@ namespace EFCorePowerTools.Extensions
             return false;
         }
 
-        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension)
+        public static List<string> GenerateFiles(this Project project, List<Tuple<string, string>> result, string extension, bool addToProject = false)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -281,19 +282,28 @@ namespace EFCorePowerTools.Extensions
                     return list;
                 }
 
-                var filePath = Path.Combine(
-                    Path.GetTempPath(),
-                    item.Item1 + extension);
-
-                if (File.Exists(filePath))
+                if (addToProject)
                 {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    var itemPath = Path.Combine(Path.GetDirectoryName(project.FullPath), item.Item1 + extension);
+                    File.WriteAllText(itemPath, item.Item2, Encoding.UTF8);
+                    list.Add(itemPath);
                 }
+                else
+                {
+                    var filePath = Path.Combine(
+                        Path.GetTempPath(),
+                        item.Item1 + extension);
 
-                File.WriteAllText(filePath, item.Item2);
-                File.SetAttributes(filePath, FileAttributes.ReadOnly);
+                    if (File.Exists(filePath))
+                    {
+                        File.SetAttributes(filePath, FileAttributes.Normal);
+                    }
 
-                list.Add(filePath);
+                    File.WriteAllText(filePath, item.Item2, Encoding.UTF8);
+                    File.SetAttributes(filePath, FileAttributes.ReadOnly);
+
+                    list.Add(filePath);
+                }
             }
 
             return list;
