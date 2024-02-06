@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Common;
 using System;
@@ -13,11 +14,16 @@ namespace RevEng.Core
     {
         private readonly List<Schema> customNameOptions;
         private readonly bool preserveCasingUsingRegex;
+        private readonly bool usePrefixNaming;
 
-        public ReplacingCandidateNamingService(List<Schema> customNameOptions, bool preserveCasingUsingRegex = false)
+        public ReplacingCandidateNamingService(
+            List<Schema> customNameOptions,
+            bool preserveCasingUsingRegex = false,
+            bool usePrefixNaming = false)
         {
             this.customNameOptions = customNameOptions;
             this.preserveCasingUsingRegex = preserveCasingUsingRegex;
+            this.usePrefixNaming = usePrefixNaming;
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -129,6 +135,85 @@ namespace RevEng.Core
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
+#if CORE80
+        public override string GetDependentEndCandidateNavigationPropertyName(IReadOnlyForeignKey foreignKey)
+        {
+            ArgumentNullException.ThrowIfNull(foreignKey);
+
+            if (!usePrefixNaming)
+            {
+                return base.GetDependentEndCandidateNavigationPropertyName(foreignKey);
+            }
+
+            var candidateName = FindCandidateNavigationName(foreignKey.Properties);
+
+            return !string.IsNullOrEmpty(candidateName) ? candidateName : foreignKey.PrincipalEntityType.ShortName();
+        }
+
+        private static string FindCandidateNavigationName(IEnumerable<IReadOnlyProperty> properties)
+        {
+            var count = properties.Count();
+            if (count == 0)
+            {
+                return string.Empty;
+            }
+
+            var firstProperty = properties.First();
+            return StripId(
+                count == 1
+                    ? firstProperty.Name
+                    : FindCommonPrefix(firstProperty.Name, properties.Select(p => p.Name)));
+        }
+
+        private static string FindCommonPrefix(string firstName, IEnumerable<string> propertyNames)
+        {
+            var prefixLength = 0;
+            foreach (var c in firstName)
+            {
+                foreach (var s in propertyNames)
+                {
+                    if (s.Length <= prefixLength
+                        || s[prefixLength] != c)
+                    {
+                        return firstName[..prefixLength];
+                    }
+                }
+
+                prefixLength++;
+            }
+
+            return firstName[..prefixLength];
+        }
+
+        private static string StripId(string commonPrefix)
+        {
+            if (commonPrefix.Length < 3
+                || !commonPrefix.EndsWith("id", StringComparison.OrdinalIgnoreCase))
+            {
+                return commonPrefix;
+            }
+
+            var ignoredCharacterCount = 2;
+            if (commonPrefix.Length > 4
+                && commonPrefix.EndsWith("guid", StringComparison.OrdinalIgnoreCase))
+            {
+                ignoredCharacterCount = 4;
+            }
+
+            int i;
+            for (i = commonPrefix.Length - ignoredCharacterCount - 1; i >= 0; i--)
+            {
+                if (char.IsLetterOrDigit(commonPrefix[i]))
+                {
+                    break;
+                }
+            }
+
+            return i != 0
+                ? commonPrefix[..(i + 1)]
+                : commonPrefix;
+        }
+#endif
         private static string GenerateIdentifier(string value)
         {
             var candidateStringBuilder = new StringBuilder();
