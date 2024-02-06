@@ -59,11 +59,17 @@ namespace RevEng.Core
                         options.DatabaseType,
                         options.UseManyToManyEntity));
 
+#if CORE80
+            if (options.CustomReplacers != null || options.UsePrefixNavigationNaming)
+            {
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex, options.UsePrefixNavigationNaming));
+            }
+#else
             if (options.CustomReplacers != null)
             {
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
             }
-
+#endif
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>

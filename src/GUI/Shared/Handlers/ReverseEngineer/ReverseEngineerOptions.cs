@@ -60,5 +60,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public bool UseDateOnlyTimeOnly { get; set; }
         public string T4TemplatePath { get; set; }
         public bool UseDecimalDataAnnotationForSprocResult { get; set; } = true;
+        public bool UsePrefixNavigationNaming { get; set; }
     }
 }

@@ -59,5 +59,6 @@ namespace RevEng.Common
         public bool UseDecimalDataAnnotation { get; set; }
         public bool PreserveCasingWithRegex { get; set; }
         public bool UseDateOnlyTimeOnly { get; set; }
+        public bool UsePrefixNavigationNaming { get; set; }
     }
 }
