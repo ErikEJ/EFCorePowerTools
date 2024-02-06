@@ -57,13 +57,13 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
         public bool UseDecimalDataAnnotation { get; set; } = true;
 
-        [JsonPropertyName("remove-valuegeneratedonadd")]
-        public bool RemoveValueGeneratedOnAdd { get; set; }
-
         [JsonPropertyName("generate-mermaid-diagram")]
         public bool GenerateMermaidDiagram { get; set; }
 
         [JsonPropertyName("refresh-object-lists")]
         public bool RefreshObjectLists { get; set; } = true;
+
+        [JsonPropertyName("use-prefix-navigation-naming")]
+        public bool UsePrefixNavigationNaming { get; set; }
     }
 }

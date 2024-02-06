@@ -426,6 +426,14 @@
                     "examples": [
                         false
                     ]
+                },
+                "use-prefix-navigation-naming": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Use prefix based naming of navigations with EF Core 8 or later",
+                    "examples": [
+                        false
+                    ]
                 }
             },
             "examples": [{

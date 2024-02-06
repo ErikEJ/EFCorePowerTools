@@ -81,6 +81,7 @@ namespace RevEng.Common.Cli
                 ProjectRootNamespace = names.RootNamespace,
                 MergeDacpacs = config.CodeGeneration.MergeDacpacs,
                 UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
+                UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
 
                 // Not supported:
                 UseHandleBars = false,
