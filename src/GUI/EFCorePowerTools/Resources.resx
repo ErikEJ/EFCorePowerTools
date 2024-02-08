@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FirebirdProvider" xml:space="preserve">
+    <value>43015f6e-757f-408b-966e-c2bce34686ba</value>
+  </data>
   <data name="MicrosoftSQLiteProvider" xml:space="preserve">
     <value>796A79E8-2579-4375-9E12-03A9E0D1FC02</value>
   </data>

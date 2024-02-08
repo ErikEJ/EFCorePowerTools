@@ -61,6 +61,15 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 43015f6e-757f-408b-966e-c2bce34686ba.
+        /// </summary>
+        internal static string FirebirdProvider {
+            get {
+                return ResourceManager.GetString("FirebirdProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 796A79E8-2579-4375-9E12-03A9E0D1FC02.
         /// </summary>
         internal static string MicrosoftSQLiteProvider {

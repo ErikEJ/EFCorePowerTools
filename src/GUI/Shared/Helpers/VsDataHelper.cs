@@ -153,6 +153,7 @@ namespace EFCorePowerTools.Helpers
             Guid providerNpgsql = new Guid(Resources.NpgsqlProvider);
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
+            Guid providerFirebird = new Guid(Resources.FirebirdProvider);
 
             try
             {
@@ -200,6 +201,11 @@ namespace EFCorePowerTools.Helpers
                             if (objProviderGuid == providerOracle)
                             {
                                 info.DatabaseType = DatabaseType.Oracle;
+                            }
+
+                            if (objProviderGuid == providerFirebird)
+                            {
+                                info.DatabaseType = DatabaseType.Firebird;
                             }
 
                             if (info.DatabaseType != DatabaseType.Undefined
@@ -296,6 +302,12 @@ namespace EFCorePowerTools.Helpers
                 {
                     dbType = DatabaseType.Mysql;
                     providerGuid = Resources.MysqlVSProvider;
+                }
+
+                if (providerInvariant == "FirebirdSql.Data.FirebirdClient")
+                {
+                    dbType = DatabaseType.Firebird;
+                    providerGuid = Resources.FirebirdProvider;
                 }
             }
 

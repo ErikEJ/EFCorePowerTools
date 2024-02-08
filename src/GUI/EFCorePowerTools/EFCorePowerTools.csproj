@@ -397,6 +397,7 @@
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.cs.resx">
       <MergeWithCTO>true</MergeWithCTO>
@@ -551,7 +552,7 @@
     </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.ja.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
-    </VSCTCompile>    
+    </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.pl.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
