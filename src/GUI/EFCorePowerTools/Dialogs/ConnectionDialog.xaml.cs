@@ -62,6 +62,7 @@ namespace EFCorePowerTools.Dialogs
                 case DatabaseType.Npgsql:
                 case DatabaseType.Oracle:
                 case DatabaseType.SQLServerDacpac:
+                case DatabaseType.Firebird:
                     break;
 
                 case DatabaseType.Mysql:
@@ -69,9 +70,6 @@ namespace EFCorePowerTools.Dialogs
                     break;
                 case DatabaseType.SQLServer:
                     txtSample.Text = "Server=myserver.database.windows.net;Authentication=Active Directory Default;Database=mydatabase;User Id=user@domain.com";
-                    break;
-                case DatabaseType.Firebird:
-                    txtSample.Text = "database=localhost:demo.fdb;user=sysdba;password=masterkey";
                     break;
                 default:
                     break;

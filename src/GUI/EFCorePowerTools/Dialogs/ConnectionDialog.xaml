@@ -40,7 +40,6 @@
             SelectedValue="{Binding DbType, Mode=TwoWay}" 
             SelectedValuePath="Tag" Grid.Row="3" Margin="12,2" Width="136" HorizontalAlignment="Left" >
                 <ComboBoxItem Tag="3" >Azure SQL DB</ComboBoxItem>
-                <ComboBoxItem Tag="10">Firebird</ComboBoxItem>
                 <ComboBoxItem Tag="6" >MySQL</ComboBoxItem>
             </ComboBox>
 
