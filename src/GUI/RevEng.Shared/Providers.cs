@@ -88,14 +88,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.15";
+                var pkgVersion = "7.0.16";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.26";
+                        pkgVersion = "6.0.27";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.1";
+                        pkgVersion = "8.0.2";
                         break;
                 }
 
