@@ -113,7 +113,8 @@ namespace RevEng.Common.Cli
 
         public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config, out List<string> warnings)
         {
-            if (File.Exists(fullPath))
+            var cliConfigExists = File.Exists(fullPath);
+            if (cliConfigExists)
             {
                 config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(fullPath, Encoding.UTF8));
             }
@@ -147,10 +148,13 @@ namespace RevEng.Common.Cli
 
             warnings = ValidateExcludedColumns(config, objects);
 
+            if (!cliConfigExists || config.CodeGeneration.RefreshObjectLists)
+            {
 #pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-            var options = new JsonSerializerOptions { WriteIndented = true };
+                var options = new JsonSerializerOptions { WriteIndented = true };
 #pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-            File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
+                File.WriteAllText(fullPath, JsonSerializer.Serialize(config, options), Encoding.UTF8);
+            }
 
             return true;
         }
