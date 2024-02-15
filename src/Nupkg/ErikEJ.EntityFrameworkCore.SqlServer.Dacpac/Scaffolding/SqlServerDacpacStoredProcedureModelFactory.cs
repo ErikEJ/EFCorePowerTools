@@ -148,6 +148,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 StoreType = "int",
                 Output = true,
                 Nullable = false,
+                IsReturnValue = true,
             });
 
             return result;
