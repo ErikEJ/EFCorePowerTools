@@ -185,9 +185,12 @@ namespace RevEng.Common.Cli
         {
             List<string> warnings = new();
 
-            var objectsToCheck = config.Tables.Where(x => x.ExcludedColumns?.Count > 0)
+            var tables = config.Tables ?? new List<Table>();
+            var views = config.Views ?? new List<View>();
+
+            var objectsToCheck = tables.Where(x => x.ExcludedColumns?.Count > 0)
                 .Select(table => table as IEntity)
-                .Union(config.Views.Where(x => x.ExcludedColumns?.Count > 0));
+                .Union(views.Where(x => x.ExcludedColumns?.Count > 0));
 
             foreach (var table in objectsToCheck)
             {
@@ -324,7 +327,7 @@ namespace RevEng.Common.Cli
             var newItems = models.Where(o => o.ObjectType == objectType).ToList();
             if (newItems.Count == 0)
             {
-                return new List<T>();
+                return null;
             }
 
             var result = entities ?? new List<T>();
@@ -339,7 +342,7 @@ namespace RevEng.Common.Cli
                 }
             }
 
-            return result;
+            return result.Count > 0 ? result : null;
         }
 
         private static ObjectType DefineObjectType<T>()
