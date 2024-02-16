@@ -38,7 +38,7 @@ namespace RevEng.Common.Cli.Configuration
         public bool RemoveDefaultSqlFromBoolProperties { get; set; }
 
         [JsonPropertyName("soft-delete-obsolete-files")]
-        public bool SoftDeleteObsoleteFiles { get; set; }
+        public bool SoftDeleteObsoleteFiles { get; set; } = true;
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("discover-multiple-stored-procedure-resultsets-preview")]
