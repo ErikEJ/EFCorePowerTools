@@ -52,7 +52,7 @@ namespace EFCorePowerTools.Helpers
 #endif
         }
 
-        public static void TrackEngineUse(DatabaseType databaseType, int databaseEdition, int databaseVersion, int databaseLevel)
+        public static void TrackEngineUse(DatabaseType databaseType, int databaseEdition, int databaseVersion, int databaseLevel, long databaseEditionId)
         {
 #if !DEBUG
             if (Enabled && telemetry != null)
@@ -61,6 +61,7 @@ namespace EFCorePowerTools.Helpers
                 {
                     { "databaseType", databaseType.ToString() },
                     { "databaseEdition", databaseEdition.ToString(CultureInfo.InvariantCulture) },
+                    { "databaseEditionId", databaseEditionId.ToString(CultureInfo.InvariantCulture) },
                     { "databaseVersion", databaseVersion.ToString(CultureInfo.InvariantCulture) },
                     { "databaseLevel", databaseLevel.ToString(CultureInfo.InvariantCulture) },
                 });

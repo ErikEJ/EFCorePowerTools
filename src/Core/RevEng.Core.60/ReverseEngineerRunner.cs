@@ -194,6 +194,7 @@ namespace RevEng.Core
                     DatabaseEdition = sku.Edition,
                     DatabaseVersion = sku.Version,
                     DatabaseLevel = sku.Level,
+                    DatabaseEditionId = sku.EditionId,
                 };
 
                 return result;

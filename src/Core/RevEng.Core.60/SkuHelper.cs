@@ -6,11 +6,12 @@ namespace RevEng.Core
 {
     internal static class SkuHelper
     {
-        public static (int Edition, int Version, int Level) GetSkuInfo(string connectionString, DatabaseType databaseType)
+        public static (int Edition, int Version, int Level, long EditionId) GetSkuInfo(string connectionString, DatabaseType databaseType)
         {
             var edition = 0;
             var version = 0;
             var compatibilityLevel = 0;
+            var editionId = 0L;
 
             switch (databaseType)
             {
@@ -23,7 +24,9 @@ namespace RevEng.Core
                         var sql = @"
 SELECT SERVERPROPERTY('EngineEdition') AS Edition, 
 SERVERPROPERTY('ProductVersion') AS ProductVersion, 
-compatibility_level As CompatibilityLevel 
+compatibility_level As CompatibilityLevel,
+SERVERPROPERTY('EditionID') AS EditionId,
+SERVERPROPERTY('IsLocalDB') AS IsLocalDB
 FROM sys.databases WHERE name = @p1;";
 
                         var builder = new SqlConnectionStringBuilder(connectionString);
@@ -43,6 +46,7 @@ FROM sys.databases WHERE name = @p1;";
                                         edition = reader.GetInt32(0);
                                         version = new Version(reader.GetString(1)).Major;
                                         compatibilityLevel = reader.GetByte(2);
+                                        editionId = reader.GetInt32(3) + reader.GetInt32(4);
                                     }
                                 }
                             }
@@ -73,7 +77,7 @@ FROM sys.databases WHERE name = @p1;";
                     break;
             }
 
-            return (edition, version, compatibilityLevel);
+            return (edition, version, compatibilityLevel, editionId);
         }
     }
 }

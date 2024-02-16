@@ -13,6 +13,7 @@ namespace RevEng.Common
         public List<string> EntityErrors { get; set; }
         public List<string> EntityWarnings { get; set; }
         public int DatabaseEdition { get; set; }
+        public long DatabaseEditionId { get; set; }
         public int DatabaseVersion { get; set; }
         public int DatabaseLevel { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
