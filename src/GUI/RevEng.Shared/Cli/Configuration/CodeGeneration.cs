@@ -4,7 +4,7 @@ namespace RevEng.Common.Cli.Configuration
 {
     public class CodeGeneration
     {
-        [JsonPropertyOrder(10)] 
+        [JsonPropertyOrder(10)]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("discover-multiple-stored-procedure-resultsets-preview")]
         public bool DiscoverMultipleStoredProcedureResultsetsPreview { get; set; }

@@ -150,8 +150,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var renamingPath = project.GetRenamingPath(optionsPath);
                 var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
+                if (!string.IsNullOrEmpty(referenceRenamingPath) && File.Exists(referenceRenamingPath))
+                {
+                    VSHelper.ShowMessage("Property renaming (experimental) is no longer available. See GitHub issue #2171.");
+                }
+
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
-                var propertyNamingModel = RenamingRulesSerializer.TryRead(referenceRenamingPath);
 
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
 
@@ -199,7 +203,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         }
 
                         options.CustomReplacers = namingOptionsAndPath.Item1;
-                        options.CustomPropertyReplacers = propertyNamingModel;
                         options.InstallNuGetPackage = !onlyGenerate;
                     }
                 }
@@ -242,8 +245,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
                     options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
-
-                    options.CustomPropertyReplacers = propertyNamingModel;
 
                     if (!await GetModelOptionsAsync(options, project.Name))
                     {
@@ -671,8 +672,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
 
-            await ApplyNavigationRenamersAsync(project, referenceRenamingPath, options);
-
             stopWatch.Stop();
 
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
@@ -696,35 +695,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
-        }
-
-        private async Task ApplyNavigationRenamersAsync(Project project, string referenceRenamingPath, ReverseEngineerOptions options)
-        {
-            if (File.Exists(referenceRenamingPath))
-            {
-                try
-                {
-                    var model = RenamingRulesSerializer.TryRead(referenceRenamingPath);
-
-                    if (!model?.Classes?.Any() ?? true)
-                    {
-                        return;
-                    }
-
-                    // navigation property renaming must be done after the project nuget packages are installed
-                    // because Roslyn will resolve the project references in order to identify property symbols
-                    var statusMessages = await RoslynEntityPropertyRenamer.ApplyRenamingRulesAsync(
-                        model,
-                        project.FullPath,
-                        options.OutputContextPath,
-                        options.OutputPath);
-                    package.LogError(statusMessages, null);
-                }
-                catch (Exception ex)
-                {
-                    package.LogError(new List<string>(), ex);
-                }
-            }
         }
 
         private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
