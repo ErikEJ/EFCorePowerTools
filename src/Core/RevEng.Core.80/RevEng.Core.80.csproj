@@ -26,9 +26,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="..\RevEng.Core.60\DbContextExtensions" Link="DbContextExtensions" />
-    <EmbeddedResource Include="..\RevEng.Core.60\DbContextExtensions.Sync" Link="DbContextExtensions.Sync" />
-	</ItemGroup>
+    <EmbeddedResource Include="DbContextExtensionsSqlQuery" />
+    <EmbeddedResource Include="DbContextExtensionsSqlQuery.Sync" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />

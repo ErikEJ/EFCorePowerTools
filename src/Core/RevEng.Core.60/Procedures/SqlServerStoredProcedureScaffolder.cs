@@ -105,7 +105,9 @@ namespace RevEng.Core.Procedures
                     }
 
                     Sb.AppendLine("}");
+#if !CORE80
                     GenerateOnModelCreating(model);
+#endif
                 }
 
                 Sb.AppendLine("}");
@@ -191,7 +193,11 @@ namespace RevEng.Core.Procedures
 
         private static string GetDbContextExtensionsText(bool useAsyncCalls)
         {
+#if CORE80
+            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensionsSqlQuery" : "RevEng.Core.DbContextExtensionsSqlQuery.Sync";
+#else
             var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
+#endif
             var assembly = typeof(SqlServerStoredProcedureScaffolder).GetTypeInfo().Assembly;
             using Stream stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
             if (stream == null)
@@ -542,7 +548,7 @@ namespace RevEng.Core.Procedures
                 Sb.AppendLine("}");
             }
         }
-
+#if !CORE80
         private void GenerateOnModelCreating(RoutineModel model)
         {
             Sb.AppendLine();
@@ -577,7 +583,7 @@ namespace RevEng.Core.Procedures
 
             Sb.AppendLine("}");
         }
-
+#endif
         private void GenerateParameterVar(ModuleParameter parameter, Routine procedure)
         {
             Sb.Append($"var {ParameterPrefix}{parameter.Name} = ");
