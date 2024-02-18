@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.IO;
 using System.Reflection;
@@ -12,6 +11,7 @@ namespace Microsoft.EntityFrameworkCore
     {
         public static string AsDgml(this DbContext context)
         {
+#pragma warning disable CA1510 // Use ArgumentNullException throw helper
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
@@ -32,17 +32,13 @@ namespace Microsoft.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(context));
             }
 
+#pragma warning restore CA1510 // Use ArgumentNullException throw helper
             return context.Database.GenerateCreateScript();
         }
 
         private static string CreateDebugView(DbContext context)
         {
-#if CORE60
             return context.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
-#else
-            var model = context.Model;
-            return model.AsModel().DebugView.View;
-#endif
         }
 
         private static string GetTemplate()

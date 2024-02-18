@@ -1,48 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
         <NoWarn>$(NoWarn);EF1001</NoWarn>
-        <PackageVersion>3.1.5</PackageVersion>
+        <PackageVersion>6.0.1</PackageVersion>
         <Authors>ErikEJ</Authors>
         <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		    <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReleaseNotes>Bug fixes to generated DGML</PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
         <PackageTags>DbContext;EntityFramework;DGML;graph;EFCore;EntityFrameworkCore</PackageTags>
         <RootNamespace>DgmlBuilder</RootNamespace>
         <MinClientVersion>5.0</MinClientVersion>
         <Dependencies>
-          <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="3.1.0" />
+          <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="6.0.0" />
         </Dependencies>
-		<PackageReadmeFile>readme.md</PackageReadmeFile>
-		<SignAssembly>true</SignAssembly>
+		    <PackageReadmeFile>readme.md</PackageReadmeFile>
+		    <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<DebugType>embedded</DebugType>
-	</PropertyGroup>
-
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <DebugType>embedded</DebugType>	
+    </PropertyGroup>
+	
 	<PropertyGroup Condition="'$(CI)' == 'True'">
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
+    <PropertyGroup>
+      <DefineConstants>TRACE;CORE60</DefineConstants>
+    </PropertyGroup>
+
 	<ItemGroup>
-  	  <None Include="readme.md" Pack="true" PackagePath="\" />	  
-    </ItemGroup>
-	
-    <ItemGroup>
-	    <None Remove="template.dgml" />
-    </ItemGroup>
+		<None Include="readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
-    <ItemGroup>
-	    <EmbeddedResource Include="template.dgml" />
+	<ItemGroup>
+      <EmbeddedResource Include="template.dgml" Link="template.dgml" />
     </ItemGroup>
-
-    <ItemGroup>
-	    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    </ItemGroup>
+    
+	<ItemGroup>
+	    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
+      <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />	
+  </ItemGroup>
 
 </Project>
