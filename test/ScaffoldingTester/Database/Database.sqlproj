@@ -46,6 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+    <SqlCodeAnalysisRules>-Microsoft.Rules.Data.SR0001;-Microsoft.Rules.Data.SR0008;-Microsoft.Rules.Data.SR0009;-Microsoft.Rules.Data.SR0010;-Microsoft.Rules.Data.SR0013;-Microsoft.Rules.Data.SR0014</SqlCodeAnalysisRules>
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>

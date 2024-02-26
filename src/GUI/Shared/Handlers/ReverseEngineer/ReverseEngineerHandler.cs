@@ -263,7 +263,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, referenceRenamingPath);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -599,7 +599,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return true;
         }
 
-        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, string referenceRenamingPath)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

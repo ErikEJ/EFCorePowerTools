@@ -150,15 +150,15 @@ namespace RevEng.Core
             return !string.IsNullOrEmpty(candidateName) ? candidateName : foreignKey.PrincipalEntityType.ShortName();
         }
 
-        private static string FindCandidateNavigationName(IEnumerable<IReadOnlyProperty> properties)
+        private static string FindCandidateNavigationName(IReadOnlyList<IReadOnlyProperty> properties)
         {
-            var count = properties.Count();
+            var count = properties.Count;
             if (count == 0)
             {
                 return string.Empty;
             }
 
-            var firstProperty = properties.First();
+            var firstProperty = properties[0];
             return StripId(
                 count == 1
                     ? firstProperty.Name
