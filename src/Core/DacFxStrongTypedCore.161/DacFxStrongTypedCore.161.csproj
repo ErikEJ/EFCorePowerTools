@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.1.172" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.2.111" />
   </ItemGroup>
 
 </Project>
