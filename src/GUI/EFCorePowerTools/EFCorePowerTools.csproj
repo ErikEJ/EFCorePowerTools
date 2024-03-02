@@ -47,6 +47,7 @@
     <StartAction>Program</StartAction>
     <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix Exp</StartArguments>
+    <CheckNewtonsoftJsonVersion>false</CheckNewtonsoftJsonVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DebugViewParser.cs">
