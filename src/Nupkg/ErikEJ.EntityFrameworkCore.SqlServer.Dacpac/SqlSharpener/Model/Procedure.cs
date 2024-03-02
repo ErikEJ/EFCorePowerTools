@@ -19,7 +19,6 @@ namespace SqlSharpener.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Procedure"/> class.
         /// </summary>
-        /// <param name="prefix">The prefix used on stored procedure names.</param>
         public Procedure(Dac.TSqlObject tSqlObject)
         {
             this.Name = tSqlObject.Name.Parts.Last();

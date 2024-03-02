@@ -39,9 +39,6 @@ namespace SqlSharpener.Model
         /// Initializes a new instance of the <see cref="Column" /> class.
         /// </summary>
         /// <param name="tSqlObject">The TSqlObject representing the column.</param>
-        /// <param name="tSqlTable">The table or view this column belongs to.</param>
-        /// <param name="primaryKeys">The primary keys.</param>
-        /// <param name="foreignKeys">The foreign keys.</param>
         public Column(Dac.TSqlObject tSqlObject)
         {
             this.Name = tSqlObject.Name.Parts.Last();

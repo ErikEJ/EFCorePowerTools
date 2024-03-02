@@ -327,7 +327,9 @@ namespace RevEng.Common.Cli
             var newItems = models.Where(o => o.ObjectType == objectType).ToList();
             if (newItems.Count == 0)
             {
+#pragma warning disable S1168
                 return null;
+#pragma warning restore S1168
             }
 
             var result = entities ?? new List<T>();

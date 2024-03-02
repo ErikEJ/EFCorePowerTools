@@ -14,16 +14,24 @@ namespace RevEng.Core
     {
         private readonly List<Schema> customNameOptions;
         private readonly bool preserveCasingUsingRegex;
+#if CORE80
         private readonly bool usePrefixNaming;
-
+#endif
         public ReplacingCandidateNamingService(
+#if CORE80
+            bool usePrefixNaming,
             List<Schema> customNameOptions,
-            bool preserveCasingUsingRegex = false,
-            bool usePrefixNaming = false)
+            bool preserveCasingUsingRegex = false)
+#else
+            List<Schema> customNameOptions,
+            bool preserveCasingUsingRegex = false)
+#endif
         {
             this.customNameOptions = customNameOptions;
             this.preserveCasingUsingRegex = preserveCasingUsingRegex;
+#if CORE80
             this.usePrefixNaming = usePrefixNaming;
+#endif
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)

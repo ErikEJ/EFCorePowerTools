@@ -8,7 +8,7 @@ namespace EFCorePowerTools.ItemWizard
 {
     public class ReverseEngineerWizardLauncher : IWizard
     {
-        // TODO Update vstemplate version reference if main assembly version changes
+        // Update vstemplate version reference if main assembly version changes
         // In \src\GUI\WizardItemTemplate\WizardItemTemplate.vstemplate
         public void RunStarted(
             object automationObject,

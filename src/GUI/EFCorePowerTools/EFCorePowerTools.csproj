@@ -19,9 +19,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\EFCorePowerTools.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\EFCorePowerTools.xml</DocumentationFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -93,6 +95,7 @@
       <DependentUpon>PickTablesDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="EFCorePowerToolsPackage.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Locales\AboutLocale.Designer.cs">
       <DependentUpon>AboutLocale.resx</DependentUpon>
       <AutoGen>True</AutoGen>

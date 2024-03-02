@@ -26,8 +26,6 @@ namespace SqlSharpener.Model
         /// Initializes a new instance of the <see cref="Table" /> class.
         /// </summary>
         /// <param name="tSqlObject">The TSqlObject representing the table.</param>
-        /// <param name="primaryKeys">The primary keys.</param>
-        /// <param name="foreignKeys">The foreign keys.</param>
         public Table(Dac.TSqlObject tSqlObject)
         {
             ArgumentNullException.ThrowIfNull(tSqlObject);

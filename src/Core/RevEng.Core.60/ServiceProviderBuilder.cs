@@ -62,7 +62,7 @@ namespace RevEng.Core
 #if CORE80
             if (options.CustomReplacers != null || options.UsePrefixNavigationNaming)
             {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex, options.UsePrefixNavigationNaming));
+                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 #else
             if (options.CustomReplacers != null)
