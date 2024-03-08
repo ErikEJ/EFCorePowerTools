@@ -17,7 +17,6 @@ internal static class RegisterDependentServices
         var reverseOptions = new ReverseEngineerCommandOptions
         {
             DatabaseType = databaseType,
-            MergeDacpacs = scaffoldOptions.IsDacpac,
             ConnectionString = scaffoldOptions.ConnectionString.ApplyDatabaseType(databaseType),
         };
         scaffoldOptions.ConnectionString = reverseOptions.ConnectionString;
