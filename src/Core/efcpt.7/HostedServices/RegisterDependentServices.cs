@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Abstractions;
+using System.Text;
+using System.Text.Json;
 using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RevEng.Common;
+using RevEng.Common.Cli.Configuration;
 using RevEng.Core;
 
 namespace ErikEJ.EFCorePowerTools.HostedServices;
@@ -17,7 +21,7 @@ internal static class RegisterDependentServices
         var reverseOptions = new ReverseEngineerCommandOptions
         {
             DatabaseType = databaseType,
-            MergeDacpacs = scaffoldOptions.IsDacpac,
+            MergeDacpacs = File.Exists(scaffoldOptions.ConfigFile.FullName.ToString()) ? JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(scaffoldOptions.ConfigFile.FullName.ToString(), Encoding.UTF8)).CodeGeneration.MergeDacpacs : scaffoldOptions.IsDacpac,
             ConnectionString = scaffoldOptions.ConnectionString.ApplyDatabaseType(databaseType),
         };
         scaffoldOptions.ConnectionString = reverseOptions.ConnectionString;
