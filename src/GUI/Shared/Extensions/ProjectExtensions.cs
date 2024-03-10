@@ -232,6 +232,13 @@ namespace EFCorePowerTools.Extensions
             return IsNet80(targetFrameworkMonikers);
         }
 
+        public static async Task<bool> IsNet90Async(this Project project)
+        {
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet90(targetFrameworkMonikers);
+        }
+
         public static async Task<bool> IsNetStandardAsync(this Project project)
         {
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
@@ -422,6 +429,11 @@ namespace EFCorePowerTools.Extensions
         private static bool IsNet80(string targetFrameworkMonikers)
         {
             return FrameworkCheck(targetFrameworkMonikers, "8");
+        }
+
+        private static bool IsNet90(string targetFrameworkMonikers)
+        {
+            return FrameworkCheck(targetFrameworkMonikers, "9");
         }
 
         private static bool FrameworkCheck(string targetFrameworkMonikers, string version)
