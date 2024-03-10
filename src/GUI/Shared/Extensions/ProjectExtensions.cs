@@ -173,6 +173,11 @@ namespace EFCorePowerTools.Extensions
                 version = new Version(8, 0);
             }
 
+            if (await project.IsNet90Async())
+            {
+                version = new Version(9, 0);
+            }
+
             return version;
         }
 
