@@ -1,7 +1,8 @@
-<Project Sdk="MSBuild.Sdk.SqlProj/2.6.0">
+<Project Sdk="MSBuild.Sdk.SqlProj/2.7.1">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	  <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>  
   </PropertyGroup>
 
 	<ItemGroup>
