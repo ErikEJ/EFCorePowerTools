@@ -1,37 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<NoWarn>$(NoWarn);EF1001</NoWarn>
-		<RootNamespace>RevEng.Core</RootNamespace>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <RootNamespace>RevEng.Core</RootNamespace>
     <Nullable>warnings</Nullable>
-	</PropertyGroup>
+  </PropertyGroup>
 
-	<PropertyGroup>
-		<DefineConstants>TRACE;CORE60;CORE80</DefineConstants>
-	</PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>TRACE;CORE60;CORE80</DefineConstants>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Compile Include="..\RevEng.Core.60\*.cs" Link="%(Filename)%(Extension)" />
-		<Compile Include="..\RevEng.Core.60\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
-		<Compile Include="..\RevEng.Core.60\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
-		<Compile Include="..\RevEng.Core.60\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
+  <ItemGroup>
+    <Compile Include="..\RevEng.Core.60\*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
     <Compile Include="..\RevEng.Core.60\Dgml\*.cs" Link="Dgml\%(Filename)%(Extension)" />
     <Compile Include="..\RevEng.Core.60\Mermaid\*.cs" Link="Mermaid\%(Filename)%(Extension)" />
-	</ItemGroup>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <Compile Remove="..\RevEng.Core.60\CrmDatabaseModelFactory.cs" />
-	  <Compile Remove="..\RevEng.Core.60\PatchedSqlServerDatabaseModelFactory.cs" />
-	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="..\RevEng.Core.60\CrmDatabaseModelFactory.cs" />
+    <Compile Remove="..\RevEng.Core.60\PatchedSqlServerDatabaseModelFactory.cs" />
+  </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="DbContextExtensionsSqlQuery" />
     <EmbeddedResource Include="DbContextExtensionsSqlQuery.Sync" />
   </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
+  <ItemGroup>
+    <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="8.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="8.0.1" />
     <!--<PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="11.0.0-??" />-->    
@@ -45,13 +45,13 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.21.121" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="8.0.1" />
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="8.0.0" />
-		<PackageReference Include="System.CodeDom" Version="8.0.0" />
-	</ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="8.0.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
-		<ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
-		<ProjectReference Include="..\..\GUI\RevEng.Shared\RevEng.Common.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\GUI\RevEng.Shared\RevEng.Common.csproj" />
+  </ItemGroup>
 
 </Project>
