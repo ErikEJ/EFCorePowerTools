@@ -3,21 +3,21 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-	<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>	  
-	<Version>2.5.0</Version>
+  <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>    
+  <Version>2.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-  </ItemGroup>	
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+  </ItemGroup>  
 
   <ItemGroup>
     <Compile Include="..\efreveng60\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
     <Compile Include="..\efreveng60\Program.cs" Link="Program.cs" />
-  </ItemGroup>	
+  </ItemGroup>  
 
   <ItemGroup>
     <ProjectReference Include="..\RevEng.Core.80\RevEng.Core.80.csproj" />
-  </ItemGroup>	
+  </ItemGroup>  
 
 </Project>
