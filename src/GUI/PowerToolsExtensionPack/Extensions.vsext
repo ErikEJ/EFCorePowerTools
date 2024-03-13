@@ -17,6 +17,10 @@
     {
       "vsixId": "DgmlPowerTools._2022.b1034e63-aefd-41f1-87fa-75767c8e2dd1",
       "name": "DgmlPowerTools 2022"
+    },
+    {
+      "vsixId": "BlackbirdSql.VisualStudio.Ddex.bb045ad5-6038-4963-aa12-e4a5262eecaa",
+      "name": "BlackbirdSql DDEX and SqlEditor for Firebird"
     }
   ]
 }
