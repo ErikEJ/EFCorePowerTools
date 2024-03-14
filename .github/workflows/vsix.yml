@@ -24,6 +24,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+
     - name: Update Version
       run: |
         ((Get-Content -Path GUI/EFCorePowerTools/Properties/AssemblyInfo.cs -Raw) -Replace "2.6.0.1", "${{ env.VERSION }}") | Set-Content -Path GUI/EFCorePowerTools/Properties/AssemblyInfo.cs
