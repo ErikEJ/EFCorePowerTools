@@ -4,6 +4,7 @@
   <PropertyGroup Label="Compile settings">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1573,1591,1712,CA1014</NoWarn>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   
   <PropertyGroup Label="Analyzer settings">
