@@ -10,6 +10,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+
     - name: Package Dacpac 6
       run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj
 
