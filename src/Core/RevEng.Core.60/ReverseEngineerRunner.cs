@@ -110,8 +110,9 @@ namespace RevEng.Core
                             var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                             if (index != -1)
                             {
-#if CORE70 || CORE80
+#if CORE70
                                 dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
+#elif CORE80
 #else
                                 dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
 #endif
