@@ -2,41 +2,49 @@
 using System.Runtime.Serialization.Json;
 using System.Text;
 using EFCorePowerTools.Handlers.ReverseEngineer;
+using EFCorePowerTools.Helpers;
 
 namespace EFCorePowerTools.Extensions
 {
-    internal static class ReverseEngineerOptionsExtensions
+    internal static class ReverseEngineerUserOptionsExtensions
     {
-        public static ReverseEngineerOptions TryRead(string optionsPath)
+        public static ReverseEngineerUserOptions TryRead(string optionsPath, string projectDirectory)
         {
+            optionsPath = optionsPath + ".user";
+
             if (!File.Exists(optionsPath))
             {
                 return null;
             }
 
-            if (File.Exists(optionsPath + ".ignore"))
-            {
-                return null;
-            }
-
-            var couldRead = TryRead(optionsPath, out ReverseEngineerOptions deserialized);
+            var couldRead = TryRead(optionsPath, out ReverseEngineerUserOptions deserialized);
             if (couldRead)
             {
+                if (!string.IsNullOrEmpty(deserialized.UiHint))
+                {
+                    deserialized.UiHint = SqlProjHelper.GetFullPathForSqlProj(deserialized.UiHint, projectDirectory);
+                }
+
                 return deserialized;
             }
 
             return null;
         }
 
-        public static string Write(this ReverseEngineerOptions options)
+        public static string Write(this ReverseEngineerUserOptions options, string projectDirectory)
         {
-            options.UiHint = null;
+            if (!string.IsNullOrEmpty(options.UiHint)
+                && (options.UiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase)
+                    || options.UiHint.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase)))
+            {
+                options.UiHint = SqlProjHelper.SetRelativePathForSqlProj(options.UiHint, projectDirectory);
+            }
 
             using (var ms = new MemoryStream())
             {
                 using (var writer = JsonReaderWriterFactory.CreateJsonWriter(ms, Encoding.UTF8, true, true, "   "))
                 {
-                    var serializer = new DataContractJsonSerializer(typeof(ReverseEngineerOptions));
+                    var serializer = new DataContractJsonSerializer(typeof(ReverseEngineerUserOptions));
                     serializer.WriteObject(writer, options);
                     writer.Flush();
                 }

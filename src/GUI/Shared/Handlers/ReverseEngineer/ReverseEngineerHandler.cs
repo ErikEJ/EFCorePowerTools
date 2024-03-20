@@ -74,7 +74,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UiHint = sqlProjectPath,
             };
 
-            await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(null, null));
+            await SaveOptionsAsync(project, optionsPath, options, null, new Tuple<List<Schema>, string>(null, null));
 
             return (optionsPath, project);
         }
@@ -157,7 +157,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
+                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
+                var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
 
                 var newOptions = false;
 
@@ -169,6 +171,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         OutputPath = "Models",
                     };
                     newOptions = true;
+                }
+
+                if (userOptions != null)
+                {
+                    options.UiHint = userOptions.UiHint;
+                }
+                else
+                {
+                    userOptions = new ReverseEngineerUserOptions
+                    {
+                        UiHint = options.UiHint,
+                    };
                 }
 
                 legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
@@ -252,7 +266,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         return;
                     }
 
-                    await SaveOptionsAsync(project, optionsPath, options, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+                    await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
@@ -697,7 +711,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
         }
 
-        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, Tuple<List<Schema>, string> renamingOptions)
+        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options,  ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
             if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
             {
@@ -707,10 +721,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(optionsPath + ".ignore"))
             {
-                if (!AdvancedOptions.Instance.IncludeUiHintInConfig)
+                if (userOptions != null)
                 {
-                    options.UiHint = null;
+                    userOptions.UiHint = options.UiHint;
+                    File.WriteAllText(optionsPath + ".user", userOptions.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);
                 }
+
+                options.UiHint = null;
 
                 foreach (var table in options.Tables)
                 {
@@ -725,7 +742,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                 }
 
-                File.WriteAllText(optionsPath, options.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);
+                File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
 
                 await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());
             }

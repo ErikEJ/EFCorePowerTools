@@ -25,12 +25,6 @@ namespace EFCorePowerTools
         public bool RunCleanup { get; set; } = true;
 
         [Category("Reverse Engineering")]
-        [DisplayName(@"Save connection name")]
-        [Description("Save connection name in efpt.config.json")]
-        [DefaultValue(true)]
-        public bool IncludeUiHintInConfig { get; set; } = true;
-
-        [Category("Reverse Engineering")]
         [DisplayName(@"Merge .dacpac files")]
         [Description("Merge dependent .dacpac files")]
         [DefaultValue(false)]
