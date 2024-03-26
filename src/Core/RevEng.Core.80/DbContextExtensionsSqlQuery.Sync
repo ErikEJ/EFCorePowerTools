@@ -23,7 +23,7 @@ namespace #NAMESPACE#
 
             if (typeof(T).GetProperties().Any())
             {
-                return await db.Database
+                return db.Database
                     .SqlQueryRaw<T>(sql, parameters)
                     .ToList();
             }
