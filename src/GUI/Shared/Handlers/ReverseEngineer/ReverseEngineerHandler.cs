@@ -69,9 +69,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var options = new ReverseEngineerOptions
             {
                 Tables = new List<SerializationTableModel>(),
-                CodeGenerationMode = CodeGenerationMode.EFCore6,
+                CodeGenerationMode = CodeGenerationMode.EFCore8,
                 DatabaseType = DatabaseType.SQLServerDacpac,
                 UiHint = sqlProjectPath,
+                ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
+                OutputPath = "Models",
             };
 
             await SaveOptionsAsync(project, optionsPath, options, null, new Tuple<List<Schema>, string>(null, null));
