@@ -15,7 +15,10 @@ namespace RevEng.Core
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
-
+#if CORE80
+            // Remove this when 8.0.4 is released
+            AppContext.SetSwitch("Microsoft.EntityFrameworkCore.Issue32422", true);
+#endif
             var errors = new List<string>();
             var warnings = new List<string>();
             var info = new List<string>();
