@@ -338,7 +338,7 @@ namespace RevEng.Common.Cli
             foreach (var displayName in newItems.Select(t => t.DisplayName))
             {
                 T existing = result.SingleOrDefault(t => t.Name == displayName);
-                if (existing == null)
+                if (Equals(existing, default(T)))
                 {
                     result.Add(new T { Name = displayName });
                 }
