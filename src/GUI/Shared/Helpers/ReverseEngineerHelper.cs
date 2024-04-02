@@ -100,7 +100,7 @@ namespace EFCorePowerTools.Helpers
                 }
             }
 
-            if (!useHandlebars && Directory.Exists(toDir))
+            if (!useHandlebars && Directory.Exists(toDir) && selectedOption != 3)
             {
                 var error = $"The latest T4 template version could not be found, looking for 'Template version: {t4Version}' in the T4 file - please update your T4 templates, for example by renaming the CodeTemplates folder.";
                 var check = $"Template version: {t4Version}";
