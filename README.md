@@ -62,7 +62,7 @@ Adds the AsDgml() extension method to any derived DbContext. The method will cre
 
 Reverse engineer a SQL Server .dacpac with the EF Core tooling
 
-[ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Nupkg/ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery/readme.md)
+[ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Nupkg/ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery/readme.md)
 
 Materialize abritary classes and scalar values from EF Core using raw SQL
 
