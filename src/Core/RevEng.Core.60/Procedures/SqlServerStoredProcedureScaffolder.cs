@@ -301,7 +301,7 @@ namespace RevEng.Core.Procedures
         private static string GenerateProcedureStatement(Routine procedure, string retValueName, bool useAsyncCalls)
         {
             var paramList = procedure.Parameters
-                .Select(p => $"@{p.Name} = @{p.Name}{(p.Output ? " OUTPUT" : "")}").ToList();
+                .Select(p => $"@{p.Name} = @{p.Name}{(p.Output ? " OUTPUT" : string.Empty)}").ToList();
 
             paramList.RemoveAt(paramList.Count - 1);
 
