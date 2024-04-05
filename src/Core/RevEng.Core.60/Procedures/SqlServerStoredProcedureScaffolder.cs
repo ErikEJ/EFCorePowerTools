@@ -52,6 +52,7 @@ namespace RevEng.Core.Procedures
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
+            Sb.AppendLine("#nullable disable"); // procedure parameters are always nullable
 
             var usings = CreateUsings(scaffolderOptions, model, schemas);
 
@@ -158,6 +159,7 @@ namespace RevEng.Core.Procedures
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
+            Sb.AppendLine("#nullable disable"); // procedure parameters are always nullable
 
             var usings = CreateUsings(scaffolderOptions, model, schemas);
 
