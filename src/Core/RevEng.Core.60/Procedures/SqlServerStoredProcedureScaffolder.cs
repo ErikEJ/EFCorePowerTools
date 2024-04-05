@@ -52,11 +52,7 @@ namespace RevEng.Core.Procedures
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
-
-            if (scaffolderOptions.NullableReferences)
-            {
-                Sb.AppendLine("#nullable enable");
-            }
+            Sb.AppendLine("#nullable disable"); // procedure parameters are always nullable
 
             var usings = CreateUsings(scaffolderOptions, model, schemas);
 
@@ -138,7 +134,7 @@ namespace RevEng.Core.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls, scaffolderOptions.NullableReferences);
+                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls);
                 }
 
                 if (model.Routines.Exists(r => r.SupportsMultipleResultSet))
@@ -163,10 +159,7 @@ namespace RevEng.Core.Procedures
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
-            if (scaffolderOptions.NullableReferences)
-            {
-                Sb.AppendLine("#nullable enable");
-            }
+            Sb.AppendLine("#nullable disable"); // procedure parameters are always nullable
 
             var usings = CreateUsings(scaffolderOptions, model, schemas);
 
@@ -187,7 +180,7 @@ namespace RevEng.Core.Procedures
                 {
                     foreach (var procedure in model.Routines)
                     {
-                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls, scaffolderOptions.NullableReferences);
+                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls);
                         Sb.AppendLine(";");
                     }
                 }
@@ -426,27 +419,11 @@ namespace RevEng.Core.Procedures
             }
         }
 
-        private void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool nullableReferences)
+        private void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls)
         {
-            var paramStrings = new List<string>();
-
-            // SQL Server procedure parameters are nullable
-            // enable nullable type annotations if UseNullableReferenceTypes is configured as true
-            // e.g. a parameter of type `string` is always annotated as `string?`
-            // the generated code for a parameter then becomes e.g. `string? parameterName`
-            foreach (var p in procedure.Parameters.Where(p => !p.Output))
-            {
-                var paramType = p.ClrType(asMethodParameter: true);
-                string paramString = $"{Code.Reference(p.ClrType(asMethodParameter: true))}";
-                if (nullableReferences && !paramType.IsValueType && p.Nullable)
-                {
-                    paramString += "?";
-                }
-
-                paramString += $" {Code.Identifier(p.Name)}";
-
-                paramStrings.Add(paramString);
-            }
+            var paramStrings = procedure.Parameters.Where(p => !p.Output)
+                .Select(p => $"{Code.Reference(p.ClrType(asMethodParameter: true))} {Code.Identifier(p.Name)}")
+                .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
 
