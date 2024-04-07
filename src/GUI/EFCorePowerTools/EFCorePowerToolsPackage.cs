@@ -29,6 +29,7 @@ using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -228,6 +229,16 @@ namespace EFCorePowerTools
                         menuCommandId13);
                     oleMenuCommandService.AddCommand(menuItem13);
 
+                    var menuCommandId30 = new CommandID(
+                        GuidList.GuidServerExplorerCreate,
+                        (int)PkgCmdIDList.cmdidServerExplorerDatabase);
+                    var menuItem30 = new OleMenuCommand(
+                        OnServerExplorerDatabaseMenuInvokeHandler,
+                        null,
+                        OnServerExplorerDatabaseBeforeQueryStatus,
+                        menuCommandId30);
+                    oleMenuCommandService.AddCommand(menuItem30);
+
                     var menuCommandId14 = new CommandID(
                         GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDbDgml);
@@ -403,6 +414,46 @@ namespace EFCorePowerTools
                 .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
 
             if (!candidateProjects.Any())
+            {
+                return;
+            }
+
+            menuCommand.Visible = true;
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void OnServerExplorerDatabaseBeforeQueryStatus(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            var menuCommand = sender as MenuCommand;
+
+            if (menuCommand == null)
+            {
+                return;
+            }
+
+            menuCommand.Visible = false;
+
+            var windows = await VS.GetAllToolWindowsAsync();
+
+
+
+            WindowFrame windowFrame = windows.FirstOrDefault(windows => windows.Caption == "SQL Server Object Explorer");
+
+            windowFra
+
+            windows.FirstOrDefault(windows => windows.Caption == "SQL Server Object Explorer")?.Activate()
+
+            var project = await VS.Solutions.GetActiveProjectAsync();
+
+            if (project == null)
+            {
+                return;
+            }
+
+            IVsDataExplorerNodeSelection nodeSelection = (IVsDataExplorerNodeSelection)GetGlobalService(typeof(IVsDataExplorerNodeSelection));
+
+            if (nodeSelection == null)
             {
                 return;
             }
@@ -597,6 +648,26 @@ namespace EFCorePowerTools
                         $"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).",
                         icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
                         buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(new List<string>(), ex);
+            }
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void OnServerExplorerDatabaseMenuInvokeHandler(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            try
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var menuCommand = sender as MenuCommand;
+                if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                {
+                    return;
                 }
             }
             catch (Exception ex)
