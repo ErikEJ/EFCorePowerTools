@@ -16,7 +16,6 @@ namespace EFCorePowerTools.Helpers
 {
     internal class VsDataHelper
     {
-
         public static readonly HashSet<Guid> SupportedProviders = new HashSet<Guid>()
         {
             new Guid(Resources.SqlServerDotNetProvider),
