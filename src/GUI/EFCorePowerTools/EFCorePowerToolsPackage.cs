@@ -31,7 +31,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using RevEng.Common;
 
 namespace EFCorePowerTools
@@ -72,6 +71,8 @@ namespace EFCorePowerTools
             compareHandler = new CompareHandler(this);
             serverDgmlHandler = new ServerDgmlHandler(this);
         }
+
+        internal EnvDTE80.DTE2 Dte2 => GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
@@ -435,16 +436,6 @@ namespace EFCorePowerTools
 
             menuCommand.Visible = false;
 
-            var windows = await VS.GetAllToolWindowsAsync();
-
-
-
-            WindowFrame windowFrame = windows.FirstOrDefault(windows => windows.Caption == "SQL Server Object Explorer");
-
-            windowFra
-
-            windows.FirstOrDefault(windows => windows.Caption == "SQL Server Object Explorer")?.Activate()
-
             var project = await VS.Solutions.GetActiveProjectAsync();
 
             if (project == null)
@@ -452,14 +443,31 @@ namespace EFCorePowerTools
                 return;
             }
 
-            IVsDataExplorerNodeSelection nodeSelection = (IVsDataExplorerNodeSelection)GetGlobalService(typeof(IVsDataExplorerNodeSelection));
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (nodeSelection == null)
+            var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
+            var selectedItems = (Array)uih.SelectedItems;
+
+            if (selectedItems != null)
             {
-                return;
-            }
+                var connectionName = ((EnvDTE.UIHierarchyItem)selectedItems.GetValue(0)).Name;
 
-            menuCommand.Visible = true;
+                if (string.IsNullOrEmpty(connectionName))
+                {
+                    return;
+                }
+
+                var dataConnectionsService = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
+                if (dataConnectionsService.Connections.TryGetValue(connectionName, out IVsDataExplorerConnection explorerConnection))
+                {
+                    var connection = explorerConnection.Connection;
+
+                    if (VsDataHelper.SupportedProviders.Contains(connection.Provider))
+                    {
+                        menuCommand.Visible = true;
+                    }
+                }
+            }
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -669,6 +677,38 @@ namespace EFCorePowerTools
                 if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
                 {
                     return;
+                }
+
+                var project = await VS.Solutions.GetActiveProjectAsync();
+                if (project == null)
+                {
+                    return;
+                }
+
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
+                var selectedItems = (Array)uih.SelectedItems;
+
+                if (selectedItems != null)
+                {
+                    var connectionName = ((EnvDTE.UIHierarchyItem)selectedItems.GetValue(0)).Name;
+
+                    if (string.IsNullOrEmpty(connectionName))
+                    {
+                        return;
+                    }
+
+                    var dataConnectionsService = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
+                    if (dataConnectionsService.Connections.TryGetValue(connectionName, out IVsDataExplorerConnection explorerConnection))
+                    {
+                        var connection = explorerConnection.Connection;
+
+                        if (VsDataHelper.SupportedProviders.Contains(connection.Provider))
+                        {
+                            await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(connectionName);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
