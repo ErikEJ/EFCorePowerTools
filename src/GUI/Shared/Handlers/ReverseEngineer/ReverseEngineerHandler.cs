@@ -81,7 +81,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return (optionsPath, project);
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync()
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(string uiHint = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -123,7 +123,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
 
-                await ReverseEngineerCodeFirstAsync(project, optionsPath, false);
+                await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint);
             }
             catch (AggregateException ae)
             {
@@ -138,7 +138,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -175,17 +175,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     newOptions = true;
                 }
 
-                if (userOptions != null)
-                {
-                    options.UiHint = userOptions.UiHint;
-                }
-                else
+                if (userOptions == null)
                 {
                     userOptions = new ReverseEngineerUserOptions
                     {
-                        UiHint = options.UiHint,
+                        UiHint = uiHint ?? options.UiHint,
                     };
                 }
+
+                options.UiHint = uiHint ?? userOptions.UiHint;
 
                 legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
                 mappedTypes = options.Tables?

@@ -29,6 +29,7 @@ using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -70,6 +71,8 @@ namespace EFCorePowerTools
             compareHandler = new CompareHandler(this);
             serverDgmlHandler = new ServerDgmlHandler(this);
         }
+
+        internal EnvDTE80.DTE2 Dte2 => GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
@@ -227,6 +230,16 @@ namespace EFCorePowerTools
                         OnSqlProjectMenuBeforeQueryStatus,
                         menuCommandId13);
                     oleMenuCommandService.AddCommand(menuItem13);
+
+                    var menuCommandId30 = new CommandID(
+                        GuidList.GuidServerExplorerCreate,
+                        (int)PkgCmdIDList.cmdidServerExplorerDatabase);
+                    var menuItem30 = new OleMenuCommand(
+                        OnServerExplorerDatabaseMenuInvokeHandler,
+                        null,
+                        OnServerExplorerDatabaseBeforeQueryStatus,
+                        menuCommandId30);
+                    oleMenuCommandService.AddCommand(menuItem30);
 
                     var menuCommandId14 = new CommandID(
                         GuidList.GuidDbContextPackageCmdSet,
@@ -408,6 +421,53 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = true;
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void OnServerExplorerDatabaseBeforeQueryStatus(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            var menuCommand = sender as MenuCommand;
+
+            if (menuCommand == null)
+            {
+                return;
+            }
+
+            menuCommand.Visible = false;
+
+            var project = await VS.Solutions.GetActiveProjectAsync();
+
+            if (project == null)
+            {
+                return;
+            }
+
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
+            var selectedItems = (Array)uih.SelectedItems;
+
+            if (selectedItems != null)
+            {
+                var connectionName = ((EnvDTE.UIHierarchyItem)selectedItems.GetValue(0)).Name;
+
+                if (string.IsNullOrEmpty(connectionName))
+                {
+                    return;
+                }
+
+                var dataConnectionsService = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
+                if (dataConnectionsService.Connections.TryGetValue(connectionName, out IVsDataExplorerConnection explorerConnection))
+                {
+                    var connection = explorerConnection.Connection;
+
+                    if (VsDataHelper.SupportedProviders.Contains(connection.Provider))
+                    {
+                        menuCommand.Visible = true;
+                    }
+                }
+            }
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -597,6 +657,58 @@ namespace EFCorePowerTools
                         $"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).",
                         icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
                         buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(new List<string>(), ex);
+            }
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private async void OnServerExplorerDatabaseMenuInvokeHandler(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            try
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var menuCommand = sender as MenuCommand;
+                if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                {
+                    return;
+                }
+
+                var project = await VS.Solutions.GetActiveProjectAsync();
+                if (project == null)
+                {
+                    return;
+                }
+
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
+                var selectedItems = (Array)uih.SelectedItems;
+
+                if (selectedItems != null)
+                {
+                    var connectionName = ((EnvDTE.UIHierarchyItem)selectedItems.GetValue(0)).Name;
+
+                    if (string.IsNullOrEmpty(connectionName))
+                    {
+                        return;
+                    }
+
+                    var dataConnectionsService = await VS.GetServiceAsync<IVsDataExplorerConnectionManager, IVsDataExplorerConnectionManager>();
+                    if (dataConnectionsService.Connections.TryGetValue(connectionName, out IVsDataExplorerConnection explorerConnection))
+                    {
+                        var connection = explorerConnection.Connection;
+
+                        if (VsDataHelper.SupportedProviders.Contains(connection.Provider))
+                        {
+                            await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(connectionName);
+                        }
+                    }
                 }
             }
             catch (Exception ex)

@@ -46,6 +46,10 @@
       </Group>
 
       <Group guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands" />
+
+      <Group guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" priority="0x0600">
+        <Parent guid="guidServerExplorerObjectNode" id="IDMX_DV_SERVER_NODE" />
+      </Group>
     </Groups>
 
     <Menus>
@@ -201,8 +205,10 @@
           <ButtonText>Visualize Database Schema (preview)</ButtonText>
         </Strings>
       </Button>
+
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
@@ -213,6 +219,7 @@
 
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerRefresh" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
@@ -228,6 +235,15 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Create EF Core DbContext...</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdDatabase" priority="0x0100" type="Button">
+        <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
         </Strings>
       </Button>
 
@@ -258,6 +274,16 @@
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidDbContextPackagePkg" value="{f4c4712c-ceae-4803-8e52-0e2049d5de9f}" />
+
+    <GuidSymbol value="{946311de-35f2-4379-84e2-91867976faf9}" name="guidCRUDSPCommandsPackageCmdSet1">
+      <IDSymbol value="257" name="cmdidCmdDatabase" />
+      <IDSymbol value="259" name="DatabaseMenuGroup" />
+    </GuidSymbol>
+    
+    <GuidSymbol name="guidServerExplorerObjectNode" value="{74D21310-2AEE-11D1-8BFB-00A0C90F26F7}">
+      <!--server explorer - database -->
+      <IDSymbol name="IDMX_DV_SERVER_NODE" value="0x503" />
+    </GuidSymbol>
 
     <!-- This is the guid used to group the menu commands together -->
     <GuidSymbol name="guidDbContextPackageCmdSet" value="{c769a05d-8d51-4919-bfe6-5f35a0eaf2ba}">
