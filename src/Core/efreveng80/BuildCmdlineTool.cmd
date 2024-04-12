@@ -1,5 +1,5 @@
 
-dotnet publish -o bin\Release\net8.0\x64\publish -f net8.0 -r win-x64 -c Release --no-self-contained
+dotnet publish -o bin\Release\net8.0\x64\publish -f net8.0 -c Release --no-self-contained
 
 if %errorlevel% equ 1 goto notbuilt
 
