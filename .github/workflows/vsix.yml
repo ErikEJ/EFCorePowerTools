@@ -8,7 +8,7 @@ on:
       - '!.github/workflows/vsix.yml'
       - '!src/GUI/**/*'
     branches:
-      - '*'
+      - 'master'
   pull_request:
     branches:
       - '*'

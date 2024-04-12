@@ -8,7 +8,7 @@ on:
       - '!.github/workflows/cli-tool.yml'
       - '!src/Core/**/*'
     branches:
-      - '*'
+      - 'master'
   pull_request:
     branches:
       - '*'
