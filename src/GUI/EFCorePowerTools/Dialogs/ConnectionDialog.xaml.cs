@@ -63,13 +63,11 @@ namespace EFCorePowerTools.Dialogs
                 case DatabaseType.Oracle:
                 case DatabaseType.SQLServerDacpac:
                 case DatabaseType.Firebird:
+                case DatabaseType.SQLServer:
                     break;
 
                 case DatabaseType.Mysql:
                     txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
-                    break;
-                case DatabaseType.SQLServer:
-                    txtSample.Text = "Server=myserver.database.windows.net;Authentication=Active Directory Default;Database=mydatabase;User Id=user@domain.com";
                     break;
                 default:
                     break;

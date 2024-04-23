@@ -99,15 +99,6 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem 
-                            Header="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
-                            Command="{Binding AddAdhocDatabaseConnectionCommand}"
-                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnectionTip}"
-                            >
-                            <MenuItem.Icon>
-                                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem 
                             Header="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
                             Command="{Binding AddDatabaseDefinitionCommand}"
                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
@@ -116,6 +107,16 @@
                                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/DatabaseSchema.png" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem 
+                            Header="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
+                            Command="{Binding AddAdhocDatabaseConnectionCommand}"
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnectionTip}"
+                            >
+                            <MenuItem.Icon>
+                                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        
                     </StackPanel>
                 </xctk:DropDownButton.DropDownContent>
             </xctk:DropDownButton>
