@@ -46,10 +46,6 @@
       </Group>
 
       <Group guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands" />
-
-      <Group guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" priority="0x0600">
-        <Parent guid="guidServerExplorerObjectNode" id="IDMX_DV_SERVER_NODE" />
-      </Group>
     </Groups>
 
     <Menus>
@@ -209,6 +205,7 @@
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
@@ -220,6 +217,7 @@
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerRefresh" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
@@ -237,7 +235,7 @@
           <ButtonText>Create EF Core DbContext...</ButtonText>
         </Strings>
       </Button>
-
+      
       <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdDatabase" priority="0x0100" type="Button">
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
