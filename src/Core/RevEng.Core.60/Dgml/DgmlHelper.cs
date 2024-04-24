@@ -116,11 +116,11 @@ namespace RevEng.Core.Dgml
 
             xtw.WriteStartElement("Style");
             xtw.WriteAttributeString("TargetType", "Node");
-            xtw.WriteAttributeString("GroupLabel", "Field Primary");
+            xtw.WriteAttributeString("GroupLabel", "PK");
             xtw.WriteAttributeString("ValueLabel", "True");
 
             xtw.WriteStartElement("Condition");
-            xtw.WriteAttributeString("Expression", "HasCategory('Field Primary')");
+            xtw.WriteAttributeString("Expression", "HasCategory('PK')");
             xtw.WriteEndElement();
 
             xtw.WriteStartElement("Setter");
@@ -132,11 +132,11 @@ namespace RevEng.Core.Dgml
 
             xtw.WriteStartElement("Style");
             xtw.WriteAttributeString("TargetType", "Node");
-            xtw.WriteAttributeString("GroupLabel", "Field Optional");
+            xtw.WriteAttributeString("GroupLabel", "NULL");
             xtw.WriteAttributeString("ValueLabel", "True");
 
             xtw.WriteStartElement("Condition");
-            xtw.WriteAttributeString("Expression", "HasCategory('Field Optional')");
+            xtw.WriteAttributeString("Expression", "HasCategory('NULL')");
             xtw.WriteEndElement();
 
             xtw.WriteStartElement("Setter");
@@ -148,11 +148,11 @@ namespace RevEng.Core.Dgml
 
             xtw.WriteStartElement("Style");
             xtw.WriteAttributeString("TargetType", "Node");
-            xtw.WriteAttributeString("GroupLabel", "Field Foreign");
+            xtw.WriteAttributeString("GroupLabel", "FK");
             xtw.WriteAttributeString("ValueLabel", "True");
 
             xtw.WriteStartElement("Condition");
-            xtw.WriteAttributeString("Expression", "HasCategory('Field Foreign')");
+            xtw.WriteAttributeString("Expression", "HasCategory('FK')");
             xtw.WriteEndElement();
 
             xtw.WriteStartElement("Setter");
@@ -164,11 +164,11 @@ namespace RevEng.Core.Dgml
 
             xtw.WriteStartElement("Style");
             xtw.WriteAttributeString("TargetType", "Node");
-            xtw.WriteAttributeString("GroupLabel", "Field");
+            xtw.WriteAttributeString("GroupLabel", "NOT NULL");
             xtw.WriteAttributeString("ValueLabel", "True");
 
             xtw.WriteStartElement("Condition");
-            xtw.WriteAttributeString("Expression", "HasCategory('Field')");
+            xtw.WriteAttributeString("Expression", "HasCategory('NOT NULL')");
             xtw.WriteEndElement();
 
             xtw.WriteStartElement("Setter");

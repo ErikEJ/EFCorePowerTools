@@ -40,21 +40,21 @@ namespace RevEng.Core.Dgml
                     {
                         var colDesc = col.Comment;
                         var shortType = col.StoreType;
-                        var category = "Field";
+                        var category = "NOT NULL";
 
                         if (col.IsNullable)
                         {
-                            category = "Field Optional";
+                            category = "NULL";
                         }
 
                         if (table.ForeignKeys.Any(c => c.Columns.Contains(col)))
                         {
-                            category = "Field Foreign";
+                            category = "FK";
                         }
 
                         if (table.PrimaryKey?.Columns.Contains(col) ?? true)
                         {
-                            category = "Field Primary";
+                            category = "PK";
                         }
 
                         if (!string.IsNullOrEmpty(colDesc))
@@ -62,7 +62,7 @@ namespace RevEng.Core.Dgml
                             shortType = shortType + Environment.NewLine + colDesc;
                         }
 
-                        dgmlHelper.WriteNode($"{table.Name}_{col.Name}", col.Name, null, category, null, shortType);
+                        dgmlHelper.WriteNode($"{table.Name}_{col.Name}", $"{col.Name} {col.StoreType}", null, category, null, shortType);
                     }
                 }
 
