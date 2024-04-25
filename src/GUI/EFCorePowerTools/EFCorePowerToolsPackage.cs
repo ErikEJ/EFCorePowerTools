@@ -231,9 +231,19 @@ namespace EFCorePowerTools
                         menuCommandId13);
                     oleMenuCommandService.AddCommand(menuItem13);
 
+                    var menuCommandId29 = new CommandID(
+                        GuidList.GuidServerExplorerMenu,
+                        (int)PkgCmdIDList.cmdidServerExplorerDiagram);
+                    var menuItem29 = new OleMenuCommand(
+                        OnServerExplorerDatabaseMenuInvokeHandler,
+                        null,
+                        OnServerExplorerDatabaseBeforeQueryStatus,
+                        menuCommandId29);
+                    oleMenuCommandService.AddCommand(menuItem29);
+
                     var menuCommandId30 = new CommandID(
-                        GuidList.GuidServerExplorerCreate,
-                        (int)PkgCmdIDList.cmdidServerExplorerDatabase);
+                        GuidList.GuidServerExplorerMenu,
+                        (int)PkgCmdIDList.cmdidServerExplorerReverseEngineer);
                     var menuItem30 = new OleMenuCommand(
                         OnServerExplorerDatabaseMenuInvokeHandler,
                         null,
@@ -336,8 +346,7 @@ namespace EFCorePowerTools
                 return;
             }
 
-            menuCommand.Visible = IsConfigFile(item.Text) && project.IsCSharpProject()
-                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync());
+            menuCommand.Visible = IsConfigFile(item.Text) && (await project.CanUseReverseEngineerAsync());
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -369,8 +378,7 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
-                menuCommand.Visible = (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync())
-                    && !project.IsMsBuildSqlProjProject();
+                menuCommand.Visible = await project.CanUseReverseEngineerAsync();
                 return;
             }
 
@@ -436,13 +444,6 @@ namespace EFCorePowerTools
 
             menuCommand.Visible = false;
 
-            var project = await VS.Solutions.GetActiveProjectAsync();
-
-            if (project == null)
-            {
-                return;
-            }
-
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
@@ -462,9 +463,33 @@ namespace EFCorePowerTools
                 {
                     var connection = explorerConnection.Connection;
 
+                    if (connection == null)
+                    {
+                        return;
+                    }
+
                     if (VsDataHelper.SupportedProviders.Contains(connection.Provider))
                     {
-                        menuCommand.Visible = true;
+                        if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerReverseEngineer)
+                        {
+                            if ((await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                            {
+                                return;
+                            }
+
+                            var project = await VS.Solutions.GetActiveProjectAsync();
+                            if (project == null)
+                            {
+                                return;
+                            }
+
+                            menuCommand.Visible = await project.CanUseReverseEngineerAsync();
+                        }
+
+                        if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
+                        {
+                            menuCommand.Visible = true;
+                        }
                     }
                 }
             }
@@ -674,18 +699,10 @@ namespace EFCorePowerTools
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var menuCommand = sender as MenuCommand;
-                if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                if (menuCommand == null)
                 {
                     return;
                 }
-
-                var project = await VS.Solutions.GetActiveProjectAsync();
-                if (project == null)
-                {
-                    return;
-                }
-
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
                 var selectedItems = (Array)uih.SelectedItems;
@@ -704,9 +721,33 @@ namespace EFCorePowerTools
                     {
                         var connection = explorerConnection.Connection;
 
+                        if (connection == null)
+                        {
+                            return;
+                        }
+
                         if (VsDataHelper.SupportedProviders.Contains(connection.Provider))
                         {
-                            await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(connectionName);
+                            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerReverseEngineer)
+                            {
+                                if ((await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                                {
+                                    return;
+                                }
+
+                                var project = await VS.Solutions.GetActiveProjectAsync();
+                                if (project == null)
+                                {
+                                    return;
+                                }
+
+                                await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(connectionName);
+                            }
+
+                            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
+                            {
+                                await serverDgmlHandler.GenerateAsync(connectionName);
+                            }
                         }
                     }
                 }

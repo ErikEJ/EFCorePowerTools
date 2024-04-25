@@ -181,6 +181,12 @@ namespace EFCorePowerTools.Extensions
             return version;
         }
 
+        public static async Task<bool> CanUseReverseEngineerAsync(this Project project)
+        {
+            return project.IsCSharpProject()
+                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync());
+        }
+
         public static bool IsCSharpProject(this Project project)
         {
             if (project == null)
@@ -228,20 +234,6 @@ namespace EFCorePowerTools.Extensions
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
             return IsNet70(targetFrameworkMonikers);
-        }
-
-        public static async Task<bool> IsNet80Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return IsNet80(targetFrameworkMonikers);
-        }
-
-        public static async Task<bool> IsNet90Async(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return IsNet90(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNetStandardAsync(this Project project)
@@ -419,6 +411,20 @@ namespace EFCorePowerTools.Extensions
             }
 
             return new Tuple<bool, string>(hasDesign, coreVersion);
+        }
+
+        private static async Task<bool> IsNet80Async(this Project project)
+        {
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet80(targetFrameworkMonikers);
+        }
+
+        private static async Task<bool> IsNet90Async(this Project project)
+        {
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet90(targetFrameworkMonikers);
         }
 
         private static bool IsNet60(string targetFrameworkMonikers)

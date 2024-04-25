@@ -46,6 +46,11 @@
       </Group>
 
       <Group guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands" />
+
+      <Group guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" priority="0x0600">
+        <Parent guid="guidServerExplorerObjectNode" id="IDMX_DV_SERVER_NODE" />
+      </Group>
+      
     </Groups>
 
     <Menus>

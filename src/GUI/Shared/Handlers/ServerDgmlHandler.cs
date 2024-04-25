@@ -24,13 +24,13 @@ namespace EFCorePowerTools.Handlers
             this.package = package;
         }
 
-        public async Task GenerateAsync()
+        public async Task GenerateAsync(string connectionName = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             try
             {
-                var info = await ChooseDataBaseConnectionAsync();
+                var info = await ChooseDataBaseConnectionAsync(connectionName);
 
                 if (info.DatabaseModel == null)
                 {
@@ -62,11 +62,21 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private async Task<(DatabaseConnectionModel DatabaseModel, SchemaInfo[] Schemas)> ChooseDataBaseConnectionAsync()
+        private async Task<(DatabaseConnectionModel DatabaseModel, SchemaInfo[] Schemas)> ChooseDataBaseConnectionAsync(string connectionName = null)
         {
             var vsDataHelper = new VsDataHelper();
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
+
+            if (!string.IsNullOrEmpty(connectionName) && databaseList != null && databaseList.Any())
+            {
+                var connection = databaseList.FirstOrDefault(m => m.Value.ConnectionName == connectionName);
+
+                if (connection.Value != null)
+                {
+                    return (connection.Value, new SchemaInfo[] { });
+                }
+            }
 
             var psd = package.GetView<IPickServerDatabaseDialog>();
 
@@ -91,6 +101,11 @@ namespace EFCorePowerTools.Handlers
             }
 
             psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore6, new List<CodeGenerationItem>());
+
+            if (!string.IsNullOrEmpty(connectionName))
+            {
+                psd.PublishUiHint(connectionName);
+            }
 
             var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
             if (!pickDataSourceResult.ClosedByOK)
