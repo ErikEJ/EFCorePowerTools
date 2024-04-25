@@ -168,6 +168,8 @@ namespace RevEng.Core
                     var npgsqlProvider = new NpgsqlDesignTimeServices();
                     npgsqlProvider.ConfigureDesignTimeServices(serviceCollection);
 
+                    serviceCollection.AddPostgresStoredProcedureDesignTimeServices();
+
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new NpgsqlNodaTimeDesignTimeServices();

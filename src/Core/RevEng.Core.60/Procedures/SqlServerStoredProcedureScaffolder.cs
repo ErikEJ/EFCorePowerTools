@@ -17,7 +17,7 @@ using RevEng.Core.Modules;
 
 namespace RevEng.Core.Procedures
 {
-    public class SqlServerStoredProcedureScaffolder : SqlServerRoutineScaffolder, IProcedureScaffolder
+    public class SqlServerStoredProcedureScaffolder : RoutineScaffolder, IProcedureScaffolder
     {
         private const string ParameterPrefix = "parameter";
 

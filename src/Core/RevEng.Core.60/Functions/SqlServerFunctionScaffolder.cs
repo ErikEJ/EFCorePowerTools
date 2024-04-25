@@ -13,7 +13,7 @@ using RevEng.Core.Modules;
 
 namespace RevEng.Core.Functions
 {
-    public class SqlServerFunctionScaffolder : SqlServerRoutineScaffolder, IFunctionScaffolder
+    public class SqlServerFunctionScaffolder : RoutineScaffolder, IFunctionScaffolder
     {
         public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code)
             : base(code)

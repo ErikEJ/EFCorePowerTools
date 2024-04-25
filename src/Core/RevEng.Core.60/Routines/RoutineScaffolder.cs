@@ -15,7 +15,7 @@ using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Modules
 {
-    public abstract class SqlServerRoutineScaffolder : IRoutineScaffolder
+    public abstract class RoutineScaffolder : IRoutineScaffolder
     {
 #pragma warning disable SA1401 // Fields should be private
         internal readonly ICSharpHelper Code;
@@ -103,7 +103,7 @@ namespace RevEng.Core.Modules
             "while",
         };
 
-        protected SqlServerRoutineScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
+        protected RoutineScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
         {
             ArgumentNullException.ThrowIfNull(code);
 
