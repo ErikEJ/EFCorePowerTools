@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using System;
