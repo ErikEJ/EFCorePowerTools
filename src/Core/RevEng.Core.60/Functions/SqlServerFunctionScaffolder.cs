@@ -10,20 +10,16 @@ using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Modules;
+using RevEng.Core.Routines;
 
 namespace RevEng.Core.Functions
 {
-    public class SqlServerFunctionScaffolder : RoutineScaffolder, IFunctionScaffolder
+    public class SqlServerFunctionScaffolder : FunctionScaffolder, IFunctionScaffolder
     {
         public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code)
             : base(code)
         {
             FileNameSuffix = ".Functions";
-        }
-
-        protected override string WriteDbContextInterface(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
-        {
-            return null;
         }
 
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
@@ -90,7 +86,7 @@ namespace RevEng.Core.Functions
             {
                 foreach (var function in model.Routines.Cast<Function>().Where(f => !f.IsScalar))
                 {
-                    var typeName = GenerateIdentifierName(function, model) + "Result";
+                    var typeName = ScaffoldHelper.GenerateIdentifierName(function, model) + "Result";
 
                     Sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey();");
                 }
@@ -104,7 +100,7 @@ namespace RevEng.Core.Functions
             var paramStrings = function.Parameters
                 .Select(p => $"{Code.Reference(p.ClrType())} {p.Name}");
 
-            var identifier = GenerateIdentifierName(function, model);
+            var identifier = ScaffoldHelper.GenerateIdentifierName(function, model);
 
             Sb.AppendLine();
 
