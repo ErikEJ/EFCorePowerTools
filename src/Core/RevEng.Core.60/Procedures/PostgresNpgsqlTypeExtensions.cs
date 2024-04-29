@@ -1,4 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
+using NpgsqlTypes;
 using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
@@ -8,30 +9,25 @@ using System.Linq;
 
 namespace RevEng.Core
 {
-    public static class SqlServerSqlTypeExtensions
+    public static class PostgresNpgsqlTypeExtensions
     {
-        private static readonly HashSet<SqlDbType> ScaleTypes = new HashSet<SqlDbType>
+        private static readonly HashSet<NpgsqlDbType> ScaleTypes = new HashSet<NpgsqlDbType>
         {
-            SqlDbType.Decimal,
-            SqlDbType.Money,
-            SqlDbType.SmallMoney,
+            NpgsqlDbType.Numeric,
+            NpgsqlDbType.Money,
         };
 
-        private static readonly HashSet<SqlDbType> VarTimeTypes = new HashSet<SqlDbType>
+        private static readonly HashSet<NpgsqlDbType> VarTimeTypes = new HashSet<NpgsqlDbType>
         {
-            SqlDbType.DateTimeOffset,
-            SqlDbType.DateTime2,
-            SqlDbType.Time,
+            NpgsqlDbType.TimestampTz,
+            NpgsqlDbType.Timestamp,
+            NpgsqlDbType.Time,
         };
 
-        private static readonly HashSet<SqlDbType> LengthRequiredTypes = new HashSet<SqlDbType>
+        private static readonly HashSet<NpgsqlDbType> LengthRequiredTypes = new HashSet<NpgsqlDbType>
         {
-            SqlDbType.Binary,
-            SqlDbType.VarBinary,
-            SqlDbType.Char,
-            SqlDbType.VarChar,
-            SqlDbType.NChar,
-            SqlDbType.NVarChar,
+            NpgsqlDbType.Varchar,
+            NpgsqlDbType.Char,
         };
 
         private static readonly ReadOnlyDictionary<string, string> SqlTypeAliases
@@ -39,47 +35,42 @@ namespace RevEng.Core
             new Dictionary<string, string>()
             {
                 { "numeric", "decimal" },
-                { "rowversion", "timestamp" },
-                { "table type", "structured" },
-                { "sql_variant", "variant" },
-                { "geography", "udt" },
-                { "geometry", "udt" },
-                { "hierarchyid", "udt" },
-                { "sysname", "nvarchar" },
+                { "character varying", "text" },
+                { "character", "char" },
             });
 
         public static bool UseDateOnlyTimeOnly { get; set; }
 
-        public static bool IsScaleType(this SqlDbType sqlDbType)
+        public static bool IsScaleType(this NpgsqlDbType dbType)
         {
-            return ScaleTypes.Contains(sqlDbType);
+            return ScaleTypes.Contains(dbType);
         }
 
-        public static bool IsVarTimeType(this SqlDbType sqlDbType)
+        public static bool IsVarTimeType(this NpgsqlDbType dbType)
         {
-            return VarTimeTypes.Contains(sqlDbType);
+            return VarTimeTypes.Contains(dbType);
         }
 
-        public static bool IsLengthRequiredType(this SqlDbType sqlDbType)
+        public static bool IsLengthRequiredType(this NpgsqlDbType dbType)
         {
-            return LengthRequiredTypes.Contains(sqlDbType);
+            return LengthRequiredTypes.Contains(dbType);
         }
 
-        public static Type ClrTypeFromSqlParameter(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
+        public static Type ClrTypeFromNpgsqlParameter(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
         }
 
-        public static Type ClrTypeFromSqlParameter(this ModuleResultElement moduleResultElement)
+        public static Type ClrTypeFromNpgsqlParameter(this ModuleResultElement moduleResultElement)
         {
             ArgumentNullException.ThrowIfNull(moduleResultElement);
 
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
-        public static SqlDbType GetSqlDbType(this ModuleParameter storedProcedureParameter)
+        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 

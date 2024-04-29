@@ -45,7 +45,7 @@ namespace RevEng.Core.Procedures
             ArgumentNullException.ThrowIfNull(procedure);
 
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{Code.Reference(p.ClrType(asMethodParameter: true))} {Code.Identifier(p.Name)}")
+                .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name)}")
                 .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
@@ -55,7 +55,7 @@ namespace RevEng.Core.Procedures
             var retValueName = allOutParams[allOutParams.Count - 1].Name;
 
             var outParamStrings = outParams
-                .Select(p => $"OutputParameter<{Code.Reference(p.ClrType())}> {Code.Identifier(p.Name)}")
+                .Select(p => $"OutputParameter<{Code.Reference(p.ClrTypeFromSqlParameter())}> {Code.Identifier(p.Name)}")
                 .ToList();
 
             string fullExec = GenerateProcedureStatement(procedure, retValueName, useAsyncCalls);
@@ -309,7 +309,7 @@ namespace RevEng.Core.Procedures
             Sb.AppendLine("new SqlParameter");
             Sb.AppendLine("{");
 
-            var sqlDbType = parameter.DbType();
+            var sqlDbType = parameter.GetSqlDbType();
 
             using (Sb.Indent())
             {
