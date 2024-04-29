@@ -56,14 +56,14 @@ namespace RevEng.Core
             return LengthRequiredTypes.Contains(dbType);
         }
 
-        public static Type ClrType(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
+        public static Type ClrTypeFromNpgsqlParameter(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
         }
 
-        public static Type ClrType(this ModuleResultElement moduleResultElement)
+        public static Type ClrTypeFromNpgsqlParameter(this ModuleResultElement moduleResultElement)
         {
             ArgumentNullException.ThrowIfNull(moduleResultElement);
 

@@ -65,21 +65,21 @@ namespace RevEng.Core
             return LengthRequiredTypes.Contains(sqlDbType);
         }
 
-        public static Type ClrType(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
+        public static Type ClrTypeFromSqlParameter(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
         }
 
-        public static Type ClrType(this ModuleResultElement moduleResultElement)
+        public static Type ClrTypeFromSqlParameter(this ModuleResultElement moduleResultElement)
         {
             ArgumentNullException.ThrowIfNull(moduleResultElement);
 
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
-        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
+        public static SqlDbType GetSqlDbType(this ModuleParameter storedProcedureParameter)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 

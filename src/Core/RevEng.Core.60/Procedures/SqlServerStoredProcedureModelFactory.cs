@@ -74,13 +74,13 @@ ORDER BY ROUTINE_NAME;";
             {
                 var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
 
-                if (parameter.ClrType() == typeof(DataTable))
+                if (parameter.ClrTypeFromSqlParameter() == typeof(DataTable))
                 {
                     param.Value = GetDataTableFromSchema(parameter, connection);
                     param.SqlDbType = SqlDbType.Structured;
                 }
 
-                if (parameter.ClrType() == typeof(byte[]))
+                if (parameter.ClrTypeFromSqlParameter() == typeof(byte[]))
                 {
                     param.SqlDbType = SqlDbType.VarBinary;
                 }
