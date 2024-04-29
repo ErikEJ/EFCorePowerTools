@@ -43,7 +43,7 @@ namespace RevEng.Core.Functions
                 schemas.Distinct().OrderBy(s => s).ToList().ForEach(schema => Sb.AppendLine($"using {scaffolderOptions.ModelNamespace}.{schema}"));
             }
 
-            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrType() == typeof(Geometry)))
+            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrTypeFromSqlParameter() == typeof(Geometry)))
             {
                 Sb.AppendLine("using NetTopologySuite.Geometries;");
             }
@@ -98,7 +98,7 @@ namespace RevEng.Core.Functions
         private void GenerateFunctionStub(Routine function, RoutineModel model)
         {
             var paramStrings = function.Parameters
-                .Select(p => $"{Code.Reference(p.ClrType())} {p.Name}");
+                .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter())} {p.Name}");
 
             var identifier = ScaffoldHelper.GenerateIdentifierName(function, model);
 

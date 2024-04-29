@@ -164,7 +164,7 @@ namespace RevEng.Core.Modules
                 });
             }
 
-            // TODO Inject a type mapper based on the database provider
+            // Inject a type mapper based on the database provider
             if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrTypeFromSqlParameter() == typeof(Geometry)))
             {
                 usings.AddRange(new List<string>()
@@ -434,7 +434,7 @@ namespace RevEng.Core.Modules
 
             Sb.AppendLine(PathHelper.Header);
 
-            // TODO Inject a type mapper based on the database provider
+            // Inject a type mapper based on the database provider
             if (resultElements.Exists(p => p.ClrTypeFromSqlParameter() == typeof(Geometry)))
             {
                 Sb.AppendLine("using NetTopologySuite.Geometries;");
@@ -495,7 +495,7 @@ namespace RevEng.Core.Modules
                     }
                 }
 
-                // TODO Inject a type mapper based on the database provider
+                // Inject a type mapper based on the database provider
                 var propertyType = property.ClrTypeFromSqlParameter();
                 string nullableAnnotation = string.Empty;
                 string defaultAnnotation = string.Empty;
