@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Functions
 {
-    public class NotImplementedProcedureScaffolder : IProcedureScaffolder
+    public class NotImplementedFunctionScaffolder : IFunctionScaffolder
     {
         public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {

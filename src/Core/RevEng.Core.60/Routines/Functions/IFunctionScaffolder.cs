@@ -1,6 +1,6 @@
 ﻿using RevEng.Core.Modules;
 
-namespace RevEng.Core.Functions
+namespace RevEng.Core.Routines.Functions
 {
     public interface IFunctionScaffolder : IRoutineScaffolder
     {

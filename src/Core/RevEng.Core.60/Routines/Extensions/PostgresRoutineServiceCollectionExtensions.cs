@@ -2,10 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Routines.Procedures;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Extensions
 {
-    public static class PostgresProcedureServiceCollectionExtensions
+    public static class PostgresRoutineServiceCollectionExtensions
     {
         public static IServiceCollection AddPostgresStoredProcedureDesignTimeServices(
             this IServiceCollection services,

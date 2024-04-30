@@ -2,11 +2,12 @@
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Procedures;
 using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Procedures
 {
     public class PostgresStoredProcedureModelFactory : PostgresRoutineModelFactory, IProcedureModelFactory
     {

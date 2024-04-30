@@ -9,10 +9,10 @@ using NetTopologySuite.Geometries;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Modules;
 using RevEng.Core.Routines;
+using RevEng.Core.Routines.Extensions;
 
-namespace RevEng.Core.Functions
+namespace RevEng.Core.Routines.Functions
 {
     public class SqlServerFunctionScaffolder : FunctionScaffolder, IFunctionScaffolder
     {

@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Functions;
+using RevEng.Core.Routines.Functions;
+using RevEng.Core.Routines.Procedures;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Extensions
 {
-    public static class SqlServerStoredProcedureServiceCollectionExtensions
+    public static class SqlServerRoutineServiceCollectionExtensions
     {
         public static IServiceCollection AddSqlServerStoredProcedureDesignTimeServices(
             this IServiceCollection services,

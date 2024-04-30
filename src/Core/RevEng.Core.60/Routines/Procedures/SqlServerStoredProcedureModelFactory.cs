@@ -2,13 +2,15 @@
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Procedures;
+using RevEng.Core.Routines.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Procedures
 {
     public class SqlServerStoredProcedureModelFactory : SqlServerRoutineModelFactory, IProcedureModelFactory
     {
@@ -100,7 +102,7 @@ ORDER BY ROUTINE_NAME;";
                     break;
                 }
 
-                int unnamedColumnCount = 0;
+                var unnamedColumnCount = 0;
 
                 foreach (DataRow row in schemaTable.Rows)
                 {
@@ -168,7 +170,7 @@ ORDER BY ROUTINE_NAME;";
 
             adapter.Fill(dtResult);
 
-            int unnamedColumnCount = 0;
+            var unnamedColumnCount = 0;
 
             foreach (DataRow row in dtResult.Rows)
             {

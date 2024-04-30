@@ -9,10 +9,10 @@ using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Modules;
 using RevEng.Core.Routines;
+using RevEng.Core.Routines.Extensions;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Procedures
 {
     public class SqlServerStoredProcedureScaffolder : ProcedureScaffolder, IProcedureScaffolder
     {
@@ -58,7 +58,7 @@ namespace RevEng.Core.Procedures
                 .Select(p => $"OutputParameter<{Code.Reference(p.ClrTypeFromSqlParameter())}> {Code.Identifier(p.Name)}")
                 .ToList();
 
-            string fullExec = GenerateProcedureStatement(procedure, retValueName, useAsyncCalls);
+            var fullExec = GenerateProcedureStatement(procedure, retValueName, useAsyncCalls);
 
             var multiResultId = GenerateMultiResultId(procedure, model);
 
@@ -182,13 +182,13 @@ namespace RevEng.Core.Procedures
             var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
 #endif
             var assembly = typeof(SqlServerStoredProcedureScaffolder).GetTypeInfo().Assembly;
-            using Stream stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
+            using var stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
             if (stream == null)
             {
                 return string.Empty;
             }
 
-            using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+            using var reader = new StreamReader(stream, Encoding.UTF8);
             return reader.ReadToEnd();
         }
 
@@ -200,7 +200,7 @@ namespace RevEng.Core.Procedures
             }
 
             var ids = new List<string>();
-            int i = 1;
+            var i = 1;
             foreach (var resultSet in procedure.Results)
             {
                 var suffix = $"{i++}";
@@ -220,7 +220,7 @@ namespace RevEng.Core.Procedures
             }
 
             var ids = new List<string>();
-            int i = 1;
+            var i = 1;
             foreach (var resultSet in procedure.Results)
             {
                 var suffix = $"{i++}";

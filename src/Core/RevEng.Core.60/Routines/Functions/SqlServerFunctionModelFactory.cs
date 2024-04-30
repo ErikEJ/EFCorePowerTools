@@ -2,12 +2,13 @@
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Procedures;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Functions
 {
     public class SqlServerFunctionModelFactory : SqlServerRoutineModelFactory, IFunctionModelFactory
     {
@@ -68,7 +69,7 @@ WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
 
             adapter.Fill(dtResult);
 
-            int rCounter = 0;
+            var rCounter = 0;
 
             foreach (DataRow res in dtResult.Rows)
             {

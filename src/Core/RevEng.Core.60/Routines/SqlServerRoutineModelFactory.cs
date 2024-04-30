@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Routines.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;

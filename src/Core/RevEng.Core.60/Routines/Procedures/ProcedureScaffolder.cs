@@ -10,9 +10,11 @@ using NetTopologySuite.Geometries;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Modules;
 using RevEng.Core.Routines;
+using RevEng.Core.Routines.Extensions;
 
-namespace RevEng.Core.Modules
+namespace RevEng.Core.Routines.Procedures
 {
     public abstract class ProcedureScaffolder : IRoutineScaffolder
     {
@@ -25,7 +27,7 @@ namespace RevEng.Core.Modules
         {
             ArgumentNullException.ThrowIfNull(code);
 
-            this.Code = code;
+            Code = code;
         }
 
         public string FileNameSuffix { get; set; }
@@ -77,7 +79,7 @@ namespace RevEng.Core.Modules
 
             foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
-                int i = 1;
+                var i = 1;
 
                 foreach (var resultSet in routine.Results)
                 {
@@ -343,7 +345,7 @@ namespace RevEng.Core.Modules
                         continue;
                     }
 
-                    int i = 1;
+                    var i = 1;
                     foreach (var resultSet in procedure.Results)
                     {
                         var suffix = $"{i++}";
@@ -497,8 +499,8 @@ namespace RevEng.Core.Modules
 
                 // Inject a type mapper based on the database provider
                 var propertyType = property.ClrTypeFromSqlParameter();
-                string nullableAnnotation = string.Empty;
-                string defaultAnnotation = string.Empty;
+                var nullableAnnotation = string.Empty;
+                var defaultAnnotation = string.Empty;
 
                 if (nullableReferences && !propertyType.IsValueType)
                 {

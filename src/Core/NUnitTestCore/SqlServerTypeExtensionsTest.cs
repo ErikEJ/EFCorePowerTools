@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
-using RevEng.Core;
+using RevEng.Core.Routines.Extensions;
 
 namespace UnitTests
 {

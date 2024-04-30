@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 
-namespace RevEng.Core
+namespace RevEng.Core.Routines.Extensions
 {
     public static class SqlServerSqlTypeExtensions
     {
@@ -204,7 +204,7 @@ namespace RevEng.Core
             }
 
 #pragma warning disable CA1308 // Normalize strings to uppercase
-            if (SqlTypeAliases.TryGetValue(cleanedTypeName.ToLowerInvariant(), out string alias))
+            if (SqlTypeAliases.TryGetValue(cleanedTypeName.ToLowerInvariant(), out var alias))
             {
                 cleanedTypeName = alias;
             }
@@ -221,8 +221,8 @@ namespace RevEng.Core
         private static string RemoveMatchingBraces(string s)
         {
             var stack = new Stack<char>();
-            int count = 0;
-            foreach (char ch in s)
+            var count = 0;
+            foreach (var ch in s)
             {
                 switch (ch)
                 {

@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Modules;
 
-namespace RevEng.Core.Modules
+namespace RevEng.Core.Routines.Functions
 {
     public abstract class FunctionScaffolder : IRoutineScaffolder
     {
@@ -22,7 +23,7 @@ namespace RevEng.Core.Modules
         {
             ArgumentNullException.ThrowIfNull(code);
 
-            this.Code = code;
+            Code = code;
         }
 
         public string FileNameSuffix { get; set; }

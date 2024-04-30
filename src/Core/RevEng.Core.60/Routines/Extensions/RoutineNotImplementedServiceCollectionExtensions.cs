@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Functions;
+using RevEng.Core.Routines.Functions;
+using RevEng.Core.Routines.Procedures;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines.Extensions
 {
     public static class RoutineNotImplementedServiceCollectionExtensions
     {

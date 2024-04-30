@@ -13,8 +13,8 @@ using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Functions;
-using RevEng.Core.Procedures;
+using RevEng.Core.Routines.Functions;
+using RevEng.Core.Routines.Procedures;
 
 namespace RevEng.Core
 {

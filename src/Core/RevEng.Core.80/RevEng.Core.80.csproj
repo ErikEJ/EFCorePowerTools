@@ -13,9 +13,10 @@
 
   <ItemGroup>
     <Compile Include="..\RevEng.Core.60\*.cs" Link="%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Functions\*.cs" Link="Functions\%(Filename)%(Extension)" />
     <Compile Include="..\RevEng.Core.60\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Procedures\*.cs" Link="Procedures\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Routines\Extensions\*.cs" Link="Routines\Extensions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Routines\Functions\*.cs" Link="Routines\Functions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.60\Routines\Procedures\*.cs" Link="Routines\Procedures\%(Filename)%(Extension)" />
     <Compile Include="..\RevEng.Core.60\Dgml\*.cs" Link="Dgml\%(Filename)%(Extension)" />
     <Compile Include="..\RevEng.Core.60\Mermaid\*.cs" Link="Mermaid\%(Filename)%(Extension)" />
   </ItemGroup>
