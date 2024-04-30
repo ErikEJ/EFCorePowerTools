@@ -4,39 +4,59 @@ using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
 
 namespace RevEng.Core.Routines.Extensions
 {
     public static class PostgresNpgsqlTypeExtensions
     {
-        private static readonly HashSet<NpgsqlDbType> ScaleTypes = new HashSet<NpgsqlDbType>
-        {
+        private static readonly HashSet<NpgsqlDbType> ScaleTypes =
+        [
             NpgsqlDbType.Numeric,
             NpgsqlDbType.Money,
-        };
+        ];
 
-        private static readonly HashSet<NpgsqlDbType> VarTimeTypes = new HashSet<NpgsqlDbType>
-        {
+        private static readonly HashSet<NpgsqlDbType> VarTimeTypes =
+        [
             NpgsqlDbType.TimestampTz,
             NpgsqlDbType.Timestamp,
             NpgsqlDbType.Time,
-        };
+        ];
 
-        private static readonly HashSet<NpgsqlDbType> LengthRequiredTypes = new HashSet<NpgsqlDbType>
-        {
+        private static readonly HashSet<NpgsqlDbType> LengthRequiredTypes =
+        [
             NpgsqlDbType.Varchar,
             NpgsqlDbType.Char,
-        };
+        ];
 
         private static readonly ReadOnlyDictionary<string, string> SqlTypeAliases
         = new ReadOnlyDictionary<string, string>(
             new Dictionary<string, string>()
             {
-                { "numeric", "decimal" },
-                { "character varying", "text" },
-                { "character", "char" },
+                { "bool", "boolean" },
+                { "decimal", "numeric" },
+                { "double precision", "double" },
+                { "float8", "double" },
+                { "character varying", "varchar" },
+                { "char", "character" },
+                { "float4", "real" },
+                { "int", "integer" },
+                { "int4", "integer" },
+                { "timestamp with time zone", "timestamptz" },
+                { "time with time zone", "timetz" },
+                { "timestamp without time zone", "timestamp" },
+                { "time without time zone", "time" },
+
+                ////{ "character varying[]", "text[]" },
+                ////{ "character[]", "char[]" },
+                ////{ "timestamp with time zone[]", "timestamp[]" },
+                ////{ "timestamp without time zone[]", "timestamp[]" },
+                ////{ "time with time zone[]", "time[]" },
+                ////{ "time without time zone[]", "time[]" },
+                ////{ "double precision[]", "float8[]" },
+                ////{ "real[]", "float4[]" },
+                ////{ "integer[]", "int[]" },
+                ////{ "boolean[]", "bool[]" },
             });
 
         public static bool UseDateOnlyTimeOnly { get; set; }
@@ -70,48 +90,39 @@ namespace RevEng.Core.Routines.Extensions
             return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
-        public static SqlDbType DbType(this ModuleParameter storedProcedureParameter)
+        public static NpgsqlDbType GetNpgsqlDbType(this ModuleParameter storedProcedureParameter)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
-            return GetSqlDbType(storedProcedureParameter.StoreType);
+            return GetNpgsqlDbType(storedProcedureParameter.StoreType);
         }
 
         public static Type GetClrType(string storeType, bool isNullable, bool asParameter = false)
         {
-            var sqlType = GetSqlDbType(storeType);
+            var sqlType = GetNpgsqlDbType(storeType);
 
             var useDateOnlyTimeOnly = UseDateOnlyTimeOnly;
 
             switch (sqlType)
             {
-                case SqlDbType.BigInt:
+                case NpgsqlDbType.Bigint:
                     return isNullable ? typeof(long?) : typeof(long);
 
-                case SqlDbType.Binary:
-                case SqlDbType.Image:
-                case SqlDbType.Timestamp:
-                case SqlDbType.VarBinary:
+                case NpgsqlDbType.Bytea:
                     return typeof(byte[]);
 
-                case SqlDbType.Bit:
+                case NpgsqlDbType.Boolean:
                     return isNullable ? typeof(bool?) : typeof(bool);
 
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                case SqlDbType.NText:
-                case SqlDbType.NVarChar:
-                case SqlDbType.Text:
-                case SqlDbType.VarChar:
-                case SqlDbType.Xml:
+                case NpgsqlDbType.Char:
+                case NpgsqlDbType.Text:
+                case NpgsqlDbType.Varchar:
+                case NpgsqlDbType.Json:
+                case NpgsqlDbType.Jsonb:
+                case NpgsqlDbType.Xml:
                     return typeof(string);
 
-                case SqlDbType.DateTime:
-                case SqlDbType.SmallDateTime:
-                case SqlDbType.DateTime2:
-                    return isNullable ? typeof(DateTime?) : typeof(DateTime);
-
-                case SqlDbType.Date:
+                case NpgsqlDbType.Date:
                     if (useDateOnlyTimeOnly)
                     {
                         return isNullable ? typeof(DateOnly?) : typeof(DateOnly);
@@ -119,7 +130,23 @@ namespace RevEng.Core.Routines.Extensions
 
                     return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
-                case SqlDbType.Time:
+                case NpgsqlDbType.Double:
+                    return isNullable ? typeof(double?) : typeof(double);
+
+                case NpgsqlDbType.Integer:
+                    return isNullable ? typeof(int?) : typeof(int);
+
+                case NpgsqlDbType.Numeric:
+                case NpgsqlDbType.Money:
+                    return isNullable ? typeof(decimal?) : typeof(decimal);
+
+                case NpgsqlDbType.Real:
+                    return isNullable ? typeof(float?) : typeof(float);
+
+                case NpgsqlDbType.Smallint:
+                    return isNullable ? typeof(short?) : typeof(short);
+
+                case NpgsqlDbType.Time:
                     if (useDateOnlyTimeOnly)
                     {
                         return isNullable ? typeof(TimeOnly?) : typeof(TimeOnly);
@@ -127,60 +154,19 @@ namespace RevEng.Core.Routines.Extensions
 
                     return isNullable ? typeof(TimeSpan?) : typeof(TimeSpan);
 
-                case SqlDbType.Decimal:
-                case SqlDbType.Money:
-                case SqlDbType.SmallMoney:
-                    return isNullable ? typeof(decimal?) : typeof(decimal);
+                case NpgsqlDbType.TimestampTz:
+                case NpgsqlDbType.Timestamp:
+                    return isNullable ? typeof(DateTime?) : typeof(DateTime);
 
-                case SqlDbType.Float:
-                    return isNullable ? typeof(double?) : typeof(double);
-
-                case SqlDbType.Int:
-                    return isNullable ? typeof(int?) : typeof(int);
-
-                case SqlDbType.Real:
-                    return isNullable ? typeof(float?) : typeof(float);
-
-                case SqlDbType.UniqueIdentifier:
+                case NpgsqlDbType.Uuid:
                     return isNullable ? typeof(Guid?) : typeof(Guid);
-
-                case SqlDbType.SmallInt:
-                    return isNullable ? typeof(short?) : typeof(short);
-
-                case SqlDbType.TinyInt:
-                    return isNullable ? typeof(byte?) : typeof(byte);
-
-                case SqlDbType.Variant:
-                    return typeof(object);
-
-                case SqlDbType.Udt:
-                    switch (storeType)
-                    {
-                        case "geometry":
-                        case "geography":
-                            if (asParameter)
-                            {
-                                return typeof(byte[]);
-                            }
-
-                            return typeof(Geometry);
-
-                        default:
-                            return typeof(byte[]);
-                    }
-
-                case SqlDbType.Structured:
-                    return typeof(DataTable);
-
-                case SqlDbType.DateTimeOffset:
-                    return isNullable ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(storeType), $"storetype: {storeType}");
             }
         }
 
-        private static SqlDbType GetSqlDbType(string storeType)
+        private static NpgsqlDbType GetNpgsqlDbType(string storeType)
         {
             if (string.IsNullOrEmpty(storeType))
             {
@@ -201,7 +187,7 @@ namespace RevEng.Core.Routines.Extensions
             }
 #pragma warning restore CA1308 // Normalize strings to uppercase
 
-            if (!Enum.TryParse(cleanedTypeName, true, out SqlDbType result))
+            if (!Enum.TryParse(cleanedTypeName, true, out NpgsqlDbType result))
             {
                 throw new ArgumentOutOfRangeException(nameof(storeType), $"cleanedTypeName: {cleanedTypeName}");
             }

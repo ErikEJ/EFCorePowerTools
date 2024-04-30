@@ -17,12 +17,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
-using RevEng.Core.Procedures;
-using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 using RevEng.Core.Routines.Extensions;
-
-
-
+using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #if !CORE80
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design;
