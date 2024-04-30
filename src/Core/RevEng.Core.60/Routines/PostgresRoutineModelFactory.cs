@@ -7,7 +7,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines
 {
     public abstract class PostgresRoutineModelFactory
     {

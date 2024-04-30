@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 
-namespace RevEng.Core.Modules
+namespace RevEng.Core.Routines
 {
     public interface IRoutineScaffolder
     {

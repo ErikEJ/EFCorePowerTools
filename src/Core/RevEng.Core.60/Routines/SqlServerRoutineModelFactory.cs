@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace RevEng.Core.Procedures
+namespace RevEng.Core.Routines
 {
     public abstract class SqlServerRoutineModelFactory
     {

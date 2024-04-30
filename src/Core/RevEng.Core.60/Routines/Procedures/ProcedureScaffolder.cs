@@ -10,8 +10,6 @@ using NetTopologySuite.Geometries;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Modules;
-using RevEng.Core.Routines;
 using RevEng.Core.Routines.Extensions;
 
 namespace RevEng.Core.Routines.Procedures
@@ -22,12 +20,14 @@ namespace RevEng.Core.Routines.Procedures
         internal readonly ICSharpHelper Code;
         internal IndentedStringBuilder Sb;
 #pragma warning restore SA1401 // Fields should be private
+        private readonly IClrTypeMapper typeMapper;
 
-        protected ProcedureScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code)
+        protected ProcedureScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
         {
             ArgumentNullException.ThrowIfNull(code);
 
             Code = code;
+            this.typeMapper = typeMapper;
         }
 
         public string FileNameSuffix { get; set; }
@@ -137,7 +137,7 @@ namespace RevEng.Core.Routines.Procedures
 
         protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls);
 
-        private static List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
+        private List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             var usings = new List<string>()
             {
@@ -166,8 +166,7 @@ namespace RevEng.Core.Routines.Procedures
                 });
             }
 
-            // Inject a type mapper based on the database provider
-            if (model.Routines.SelectMany(r => r.Parameters).Any(p => p.ClrTypeFromSqlParameter() == typeof(Geometry)))
+            if (model.Routines.SelectMany(r => r.Parameters).Any(p => typeMapper.GetClrType(p) == typeof(Geometry)))
             {
                 usings.AddRange(new List<string>()
                 {
@@ -436,8 +435,7 @@ namespace RevEng.Core.Routines.Procedures
 
             Sb.AppendLine(PathHelper.Header);
 
-            // Inject a type mapper based on the database provider
-            if (resultElements.Exists(p => p.ClrTypeFromSqlParameter() == typeof(Geometry)))
+            if (resultElements.Exists(p => typeMapper.GetClrType(p) == typeof(Geometry)))
             {
                 Sb.AppendLine("using NetTopologySuite.Geometries;");
             }
@@ -497,8 +495,7 @@ namespace RevEng.Core.Routines.Procedures
                     }
                 }
 
-                // Inject a type mapper based on the database provider
-                var propertyType = property.ClrTypeFromSqlParameter();
+                var propertyType = typeMapper.GetClrType(property);
                 var nullableAnnotation = string.Empty;
                 var defaultAnnotation = string.Empty;
 
