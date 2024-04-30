@@ -9,7 +9,6 @@ using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Routines;
 using RevEng.Core.Routines.Extensions;
 
 namespace RevEng.Core.Routines.Procedures
@@ -18,8 +17,8 @@ namespace RevEng.Core.Routines.Procedures
     {
         private const string ParameterPrefix = "parameter";
 
-        public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code)
-            : base(code)
+        public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
+            : base(code, typeMapper)
         {
             FileNameSuffix = "Procedures";
         }

@@ -20,6 +20,7 @@ namespace RevEng.Core.Routines.Extensions
             }
 
             return services
+                .AddSingleton<IClrTypeMapper, SqlServerClrTypeMapper>()
                 .AddSingleton<IProcedureModelFactory, SqlServerStoredProcedureModelFactory>()
                 .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
@@ -51,6 +52,7 @@ namespace RevEng.Core.Routines.Extensions
             }
 
             return services
+                .AddSingleton<IClrTypeMapper, SqlServerClrTypeMapper>()
                 .AddSingleton<IProcedureModelFactory, SqlServerDacpacStoredProcedureModelFactory>(
                     provider => new SqlServerDacpacStoredProcedureModelFactory(factoryOptions))
                 .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()

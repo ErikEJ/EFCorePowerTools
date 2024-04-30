@@ -72,18 +72,18 @@ namespace RevEng.Core.Routines.Extensions
             return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
         }
 
-        public static Type ClrTypeFromSqlParameter(this ModuleResultElement moduleResultElement)
-        {
-            ArgumentNullException.ThrowIfNull(moduleResultElement);
-
-            return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
-        }
-
         public static SqlDbType GetSqlDbType(this ModuleParameter storedProcedureParameter)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
             return GetSqlDbType(storedProcedureParameter.StoreType);
+        }
+
+        public static Type GetClrType(this ModuleResultElement moduleResultElement)
+        {
+            ArgumentNullException.ThrowIfNull(moduleResultElement);
+
+            return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
         }
 
         public static Type GetClrType(string storeType, bool isNullable, bool asParameter = false)
