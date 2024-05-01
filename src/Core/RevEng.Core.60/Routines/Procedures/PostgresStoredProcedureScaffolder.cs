@@ -21,6 +21,7 @@ namespace RevEng.Core.Routines.Procedures
             : base(code, typeMapper)
         {
             FileNameSuffix = "Procedures";
+            ProviderUsing = "using Npgsql";
         }
 
         public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
@@ -131,8 +132,6 @@ namespace RevEng.Core.Routines.Procedures
                         Sb.AppendLine($"{Code.Identifier(parameter.Name)}.SetValue({ParameterPrefix}{parameter.Name}.Value);");
                     }
 
-                    Sb.AppendLine();
-
                     Sb.AppendLine("return _;");
                 }
 
@@ -175,7 +174,7 @@ namespace RevEng.Core.Routines.Procedures
                 paramList.Add(p);
             }
 
-            var fullExec = $"\"SELECT * FROM  \"{procedure.Schema}\".\"{procedure.Name}\" {string.Join(", ", paramList)}\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
+            var fullExec = $"\"SELECT * FROM  \\\"{procedure.Schema}\\\".\\\"{procedure.Name}\\\" {string.Join(", ", paramList)}\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
             return fullExec;
         }
 
@@ -204,11 +203,6 @@ namespace RevEng.Core.Routines.Procedures
                 }
 
                 line += $"{string.Join(", ", outParamStrings)}";
-            }
-
-            if (paramStrings.Any() || outParams.Count > 0)
-            {
-                line += ", ";
             }
 
             line += useAsyncCalls ? ", CancellationToken cancellationToken = default)" : ")";
@@ -250,7 +244,7 @@ namespace RevEng.Core.Routines.Procedures
                     Sb.AppendLine($"Scale = {parameter.Scale},");
                 }
 
-                if (sqlDbType.IsLengthRequiredType())
+                if (sqlDbType.IsLengthRequiredType() && parameter.Length.HasValue)
                 {
                     Sb.AppendLine($"Size = {parameter.Length},");
                 }
@@ -272,7 +266,7 @@ namespace RevEng.Core.Routines.Procedures
                     Sb.AppendLine("Direction = System.Data.ParameterDirection.Output,");
                 }
 
-                Sb.AppendLine($"SqlDbType = NpgsqlTypes.NpgsqlDbType.{sqlDbType},");
+                Sb.AppendLine($"NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.{sqlDbType},");
             }
 
             Sb.Append("}");

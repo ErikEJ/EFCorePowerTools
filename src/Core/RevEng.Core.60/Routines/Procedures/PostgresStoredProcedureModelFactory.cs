@@ -191,9 +191,16 @@ order by schema_name,
                     var types = (string[])row["return_record_types"];
                     for (var i = 0; i < names.Length; i++)
                     {
+                        var name = names[i];
+
+                        if (name.StartsWith('"') && name.EndsWith('"'))
+                        {
+                            name = name.Substring(1, name.Length - 2);
+                        }
+
                         list.Add(new ModuleResultElement
                         {
-                            Name = names[i],
+                            Name = name,
                             StoreType = types[i],
                             Ordinal = i,
                             Nullable = true,

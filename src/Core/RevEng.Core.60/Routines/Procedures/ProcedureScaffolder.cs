@@ -32,6 +32,8 @@ namespace RevEng.Core.Routines.Procedures
 
         public string FileNameSuffix { get; set; }
 
+        public string ProviderUsing { get; set; }
+
         public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
             ArgumentNullException.ThrowIfNull(scaffoldedModel);
@@ -142,7 +144,6 @@ namespace RevEng.Core.Routines.Procedures
             var usings = new List<string>()
             {
                 "using Microsoft.EntityFrameworkCore",
-                "using Microsoft.Data.SqlClient",
                 "using System",
                 "using System.Collections.Generic",
                 "using System.Data",
@@ -150,6 +151,8 @@ namespace RevEng.Core.Routines.Procedures
                 "using System.Threading.Tasks",
                 $"using {scaffolderOptions.ModelNamespace}",
             };
+
+            usings.Add(ProviderUsing);
 
             if (scaffolderOptions.UseSchemaNamespaces)
             {

@@ -3,17 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PostgresTester.Models
+#nullable enable
+
+namespace PostgresTester
 {
     public partial class SalesbyYearResult
     {
-        [Column(""ShippedDate"")]
         public DateTime? ShippedDate { get; set; }
-        [Column(""OrderID"")]
         public int? OrderID { get; set; }
-        [Column(""Subtotal"")]
         public double? Subtotal { get; set; }
-        [Column(""Year"")]
         public int? Year { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PostgresTester.Models
+namespace PostgresTester
 {
     public static class DbContextExtensions
     {

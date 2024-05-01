@@ -3,21 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PostgresTester.Models
+#nullable enable
+
+namespace PostgresTester
 {
     public partial class EmployeeSalesbyCountryResult
     {
-        [Column(""Country"")]
-        public string Country { get; set; }
-        [Column(""LastName"")]
-        public string LastName { get; set; }
-        [Column(""FirstName"")]
-        public string FirstName { get; set; }
-        [Column(""ShippedDate"")]
+        public string? Country { get; set; }
+        public string? LastName { get; set; }
+        public string? FirstName { get; set; }
         public DateTime? ShippedDate { get; set; }
-        [Column(""OrderID"")]
         public int? OrderID { get; set; }
-        [Column(""Subtotal"")]
         public double? Subtotal { get; set; }
     }
 }

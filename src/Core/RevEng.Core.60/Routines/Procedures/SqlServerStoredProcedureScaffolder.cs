@@ -21,6 +21,7 @@ namespace RevEng.Core.Routines.Procedures
             : base(code, typeMapper)
         {
             FileNameSuffix = "Procedures";
+            ProviderUsing = "using Microsoft.Data.SqlClient";
         }
 
         public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
