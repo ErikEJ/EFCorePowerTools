@@ -17,7 +17,7 @@ namespace RevEng.Core.Routines.Procedures
             RoutineSql = $@"
 select n.nspname as schema_name,
        p.proname as specific_name,
-       CAST(0 as boolean) as is_scalar
+       p.proretset as returns_set
 from pg_proc p
 left join pg_namespace n on p.pronamespace = n.oid
 left join pg_language l on p.prolang = l.oid

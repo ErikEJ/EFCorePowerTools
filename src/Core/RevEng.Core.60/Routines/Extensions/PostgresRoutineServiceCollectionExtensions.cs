@@ -18,8 +18,9 @@ namespace RevEng.Core.Routines.Extensions
             }
 
             return services
+                .AddSingleton<IClrTypeMapper, PostgresClrTypeMapper>()
                 .AddSingleton<IProcedureModelFactory, PostgresStoredProcedureModelFactory>()
-                ////.AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
+                .AddSingleton<IProcedureScaffolder, PostgresStoredProcedureScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }
     }
