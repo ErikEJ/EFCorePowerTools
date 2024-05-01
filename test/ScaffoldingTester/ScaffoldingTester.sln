@@ -17,7 +17,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseBuild", "DatabaseBuild\DatabaseBuild.csproj", "{FEE94626-03BA-474A-9329-9FD63D055CA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScaffoldingPostgreSqlMultiSchemaTester", "ScaffoldingPostgreSqlMultiSchemaTester\ScaffoldingPostgreSqlMultiSchemaTester.csproj", "{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostgresTester", "PostgresTester\PostgresTester.csproj", "{6494E379-EA19-4FBE-88FD-5ED13E154C1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,10 @@ Global
 		{FEE94626-03BA-474A-9329-9FD63D055CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE94626-03BA-474A-9329-9FD63D055CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE94626-03BA-474A-9329-9FD63D055CA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFF7EBBC-CB4C-495E-A8BD-B1F437F66052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
