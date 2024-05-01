@@ -175,7 +175,7 @@ namespace RevEng.Core.Routines.Procedures
                 paramList.Add(p);
             }
 
-            var fullExec = $"\"SELECT * FROM {procedure.Schema}.{procedure.Name} {string.Join(", ", paramList)}\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
+            var fullExec = $"\"SELECT * FROM  \"{procedure.Schema}\".\"{procedure.Name}\" {string.Join(", ", paramList)}\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
             return fullExec;
         }
 

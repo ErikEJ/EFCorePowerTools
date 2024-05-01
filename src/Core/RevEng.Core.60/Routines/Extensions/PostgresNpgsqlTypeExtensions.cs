@@ -38,7 +38,7 @@ namespace RevEng.Core.Routines.Extensions
                 { "double precision", "double" },
                 { "float8", "double" },
                 { "character varying", "varchar" },
-                { "char", "character" },
+                { "character", "varchar" },
                 { "float4", "real" },
                 { "int", "integer" },
                 { "int4", "integer" },

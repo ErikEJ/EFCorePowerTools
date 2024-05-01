@@ -24,6 +24,7 @@ left join pg_language l on p.prolang = l.oid
 left join pg_type t on t.oid = p.prorettype 
 where n.nspname not in ('pg_catalog', 'information_schema')
       and (p.prokind = 'p' or p.prokind = 'f')
+      and (l.lanname = 'sql')
 order by schema_name,
          specific_name;";
         }
@@ -169,7 +170,7 @@ order by schema_name,
 
     from cte1
     left join cte2 on cte1.schema = cte2.schema and cte1.specific_name = cte2.specific_name
-	where cte1.schema = '{module.Schema}' and cte1.name = '{module.Name}'";
+	where cte1.schema = '{module.Schema}' and (cte1.name = '{module.Name}' or cte1.name = '""{module.Name}""')";
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var adapter = new NpgsqlDataAdapter
