@@ -54,7 +54,7 @@ namespace RevEng.Core.Routines
 
                     if (filter.Count == 0 || filter.Contains(key))
                     {
-                        var isScalar = foundModule.Item3;
+                        var isScalar = !foundModule.Item3;
 
                         var module = RoutineType == "PROCEDURE"
                             ? (Routine)new Procedure()
@@ -96,7 +96,10 @@ namespace RevEng.Core.Routines
 #pragma warning restore CA1031 // Do not catch general exception types
                         }
 
-                        result.Add(module);
+                        if (!isScalar)
+                        {
+                            result.Add(module);
+                        }
                     }
                 }
             }
