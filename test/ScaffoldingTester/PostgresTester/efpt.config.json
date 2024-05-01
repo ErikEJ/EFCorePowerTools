@@ -1,0 +1,105 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "NorthwindContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "PostgresTester",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "public.Categories",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.CustomerCustomerDemo",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.CustomerDemographics",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Customers",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Employees",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.EmployeeTerritories",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Order Details",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Orders",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Products",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Region",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Shippers",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Suppliers",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.Territories",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.CustOrderHist",
+         "ObjectType": 1
+      },
+      {
+         "Name": "public.Employee Sales by Country",
+         "ObjectType": 1
+      },
+      {
+         "Name": "public.Sales by Year",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

@@ -61,6 +61,11 @@ namespace EFCorePowerTools.Helpers
                 result += "." + catalog.ToString();
             }
 
+            if (!string.IsNullOrEmpty(result) && result.Length > 1 && result.StartsWith("."))
+            {
+                result = result.Substring(1);
+            }
+
             return result;
         }
 
