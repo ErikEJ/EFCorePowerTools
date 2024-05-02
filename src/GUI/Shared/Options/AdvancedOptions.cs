@@ -36,12 +36,6 @@ namespace EFCorePowerTools
         [DefaultValue(false)]
         public bool UseLegacyResultSetDiscovery { get; set; }
 
-        [Category("Reverse Engineering")]
-        [DisplayName(@"Prefer async calls")]
-        [Description("Prefer async/await over synchronous calls")]
-        [DefaultValue(true)]
-        public bool PreferAsyncCalls { get; set; } = true;
-
         [Category("Other")]
         [DisplayName(@"Participate in Telemetry")]
         [Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports")]

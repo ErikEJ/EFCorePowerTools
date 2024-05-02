@@ -60,5 +60,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public string T4TemplatePath { get; set; }
         public bool UseDecimalDataAnnotationForSprocResult { get; set; } = true;
         public bool UsePrefixNavigationNaming { get; set; }
+        public bool UseAsyncStoredProcedureCalls { get; set; } = true;
     }
 }
