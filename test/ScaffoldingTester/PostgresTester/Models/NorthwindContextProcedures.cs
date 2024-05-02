@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace PostgresTester
 {
-    public partial class testContext
+    public partial class NorthwindContext
     {
-        private ItestContextProcedures _procedures;
+        private INorthwindContextProcedures _procedures;
 
-        public virtual ItestContextProcedures Procedures
+        public virtual INorthwindContextProcedures Procedures
         {
             get
             {
-                if (_procedures is null) _procedures = new testContextProcedures(this);
+                if (_procedures is null) _procedures = new NorthwindContextProcedures(this);
                 return _procedures;
             }
             set
@@ -28,7 +28,7 @@ namespace PostgresTester
             }
         }
 
-        public ItestContextProcedures GetProcedures()
+        public INorthwindContextProcedures GetProcedures()
         {
             return Procedures;
         }
@@ -41,69 +41,71 @@ namespace PostgresTester
         }
     }
 
-    public partial class testContextProcedures : ItestContextProcedures
+    public partial class NorthwindContextProcedures : INorthwindContextProcedures
     {
-        private readonly testContext _context;
+        private readonly NorthwindContext _context;
 
-        public testContextProcedures(testContext context)
+        public NorthwindContextProcedures(NorthwindContext context)
         {
             _context = context;
         }
 
         public virtual async Task<List<CustOrderHistResult>> CustOrderHistAsync(string CustomerID, CancellationToken cancellationToken = default)
         {
-
             var npgsqlParameters = new []
             {
                 new NpgsqlParameter
                 {
+                    ParameterName = "CustomerID",
                     Value = CustomerID ?? Convert.DBNull,
-                    NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Varchar,
+                    NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Char,
                 },
             };
-            var _ = await _context.SqlQueryAsync<CustOrderHistResult>("SELECT * FROM  \"public\".\"CustOrderHist\" $1", npgsqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<CustOrderHistResult>("SELECT * FROM \"public\".\"CustOrderHist\" (@CustomerID)", npgsqlParameters, cancellationToken);
 
             return _;
         }
 
         public virtual async Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default)
         {
-
             var npgsqlParameters = new []
             {
                 new NpgsqlParameter
                 {
+                    ParameterName = "Beginning_Date",
                     Value = Beginning_Date ?? Convert.DBNull,
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Timestamp,
                 },
                 new NpgsqlParameter
                 {
+                    ParameterName = "Ending_Date",
                     Value = Ending_Date ?? Convert.DBNull,
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Timestamp,
                 },
             };
-            var _ = await _context.SqlQueryAsync<EmployeeSalesbyCountryResult>("SELECT * FROM  \"public\".\"Employee Sales by Country\" $1, $2", npgsqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<EmployeeSalesbyCountryResult>("SELECT * FROM \"public\".\"Employee Sales by Country\" (@Beginning_Date, @Ending_Date)", npgsqlParameters, cancellationToken);
 
             return _;
         }
 
         public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default)
         {
-
             var npgsqlParameters = new []
             {
                 new NpgsqlParameter
                 {
+                    ParameterName = "Beginning_Date",
                     Value = Beginning_Date ?? Convert.DBNull,
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Timestamp,
                 },
                 new NpgsqlParameter
                 {
+                    ParameterName = "Ending_Date",
                     Value = Ending_Date ?? Convert.DBNull,
                     NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Timestamp,
                 },
             };
-            var _ = await _context.SqlQueryAsync<SalesbyYearResult>("SELECT * FROM  \"public\".\"Sales by Year\" $1, $2", npgsqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SalesbyYearResult>("SELECT * FROM \"public\".\"Sales by Year\" (@Beginning_Date, @Ending_Date)", npgsqlParameters, cancellationToken);
 
             return _;
         }

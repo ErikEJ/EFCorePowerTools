@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PostgresTester
 {
-    public partial interface ItestContextProcedures
+    public partial interface INorthwindContextProcedures
     {
         Task<List<CustOrderHistResult>> CustOrderHistAsync(string CustomerID, CancellationToken cancellationToken = default);
         Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default);

@@ -89,8 +89,6 @@ namespace RevEng.Core.Routines.Procedures
                         GenerateParameterVar(parameter);
                     }
 
-                    Sb.AppendLine();
-
                     Sb.AppendLine("var npgsqlParameters = new []");
                     Sb.AppendLine("{");
                     using (Sb.Indent())
@@ -159,22 +157,10 @@ namespace RevEng.Core.Routines.Procedures
 
         private static string GenerateProcedureStatement(Routine procedure, bool useAsyncCalls)
         {
-            var paramList = new List<string>();
-            int i = 1;
+            var paramList = procedure.Parameters
+                .Select(p => $"@{p.Name}{(p.Output ? " OUTPUT" : string.Empty)}").ToList();
 
-            foreach (var parameter in procedure.Parameters)
-            {
-                var p = $"${i++}";
-
-                if (parameter.Output)
-                {
-                    p += " OUTPUT";
-                }
-
-                paramList.Add(p);
-            }
-
-            var fullExec = $"\"SELECT * FROM  \\\"{procedure.Schema}\\\".\\\"{procedure.Name}\\\" {string.Join(", ", paramList)}\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
+            var fullExec = $"\"SELECT * FROM \\\"{procedure.Schema}\\\".\\\"{procedure.Name}\\\" ({string.Join(", ", paramList)})\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
             return fullExec;
         }
 
@@ -226,6 +212,8 @@ namespace RevEng.Core.Routines.Procedures
 
             using (Sb.Indent())
             {
+                Sb.AppendLine($"ParameterName = \"{parameter.Name}\",");
+
                 if (sqlDbType.IsScaleType())
                 {
                     if (parameter.Precision > 0)
