@@ -3,18 +3,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace PostgresTester
+namespace PostgresTester.Models;
+
+public partial class CustomerDemographic
 {
-    public partial class CustomerDemographic
-    {
-        public CustomerDemographic()
-        {
-            Customers = new HashSet<Customer>();
-        }
+    public string CustomerTypeId { get; set; } = null!;
 
-        public string CustomerTypeId { get; set; } = null!;
-        public string? CustomerDesc { get; set; }
+    public string? CustomerDesc { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; }
-    }
+    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
 }

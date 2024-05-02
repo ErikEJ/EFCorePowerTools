@@ -3,20 +3,17 @@
 using System;
 using System.Collections.Generic;
 
-namespace PostgresTester
+namespace PostgresTester.Models;
+
+public partial class Category
 {
-    public partial class Category
-    {
-        public Category()
-        {
-            Products = new HashSet<Product>();
-        }
+    public int CategoryId { get; set; }
 
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; } = null!;
-        public string? Description { get; set; }
-        public byte[]? Picture { get; set; }
+    public string CategoryName { get; set; } = null!;
 
-        public virtual ICollection<Product> Products { get; set; }
-    }
+    public string? Description { get; set; }
+
+    public byte[]? Picture { get; set; }
+
+    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

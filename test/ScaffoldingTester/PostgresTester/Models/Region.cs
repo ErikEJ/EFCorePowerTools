@@ -3,18 +3,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace PostgresTester
+namespace PostgresTester.Models;
+
+public partial class Region
 {
-    public partial class Region
-    {
-        public Region()
-        {
-            Territories = new HashSet<Territory>();
-        }
+    public int RegionId { get; set; }
 
-        public int RegionId { get; set; }
-        public string RegionDescription { get; set; } = null!;
+    public string RegionDescription { get; set; } = null!;
 
-        public virtual ICollection<Territory> Territories { get; set; }
-    }
+    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
 }

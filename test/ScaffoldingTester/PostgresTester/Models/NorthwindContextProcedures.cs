@@ -2,14 +2,14 @@
 #nullable disable
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using PostgresTester;
+using PostgresTester.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PostgresTester
+namespace PostgresTester.Models
 {
     public partial class NorthwindContext
     {
@@ -31,13 +31,6 @@ namespace PostgresTester
         public INorthwindContextProcedures GetProcedures()
         {
             return Procedures;
-        }
-
-        protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<CustOrderHistResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<EmployeeSalesbyCountryResult>().HasNoKey().ToView(null);
-            modelBuilder.Entity<SalesbyYearResult>().HasNoKey().ToView(null);
         }
     }
 

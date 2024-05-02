@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable enable
 
-namespace PostgresTester
+namespace PostgresTester.Models
 {
     public partial class CustOrderHistResult
     {

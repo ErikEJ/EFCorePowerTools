@@ -2,9 +2,9 @@
 {
     class Program
     {
-        static async System.Threading.Tasks.Task Main(string[] args)
+        static async Task Main(string[] args)
         {
-            using (var db = new NorthwindContext())
+            using (var db = new Models.NorthwindContext())
             {
                 var result = await db.Procedures.CustOrderHistAsync("ALFKI");
                 if (result.Count != 11)

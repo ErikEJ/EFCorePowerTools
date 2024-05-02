@@ -2,14 +2,14 @@
 #nullable disable
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using PostgresTester;
+using PostgresTester.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PostgresTester
+namespace PostgresTester.Models
 {
     public partial interface INorthwindContextProcedures
     {
