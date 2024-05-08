@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
-namespace RevEng.Core.Dgml
+namespace RevEng.Core.Diagram
 {
     internal sealed class DatabaseModelToDgml
     {

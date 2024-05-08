@@ -20,7 +20,7 @@ namespace RevEng.Core.Routines.Procedures
         public PostgresStoredProcedureScaffolder([NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
             : base(code, typeMapper)
         {
-            FileNameSuffix = "Procedures";
+            FileNameSuffix = "Functions";
             ProviderUsing = "using Npgsql";
         }
 
@@ -31,7 +31,7 @@ namespace RevEng.Core.Routines.Procedures
             var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls);
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
-            var dbContextExtensionsText = GetDbContextExtensionsText(useAsyncCalls);
+            var dbContextExtensionsText = ScaffoldHelper.GetDbContextExtensionsText(useAsyncCalls);
             var dbContextExtensionsName = useAsyncCalls ? "DbContextExtensions.cs" : "DbContextExtensions.Sync.cs";
             var dbContextExtensionsPath = Path.Combine(contextDir ?? string.Empty, dbContextExtensionsName);
             File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
@@ -135,24 +135,6 @@ namespace RevEng.Core.Routines.Procedures
 
                 Sb.AppendLine("}");
             }
-        }
-
-        private static string GetDbContextExtensionsText(bool useAsyncCalls)
-        {
-#if CORE80
-            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensionsSqlQuery" : "RevEng.Core.DbContextExtensionsSqlQuery.Sync";
-#else
-            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
-#endif
-            var assembly = typeof(SqlServerStoredProcedureScaffolder).GetTypeInfo().Assembly;
-            using var stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
-            if (stream == null)
-            {
-                return string.Empty;
-            }
-
-            using var reader = new StreamReader(stream, Encoding.UTF8);
-            return reader.ReadToEnd();
         }
 
         private static string GenerateProcedureStatement(Routine procedure, bool useAsyncCalls)

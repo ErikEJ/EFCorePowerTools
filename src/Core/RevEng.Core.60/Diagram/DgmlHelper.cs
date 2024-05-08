@@ -2,7 +2,7 @@
 using System.Security;
 using System.Xml;
 
-namespace RevEng.Core.Dgml
+namespace RevEng.Core.Diagram
 {
     internal sealed class DgmlHelper : IDisposable
     {

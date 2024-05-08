@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using RevEng.Core.Abstractions.Metadata;
 
@@ -89,6 +92,25 @@ namespace RevEng.Core.Routines
             "volatile",
             "while",
         };
+
+        public static string GetDbContextExtensionsText(bool useAsyncCalls)
+        {
+#if CORE80
+            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensionsSqlQuery" : "RevEng.Core.DbContextExtensionsSqlQuery.Sync";
+#else
+            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
+#endif
+            var assembly = typeof(ScaffoldHelper).GetTypeInfo().Assembly;
+            using var stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
+            if (stream == null)
+            {
+                return string.Empty;
+            }
+
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            return reader.ReadToEnd();
+        }
+
 
         public static string GenerateIdentifierName(Routine routine, RoutineModel model)
         {

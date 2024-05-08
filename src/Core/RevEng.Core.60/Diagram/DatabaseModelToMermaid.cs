@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
-namespace RevEng.Core.Mermaid
+namespace RevEng.Core.Diagram
 {
     public class DatabaseModelToMermaid
     {

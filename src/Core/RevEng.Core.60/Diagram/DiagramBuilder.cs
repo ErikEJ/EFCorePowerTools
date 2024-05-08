@@ -7,17 +7,16 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
-using RevEng.Core.Mermaid;
 
-namespace RevEng.Core.Dgml
+namespace RevEng.Core.Diagram
 {
-    public class DgmlBuilder
+    public class DiagramBuilder
     {
         private readonly string connectionString;
         private readonly ServiceProvider serviceProvider;
         private readonly List<string> schemas = Enumerable.Empty<string>().ToList();
 
-        public DgmlBuilder(int databaseType, string connectionString, List<string> schemas)
+        public DiagramBuilder(int databaseType, string connectionString, List<string> schemas)
         {
             if (string.IsNullOrEmpty(connectionString))
             {

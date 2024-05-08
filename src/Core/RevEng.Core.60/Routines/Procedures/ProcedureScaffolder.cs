@@ -122,7 +122,7 @@ namespace RevEng.Core.Routines.Procedures
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
                     Code = dbContextInterface,
-                    Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, $"I{scaffolderOptions.ContextName}Procedures.cs")),
+                    Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, $"I{scaffolderOptions.ContextName}{FileNameSuffix}.cs")),
                 });
             }
 
@@ -205,7 +205,7 @@ namespace RevEng.Core.Routines.Procedures
 
             using (Sb.Indent())
             {
-                Sb.AppendLine($"public partial interface I{scaffolderOptions.ContextName}Procedures");
+                Sb.AppendLine($"public partial interface I{scaffolderOptions.ContextName}{FileNameSuffix}");
                 Sb.AppendLine("{");
                 using (Sb.Indent())
                 {
@@ -252,9 +252,9 @@ namespace RevEng.Core.Routines.Procedures
                 Sb.AppendLine("{");
                 using (Sb.Indent())
                 {
-                    Sb.AppendLine($"private I{scaffolderOptions.ContextName}Procedures _procedures;");
+                    Sb.AppendLine($"private I{scaffolderOptions.ContextName}{FileNameSuffix} _procedures;");
                     Sb.AppendLine();
-                    Sb.AppendLine($"public virtual I{scaffolderOptions.ContextName}Procedures Procedures");
+                    Sb.AppendLine($"public virtual I{scaffolderOptions.ContextName}{FileNameSuffix} {FileNameSuffix}");
                     Sb.AppendLine("{");
                     using (Sb.Indent())
                     {
@@ -262,7 +262,7 @@ namespace RevEng.Core.Routines.Procedures
                         Sb.AppendLine("{");
                         using (Sb.Indent())
                         {
-                            Sb.AppendLine($"if (_procedures is null) _procedures = new {scaffolderOptions.ContextName}Procedures(this);");
+                            Sb.AppendLine($"if (_procedures is null) _procedures = new {scaffolderOptions.ContextName}{FileNameSuffix}(this);");
                             Sb.AppendLine("return _procedures;");
                         }
 
@@ -279,11 +279,11 @@ namespace RevEng.Core.Routines.Procedures
 
                     Sb.AppendLine("}");
                     Sb.AppendLine();
-                    Sb.AppendLine($"public I{scaffolderOptions.ContextName}Procedures GetProcedures()");
+                    Sb.AppendLine($"public I{scaffolderOptions.ContextName}{FileNameSuffix} Get{FileNameSuffix}()");
                     Sb.AppendLine("{");
                     using (Sb.Indent())
                     {
-                        Sb.AppendLine("return Procedures;");
+                        Sb.AppendLine($"return {FileNameSuffix};");
                     }
 
                     Sb.AppendLine("}");
@@ -295,14 +295,14 @@ namespace RevEng.Core.Routines.Procedures
                 Sb.AppendLine("}");
                 Sb.AppendLine();
 
-                Sb.AppendLine($"public partial class {scaffolderOptions.ContextName}Procedures : I{scaffolderOptions.ContextName}Procedures");
+                Sb.AppendLine($"public partial class {scaffolderOptions.ContextName}{FileNameSuffix} : I{scaffolderOptions.ContextName}{FileNameSuffix}");
                 Sb.AppendLine("{");
 
                 using (Sb.Indent())
                 {
                     Sb.AppendLine($"private readonly {scaffolderOptions.ContextName} _context;");
                     Sb.AppendLine();
-                    Sb.AppendLine($"public {scaffolderOptions.ContextName}Procedures({scaffolderOptions.ContextName} context)");
+                    Sb.AppendLine($"public {scaffolderOptions.ContextName}{FileNameSuffix}({scaffolderOptions.ContextName} context)");
                     Sb.AppendLine("{");
 
                     using (Sb.Indent())
@@ -335,7 +335,7 @@ namespace RevEng.Core.Routines.Procedures
         private void GenerateOnModelCreating(RoutineModel model)
         {
             Sb.AppendLine();
-            Sb.AppendLine("protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)");
+            Sb.AppendLine($"protected void OnModelCreatingGenerated{FileNameSuffix}(ModelBuilder modelBuilder)");
             Sb.AppendLine("{");
 
             using (Sb.Indent())

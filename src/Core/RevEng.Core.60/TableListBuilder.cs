@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Mermaid;
+using RevEng.Core.Diagram;
 
 namespace RevEng.Core
 {

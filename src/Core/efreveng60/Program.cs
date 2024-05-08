@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Core;
 using RevEng.Core.Abstractions.Model;
-using RevEng.Core.Dgml;
+using RevEng.Core.Diagram;
 
 [assembly: CLSCompliant(true)]
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Reviewed")]
@@ -73,7 +73,7 @@ namespace EfReveng
                             schemas = args[3].Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s).ToList();
                         }
 
-                        var builder = new DgmlBuilder(dbType, args[2], schemas);
+                        var builder = new DiagramBuilder(dbType, args[2], schemas);
 
                         var buildResult = string.Empty;
 
