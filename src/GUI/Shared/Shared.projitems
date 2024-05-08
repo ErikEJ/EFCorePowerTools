@@ -74,7 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ReverseEngineerUserOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerUserOptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ServerDgmlHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\DatabaseDiagramHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlConnectionStringBuilderHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlProjHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
@@ -99,7 +99,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ResultDeserializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerCommandOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\TableListBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CredentialStore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\VSHelper.cs" />

@@ -64,7 +64,8 @@ namespace EfReveng
                     }
 
                     if ((args.Length == 3 || args.Length == 4)
-                        && args[0] == "dgml" && int.TryParse(args[1], out int dbType))
+                        && (args[0] == "dgml" || args[0] == "erdiagram")
+                        && int.TryParse(args[1], out int dbType))
                     {
                         var schemas = Enumerable.Empty<string>().ToList();
                         if (args.Length == 4)
@@ -74,7 +75,16 @@ namespace EfReveng
 
                         var builder = new DgmlBuilder(dbType, args[2], schemas);
 
-                        var buildResult = builder.GetDgmlFileName();
+                        var buildResult = string.Empty;
+
+                        if (args[0] == "dgml")
+                        {
+                            buildResult = builder.GetDgmlFileName();
+                        }
+                        else
+                        {
+                            buildResult = builder.GetErDiagramFileName();
+                        }
 
                         await Console.Out.WriteLineAsync("Result:");
                         await Console.Out.WriteLineAsync(buildResult);

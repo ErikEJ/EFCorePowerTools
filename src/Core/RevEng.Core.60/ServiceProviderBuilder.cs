@@ -75,7 +75,7 @@ namespace RevEng.Core
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
                 {
-                    hbOptions.ReverseEngineerOptions = ReverseEngineerOptions.DbContextAndEntities;
+                    hbOptions.ReverseEngineerOptions = Microsoft.EntityFrameworkCore.Design.ReverseEngineerOptions.DbContextAndEntities;
                     hbOptions.LanguageOptions = (LanguageOptions)options.SelectedHandlebarsLanguage;
                 });
                 serviceCollection.AddSingleton<ITemplateFileService>(provider

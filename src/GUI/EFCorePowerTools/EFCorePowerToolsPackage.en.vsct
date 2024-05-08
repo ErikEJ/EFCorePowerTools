@@ -255,7 +255,7 @@
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
-          <ButtonText>EF Core Power Tools - Visualize Database Schema</ButtonText>
+          <ButtonText>EF Core Power Tools - Generate ER Diagram</ButtonText>
         </Strings>
       </Button>
 

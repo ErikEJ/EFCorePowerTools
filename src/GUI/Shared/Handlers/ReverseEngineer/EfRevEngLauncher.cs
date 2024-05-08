@@ -133,16 +133,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await GetTablesInternalAsync(arguments);
         }
 
-        public async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType, List<string> schemaList)
+        public async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, List<string> schemaList, bool erDiagram)
         {
-            var arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
+            var option = erDiagram ? "erdiagram " : "dgml ";
+
+            var arguments = option + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
 
             if (schemaList.Count == 0)
             {
-                arguments = "dgml " + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+                arguments = option + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
             }
 
-            var filePath = await GetDgmlInternalAsync(arguments);
+            var filePath = await GetDiagramInternalAsync(arguments);
 
             return filePath;
         }
@@ -152,13 +154,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await ProcessLauncher.RunProcessAsync(startInfo);
         }
 
-        private async Task<string> GetDgmlInternalAsync(string arguments)
+        private async Task<string> GetDiagramInternalAsync(string arguments)
         {
             var startInfo = await CreateStartInfoAsync(arguments);
 
             var standardOutput = await RunProcessAsync(startInfo);
 
-            return resultDeserializer.BuildDgmlResult(standardOutput);
+            return resultDeserializer.BuildDiagramResult(standardOutput);
         }
 
         private async Task<List<TableModel>> GetTablesInternalAsync(string arguments)
