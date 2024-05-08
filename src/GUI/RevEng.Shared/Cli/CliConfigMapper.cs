@@ -11,7 +11,7 @@ namespace RevEng.Common.Cli
 {
     public static class CliConfigMapper
     {
-        public static ReverseEngineerCommandOptions ToOptions(this CliConfig config, string connectionString, DatabaseType databaseType, string projectPath, bool isDacpac, string configPath)
+        public static ReverseEngineerCommandOptions ToCommandOptions(this CliConfig config, string connectionString, DatabaseType databaseType, string projectPath, bool isDacpac, string configPath)
         {
             if (config is null)
             {
@@ -93,6 +93,93 @@ namespace RevEng.Common.Cli
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
                 UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
                 UseAsyncCalls = true, // not implemented
+                FilterSchemas = false, // not implemented
+                Schemas = null, // not implemented
+            };
+
+            if (config.FileLayout is null)
+            {
+                return options;
+            }
+
+            options.OutputPath = config.FileLayout.OutputPath;
+            options.OutputContextPath = config.FileLayout.OutputDbContextPath;
+            options.UseSchemaFolders = config.FileLayout.UseSchemaFoldersPreview;
+            options.UseSchemaNamespaces = config.FileLayout.UseSchemaNamespacesPreview;
+            options.UseDbContextSplitting = config.FileLayout.SplitDbContextPreview;
+
+            return options;
+        }
+
+        public static ReverseEngineerOptions ToOptions(this CliConfig config, string projectPath, string configPath)
+        {
+            if (config is null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
+            if (string.IsNullOrEmpty(projectPath))
+            {
+                throw new ArgumentNullException(nameof(projectPath));
+            }
+
+            if (string.IsNullOrEmpty(configPath))
+            {
+                throw new ArgumentNullException(nameof(configPath));
+            }
+
+            var selectedToBeGenerated = config.CodeGeneration.Type.ToUpperInvariant() switch
+            {
+                "DBCONTEXT" => 1,
+                "ENTITIES" => 2,
+                _ => 0, // "all"
+            };
+
+            var replacements = config.Replacements ?? new Replacements();
+            var typeMappings = config.TypeMappings ?? new TypeMappings();
+            var names = config.Names ?? new Names();
+
+            var options = new ReverseEngineerOptions
+            {
+                ProjectPath = projectPath,
+                ModelNamespace = names.ModelNamespace,
+                ContextNamespace = names.DbContextNamespace,
+                UseFluentApiOnly = !config.CodeGeneration.UseDataAnnotations,
+                ContextClassName = names.DbContextName,
+                Tables = BuildObjectList(config),
+                UseDatabaseNames = config.CodeGeneration.UseDatabaseNames,
+                UseInflector = config.CodeGeneration.UseInflector,
+                UseT4 = config.CodeGeneration.UseT4,
+                T4TemplatePath = config.CodeGeneration.T4TemplatePath != null ? PathHelper.GetAbsPath(config.CodeGeneration.T4TemplatePath, projectPath) : null,
+                IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
+                SelectedToBeGenerated = selectedToBeGenerated,
+                Dacpac = null,
+                CustomReplacers = GetNamingOptions(configPath),
+                UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
+                UncountableWords = replacements.UncountableWords?.ToList(),
+                UseSpatial = typeMappings.UseSpatial,
+                UseHierarchyId = typeMappings.UseHierarchyId,
+                UseNodaTime = typeMappings.UseNodaTime,
+                UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
+                UseNoNavigations = config.CodeGeneration.UseNoNavigationsPreview,
+                UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
+                PreserveCasingWithRegex = replacements.PreserveCasingWithRegex,
+                UseDateOnlyTimeOnly = typeMappings.UseDateOnlyTimeOnly,
+                UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,
+                ProjectRootNamespace = names.RootNamespace,
+                UseDecimalDataAnnotationForSprocResult = config.CodeGeneration.UseDecimalDataAnnotation,
+                UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
+
+                // Not supported:
+                UseHandleBars = false,
+                SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
+                OptionsPath = null, // handlebars support, will not support it
+
+                // Not implemented:
+                UseNoDefaultConstructor = false, // not implemented, will consider if asked for
+                DefaultDacpacSchema = null, // not implemented, will consider if asked for
+                UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
+                UseAsyncStoredProcedureCalls = true, // not implemented
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
             };

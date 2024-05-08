@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using EFCorePowerTools.Handlers.ReverseEngineer;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Extensions
 {
@@ -10,6 +10,11 @@ namespace EFCorePowerTools.Extensions
         public static ReverseEngineerOptions TryRead(string optionsPath)
         {
             if (!File.Exists(optionsPath))
+            {
+                return null;
+            }
+
+            if (optionsPath.EndsWith(Constants.ConfigFileName, System.StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }

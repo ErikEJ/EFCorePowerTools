@@ -102,6 +102,27 @@ namespace EFCorePowerTools.Extensions
             return result.OrderBy(s => s).ToList();
         }
 
+        public static string GetCliConfigFile(this Project project)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            var projectPath = Path.GetDirectoryName(project.FullPath);
+
+            if (string.IsNullOrEmpty(projectPath))
+            {
+                return null;
+            }
+
+            var path = Path.Combine(projectPath,  RevEng.Common.Constants.ConfigFileName);
+
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            return null;
+        }
+
         public static string GetRenamingPath(this Project project, string optionsPath, bool navigationsFile = false)
         {
             ThreadHelper.ThrowIfNotOnUIThread();

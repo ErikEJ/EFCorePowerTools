@@ -58,7 +58,7 @@ namespace EFCorePowerTools
         private readonly DgmlNugetHandler dgmlNugetHandler;
         private readonly MigrationsHandler migrationsHandler;
         private readonly CompareHandler compareHandler;
-        private readonly ServerDgmlHandler serverDgmlHandler;
+        private readonly DatabaseDiagramHandler databaseDiagramHandler;
         private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
@@ -69,7 +69,7 @@ namespace EFCorePowerTools
             dgmlNugetHandler = new DgmlNugetHandler();
             migrationsHandler = new MigrationsHandler(this);
             compareHandler = new CompareHandler(this);
-            serverDgmlHandler = new ServerDgmlHandler(this);
+            databaseDiagramHandler = new DatabaseDiagramHandler(this);
         }
 
         internal EnvDTE80.DTE2 Dte2 => GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
@@ -632,7 +632,7 @@ namespace EFCorePowerTools
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml)
                 {
-                    await serverDgmlHandler.GenerateAsync();
+                    await databaseDiagramHandler.GenerateAsync();
                 }
             }
             catch (Exception ex)
@@ -746,7 +746,7 @@ namespace EFCorePowerTools
 
                             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
                             {
-                                await serverDgmlHandler.GenerateAsync(connectionName);
+                                await databaseDiagramHandler.GenerateAsync(connectionName, generateErDiagram: true);
                             }
                         }
                     }

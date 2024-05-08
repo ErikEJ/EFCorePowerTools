@@ -13,14 +13,17 @@ namespace RevEng.Core.Mermaid
             this.databaseModel = databaseModel;
         }
 
-        public string CreateMermaid()
+        public string CreateMermaid(bool createMarkdown = true)
         {
             var sb = new System.Text.StringBuilder();
 
-            sb.AppendLine(CultureInfo.InvariantCulture, $"## {databaseModel.DatabaseName}");
-            sb.AppendLine();
+            if (createMarkdown)
+            {
+                sb.AppendLine(CultureInfo.InvariantCulture, $"## {databaseModel.DatabaseName}");
+                sb.AppendLine();
+                sb.AppendLine("```mermaid");
+            }
 
-            sb.AppendLine("```mermaid");
             sb.AppendLine("erDiagram");
 
             foreach (var table in databaseModel.Tables)
@@ -76,7 +79,10 @@ namespace RevEng.Core.Mermaid
                 }
             }
 
-            sb.AppendLine("```");
+            if (createMarkdown)
+            {
+                sb.AppendLine("```");
+            }
 
             return sb.ToString();
         }

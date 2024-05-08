@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
+using RevEng.Core.Mermaid;
 
 namespace RevEng.Core.Dgml
 {
@@ -43,6 +45,20 @@ namespace RevEng.Core.Dgml
             var creator = new DatabaseModelToDgml(model, fileName);
 
             creator.CreateDgml();
+
+            return fileName;
+        }
+
+        public string GetErDiagramFileName()
+        {
+            var model = GetModelInternal();
+
+            var creator = new DatabaseModelToMermaid(model);
+
+            var diagram = creator.CreateMermaid(createMarkdown: false);
+
+            var fileName = Path.Join(Path.GetTempPath(), Path.GetRandomFileName() + ".mmd");
+            File.WriteAllText(fileName, diagram, Encoding.UTF8);
 
             return fileName;
         }

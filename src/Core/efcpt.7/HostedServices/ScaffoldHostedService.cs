@@ -63,7 +63,7 @@ internal sealed class ScaffoldHostedService : HostedService
 
         GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
 
-        var commandOptions = config.ToOptions(
+        var commandOptions = config.ToCommandOptions(
             scaffoldOptions.ConnectionString,
             reverseEngineerCommandOptions.DatabaseType,
             scaffoldOptions.Output ?? Directory.GetCurrentDirectory(),
