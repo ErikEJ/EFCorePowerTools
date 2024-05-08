@@ -111,7 +111,6 @@ namespace RevEng.Core.Routines
             return reader.ReadToEnd();
         }
 
-
         public static string GenerateIdentifierName(Routine routine, RoutineModel model)
         {
             ArgumentNullException.ThrowIfNull(routine);

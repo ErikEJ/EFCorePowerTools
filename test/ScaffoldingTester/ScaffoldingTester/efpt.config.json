@@ -2,7 +2,6 @@
    "CodeGenerationMode": 4,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
-   "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": true,
    "ModelNamespace": null,
@@ -160,8 +159,9 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "dg-pf2wppld\\sqlexpress.Northwind.dbo",
+   "UiHint": null,
    "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": false,
@@ -178,6 +178,7 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
