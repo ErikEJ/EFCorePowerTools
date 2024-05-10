@@ -52,6 +52,7 @@
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\..\GUI\RevEng.Shared\RevEng.Common.csproj" />
+    <ProjectReference Include="..\SqlServer.Rules.Report\SqlServer.Rules.Report.csproj" />
   </ItemGroup>
 
 </Project>
