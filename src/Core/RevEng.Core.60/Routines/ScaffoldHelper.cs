@@ -127,7 +127,7 @@ namespace RevEng.Core.Routines
             return CreateIdentifier(propertyName);
         }
 
-        private static Tuple<string, string> CreateIdentifier(string name)
+        public static Tuple<string, string> CreateIdentifier(string name)
         {
             var original = name;
 

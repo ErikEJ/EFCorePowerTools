@@ -9,15 +9,14 @@ using NetTopologySuite.Geometries;
 using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Routines;
 using RevEng.Core.Routines.Extensions;
 
 namespace RevEng.Core.Routines.Functions
 {
     public class SqlServerFunctionScaffolder : FunctionScaffolder, IFunctionScaffolder
     {
-        public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code)
-            : base(code)
+        public SqlServerFunctionScaffolder([NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
+            : base(code, typeMapper)
         {
             FileNameSuffix = ".Functions";
         }
