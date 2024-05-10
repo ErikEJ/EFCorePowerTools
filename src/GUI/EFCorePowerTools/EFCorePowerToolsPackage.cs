@@ -59,6 +59,7 @@ namespace EFCorePowerTools
         private readonly MigrationsHandler migrationsHandler;
         private readonly CompareHandler compareHandler;
         private readonly DatabaseDiagramHandler databaseDiagramHandler;
+        private readonly DacpacAnalyzerHandler dacpacAnalyzerHandler;
         private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
@@ -70,6 +71,7 @@ namespace EFCorePowerTools
             migrationsHandler = new MigrationsHandler(this);
             compareHandler = new CompareHandler(this);
             databaseDiagramHandler = new DatabaseDiagramHandler(this);
+            dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
         }
 
         internal EnvDTE80.DTE2 Dte2 => GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
@@ -222,7 +224,7 @@ namespace EFCorePowerTools
                     oleMenuCommandService.AddCommand(menuItem12);
 
                     var menuCommandId13 = new CommandID(
-                        GuidList.GuidSqlprojCreate,
+                        GuidList.GuidSqlprojContext,
                         (int)PkgCmdIDList.cmdidSqlprojCreate);
                     var menuItem13 = new OleMenuCommand(
                         OnSqlProjectContextMenuInvokeHandler,
@@ -230,6 +232,16 @@ namespace EFCorePowerTools
                         OnSqlProjectMenuBeforeQueryStatus,
                         menuCommandId13);
                     oleMenuCommandService.AddCommand(menuItem13);
+
+                    var menuCommandId17 = new CommandID(
+                        GuidList.GuidDbContextPackageCmdSet,
+                        (int)PkgCmdIDList.cmdidSqlprojAnalyze);
+                    var menuItem17 = new OleMenuCommand(
+                        OnSqlProjectContextMenuInvokeHandler,
+                        null,
+                        OnSqlProjectMenuBeforeQueryStatus,
+                        menuCommandId17);
+                    oleMenuCommandService.AddCommand(menuItem17);
 
                     var menuCommandId29 = new CommandID(
                         GuidList.GuidServerExplorerMenu,
@@ -425,21 +437,31 @@ namespace EFCorePowerTools
                 return;
             }
 
-            if (!project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojCreate)
             {
-                return;
+                if (!project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+                var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
+                    .Where(p => p.IsCSharpProject())
+                    .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
+
+                if (!candidateProjects.Any())
+                {
+                    return;
+                }
+
+                menuCommand.Visible = true;
             }
 
-            var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
-                .Where(p => p.IsCSharpProject())
-                .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
-
-            if (!candidateProjects.Any())
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze
+                && (project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
+                    || project.IsMsBuildSqlProjProject()))
             {
-                return;
+                menuCommand.Visible = true;
             }
-
-            menuCommand.Visible = true;
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -676,27 +698,35 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
-                    .Where(p => p.IsCSharpProject())
-                    .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
-
-                if (!candidateProjects.Any())
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojCreate)
                 {
-                    return;
+                    var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
+                        .Where(p => p.IsCSharpProject())
+                        .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
+
+                    if (!candidateProjects.Any())
+                    {
+                        return;
+                    }
+
+                    var result = await reverseEngineerHandler.DropSqlprojOptionsAsync(candidateProjects, sqlproject.FullPath);
+
+                    if (result.OptionsPath != null && result.Project != null)
+                    {
+                        await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project, result.OptionsPath, false, true);
+                    }
+                    else if (result.OptionsPath == null && result.Project != null)
+                    {
+                        await VS.MessageBox.ShowAsync(
+                            $"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).",
+                            icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
+                            buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                    }
                 }
 
-                var result = await reverseEngineerHandler.DropSqlprojOptionsAsync(candidateProjects, sqlproject.FullPath);
-
-                if (result.OptionsPath != null && result.Project != null)
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze)
                 {
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(result.Project, result.OptionsPath, false, true);
-                }
-                else if (result.OptionsPath == null && result.Project != null)
-                {
-                    await VS.MessageBox.ShowAsync(
-                        $"Project '{result.Project.Name}' already contains an EF Core Power Tools config file (efpt.config.json).",
-                        icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
-                        buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                    await dacpacAnalyzerHandler.GenerateAsync(sqlproject.FullPath);
                 }
             }
             catch (Exception ex)

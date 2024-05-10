@@ -20,6 +20,7 @@ namespace EFCorePowerTools
 
         // Database project menu
         public const uint cmdidSqlprojCreate = 0x109;
+        public const uint cmdidSqlprojAnalyze = 0x110;
 
         // Server Explorer context menu
         public const uint cmdidServerExplorerReverseEngineer = 257;

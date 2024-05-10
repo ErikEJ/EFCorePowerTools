@@ -149,6 +149,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return filePath;
         }
 
+        public async Task<string> GetReportPathAsync(string dacpacPath)
+        {
+            var arguments = "dacpacreport " + " \"" + dacpacPath.Replace("\"", "\\\"") + "\"";
+
+            var filePath = await GetDiagramInternalAsync(arguments);
+
+            return filePath;
+        }
+
         private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
             return await ProcessLauncher.RunProcessAsync(startInfo);
