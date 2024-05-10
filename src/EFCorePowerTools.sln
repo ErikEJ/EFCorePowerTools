@@ -78,6 +78,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErikEJ.EntityFrameworkCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Core.60", "Core\RevEng.Core.60\RevEng.Core.60.csproj", "{CD04F13C-C52C-4D7E-92BF-E0462D83EF9F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlServer.Rules.Report", "Core\SqlServer.Rules.Report\SqlServer.Rules.Report.csproj", "{DD43220F-DDB6-493B-8578-45C06A1B819B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,10 @@ Global
 		{CD04F13C-C52C-4D7E-92BF-E0462D83EF9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD04F13C-C52C-4D7E-92BF-E0462D83EF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD04F13C-C52C-4D7E-92BF-E0462D83EF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD43220F-DDB6-493B-8578-45C06A1B819B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD43220F-DDB6-493B-8578-45C06A1B819B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD43220F-DDB6-493B-8578-45C06A1B819B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD43220F-DDB6-493B-8578-45C06A1B819B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -199,6 +205,7 @@ Global
 		{4130DB41-57DA-45B4-81C3-F56558165B32} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{F0CC7C3F-4462-444F-8834-D6BF3FA1473D} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 		{CD04F13C-C52C-4D7E-92BF-E0462D83EF9F} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
+		{DD43220F-DDB6-493B-8578-45C06A1B819B} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}

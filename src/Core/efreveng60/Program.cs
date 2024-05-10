@@ -92,6 +92,22 @@ namespace EfReveng
                         return 0;
                     }
 
+#if NET8_0_OR_GREATER
+                    if (args.Length == 2
+                        && args[0] == "dacpacreport"
+                        && new FileInfo(args[1]).Exists)
+                    {
+                        var builder = new DacpacReportBuilder(new FileInfo(args[1]));
+
+                        var buildResult = builder.BuildReport();
+
+                        await Console.Out.WriteLineAsync("Result:");
+                        await Console.Out.WriteLineAsync(buildResult);
+
+                        return 0;
+                    }
+#endif
+
                     if (!File.Exists(args[0]))
                     {
                         await Console.Out.WriteLineAsync("Error:");
