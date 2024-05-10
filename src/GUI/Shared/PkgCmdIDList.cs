@@ -16,6 +16,7 @@ namespace EFCorePowerTools
         public const uint cmdidDbCompare = 0x008;
         public const uint cmdidDbDgml = 0x009;
         public const uint cmdidOptions = 0x010;
+        public const uint cmdidDbErDiagram = 0x011;
 
         // Database project menu
         public const uint cmdidSqlprojCreate = 0x109;

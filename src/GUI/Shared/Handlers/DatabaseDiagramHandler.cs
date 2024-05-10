@@ -50,18 +50,9 @@ namespace EFCorePowerTools.Handlers
                     connectionString = DataProtection.DecryptString(info.DatabaseModel.DataConnection.EncryptedConnectionString);
                 }
 
-                string diagramPath = null;
+                var diagramPath = await GetDiagramAsync(connectionString, info.DatabaseModel.DatabaseType, info.Schemas, generateErDiagram);
 
-                if (generateErDiagram)
-                {
-                    diagramPath = await GetErDiagramAsync(connectionString, info.DatabaseModel.DatabaseType, info.Schemas);
-                }
-                else
-                {
-                    diagramPath = await GetDgmlAsync(connectionString, info.DatabaseModel.DatabaseType, info.Schemas);
-                }
-
-                await ShowDgmlAsync(diagramPath);
+                await ShowDiagramAsync(diagramPath);
 
                 Telemetry.TrackEvent("PowerTools.GenerateServerDgml");
             }
@@ -136,19 +127,13 @@ namespace EFCorePowerTools.Handlers
             return (pickDataSourceResult.Payload.Connection, pickDataSourceResult.Payload.Schemas);
         }
 
-        private async Task<string> GetDgmlAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
+        private async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas, bool erDiagram)
         {
             var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore6);
-            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas), erDiagram: false);
+            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas), erDiagram);
         }
 
-        private async Task<string> GetErDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
-        {
-            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore6);
-            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas), erDiagram: true);
-        }
-
-        private async Task ShowDgmlAsync(string path)
+        private async Task ShowDiagramAsync(string path)
         {
             if (File.Exists(path))
             {

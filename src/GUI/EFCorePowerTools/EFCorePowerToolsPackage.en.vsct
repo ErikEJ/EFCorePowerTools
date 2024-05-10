@@ -207,6 +207,17 @@
         </Strings>
       </Button>
 
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidDbErDiagram" priority="0x0900" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidDbErDiagram</CommandName>
+          <ButtonText>Generate ER Diagram</ButtonText>
+        </Strings>
+      </Button>
+
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
@@ -328,6 +339,7 @@
       <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
       <IDSymbol name="cmdidDbCompare" value="0x0008" />
       <IDSymbol name="cmdidDbDgml" value="0x0009" />
+      <IDSymbol name="cmdidDbErDiagram" value="0x0011" />
     </GuidSymbol>
 
     <!-- This is the guid used to group the menu ReverseEngineer commands together -->
