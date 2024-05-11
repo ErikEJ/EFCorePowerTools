@@ -4,16 +4,17 @@ using System.Xml.Serialization;
 
 namespace SqlServer.Rules.Report
 {
+#pragma warning disable CA1724 // Type names should not match namespaces
     [Serializable]
-    public class ReportInfo
+    public class Report
     {
-        public ReportInfo()
+        public Report()
         {
         }
 
-        public ReportInfo(string solutionName, List<IssueType> issueTypes, string projectName, List<Issue> problems)
+        public Report(string solutionName, List<IssueType> issueTypes, string projectName, List<Issue> problems)
         {
-            ToolsVersion = typeof(ReportInfo).Assembly.GetName().Version.ToString();
+            ToolsVersion = typeof(Report).Assembly.GetName().Version.ToString();
             Information = new Information() { Solution = $"{solutionName}.sln" };
             IssueTypes = issueTypes;
             Issues = new List<RulesProject> { new Rules.Report.RulesProject() { Name = projectName, Issues = problems } };
@@ -26,4 +27,5 @@ namespace SqlServer.Rules.Report
         public List<IssueType> IssueTypes { get; set; }
         public List<RulesProject> Issues { get; set; }
     }
+#pragma warning restore CA1724 // Type names should not match namespaces
 }

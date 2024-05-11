@@ -218,7 +218,7 @@
         </Strings>
       </Button>
       
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidDacpacReport" priority="0x0950" type="Button">
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidDacpacReport" priority="0x0700" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -226,6 +226,7 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Analyze this! (preview)</ButtonText>
+          <ToolTipText>Run T-SQL static code analysis with an extensive set of rules</ToolTipText>
         </Strings>
       </Button>
 

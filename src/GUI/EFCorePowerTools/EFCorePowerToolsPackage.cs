@@ -382,10 +382,10 @@ namespace EFCorePowerTools
 
             menuCommand.Visible = false;
 
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions)
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
             {
                 menuCommand.Visible = true;
                 return;

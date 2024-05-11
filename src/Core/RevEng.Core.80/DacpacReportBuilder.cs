@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Data;
 using System.IO;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
-using Microsoft.EntityFrameworkCore.Storage;
 using SqlServer.Rules.Report;
 
 namespace RevEng.Core
@@ -22,10 +18,10 @@ namespace RevEng.Core
         {
             var request = new ReportRequest
             {
-                Solution = dacpac.FullName,
+                Solution = dacpac.Name,
                 InputPath = dacpac.FullName,
-
-                //// Suppress = p => Regex.IsMatch(p.Problem.RuleId, @"Microsoft\.Rules.*(SR0001|SR0016|SR0005|SR0007)", RegexOptions.IgnoreCase),
+                OutputDirectory = Path.GetDirectoryName(dacpac.FullName),
+                ////Suppress = p => Regex.IsMatch(p.Problem.RuleId, @"Microsoft\.Rules.*(SR0001|SR0016|SR0005|SR0007)", RegexOptions.IgnoreCase),
             };
 
             var factory = new ReportFactory();
@@ -36,7 +32,7 @@ namespace RevEng.Core
 
             var fileName = dacpac.Name.Replace(".dacpac", ".html", StringComparison.OrdinalIgnoreCase);
 
-            return Path.Join(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
+            return Path.Join(Path.GetDirectoryName(dacpac.FullName), fileName);
         }
 
         private static void Factory_Notify(string notificationMessage, NotificationType type)

@@ -81,7 +81,7 @@ namespace SqlServer.Rules.Report
             sw.Stop();
             SendNotification($"Running rules complete, elapsed: {sw.Elapsed:hh\\:mm\\:ss}");
 
-            var report = new ReportInfo(
+            var report = new Report(
                 request.Solution,
                 GetIssueTypes(service.GetRules(), request.SuppressIssueTypes).ToList(),
                 request.FileName,
@@ -183,9 +183,9 @@ namespace SqlServer.Rules.Report
                    };
         }
 
-        private static void SerializeReport(ReportInfo report, string outputPath)
+        private static void SerializeReport(Report report, string outputPath)
         {
-            var serializer = new XmlSerializer(typeof(ReportInfo));
+            var serializer = new XmlSerializer(typeof(Report));
             var ns = new XmlSerializerNamespaces(new XmlQualifiedName[] { new XmlQualifiedName(string.Empty, string.Empty) });
             var xmlSettings = new XmlWriterSettings
             {

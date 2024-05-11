@@ -41,7 +41,7 @@ namespace EFCorePowerTools.Handlers
 
         private async Task<string> GetDacpacReportAsync(string dacpacPath)
         {
-            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore6);
+            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
             return await launcher.GetReportPathAsync(dacpacPath);
         }
 
