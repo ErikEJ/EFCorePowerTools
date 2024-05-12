@@ -49,7 +49,7 @@
     <html>
       <head>
         <title>
-          DB Project: <xsl:value-of select="/Report/Issues/Project[1]/@Name"/>
+          Project: <xsl:value-of select="/Report/Issues/Project[1]/@Name"/>
         </title>
         <style type="text/css">
           body {
@@ -283,13 +283,15 @@
         </style>
       </head>
       <body>
-        <h1>SQL Server Rules</h1>
+        <h1>EF Core Power Tools T-SQL Analysis</h1>
         <h3>
           Report Date: <xsl:call-template name="formatdate">
             <xsl:with-param name="DateTimeStr" select="/Report/Information/ReportDate"/>
           </xsl:call-template>
         </h3>
-
+        <h3>
+            <a href="https://erikej.github.io/dacfx/codeanalysis/sqlserver/2024/04/02/dacfx-codeanalysis.html">HOW TO: Add code analysis to your build</a>
+        </h3>
         <table class="table-fill">
           <caption>
             Database Project: <xsl:value-of select="/Report/Issues/Project[1]/@Name"/>

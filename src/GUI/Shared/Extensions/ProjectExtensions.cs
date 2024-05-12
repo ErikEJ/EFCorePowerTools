@@ -54,6 +54,7 @@ namespace EFCorePowerTools.Extensions
 
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
+            var assemblyNameDacpac = assemblyName + ".dacpac";
 
             var outputPath = await GetOutputPathAsync(project);
 
@@ -70,6 +71,11 @@ namespace EFCorePowerTools.Extensions
             if (File.Exists(Path.Combine(outputPath, assemblyNameDll)))
             {
                 return Path.Combine(outputPath, assemblyNameDll);
+            }
+
+            if (File.Exists(Path.Combine(outputPath, assemblyNameDacpac)))
+            {
+                return Path.Combine(outputPath, assemblyNameDacpac);
             }
 
             return null;
@@ -231,6 +237,17 @@ namespace EFCorePowerTools.Extensions
             }
 
             return project.IsCapabilityMatch("CSharp & CPS");
+        }
+
+        public static bool IsSqlDatabaseProject(this Project project)
+        {
+            if (project == null)
+            {
+                return false;
+            }
+
+            return project.IsMsBuildSqlProjProject()
+                || project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
         }
 
         public static bool IsMsBuildSqlProjProject(this Project project)

@@ -89,6 +89,20 @@ namespace EFCorePowerTools.Handlers
                 }
             }
 
+            if (!string.IsNullOrEmpty(connectionName) && dacpacList != null && dacpacList.Any())
+            {
+                var path = Array.Find(dacpacList, m => m == connectionName);
+
+                if (path != null)
+                {
+                    return (new DatabaseConnectionModel
+                    {
+                         FilePath = path,
+                         DatabaseType = DatabaseType.SQLServerDacpac,
+                    }, new SchemaInfo[] { });
+                }
+            }
+
             var psd = package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
