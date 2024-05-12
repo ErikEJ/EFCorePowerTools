@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using Microsoft.VisualStudio.Shell;
@@ -25,9 +26,15 @@ namespace EFCorePowerTools.Handlers
 
             try
             {
+                await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 1, 3);
+
                 var dacpacPath = await SqlProjHelper.BuildSqlProjAsync(projectPath);
 
+                await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 2, 3);
+
                 var reportPath = await GetDacpacReportAsync(dacpacPath);
+
+                await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 3, 3);
 
                 ShowReport(reportPath);
 
@@ -36,6 +43,10 @@ namespace EFCorePowerTools.Handlers
             catch (Exception exception)
             {
                 package.LogError(new List<string>(), exception);
+            }
+            finally
+            {
+                await VS.StatusBar.ClearAsync();
             }
         }
 

@@ -116,8 +116,6 @@ namespace EFCorePowerTools.Helpers
                 searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
             }
 
-            var files = new List<string>();
-
             if (!await VS.Build.ProjectIsUpToDateAsync(project))
             {
                 var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Rebuild);
@@ -126,17 +124,17 @@ namespace EFCorePowerTools.Helpers
                 {
                     throw new InvalidOperationException("Dacpac build failed");
                 }
-
-                if (!Directory.Exists(searchPath))
-                {
-                    return null;
-                }
-
-                files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories)
-                    .Where(f => !f.EndsWith("\\msdb.dacpac", StringComparison.OrdinalIgnoreCase)
-                        && !f.EndsWith("\\master.dacpac", StringComparison.OrdinalIgnoreCase))
-                    .ToList();
             }
+
+            if (!Directory.Exists(searchPath))
+            {
+                return null;
+            }
+
+            var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories)
+                .Where(f => !f.EndsWith("\\msdb.dacpac", StringComparison.OrdinalIgnoreCase)
+                    && !f.EndsWith("\\master.dacpac", StringComparison.OrdinalIgnoreCase))
+                .ToList();
 
             if (files.Count == 1)
             {

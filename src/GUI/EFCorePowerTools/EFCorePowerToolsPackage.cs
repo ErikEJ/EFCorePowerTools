@@ -457,8 +457,7 @@ namespace EFCorePowerTools
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze
-                && (project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
-                    || project.IsMsBuildSqlProjProject()))
+                && project.IsSqlDatabaseProject())
             {
                 menuCommand.Visible = true;
             }
@@ -663,13 +662,23 @@ namespace EFCorePowerTools
                 {
                     await compareHandler.HandleComparisonAsync(path, project);
                 }
-                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml)
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
+                    || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
                 {
-                    await databaseDiagramHandler.GenerateAsync();
-                }
-                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
-                {
-                    await databaseDiagramHandler.GenerateAsync(connectionName: null, generateErDiagram: true);
+                    string connectionName = null;
+                    if (project.IsSqlDatabaseProject())
+                    {
+                        connectionName = project.FullPath;
+
+                        if (project.IsMsBuildSqlProjProject())
+                        {
+                            connectionName = await project.GetOutPutAssemblyPathAsync();
+                        }
+                    }
+
+                    await databaseDiagramHandler.GenerateAsync(
+                        connectionName,
+                        generateErDiagram: menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram);
                 }
             }
             catch (Exception ex)
