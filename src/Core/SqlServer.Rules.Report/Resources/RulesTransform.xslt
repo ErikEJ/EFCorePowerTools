@@ -290,7 +290,7 @@
           </xsl:call-template>
         </h3>
         <h3>
-            <a href="https://erikej.github.io/dacfx/codeanalysis/sqlserver/2024/04/02/dacfx-codeanalysis.html">HOW TO: Add code analysis to your build</a>
+            <a href="https://erikej.github.io/dacfx/codeanalysis/sqlserver/2024/04/02/dacfx-codeanalysis.html">HOW TO: Add code analysis to your database project</a>
         </h3>
         <table class="table-fill">
           <caption>
