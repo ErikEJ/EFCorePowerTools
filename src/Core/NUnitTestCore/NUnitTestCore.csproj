@@ -13,6 +13,7 @@
     <None Remove="ChinookContext.txt" />
     <None Remove="Dacpac\Issue1262.dacpac" />
     <None Remove="Dacpac\Temporal.dacpac" />
+    <None Remove="Dacpac\TvpParams.dacpac" />
     <None Remove="Identity.txt" />
     <None Remove="Issue208.dacpac" />
     <None Remove="Issue210.dacpac" />
@@ -35,6 +36,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Temporal.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\TvpParams.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dgml\Aw2014Person.txt">

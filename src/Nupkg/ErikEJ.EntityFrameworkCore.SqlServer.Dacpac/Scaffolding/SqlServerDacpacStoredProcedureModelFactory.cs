@@ -102,6 +102,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         {
             var result = new List<ModuleParameter>();
 
+            string typeName = null;
+
             foreach (var parameter in proc.Parameters)
             {
                 var storeType = parameter.DataType.First().Name.Parts[0];
@@ -117,12 +119,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     storeType = dtReference.Type.First().Name.Parts[0];
                 }
 
-                var udtReference = parameter.DataType.First() as TSqlUserDefinedTypeReference;
-
-#pragma warning disable S2219 // Runtime type checking should be simplified
-                if (udtReference != null)
+                if (parameter.DataType.First() is TSqlUserDefinedTypeReference udtReference)
                 {
                     storeType = udtReference.Name.Parts[1];
+                }
+
+                if (parameter.DataType.First() is TSqlTableTypeReference tableReference)
+                {
+                    // parameter is a table type (TVP)
+                    storeType = "structured";
+                    typeName = tableReference.Name.ToString();
                 }
 
 #pragma warning restore S2219 // Runtime type checking should be simplified
@@ -136,6 +142,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Scale = parameter.Scale,
                     StoreType = storeType,
                     Nullable = true,
+                    TypeName = typeName,
                 };
 
                 result.Add(newParameter);

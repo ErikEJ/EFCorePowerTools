@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using RevEng.Core.Abstractions;
 
 namespace UnitTests
 {
@@ -204,7 +205,7 @@ namespace UnitTests
         }
 
         [Test]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "Test")]
         public void Temporal_Support()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory(null);
@@ -216,6 +217,23 @@ namespace UnitTests
             // Assert
             ClassicAssert.AreEqual(1, dbModel.Tables.Count());
             ClassicAssert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal));
+        }
+
+        [Test]
+        public void Issue_2322_Tvp_Sproc_Parameters()
+        {
+            var factory = new SqlServerDacpacStoredProcedureModelFactory(
+                new SqlServerDacpacDatabaseModelFactoryOptions{ MergeDacpacs = false });
+            var options = new ModuleModelFactoryOptions { FullModel = true, Modules = new List<string>() };
+
+            // Act
+            var dbModel = factory.Create(TestPath("TvpParams.dacpac"), options);
+
+            // Assert
+            ClassicAssert.AreEqual(1, dbModel.Routines.Count);
+            ClassicAssert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
+            ClassicAssert.AreEqual("[Constant].[NumberIDList]", dbModel.Routines[0].Parameters[0].TypeName);
+            ClassicAssert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
         }
 
         private string TestPath(string file)
