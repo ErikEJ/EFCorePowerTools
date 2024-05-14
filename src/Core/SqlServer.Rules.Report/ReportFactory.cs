@@ -131,9 +131,6 @@ namespace SqlServer.Rules.Report
 
             // not sure where this " is coming from, but it throws an exception trying to use the path
             outDir = outDir.Replace("\"", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"OUT DIRECTORY: ' {outDir} '");
-            Console.ResetColor();
 
             if (!Path.IsPathRooted(outDir))
             {

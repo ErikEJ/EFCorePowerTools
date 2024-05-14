@@ -29,6 +29,12 @@ namespace EFCorePowerTools.Helpers
             new Guid(Resources.FirebirdProvider),
         };
 
+        public static readonly HashSet<Guid> SqlServerProviders = new HashSet<Guid>()
+        {
+            new Guid(Resources.SqlServerDotNetProvider),
+            new Guid(Resources.MicrosoftSqlServerDotNetProvider),
+        };
+
         public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
             if (dbType == DatabaseType.SQLServer && (connectionString.IndexOf(";Authentication=", StringComparison.OrdinalIgnoreCase) < 0))

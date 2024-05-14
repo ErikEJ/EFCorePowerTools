@@ -149,9 +149,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return filePath;
         }
 
-        public async Task<string> GetReportPathAsync(string dacpacPath)
+        public async Task<string> GetReportPathAsync(string path, bool isConnectionString)
         {
-            var arguments = "dacpacreport " + " \"" + dacpacPath.Replace("\"", "\\\"") + "\"";
+            var option = isConnectionString ? "dacpacreportextract " : "dacpacreport ";
+
+            var arguments = option + " \"" + path.Replace("\"", "\\\"") + "\"";
 
             var filePath = await GetDiagramInternalAsync(arguments);
 
