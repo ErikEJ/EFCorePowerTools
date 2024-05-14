@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
@@ -98,6 +99,23 @@ namespace EfReveng
                         && new FileInfo(args[1]).Exists)
                     {
                         var builder = new DacpacReportBuilder(new FileInfo(args[1]));
+
+                        var buildResult = builder.BuildReport();
+
+                        await Console.Out.WriteLineAsync("Result:");
+                        await Console.Out.WriteLineAsync(buildResult);
+
+                        return 0;
+                    }
+
+                    if (args.Length == 2
+                        && args[0] == "dacpacreportextract")
+                    {
+                        var extractor = new DacpacExtractor(new SqlConnectionStringBuilder(args[1]));
+
+                        var dacpacPath = extractor.ExtractDacpac();
+
+                        var builder = new DacpacReportBuilder(dacpacPath);
 
                         var buildResult = builder.BuildReport();
 

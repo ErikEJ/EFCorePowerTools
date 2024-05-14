@@ -263,6 +263,16 @@ namespace EFCorePowerTools
                         menuCommandId30);
                     oleMenuCommandService.AddCommand(menuItem30);
 
+                    var menuCommandId31 = new CommandID(
+                        GuidList.GuidServerExplorerMenu,
+                        (int)PkgCmdIDList.cmdidServerExplorerAnalyze);
+                    var menuItem31 = new OleMenuCommand(
+                        OnServerExplorerDatabaseMenuInvokeHandler,
+                        null,
+                        OnServerExplorerDatabaseBeforeQueryStatus,
+                        menuCommandId31);
+                    oleMenuCommandService.AddCommand(menuItem31);
+
                     var menuCommandId14 = new CommandID(
                         GuidList.GuidDbContextPackageCmdSet,
                         (int)PkgCmdIDList.cmdidDbDgml);
@@ -516,11 +526,18 @@ namespace EFCorePowerTools
                             }
 
                             menuCommand.Visible = await project.CanUseReverseEngineerAsync();
+                            return;
                         }
 
                         if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
                         {
                             menuCommand.Visible = true;
+                            return;
+                        }
+
+                        if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerAnalyze)
+                        {
+                            menuCommand.Visible = VsDataHelper.SqlServerProviders.Contains(connection.Provider);
                         }
                     }
                 }
@@ -735,7 +752,7 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze)
                 {
-                    await dacpacAnalyzerHandler.GenerateAsync(sqlproject.FullPath);
+                    await dacpacAnalyzerHandler.GenerateAsync(sqlproject.FullPath, isConnectionString: false);
                 }
             }
             catch (Exception ex)
@@ -801,6 +818,12 @@ namespace EFCorePowerTools
                             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
                             {
                                 await databaseDiagramHandler.GenerateAsync(connectionName, generateErDiagram: true);
+                            }
+
+                            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerAnalyze)
+                            {
+                                await dacpacAnalyzerHandler.GenerateAsync(DataProtection.DecryptString(connection.EncryptedConnectionString), isConnectionString: true);
+                                return;
                             }
                         }
                     }

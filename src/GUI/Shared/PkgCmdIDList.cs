@@ -25,6 +25,7 @@ namespace EFCorePowerTools
         // Server Explorer context menu
         public const uint cmdidServerExplorerReverseEngineer = 257;
         public const uint cmdidServerExplorerDiagram = 258;
+        public const uint cmdidServerExplorerAnalyze = 260;
 
         // Context menu item
         public const uint cmdidReverseEngineerEdit = 0x1101;

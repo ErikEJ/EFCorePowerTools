@@ -20,19 +20,27 @@ namespace EFCorePowerTools.Handlers
             this.package = package;
         }
 
-        public async Task GenerateAsync(string projectPath)
+        public async Task GenerateAsync(string path, bool isConnectionString)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             try
             {
                 await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 1, 3);
 
-                var dacpacPath = await SqlProjHelper.BuildSqlProjAsync(projectPath);
+                string dacpacPath;
+                if (isConnectionString)
+                {
+                    var builder = new SqlConnectionStringBuilderHelper().GetBuilder(path);
+                    dacpacPath = builder.ConnectionString;
+                }
+                else
+                {
+                    dacpacPath = await SqlProjHelper.BuildSqlProjAsync(path);
+                }
 
                 await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 2, 3);
 
-                var reportPath = await GetDacpacReportAsync(dacpacPath);
+                var reportPath = await GetDacpacReportAsync(dacpacPath, isConnectionString);
 
                 await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 3, 3);
 
@@ -50,10 +58,10 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private async Task<string> GetDacpacReportAsync(string dacpacPath)
+        private async Task<string> GetDacpacReportAsync(string path, bool isConnectionString)
         {
             var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
-            return await launcher.GetReportPathAsync(dacpacPath);
+            return await launcher.GetReportPathAsync(path, isConnectionString);
         }
 
         private void ShowReport(string path)

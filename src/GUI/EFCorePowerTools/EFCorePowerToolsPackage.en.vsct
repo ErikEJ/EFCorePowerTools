@@ -263,8 +263,6 @@
           <ButtonText>Create EF Core DbContext...</ButtonText>
         </Strings>
       </Button>
-      
-      
 
       <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdDatabase" priority="0x0100" type="Button">
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
@@ -275,7 +273,7 @@
         </Strings>
       </Button>
 
-      <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdDiagram" priority="0x0100" type="Button">
+      <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdDiagram" priority="0x0101" type="Button">
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -283,6 +281,15 @@
           <ButtonText>EF Core Power Tools - Generate ER Diagram</ButtonText>
         </Strings>
       </Button>
+      
+      <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdAnalyze" priority="0x0102" type="Button">
+        <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>EF Core Power Tools - Analyze Database (experimental)</ButtonText>
+        </Strings>
+      </Button>    
 
     </Buttons>
 
@@ -320,6 +327,7 @@
       <IDSymbol value="257" name="cmdidCmdDatabase" />
       <IDSymbol value="258" name="cmdidCmdDiagram" />
       <IDSymbol value="259" name="DatabaseMenuGroup" />
+      <IDSymbol value="260" name="cmdidCmdAnalyze" />
     </GuidSymbol>
     
     <GuidSymbol name="guidServerExplorerObjectNode" value="{74D21310-2AEE-11D1-8BFB-00A0C90F26F7}">
