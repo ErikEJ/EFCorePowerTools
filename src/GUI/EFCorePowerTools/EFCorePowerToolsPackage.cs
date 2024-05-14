@@ -485,6 +485,7 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = false;
+            menuCommand.Enabled = false;
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -525,19 +526,19 @@ namespace EFCorePowerTools
                                 return;
                             }
 
-                            menuCommand.Visible = await project.CanUseReverseEngineerAsync();
+                            menuCommand.Visible = menuCommand.Enabled = await project.CanUseReverseEngineerAsync();
                             return;
                         }
 
                         if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
                         {
-                            menuCommand.Visible = true;
+                            menuCommand.Visible = menuCommand.Enabled = true;
                             return;
                         }
 
                         if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerAnalyze)
                         {
-                            menuCommand.Visible = VsDataHelper.SqlServerProviders.Contains(connection.Provider);
+                            menuCommand.Visible = menuCommand.Enabled = VsDataHelper.SqlServerProviders.Contains(connection.Provider);
                         }
                     }
                 }

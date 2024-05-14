@@ -284,7 +284,7 @@
       
       <Button guid="guidCRUDSPCommandsPackageCmdSet1" id="cmdidCmdAnalyze" priority="0x0102" type="Button">
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
+        <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - Analyze Database (experimental)</ButtonText>
