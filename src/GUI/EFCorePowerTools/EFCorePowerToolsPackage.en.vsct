@@ -281,7 +281,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>EF Core Power Tools - Generate ER Diagram</ButtonText>
+          <ButtonText>EF Core Power Tools - ER Diagram</ButtonText>
         </Strings>
       </Button>
       
@@ -292,7 +292,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>        
         <Strings>
-          <ButtonText>EF Core Power Tools - Analyze Database (experimental)</ButtonText>
+          <ButtonText>EF Core Power Tools - Analyze (experimental)</ButtonText>
         </Strings>
       </Button>    
 
