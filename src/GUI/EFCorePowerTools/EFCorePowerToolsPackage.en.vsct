@@ -226,7 +226,6 @@
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Analyze this! (preview)</ButtonText>
-          <ToolTipText>Run T-SQL static code analysis with an extensive set of rules</ToolTipText>
         </Strings>
       </Button>
 
@@ -268,6 +267,8 @@
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
         </Strings>
@@ -277,6 +278,8 @@
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - Generate ER Diagram</ButtonText>
         </Strings>
@@ -286,6 +289,8 @@
         <Parent guid="guidCRUDSPCommandsPackageCmdSet1" id="DatabaseMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>        
         <Strings>
           <ButtonText>EF Core Power Tools - Analyze Database (experimental)</ButtonText>
         </Strings>
