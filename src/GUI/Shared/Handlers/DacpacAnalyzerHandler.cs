@@ -7,6 +7,7 @@ using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers
@@ -44,7 +45,10 @@ namespace EFCorePowerTools.Handlers
 
                 await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 3, 3);
 
-                ShowReport(reportPath);
+                if (File.Exists(reportPath))
+                {
+                    await OpenVsWebBrowserAsync(reportPath);
+                }
 
                 Telemetry.TrackEvent("PowerTools.GenerateDacpacReport");
             }
@@ -64,12 +68,25 @@ namespace EFCorePowerTools.Handlers
             return await launcher.GetReportPathAsync(path, isConnectionString);
         }
 
-        private void ShowReport(string path)
+        private void OpenWebBrowser(string path)
         {
-            if (File.Exists(path))
+            Process.Start(path);
+        }
+
+        private async Task OpenVsWebBrowserAsync(string path)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var service = await VS.GetServiceAsync<SVsWebBrowsingService, IVsWebBrowsingService>();
+
+            if (service == null)
             {
-                Process.Start(path);
+                OpenWebBrowser(path);
+                return;
             }
+
+            service.Navigate(path, (uint)__VSWBNAVIGATEFLAGS.VSNWB_ForceNew, out var frame);
+            frame.Show();
         }
     }
 }
