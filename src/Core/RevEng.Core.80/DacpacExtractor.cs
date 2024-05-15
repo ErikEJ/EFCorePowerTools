@@ -17,7 +17,7 @@ namespace RevEng.Core
 
         public FileInfo ExtractDacpac()
         {
-            var extractedPackagePath = Path.Join(Path.GetTempPath(), Path.GetRandomFileName() + ".dacpac");
+            var extractedPackagePath = Path.Join(Path.GetTempPath(), connectionStringBuilder.InitialCatalog + ".dacpac");
 
             var services = new DacServices(connectionStringBuilder.ConnectionString);
 
