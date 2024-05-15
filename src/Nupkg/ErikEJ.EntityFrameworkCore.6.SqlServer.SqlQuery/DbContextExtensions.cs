@@ -113,7 +113,9 @@ namespace Microsoft.EntityFrameworkCore
 #pragma warning restore CA1812
 #pragma warning restore CA1852
         {
+#pragma warning disable S1144 // Unused private types or members should be removed
             public T Value { get; private set; }
+#pragma warning restore S1144 // Unused private types or members should be removed
         }
 
         private sealed class ContextForQueryType<T> : DbContext

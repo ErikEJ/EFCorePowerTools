@@ -88,14 +88,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.18";
+                var pkgVersion = "7.0.19";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.29";
+                        pkgVersion = "6.0.30";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.4";
+                        pkgVersion = "8.0.5 ";
                         break;
                 }
 
@@ -350,14 +350,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Oracle)
             {
-                var pkgVersion = "7.21.12";
+                var pkgVersion = "7.21.13";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.21.120";
+                        pkgVersion = "6.21.140";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.21.121";
+                        pkgVersion = "8.23.40";
                         break;
                 }
 
