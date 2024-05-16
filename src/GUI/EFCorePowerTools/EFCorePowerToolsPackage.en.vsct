@@ -214,18 +214,18 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidDbErDiagram</CommandName>
-          <ButtonText>Generate ER Diagram</ButtonText>
+          <ButtonText>ER Diagram</ButtonText>
         </Strings>
       </Button>
       
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDacpacReport" priority="0x0700" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
-        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Analyze this! (preview)</ButtonText>
+          <ButtonText>Analyze (preview)</ButtonText>
         </Strings>
       </Button>
 
