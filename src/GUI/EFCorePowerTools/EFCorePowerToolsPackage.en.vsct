@@ -129,7 +129,7 @@
           <ButtonText>Options</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0250" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="Template" />
@@ -356,7 +356,7 @@
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0700" />
       <IDSymbol name="cmdidEdmAboutMenuItemsGroup" value="0x0800" />
       <IDSymbol name="cmdidEdmViewMenuItemsGroup" value="0x0900" />
-      
+
       <!-- Project Menu Entries -->
       <IDSymbol name="cmdidReverseEngineerCodeFirst" value="0x0001" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
