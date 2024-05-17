@@ -294,7 +294,7 @@
         <Strings>
           <ButtonText>EF Core Power Tools - Analyze (experimental)</ButtonText>
         </Strings>
-      </Button>    
+      </Button>
 
     </Buttons>
 
@@ -318,10 +318,7 @@
     <CommandPlacement guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command1Id" priority="0x100" >
       <Parent guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands"/>
     </CommandPlacement>
-  
-    <!--<CommandPlacement guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command2Id" priority="0x101" >
-      <Parent guid="guidVSPackageCommandProjectContextMenuCmdSet" id="MyGroupForCommands"/>
-    </CommandPlacement>-->
+
   </CommandPlacements>
 
   <Symbols>
