@@ -331,7 +331,7 @@
       <IDSymbol value="259" name="DatabaseMenuGroup" />
       <IDSymbol value="260" name="cmdidCmdAnalyze" />
     </GuidSymbol>
-    
+
     <GuidSymbol name="guidServerExplorerObjectNode" value="{74D21310-2AEE-11D1-8BFB-00A0C90F26F7}">
       <!--server explorer - database -->
       <IDSymbol name="IDMX_DV_SERVER_NODE" value="0x503" />
