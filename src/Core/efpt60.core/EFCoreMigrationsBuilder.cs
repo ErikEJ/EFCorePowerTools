@@ -94,6 +94,11 @@ namespace Modelling
 
             var databaseExists = relationalDatabaseCreator.Exists();
 
+            if (!databaseExists)
+            {
+                relationalDatabaseCreator.Create();
+            }
+
             var migrationsAssembly = context.GetService<IMigrationsAssembly>();
 
             var hasDifferences = false;
@@ -116,7 +121,7 @@ namespace Modelling
                 }
             }
 
-            if (!databaseExists || hasDifferences)
+            if (hasDifferences)
             {
                 return "Changes";
             }
