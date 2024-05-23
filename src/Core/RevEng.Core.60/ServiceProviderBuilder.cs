@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -20,7 +21,6 @@ using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 #if !CORE80
-using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design;
 #endif
 
@@ -129,12 +129,12 @@ namespace RevEng.Core
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-#if !CORE80
+
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-#endif
+
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
