@@ -21,10 +21,6 @@
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
 
-      <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmMigrationMenuItemsGroup" priority="0x0150">
-        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
-      </Group>
-
       <Group guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" priority="0x0200">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" />
       </Group>
@@ -94,17 +90,6 @@
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
           <ButtonText>Inżynieria wsteczna</ButtonText>
-        </Strings>
-      </Button>
-
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidMigrationStatus" priority="0x0100" type="Button">
-        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMigrationMenuItemsGroup" />
-        <Icon guid="ImageCatalogGuid" id="GenerateChangeScript" />
-        <CommandFlag>IconIsMoniker</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <CommandName>cmdidMigrationStatus</CommandName>
-          <ButtonText>Narzędzie do migracji (wersja zapoznawcza)</ButtonText>
         </Strings>
       </Button>
 
@@ -350,7 +335,6 @@
       <IDSymbol name="cmdidDebugViewBuild" value="0x0450" />
       <IDSymbol name="cmdidEdmCompareMenuItemsGroup" value="0x0470" />
       <IDSymbol name="cmdidEdmDatabaseMenuItemsGroup" value="0x0480" />
-      <IDSymbol name="cmdidEdmMigrationMenuItemsGroup" value="0x0490" />
       <IDSymbol name="cmdidEdmMenu" value="0x0500" />
       <IDSymbol name="cmdidEdmMenuGroup" value="0x0600" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0700" />
@@ -364,7 +348,6 @@
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
       <IDSymbol name="cmdidAbout" value="0x0006" />
       <IDSymbol name="cmdidOptions" value="0x0010" />
-      <IDSymbol name="cmdidMigrationStatus" value="0x0007" />
       <IDSymbol name="cmdidDbCompare" value="0x0008" />
       <IDSymbol name="cmdidDbDgml" value="0x0009" />
       <IDSymbol name="cmdidDbErDiagram" value="0x0011" />

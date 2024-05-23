@@ -36,22 +36,6 @@ namespace Modelling
                         result = EfCoreCompareBuilder.GenerateSchemaCompareResult(args[1], args[2], args[3], args[4]);
                     }
 #endif
-                    else if (args.Contains("migrationstatus") && args.Length >= 3)
-                    {
-                        result = EfCoreMigrationsBuilder.GenerateMigrationStatusList(args[1], args[2]);
-                    }
-                    else if (args.Contains("migrate") && args.Length >= 4)
-                    {
-                        result = EfCoreMigrationsBuilder.Migrate(args[1], args[2], args[3]);
-                    }
-                    else if (args.Contains("scriptmigration") && args.Length >= 4)
-                    {
-                        result = EfCoreMigrationsBuilder.ScriptMigration(args[1], args[2], args[3]);
-                    }
-                    else if (args.Contains("addmigration") && args.Length >= 7)
-                    {
-                        result = EfCoreMigrationsBuilder.AddMigration(args[1], args[2], args[3], args[4], args[5], args[6]);
-                    }
                     else
                     {
                         result = EfCoreModelBuilder.GenerateDebugView(args[0], args[1]);
