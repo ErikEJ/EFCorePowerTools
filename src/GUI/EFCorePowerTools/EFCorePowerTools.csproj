@@ -71,9 +71,6 @@
     <Compile Include="Dialogs\CompareResultDialog.xaml.cs">
       <DependentUpon>CompareResultDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\EfCoreMigrationsDialog.xaml.cs">
-      <DependentUpon>EfCoreMigrationsDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\EfCoreModelDialog.xaml.cs">
       <DependentUpon>EfCoreModelDialog.xaml</DependentUpon>
     </Compile>
@@ -109,11 +106,6 @@
     </Compile>
     <Compile Include="Locales\DgmlLocale.Designer.cs">
       <DependentUpon>DgmlLocale.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Locales\MigrationsLocale.Designer.cs">
-      <DependentUpon>MigrationsLocale.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -153,7 +145,6 @@
     <Resource Include="Resources\ScrollbarArrowDownRight.png" />
     <Resource Include="Resources\Add.png" />
     <Resource Include="Resources\Remove.png" />
-    <Resource Include="Resources\Unicorn.png" />
     <EmbeddedResource Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
@@ -323,24 +314,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DgmlLocale.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\MigrationsLocale.cs.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.de.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.en.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.es.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.fr.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.it.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.ja.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.pl.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.pt-BR.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.ru.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.tr.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.zh-Hans.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.zh-Hant.resx" />
-    <EmbeddedResource Include="Locales\MigrationsLocale.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MigrationsLocale.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.de.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.en.resx" />
@@ -470,10 +443,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\CompareResultDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Dialogs\EfCoreMigrationsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

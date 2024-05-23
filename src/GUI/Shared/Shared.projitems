@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IColumnInformationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ICompareOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ICompareResultViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IMigrationOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeEditableViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IObjectTreeRootItemViewModel.cs" />
@@ -42,7 +41,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\ICompareOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\ICompareResultDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IDialog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IMigrationOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IModelingOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickProjectDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickConfigDialog.cs" />
@@ -92,7 +90,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\Compare\CompareType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DgmlNugetHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\GenerationType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Handlers\MigrationsHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ModelAnalyzerHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ProcessLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\EfRevEngLauncher.cs" />
@@ -127,7 +124,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareResultViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ContextTypeItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DatabaseConnectionModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MigrationOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeRootItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeViewModel.cs" />

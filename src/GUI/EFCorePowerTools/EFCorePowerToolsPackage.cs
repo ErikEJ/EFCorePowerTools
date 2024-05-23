@@ -56,7 +56,6 @@ namespace EFCorePowerTools
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
         private readonly DgmlNugetHandler dgmlNugetHandler;
-        private readonly MigrationsHandler migrationsHandler;
         private readonly CompareHandler compareHandler;
         private readonly DatabaseDiagramHandler databaseDiagramHandler;
         private readonly DacpacAnalyzerHandler dacpacAnalyzerHandler;
@@ -68,7 +67,6 @@ namespace EFCorePowerTools
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
             dgmlNugetHandler = new DgmlNugetHandler();
-            migrationsHandler = new MigrationsHandler(this);
             compareHandler = new CompareHandler(this);
             databaseDiagramHandler = new DatabaseDiagramHandler(this);
             dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
@@ -202,16 +200,6 @@ namespace EFCorePowerTools
                         OnProjectMenuBeforeQueryStatus,
                         menuCommandId10);
                     oleMenuCommandService.AddCommand(menuItem10);
-
-                    var menuCommandId11 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidMigrationStatus);
-                    var menuItem11 = new OleMenuCommand(
-                        OnProjectContextMenuInvokeHandler,
-                        null,
-                        OnProjectMenuBeforeQueryStatus,
-                        menuCommandId11);
-                    oleMenuCommandService.AddCommand(menuItem11);
 
                     var menuCommandId12 = new CommandID(
                         GuidList.GuidDbContextPackageCmdSet,
@@ -419,7 +407,6 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
-                menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
                 menuCommand.Visible = await project.IsNet60OrHigherAsync()
@@ -629,7 +616,6 @@ namespace EFCorePowerTools
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                     menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
                     menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
-                    menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus ||
                     menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
                 {
                     path = await LocateProjectAssemblyPathAsync(project);
@@ -662,10 +648,6 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild)
                 {
                     await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.DebugView);
-                }
-                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidMigrationStatus)
-                {
-                    await migrationsHandler.ManageMigrationsAsync(path, project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
                 {
@@ -878,7 +860,6 @@ namespace EFCorePowerTools
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
                     .AddTransient<IPickTablesDialog, PickTablesDialog>()
                     .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>()
-                    .AddTransient<IMigrationOptionsDialog, EfCoreMigrationsDialog>()
                     .AddTransient<IPickSchemasDialog, PickSchemasDialog>()
                     .AddTransient<IPickConnectionDialog, ConnectionDialog>()
                     .AddTransient<IAdvancedModelingOptionsDialog, AdvancedModelingOptionsDialog>()
@@ -899,7 +880,6 @@ namespace EFCorePowerTools
                     .AddSingleton<Func<ITableInformationViewModel>>(provider => () => new TableInformationViewModel(provider.GetService<IMessenger>()))
                     .AddSingleton<Func<IColumnInformationViewModel>>(provider => () => new ColumnInformationViewModel(provider.GetService<IMessenger>()))
                     .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>()
-                    .AddTransient<IMigrationOptionsViewModel, MigrationOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
                     .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>()
                     .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>()

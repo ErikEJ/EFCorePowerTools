@@ -63,19 +63,14 @@ namespace EFCorePowerTools.Handlers
             return result;
         }
 
-        public Task<string> GetOutputAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
-        {
-            return GetOutputInternalAsync(outputPath, projectPath, generationType, contextName, migrationIdentifier, nameSpace);
-        }
-
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextNames, string connectionString)
         {
-            return GetOutputInternalAsync(outputPath, null, generationType, contextNames, connectionString, null);
+            return GetOutputInternalAsync(outputPath, generationType, contextNames, connectionString);
         }
 
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
-            return GetOutputInternalAsync(outputPath, null, generationType, contextName, null, null);
+            return GetOutputInternalAsync(outputPath, generationType, contextName, null);
         }
 
         public List<Tuple<string, string>> BuildModelResult(string modelInfo)
@@ -130,7 +125,7 @@ namespace EFCorePowerTools.Handlers
             Telemetry.TrackFrameworkUse(nameof(ProcessLauncher), codeGenerationMode);
         }
 
-        private async Task<string> GetOutputInternalAsync(string outputPath, string projectPath, GenerationType generationType, string contextName, string migrationIdentifier, string nameSpace)
+        private async Task<string> GetOutputInternalAsync(string outputPath, GenerationType generationType, string contextName, string connectionString)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -161,23 +156,11 @@ namespace EFCorePowerTools.Handlers
                     break;
                 case GenerationType.DebugView:
                     break;
-                case GenerationType.MigrationStatus:
-                    startInfo.Arguments = "migrationstatus" + outputs;
-                    break;
-                case GenerationType.MigrationApply:
-                    startInfo.Arguments = "migrate" + outputs + contextName;
-                    break;
-                case GenerationType.MigrationAdd:
-                    startInfo.Arguments = "addmigration" + outputs + "\"" + projectPath + "\" " + contextName + " " + migrationIdentifier + " " + nameSpace;
-                    break;
-                case GenerationType.MigrationScript:
-                    startInfo.Arguments = "scriptmigration" + outputs + contextName;
-                    break;
                 case GenerationType.DbContextList:
                     startInfo.Arguments = "contextlist" + outputs;
                     break;
                 case GenerationType.DbContextCompare:
-                    startInfo.Arguments = "schemacompare" + outputs + "\"" + migrationIdentifier + "\" " + contextName;
+                    startInfo.Arguments = "schemacompare" + outputs + "\"" + connectionString + "\" " + contextName;
                     break;
                 default:
                     break;

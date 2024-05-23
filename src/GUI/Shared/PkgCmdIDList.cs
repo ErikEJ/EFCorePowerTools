@@ -7,7 +7,6 @@ namespace EFCorePowerTools
         // C# project context menu
         public const uint cmdidReverseEngineerCodeFirst = 0x001;
         public const uint cmdidAbout = 0x006;
-        public const uint cmdidMigrationStatus = 0x007;
         public const uint cmdidDgmlBuild = 0x0100;
         public const uint cmdidDgmlNuget = 0x0200;
         public const uint cmdidT4Drop = 0x0250;
