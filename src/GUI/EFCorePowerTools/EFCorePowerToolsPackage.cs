@@ -411,6 +411,8 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh)
             {
+                await JoinableTaskFactory.SwitchToMainThreadAsync();
+
                 menuCommand.Visible = await project.CanUseReverseEngineerAsync()
                     && project.GetConfigFiles().Count == 1;
                 return;
