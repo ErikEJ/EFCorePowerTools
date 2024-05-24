@@ -130,26 +130,32 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
-                    var menuCommandId3 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidDgmlBuild);
-
                     var menuItem3 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId3);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidDgmlBuild));
                     oleMenuCommandService.AddCommand(menuItem3);
 
-                    var menuCommandId5 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst);
                     var menuItem5 = new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId5);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst));
                     oleMenuCommandService.AddCommand(menuItem5);
+
+                    var menuItem55 = new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh));
+                    oleMenuCommandService.AddCommand(menuItem55);
 
                     var menuCommandId6 = new CommandID(
                         GuidList.GuidDbContextPackageCmdSet,
@@ -403,6 +409,15 @@ namespace EFCorePowerTools
                 return;
             }
 
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh)
+            {
+                await JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                menuCommand.Visible = await project.CanUseReverseEngineerAsync()
+                    && project.GetConfigFiles().Count == 1;
+                return;
+            }
+
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild ||
@@ -628,6 +643,16 @@ namespace EFCorePowerTools
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
                 {
                     await reverseEngineerHandler.ReverseEngineerCodeFirstAsync();
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh)
+                {
+                    var configs = project.GetConfigFiles();
+                    if (configs.Count != 1)
+                    {
+                        return;
+                    }
+
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, configs[0], true);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
