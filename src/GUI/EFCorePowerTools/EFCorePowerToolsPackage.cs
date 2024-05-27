@@ -72,7 +72,11 @@ namespace EFCorePowerTools
             dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
         }
 
-        internal EnvDTE80.DTE2 Dte2 => GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
+        internal EnvDTE80.DTE2 Dte2()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            return GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
+        }
 
         internal void LogError(List<string> statusMessages, Exception exception)
         {
@@ -490,7 +494,7 @@ namespace EFCorePowerTools
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
+            var uih = Dte2().ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
             var selectedItems = (Array)uih.SelectedItems;
 
             if (selectedItems != null)
@@ -782,7 +786,7 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                var uih = Dte2.ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
+                var uih = Dte2().ToolWindows.GetToolWindow(EnvDTE.Constants.vsWindowKindServerExplorer) as EnvDTE.UIHierarchy;
                 var selectedItems = (Array)uih.SelectedItems;
 
                 if (selectedItems != null)
