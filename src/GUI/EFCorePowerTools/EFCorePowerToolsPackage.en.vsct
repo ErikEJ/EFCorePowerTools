@@ -92,7 +92,7 @@
           <ButtonText>Reverse Engineer</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerRefresh" priority="0x0200" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="RefreshScript" />
@@ -102,7 +102,7 @@
           <CommandName>cmdidReverseEngineerRefresh</CommandName>
           <ButtonText>Refresh</ButtonText>
         </Strings>
-      </Button>      
+      </Button>
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidAbout" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" />
@@ -213,7 +213,7 @@
           <ButtonText>ER Diagram</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDacpacReport" priority="0x0700" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
