@@ -93,6 +93,17 @@
         </Strings>
       </Button>
 
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerRefresh" priority="0x0200" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="RefreshScript" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <CommandName>cmdidReverseEngineerRefresh</CommandName>
+          <ButtonText>Refresh</ButtonText>
+        </Strings>
+      </Button>
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidAbout" priority="0x0900" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmAboutMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="StatusHelpOutline" />
@@ -114,7 +125,7 @@
           <ButtonText>Opzioni</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidT4Drop" priority="0x0250" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmViewMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="Template" />
@@ -202,7 +213,7 @@
           <ButtonText>ER Diagram</ButtonText>
         </Strings>
       </Button>
-      
+
       <Button guid="guidDbContextPackageCmdSet" id="cmdidDacpacReport" priority="0x0700" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmDatabaseMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
@@ -216,7 +227,7 @@
 
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerEdit" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <Icon guid="ImageCatalogGuid" id="EditDatabase" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -228,7 +239,7 @@
 
       <Button guid="guidReverseEngineerMenu" id="cmdidReverseEngineerRefresh" priority="0x0100" type="Button">
         <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
-        <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
+        <Icon guid="ImageCatalogGuid" id="RefreshScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -340,9 +351,10 @@
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0700" />
       <IDSymbol name="cmdidEdmAboutMenuItemsGroup" value="0x0800" />
       <IDSymbol name="cmdidEdmViewMenuItemsGroup" value="0x0900" />
-      
+
       <!-- Project Menu Entries -->
       <IDSymbol name="cmdidReverseEngineerCodeFirst" value="0x0001" />
+      <IDSymbol name="cmdidReverseEngineerRefresh" value="0x0007" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
       <IDSymbol name="cmdidEdmProjectMenu" value="0x0003" />
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
