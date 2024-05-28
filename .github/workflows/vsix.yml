@@ -47,6 +47,13 @@ jobs:
       run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
       working-directory: src
 
+    - name: Extract and verify file count
+      shell: cmd
+      run: |
+        mkdir vsix
+        7z e src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix EFCorePowerTools-${{ env.VERSION }}.vsix -ovsix
+        dir /a:-d /s /b "vsix" | find /c ":\"
+
     - name: Move build output
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && github.event_name == 'push'  
       run: |
