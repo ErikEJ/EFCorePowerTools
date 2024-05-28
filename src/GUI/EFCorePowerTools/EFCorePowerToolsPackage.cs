@@ -120,7 +120,7 @@ namespace EFCorePowerTools
             return await VS.Shell.GetVsVersionAsync();
         }
 
-        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
             {
