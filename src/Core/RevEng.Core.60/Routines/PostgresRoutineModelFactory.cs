@@ -35,6 +35,16 @@ namespace RevEng.Core.Routines
                 using (var command = new NpgsqlCommand(RoutineSql, connection))
                 {
                     connection.Open();
+
+                    if (connection.PostgreSqlVersion.Major < 11)
+                    {
+                        return new RoutineModel
+                        {
+                            Routines = result,
+                            Errors = errors,
+                        };
+                    }
+
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
