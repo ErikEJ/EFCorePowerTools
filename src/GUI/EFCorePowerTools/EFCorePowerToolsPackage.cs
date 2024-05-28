@@ -345,9 +345,9 @@ namespace EFCorePowerTools
 
         private static bool IsConfigFile(string itemName)
         {
-            return itemName != null &&
-                itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase) &&
-                itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
+            return itemName != null
+                && itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase)
+                && itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
