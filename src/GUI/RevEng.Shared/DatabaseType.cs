@@ -11,5 +11,6 @@ namespace RevEng.Common
         Oracle = 7,
         SQLServerDacpac = 8,
         Firebird = 10,
+        KingBase = 21,
     }
 }

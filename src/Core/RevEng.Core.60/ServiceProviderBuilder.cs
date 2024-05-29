@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+#if CORE80
+using Kdbndp.EntityFrameworkCore.KingbaseES.Design.Internal;
+#endif
 using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
@@ -124,7 +127,12 @@ namespace RevEng.Core
                     }
 
                     break;
-
+#if CORE80
+                case DatabaseType.KingBase:
+                    var kingBaseProvider = new KdbndpDesignTimeServices();
+                    kingBaseProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
+#endif
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
