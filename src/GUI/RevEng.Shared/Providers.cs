@@ -41,6 +41,9 @@ namespace RevEng.Common
                 case "FirebirdSql.EntityFrameworkCore.Firebird":
                     return DatabaseType.Firebird;
 
+                case "DotNetCore.EntityFrameworkCore.KingbaseES":
+                    return DatabaseType.KingBase;
+
                 default:
                     return DatabaseType.Undefined;
             }
@@ -395,6 +398,20 @@ namespace RevEng.Common
                 });
             }
 
+            if (databaseType == DatabaseType.KingBase)
+            {
+                var pkgVersion = "8.0.0";
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "DotNetCore.EntityFrameworkCore.KingbaseES",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "KingBase",
+                });
+            }
+
             return packages;
         }
 
@@ -471,6 +488,10 @@ namespace RevEng.Common
                     "FirebirdSql.EntityFrameworkCore.Firebird",
                     new List<string> { "firebird" }
                 },
+                {
+                    "DotNetCore.EntityFrameworkCore.KingbaseES",
+                    new List<string> { "kingbase" }
+                }
             };
         }
     }
