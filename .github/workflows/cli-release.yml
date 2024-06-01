@@ -16,7 +16,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        global-json-file: global.json
+        dotnet-version: '8.0.206' # Use until runnner is updated to VS 17.10
 
     - name: Package CLI 6
       run: dotnet pack src\Core\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ github.event.inputs.version }} -p:InformationalVersion=6.1.${{ github.event.inputs.version }}
