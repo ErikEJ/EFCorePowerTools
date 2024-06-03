@@ -35,7 +35,7 @@
        <None Include="readme.md" Link="readme.md" Pack="true" PackagePath="\" />
 
        <EmbeddedResource Include="template.dgml" Link="template.dgml" />
-       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
+       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.20" />
        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />  
     </ItemGroup>
 
