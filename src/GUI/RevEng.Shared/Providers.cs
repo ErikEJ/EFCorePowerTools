@@ -88,14 +88,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.19";
+                var pkgVersion = "7.0.20";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.30";
+                        pkgVersion = "6.0.31";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.5 ";
+                        pkgVersion = "8.0.6";
                         break;
                 }
 
@@ -183,11 +183,11 @@ namespace RevEng.Common
 
                 if (useDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.9";
+                    pkgVersion = "7.0.10";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.9";
+                            pkgVersion = "6.0.10";
                             break;
                     }
 
@@ -220,14 +220,14 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLite)
             {
-                var pkgVersion = "7.0.18";
+                var pkgVersion = "7.0.20";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.29";
+                        pkgVersion = "6.0.31";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.4";
+                        pkgVersion = "8.0.6";
                         break;
                 }
 
