@@ -18,7 +18,7 @@
 
    <ItemGroup>
      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
-     <PackageReference Include="EfCore.SchemaCompare" Version="8.0.1" />
+     <PackageReference Include="EfCore.SchemaCompare" Version="8.0.4" />
    </ItemGroup>
 
 </Project>

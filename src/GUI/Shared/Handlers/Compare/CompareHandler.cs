@@ -84,7 +84,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     }
                     else if (version.Major == 8)
                     {
-                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 0, 0));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 0, 4));
                         nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(8, 0, 0));
                     }
 
