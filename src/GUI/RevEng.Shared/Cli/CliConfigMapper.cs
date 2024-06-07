@@ -289,8 +289,7 @@ namespace RevEng.Common.Cli
                 foreach (var column in badExclusions)
                 {
                     var originalColumnString = table.ExcludedColumns.Single(x => string.Equals(x, column, StringComparison.Ordinal));
-                    warnings.Add($"{table.Name}.{originalColumnString} cannot be excluded because it is either a Primary Key or Foreign Key of another Mapped Column.  This entry has been removed from the config file.");
-                    table.ExcludedColumns.Remove(originalColumnString);
+                    warnings.Add($"{table.Name}.{originalColumnString} is either a Primary Key or Foreign Key of another Table. Removing this column could result in an invalid model.");
                 }
             }
 
