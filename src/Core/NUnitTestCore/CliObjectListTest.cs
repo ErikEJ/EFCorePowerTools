@@ -246,10 +246,10 @@ namespace UnitTests
                 }
 
                 ClassicAssert.True(warnings.Count == 4);
-                ClassicAssert.True(resultConfig.Tables[0].ExcludedColumns.Count == 1);
-                ClassicAssert.True(resultConfig.Tables[0].ExcludedColumns[0] == "Name");
-                ClassicAssert.True(resultConfig.Views[0].ExcludedColumns.Count == 1);
-                ClassicAssert.True(resultConfig.Views[0].ExcludedColumns[0] == "Name");
+                ClassicAssert.True(resultConfig.Tables[0].ExcludedColumns.Count == 3);
+                ClassicAssert.True(resultConfig.Tables[0].ExcludedColumns[0] == "UserId");
+                ClassicAssert.True(resultConfig.Views[0].ExcludedColumns.Count == 3);
+                ClassicAssert.True(resultConfig.Views[0].ExcludedColumns[0] == "UserId");
                 ClassicAssert.IsNull(resultConfig.Functions[0].ExcludedColumns);
                 ClassicAssert.IsNull(resultConfig.StoredProcedures[0].ExcludedColumns);
             }
