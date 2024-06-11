@@ -145,6 +145,16 @@ public partial class <#= EntityType.Name #>
         }
         else
         {
+            var comment = navigation.ForeignKey.Properties.FirstOrDefault()?.GetComment();
+            if (!string.IsNullOrEmpty(comment))
+            {
+#>
+    /// <summary>
+    /// <#= code.XmlComment(comment, indent: 1) #>
+    /// </summary>
+<#
+            }
+
             var needsNullable = Options.UseNullableReferenceTypes && !(navigation.ForeignKey.IsRequired && navigation.IsOnDependent);
             var needsInitializer = Options.UseNullableReferenceTypes && navigation.ForeignKey.IsRequired && navigation.IsOnDependent;
 #>
