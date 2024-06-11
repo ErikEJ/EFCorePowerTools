@@ -99,6 +99,23 @@ namespace RevEng.Core
                 {
                     table.UniqueConstraints.Remove(constraint);
                 }
+
+                var fksToBeRemoved = new List<DatabaseForeignKey>();
+                foreach (var fk in table.ForeignKeys)
+                {
+                    foreach (var column in fk.Columns)
+                    {
+                        if (excludedColumns.Contains(column))
+                        {
+                            fksToBeRemoved.Add(fk);
+                        }
+                    }
+                }
+
+                foreach (var fk in fksToBeRemoved)
+                {
+                    table.ForeignKeys.Remove(fk);
+                }
             }
 
             return base.VisitTable(modelBuilder, table);
