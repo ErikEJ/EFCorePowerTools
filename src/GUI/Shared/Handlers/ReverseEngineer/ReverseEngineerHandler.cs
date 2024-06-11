@@ -287,6 +287,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         return;
                     }
 
+                    if (newOptions)
+                    {
+                        // HACK Work around for issue with web app project system on initial run
+                        userOptions = null;
+                    }
+
                     await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
