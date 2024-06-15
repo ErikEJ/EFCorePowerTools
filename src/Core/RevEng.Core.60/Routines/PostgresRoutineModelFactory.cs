@@ -24,7 +24,7 @@ namespace RevEng.Core.Routines
             ArgumentNullException.ThrowIfNull(options);
 
             var result = new List<Routine>();
-            var found = new List<Tuple<string, string, bool>>();
+            var found = new List<Tuple<string, string, bool, char>>();
             var errors = new List<string>();
 
             var filter = options.Modules.ToHashSet();
@@ -49,8 +49,8 @@ namespace RevEng.Core.Routines
                     {
                         while (reader.Read())
                         {
-                            // Schema, Name, IsScalar
-                            found.Add(new Tuple<string, string, bool>(reader.GetString(0), reader.GetString(1), reader.GetFieldValue<bool>(2)));
+                            // Schema, Name, IsScalar, Type (f or p)
+                            found.Add(new Tuple<string, string, bool, char>(reader.GetString(0), reader.GetString(1), reader.GetFieldValue<bool>(2), reader.GetChar(3)));
                         }
                     }
                 }
@@ -64,7 +64,7 @@ namespace RevEng.Core.Routines
 
                     if (filter.Count == 0 || filter.Contains(key))
                     {
-                        var isScalar = !foundModule.Item3;
+                        var isScalar = false; //// !foundModule.Item3;
 
                         var module = RoutineType == "PROCEDURE"
                             ? (Routine)new Procedure()
@@ -72,6 +72,7 @@ namespace RevEng.Core.Routines
 
                         module.Schema = foundModule.Item1;
                         module.Name = foundModule.Item2;
+                        module.IsScalar = foundModule.Item4 == 'f';
 
                         if (options.FullModel)
                         {

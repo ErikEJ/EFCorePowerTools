@@ -17,14 +17,15 @@ namespace RevEng.Core.Routines.Procedures
             RoutineSql = $@"
 select n.nspname as schema_name,
        p.proname as specific_name,
-       p.proretset as returns_set
+       p.proretset as returns_set,
+       p.prokind as routine_type
 from pg_proc p
 left join pg_namespace n on p.pronamespace = n.oid
 left join pg_language l on p.prolang = l.oid
 left join pg_type t on t.oid = p.prorettype 
 where n.nspname not in ('pg_catalog', 'information_schema')
       and (p.prokind = 'p' or p.prokind = 'f')
-      and (l.lanname = 'sql')
+      and (l.lanname = 'sql' or l.lanname = 'plpgsql')
 order by schema_name,
          specific_name;";
         }

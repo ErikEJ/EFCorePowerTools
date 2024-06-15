@@ -48,9 +48,7 @@ namespace RevEng.Core.Routines.Procedures
                 .Select(p => $"{Code.Reference(p.ClrTypeFromNpgsqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name)}")
                 .ToList();
 
-            var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
-
-            var outParams = allOutParams.SkipLast(1).ToList();
+            var outParams = procedure.Parameters.Where(p => p.Output).ToList();
 
             var outParamStrings = outParams
                 .Select(p => $"OutputParameter<{Code.Reference(p.ClrTypeFromNpgsqlParameter())}> {Code.Identifier(p.Name)}")
@@ -84,7 +82,7 @@ namespace RevEng.Core.Routines.Procedures
 
                 using (Sb.Indent())
                 {
-                    foreach (var parameter in allOutParams)
+                    foreach (var parameter in outParams)
                     {
                         GenerateParameterVar(parameter);
                     }
@@ -140,9 +138,15 @@ namespace RevEng.Core.Routines.Procedures
         private static string GenerateProcedureStatement(Routine procedure, bool useAsyncCalls)
         {
             var paramList = procedure.Parameters
-                .Select(p => $"@{p.Name}{(p.Output ? " OUTPUT" : string.Empty)}").ToList();
+                .Select(p => $"@{p.Name}").ToList();
 
             var fullExec = $"\"SELECT * FROM \\\"{procedure.Schema}\\\".\\\"{procedure.Name}\\\" ({string.Join(", ", paramList)})\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
+
+            if (!procedure.IsScalar)
+            {
+                fullExec = $"\"CALL \\\"{procedure.Schema}\\\".\\\"{procedure.Name}\\\" ({string.Join(", ", paramList)})\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
+            }
+
             return fullExec;
         }
 
