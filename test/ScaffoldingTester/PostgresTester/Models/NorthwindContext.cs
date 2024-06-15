@@ -8,10 +8,6 @@ namespace PostgresTester.Models;
 
 public partial class NorthwindContext : DbContext
 {
-    public NorthwindContext()
-    {
-    }
-
     public NorthwindContext(DbContextOptions<NorthwindContext> options)
         : base(options)
     {
@@ -19,17 +15,23 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<CategorySalesFor1997> CategorySalesFor1997s { get; set; }
+
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<CustomerDemographic> CustomerDemographics { get; set; }
 
     public virtual DbSet<Employee> Employees { get; set; }
 
+    public virtual DbSet<Invoice> Invoices { get; set; }
+
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<ProductSalesFor1997> ProductSalesFor1997s { get; set; }
 
     public virtual DbSet<Region> Regions { get; set; }
 
@@ -38,10 +40,6 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
     public virtual DbSet<Territory> Territories { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=Northwind;Username=postgres;Password=tintin97;Persist Security Info=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +53,15 @@ public partial class NorthwindContext : DbContext
             entity.HasIndex(e => e.CategoryName, "Categories_CategoryName_idx");
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+        });
+
+        modelBuilder.Entity<CategorySalesFor1997>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Category Sales for 1997");
+
             entity.Property(e => e.CategoryName).HasMaxLength(15);
         });
 
@@ -165,6 +172,39 @@ public partial class NorthwindContext : DbContext
                             .HasMaxLength(20)
                             .HasColumnName("TerritoryID");
                     });
+        });
+
+        modelBuilder.Entity<Invoice>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Invoices");
+
+            entity.Property(e => e.Address).HasMaxLength(60);
+            entity.Property(e => e.City).HasMaxLength(15);
+            entity.Property(e => e.Country).HasMaxLength(15);
+            entity.Property(e => e.CustomerId)
+                .HasMaxLength(5)
+                .IsFixedLength()
+                .HasColumnName("CustomerID");
+            entity.Property(e => e.CustomerName).HasMaxLength(40);
+            entity.Property(e => e.Freight).HasPrecision(12, 2);
+            entity.Property(e => e.OrderDate).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.PostalCode).HasMaxLength(10);
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.ProductName).HasMaxLength(40);
+            entity.Property(e => e.Region).HasMaxLength(15);
+            entity.Property(e => e.RequiredDate).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ShipAddress).HasMaxLength(60);
+            entity.Property(e => e.ShipCity).HasMaxLength(15);
+            entity.Property(e => e.ShipCountry).HasMaxLength(15);
+            entity.Property(e => e.ShipName).HasMaxLength(40);
+            entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
+            entity.Property(e => e.ShipRegion).HasMaxLength(15);
+            entity.Property(e => e.ShippedDate).HasColumnType("timestamp without time zone");
+            entity.Property(e => e.ShipperName).HasMaxLength(40);
+            entity.Property(e => e.UnitPrice).HasPrecision(12, 2);
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -279,6 +319,16 @@ public partial class NorthwindContext : DbContext
             entity.HasOne(d => d.Supplier).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SupplierId)
                 .HasConstraintName("FK_Products_Suppliers");
+        });
+
+        modelBuilder.Entity<ProductSalesFor1997>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Product Sales for 1997");
+
+            entity.Property(e => e.CategoryName).HasMaxLength(15);
+            entity.Property(e => e.ProductName).HasMaxLength(40);
         });
 
         modelBuilder.Entity<Region>(entity =>

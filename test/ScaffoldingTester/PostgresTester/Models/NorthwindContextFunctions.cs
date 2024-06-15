@@ -13,13 +13,13 @@ namespace PostgresTester.Models
 {
     public partial class NorthwindContext
     {
-        private INorthwindContextProcedures _procedures;
+        private INorthwindContextFunctions _procedures;
 
-        public virtual INorthwindContextProcedures Procedures
+        public virtual INorthwindContextFunctions Functions
         {
             get
             {
-                if (_procedures is null) _procedures = new NorthwindContextProcedures(this);
+                if (_procedures is null) _procedures = new NorthwindContextFunctions(this);
                 return _procedures;
             }
             set
@@ -28,17 +28,17 @@ namespace PostgresTester.Models
             }
         }
 
-        public INorthwindContextProcedures GetProcedures()
+        public INorthwindContextFunctions GetFunctions()
         {
-            return Procedures;
+            return Functions;
         }
     }
 
-    public partial class NorthwindContextProcedures : INorthwindContextProcedures
+    public partial class NorthwindContextFunctions : INorthwindContextFunctions
     {
         private readonly NorthwindContext _context;
 
-        public NorthwindContextProcedures(NorthwindContext context)
+        public NorthwindContextFunctions(NorthwindContext context)
         {
             _context = context;
         }
@@ -100,6 +100,37 @@ namespace PostgresTester.Models
             };
             var _ = await _context.SqlQueryAsync<SalesbyYearResult>("SELECT * FROM \"public\".\"Sales by Year\" (@Beginning_Date, @Ending_Date)", npgsqlParameters, cancellationToken);
 
+            return _;
+        }
+
+        public virtual async Task<int> sum_xyAsync(int? _x, int? _y, OutputParameter<int?> _sum, CancellationToken cancellationToken = default)
+        {
+            var parameter_sum = new NpgsqlParameter
+            {
+                ParameterName = "_sum",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = _sum?._value ?? Convert.DBNull,
+                NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Integer,
+            };
+            var npgsqlParameters = new []
+            {
+                new NpgsqlParameter
+                {
+                    ParameterName = "_x",
+                    Value = _x ?? Convert.DBNull,
+                    NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Integer,
+                },
+                new NpgsqlParameter
+                {
+                    ParameterName = "_y",
+                    Value = _y ?? Convert.DBNull,
+                    NpgsqlDbType = NpgsqlTypes.NpgsqlDbType.Integer,
+                },
+                parameter_sum,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("CALL \"public\".\"sum_xy\" (@_x, @_y, @_sum)", npgsqlParameters, cancellationToken);
+
+            _sum.SetValue(parameter_sum.Value);
             return _;
         }
     }

@@ -138,7 +138,7 @@ namespace RevEng.Core.Routines.Procedures
         private static string GenerateProcedureStatement(Routine procedure, bool useAsyncCalls)
         {
             var paramList = procedure.Parameters
-                .Select(p => $"@{p.Name}{(p.Output ? " OUTPUT" : string.Empty)}").ToList();
+                .Select(p => $"@{p.Name}").ToList();
 
             var fullExec = $"\"SELECT * FROM \\\"{procedure.Schema}\\\".\\\"{procedure.Name}\\\" ({string.Join(", ", paramList)})\", npgsqlParameters{(useAsyncCalls ? ", cancellationToken" : string.Empty)}".Replace(" \"", "\"", StringComparison.OrdinalIgnoreCase);
 

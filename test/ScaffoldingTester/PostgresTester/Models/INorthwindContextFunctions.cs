@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace PostgresTester.Models
 {
-    public partial interface INorthwindContextProcedures
+    public partial interface INorthwindContextFunctions
     {
         Task<List<CustOrderHistResult>> CustOrderHistAsync(string CustomerID, CancellationToken cancellationToken = default);
         Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default);
         Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? Beginning_Date, DateTime? Ending_Date, CancellationToken cancellationToken = default);
+        Task<int> sum_xyAsync(int? _x, int? _y, OutputParameter<int?> _sum, CancellationToken cancellationToken = default);
     }
 }
