@@ -169,7 +169,7 @@
     <value>EFCore.SchemaCompare 설치 중입니다, 명령어를 다시 시도해 주세요.</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
-    <value>데이터 로드하는 중</value>
+    <value>데이터 로드 중</value>
   </data>
   <data name="NoContextsSelected" xml:space="preserve">
     <value>컨텍스트가 선택되지 않음</value>
@@ -181,7 +181,7 @@
     <value>차이점만 표시</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>연결을 추가할 수 없는 경우, 공급자가 지원되지 않는 것일 수 있습니다.</value>
+    <value>연결을 추가할 수 없는 경우, 지원되지 않는 공급자일 수 있습니다.</value>
   </data>
   <data name="UnableToCollectDbContextInformation" xml:space="preserve">
     <value>DbContext 정보를 수집할 수 없습니다.</value>

@@ -241,7 +241,7 @@
     <value>코드 생성 중...</value>
   </data>
   <data name="GettingReadyToConnect" xml:space="preserve">
-    <value>연결을 준비하는 중...</value>
+    <value>연결 준비 중...</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>도움말</value>
@@ -253,13 +253,13 @@
     <value>프로젝트에 EF Core 제공자 패키지 설치</value>
   </data>
   <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
-    <value>EF Core 패키지를 설치하는 중</value>
+    <value>EF Core 패키지 설치 중</value>
   </data>
   <data name="LoadingDatabaseObjects" xml:space="preserve">
-    <value>데이터베이스 객체를 로드하는 중...</value>
+    <value>데이터베이스 객체 로드 중...</value>
   </data>
   <data name="LoadingOptions" xml:space="preserve">
-    <value>옵션을 로드하는 중...</value>
+    <value>옵션 로드 중...</value>
   </data>
   <data name="MapHierarchyId" xml:space="preserve">
     <value>HierarchyId 매핑</value>
