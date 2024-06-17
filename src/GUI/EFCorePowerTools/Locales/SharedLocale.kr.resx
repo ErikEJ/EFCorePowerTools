@@ -117,20 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="100" xml:space="preserve">
-    <value>EF Core Power Tools</value>
+  <data name="AnErrorOccurred" xml:space="preserve">
+    <value>오류가 발생했습니다. "확장(Extensions)" 출력 창을 확인해주세요</value>
   </data>
-  <data name="101" xml:space="preserve">
-    <value>일반</value>
+  <data name="BuildFailed" xml:space="preserve">
+    <value>빌드에 실패했습니다. DbContext class를 찾을 수 없습니다</value>
   </data>
-  <data name="110" xml:space="preserve">
-    <value>Entity Framework Core Power Tools</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>취소</value>
   </data>
-  <data name="112" xml:space="preserve">
-    <value>Visual Studio 솔루션 탐색기의 상황에 맞는 메뉴에 EF Core DbContext 기능을 추가합니다</value>
+  <data name="Close" xml:space="preserve">
+    <value>닫기</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="EFCoreVersionNotFound" xml:space="preserve">
+    <value>프로젝트에서 EF Core 3.1 이상을 찾을 수 없습니다</value>
+  </data>
+  <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
+    <value>EFCore.Design 버전{0}을 설치 중입니다. 명령어를 재시도해주세요</value>
+  </data>
+  <data name="InvalidName" xml:space="preserve">
+    <value>유효하지 않은 이름</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="SelectedProjectTypeNoTargetFrameworkMoniker" xml:space="preserve">
+    <value>선택된 프로젝트 타입에는 TargetFrameworkMoniker가 없습니다</value>
+  </data>
+  <data name="SupportedFramework" xml:space="preserve">
+    <value>.NET Core 3.0+ 프로젝트만 지원됩니다 - TargetFrameworkMoniker</value>
+  </data>
+  <data name="UnableToLocateProjectAssembly" xml:space="preserve">
+    <value>프로젝트 어셈블리를 찾을 수 없습니다</value>
   </data>
 </root>

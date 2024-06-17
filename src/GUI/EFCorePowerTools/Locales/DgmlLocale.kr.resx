@@ -117,20 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="100" xml:space="preserve">
-    <value>EF Core Power Tools</value>
+  <data name="InstallingPackage" xml:space="preserve">
+    <value>DbContext Dgml 확장팩 설치</value>
   </data>
-  <data name="101" xml:space="preserve">
-    <value>일반</value>
-  </data>
-  <data name="110" xml:space="preserve">
-    <value>Entity Framework Core Power Tools</value>
-  </data>
-  <data name="112" xml:space="preserve">
-    <value>Visual Studio 솔루션 탐색기의 상황에 맞는 메뉴에 EF Core DbContext 기능을 추가합니다</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PackageInstalled" xml:space="preserve">
+    <value>Dgml package 설치 완료</value>
   </data>
 </root>
