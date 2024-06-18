@@ -127,13 +127,13 @@
     <value>사용자 지정 연결 추가</value>
   </data>
   <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
-    <value>Add manually defined connection</value>
+    <value>수동으로 정의된 연결 추가</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
-    <value>Add Database Connection</value>
+    <value>데이터베이스 연결 추가</value>
   </data>
   <data name="AddDatabaseConnectionTip" xml:space="preserve">
-    <value>Add Server Explorer (DDEX) connection</value>
+    <value>서버 탐색기 (DDEX) 연결 추가</value>
   </data>
   <data name="AddExternalDacPac" xml:space="preserve">
     <value>.dacpac 파일 추가</value>
@@ -145,34 +145,34 @@
     <value>고급...</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
-    <value>Always include all database objects</value>
+    <value>모든 데이터베이스 오브젝트 항상 포함하기</value>
   </data>
   <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
-    <value>Cannot generate code while debugging</value>
+    <value>디버깅하는 동안 코드를 생성할 수 없습니다.</value>
   </data>
   <data name="CannotUncheckPrimaryKey" xml:space="preserve">
-    <value>This column is part of the primary key and cannot be unchecked if the table is selected.</value>
+    <value>이 컬럼은 기본키의 일부이며 테이블 선택 시 체크를 해제할 수 없습니다.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>Please check the 'Extensions' output window for issues</value>
+    <value>출력 창의 '확장'에서 오류를 확인해 주세요.</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
-    <value>Please check the 'Extensions' output window for warnings</value>
+    <value>출력 창의 '확장'에서 경고를 확인해 주세요.</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
-    <value>Choose Your Configuration File</value>
+    <value>구성 파일 선택</value>
   </data>
   <data name="ChooseDatabaseConnection" xml:space="preserve">
-    <value>Choose Your Data Connection</value>
+    <value>데이터베이스 연결 선택</value>
   </data>
   <data name="ChooseDatabaseObjects" xml:space="preserve">
-    <value>Choose Your Database Objects</value>
+    <value>데이터베이스 오브젝트 선택</value>
   </data>
   <data name="ChooseSchemas" xml:space="preserve">
-    <value>Choose Your Schemas</value>
+    <value>스키마 선택</value>
   </data>
   <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
-    <value>Choose Your SQL Server Database project</value>
+    <value>SQL 서버 데이터베이스 프로젝트 선택</value>
   </data>
   <data name="CodeGeneration" xml:space="preserve">
     <value>코드 생성</value>
@@ -193,88 +193,88 @@
     <value>컨텍스트 이름이 필요합니다.</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>Customize code using templates</value>
+    <value>템플릿을 사용한 코드 커스터마이즈</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
-    <value>Database connection not found, cannot refresh</value>
+    <value>데이터베이스 연결을 찾을 수 없습니다. 새로 고침에 실패했습니다.</value>
   </data>
   <data name="DbContextOnly" xml:space="preserve">
-    <value>DbContext only</value>
+    <value>DbContext 전용</value>
   </data>
   <data name="DbContextPath" xml:space="preserve">
-    <value>DbContext path (f.ex. Data) - optional</value>
+    <value>DbContext 경로 (예 : Data) - 선택 사항</value>
   </data>
   <data name="DbContextSubNamespace" xml:space="preserve">
-    <value>DbContext sub-namespace (overrides path) - optional</value>
+    <value>DbContext 하위 네임스페이스 (경로를 대체합니다) - 선택 사항</value>
   </data>
   <data name="DDEXProviderExperience" xml:space="preserve">
-    <value>Install DDEX Provider for better experience</value>
+    <value>더 나은 경험을 위해 DDEX 프로바이더 설치하기</value>
   </data>
   <data name="EFCoreVersionTip" xml:space="preserve">
-    <value>Choose Your EF Core version</value>
+    <value>EF Core 버전 선택</value>
   </data>
   <data name="EntityTypesAndContext" xml:space="preserve">
-    <value>EntityTypes &amp; DbContext</value>
+    <value>EntityTypes과 DbContext</value>
   </data>
   <data name="EntityTypesOnly" xml:space="preserve">
-    <value>EntityTypes only</value>
+    <value>EntityTypes 전용</value>
   </data>
   <data name="EntityTypesPath" xml:space="preserve">
-    <value>EntityTypes path (f.ex. Models) - optional</value>
+    <value>EntityTypes 경로 (예 : Models) - 선택 사항</value>
   </data>
   <data name="EntityTypesSubNamespace" xml:space="preserve">
-    <value>EntityTypes sub-namespace (overrides path) - optional</value>
+    <value>EntityTypes 하위 네임스페이스 (경로를 대체합니다) - 선택 사항</value>
   </data>
   <data name="FileLayout" xml:space="preserve">
-    <value>File layout</value>
+    <value>파일 레이아웃</value>
   </data>
   <data name="FilterSchemas" xml:space="preserve">
-    <value>Filter schemas</value>
+    <value>스키마 필터링하기</value>
   </data>
   <data name="Functions" xml:space="preserve">
-    <value>Functions</value>
+    <value>함수</value>
   </data>
   <data name="GenerateEFCoreModelInProject" xml:space="preserve">
-    <value>Choose Your Settings for Project {0}</value>
+    <value>프로젝트 {0}에 대한 설정 선택</value>
   </data>
   <data name="GeneratingCode" xml:space="preserve">
-    <value>Generating code...</value>
+    <value>코드 생성하는 중...</value>
   </data>
   <data name="GettingReadyToConnect" xml:space="preserve">
-    <value>Getting ready to connect...</value>
+    <value>연결 준비하는 중...</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>도움말</value>
   </data>
   <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
-    <value>Include connection string in generated code</value>
+    <value>생성된 코드에 연결 문자열 포함</value>
   </data>
   <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
-    <value>Install the EF Core provider package in the project</value>
+    <value>프로젝트에 EF Core 프로바이더 패키지 설치</value>
   </data>
   <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
-    <value>Installing EF Core provider package</value>
+    <value>EF Core 프로바이더 패키지 설치하는 중</value>
   </data>
   <data name="LoadingDatabaseObjects" xml:space="preserve">
-    <value>Loading database objects...</value>
+    <value>데이터베이스 오브젝트 불러오는 중...</value>
   </data>
   <data name="LoadingOptions" xml:space="preserve">
-    <value>Loading options...</value>
+    <value>옵션 불러오는 중...</value>
   </data>
   <data name="MapHierarchyId" xml:space="preserve">
-    <value>Map HierarchyId</value>
+    <value>HierarchyId 매핑</value>
   </data>
   <data name="MapNodaTimeTypes" xml:space="preserve">
-    <value>Map Noda Time types</value>
+    <value>Noda Time 타입 매핑</value>
   </data>
   <data name="Mapping" xml:space="preserve">
-    <value>Mapping</value>
+    <value>매핑</value>
   </data>
   <data name="MapSpatialTypes" xml:space="preserve">
-    <value>Map spatial types</value>
+    <value>공간 데이터 타입 매핑</value>
   </data>
   <data name="ModelGeneratedSuccesfully" xml:space="preserve">
-    <value>Model generated successfully.</value>
+    <value>모델 생성에 성공했습니다.</value>
   </data>
   <data name="Namespace" xml:space="preserve">
     <value>네임스페이스</value>
@@ -283,141 +283,141 @@
     <value>네임스페이스가 필요합니다.</value>
   </data>
   <data name="Naming" xml:space="preserve">
-    <value>Naming</value>
+    <value>이름 정하기</value>
   </data>
   <data name="NewNameCannotBeEmpty" xml:space="preserve">
-    <value>New name cannot be empty</value>
+    <value>새 이름은 빈 값이 될 수 없습니다.</value>
   </data>
   <data name="NoPrimaryKey" xml:space="preserve">
-    <value>This table has no primary key defined.</value>
+    <value>이 테이블은 기본키가 정의되어 있지 않습니다.</value>
   </data>
   <data name="PackageNotFoundInProject" xml:space="preserve">
-    <value>The "{0}" NuGet package was not found in the project - it must be installed in order to build.</value>
+    <value>프로젝트에서 NuGet 패키지 "{0}"을 찾을 수 없습니다. - 빌드하려면 설치해야 합니다.</value>
   </data>
   <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
-    <value>Pluralize or singularize generated object names (English)</value>
+    <value>생성된 오브젝트 이름을 복수형 또는 단수형으로 변환 (영어)</value>
   </data>
   <data name="POCOEntities" xml:space="preserve">
-    <value>POCO entities</value>
+    <value>POCO 엔티티</value>
   </data>
   <data name="Rate" xml:space="preserve">
-    <value>⭐ Rate</value>
+    <value>⭐ 평가</value>
   </data>
   <data name="RateTip" xml:space="preserve">
-    <value>Let me know if you like this free tool</value>
+    <value>이 도구가 마음에 들면 알려주세요.</value>
   </data>
   <data name="ReleaseNotes" xml:space="preserve">
-    <value>Release Notes</value>
+    <value>릴리즈 노트</value>
   </data>
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
-    <value>Remove constructor from entity classes (experimental)</value>
+    <value>엔티티 클래스에서 생성자 제거 (실험적 기능)</value>
   </data>
   <data name="RemoveDefaultConstructor" xml:space="preserve">
-    <value>Remove default DbContext constructor</value>
+    <value>DbContext 기본 생성자 제거 (실험적 기능)</value>
   </data>
   <data name="RemoveNavigationsFromEntities" xml:space="preserve">
-    <value>Remove navigations from entity classes (experimental)</value>
+    <value>엔티티 클래스에서 네비게이션 제거 (실험적 기능)</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
-    <value>Remove selected connection</value>
+    <value>선택한 연결 제거</value>
   </data>
   <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
-    <value>Remove SQL default from bool columns</value>
+    <value>bool 컬럼에서 SQL 기본값 제거</value>
   </data>
   <data name="RenamingNavigations" xml:space="preserve">
-    <value>Renaming navigations</value>
+    <value>네비게이션 이름 바꾸기</value>
   </data>
   <data name="ReportingResult" xml:space="preserve">
-    <value>Reporting result...</value>
+    <value>결과 보고하는 중...</value>
   </data>
   <data name="ReverseEngineerCompleted" xml:space="preserve">
-    <value>Reverse engineer completed in {0}</value>
+    <value>{0}에서 리버스 엔지니어링이 완료되었습니다.</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>검색</value>
   </data>
   <data name="SearchForObjects" xml:space="preserve">
-    <value>Search for objects</value>
+    <value>오브젝트 검색</value>
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
-    <value>Split DbContext into Configuration classes (preview)</value>
+    <value>DbContext를 Configuration 클래스로 나누기 (프리뷰)</value>
   </data>
   <data name="SQLiteExperience" xml:space="preserve">
-    <value>Improve your SQLite experience</value>
+    <value>SQLite 경험 향상시키기</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
-    <value>The credentials in use has not been granted 'VIEW DEFINITION' rights, so functionality may be degraded or faulty.</value>
+    <value>사용하고 있는 자격 증명에 'VIEW DEFINITION' 권한이 부여되지 않아 기능에 문제가 발생할 수 있습니다.</value>
   </data>
   <data name="SQLServerVersionNotSupported" xml:space="preserve">
-    <value>SQL Server version {0} may not be supported.</value>
+    <value>SQL Server {0} 버전은 지원되지 않을 수 있습니다.</value>
   </data>
   <data name="StoredProcedures" xml:space="preserve">
-    <value>Stored procedures</value>
+    <value>저장 프로시저</value>
   </data>
   <data name="StoredProceduresReturnList" xml:space="preserve">
-    <value>Stored procedures return List (default array)</value>
+    <value>저장 프로시저 목록 (기본 배열)</value>
   </data>
   <data name="T4TemplatePath" xml:space="preserve">
-    <value>T4 Template path - optional</value>
+    <value>T4 템플릿 경로 - 선택 사항</value>
   </data>
   <data name="Tables" xml:space="preserve">
-    <value>Tables</value>
+    <value>테이블</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>Unable to add connection, maybe the provider is not supported</value>
+    <value>연결을 추가할 수 없습니다. 공급자가 지원하지 않을 수 있습니다.</value>
   </data>
   <data name="UnableToAddToList" xml:space="preserve">
-    <value>Unable to add to list</value>
+    <value>목록에 추가할 수 없습니다.</value>
   </data>
   <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
-    <value>Unable to build selected Database Project</value>
+    <value>선택한 데이터베이스 프로젝트를 빌드할 수 없습니다.</value>
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
-    <value>Unable to remove connection</value>
+    <value>연결을 제거할 수 없습니다.</value>
   </data>
   <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
-    <value>If unchecked, EF Core 3.1 will be used</value>
+    <value>이 항목을 선택하지 않으면 EF Core 3.1을 사용합니다.</value>
   </data>
   <data name="UncheckingFileRemoved" xml:space="preserve">
-    <value>Unchecking an item may cause the related file to be removed</value>
+    <value>이 항목을 선택하지 않으면 관련 파일이 삭제될 수 있습니다.</value>
   </data>
   <data name="UnsupportedProvider" xml:space="preserve">
-    <value>Unsupported provider</value>
+    <value>지원하지 않는 공급자</value>
   </data>
   <data name="UseDataAnnotations" xml:space="preserve">
-    <value>Use DataAnnotation attributes to configure the model</value>
+    <value>DataAnnotation 속성을 사용해 모듈 구성</value>
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
-    <value>Use EF6 "Classic" pluralizer</value>
+    <value>EF6 "Classic" 복수화 사용</value>
   </data>
   <data name="UseManyToManyEntity" xml:space="preserve">
-    <value>Use many to many entity</value>
+    <value>다대다 (Many to Many) 엔티티 사용</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
-    <value>Use table and column names directly from the database</value>
+    <value>데이터베이스에서 직접 테이블과 컬럼 이름을 가져와서 사용</value>
   </data>
   <data name="UseNullableReferenceTypes" xml:space="preserve">
-    <value>Use nullable reference types</value>
+    <value>Nullable 레퍼런스 타입 사용</value>
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
-    <value>Use regular expression</value>
+    <value>정규 표현식 사용</value>
   </data>
   <data name="UserGuide" xml:space="preserve">
-    <value>User Guide</value>
+    <value>사용자 가이드</value>
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
-    <value>Use schema folder separation (experimental)</value>
+    <value>스키마 폴더 분리 사용 (실험적 기능)</value>
   </data>
   <data name="UseSchemaNamespaces" xml:space="preserve">
-    <value>Use schema namespaces separation (experimental)</value>
+    <value>스키마 네임스페이스 분리 사용 (실험적 기능)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
-    <value>Use text search</value>
+    <value>텍스트 검색 사용</value>
   </data>
   <data name="Views" xml:space="preserve">
-    <value>Views</value>
+    <value>뷰</value>
   </data>
   <data name="WhatToGenerate" xml:space="preserve">
-    <value>What to generate</value>
+    <value>생성할 내용</value>
   </data>
 </root>

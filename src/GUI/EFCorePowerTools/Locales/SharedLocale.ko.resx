@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>오류가 발생했습니다. 자세한 내용은 "확장 프로그램" 출력 창을 확인해 주세요.</value>
+    <value>오류가 발생했습니다. 자세한 내용은 출력 창의 "확장"을 확인해 주세요.</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
     <value>빌드에 실패했습니다. DbContext 클래스를 찾을 수 없습니다.</value>
