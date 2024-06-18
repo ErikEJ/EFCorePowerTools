@@ -124,10 +124,10 @@
     <value>데이터베이스 연결 추가</value>
   </data>
   <data name="CannotCompareContextToDatabaseWhileDebugging" xml:space="preserve">
-    <value>디버깅하는 동안 컨텍스트를 데이터베이스와 비교할 수 없습니다.</value>
+    <value>디버깅 중에는 컨텍스트를 데이터베이스와 비교할 수 없습니다</value>
   </data>
   <data name="CannotSupportVersion" xml:space="preserve">
-    <value>버전 {0}을(를) 지원할 수 없으며, 미리보기는 제한적으로 지원됩니다. Microsoft.EntityFrameworkCore.Design 미리보기를 수동으로 설치해 볼 수 있습니다.</value>
+    <value>버전 {0}은(는) 지원되지 않습니다. 미리보기 지원에는 제한이 있으므로 주의하십시오. Microsoft.EntityFrameworkCore.Design 미리보기를 수동으로 설치해 볼 수 있습니다.</value>
   </data>
   <data name="ChooseDatabaseContexts" xml:space="preserve">
     <value>데이터베이스 및 컨텍스트 선택</value>
@@ -136,10 +136,10 @@
     <value>닫기</value>
   </data>
   <data name="CompareCompletedIn" xml:space="preserve">
-    <value>{0}에서 비교 완료</value>
+    <value>{0}에서 비교 완료되었습니다</value>
   </data>
   <data name="ComparingDatabaseWithContexts" xml:space="preserve">
-    <value>데이터베이스와 컨텍스트 비교...</value>
+    <value>데이터베이스와 컨텍스트 비교 중...</value>
   </data>
   <data name="ComparisonResult" xml:space="preserve">
     <value>비교 결과</value>
@@ -166,13 +166,13 @@
     <value>유형</value>
   </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
-    <value>EFCore.SchemaCompare 설치 중입니다, 명령어를 다시 시도해 주세요.</value>
+    <value>EFCore.SchemaCompare 설치 중입니다, 명령어를 재시도 해주세요.</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>데이터 로드 중</value>
   </data>
   <data name="NoContextsSelected" xml:space="preserve">
-    <value>컨텍스트가 선택되지 않음</value>
+    <value>컨텍스트가 선택되지 않았습니다</value>
   </data>
   <data name="RemoveSelectedConnection" xml:space="preserve">
     <value>선택한 연결 제거</value>
@@ -181,16 +181,16 @@
     <value>차이점만 표시</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>연결을 추가할 수 없는 경우, 지원되지 않는 공급자일 수 있습니다.</value>
+    <value>연결을 추가할 수 없습니다, 지원되지 않는 공급자일 수 있습니다</value>
   </data>
   <data name="UnableToCollectDbContextInformation" xml:space="preserve">
-    <value>DbContext 정보를 수집할 수 없습니다.</value>
+    <value>DbContext 정보를 수집할 수 없습니다</value>
   </data>
   <data name="UnableToCollectSchemaCompareInformation" xml:space="preserve">
-    <value>SchemaCompare 정보를 수집할 수 없습니다.</value>
+    <value>SchemaCompare 정보를 수집할 수 없습니다</value>
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
-    <value>연결을 제거할 수 없습니다.</value>
+    <value>연결을 제거할 수 없습니다</value>
   </data>
   <data name="VersionSupported" xml:space="preserve">
     <value>EF Core 6 이상만 지원됩니다.</value>
