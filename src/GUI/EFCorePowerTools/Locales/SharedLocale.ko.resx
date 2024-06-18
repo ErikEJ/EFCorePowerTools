@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnErrorOccurred" xml:space="preserve">
-    <value>오류가 발생했습니다. "확장" 출력창의 내용을 확인하세요.</value>
+    <value>오류가 발생했습니다. 자세한 내용은 "확장" 출력창의 내용을 확인하세요.</value>
   </data>
   <data name="BuildFailed" xml:space="preserve">
     <value>빌드에 실패했습니다. DbContext 클래스를 찾을 수 없습니다.</value>
@@ -130,10 +130,10 @@
     <value>닫기</value>
   </data>
   <data name="EFCoreVersionNotFound" xml:space="preserve">
-    <value>프로젝트에서 EF Core 3.1 또는 최신 버전을 찾을 수 없습니다.</value>
+    <value>프로젝트에서 EF Core 3.1 또는 상위 버전을 찾을 수 없습니다.</value>
   </data>
   <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
-    <value>EFCore.Design {0} 버전을 설치하고 있습니다. 명령을 다시 실행해주세요.</value>
+    <value>EFCore.Design {0} 버전을 설치하고 있습니다. 명령을 다시 시도해주세요.</value>
   </data>
   <data name="InvalidName" xml:space="preserve">
     <value>유효하지 않은 이름</value>
@@ -145,7 +145,7 @@
     <value>선택한 프로젝트 유형에 TargetFrameworkMoniker가 없습니다.</value>
   </data>
   <data name="SupportedFramework" xml:space="preserve">
-    <value>.NET Core 3.0+ 프로젝트만 지원됩니다 - TargetFrameworkMoniker</value>
+    <value>.NET Core 3.0 이상 프로젝트만 지원됩니다 - TargetFrameworkMoniker</value>
   </data>
   <data name="UnableToLocateProjectAssembly" xml:space="preserve">
     <value>프로젝트 어셈블리를 찾을 수 없습니다.</value>

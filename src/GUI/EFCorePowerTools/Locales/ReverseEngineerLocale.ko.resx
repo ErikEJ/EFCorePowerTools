@@ -154,10 +154,10 @@
     <value>이 컬럼은 기본키(primary key)의 일부이며, 테이블이 선택된 경우 체크를 해제할 수 없습니다.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>'확장' 출력창에서 문제를 확인하세요.</value>
+    <value>'확장' 출력창에서 문제 내용을 확인하세요.</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
-    <value>'확장' 출력창에서 경고를 확인하세요.</value>
+    <value>'확장' 출력창에서 경고 내용을 확인하세요.</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
     <value>구성 파일 선택</value>
@@ -229,7 +229,7 @@
     <value>파일 레이아웃</value>
   </data>
   <data name="FilterSchemas" xml:space="preserve">
-    <value>필터 스키마</value>
+    <value>스키마 필터링하기</value>
   </data>
   <data name="Functions" xml:space="preserve">
     <value>함수</value>
@@ -238,10 +238,10 @@
     <value>프로젝트 {0}에 대한 설정 선택</value>
   </data>
   <data name="GeneratingCode" xml:space="preserve">
-    <value>코드 생성 중...</value>
+    <value>코드를 생성하는 중...</value>
   </data>
   <data name="GettingReadyToConnect" xml:space="preserve">
-    <value>연결 준비 중...</value>
+    <value>연결을 준비하는 중...</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>도움말</value>
@@ -250,7 +250,7 @@
     <value>생성된 코드에 연결 문자열 포함</value>
   </data>
   <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
-    <value>프로젝트에 EF Core 제공자 패키지 설치</value>
+    <value>프로젝트에 EF Core 공급자 패키지 설치</value>
   </data>
   <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
     <value>EF Core 패키지 설치 중</value>
@@ -346,7 +346,7 @@
     <value>SQLite 경험을 향상시키기</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
-    <value>현재 적용중인 자격 증명에 'VIEW DEFINITION' 권한이 부여되지 않아 기능에 문제가 발생할 수 있습니다.</value>
+    <value>현재 자격 증명에 'VIEW DEFINITION' 권한이 부여되지 않아 기능에 문제가 발생할 수 있습니다.</value>
   </data>
   <data name="SQLServerVersionNotSupported" xml:space="preserve">
     <value>SQL Server {0} 버전은 지원되지 않을 수 있습니다.</value>
@@ -364,34 +364,34 @@
     <value>테이블</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>연결을 추가하지 못했습니다. 지원하지 않는 제공자로 인해 문제가 발생했을 수 있습니다.</value>
+    <value>연결을 추가하지 못했습니다. 지원하지 않는 공급자로 인해 문제가 발생할 수 있습니다.</value>
   </data>
   <data name="UnableToAddToList" xml:space="preserve">
-    <value>리스트에 추가하지 못했습니다.</value>
+    <value>목록에 추가하지 못했습니다.</value>
   </data>
   <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
-    <value>선택된 데이터베이스 프로젝트를 빌드하지 못했습니다.</value>
+    <value>선택된 데이터베이스 프로젝트를 빌드할 수 없습니다.</value>
   </data>
   <data name="UnableToRemoveConnection" xml:space="preserve">
     <value>연결을 제거할 수 없습니다.</value>
   </data>
   <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
-    <value>선택하지 않을 경우 EF Core 3.1 버전이 사용됩니다.</value>
+    <value>이 항목을 선택하지 않을 경우 EF Core 3.1 버전이 사용됩니다.</value>
   </data>
   <data name="UncheckingFileRemoved" xml:space="preserve">
-    <value>이 항목을 선택하면 관련된 파일이 삭제될 수 있습니다.</value>
+    <value>이 항목을 선택하지 않으면 관련된 파일이 삭제될 수 있습니다.</value>
   </data>
   <data name="UnsupportedProvider" xml:space="preserve">
-    <value>지원되지 않는 제공자</value>
+    <value>지원하지 않는 공급자</value>
   </data>
   <data name="UseDataAnnotations" xml:space="preserve">
-    <value>모듈 구성에 DataAnnotation 속성 사용</value>
+    <value>DataAnnotation 속성 사용하여 모델 구성</value>
   </data>
   <data name="UseEF6Pluralizer" xml:space="preserve">
     <value>EF6 "Classic" 복수화 사용</value>
   </data>
   <data name="UseManyToManyEntity" xml:space="preserve">
-    <value>Many to many(M:N) 엔티티 사용</value>
+    <value>다대다 (Many to many; M:N) 엔티티 사용</value>
   </data>
   <data name="UseNamesFromDatabase" xml:space="preserve">
     <value>데이터베이스에서 테이블 및 컬럼명을 직접적으로 가져와 사용하기</value>
@@ -400,16 +400,16 @@
     <value>Nullable 레퍼런스 타입 사용</value>
   </data>
   <data name="UseRegularExpression" xml:space="preserve">
-    <value>정규표현식 사용</value>
+    <value>정규 표현식 사용</value>
   </data>
   <data name="UserGuide" xml:space="preserve">
-    <value>유저 가이드</value>
+    <value>사용자 가이드</value>
   </data>
   <data name="UseSchemaFolders" xml:space="preserve">
-    <value>스키마 폴더 분리 (실험적)</value>
+    <value>스키마 폴더 분리 사용 (실험적)</value>
   </data>
   <data name="UseSchemaNamespaces" xml:space="preserve">
-    <value>스키마 네임스페이스 분리 (실험적)</value>
+    <value>스키마 네임스페이스 분리 사용 (실험적)</value>
   </data>
   <data name="UseTextSearch" xml:space="preserve">
     <value>텍스트 검색 사용</value>

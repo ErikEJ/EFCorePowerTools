@@ -127,7 +127,7 @@
     <value>Entity Framework Core Power Tools</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>설계 시 유용한 EF Core DbContext 기능을 Visual Studio 솔루션 탐색기 컨텍스트 메뉴에 추가합니다.</value>
+    <value>Visual Studio 솔루션 탐색기 컨텍스트 메뉴에 설계 시 유용한 EF Core DbContext 기능을 추가합니다.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
