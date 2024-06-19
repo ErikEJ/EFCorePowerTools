@@ -99,6 +99,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Locales\ButtonLocale.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ButtonLocale.resx</DependentUpon>
+    </Compile>
     <Compile Include="Locales\ModelAnalyzerLocale.Designer.cs">
       <DependentUpon>ModelAnalyzerLocale.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -279,6 +284,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ButtonLocale.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ButtonLocale.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\CompareLocale.cs.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.de.resx" />

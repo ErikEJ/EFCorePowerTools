@@ -319,10 +319,22 @@ namespace EFCorePowerTools
         private async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            var menuCommand = sender as MenuCommand;
+            var menuCommand = sender as OleMenuCommand;
             if (menuCommand == null || (await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
             {
                 return;
+            }
+
+            switch ((uint)menuCommand.CommandID.ID)
+            {
+                case PkgCmdIDList.cmdidReverseEngineerEdit:
+                    menuCommand.Text = ButtonLocale.cmdidReverseEngineerEdit;
+                    break;
+                case PkgCmdIDList.cmdidReverseEngineerRefresh:
+                    menuCommand.Text = ButtonLocale.cmdidReverseEngineerRefresh;
+                    break;
+                default:
+                    break;
             }
 
             menuCommand.Visible = false;
@@ -348,12 +360,55 @@ namespace EFCorePowerTools
         private async void OnProjectMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            if (!(sender is MenuCommand menuCommand))
+            if (!(sender is OleMenuCommand menuCommand))
             {
                 return;
             }
 
             menuCommand.Visible = false;
+
+            switch ((uint)menuCommand.CommandID.ID)
+            {
+                case PkgCmdIDList.cmdidAbout:
+                    menuCommand.Text = ButtonLocale.cmdidAbout;
+                    break;
+                case PkgCmdIDList.cmdidDbCompare:
+                    menuCommand.Text = ButtonLocale.cmdidDbCompare;
+                    break;
+                case PkgCmdIDList.cmdidDbErDiagram:
+                    menuCommand.Text = ButtonLocale.cmdidDbErDiagram;
+                    break;
+                case PkgCmdIDList.cmdidDbDgml:
+                    menuCommand.Text = ButtonLocale.cmdidDbDgml;
+                    break;
+                case PkgCmdIDList.cmdidDebugViewBuild:
+                    menuCommand.Text = ButtonLocale.cmdidDebugViewBuild;
+                    break;
+                case PkgCmdIDList.cmdidDgmlBuild:
+                    menuCommand.Text = ButtonLocale.cmdidDgmlBuild;
+                    break;
+                case PkgCmdIDList.cmdidDgmlNuget:
+                    menuCommand.Text = ButtonLocale.cmdidDgmlNuget;
+                    break;
+                case PkgCmdIDList.cmdidOptions:
+                    menuCommand.Text = ButtonLocale.cmdidOptions;
+                    break;
+                case PkgCmdIDList.cmdidReverseEngineerCodeFirst:
+                    menuCommand.Text = ButtonLocale.cmdidReverseEngineerCodeFirst;
+                    break;
+                case PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh:
+                    menuCommand.Text = ButtonLocale.cmdidReverseEngineerCodeFirstRefresh;
+                    break;
+                case PkgCmdIDList.cmdidSqlBuild:
+                    menuCommand.Text = ButtonLocale.cmdidSqlBuild;
+                    break;
+                case PkgCmdIDList.cmdidT4Drop:
+                    menuCommand.Text = ButtonLocale.cmdidT4Drop;
+                    break;
+
+                default:
+                    break;
+            }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions
@@ -402,11 +457,23 @@ namespace EFCorePowerTools
         private async void OnSqlProjectMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            var menuCommand = sender as MenuCommand;
+            var menuCommand = sender as OleMenuCommand;
 
             if (menuCommand == null)
             {
                 return;
+            }
+
+            switch ((uint)menuCommand.CommandID.ID)
+            {
+                case PkgCmdIDList.cmdidSqlprojCreate:
+                    menuCommand.Text = ButtonLocale.cmdidSqlprojCreate;
+                    break;
+                case PkgCmdIDList.cmdidSqlprojAnalyze:
+                    menuCommand.Text = ButtonLocale.cmdidSqlprojAnalyze;
+                    break;
+                default:
+                    break;
             }
 
             menuCommand.Visible = false;
@@ -448,11 +515,26 @@ namespace EFCorePowerTools
         private async void OnServerExplorerDatabaseBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
-            var menuCommand = sender as MenuCommand;
+            var menuCommand = sender as OleMenuCommand;
 
             if (menuCommand == null)
             {
                 return;
+            }
+
+            switch ((uint)menuCommand.CommandID.ID)
+            {
+                case PkgCmdIDList.cmdidServerExplorerReverseEngineer:
+                    menuCommand.Text = ButtonLocale.cmdidServerExplorerReverseEngineer;
+                    break;
+                case PkgCmdIDList.cmdidServerExplorerDiagram:
+                    menuCommand.Text = ButtonLocale.cmdidServerExplorerDiagram;
+                    break;
+                case PkgCmdIDList.cmdidServerExplorerAnalyze:
+                    menuCommand.Text = ButtonLocale.cmdidServerExplorerAnalyze;
+                    break;
+                default:
+                    break;
             }
 
             menuCommand.Visible = false;
