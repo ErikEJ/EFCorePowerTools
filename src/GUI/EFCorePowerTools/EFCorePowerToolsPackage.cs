@@ -134,192 +134,157 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
-                    var menuItem3 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
                         new CommandID(
                             GuidList.GuidDbContextPackageCmdSet,
-                            (int)PkgCmdIDList.cmdidDgmlBuild));
-                    oleMenuCommandService.AddCommand(menuItem3);
+                            (int)PkgCmdIDList.cmdidDgmlBuild)));
 
-                    var menuItem5 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
                         new CommandID(
                             GuidList.GuidDbContextPackageCmdSet,
-                            (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst));
-                    oleMenuCommandService.AddCommand(menuItem5);
+                            (int)PkgCmdIDList.cmdidReverseEngineerCodeFirst)));
 
-                    var menuItem55 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
                         new CommandID(
                             GuidList.GuidDbContextPackageCmdSet,
-                            (int)PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh));
-                    oleMenuCommandService.AddCommand(menuItem55);
+                            (int)PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh)));
 
-                    var menuCommandId6 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidT4Drop);
-                    var menuItem6 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId6);
-                    oleMenuCommandService.AddCommand(menuItem6);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidT4Drop)));
 
-                    var menuCommandId7 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidAbout);
-                    var menuItem7 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId7);
-                    oleMenuCommandService.AddCommand(menuItem7);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidAbout)));
 
-                    var menuCommandId8 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidDgmlNuget);
-                    var menuItem8 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId8);
-                    oleMenuCommandService.AddCommand(menuItem8);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidDgmlNuget)));
 
-                    var menuCommandId9 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidSqlBuild);
-                    var menuItem9 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId9);
-                    oleMenuCommandService.AddCommand(menuItem9);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidSqlBuild)));
 
-                    var menuCommandId10 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidDebugViewBuild);
-                    var menuItem10 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId10);
-                    oleMenuCommandService.AddCommand(menuItem10);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidDebugViewBuild)));
 
-                    var menuCommandId12 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidDbCompare);
-                    var menuItem12 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId12);
-                    oleMenuCommandService.AddCommand(menuItem12);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidDbCompare)));
 
-                    var menuCommandId13 = new CommandID(
-                        GuidList.GuidSqlprojContext,
-                        (int)PkgCmdIDList.cmdidSqlprojCreate);
-                    var menuItem13 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnSqlProjectContextMenuInvokeHandler,
                         null,
                         OnSqlProjectMenuBeforeQueryStatus,
-                        menuCommandId13);
-                    oleMenuCommandService.AddCommand(menuItem13);
+                        new CommandID(
+                            GuidList.GuidSqlprojContext,
+                            (int)PkgCmdIDList.cmdidSqlprojCreate)));
 
-                    var menuCommandId17 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidSqlprojAnalyze);
-                    var menuItem17 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnSqlProjectContextMenuInvokeHandler,
                         null,
                         OnSqlProjectMenuBeforeQueryStatus,
-                        menuCommandId17);
-                    oleMenuCommandService.AddCommand(menuItem17);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidSqlprojAnalyze)));
 
-                    var menuCommandId29 = new CommandID(
-                        GuidList.GuidServerExplorerMenu,
-                        (int)PkgCmdIDList.cmdidServerExplorerDiagram);
-                    var menuItem29 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnServerExplorerDatabaseMenuInvokeHandler,
                         null,
                         OnServerExplorerDatabaseBeforeQueryStatus,
-                        menuCommandId29);
-                    oleMenuCommandService.AddCommand(menuItem29);
+                        new CommandID(
+                            GuidList.GuidServerExplorerMenu,
+                            (int)PkgCmdIDList.cmdidServerExplorerDiagram)));
 
-                    var menuCommandId30 = new CommandID(
-                        GuidList.GuidServerExplorerMenu,
-                        (int)PkgCmdIDList.cmdidServerExplorerReverseEngineer);
-                    var menuItem30 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnServerExplorerDatabaseMenuInvokeHandler,
                         null,
                         OnServerExplorerDatabaseBeforeQueryStatus,
-                        menuCommandId30);
-                    oleMenuCommandService.AddCommand(menuItem30);
+                        new CommandID(
+                            GuidList.GuidServerExplorerMenu,
+                            (int)PkgCmdIDList.cmdidServerExplorerReverseEngineer)));
 
-                    var menuCommandId31 = new CommandID(
-                        GuidList.GuidServerExplorerMenu,
-                        (int)PkgCmdIDList.cmdidServerExplorerAnalyze);
-                    var menuItem31 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnServerExplorerDatabaseMenuInvokeHandler,
                         null,
                         OnServerExplorerDatabaseBeforeQueryStatus,
-                        menuCommandId31);
-                    oleMenuCommandService.AddCommand(menuItem31);
+                        new CommandID(
+                            GuidList.GuidServerExplorerMenu,
+                            (int)PkgCmdIDList.cmdidServerExplorerAnalyze)));
 
-                    var menuCommandId14 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidDbDgml);
-                    var menuItem14 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId14);
-                    oleMenuCommandService.AddCommand(menuItem14);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidDbDgml)));
 
-                    var menuCommandId15 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidOptions);
-                    var menuItem15 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId15);
-                    oleMenuCommandService.AddCommand(menuItem15);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidOptions)));
 
-                    var menuCommandId16 = new CommandID(
-                        GuidList.GuidDbContextPackageCmdSet,
-                        (int)PkgCmdIDList.cmdidDbErDiagram);
-                    var menuItem16 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
                         OnProjectMenuBeforeQueryStatus,
-                        menuCommandId16);
-                    oleMenuCommandService.AddCommand(menuItem16);
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidDbErDiagram)));
 
-                    var menuCommandId1101 = new CommandID(
-                        GuidList.GuidReverseEngineerMenu,
-                        (int)PkgCmdIDList.cmdidReverseEngineerEdit);
-                    var menuItem251 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnReverseEngineerConfigFileMenuInvokeHandler,
                         null,
                         OnReverseEngineerConfigFileMenuBeforeQueryStatus,
-                        menuCommandId1101);
-                    oleMenuCommandService.AddCommand(menuItem251);
+                        new CommandID(
+                            GuidList.GuidReverseEngineerMenu,
+                            (int)PkgCmdIDList.cmdidReverseEngineerEdit)));
 
-                    var menuCommandId1102 = new CommandID(
-                        GuidList.GuidReverseEngineerMenu,
-                        (int)PkgCmdIDList.cmdidReverseEngineerRefresh);
-                    var menuItem252 = new OleMenuCommand(
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnReverseEngineerConfigFileMenuInvokeHandler,
                         null,
                         OnReverseEngineerConfigFileMenuBeforeQueryStatus,
-                        menuCommandId1102);
-                    oleMenuCommandService.AddCommand(menuItem252);
+                        new CommandID(
+                            GuidList.GuidReverseEngineerMenu,
+                            (int)PkgCmdIDList.cmdidReverseEngineerRefresh)));
                 }
 
                 typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
