@@ -53,7 +53,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix -ovsix -y
         dir /a:-d /s /b "vsix" | find /c ":\" > filecount.txt
-        findstr "75" filecount.txt # 76 files in the vsix before BuildTools update - System.Numerics.Vectors.dll is missing
+        findstr "75" filecount.txt
 
     - name: Move build output
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && github.event_name == 'push'  
