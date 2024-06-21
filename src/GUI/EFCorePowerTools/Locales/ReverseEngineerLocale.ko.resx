@@ -124,10 +124,10 @@
     <value>커스텀 연결 추가</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
-    <value>커스텀 연결 추가</value>
+    <value>커스텀 데이터베이스 연결 추가</value>
   </data>
   <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
-    <value>수동으로 정의된 연결 추가</value>
+    <value>수동으로 데이터베이스 연결을 정의합니다.</value>
   </data>
   <data name="AddDatabaseConnection" xml:space="preserve">
     <value>데이터베이스 연결 추가</value>
@@ -154,7 +154,7 @@
     <value>이 컬럼은 기본키(primary key)의 일부이며, 테이블이 선택된 경우 체크를 해제할 수 없습니다.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>'확장' 출력창에서 문제 내용을 확인하세요.</value>
+    <value>'확장' 출력창에서 오류 내용을 확인하세요.</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
     <value>'확장' 출력창에서 경고 내용을 확인하세요.</value>
