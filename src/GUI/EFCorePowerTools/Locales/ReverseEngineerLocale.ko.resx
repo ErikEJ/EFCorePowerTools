@@ -157,7 +157,7 @@
     <value>'확장' 출력창에서 오류 내용을 확인하세요.</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
-    <value>'확장' 출력창에서 경고 내용을 확인하세요.</value>
+    <value>'확장' 출력 창에서 경고 내용을 확인하세요.</value>
   </data>
   <data name="ChooseConfigurationFile" xml:space="preserve">
     <value>구성 파일 선택</value>
