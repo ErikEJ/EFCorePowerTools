@@ -181,7 +181,7 @@
     <value>차이점만 표시</value>
   </data>
   <data name="UnableToAddConnection" xml:space="preserve">
-    <value>연결을 추가할 수 없습니다, 지원되지 않는 공급자일 수 있습니다</value>
+    <value>연결을 추가할 수 없습니다. 지원되지 않는 공급자일 수 있습니다</value>
   </data>
   <data name="UnableToCollectDbContextInformation" xml:space="preserve">
     <value>DbContext 정보를 수집할 수 없습니다</value>
