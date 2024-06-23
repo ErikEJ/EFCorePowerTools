@@ -133,7 +133,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>T4 템플릿 추가</ButtonText>
+          <ButtonText>T4 스캐폴딩 템플릿 추가</ButtonText>
         </Strings>
       </Button>
 
