@@ -310,7 +310,7 @@
     <value>릴리즈 노트</value>
   </data>
   <data name="RemoveConstructorFromEntities" xml:space="preserve">
-    <value>엔티티 클래스에서 기본 생성자 제거 (실험적)</value>
+    <value>엔티티 클래스에서 생성자 제거 (실험적)</value>
   </data>
   <data name="RemoveDefaultConstructor" xml:space="preserve">
     <value>기본 DbContext 생성자 제거</value>
