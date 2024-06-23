@@ -202,7 +202,7 @@
     <value>DbContext 전용</value>
   </data>
   <data name="DbContextPath" xml:space="preserve">
-    <value>DbContext 경로 (f.ex. Data) - 선택사항</value>
+    <value>DbContext 경로 (예. Data) - 선택사항</value>
   </data>
   <data name="DbContextSubNamespace" xml:space="preserve">
     <value>DbContext 서브-네임스페이스 (기본 경로를 덮어씁니다) - 선택사항</value>
