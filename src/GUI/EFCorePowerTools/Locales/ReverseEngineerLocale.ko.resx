@@ -220,7 +220,7 @@
     <value>EntityTypes 전용</value>
   </data>
   <data name="EntityTypesPath" xml:space="preserve">
-    <value>EntityTypes 경로 (f.ex. Models) - 선택사항</value>
+    <value>EntityTypes 경로 (예. Models) - 선택사항</value>
   </data>
   <data name="EntityTypesSubNamespace" xml:space="preserve">
     <value>EntityTypes 서브-네임스페이스 (기본 경로를 덮어씁니다) - 선택사항</value>
