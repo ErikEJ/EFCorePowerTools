@@ -193,7 +193,7 @@
     <value>컨텍스트 이름은 필수값입니다.</value>
   </data>
   <data name="CustomizeUsingHandlebars" xml:space="preserve">
-    <value>템플릿을 사용하여 코드 커스텀하기</value>
+    <value>템플릿을 사용하여 코드 커스터마이징하기</value>
   </data>
   <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
     <value>데이터베이스 연결을 찾지 못했습니다. 새로고침에 실패했습니다.</value>
