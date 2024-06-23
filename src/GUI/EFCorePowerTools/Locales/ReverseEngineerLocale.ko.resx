@@ -121,7 +121,7 @@
     <value>추가...</value>
   </data>
   <data name="AddAdhocConnection" xml:space="preserve">
-    <value>커스텀 연결 추가</value>
+    <value>커스텀 데이터베이스 연결 추가</value>
   </data>
   <data name="AddAdhocDatabaseConnection" xml:space="preserve">
     <value>커스텀 데이터베이스 연결 추가</value>
