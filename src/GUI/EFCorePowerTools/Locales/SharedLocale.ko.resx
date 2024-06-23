@@ -133,7 +133,7 @@
     <value>프로젝트에서 EF Core 3.1 또는 상위 버전을 찾을 수 없습니다.</value>
   </data>
   <data name="InstallingEfCoreDesignPackage" xml:space="preserve">
-    <value>EFCore.Design {0} 버전을 설치하고 있습니다. 명령을 다시 시도해주세요.</value>
+    <value>EFCore.Design {0} 버전을 설치하고 있습니다. 명령을 다시 시도해 주세요.</value>
   </data>
   <data name="InvalidName" xml:space="preserve">
     <value>유효하지 않은 이름</value>
