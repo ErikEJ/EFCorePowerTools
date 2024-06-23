@@ -166,7 +166,7 @@
     <value>유형</value>
   </data>
   <data name="InstallingEfCoreSchemaCompare" xml:space="preserve">
-    <value>EFCore.SchemaCompare 설치 중입니다, 명령어를 재시도 해주세요.</value>
+    <value>EFCore.SchemaCompare 설치 중입니다. 명령을 다시 시도하세요</value>
   </data>
   <data name="LoadingData" xml:space="preserve">
     <value>데이터 로드 중</value>
