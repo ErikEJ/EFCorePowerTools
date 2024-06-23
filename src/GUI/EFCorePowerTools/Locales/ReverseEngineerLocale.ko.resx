@@ -154,7 +154,7 @@
     <value>이 컬럼은 기본키(primary key)의 일부이며, 테이블이 선택된 경우 체크를 해제할 수 없습니다.</value>
   </data>
   <data name="CheckOutputWindowForErrors" xml:space="preserve">
-    <value>'확장' 출력창에서 오류 내용을 확인하세요.</value>
+    <value>'확장' 출력 창에서 오류 내용을 확인하세요.</value>
   </data>
   <data name="CheckOutputWindowForWarnings" xml:space="preserve">
     <value>'확장' 출력 창에서 경고 내용을 확인하세요.</value>
