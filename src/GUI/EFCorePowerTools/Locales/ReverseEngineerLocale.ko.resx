@@ -253,7 +253,7 @@
     <value>프로젝트에 EF Core 공급자 패키지 설치</value>
   </data>
   <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
-    <value>EF Core 패키지 설치 중</value>
+    <value>EF Core 공급자 패키지 설치 중</value>
   </data>
   <data name="LoadingDatabaseObjects" xml:space="preserve">
     <value>데이터베이스 객체 로드 중...</value>
