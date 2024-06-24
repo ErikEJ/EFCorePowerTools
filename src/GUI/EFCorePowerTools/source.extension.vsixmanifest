@@ -3,14 +3,16 @@
     <Metadata>
         <Identity Id="f4c4712c-ceae-4803-8e52-0e2049d5de9f" Version="2.6.0" Language="en-US" Publisher="ErikEJ" />
         <DisplayName>EF Core Power Tools</DisplayName>
-        <Description xml:space="preserve">Useful design-time DbContext features, added to the Visual Studio Solution Explorer context menu.
+        <Description xml:space="preserve">Useful design-time DbContext and database features, added to the Visual Studio Solution Explorer context menu.
 
 When right-clicking on a C# project, the following context menu functions are available:
 Reverse Engineer - Generates POCO classes, derived DbContext and Code First mapping for an existing database or SQL Server Database project (.dacpac).
-Migrations Tool - Manage EF Core Migrations in the project: View status, Add Migration, Update Database
 Add DbContext Model Diagram - Adds a DGML graph from your DbContext Model.
 View DbContext Model SQL DDL - View a SQL DDL script from your DbContext Model.
-About - Displays version and other diagnostic information about your Visual Studio instance. 
+
+Adds the following database features to the Visual Studio Server Explorer:
+- Generate ER Diagram
+- Analyze Database
         </Description>
         <MoreInfo>https://github.com/ErikEJ/EFCorePowerTools/wiki/</MoreInfo>
         <License>Resources\license.txt</License>
