@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>추가...</value>
+  </data>
+  <data name="AddAdhocConnection" xml:space="preserve">
+    <value>커스텀 데이터베이스 연결 추가</value>
+  </data>
+  <data name="AddAdhocDatabaseConnection" xml:space="preserve">
+    <value>커스텀 데이터베이스 연결 추가</value>
+  </data>
+  <data name="AddAdhocDatabaseConnectionTip" xml:space="preserve">
+    <value>수동으로 데이터베이스 연결을 정의합니다.</value>
+  </data>
+  <data name="AddDatabaseConnection" xml:space="preserve">
+    <value>데이터베이스 연결 추가</value>
+  </data>
+  <data name="AddDatabaseConnectionTip" xml:space="preserve">
+    <value>서버 탐색기 (DDEX) 연결 추가</value>
+  </data>
+  <data name="AddExternalDacPac" xml:space="preserve">
+    <value>.dacpac 파일 추가</value>
+  </data>
+  <data name="AddSchemasToFilter" xml:space="preserve">
+    <value>필터에 스키마 추가</value>
+  </data>
+  <data name="Advanced" xml:space="preserve">
+    <value>고급...</value>
+  </data>
+  <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
+    <value>항상 모든 데이터베이스 객체 포함하기</value>
+  </data>
+  <data name="CannotGenerateCodeWhileDebugging" xml:space="preserve">
+    <value>디버깅 중에는 코드를 생성할 수 없습니다.</value>
+  </data>
+  <data name="CannotUncheckPrimaryKey" xml:space="preserve">
+    <value>이 컬럼은 기본키(primary key)의 일부이며, 테이블이 선택된 경우 체크를 해제할 수 없습니다.</value>
+  </data>
+  <data name="CheckOutputWindowForErrors" xml:space="preserve">
+    <value>'확장' 출력 창에서 오류 내용을 확인하세요.</value>
+  </data>
+  <data name="CheckOutputWindowForWarnings" xml:space="preserve">
+    <value>'확장' 출력 창에서 경고 내용을 확인하세요.</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>구성 파일 선택</value>
+  </data>
+  <data name="ChooseDatabaseConnection" xml:space="preserve">
+    <value>데이터베이스 연결 선택</value>
+  </data>
+  <data name="ChooseDatabaseObjects" xml:space="preserve">
+    <value>데이터베이스 객체 선택</value>
+  </data>
+  <data name="ChooseSchemas" xml:space="preserve">
+    <value>스키마 선택</value>
+  </data>
+  <data name="ChooseSqlServerDatabaseProject" xml:space="preserve">
+    <value>SQL 서버 데이터베이스 프로젝트 선택</value>
+  </data>
+  <data name="CodeGeneration" xml:space="preserve">
+    <value>코드 생성</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="ConnectionSample" xml:space="preserve">
+    <value>샘플</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>연결 문자열</value>
+  </data>
+  <data name="ContextName" xml:space="preserve">
+    <value>컨텍스트 이름</value>
+  </data>
+  <data name="ContextNameRequired" xml:space="preserve">
+    <value>컨텍스트 이름은 필수값입니다.</value>
+  </data>
+  <data name="CustomizeUsingHandlebars" xml:space="preserve">
+    <value>템플릿을 사용하여 코드 커스터마이징하기</value>
+  </data>
+  <data name="DatabaseConnectionNotFoundCannotRefresh" xml:space="preserve">
+    <value>데이터베이스 연결을 찾지 못했습니다. 새로고침에 실패했습니다.</value>
+  </data>
+  <data name="DbContextOnly" xml:space="preserve">
+    <value>DbContext 전용</value>
+  </data>
+  <data name="DbContextPath" xml:space="preserve">
+    <value>DbContext 경로 (예. Data) - 선택사항</value>
+  </data>
+  <data name="DbContextSubNamespace" xml:space="preserve">
+    <value>DbContext 서브-네임스페이스 (기본 경로를 덮어씁니다) - 선택사항</value>
+  </data>
+  <data name="DDEXProviderExperience" xml:space="preserve">
+    <value>더 나은 경험을 위해 DDEX Provider 설치</value>
+  </data>
+  <data name="EFCoreVersionTip" xml:space="preserve">
+    <value>EF Core 버전 선택</value>
+  </data>
+  <data name="EntityTypesAndContext" xml:space="preserve">
+    <value>EntityTypes &amp; DbContext</value>
+  </data>
+  <data name="EntityTypesOnly" xml:space="preserve">
+    <value>EntityTypes 전용</value>
+  </data>
+  <data name="EntityTypesPath" xml:space="preserve">
+    <value>EntityTypes 경로 (예. Models) - 선택사항</value>
+  </data>
+  <data name="EntityTypesSubNamespace" xml:space="preserve">
+    <value>EntityTypes 서브-네임스페이스 (기본 경로를 덮어씁니다) - 선택사항</value>
+  </data>
+  <data name="FileLayout" xml:space="preserve">
+    <value>파일 레이아웃</value>
+  </data>
+  <data name="FilterSchemas" xml:space="preserve">
+    <value>스키마 필터링하기</value>
+  </data>
+  <data name="Functions" xml:space="preserve">
+    <value>함수</value>
+  </data>
+  <data name="GenerateEFCoreModelInProject" xml:space="preserve">
+    <value>프로젝트 {0}에 대한 설정 선택</value>
+  </data>
+  <data name="GeneratingCode" xml:space="preserve">
+    <value>코드를 생성하는 중...</value>
+  </data>
+  <data name="GettingReadyToConnect" xml:space="preserve">
+    <value>연결을 준비하는 중...</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="IncludeConnectionStringGeneratedCode" xml:space="preserve">
+    <value>생성된 코드에 연결 문자열 포함</value>
+  </data>
+  <data name="InstallEFCoreProviderPackageInProject" xml:space="preserve">
+    <value>프로젝트에 EF Core 공급자 패키지 설치</value>
+  </data>
+  <data name="InstallingEFCoreProviderPackage" xml:space="preserve">
+    <value>EF Core 공급자 패키지 설치 중</value>
+  </data>
+  <data name="LoadingDatabaseObjects" xml:space="preserve">
+    <value>데이터베이스 객체 로드 중...</value>
+  </data>
+  <data name="LoadingOptions" xml:space="preserve">
+    <value>옵션 로드 중...</value>
+  </data>
+  <data name="MapHierarchyId" xml:space="preserve">
+    <value>HierarchyId 매핑</value>
+  </data>
+  <data name="MapNodaTimeTypes" xml:space="preserve">
+    <value>Noda Time 타입 매핑</value>
+  </data>
+  <data name="Mapping" xml:space="preserve">
+    <value>매핑</value>
+  </data>
+  <data name="MapSpatialTypes" xml:space="preserve">
+    <value>공간 데이터형 매핑</value>
+  </data>
+  <data name="ModelGeneratedSuccesfully" xml:space="preserve">
+    <value>성공적으로 모델을 생성했습니다.</value>
+  </data>
+  <data name="Namespace" xml:space="preserve">
+    <value>네임스페이스</value>
+  </data>
+  <data name="NamespaceRequired" xml:space="preserve">
+    <value>네임스페이스는 필수값입니다.</value>
+  </data>
+  <data name="Naming" xml:space="preserve">
+    <value>명칭</value>
+  </data>
+  <data name="NewNameCannotBeEmpty" xml:space="preserve">
+    <value>새로운 이름은 빈값이 될 수 없습니다.</value>
+  </data>
+  <data name="NoPrimaryKey" xml:space="preserve">
+    <value>테이블에 기본키(primary key)가 정의되지 않았습니다.</value>
+  </data>
+  <data name="PackageNotFoundInProject" xml:space="preserve">
+    <value>"프로젝트에서 {0}" NuGet 패키지를 찾을 수 없습니다 - 빌드를 진행하려면 먼저 패키지를 설치하세요.</value>
+  </data>
+  <data name="PluralizeSingularizeObjectNames" xml:space="preserve">
+    <value>생성된 객체 이름의 복수화/단수화 (English)</value>
+  </data>
+  <data name="POCOEntities" xml:space="preserve">
+    <value>POCO 엔티티</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>⭐ 평가</value>
+  </data>
+  <data name="RateTip" xml:space="preserve">
+    <value>이 도구가 마음에 드신다면 알려주세요</value>
+  </data>
+  <data name="ReleaseNotes" xml:space="preserve">
+    <value>릴리즈 노트</value>
+  </data>
+  <data name="RemoveConstructorFromEntities" xml:space="preserve">
+    <value>엔티티 클래스에서 생성자 제거 (실험적)</value>
+  </data>
+  <data name="RemoveDefaultConstructor" xml:space="preserve">
+    <value>기본 DbContext 생성자 제거</value>
+  </data>
+  <data name="RemoveNavigationsFromEntities" xml:space="preserve">
+    <value>엔티티 클래스에서 탐색 제거 (실험적)</value>
+  </data>
+  <data name="RemoveSelectedConnection" xml:space="preserve">
+    <value>선택된 연결 제거</value>
+  </data>
+  <data name="RemoveSQLDefaultFromBoolColumns" xml:space="preserve">
+    <value>bool 컬럼에서 SQL 기본값 제거</value>
+  </data>
+  <data name="RenamingNavigations" xml:space="preserve">
+    <value>탐색 이름 바꾸기</value>
+  </data>
+  <data name="ReportingResult" xml:space="preserve">
+    <value>결과 보고 중...</value>
+  </data>
+  <data name="ReverseEngineerCompleted" xml:space="preserve">
+    <value>리버스 엔지니어링이 완료되었습니다. ({0})</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>검색</value>
+  </data>
+  <data name="SearchForObjects" xml:space="preserve">
+    <value>객체 검색</value>
+  </data>
+  <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
+    <value>DbContext를 구성 클래스로 분할 (프리뷰)</value>
+  </data>
+  <data name="SQLiteExperience" xml:space="preserve">
+    <value>SQLite 경험을 향상시키기</value>
+  </data>
+  <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
+    <value>현재 자격 증명에 'VIEW DEFINITION' 권한이 부여되지 않아 기능에 문제가 발생할 수 있습니다.</value>
+  </data>
+  <data name="SQLServerVersionNotSupported" xml:space="preserve">
+    <value>SQL Server {0} 버전은 지원되지 않을 수 있습니다.</value>
+  </data>
+  <data name="StoredProcedures" xml:space="preserve">
+    <value>저장 프로시저</value>
+  </data>
+  <data name="StoredProceduresReturnList" xml:space="preserve">
+    <value>저장 프로시저 목록 (기본 배열)</value>
+  </data>
+  <data name="T4TemplatePath" xml:space="preserve">
+    <value>T4 템플릿 경로 - 선택사항</value>
+  </data>
+  <data name="Tables" xml:space="preserve">
+    <value>테이블</value>
+  </data>
+  <data name="UnableToAddConnection" xml:space="preserve">
+    <value>연결을 추가하지 못했습니다. 지원하지 않는 공급자로 인해 문제가 발생할 수 있습니다.</value>
+  </data>
+  <data name="UnableToAddToList" xml:space="preserve">
+    <value>목록에 추가하지 못했습니다.</value>
+  </data>
+  <data name="UnableToBuildSelectedDatabaseProject" xml:space="preserve">
+    <value>선택된 데이터베이스 프로젝트를 빌드할 수 없습니다.</value>
+  </data>
+  <data name="UnableToRemoveConnection" xml:space="preserve">
+    <value>연결을 제거할 수 없습니다.</value>
+  </data>
+  <data name="UncheckedEFCoreVersionUsed" xml:space="preserve">
+    <value>이 항목을 선택하지 않을 경우 EF Core 3.1 버전이 사용됩니다.</value>
+  </data>
+  <data name="UncheckingFileRemoved" xml:space="preserve">
+    <value>이 항목을 선택하지 않을 경우 관련된 파일이 삭제될 수 있습니다.</value>
+  </data>
+  <data name="UnsupportedProvider" xml:space="preserve">
+    <value>지원하지 않는 공급자</value>
+  </data>
+  <data name="UseDataAnnotations" xml:space="preserve">
+    <value>DataAnnotation 속성 사용하여 모델 구성</value>
+  </data>
+  <data name="UseEF6Pluralizer" xml:space="preserve">
+    <value>EF6 "Classic" 복수화 사용</value>
+  </data>
+  <data name="UseManyToManyEntity" xml:space="preserve">
+    <value>다대다 (Many to many; M:N) 엔티티 사용</value>
+  </data>
+  <data name="UseNamesFromDatabase" xml:space="preserve">
+    <value>데이터베이스에서 테이블 및 컬럼명을 직접적으로 가져와 사용하기</value>
+  </data>
+  <data name="UseNullableReferenceTypes" xml:space="preserve">
+    <value>Nullable 레퍼런스 타입 사용</value>
+  </data>
+  <data name="UseRegularExpression" xml:space="preserve">
+    <value>정규 표현식 사용</value>
+  </data>
+  <data name="UserGuide" xml:space="preserve">
+    <value>사용자 가이드</value>
+  </data>
+  <data name="UseSchemaFolders" xml:space="preserve">
+    <value>스키마 폴더 분리 사용 (실험적)</value>
+  </data>
+  <data name="UseSchemaNamespaces" xml:space="preserve">
+    <value>스키마 네임스페이스 분리 사용 (실험적)</value>
+  </data>
+  <data name="UseTextSearch" xml:space="preserve">
+    <value>텍스트 검색 사용</value>
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value>뷰</value>
+  </data>
+  <data name="WhatToGenerate" xml:space="preserve">
+    <value>생성할 내용 선택</value>
+  </data>
+</root>

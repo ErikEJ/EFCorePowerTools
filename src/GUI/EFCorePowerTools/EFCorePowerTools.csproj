@@ -268,6 +268,7 @@
     <EmbeddedResource Include="Locales\AboutLocale.fr.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.it.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.ja.resx" />
+    <EmbeddedResource Include="Locales\AboutLocale.ko.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.pl.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\AboutLocale.ru.resx" />
@@ -285,6 +286,7 @@
     <EmbeddedResource Include="Locales\CompareLocale.es.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.it.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.ja.resx" />
+    <EmbeddedResource Include="Locales\CompareLocale.ko.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.pl.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.ru.resx" />
@@ -304,6 +306,7 @@
     <EmbeddedResource Include="Locales\DgmlLocale.fr.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.it.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.ja.resx" />
+    <EmbeddedResource Include="Locales\DgmlLocale.ko.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.pl.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\DgmlLocale.ru.resx" />
@@ -321,6 +324,7 @@
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.ja.resx" />
+    <EmbeddedResource Include="Locales\ModelAnalyzerLocale.ko.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.pl.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\ModelAnalyzerLocale.ru.resx" />
@@ -338,6 +342,7 @@
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.ja.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.ko.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.it.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.pl.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.pt-BR.resx" />
@@ -357,6 +362,7 @@
     <EmbeddedResource Include="Locales\SharedLocale.fr.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.it.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.ja.resx" />
+    <EmbeddedResource Include="Locales\SharedLocale.ko.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.pl.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.pt-BR.resx" />
     <EmbeddedResource Include="Locales\SharedLocale.ru.resx" />
@@ -403,6 +409,10 @@
     <EmbeddedResource Include="VSPackage.ja.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <LogicalName>VSPackage.jp.Resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VSPackage.ko.resx">
+      <MergeWithCTO>true</MergeWithCTO>
+      <LogicalName>VSPackage.ko.Resources</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="VSPackage.pl.resx">
       <MergeWithCTO>true</MergeWithCTO>
@@ -526,6 +536,9 @@
     <VSCTCompile Include="EFCorePowerToolsPackage.ja.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <VSCTCompile Include="EFCorePowerToolsPackage.ko.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
     <VSCTCompile Include="EFCorePowerToolsPackage.pl.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
@@ -570,7 +583,7 @@
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
