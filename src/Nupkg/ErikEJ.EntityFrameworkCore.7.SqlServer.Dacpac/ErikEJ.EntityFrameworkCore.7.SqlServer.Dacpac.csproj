@@ -54,7 +54,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.3.563" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.3.566" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />    
   </ItemGroup>
 
