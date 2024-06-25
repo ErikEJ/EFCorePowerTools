@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -148,13 +148,18 @@ namespace EFCorePowerTools.ViewModels
 
         private void HandleSearchTextChange(string text, SearchMode searchMode)
         {
-            Thread.Sleep(300);
-            if (text != SearchText)
-            {
-                return;
-            }
+            _ = Task.Delay(TimeSpan.FromMilliseconds(300))
+                .ContinueWith(
+                _ =>
+                {
+                    if (text != SearchText)
+                    {
+                        return;
+                    }
 
-            ObjectTree.Search(SearchText, searchMode);
+                    ObjectTree.Search(SearchText, searchMode);
+                },
+                TaskScheduler.Default);
         }
 
         private void UpdateTableSelectionThreeState()
