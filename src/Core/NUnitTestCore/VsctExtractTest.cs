@@ -1,30 +1,58 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
-using RevEng.Core;
+using System.IO;
+using System.Linq;
 
 namespace UnitTests
 {
     [TestFixture]
     public class VsctExtractTest
     {
-        [Test]
-        public void CanSplit()
+        [Test, Ignore("Run locally only")]
+        public void CanExtract()
         {
-            XmlDocument xml = new XmlDocument();
-            xml.LoadXml(System.IO.File.ReadAllText("C:\\Code\\Github\\EFCorePowerTools\\src\\GUI\\EFCorePowerTools\\EFCorePowerToolsPackage.en.vsct")); //myXmlString is the xml file in string //copying xml to string: string myXmlString = xmldoc.OuterXml.ToString();
+            var buttonTexts = new List<Buttontexts>();
+            var files = Directory.EnumerateFiles("C:\\Code\\Github\\EFCorePowerTools\\src\\GUI\\EFCorePowerTools", "EFCorePowerToolsPackage.*.vsct");
 
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xml.NameTable);
-            nsmgr.AddNamespace("ns", "http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable");
-            XmlNodeList xnList = xml.SelectNodes("ns:CommandTable/ns:Commands/ns:Buttons/ns:Button", nsmgr);
-            foreach (XmlNode xn in xnList)
+            foreach (var file in files)
             {
-                XmlNode text = xn.SelectSingleNode("ns:Strings/ns:ButtonText", nsmgr);
-                if (text != null)
+                XmlDocument xml = new XmlDocument();
+                xml.LoadXml(File.ReadAllText(file));
+
+                var language = Path.GetFileNameWithoutExtension(file).Replace("EFCorePowerToolsPackage.", "").Replace(".vsct", "");
+
+                XmlNamespaceManager nsmgr = new XmlNamespaceManager(xml.NameTable);
+                nsmgr.AddNamespace("ns", "http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable");
+                XmlNodeList xnList = xml.SelectNodes("ns:CommandTable/ns:Commands/ns:Buttons/ns:Button", nsmgr);
+                foreach (XmlNode xn in xnList)
                 {
-                    var id = xn.Attributes["id"].InnerText;
-                    var textValue = text.InnerText;
+                    XmlNode text = xn.SelectSingleNode("ns:Strings/ns:ButtonText", nsmgr);
+                    if (text != null)
+                    {
+                        buttonTexts.Add(new Buttontexts
+                        {
+                            Id = xn.Attributes["id"].InnerText,
+                            Text = text.InnerText,
+                            Locale = language,
+                        });
+                    }
                 }
+            }
+
+            var content = buttonTexts.Select(b => b.ToString()).OrderBy(x => x).ToList();
+            File.WriteAllLines("C:\\Code\\Github\\EFCorePowerTools\\src\\GUI\\EFCorePowerTools\\VsctExtract.csv", content);
+        }
+
+        private class Buttontexts
+        {
+            public string Id { get; set; }
+            public string Text { get; set; }
+            public string Locale { get; set; }
+
+            public override string ToString()
+            {
+                return $"{Id},{Locale},{Text}";
             }
         }
     }
