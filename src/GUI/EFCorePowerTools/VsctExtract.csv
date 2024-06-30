@@ -1,73 +1,3 @@
-cmdidAbout,cs,O aplikaci
-cmdidAbout,de,Über
-cmdidAbout,en,About
-cmdidAbout,es,Acerca de
-cmdidAbout,fr,A propos
-cmdidAbout,it,Informazioni
-cmdidAbout,ja,情報
-cmdidAbout,ko,정보
-cmdidAbout,pl,O...
-cmdidAbout,pt-br,Sobre
-cmdidAbout,ru,О программе
-cmdidAbout,tr,Hakkında
-cmdidAbout,zh-Hans,关于
-cmdidAbout,zh-Hant,關於
-cmdidCmdAnalyze,cs,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,de,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,en,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,es,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,fr,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,it,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,ja,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,ko,EF Core Power Tools - 분석 (실험적)
-cmdidCmdAnalyze,pl,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,pt-br,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,ru,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,tr,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,zh-Hans,EF Core Power Tools - Analyze (experimental)
-cmdidCmdAnalyze,zh-Hant,EF Core Power Tools - Analyze (experimental)
-cmdidCmdDatabase,cs,EF Core Power Tools - Zpětná analýza
-cmdidCmdDatabase,de,EF Core Power Tools - Reverse Engineering
-cmdidCmdDatabase,en,EF Core Power Tools - Reverse Engineer
-cmdidCmdDatabase,es,EF Core Power Tools - Ingeniería inversa
-cmdidCmdDatabase,fr,EF Core Power Tools - Reverse Engineer
-cmdidCmdDatabase,it,EF Core Power Tools - Reverse Engineer
-cmdidCmdDatabase,ja,EF Core Power Tools - リバースエンジニアリング
-cmdidCmdDatabase,ko,EF Core Power Tools - 리버스 엔지니어링
-cmdidCmdDatabase,pl,EF Core Power Tools - Engenharia Reversa
-cmdidCmdDatabase,pt-br,EF Core Power Tools - Engenharia Reversa
-cmdidCmdDatabase,ru,EF Core Power Tools - реконструировать
-cmdidCmdDatabase,tr,EF Core Power Tools - Ters Mühendislik
-cmdidCmdDatabase,zh-Hans,EF Core 工具 - 反向工程
-cmdidCmdDatabase,zh-Hant,EF Core Power Tools - 反向工程
-cmdidCmdDiagram,cs,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,de,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,en,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,es,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,fr,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,it,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,ja,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,ko,EF Core Power Tools - ER 다이어그램 (ERD)
-cmdidCmdDiagram,pl,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,pt-br,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,ru,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,tr,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,zh-Hans,EF Core Power Tools - ER Diagram
-cmdidCmdDiagram,zh-Hant,EF Core Power Tools - ER Diagram
-cmdidDacpacReport,cs,Analyze (preview)
-cmdidDacpacReport,de,Analyze (preview)
-cmdidDacpacReport,en,Analyze (preview)
-cmdidDacpacReport,es,Analyze (preview)
-cmdidDacpacReport,fr,Analyze (preview)
-cmdidDacpacReport,it,Analyze (preview)
-cmdidDacpacReport,ja,Analyze (preview)
-cmdidDacpacReport,ko,분석 (프리뷰)
-cmdidDacpacReport,pl,Analyze (preview)
-cmdidDacpacReport,pt-br,Analyze (preview)
-cmdidDacpacReport,ru,Analyze (preview)
-cmdidDacpacReport,tr,Analyze (preview)
-cmdidDacpacReport,zh-Hans,Analyze (preview)
-cmdidDacpacReport,zh-Hant,Analyze (preview)
 cmdidDbCompare,cs,Porovnat DbContext s databází
 cmdidDbCompare,de,DbContext mit Datenbank vergleichen
 cmdidDbCompare,en,Compare DbContext to database
@@ -96,20 +26,6 @@ cmdidDbDgml,ru,Диаграмма схемы базы данных (предва
 cmdidDbDgml,tr,Visualize Database Schema (preview)
 cmdidDbDgml,zh-Hans,数据库架构可视化 (预览)
 cmdidDbDgml,zh-Hant,視覺化資料庫結構 (預覽版)
-cmdidDbErDiagram,cs,ER Diagram
-cmdidDbErDiagram,de,ER Diagram
-cmdidDbErDiagram,en,ER Diagram
-cmdidDbErDiagram,es,ER Diagram
-cmdidDbErDiagram,fr,ER Diagram
-cmdidDbErDiagram,it,ER Diagram
-cmdidDbErDiagram,ja,ER Diagram
-cmdidDbErDiagram,ko,ER 다이어그램 (ERD)
-cmdidDbErDiagram,pl,ER Diagram
-cmdidDbErDiagram,pt-br,ER Diagram
-cmdidDbErDiagram,ru,ER Diagram
-cmdidDbErDiagram,tr,ER Diagram
-cmdidDbErDiagram,zh-Hans,ER Diagram
-cmdidDbErDiagram,zh-Hant,ER Diagram
 cmdidDebugViewBuild,cs,Zobrazit DbContext jako DebugView
 cmdidDebugViewBuild,de,DbContext als Debug-Ansicht anzeigen
 cmdidDebugViewBuild,en,View DbContext as DebugView

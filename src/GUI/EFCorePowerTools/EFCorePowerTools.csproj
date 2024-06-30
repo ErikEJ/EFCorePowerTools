@@ -285,20 +285,48 @@
       <LastGenOutput>AboutLocale.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Locales\ButtonLocale.cs.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.de.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.en.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.es.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.fr.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.it.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.ja.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.ko.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.pl.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.pt-BR.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.ru.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.tr.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.zh-Hant.resx" />
-    <EmbeddedResource Include="Locales\ButtonLocale.zh-Hans.resx" />
+    <EmbeddedResource Include="Locales\ButtonLocale.cs.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.es.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.fr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.it.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.ja.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.ko.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.pl.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.pt-BR.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.ru.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.tr.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.zh-Hant.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Locales\ButtonLocale.zh-Hans.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locales\ButtonLocale.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ButtonLocale.Designer.cs</LastGenOutput>

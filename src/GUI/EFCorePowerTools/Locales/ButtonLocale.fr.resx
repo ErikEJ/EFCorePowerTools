@@ -120,58 +120,10 @@
   <data name="cmdidAbout" xml:space="preserve">
     <value>A propos</value>
   </data>
-  <data name="cmdidDbCompare" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidDbDgml" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidDbErDiagram" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidDebugViewBuild" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidDgmlBuild" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidDgmlNuget" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidOptions" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidReverseEngineerEdit" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidServerExplorerAnalyze" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidServerExplorerDiagram" xml:space="preserve">
-    <value />
-  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
-    <value />
+    <value>EF Core Power Tools - Reverse Engineer</value>
   </data>
-  <data name="cmdidSqlBuild" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidSqlprojAnalyze" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidSqlprojCreate" xml:space="preserve">
-    <value />
-  </data>
-  <data name="cmdidT4Drop" xml:space="preserve">
-    <value />
+  <data name="cmdidDbCompare" xml:space="preserve">
+    <value>Comparer le DbContext à la base de données</value>
   </data>
 </root>
