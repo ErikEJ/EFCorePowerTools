@@ -132,4 +132,11 @@
   <data name="cmdidDbCompare" xml:space="preserve">
     <value>데이터베이스와 DbContext 비교</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidDbDgml" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidDbErDiagram" xml:space="preserve">
+    <value>ER 다이어그램 (ERD)</value>
+  </data>
 </root>

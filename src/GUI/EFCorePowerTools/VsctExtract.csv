@@ -1,17 +1,3 @@
-cmdidDbCompare,cs,Porovnat DbContext s databází
-cmdidDbCompare,de,DbContext mit Datenbank vergleichen
-cmdidDbCompare,en,Compare DbContext to database
-cmdidDbCompare,es,Comparar DbContext contra la base de datos
-cmdidDbCompare,fr,Comparer le DbContext à la base de données
-cmdidDbCompare,it,Compara contesto al database
-cmdidDbCompare,ja,DbContext・データベース比較
-cmdidDbCompare,ko,데이터베이스와 DbContext 비교
-cmdidDbCompare,pl,Porównaj DbContext z bazą danych
-cmdidDbCompare,pt-br,Comparar DbContext com database
-cmdidDbCompare,ru,Сравнить контекст БД с базой данных
-cmdidDbCompare,tr,DbContext'i veritabanı ile karşılaştır
-cmdidDbCompare,zh-Hans,架构比较
-cmdidDbCompare,zh-Hant,比較 DbContext 和資料庫
 cmdidDbDgml,cs,Vizualizace databázového schématu (preview)
 cmdidDbDgml,de,Datenbankschema visualisieren (Vorschau)
 cmdidDbDgml,en,Visualize Database Schema

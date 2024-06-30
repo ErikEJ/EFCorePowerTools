@@ -138,9 +138,6 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cmdidDbErDiagram" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>4</value>
   </data>
