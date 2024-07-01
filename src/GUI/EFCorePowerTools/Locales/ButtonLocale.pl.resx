@@ -132,8 +132,11 @@
   <data name="cmdidDgmlBuild" xml:space="preserve">
     <value>Dodaj diagram DbContext</value>
   </data>
+  <data name="cmdidDgmlNuget" xml:space="preserve">
+    <value>Dodaj rozszerzenie AsDgml()</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidDgmlNuget" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="cmdidOptions" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">

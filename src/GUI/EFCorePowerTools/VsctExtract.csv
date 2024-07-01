@@ -1,17 +1,3 @@
-cmdidDgmlBuild,cs,Přidat DbContext Diagram
-cmdidDgmlBuild,de,DbContext Diagramm hinzufügen
-cmdidDgmlBuild,en,Add DbContext Diagram
-cmdidDgmlBuild,es,Añadir diagrama DbContext
-cmdidDgmlBuild,fr,Ajouter Diagramme DbContext
-cmdidDgmlBuild,it,Aggiungi diagramma del contesto
-cmdidDgmlBuild,ja,DbContextダイアグラム追加
-cmdidDgmlBuild,ko,DbContext 다이어그램 추가
-cmdidDgmlBuild,pl,Dodaj diagram DbContext
-cmdidDgmlBuild,pt-br,Adicionar diagrama DbContext
-cmdidDgmlBuild,ru,Добавить диаграмму контекста БД
-cmdidDgmlBuild,tr,DbContext diagramı ekle
-cmdidDgmlBuild,zh-Hans,生成关系图
-cmdidDgmlBuild,zh-Hant,新增 DbContext 圖表
 cmdidDgmlNuget,cs,Přidat rozšíření AsDgml()
 cmdidDgmlNuget,de,AsDgml() Erweiterung hinzufügen
 cmdidDgmlNuget,en,Add AsDgml() extension

@@ -132,6 +132,13 @@
   <data name="cmdidDgmlBuild" xml:space="preserve">
     <value>新增 DbContext 圖表</value>
   </data>
+  <data name="cmdidDgmlNuget" xml:space="preserve">
+    <value>新增 AsDgml() 擴充方法</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidOptions" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - 反向工程</value>
   </data>

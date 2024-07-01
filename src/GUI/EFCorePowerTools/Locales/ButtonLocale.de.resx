@@ -136,7 +136,7 @@
     <value>DbContext Diagramm hinzufügen</value>
   </data>
   <data name="cmdidDgmlNuget" xml:space="preserve">
-    <value>6</value>
+    <value>AsDgml() Erweiterung hinzufügen</value>
   </data>
   <data name="cmdidOptions" xml:space="preserve">
     <value>7</value>

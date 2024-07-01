@@ -135,6 +135,9 @@
   <data name="cmdidDgmlBuild" xml:space="preserve">
     <value>Ajouter Diagramme DbContext</value>
   </data>
+  <data name="cmdidDgmlNuget" xml:space="preserve">
+    <value>Ajouter l'extension AsDgml()</value>
+  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Reverse Engineer</value>
   </data>

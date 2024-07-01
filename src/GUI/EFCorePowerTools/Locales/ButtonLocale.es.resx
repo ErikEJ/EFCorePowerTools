@@ -135,6 +135,13 @@
   <data name="cmdidDgmlBuild" xml:space="preserve">
     <value>Añadir diagrama DbContext</value>
   </data>
+  <data name="cmdidDgmlNuget" xml:space="preserve">
+    <value>Añadir extensión AsDgml()</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidOptions" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Ingeniería inversa</value>
   </data>
