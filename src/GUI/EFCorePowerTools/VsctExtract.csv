@@ -1,31 +1,3 @@
-cmdidDbDgml,cs,Vizualizace databázového schématu (preview)
-cmdidDbDgml,de,Datenbankschema visualisieren (Vorschau)
-cmdidDbDgml,en,Visualize Database Schema
-cmdidDbDgml,es,Visualizar esquema de base datos (vista previa)
-cmdidDbDgml,fr,Visualiser le Schéma de base de données (preversion)
-cmdidDbDgml,it,Visualizza Schema del DB (preview)
-cmdidDbDgml,ja,データベーススキーマ表示 (プレビュー)
-cmdidDbDgml,ko,데이터베이스 스키마 시각화
-cmdidDbDgml,pl,Wizualizuj schemat bazy danych (wersja zapoznawcza)
-cmdidDbDgml,pt-br,Visualizar Database Schema (visualização antecipada)
-cmdidDbDgml,ru,Диаграмма схемы базы данных (предварительная версия)
-cmdidDbDgml,tr,Visualize Database Schema (preview)
-cmdidDbDgml,zh-Hans,数据库架构可视化 (预览)
-cmdidDbDgml,zh-Hant,視覺化資料庫結構 (預覽版)
-cmdidDebugViewBuild,cs,Zobrazit DbContext jako DebugView
-cmdidDebugViewBuild,de,DbContext als Debug-Ansicht anzeigen
-cmdidDebugViewBuild,en,View DbContext as DebugView
-cmdidDebugViewBuild,es,Ver DbContext como vista de depuración
-cmdidDebugViewBuild,fr,Afficher le DbContext en tant que DebugView
-cmdidDebugViewBuild,it,Visualizza contesto come DebugView
-cmdidDebugViewBuild,ja,DbContextのDebugView表示
-cmdidDebugViewBuild,ko,DebugView로 DbContext 보기
-cmdidDebugViewBuild,pl,Wyświetl DbContext jako DebugView
-cmdidDebugViewBuild,pt-br,Visualizar DbContext como DebugView
-cmdidDebugViewBuild,ru,Просмотр класса контекста БД как DebugView
-cmdidDebugViewBuild,tr,DbContext'i DebugView olarak göster
-cmdidDebugViewBuild,zh-Hans,生成调试视图
-cmdidDebugViewBuild,zh-Hant,檢視 DbContext 的 DebugView
 cmdidDgmlBuild,cs,Přidat DbContext Diagram
 cmdidDgmlBuild,de,DbContext Diagramm hinzufügen
 cmdidDgmlBuild,en,Add DbContext Diagram

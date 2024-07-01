@@ -120,10 +120,20 @@
   <data name="cmdidAbout" xml:space="preserve">
     <value>关于</value>
   </data>
-  <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
-    <value>EF Core 工具 - 反向工程</value>
-  </data>
   <data name="cmdidDbCompare" xml:space="preserve">
     <value>架构比较</value>
+  </data>
+  <data name="cmdidDbDgml" xml:space="preserve">
+    <value>数据库架构可视化 (预览)</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidDebugViewBuild" xml:space="preserve">
+    <value>生成调试视图</value>
+  </data>
+  <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
+    <value>EF Core 工具 - 反向工程</value>
   </data>
 </root>

@@ -120,10 +120,20 @@
   <data name="cmdidAbout" xml:space="preserve">
     <value>Informazioni</value>
   </data>
-  <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
-    <value>EF Core Power Tools - Reverse Engineer</value>
-  </data>
   <data name="cmdidDbCompare" xml:space="preserve">
     <value>Compara contesto al database</value>
+  </data>
+  <data name="cmdidDbDgml" xml:space="preserve">
+    <value>Visualizza Schema del DB (preview)</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidDebugViewBuild" xml:space="preserve">
+    <value>Visualizza contesto come DebugView</value>
+  </data>
+  <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
+    <value>EF Core Power Tools - Reverse Engineer</value>
   </data>
 </root>
