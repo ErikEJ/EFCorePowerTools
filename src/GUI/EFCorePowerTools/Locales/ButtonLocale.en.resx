@@ -132,6 +132,9 @@
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>View DbContext as DebugView</value>
   </data>
+  <data name="cmdidDgmlBuild" xml:space="preserve">
+    <value>Add DbContext Diagram</value>
+  </data>
   <data name="cmdidServerExplorerAnalyze" xml:space="preserve">
     <value>EF Core Power Tools - Analyze (experimental)</value>
   </data>

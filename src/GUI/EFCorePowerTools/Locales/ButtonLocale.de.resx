@@ -126,15 +126,14 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>Datenbankschema visualisieren (Vorschau)</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidDbErDiagram" xml:space="preserve">
+    <value>DbContext Diagramm hinzufügen</value>
   </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>DbContext als Debug-Ansicht anzeigen</value>
   </data>
   <data name="cmdidDgmlBuild" xml:space="preserve">
-    <value>5</value>
+    <value>DbContext Diagramm hinzufügen</value>
   </data>
   <data name="cmdidDgmlNuget" xml:space="preserve">
     <value>6</value>

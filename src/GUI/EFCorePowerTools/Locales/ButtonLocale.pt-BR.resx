@@ -126,12 +126,11 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>Visualizar Database Schema (visualização antecipada)</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>Visualizar DbContext como DebugView</value>
+  </data>
+  <data name="cmdidDgmlBuild" xml:space="preserve">
+    <value>Adicionar diagrama DbContext</value>
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Engenharia Reversa</value>

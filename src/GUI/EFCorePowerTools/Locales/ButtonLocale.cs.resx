@@ -126,12 +126,14 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>Vizualizace databázového schématu (preview)</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidDbErDiagram" xml:space="preserve">
+    <value>Přidat DbContext Diagram</value>
   </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>Zobrazit DbContext jako DebugView</value>
+  </data>
+  <data name="cmdidDgmlBuild" xml:space="preserve">
+    <value>Přidat DbContext Diagram</value>
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Zpětná analýza</value>
