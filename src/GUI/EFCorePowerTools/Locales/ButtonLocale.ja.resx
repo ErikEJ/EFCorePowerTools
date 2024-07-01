@@ -126,9 +126,6 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>データベーススキーマ表示 (プレビュー)</value>
   </data>
-  <data name="cmdidDbErDiagram" xml:space="preserve">
-    <value>DbContextダイアグラム追加</value>
-  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>DbContextのDebugView表示</value>
   </data>
@@ -137,6 +134,10 @@
   </data>
   <data name="cmdidDgmlNuget" xml:space="preserve">
     <value>AsDgml() 拡張追加</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidOptions" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - リバースエンジニアリング</value>

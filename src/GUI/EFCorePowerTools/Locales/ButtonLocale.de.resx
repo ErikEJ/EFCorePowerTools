@@ -126,9 +126,6 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>Datenbankschema visualisieren (Vorschau)</value>
   </data>
-  <data name="cmdidDbErDiagram" xml:space="preserve">
-    <value>DbContext Diagramm hinzufügen</value>
-  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>DbContext als Debug-Ansicht anzeigen</value>
   </data>
