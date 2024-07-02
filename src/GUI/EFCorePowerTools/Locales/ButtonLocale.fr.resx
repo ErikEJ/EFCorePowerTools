@@ -142,6 +142,15 @@
   <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
+    <value>Rafraîchir</value>
+  </data>
+  <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
+    <value>EF Core Power Tools - Rafraîchir</value>
+  </data>
+  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Reverse Engineer</value>
   </data>

@@ -142,13 +142,13 @@
     <value>8</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
-    <value>9</value>
+    <value>Aktualisieren</value>
   </data>
   <data name="cmdidReverseEngineerEdit" xml:space="preserve">
     <value>10</value>
   </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
-    <value>11</value>
+    <value>EF Core Power Tools - Aktualisieren</value>
   </data>
   <data name="cmdidServerExplorerAnalyze" xml:space="preserve">
     <value>12</value>

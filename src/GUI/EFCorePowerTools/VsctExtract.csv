@@ -1,17 +1,3 @@
-cmdidOptions,cs,Nastavení
-cmdidOptions,de,Optionen
-cmdidOptions,en,Options
-cmdidOptions,es,Opciones
-cmdidOptions,fr,Options
-cmdidOptions,it,Opzioni
-cmdidOptions,ja,オプション
-cmdidOptions,ko,옵션
-cmdidOptions,pl,Opcje
-cmdidOptions,pt-br,Opções
-cmdidOptions,ru,Параметры
-cmdidOptions,tr,Seçenekler
-cmdidOptions,zh-Hans,配置
-cmdidOptions,zh-Hant,選項
 cmdidReverseEngineerCodeFirst,cs,Zpětná analýza
 cmdidReverseEngineerCodeFirst,de,Reverse Engineering
 cmdidReverseEngineerCodeFirst,en,Reverse Engineer
@@ -40,34 +26,6 @@ cmdidReverseEngineerEdit,ru,EF Core Power Tools - Редактировать
 cmdidReverseEngineerEdit,tr,EF Core Power Tools - Düzenle
 cmdidReverseEngineerEdit,zh-Hans,EF Core 工具 - 编辑
 cmdidReverseEngineerEdit,zh-Hant,EF Core Power Tools - 編輯
-cmdidReverseEngineerRefresh,cs,EF Core Power Tools - Aktualizovat
-cmdidReverseEngineerRefresh,cs,Aktualizovat
-cmdidReverseEngineerRefresh,de,EF Core Power Tools - Aktualisieren
-cmdidReverseEngineerRefresh,de,Aktualisieren
-cmdidReverseEngineerRefresh,en,EF Core Power Tools - Refresh
-cmdidReverseEngineerRefresh,en,Refresh
-cmdidReverseEngineerRefresh,es,EF Core Power Tools - Recargar
-cmdidReverseEngineerRefresh,es,Recargar
-cmdidReverseEngineerRefresh,fr,EF Core Power Tools - Rafraîchir
-cmdidReverseEngineerRefresh,fr,Rafraîchir
-cmdidReverseEngineerRefresh,it,EF Core Power Tools - Aggiorna
-cmdidReverseEngineerRefresh,it,Aggiorna
-cmdidReverseEngineerRefresh,ja,EF Core Power Tools - 更新
-cmdidReverseEngineerRefresh,ja,更新
-cmdidReverseEngineerRefresh,ko,EF Core Power Tools - 새로고침
-cmdidReverseEngineerRefresh,ko,새로고침
-cmdidReverseEngineerRefresh,pl,EF Core Power Tools - Odśwież
-cmdidReverseEngineerRefresh,pl,Odśwież
-cmdidReverseEngineerRefresh,pt-br,EF Core Power Tools - Atualizar
-cmdidReverseEngineerRefresh,pt-br,Atualizar
-cmdidReverseEngineerRefresh,ru,EF Core Power Tools - Обновить
-cmdidReverseEngineerRefresh,ru,Обновить
-cmdidReverseEngineerRefresh,tr,EF Core Power Tools - Yenile
-cmdidReverseEngineerRefresh,tr,Yenile
-cmdidReverseEngineerRefresh,zh-Hans,EF Core 工具 - 刷新
-cmdidReverseEngineerRefresh,zh-Hans,刷新
-cmdidReverseEngineerRefresh,zh-Hant,EF Core Power Tools - 重新整理
-cmdidReverseEngineerRefresh,zh-Hant,重新整理
 cmdidSqlBuild,cs,Zobrazit DbContext DDL SQL
 cmdidSqlBuild,de,DbContext DDL SQL anzeigen
 cmdidSqlBuild,en,View DbContext DDL SQL

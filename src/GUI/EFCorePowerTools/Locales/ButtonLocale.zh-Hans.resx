@@ -142,6 +142,18 @@
   <data name="cmdidOptions" xml:space="preserve">
     <value>配置</value>
   </data>
+  <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
+    <value>EF Core 工具 - 刷新</value>
+  </data>
+  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core 工具 - 反向工程</value>
   </data>

@@ -145,6 +145,15 @@
   <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
+    <value>새로고침</value>
+  </data>
+  <data name="cmdidReverseEngineerEdit" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
+    <value>EF Core Power Tools - 새로고침</value>
+  </data>
   <data name="cmdidServerExplorerAnalyze" xml:space="preserve">
     <value>EF Core Power Tools - 분석 (실험적)</value>
   </data>
