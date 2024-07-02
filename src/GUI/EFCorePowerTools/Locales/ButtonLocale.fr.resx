@@ -163,6 +163,9 @@
   <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="cmdidSqlprojCreate" xml:space="preserve">
+    <value>Créer un DbContext EF Core ...</value>
+  </data>
   <data name="cmdidT4Drop" xml:space="preserve">
     <value>Ajouter Templates T4</value>
   </data>

@@ -163,8 +163,8 @@
   <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="cmdidSqlprojCreate" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidSqlprojCreate" xml:space="preserve">
+    <value>Vytvořit EF Core DbContext...</value>
   </data>
   <data name="cmdidT4Drop" xml:space="preserve">
     <value>Přidat šablony pro T4 Scaffolding</value>

@@ -168,9 +168,8 @@
   <data name="cmdidSqlprojAnalyze" xml:space="preserve">
     <value>분석 (실험적)</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidSqlprojCreate" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidSqlprojCreate" xml:space="preserve">
+    <value>EF Core DbContext 생성...</value>
   </data>
   <data name="cmdidT4Drop" xml:space="preserve">
     <value>T4 스캐폴딩 템플릿 추가</value>
