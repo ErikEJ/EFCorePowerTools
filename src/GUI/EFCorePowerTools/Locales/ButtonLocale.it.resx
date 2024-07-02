@@ -150,10 +150,20 @@
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - Aggiorna</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Reverse Engineer</value>
   </data>
   <data name="cmdidSqlBuild" xml:space="preserve">
     <value>Genera DDL SQL del contesto</value>
+  </data>
+  <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidT4Drop" xml:space="preserve">
+    <value>Aggiungi template T4</value>
   </data>
 </root>

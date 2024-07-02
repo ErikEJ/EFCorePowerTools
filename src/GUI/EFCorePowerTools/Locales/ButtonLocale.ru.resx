@@ -156,4 +156,11 @@
   <data name="cmdidSqlBuild" xml:space="preserve">
     <value>Просмотр SQL выражений описания данных для контекста БД</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidT4Drop" xml:space="preserve">
+    <value>Добавьте шаблоны генерации T4</value>
+  </data>
 </root>

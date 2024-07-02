@@ -166,4 +166,7 @@
   <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="cmdidT4Drop" xml:space="preserve">
+    <value>Añadir plantillas T4 de andamiaje «Scaffolding»</value>
+  </data>
 </root>
