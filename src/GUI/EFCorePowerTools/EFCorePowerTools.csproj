@@ -330,6 +330,7 @@
     <EmbeddedResource Include="Locales\ButtonLocale.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ButtonLocale.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\CompareLocale.cs.resx" />
     <EmbeddedResource Include="Locales\CompareLocale.de.resx" />

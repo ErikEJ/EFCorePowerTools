@@ -157,4 +157,13 @@
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Zpětná analýza</value>
   </data>
+  <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidSqlprojCreate" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidSqlBuild" xml:space="preserve">
+    <value>Zobrazit DbContext DDL SQL</value>
+  </data>
 </root>
