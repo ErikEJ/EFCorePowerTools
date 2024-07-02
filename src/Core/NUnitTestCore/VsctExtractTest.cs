@@ -41,7 +41,7 @@ namespace UnitTests
             }
 
             var content = buttonTexts.Select(b => b.ToString()).OrderBy(x => x).ToList();
-            File.WriteAllLines("C:\\Code\\Github\\EFCorePowerTools\\src\\GUI\\EFCorePowerTools\\VsctExtract.csv", content);
+            File.WriteAllLines("C:\\Code\\Github\\EFCorePowerTools\\src\\GUI\\EFCorePowerTools\\VsctExtractByLocale.csv", content);
         }
 
         private class Buttontexts
@@ -52,7 +52,7 @@ namespace UnitTests
 
             public override string ToString()
             {
-                return $"{Id},{Locale},{Text}";
+                return $"{Locale},{Id},{Text}";
             }
         }
     }

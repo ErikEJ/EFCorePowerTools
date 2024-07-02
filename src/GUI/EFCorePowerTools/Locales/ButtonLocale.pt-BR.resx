@@ -126,6 +126,10 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>Visualizar Database Schema (visualização antecipada)</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>Visualizar DbContext como DebugView</value>
   </data>
@@ -135,9 +139,8 @@
   <data name="cmdidDgmlNuget" xml:space="preserve">
     <value>Adicionar extensão AsDgml()</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidOptions" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidOptions" xml:space="preserve">
+    <value>Opções</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />

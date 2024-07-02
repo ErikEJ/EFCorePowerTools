@@ -136,7 +136,7 @@
     <value>AsDgml() Erweiterung hinzufügen</value>
   </data>
   <data name="cmdidOptions" xml:space="preserve">
-    <value>7</value>
+    <value>Optionen</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
     <value>8</value>

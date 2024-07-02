@@ -1,0 +1,266 @@
+cs,cmdidAbout,O aplikaci
+cs,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+cs,cmdidCmdDatabase,EF Core Power Tools - Zpětná analýza
+cs,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+cs,cmdidDacpacReport,Analyze (preview)
+cs,cmdidDbCompare,Porovnat DbContext s databází
+cs,cmdidDbDgml,Vizualizace databázového schématu (preview)
+cs,cmdidDbErDiagram,ER Diagram
+cs,cmdidDebugViewBuild,Zobrazit DbContext jako DebugView
+cs,cmdidDgmlBuild,Přidat DbContext Diagram
+cs,cmdidDgmlNuget,Přidat rozšíření AsDgml()
+cs,cmdidOptions,Nastavení
+cs,cmdidReverseEngineerCodeFirst,Zpětná analýza
+cs,cmdidReverseEngineerEdit,EF Core Power Tools - Upravit
+cs,cmdidReverseEngineerRefresh,EF Core Power Tools - Aktualizovat
+cs,cmdidReverseEngineerRefresh,Refresh
+cs,cmdidSqlBuild,Zobrazit DbContext DDL SQL
+cs,cmdidT4Drop,Přidat šablony pro T4 Scaffolding
+cs,Command1Id,Vytvořit EF Core DbContext...
+de,cmdidAbout,Über
+de,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+de,cmdidCmdDatabase,EF Core Power Tools - Reverse Engineering
+de,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+de,cmdidDacpacReport,Analyze (preview)
+de,cmdidDbCompare,DbContext mit Datenbank vergleichen
+de,cmdidDbDgml,Datenbankschema visualisieren (Vorschau)
+de,cmdidDbErDiagram,ER Diagram
+de,cmdidDebugViewBuild,DbContext als Debug-Ansicht anzeigen
+de,cmdidDgmlBuild,DbContext Diagramm hinzufügen
+de,cmdidDgmlNuget,AsDgml() Erweiterung hinzufügen
+de,cmdidOptions,Optionen
+de,cmdidReverseEngineerCodeFirst,Reverse Engineering
+de,cmdidReverseEngineerEdit,EF Core Power Tools - Bearbeiten
+de,cmdidReverseEngineerRefresh,EF Core Power Tools - Aktualisieren
+de,cmdidReverseEngineerRefresh,Refresh
+de,cmdidSqlBuild,DbContext DDL SQL anzeigen
+de,cmdidT4Drop,T4-Gerüstvorlagen hinzufügen
+de,Command1Id,EF Core DbContext erstellen...
+en,cmdidAbout,About
+en,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+en,cmdidCmdDatabase,EF Core Power Tools - Reverse Engineer
+en,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+en,cmdidDacpacReport,Analyze (preview)
+en,cmdidDbCompare,Compare DbContext to database
+en,cmdidDbDgml,Visualize Database Schema
+en,cmdidDbErDiagram,ER Diagram
+en,cmdidDebugViewBuild,View DbContext as DebugView
+en,cmdidDgmlBuild,Add DbContext Diagram
+en,cmdidDgmlNuget,Add AsDgml() extension
+en,cmdidOptions,Options
+en,cmdidReverseEngineerCodeFirst,Reverse Engineer
+en,cmdidReverseEngineerEdit,EF Core Power Tools - Edit
+en,cmdidReverseEngineerRefresh,EF Core Power Tools - Refresh
+en,cmdidReverseEngineerRefresh,Refresh
+en,cmdidSqlBuild,View DbContext DDL SQL
+en,cmdidT4Drop,Add T4 Scaffolding Templates
+en,Command1Id,Create EF Core DbContext...
+es,cmdidAbout,Acerca de
+es,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+es,cmdidCmdDatabase,EF Core Power Tools - Ingeniería inversa
+es,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+es,cmdidDacpacReport,Analyze (preview)
+es,cmdidDbCompare,Comparar DbContext contra la base de datos
+es,cmdidDbDgml,Visualizar esquema de base datos (vista previa)
+es,cmdidDbErDiagram,ER Diagram
+es,cmdidDebugViewBuild,Ver DbContext como vista de depuración
+es,cmdidDgmlBuild,Añadir diagrama DbContext
+es,cmdidDgmlNuget,Añadir extensión AsDgml()
+es,cmdidOptions,Opciones
+es,cmdidReverseEngineerCodeFirst,Ingeniería inversa
+es,cmdidReverseEngineerEdit,EF Core Power Tools - Editar
+es,cmdidReverseEngineerRefresh,EF Core Power Tools - Recargar
+es,cmdidReverseEngineerRefresh,Refresh
+es,cmdidSqlBuild,Ver DbContext DDL SQL
+es,cmdidT4Drop,Añadir plantillas T4 de andamiaje «Scaffolding»
+es,Command1Id,Crear DbContext de EF Core...
+fr,cmdidAbout,A propos
+fr,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+fr,cmdidCmdDatabase,EF Core Power Tools - Reverse Engineer
+fr,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+fr,cmdidDacpacReport,Analyze (preview)
+fr,cmdidDbCompare,Comparer le DbContext à la base de données
+fr,cmdidDbDgml,Visualiser le Schéma de base de données (preversion)
+fr,cmdidDbErDiagram,ER Diagram
+fr,cmdidDebugViewBuild,Afficher le DbContext en tant que DebugView
+fr,cmdidDgmlBuild,Ajouter Diagramme DbContext
+fr,cmdidDgmlNuget,Ajouter l'extension AsDgml()
+fr,cmdidOptions,Options
+fr,cmdidReverseEngineerCodeFirst,Reverse Engineer
+fr,cmdidReverseEngineerEdit,EF Core Power Tools - Editer
+fr,cmdidReverseEngineerRefresh,EF Core Power Tools - Rafraîchir
+fr,cmdidReverseEngineerRefresh,Refresh
+fr,cmdidSqlBuild,Afficher le DbContext DDL SQL
+fr,cmdidT4Drop,Ajouter Templates T4
+fr,Command1Id,Créer un DbContext EF Core ...
+it,cmdidAbout,Informazioni
+it,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+it,cmdidCmdDatabase,EF Core Power Tools - Reverse Engineer
+it,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+it,cmdidDacpacReport,Analyze (preview)
+it,cmdidDbCompare,Compara contesto al database
+it,cmdidDbDgml,Visualizza Schema del DB (preview)
+it,cmdidDbErDiagram,ER Diagram
+it,cmdidDebugViewBuild,Visualizza contesto come DebugView
+it,cmdidDgmlBuild,Aggiungi diagramma del contesto
+it,cmdidDgmlNuget,Aggiungi estensione AsDgml()
+it,cmdidOptions,Opzioni
+it,cmdidReverseEngineerCodeFirst,Reverse Engineer
+it,cmdidReverseEngineerEdit,EF Core Power Tools - Modifica
+it,cmdidReverseEngineerRefresh,EF Core Power Tools - Aggiorna
+it,cmdidReverseEngineerRefresh,Refresh
+it,cmdidSqlBuild,Genera DDL SQL del contesto
+it,cmdidT4Drop,Aggiungi template T4
+it,Command1Id,Creazione Contesto EF Core...
+ja,cmdidAbout,情報
+ja,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+ja,cmdidCmdDatabase,EF Core Power Tools - リバースエンジニアリング
+ja,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+ja,cmdidDacpacReport,Analyze (preview)
+ja,cmdidDbCompare,DbContext・データベース比較
+ja,cmdidDbDgml,データベーススキーマ表示 (プレビュー)
+ja,cmdidDbErDiagram,ER Diagram
+ja,cmdidDebugViewBuild,DbContextのDebugView表示
+ja,cmdidDgmlBuild,DbContextダイアグラム追加
+ja,cmdidDgmlNuget,AsDgml() 拡張追加
+ja,cmdidOptions,オプション
+ja,cmdidReverseEngineerCodeFirst,リバースエンジニアリング
+ja,cmdidReverseEngineerEdit,EF Core Power Tools - 編集
+ja,cmdidReverseEngineerRefresh,EF Core Power Tools - 更新
+ja,cmdidReverseEngineerRefresh,Refresh
+ja,cmdidSqlBuild,DbContext DDL SQL表示
+ja,cmdidT4Drop,T4テンプレート追加
+ja,Command1Id,Create EF Core DbContext...
+ko,cmdidAbout,정보
+ko,cmdidCmdAnalyze,EF Core Power Tools - 분석 (실험적)
+ko,cmdidCmdDatabase,EF Core Power Tools - 리버스 엔지니어링
+ko,cmdidCmdDiagram,EF Core Power Tools - ER 다이어그램 (ERD)
+ko,cmdidDacpacReport,분석 (프리뷰)
+ko,cmdidDbCompare,데이터베이스와 DbContext 비교
+ko,cmdidDbDgml,데이터베이스 스키마 시각화
+ko,cmdidDbErDiagram,ER 다이어그램 (ERD)
+ko,cmdidDebugViewBuild,DebugView로 DbContext 보기
+ko,cmdidDgmlBuild,DbContext 다이어그램 추가
+ko,cmdidDgmlNuget,AsDgml() 확장 추가
+ko,cmdidOptions,옵션
+ko,cmdidReverseEngineerCodeFirst,리버스 엔지니어링
+ko,cmdidReverseEngineerEdit,EF Core Power Tools - 편집
+ko,cmdidReverseEngineerRefresh,EF Core Power Tools - 새로고침
+ko,cmdidReverseEngineerRefresh,새로고침
+ko,cmdidSqlBuild,DbContext DDL SQL 보기
+ko,cmdidT4Drop,T4 스캐폴딩 템플릿 추가
+ko,Command1Id,EF Core DbContext 생성...
+pl,cmdidAbout,O...
+pl,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+pl,cmdidCmdDatabase,EF Core Power Tools - Engenharia Reversa
+pl,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+pl,cmdidDacpacReport,Analyze (preview)
+pl,cmdidDbCompare,Porównaj DbContext z bazą danych
+pl,cmdidDbDgml,Wizualizuj schemat bazy danych (wersja zapoznawcza)
+pl,cmdidDbErDiagram,ER Diagram
+pl,cmdidDebugViewBuild,Wyświetl DbContext jako DebugView
+pl,cmdidDgmlBuild,Dodaj diagram DbContext
+pl,cmdidDgmlNuget,Dodaj rozszerzenie AsDgml()
+pl,cmdidOptions,Opcje
+pl,cmdidReverseEngineerCodeFirst,Inżynieria wsteczna
+pl,cmdidReverseEngineerEdit,EF Core Power Tools - Edycja
+pl,cmdidReverseEngineerRefresh,EF Core Power Tools - Odśwież
+pl,cmdidReverseEngineerRefresh,Refresh
+pl,cmdidSqlBuild,Wyświetl DDL SQL dla DbContext
+pl,cmdidT4Drop,Dodaj szablony T4
+pl,Command1Id,Utwórz DbContext do EF Core...
+pt-br,cmdidAbout,Sobre
+pt-br,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+pt-br,cmdidCmdDatabase,EF Core Power Tools - Engenharia Reversa
+pt-br,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+pt-br,cmdidDacpacReport,Analyze (preview)
+pt-br,cmdidDbCompare,Comparar DbContext com database
+pt-br,cmdidDbDgml,Visualizar Database Schema (visualização antecipada)
+pt-br,cmdidDbErDiagram,ER Diagram
+pt-br,cmdidDebugViewBuild,Visualizar DbContext como DebugView
+pt-br,cmdidDgmlBuild,Adicionar diagrama DbContext
+pt-br,cmdidDgmlNuget,Adicionar extensão AsDgml()
+pt-br,cmdidOptions,Opções
+pt-br,cmdidReverseEngineerCodeFirst,Engenharia Reversa
+pt-br,cmdidReverseEngineerEdit,EF Core Power Tools - Editar
+pt-br,cmdidReverseEngineerRefresh,EF Core Power Tools - Atualizar
+pt-br,cmdidReverseEngineerRefresh,Refresh
+pt-br,cmdidSqlBuild,Visualizar DbContext DDL SQL
+pt-br,cmdidT4Drop,Adicionar modelos de Scaffolding em T4  
+pt-br,Command1Id,Criar o EF Core DbContext...
+ru,cmdidAbout,О программе
+ru,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+ru,cmdidCmdDatabase,EF Core Power Tools - реконструировать
+ru,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+ru,cmdidDacpacReport,Analyze (preview)
+ru,cmdidDbCompare,Сравнить контекст БД с базой данных
+ru,cmdidDbDgml,Диаграмма схемы базы данных (предварительная версия)
+ru,cmdidDbErDiagram,ER Diagram
+ru,cmdidDebugViewBuild,Просмотр класса контекста БД как DebugView
+ru,cmdidDgmlBuild,Добавить диаграмму контекста БД
+ru,cmdidDgmlNuget,Добавьте расширение AsDgml()
+ru,cmdidOptions,Параметры
+ru,cmdidReverseEngineerCodeFirst,Реконструировать
+ru,cmdidReverseEngineerEdit,EF Core Power Tools - Редактировать
+ru,cmdidReverseEngineerRefresh,EF Core Power Tools - Обновить
+ru,cmdidReverseEngineerRefresh,Refresh
+ru,cmdidSqlBuild,Просмотр SQL выражений описания данных для контекста БД
+ru,cmdidT4Drop,Добавьте шаблоны генерации T4
+ru,Command1Id,Создать класс EF Core контекст БД...
+tr,cmdidAbout,Hakkında
+tr,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+tr,cmdidCmdDatabase,EF Core Power Tools - Ters Mühendislik
+tr,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+tr,cmdidDacpacReport,Analyze (preview)
+tr,cmdidDbCompare,DbContext'i veritabanı ile karşılaştır
+tr,cmdidDbDgml,Visualize Database Schema (preview)
+tr,cmdidDbErDiagram,ER Diagram
+tr,cmdidDebugViewBuild,DbContext'i DebugView olarak göster
+tr,cmdidDgmlBuild,DbContext diagramı ekle
+tr,cmdidDgmlNuget,AsDgml() eklentisini ekle
+tr,cmdidOptions,Seçenekler
+tr,cmdidReverseEngineerCodeFirst,Ters mühendislik
+tr,cmdidReverseEngineerEdit,EF Core Power Tools - Düzenle
+tr,cmdidReverseEngineerRefresh,EF Core Power Tools - Yenile
+tr,cmdidReverseEngineerRefresh,Refresh
+tr,cmdidSqlBuild,DbContext DDL SQL göster
+tr,cmdidT4Drop,T4 Scaffolding Şablonları Ekle
+tr,Command1Id,Create EF Core DbContext...
+zh-Hans,cmdidAbout,关于
+zh-Hans,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+zh-Hans,cmdidCmdDatabase,EF Core 工具 - 反向工程
+zh-Hans,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+zh-Hans,cmdidDacpacReport,Analyze (preview)
+zh-Hans,cmdidDbCompare,架构比较
+zh-Hans,cmdidDbDgml,数据库架构可视化 (预览)
+zh-Hans,cmdidDbErDiagram,ER Diagram
+zh-Hans,cmdidDebugViewBuild,生成调试视图
+zh-Hans,cmdidDgmlBuild,生成关系图
+zh-Hans,cmdidDgmlNuget,安装Dgml包
+zh-Hans,cmdidOptions,配置
+zh-Hans,cmdidReverseEngineerCodeFirst,反向工程
+zh-Hans,cmdidReverseEngineerEdit,EF Core 工具 - 编辑
+zh-Hans,cmdidReverseEngineerRefresh,EF Core 工具 - 刷新
+zh-Hans,cmdidReverseEngineerRefresh,Refresh
+zh-Hans,cmdidSqlBuild,生成SQL语句
+zh-Hans,cmdidT4Drop,添加 T4 模板
+zh-Hans,Command1Id,创建 EF Core 数据库上下文中...
+zh-Hant,cmdidAbout,關於
+zh-Hant,cmdidCmdAnalyze,EF Core Power Tools - Analyze (experimental)
+zh-Hant,cmdidCmdDatabase,EF Core Power Tools - 反向工程
+zh-Hant,cmdidCmdDiagram,EF Core Power Tools - ER Diagram
+zh-Hant,cmdidDacpacReport,Analyze (preview)
+zh-Hant,cmdidDbCompare,比較 DbContext 和資料庫
+zh-Hant,cmdidDbDgml,視覺化資料庫結構 (預覽版)
+zh-Hant,cmdidDbErDiagram,ER Diagram
+zh-Hant,cmdidDebugViewBuild,檢視 DbContext 的 DebugView
+zh-Hant,cmdidDgmlBuild,新增 DbContext 圖表
+zh-Hant,cmdidDgmlNuget,新增 AsDgml() 擴充方法
+zh-Hant,cmdidOptions,選項
+zh-Hant,cmdidReverseEngineerCodeFirst,反向工程
+zh-Hant,cmdidReverseEngineerEdit,EF Core Power Tools - 編輯
+zh-Hant,cmdidReverseEngineerRefresh,EF Core Power Tools - 重新整理
+zh-Hant,cmdidReverseEngineerRefresh,Refresh
+zh-Hant,cmdidSqlBuild,檢視 DbContext DDL SQL
+zh-Hant,cmdidT4Drop,新增 T4 Scaffolding 樣板
+zh-Hant,Command1Id,正在建立 EF Core DbContext...
