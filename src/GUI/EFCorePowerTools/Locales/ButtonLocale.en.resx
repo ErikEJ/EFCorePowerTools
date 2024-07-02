@@ -142,13 +142,13 @@
     <value>Options</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
-    <value />
+    <value>Reverse Engineer</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="cmdidReverseEngineerEdit" xml:space="preserve">
-    <value />
+    <value>EF Core Power Tools - Edit</value>
   </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - Refresh</value>

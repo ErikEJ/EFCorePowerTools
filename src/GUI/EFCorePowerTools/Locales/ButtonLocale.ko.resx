@@ -141,15 +141,14 @@
   <data name="cmdidOptions" xml:space="preserve">
     <value>옵션</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
+    <value>리버스 엔지니어링</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>새로고침</value>
   </data>
-  <data name="cmdidReverseEngineerEdit" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerEdit" xml:space="preserve">
+    <value>EF Core Power Tools - 편집</value>
   </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - 새로고침</value>
@@ -162,5 +161,15 @@
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - 리버스 엔지니어링</value>
+  </data>
+  <data name="cmdidSqlBuild" xml:space="preserve">
+    <value>DbContext DDL SQL 보기</value>
+  </data>
+  <data name="cmdidSqlprojAnalyze" xml:space="preserve">
+    <value>분석 (실험적)</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidSqlprojCreate" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

@@ -126,9 +126,6 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>視覺化資料庫結構 (預覽版)</value>
   </data>
-  <data name="cmdidDbErDiagram" xml:space="preserve">
-    <value />
-  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>檢視 DbContext 的 DebugView</value>
   </data>
@@ -141,23 +138,22 @@
   <data name="cmdidOptions" xml:space="preserve">
     <value>選項</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
+    <value>反向工程</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>重新整理</value>
   </data>
-  <data name="cmdidReverseEngineerEdit" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerEdit" xml:space="preserve">
+    <value>EF Core Power Tools - 編輯</value>
   </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - 重新整理</value>
   </data>
-  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - 反向工程</value>
+  </data>
+  <data name="cmdidSqlBuild" xml:space="preserve">
+    <value>檢視 DbContext DDL SQL</value>
   </data>
 </root>

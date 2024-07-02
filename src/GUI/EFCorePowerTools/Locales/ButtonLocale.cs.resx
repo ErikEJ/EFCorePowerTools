@@ -138,32 +138,26 @@
   <data name="cmdidOptions" xml:space="preserve">
     <value>Nastavení</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
+    <value>Zpětná analýza</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>Aktualizovat</value>
   </data>
-  <data name="cmdidReverseEngineerEdit" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerEdit" xml:space="preserve">
+    <value>EF Core Power Tools - Upravit</value>
   </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - Aktualizovat</value>
   </data>
-  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Zpětná analýza</value>
   </data>
-  <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="cmdidSqlprojCreate" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="cmdidSqlBuild" xml:space="preserve">
     <value>Zobrazit DbContext DDL SQL</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

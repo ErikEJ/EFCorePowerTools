@@ -126,10 +126,6 @@
   <data name="cmdidDbDgml" xml:space="preserve">
     <value>Wizualizuj schemat bazy danych (wersja zapoznawcza)</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidDbErDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="cmdidDebugViewBuild" xml:space="preserve">
     <value>Wyświetl DbContext jako DebugView</value>
   </data>
@@ -142,19 +138,22 @@
   <data name="cmdidOptions" xml:space="preserve">
     <value>Opcje</value>
   </data>
-  <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
+    <value>Inżynieria wsteczna</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>Odśwież</value>
   </data>
+  <data name="cmdidReverseEngineerEdit" xml:space="preserve">
+    <value>EF Core Power Tools - Edycja</value>
+  </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - Odśwież</value>
   </data>
-  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Inżynieria wsteczna</value>
+  </data>
+  <data name="cmdidSqlBuild" xml:space="preserve">
+    <value>Wyświetl DDL SQL dla DbContext</value>
   </data>
 </root>

@@ -138,20 +138,32 @@
   <data name="cmdidOptions" xml:space="preserve">
     <value>Opciones</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cmdidReverseEngineerCodeFirst" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
+    <value>Ingeniería inversa</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>Recargar</value>
   </data>
+  <data name="cmdidReverseEngineerEdit" xml:space="preserve">
+    <value>EF Core Power Tools - Editar</value>
+  </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - Recargar</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="cmdidServerExplorerDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Ingeniería inversa</value>
+  </data>
+  <data name="cmdidSqlBuild" xml:space="preserve">
+    <value>Ver DbContext DDL SQL</value>
+  </data>
+  <data name="cmdidSqlprojAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

@@ -139,33 +139,34 @@
     <value>Optionen</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
-    <value>8</value>
+    <value>Reverse Engineering</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>Aktualisieren</value>
   </data>
   <data name="cmdidReverseEngineerEdit" xml:space="preserve">
-    <value>10</value>
+    <value>EF Core Power Tools - Bearbeiten</value>
   </data>
   <data name="cmdidReverseEngineerRefresh" xml:space="preserve">
     <value>EF Core Power Tools - Aktualisieren</value>
   </data>
-  <data name="cmdidServerExplorerAnalyze" xml:space="preserve">
-    <value>12</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cmdidServerExplorerAnalyze" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="cmdidServerExplorerDiagram" xml:space="preserve">
-    <value>13</value>
+  <data name="cmdidServerExplorerDiagram" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="cmdidServerExplorerReverseEngineer" xml:space="preserve">
     <value>EF Core Power Tools - Reverse Engineering</value>
   </data>
-  <data name="cmdidSqlprojAnalyze" xml:space="preserve">
-    <value>14</value>
+  <data name="cmdidSqlBuild" xml:space="preserve">
+    <value>DbContext DDL SQL anzeigen</value>
   </data>
-  <data name="cmdidSqlprojCreate" xml:space="preserve">
-    <value>15</value>
+  <data name="cmdidSqlprojCreate" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="cmdidT4Drop" xml:space="preserve">
-    <value>16</value>
+    <value />
   </data>
 </root>
