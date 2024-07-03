@@ -54,27 +54,30 @@
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools</CommandName>
-          <ButtonText>EF Core 工具</ButtonText>
+          <ButtonText>EF Core Power Tools</ButtonText>
         </Strings>
       </Menu>
 
       <Menu guid="guidDbContextPackageCmdSet" id="cmdidEdmMenu" priority="0x0100" type="Menu">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmMenuGroup" />
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools</CommandName>
-          <ButtonText>EF Core 工具</ButtonText>
+          <ButtonText>EF Core Power Tools</ButtonText>
         </Strings>
       </Menu>
 
       <Menu guid="guidReverseEngineerMenu" id="idReverseEngineerMenu" priority="0x0100" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Reverse Engineer</CommandName>
-          <ButtonText>EF Core 工具 - 反向工程</ButtonText>
+          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
         </Strings>
       </Menu>
 
@@ -87,9 +90,10 @@
         <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
-          <ButtonText>反向工程</ButtonText>
+          <ButtonText>Reverse Engineer</ButtonText>
         </Strings>
       </Button>
 
@@ -98,6 +102,7 @@
         <Icon guid="ImageCatalogGuid" id="RefreshScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidReverseEngineerRefresh</CommandName>
           <ButtonText>Refresh</ButtonText>
@@ -109,9 +114,10 @@
         <Icon guid="ImageCatalogGuid" id="StatusHelpOutline" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidAbout</CommandName>
-          <ButtonText>关于</ButtonText>
+          <ButtonText>About</ButtonText>
         </Strings>
       </Button>
 
@@ -120,9 +126,10 @@
         <Icon guid="ImageCatalogGuid" id="Settings" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
-          <ButtonText>配置</ButtonText>
+          <ButtonText>Options</ButtonText>
         </Strings>
       </Button>
 
@@ -131,9 +138,10 @@
         <Icon guid="ImageCatalogGuid" id="Template" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
-          <ButtonText>添加 T4 模板</ButtonText>
+          <ButtonText>Add T4 Scaffolding Templates</ButtonText>
         </Strings>
       </Button>
 
@@ -142,9 +150,10 @@
         <Icon guid="ImageCatalogGuid" id="NewDiagram" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>生成关系图</ButtonText>
+          <ButtonText>Add DbContext Diagram</ButtonText>
         </Strings>
       </Button>
 
@@ -153,9 +162,10 @@
         <Icon guid="ImageCatalogGuid" id="SQLQueryChecked" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
-          <ButtonText>生成SQL语句</ButtonText>
+          <ButtonText>View DbContext DDL SQL</ButtonText>
         </Strings>
       </Button>
 
@@ -164,9 +174,10 @@
         <Icon guid="ImageCatalogGuid" id="ExportScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
-          <ButtonText>生成调试视图</ButtonText>
+          <ButtonText>View DbContext as DebugView</ButtonText>
         </Strings>
       </Button>
 
@@ -175,9 +186,10 @@
         <Icon guid="ImageCatalogGuid" id="PackageDeployment" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
-          <ButtonText>安装Dgml包</ButtonText>
+          <ButtonText>Add AsDgml() extension</ButtonText>
         </Strings>
       </Button>
 
@@ -186,9 +198,10 @@
         <Icon guid="ImageCatalogGuid" id="CompareSchemas" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
-          <ButtonText>架构比较</ButtonText>
+          <ButtonText>Compare DbContext to database</ButtonText>
         </Strings>
       </Button>
 
@@ -197,9 +210,10 @@
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
-          <ButtonText>数据库架构可视化 (预览)</ButtonText>
+          <ButtonText>Visualize Database Schema</ButtonText>
         </Strings>
       </Button>
 
@@ -208,6 +222,7 @@
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDbErDiagram</CommandName>
           <ButtonText>ER Diagram</ButtonText>
@@ -220,6 +235,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>Analyze (preview)</ButtonText>
         </Strings>
@@ -231,9 +247,10 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Edit</CommandName>
-          <ButtonText>EF Core 工具 - 编辑</ButtonText>
+          <ButtonText>EF Core Power Tools - Edit</ButtonText>
         </Strings>
       </Button>
 
@@ -243,9 +260,10 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Refresh</CommandName>
-          <ButtonText>EF Core 工具 - 刷新</ButtonText>
+          <ButtonText>EF Core Power Tools - Refresh</ButtonText>
         </Strings>
       </Button>
 
@@ -254,8 +272,9 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>创建 EF Core 数据库上下文中...</ButtonText>
+          <ButtonText>Create EF Core DbContext...</ButtonText>
         </Strings>
       </Button>
 
@@ -265,8 +284,9 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>EF Core 工具 - 反向工程</ButtonText>
+          <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
         </Strings>
       </Button>
 
@@ -276,6 +296,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - ER Diagram</ButtonText>
         </Strings>
@@ -286,7 +307,8 @@
         <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>        
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - Analyze (experimental)</ButtonText>
         </Strings>
