@@ -114,6 +114,7 @@
         <Icon guid="ImageCatalogGuid" id="StatusHelpOutline" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidAbout</CommandName>
           <ButtonText>About</ButtonText>
@@ -125,6 +126,7 @@
         <Icon guid="ImageCatalogGuid" id="Settings" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidOptions</CommandName>
           <ButtonText>Options</ButtonText>
@@ -136,6 +138,7 @@
         <Icon guid="ImageCatalogGuid" id="Template" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidT4Drop</CommandName>
           <ButtonText>Add T4 Scaffolding Templates</ButtonText>
@@ -147,6 +150,7 @@
         <Icon guid="ImageCatalogGuid" id="NewDiagram" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
           <ButtonText>Add DbContext Diagram</ButtonText>
@@ -158,6 +162,7 @@
         <Icon guid="ImageCatalogGuid" id="SQLQueryChecked" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidSqlBuild</CommandName>
           <ButtonText>View DbContext DDL SQL</ButtonText>
@@ -169,6 +174,7 @@
         <Icon guid="ImageCatalogGuid" id="ExportScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDebugViewBuild</CommandName>
           <ButtonText>View DbContext as DebugView</ButtonText>
@@ -180,6 +186,7 @@
         <Icon guid="ImageCatalogGuid" id="PackageDeployment" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDgmlNuget</CommandName>
           <ButtonText>Add AsDgml() extension</ButtonText>
@@ -191,6 +198,7 @@
         <Icon guid="ImageCatalogGuid" id="CompareSchemas" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDbCompare</CommandName>
           <ButtonText>Compare DbContext to database</ButtonText>
@@ -202,6 +210,7 @@
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDbDgml</CommandName>
           <ButtonText>Visualize Database Schema</ButtonText>
@@ -213,6 +222,7 @@
         <Icon guid="ImageCatalogGuid" id="DatabaseAuditSpecification" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidDbErDiagram</CommandName>
           <ButtonText>ER Diagram</ButtonText>
@@ -225,6 +235,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>Analyze (preview)</ButtonText>
         </Strings>
@@ -236,6 +247,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Edit</CommandName>
           <ButtonText>EF Core Power Tools - Edit</ButtonText>
@@ -248,6 +260,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>EF Core Power Tools - Refresh</CommandName>
           <ButtonText>EF Core Power Tools - Refresh</ButtonText>
@@ -259,6 +272,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>Create EF Core DbContext...</ButtonText>
         </Strings>
@@ -270,6 +284,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - Reverse Engineer</ButtonText>
         </Strings>
@@ -281,6 +296,7 @@
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - ER Diagram</ButtonText>
         </Strings>
@@ -291,7 +307,8 @@
         <Icon guid="ImageCatalogGuid" id="CodeInformationRule" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>DefaultInvisible</CommandFlag>        
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <ButtonText>EF Core Power Tools - Analyze (experimental)</ButtonText>
         </Strings>

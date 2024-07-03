@@ -139,7 +139,7 @@
     <value>Optionen</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirst" xml:space="preserve">
-    <value>Reverse Engineering&#x8;</value>
+    <value>Reverse Engineering</value>
   </data>
   <data name="cmdidReverseEngineerCodeFirstRefresh" xml:space="preserve">
     <value>Aktualisieren</value>
@@ -170,6 +170,6 @@
     <value>EF Core DbContext erstellen...</value>
   </data>
   <data name="cmdidT4Drop" xml:space="preserve">
-    <value>&#x8;T4-Gerüstvorlagen hinzufügen</value>
+    <value>T4-Gerüstvorlagen hinzufügen</value>
   </data>
 </root>
