@@ -170,7 +170,7 @@ namespace RevEng.Common.Cli
                 UseDecimalDataAnnotationForSprocResult = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
 
-                // Not supported:
+                // HandleBars templates are not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it
@@ -178,7 +178,7 @@ namespace RevEng.Common.Cli
                 // Not implemented:
                 UseNoDefaultConstructor = false, // not implemented, will consider if asked for
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
-                UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
+                UseNoObjectFilter = false, // will add all objects and use exclusions to filter list - "refresh-object-lists" allows you to avoid this (switch to manual)
                 UseAsyncStoredProcedureCalls = true, // not implemented
                 FilterSchemas = false, // not implemented
                 Schemas = null, // not implemented
