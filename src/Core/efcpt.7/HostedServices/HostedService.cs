@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace ErikEJ.EFCorePowerTools.HostedServices;
 
-public abstract class HostedService : BackgroundService
+internal abstract class HostedService : BackgroundService
 {
     public sealed override Task StartAsync(CancellationToken cancellationToken)
     {

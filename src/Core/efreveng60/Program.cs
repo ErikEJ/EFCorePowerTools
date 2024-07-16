@@ -17,7 +17,7 @@ using RevEng.Core.Diagram;
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Reviewed")]
 namespace EfReveng
 {
-    public static class Program
+    internal static class Program
     {
         public static async System.Threading.Tasks.Task<int> Main(string[] args)
         {

@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Modelling
 {
-    public static class EfCoreModelBuilder
+    internal static class EfCoreModelBuilder
     {
 #pragma warning disable CA1002 // Do not expose generic lists
         public static List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath)

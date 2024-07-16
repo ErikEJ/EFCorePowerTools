@@ -440,7 +440,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return tableColumns;
         }
 
-        private static void GetViewColumns(TSqlView item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
+        private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 

@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Modelling
 {
-    public static class EfCoreCompareBuilder
+    internal static class EfCoreCompareBuilder
     {
 #pragma warning disable CA1002 // Do not expose generic lists
         public static List<Tuple<string, string>> GenerateDbContextList(string outputPath, string startupOutputPath)

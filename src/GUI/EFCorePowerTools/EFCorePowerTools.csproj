@@ -580,7 +580,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.5.33428.388" />
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>17.11.54-preview1</Version>
+      <Version>17.11.414</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
