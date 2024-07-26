@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Dac;
 
-namespace RevEng.Core
+namespace RevEng.Core.DacpacReport
 {
     public class DacpacExtractor
     {

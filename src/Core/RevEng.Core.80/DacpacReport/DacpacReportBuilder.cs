@@ -2,7 +2,7 @@
 using System.IO;
 using SqlServer.Rules.Report;
 
-namespace RevEng.Core
+namespace RevEng.Core.DacpacReport
 {
     public class DacpacReportBuilder
     {
