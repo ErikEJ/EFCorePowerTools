@@ -289,3 +289,4 @@ __pycache__/
 
 # Apple macOS files that stores custom attributes of its containing folder
 **/.DS_Store
+*.env
