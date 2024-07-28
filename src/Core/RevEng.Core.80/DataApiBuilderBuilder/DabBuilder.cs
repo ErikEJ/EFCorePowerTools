@@ -92,26 +92,97 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
             sb.AppendLine(CultureInfo.InvariantCulture, $"dab init -c dab-config.json --database-type {databaseType} --connection-string \"@env('dab-connection-string')\" --host-mode Development");
 
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo Adding tables");
+
             foreach (var dbObject in model.Tables)
             {
-                var columns = dbObject.Columns.Select(c => c.Name).ToList();
-                var columnList = string.Join(",", columns);
+                if (BreaksOn(dbObject))
+                {
+                    continue;
+                }
+
+                var columnList = string.Join(
+                    ",",
+                    dbObject.Columns
+                    .Select(c => c.Name).ToList());
+
+                var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
 
                 if (dbObject.PrimaryKey != null)
                 {
-                   var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --permissions \"anonymous:*\" ");
                 }
-
-                //TODO: guess and set primary key for views --source.key-fields
             }
 
-            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo run 'dab validate' to validate your configuration");
-            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo run 'dab start' to start the development API host");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo Adding views and tables without primary key");
+
+            foreach (var dbObject in model.Tables)
+            {
+                if (BreaksOn(dbObject))
+                {
+                    continue;
+                }
+
+                var columnList = string.Join(
+                    ",",
+                    dbObject.Columns
+                    .Select(c => c.Name).ToList());
+
+                var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+
+                if (dbObject.PrimaryKey == null)
+                {
+                    var strategy = "Id column";
+                    var candidate = dbObject.Columns.FirstOrDefault(c => c.Name.Equals("id", StringComparison.OrdinalIgnoreCase));
+                    if (candidate == null)
+                    {
+                        strategy = "first Id column";
+                        candidate = dbObject.Columns.FirstOrDefault(c => c.Name.EndsWith("id", StringComparison.OrdinalIgnoreCase));
+                        if (candidate == null)
+                        {
+                            strategy = "first column";
+                            candidate = dbObject.Columns[0];
+                        }
+                    }
+
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"@echo No primary key found for table/view '{dbObject.Name}', using {strategy} ({candidate.Name}) as key field");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --source.key-fields \"{candidate.Name}\" --permissions \"anonymous:*\" ");
+                }
+            }
+
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo Adding relationships");
+
+            foreach (var dbObject in model.Tables)
+            {
+                if (BreaksOn(dbObject))
+                {
+                    continue;
+                }
+
+                var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+
+                foreach (var fk in dbObject.ForeignKeys)
+                {
+                    var fkType = fk.PrincipalTable.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {type} --relationship {fkType} --target.entity {fkType} --cardinality one");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {fkType} --relationship {type} --target.entity {type} --cardinality many");
+                }
+            }
+
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo **");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo ** run 'dab validate' to validate your configuration **");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo ** run 'dab start' to start the development API host **");
 
             File.WriteAllText(fileName, sb.ToString(), Encoding.ASCII);
 
             return fileName;
+        }
+
+        private static bool BreaksOn(DatabaseTable dbObject)
+        {
+            return dbObject.Columns
+                .Any(c => c.StoreType == "hierarchyid" || c.StoreType == "geometry" || c.StoreType == "geography")
+                || !dbObject.Columns.Any();
         }
 
         private DatabaseModel GetModelInternal()

@@ -271,6 +271,14 @@ namespace EFCorePowerTools
                             (int)PkgCmdIDList.cmdidDbErDiagram)));
 
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidReverseEngineerDab)));
+
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnReverseEngineerConfigFileMenuInvokeHandler,
                         null,
                         OnReverseEngineerConfigFileMenuBeforeQueryStatus,
@@ -405,6 +413,10 @@ namespace EFCorePowerTools
                 case PkgCmdIDList.cmdidT4Drop:
                     menuCommand.Text = ButtonLocale.cmdidT4Drop;
                     break;
+                case PkgCmdIDList.cmdidReverseEngineerDab:
+
+                    // TODO Set localized text
+                    break;
 
                 default:
                     break;
@@ -413,7 +425,8 @@ namespace EFCorePowerTools
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidOptions
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDab)
             {
                 menuCommand.Visible = true;
                 return;
@@ -704,6 +717,10 @@ namespace EFCorePowerTools
                     }
 
                     await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, configs[0], true);
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDab)
+                {
+                    await VS.MessageBox.ShowConfirmAsync("Running!");
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
