@@ -415,10 +415,6 @@ namespace EFCorePowerTools
                 case PkgCmdIDList.cmdidT4Drop:
                     menuCommand.Text = ButtonLocale.cmdidT4Drop;
                     break;
-                case PkgCmdIDList.cmdidReverseEngineerDab:
-
-                    // TODO Set localized text
-                    break;
 
                 default:
                     break;
