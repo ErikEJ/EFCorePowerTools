@@ -59,6 +59,7 @@ namespace EFCorePowerTools
         private readonly CompareHandler compareHandler;
         private readonly DatabaseDiagramHandler databaseDiagramHandler;
         private readonly DacpacAnalyzerHandler dacpacAnalyzerHandler;
+        private readonly DabBuilderHandler dabBuilderHandler;
         private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
@@ -70,6 +71,7 @@ namespace EFCorePowerTools
             compareHandler = new CompareHandler(this);
             databaseDiagramHandler = new DatabaseDiagramHandler(this);
             dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
+            dabBuilderHandler = new DabBuilderHandler(this);
         }
 
         internal EnvDTE80.DTE2 Dte2()
@@ -720,7 +722,7 @@ namespace EFCorePowerTools
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerDab)
                 {
-                    await VS.MessageBox.ShowConfirmAsync("Running!");
+                    await dabBuilderHandler.BuildDabConfigAsync(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {

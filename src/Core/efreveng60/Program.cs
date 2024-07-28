@@ -134,7 +134,7 @@ namespace EfReveng
                         && args[0] == "dabbuilder"
                         && new FileInfo(args[1]).Exists)
                     {
-                        var dabOptions = DataApiBuilderOptionsExtensions.TryDeserialize(await File.ReadAllTextAsync(args[1], Encoding.UTF8));
+                        var dabOptions = DataApiBuilderOptionsExtensions.TryRead(args[1]);
 
                         if (dabOptions == null)
                         {

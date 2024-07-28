@@ -160,6 +160,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return filePath;
         }
 
+        public async Task<string> GetDabConfigPathAsync(string optionsPath)
+        {
+            var arguments = "dabbuilder " + " \"" + optionsPath.Replace("\"", "\\\"") + "\"";
+
+            var filePath = await GetDiagramInternalAsync(arguments);
+
+            return filePath;
+        }
+
         private static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
             return await ProcessLauncher.RunProcessAsync(startInfo);

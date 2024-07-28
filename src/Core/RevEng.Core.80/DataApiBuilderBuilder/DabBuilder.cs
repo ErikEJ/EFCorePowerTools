@@ -40,14 +40,12 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
         public string GetDabConfigCmdFile()
         {
-            var folder = Path.GetDirectoryName(options.ProjectPath);
-
-            if (folder == null)
+            if (options.ProjectPath == null)
             {
                 return string.Empty;
             }
 
-            var fileName = Path.Combine(folder, "dab-config.cmd");
+            var fileName = Path.Combine(options.ProjectPath, "dab-config.cmd");
 
             string databaseType = string.Empty;
 
@@ -82,11 +80,17 @@ namespace RevEng.Core.DataApiBuilderBuilder
             }
 
             var model = GetModelInternal();
-            var procedures = GetStoredProcedures();
+            ////var procedures = GetStoredProcedures();
 
             var sb = new StringBuilder();
 
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo off");
+
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo This cmd file creates a Data API Builder configuration based on the chosen database objects.");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo To run the cmd, create an .env file with the following contents:");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo dab-connection-string=<your connection string>");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo ** Make sure to exclude the .env file from source control**");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo **");
 
             sb.AppendLine(CultureInfo.InvariantCulture, $"dotnet tool install -g Microsoft.DataApiBuilder");
 
@@ -196,29 +200,29 @@ namespace RevEng.Core.DataApiBuilderBuilder
             return dbModel;
         }
 
-        private RoutineModel GetStoredProcedures()
-        {
-            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
+        ////private RoutineModel GetStoredProcedures()
+        ////{
+        ////    var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
 
-            if (procedureModelFactory == null)
-            {
-                return new RoutineModel();
-            }
+        ////    if (procedureModelFactory == null)
+        ////    {
+        ////        return new RoutineModel();
+        ////    }
 
-            var modelFactoryOptions = new ModuleModelFactoryOptions
-            {
-                DiscoverMultipleResultSets = false,
-                UseLegacyResultSetDiscovery = false,
-                UseDateOnlyTimeOnly = true,
-                FullModel = true,
-                Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
-                ModulesUsingLegacyDiscovery = options.Tables
-                        .Where(t => t.ObjectType == ObjectType.Procedure && t.UseLegacyResultSetDiscovery)
-                        .Select(m => m.Name),
-                MappedModules = new Dictionary<string, string>(),
-            };
+        ////    var modelFactoryOptions = new ModuleModelFactoryOptions
+        ////    {
+        ////        DiscoverMultipleResultSets = false,
+        ////        UseLegacyResultSetDiscovery = false,
+        ////        UseDateOnlyTimeOnly = true,
+        ////        FullModel = true,
+        ////        Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
+        ////        ModulesUsingLegacyDiscovery = options.Tables
+        ////                .Where(t => t.ObjectType == ObjectType.Procedure && t.UseLegacyResultSetDiscovery)
+        ////                .Select(m => m.Name),
+        ////        MappedModules = new Dictionary<string, string>(),
+        ////    };
 
-            return procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
-        }
+        ////    return procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
+        ////}
     }
 }

@@ -46,6 +46,17 @@ namespace RevEng.Common
             }
         }
 
+        public static HashSet<DatabaseType> GetDabProviders()
+            {
+            return new HashSet<DatabaseType>
+            {
+                DatabaseType.SQLServer,
+                DatabaseType.SQLServerDacpac,
+                DatabaseType.Npgsql,
+                DatabaseType.Mysql,
+            };
+        }
+
         public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
         {
             if (commandOptions == null)
