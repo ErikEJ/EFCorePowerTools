@@ -54,10 +54,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var errorParts = output.Split(new[] { "Error:" + Environment.NewLine }, StringSplitOptions.None);
             if (errorParts.Length == 2)
             {
-                throw new InvalidOperationException("Diagram error: " + Environment.NewLine + errorParts[1]);
+                throw new InvalidOperationException("Result error: " + Environment.NewLine + errorParts[1]);
             }
 
-            throw new InvalidOperationException($"Diagram error: Unable to launch external process: {Environment.NewLine + output}");
+            throw new InvalidOperationException($"Launch error: Unable to launch external process: {Environment.NewLine + output}");
         }
 
         private static bool TryRead<T>(string options, out T deserialized)

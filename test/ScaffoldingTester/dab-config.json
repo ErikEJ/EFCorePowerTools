@@ -1,0 +1,1398 @@
+{
+  "$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.1.7/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mssql",
+    "connection-string": "@env('dab-connection-string')",
+    "options": {
+      "set-session-context": false
+    }
+  },
+  "runtime": {
+    "rest": {
+      "enabled": true,
+      "path": "/api",
+      "request-body-strict": true
+    },
+    "graphql": {
+      "enabled": true,
+      "path": "/graphql",
+      "allow-introspection": true
+    },
+    "host": {
+      "cors": {
+        "origins": [],
+        "allow-credentials": false
+      },
+      "authentication": {
+        "provider": "StaticWebApps"
+      },
+      "mode": "development"
+    }
+  },
+  "entities": {
+    "Categories": {
+      "source": {
+        "object": "[dbo].[Categories]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Categories",
+          "plural": "Categories"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CategoryID",
+                  "CategoryName",
+                  "Description",
+                  "Picture"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Products": {
+          "cardinality": "many",
+          "target.entity": "Products",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "CustomerCustomerDemo": {
+      "source": {
+        "object": "[dbo].[CustomerCustomerDemo]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "CustomerCustomerDemo",
+          "plural": "CustomerCustomerDemos"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CustomerID",
+                  "CustomerTypeID"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "CustomerDemographics": {
+          "cardinality": "one",
+          "target.entity": "CustomerDemographics",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Customers": {
+          "cardinality": "one",
+          "target.entity": "Customers",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "CustomerDemographics": {
+      "source": {
+        "object": "[dbo].[CustomerDemographics]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "CustomerDemographics",
+          "plural": "CustomerDemographics"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CustomerTypeID",
+                  "CustomerDesc"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "CustomerCustomerDemo": {
+          "cardinality": "many",
+          "target.entity": "CustomerCustomerDemo",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Customers": {
+      "source": {
+        "object": "[dbo].[Customers]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Customers",
+          "plural": "Customers"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CustomerID",
+                  "CompanyName",
+                  "ContactName",
+                  "ContactTitle",
+                  "Address",
+                  "City",
+                  "Region",
+                  "PostalCode",
+                  "Country",
+                  "Phone",
+                  "Fax",
+                  "Rating"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "CustomerCustomerDemo": {
+          "cardinality": "many",
+          "target.entity": "CustomerCustomerDemo",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Orders": {
+          "cardinality": "many",
+          "target.entity": "Orders",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Employees": {
+      "source": {
+        "object": "[dbo].[Employees]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Employees",
+          "plural": "Employees"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "EmployeeID",
+                  "LastName",
+                  "FirstName",
+                  "Title",
+                  "TitleOfCourtesy",
+                  "BirthDate",
+                  "HireDate",
+                  "Address",
+                  "City",
+                  "Region",
+                  "PostalCode",
+                  "Country",
+                  "HomePhone",
+                  "Extension",
+                  "Photo",
+                  "Notes",
+                  "ReportsTo",
+                  "PhotoPath"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Employees": {
+          "cardinality": "many",
+          "target.entity": "Employees",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "EmployeeTerritories": {
+          "cardinality": "many",
+          "target.entity": "EmployeeTerritories",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Orders": {
+          "cardinality": "many",
+          "target.entity": "Orders",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "EmployeeTerritories": {
+      "source": {
+        "object": "[dbo].[EmployeeTerritories]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "EmployeeTerritories",
+          "plural": "EmployeeTerritories"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "EmployeeID",
+                  "TerritoryID"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Employees": {
+          "cardinality": "one",
+          "target.entity": "Employees",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Territories": {
+          "cardinality": "one",
+          "target.entity": "Territories",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "OrderDetails": {
+      "source": {
+        "object": "[dbo].[Order Details]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "OrderDetails",
+          "plural": "OrderDetails"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "OrderID",
+                  "ProductID",
+                  "UnitPrice",
+                  "Quantity",
+                  "Discount"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Orders": {
+          "cardinality": "one",
+          "target.entity": "Orders",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Products": {
+          "cardinality": "one",
+          "target.entity": "Products",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Orders": {
+      "source": {
+        "object": "[dbo].[Orders]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Orders",
+          "plural": "Orders"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "OrderID",
+                  "CustomerID",
+                  "EmployeeID",
+                  "OrderDate",
+                  "RequiredDate",
+                  "ShippedDate",
+                  "ShipVia",
+                  "Freight",
+                  "ShipName",
+                  "ShipAddress",
+                  "ShipCity",
+                  "ShipRegion",
+                  "ShipPostalCode",
+                  "ShipCountry"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "OrderDetails": {
+          "cardinality": "many",
+          "target.entity": "OrderDetails",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Customers": {
+          "cardinality": "one",
+          "target.entity": "Customers",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Employees": {
+          "cardinality": "one",
+          "target.entity": "Employees",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Shippers": {
+          "cardinality": "one",
+          "target.entity": "Shippers",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Products": {
+      "source": {
+        "object": "[dbo].[Products]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Products",
+          "plural": "Products"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ProductID",
+                  "ProductName",
+                  "SupplierID",
+                  "CategoryID",
+                  "QuantityPerUnit",
+                  "UnitPrice",
+                  "UnitsInStock",
+                  "UnitsOnOrder",
+                  "ReorderLevel",
+                  "Discontinued"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "OrderDetails": {
+          "cardinality": "many",
+          "target.entity": "OrderDetails",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Categories": {
+          "cardinality": "one",
+          "target.entity": "Categories",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Suppliers": {
+          "cardinality": "one",
+          "target.entity": "Suppliers",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Region": {
+      "source": {
+        "object": "[dbo].[Region]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Region",
+          "plural": "Regions"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "RegionID",
+                  "RegionDescription"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Territories": {
+          "cardinality": "many",
+          "target.entity": "Territories",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Shippers": {
+      "source": {
+        "object": "[dbo].[Shippers]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Shippers",
+          "plural": "Shippers"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ShipperID",
+                  "CompanyName",
+                  "Phone"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Orders": {
+          "cardinality": "many",
+          "target.entity": "Orders",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Suppliers": {
+      "source": {
+        "object": "[dbo].[Suppliers]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Suppliers",
+          "plural": "Suppliers"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "SupplierID",
+                  "CompanyName",
+                  "ContactName",
+                  "ContactTitle",
+                  "Address",
+                  "City",
+                  "Region",
+                  "PostalCode",
+                  "Country",
+                  "Phone",
+                  "Fax",
+                  "HomePage"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "Products": {
+          "cardinality": "many",
+          "target.entity": "Products",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Territories": {
+      "source": {
+        "object": "[dbo].[Territories]",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Territories",
+          "plural": "Territories"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "TerritoryID",
+                  "TerritoryDescription",
+                  "RegionID"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "relationships": {
+        "EmployeeTerritories": {
+          "cardinality": "many",
+          "target.entity": "EmployeeTerritories",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        },
+        "Region": {
+          "cardinality": "one",
+          "target.entity": "Region",
+          "source.fields": [],
+          "target.fields": [],
+          "linking.source.fields": [],
+          "linking.target.fields": []
+        }
+      }
+    },
+    "Alphabeticallistofproducts": {
+      "source": {
+        "object": "[dbo].[Alphabetical list of products]",
+        "type": "table",
+        "key-fields": [
+          "ProductID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Alphabeticallistofproducts",
+          "plural": "Alphabeticallistofproducts"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ProductID",
+                  "ProductName",
+                  "SupplierID",
+                  "CategoryID",
+                  "QuantityPerUnit",
+                  "UnitPrice",
+                  "UnitsInStock",
+                  "UnitsOnOrder",
+                  "ReorderLevel",
+                  "Discontinued",
+                  "CategoryName"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "CategorySalesfor1997": {
+      "source": {
+        "object": "[dbo].[Category Sales for 1997]",
+        "type": "table",
+        "key-fields": [
+          "CategoryName"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "CategorySalesfor1997",
+          "plural": "CategorySalesfor1997s"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CategoryName",
+                  "CategorySales"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "CurrentProductList": {
+      "source": {
+        "object": "[dbo].[Current Product List]",
+        "type": "table",
+        "key-fields": [
+          "ProductID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "CurrentProductList",
+          "plural": "CurrentProductLists"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ProductID",
+                  "ProductName"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "CustomerandSuppliersbyCity": {
+      "source": {
+        "object": "[dbo].[Customer and Suppliers by City]",
+        "type": "table",
+        "key-fields": [
+          "City"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "CustomerandSuppliersbyCity",
+          "plural": "CustomerandSuppliersbyCities"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "City",
+                  "CompanyName",
+                  "ContactName",
+                  "Relationship"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Invoices": {
+      "source": {
+        "object": "[dbo].[Invoices]",
+        "type": "table",
+        "key-fields": [
+          "CustomerID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "Invoices",
+          "plural": "Invoices"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ShipName",
+                  "ShipAddress",
+                  "ShipCity",
+                  "ShipRegion",
+                  "ShipPostalCode",
+                  "ShipCountry",
+                  "CustomerID",
+                  "CustomerName",
+                  "Address",
+                  "City",
+                  "Region",
+                  "PostalCode",
+                  "Country",
+                  "Salesperson",
+                  "OrderID",
+                  "OrderDate",
+                  "RequiredDate",
+                  "ShippedDate",
+                  "ShipperName",
+                  "ProductID",
+                  "ProductName",
+                  "UnitPrice",
+                  "Quantity",
+                  "Discount",
+                  "ExtendedPrice",
+                  "Freight"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "OrderDetailsExtended": {
+      "source": {
+        "object": "[dbo].[Order Details Extended]",
+        "type": "table",
+        "key-fields": [
+          "OrderID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "OrderDetailsExtended",
+          "plural": "OrderDetailsExtendeds"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "OrderID",
+                  "ProductID",
+                  "ProductName",
+                  "UnitPrice",
+                  "Quantity",
+                  "Discount",
+                  "ExtendedPrice"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "OrderSubtotals": {
+      "source": {
+        "object": "[dbo].[Order Subtotals]",
+        "type": "table",
+        "key-fields": [
+          "OrderID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "OrderSubtotals",
+          "plural": "OrderSubtotals"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "OrderID",
+                  "Subtotal"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "OrdersQry": {
+      "source": {
+        "object": "[dbo].[Orders Qry]",
+        "type": "table",
+        "key-fields": [
+          "OrderID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "OrdersQry",
+          "plural": "OrdersQries"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "OrderID",
+                  "CustomerID",
+                  "EmployeeID",
+                  "OrderDate",
+                  "RequiredDate",
+                  "ShippedDate",
+                  "ShipVia",
+                  "Freight",
+                  "ShipName",
+                  "ShipAddress",
+                  "ShipCity",
+                  "ShipRegion",
+                  "ShipPostalCode",
+                  "ShipCountry",
+                  "CompanyName",
+                  "Address",
+                  "City",
+                  "Region",
+                  "PostalCode",
+                  "Country"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ProductSalesfor1997": {
+      "source": {
+        "object": "[dbo].[Product Sales for 1997]",
+        "type": "table",
+        "key-fields": [
+          "CategoryName"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "ProductSalesfor1997",
+          "plural": "ProductSalesfor1997s"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CategoryName",
+                  "ProductName",
+                  "ProductSales"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ProductsAboveAveragePrice": {
+      "source": {
+        "object": "[dbo].[Products Above Average Price]",
+        "type": "table",
+        "key-fields": [
+          "ProductName"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "ProductsAboveAveragePrice",
+          "plural": "ProductsAboveAveragePrices"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ProductName",
+                  "UnitPrice"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "ProductsbyCategory": {
+      "source": {
+        "object": "[dbo].[Products by Category]",
+        "type": "table",
+        "key-fields": [
+          "CategoryName"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "ProductsbyCategory",
+          "plural": "ProductsbyCategories"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CategoryName",
+                  "ProductName",
+                  "QuantityPerUnit",
+                  "UnitsInStock",
+                  "Discontinued"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "QuarterlyOrders": {
+      "source": {
+        "object": "[dbo].[Quarterly Orders]",
+        "type": "table",
+        "key-fields": [
+          "CustomerID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "QuarterlyOrders",
+          "plural": "QuarterlyOrders"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CustomerID",
+                  "CompanyName",
+                  "City",
+                  "Country"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SalesbyCategory": {
+      "source": {
+        "object": "[dbo].[Sales by Category]",
+        "type": "table",
+        "key-fields": [
+          "CategoryID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "SalesbyCategory",
+          "plural": "SalesbyCategories"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "CategoryID",
+                  "CategoryName",
+                  "ProductName",
+                  "ProductSales"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SalesTotalsbyAmount": {
+      "source": {
+        "object": "[dbo].[Sales Totals by Amount]",
+        "type": "table",
+        "key-fields": [
+          "OrderID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "SalesTotalsbyAmount",
+          "plural": "SalesTotalsbyAmounts"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "SaleAmount",
+                  "OrderID",
+                  "CompanyName",
+                  "ShippedDate"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SummaryofSalesbyQuarter": {
+      "source": {
+        "object": "[dbo].[Summary of Sales by Quarter]",
+        "type": "table",
+        "key-fields": [
+          "OrderID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "SummaryofSalesbyQuarter",
+          "plural": "SummaryofSalesbyQuarters"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ShippedDate",
+                  "OrderID",
+                  "Subtotal"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "SummaryofSalesbyYear": {
+      "source": {
+        "object": "[dbo].[Summary of Sales by Year]",
+        "type": "table",
+        "key-fields": [
+          "OrderID"
+        ]
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "SummaryofSalesbyYear",
+          "plural": "SummaryofSalesbyYears"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*",
+              "fields": {
+                "exclude": [],
+                "include": [
+                  "ShippedDate",
+                  "OrderID",
+                  "Subtotal"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

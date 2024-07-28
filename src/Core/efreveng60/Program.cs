@@ -11,6 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Core;
 using RevEng.Core.Abstractions.Model;
+#if NET8_0
+using RevEng.Common.Dab;
+using RevEng.Core.DacpacReport;
+using RevEng.Core.DataApiBuilderBuilder;
+#endif
 using RevEng.Core.Diagram;
 
 [assembly: CLSCompliant(true)]
@@ -93,7 +98,7 @@ namespace EfReveng
                         return 0;
                     }
 
-#if NET8_0_OR_GREATER
+#if NET8_0
                     if (args.Length == 2
                         && args[0] == "dacpacreport"
                         && new FileInfo(args[1]).Exists)
@@ -118,6 +123,29 @@ namespace EfReveng
                         var builder = new DacpacReportBuilder(dacpacPath);
 
                         var buildResult = builder.BuildReport();
+
+                        await Console.Out.WriteLineAsync("Result:");
+                        await Console.Out.WriteLineAsync(buildResult);
+
+                        return 0;
+                    }
+
+                    if (args.Length == 2
+                        && args[0] == "dabbuilder"
+                        && new FileInfo(args[1]).Exists)
+                    {
+                        var dabOptions = DataApiBuilderOptionsExtensions.TryRead(args[1]);
+
+                        if (dabOptions == null)
+                        {
+                            await Console.Out.WriteLineAsync("Error:");
+                            await Console.Out.WriteLineAsync("Could not read options");
+                            return 1;
+                        }
+
+                        var builder = new DabBuilder(dabOptions);
+
+                        var buildResult = builder.GetDabConfigCmdFile();
 
                         await Console.Out.WriteLineAsync("Result:");
                         await Console.Out.WriteLineAsync(buildResult);

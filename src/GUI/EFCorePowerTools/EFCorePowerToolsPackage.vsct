@@ -92,7 +92,6 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <CommandName>cmdidReverseEngineerCodeFirst</CommandName>
           <ButtonText>Reverse Engineer</ButtonText>
         </Strings>
       </Button>
@@ -104,8 +103,18 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <CommandName>cmdidReverseEngineerRefresh</CommandName>
           <ButtonText>Refresh</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerDab" priority="0x0300" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="WebConfiguration" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Data API Builder Scaffold (preview)</ButtonText>
         </Strings>
       </Button>
 
@@ -339,6 +348,7 @@
 
   </CommandPlacements>
 
+  
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidDbContextPackagePkg" value="{f4c4712c-ceae-4803-8e52-0e2049d5de9f}" />
@@ -377,6 +387,7 @@
       <!-- Project Menu Entries -->
       <IDSymbol name="cmdidReverseEngineerCodeFirst" value="0x0001" />
       <IDSymbol name="cmdidReverseEngineerRefresh" value="0x0007" />
+      <IDSymbol name="cmdidReverseEngineerDab" value="0x0012" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />
       <IDSymbol name="cmdidEdmProjectMenu" value="0x0003" />
       <IDSymbol name="cmdidEdmProjectMenuGroup" value="0x0004" />
@@ -406,5 +417,6 @@
     </GuidSymbol>
 
   </Symbols>
+  
 
 </CommandTable>
