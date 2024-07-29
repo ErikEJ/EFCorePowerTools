@@ -104,6 +104,8 @@ namespace RevEng.Core.DataApiBuilderBuilder
                     continue;
                 }
 
+                RemoveExcludedColumns(dbObject);
+
                 var columnList = string.Join(
                     ",",
                     dbObject.Columns
@@ -125,6 +127,8 @@ namespace RevEng.Core.DataApiBuilderBuilder
                 {
                     continue;
                 }
+
+                RemoveExcludedColumns(dbObject);
 
                 var columnList = string.Join(
                     ",",
@@ -200,6 +204,22 @@ namespace RevEng.Core.DataApiBuilderBuilder
             return dbObject.Columns
                 .Any(c => c.StoreType == "hierarchyid" || c.StoreType == "geometry" || c.StoreType == "geography")
                 || !dbObject.Columns.Any();
+        }
+
+        private void RemoveExcludedColumns(DatabaseTable dbObject)
+        {
+            var excludedColumns = options.Tables.Find(t => t.Name == $"[{dbObject.Schema}].[{dbObject.Name}]")?.ExcludedColumns;
+            if (excludedColumns != null)
+            {
+                foreach (var column in excludedColumns)
+                {
+                    var columnToRemove = dbObject.Columns.FirstOrDefault(c => c.Name.Equals(column, StringComparison.OrdinalIgnoreCase));
+                    if (columnToRemove != null)
+                    {
+                        dbObject.Columns.Remove(columnToRemove);
+                    }
+                }
+            }
         }
 
         private DatabaseModel GetModelInternal()

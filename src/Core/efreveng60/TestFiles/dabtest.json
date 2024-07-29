@@ -18,7 +18,11 @@
     },
     {
       "Name": "[dbo].[Customers]",
-      "ObjectType": 0
+      "ObjectType": 0,
+      "ExcludedColumns": [
+        "Fax",
+        "Phone"
+      ]
     },
     {
       "Name": "[dbo].[Employees]",

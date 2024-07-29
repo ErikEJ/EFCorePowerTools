@@ -10,7 +10,7 @@ dab init -c dab-config.json --database-type mssql --connection-string "@env('dab
 dab add "Categories" --source "[dbo].[Categories]" --fields.include "CategoryID,CategoryName,Description,Picture" --permissions "anonymous:*" 
 dab add "CustomerCustomerDemo" --source "[dbo].[CustomerCustomerDemo]" --fields.include "CustomerID,CustomerTypeID" --permissions "anonymous:*" 
 dab add "CustomerDemographics" --source "[dbo].[CustomerDemographics]" --fields.include "CustomerTypeID,CustomerDesc" --permissions "anonymous:*" 
-dab add "Customers" --source "[dbo].[Customers]" --fields.include "CustomerID,CompanyName,ContactName,ContactTitle,Address,City,Region,PostalCode,Country,Phone,Fax,Rating" --permissions "anonymous:*" 
+dab add "Customers" --source "[dbo].[Customers]" --fields.include "CustomerID,CompanyName,ContactName,ContactTitle,Address,City,Region,PostalCode,Country,Rating" --permissions "anonymous:*" 
 dab add "Employees" --source "[dbo].[Employees]" --fields.include "EmployeeID,LastName,FirstName,Title,TitleOfCourtesy,BirthDate,HireDate,Address,City,Region,PostalCode,Country,HomePhone,Extension,Photo,Notes,ReportsTo,PhotoPath" --permissions "anonymous:*" 
 dab add "EmployeeTerritories" --source "[dbo].[EmployeeTerritories]" --fields.include "EmployeeID,TerritoryID" --permissions "anonymous:*" 
 dab add "OrderDetails" --source "[dbo].[Order Details]" --fields.include "OrderID,ProductID,UnitPrice,Quantity,Discount" --permissions "anonymous:*" 
