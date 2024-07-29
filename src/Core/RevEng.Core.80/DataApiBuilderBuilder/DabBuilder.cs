@@ -88,8 +88,8 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo This cmd file creates a Data API Builder configuration based on the chosen database objects.");
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo To run the cmd, create an .env file with the following contents:");
-            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo dab-connection-string=<your connection string>");
-            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo ** Make sure to exclude the .env file from source control**");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo dab-connection-string=your connection string");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo ** Make sure to exclude the .env file from source control **");
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo **");
 
             sb.AppendLine(CultureInfo.InvariantCulture, $"dotnet tool install -g Microsoft.DataApiBuilder");

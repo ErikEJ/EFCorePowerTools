@@ -58,6 +58,16 @@ namespace EFCorePowerTools.Dialogs
             };
             codeGeneration = (codeGeneration, allowedVersions) =>
             {
+                if (allowedVersions.Count == 1
+                    && allowedVersions[0].Value == "DAB")
+                {
+                    grdRow1.Height = new GridLength(0);
+                    grdRow2.Height = new GridLength(0);
+                    grdRow3.Height = new GridLength(0);
+                    viewModel.CodeGenerationMode = (int)codeGeneration;
+                    return;
+                }
+
                 foreach (var item in allowedVersions)
                 {
                     viewModel.CodeGenerationModeList.Add(item);

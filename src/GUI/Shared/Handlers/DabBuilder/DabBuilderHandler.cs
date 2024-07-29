@@ -135,7 +135,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }));
             }
 
-            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore6, new List<CodeGenerationItem>());
+            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore6, new List<CodeGenerationItem>
+            {
+                new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "DAB" },
+            });
 
             psd.PublishSchemas(new List<SchemaInfo>());
 
