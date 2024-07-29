@@ -80,7 +80,6 @@ namespace RevEng.Core.DataApiBuilderBuilder
             }
 
             var model = GetModelInternal();
-            ////var procedures = GetStoredProcedures();
 
             var sb = new StringBuilder();
 
@@ -150,7 +149,7 @@ namespace RevEng.Core.DataApiBuilderBuilder
                     }
 
                     sb.AppendLine(CultureInfo.InvariantCulture, $"@echo No primary key found for table/view '{dbObject.Name}', using {strategy} ({candidate.Name}) as key field");
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --source.key-fields \"{candidate.Name}\" --permissions \"anonymous:*\" ");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --source.type \"view\" --source.key-fields \"{candidate.Name}\" --permissions \"anonymous:*\" ");
                 }
             }
 
@@ -170,6 +169,20 @@ namespace RevEng.Core.DataApiBuilderBuilder
                     var fkType = fk.PrincipalTable.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {type} --relationship {fkType} --target.entity {fkType} --cardinality one");
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {fkType} --relationship {type} --target.entity {type} --cardinality many");
+                }
+            }
+
+            if (options.DatabaseType == DatabaseType.SQLServer || options.DatabaseType == DatabaseType.SQLServerDacpac)
+            {
+                sb.AppendLine(CultureInfo.InvariantCulture, $"@echo Adding stored procedures");
+
+                var procedures = GetStoredProcedures();
+
+                foreach (var procedure in procedures.Routines)
+                {
+                    var type = procedure.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{procedure.Schema}].[{procedure.Name}]\" --source.type \"stored-procedure\" --permissions \"anonymous:execute\" --rest.methods \"get\" --graphql.operation \"query\" ");
                 }
             }
 
@@ -200,29 +213,25 @@ namespace RevEng.Core.DataApiBuilderBuilder
             return dbModel;
         }
 
-        ////private RoutineModel GetStoredProcedures()
-        ////{
-        ////    var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
+        private RoutineModel GetStoredProcedures()
+        {
+            var procedureModelFactory = serviceProvider.GetService<IProcedureModelFactory>();
 
-        ////    if (procedureModelFactory == null)
-        ////    {
-        ////        return new RoutineModel();
-        ////    }
+            if (procedureModelFactory == null)
+            {
+                return new RoutineModel();
+            }
 
-        ////    var modelFactoryOptions = new ModuleModelFactoryOptions
-        ////    {
-        ////        DiscoverMultipleResultSets = false,
-        ////        UseLegacyResultSetDiscovery = false,
-        ////        UseDateOnlyTimeOnly = true,
-        ////        FullModel = true,
-        ////        Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
-        ////        ModulesUsingLegacyDiscovery = options.Tables
-        ////                .Where(t => t.ObjectType == ObjectType.Procedure && t.UseLegacyResultSetDiscovery)
-        ////                .Select(m => m.Name),
-        ////        MappedModules = new Dictionary<string, string>(),
-        ////    };
+            var modelFactoryOptions = new ModuleModelFactoryOptions
+            {
+                DiscoverMultipleResultSets = false,
+                UseLegacyResultSetDiscovery = true,
+                UseDateOnlyTimeOnly = true,
+                FullModel = false,
+                Modules = options.Tables.Where(t => t.ObjectType == ObjectType.Procedure).Select(m => m.Name),
+            };
 
-        ////    return procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
-        ////}
+            return procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, modelFactoryOptions);
+        }
     }
 }

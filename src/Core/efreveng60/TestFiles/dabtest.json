@@ -125,7 +125,7 @@
       "ObjectType": 3
     },
     {
-      "Name": "[dbo].[sum]",
+      "Name": "[dbo].[CustOrderHist]",
       "ObjectType": 1
     },
     {
