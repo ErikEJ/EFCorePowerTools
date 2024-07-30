@@ -44,7 +44,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
 
-                var optionsPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "dab-options.json");
+                var projectPath = Path.GetDirectoryName(project.FullPath);
+
+                var optionsPath = Path.Combine(projectPath, "dab-options.json");
 
                 var options = DataApiBuilderOptionsExtensions.TryRead(optionsPath);
 
@@ -53,11 +55,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     options = new DataApiBuilderOptions();
                 }
 
+                var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, projectPath);
+
+                if (userOptions == null)
+                {
+                    userOptions = new ReverseEngineerUserOptions();
+                }
+
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
 
                 DatabaseConnectionModel dbInfo = null;
 
-                if (!await ChooseDataBaseConnectionAsync(options))
+                if (!await ChooseDataBaseConnectionAsync(options, userOptions))
                 {
                     await VS.StatusBar.ClearAsync();
                     return;
@@ -82,12 +91,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 options.ConnectionString = dbInfo.ConnectionString;
-                await SaveOptionsAsync(project, optionsPath, options);
+                await SaveOptionsAsync(project, optionsPath, options, userOptions);
 
                 await GenerateFilesAsync(optionsPath);
 
                 options.ConnectionString = null;
-                await SaveOptionsAsync(project, optionsPath, options);
+                await SaveOptionsAsync(project, optionsPath, options, userOptions);
 
                 Telemetry.TrackEvent("PowerTools.DabBuild");
             }
@@ -104,7 +113,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private async Task<bool> ChooseDataBaseConnectionAsync(DataApiBuilderOptions options)
+        private async Task<bool> ChooseDataBaseConnectionAsync(DataApiBuilderOptions options, ReverseEngineerUserOptions userOptions)
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
 
@@ -140,6 +149,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "DAB" },
             });
 
+            if (!string.IsNullOrEmpty(userOptions.UiHint))
+            {
+                psd.PublishUiHint(userOptions.UiHint);
+            }
+
             psd.PublishSchemas(new List<SchemaInfo>());
 
             var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
@@ -149,6 +163,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
+            userOptions.UiHint = pickDataSourceResult.Payload.UiHint;
 
             if (pickDataSourceResult.Payload.Connection != null)
             {
@@ -263,14 +278,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             stopWatch.Stop();
 
-            await VS.Documents.OpenAsync(cmdPath);
+            if (File.Exists(cmdPath))
+            {
+                await VS.Documents.OpenAsync(cmdPath);
+            }
 
             await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
 
             Telemetry.TrackFrameworkUse(nameof(DabBuilderHandler), CodeGenerationMode.EFCore8);
         }
 
-        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, DataApiBuilderOptions options)
+        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, DataApiBuilderOptions options, ReverseEngineerUserOptions userOptions)
         {
             if (File.Exists(optionsPath) && File.GetAttributes(optionsPath).HasFlag(FileAttributes.ReadOnly))
             {
@@ -280,6 +298,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!File.Exists(optionsPath + ".ignore"))
             {
+                if (userOptions != null && !string.IsNullOrEmpty(userOptions.UiHint))
+                {
+                    File.WriteAllText(optionsPath + ".user", userOptions.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);
+                }
+
                 File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
 
                 await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());

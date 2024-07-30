@@ -53,6 +53,7 @@ namespace RevEng.Core.DataApiBuilderBuilder
             {
                 case DatabaseType.Undefined:
                     break;
+                case DatabaseType.SQLServerDacpac:
                 case DatabaseType.SQLServer:
                     databaseType = "mssql";
                     break;
@@ -65,8 +66,6 @@ namespace RevEng.Core.DataApiBuilderBuilder
                     databaseType = "mysql";
                     break;
                 case DatabaseType.Oracle:
-                    break;
-                case DatabaseType.SQLServerDacpac:
                     break;
                 case DatabaseType.Firebird:
                     break;
@@ -228,7 +227,7 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
             var dbModelOptions = new DatabaseModelFactoryOptions(options.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), null);
 
-            var dbModel = dbModelFactory!.Create(options.ConnectionString, dbModelOptions);
+            var dbModel = dbModelFactory!.Create(options.Dacpac ?? options.ConnectionString, dbModelOptions);
 
             return dbModel;
         }

@@ -9,7 +9,7 @@ dab init -c dab-config.json --database-type mssql --connection-string "@env('dab
 @echo Adding tables
 dab add "Album" --source "[dbo].[Album]" --fields.include "AlbumId,Title,ArtistId" --permissions "anonymous:*" 
 dab add "Artist" --source "[dbo].[Artist]" --fields.include "ArtistId,Name" --permissions "anonymous:*" 
-dab add "Customer" --source "[dbo].[Customer]" --fields.include "CustomerId,FirstName,LastName,Company,Address,City,State,Country,PostalCode,Phone,Fax,Email,SupportRepId" --permissions "anonymous:*" 
+dab add "Customer" --source "[dbo].[Customer]" --fields.include "CustomerId,FirstName,LastName,Company,Address,City,State,Country,SupportRepId" --permissions "anonymous:*" 
 dab add "Employee" --source "[dbo].[Employee]" --fields.include "EmployeeId,LastName,FirstName,Title,ReportsTo,BirthDate,HireDate,Address,City,State,Country,PostalCode,Phone,Fax,Email" --permissions "anonymous:*" 
 dab add "Genre" --source "[dbo].[Genre]" --fields.include "GenreId,Name" --permissions "anonymous:*" 
 dab add "Invoice" --source "[dbo].[Invoice]" --fields.include "InvoiceId,CustomerId,InvoiceDate,BillingAddress,BillingCity,BillingState,BillingCountry,BillingPostalCode,Total" --permissions "anonymous:*" 
@@ -42,6 +42,7 @@ dab update Track --relationship Genre --target.entity Genre --cardinality one
 dab update Genre --relationship Track --target.entity Track --cardinality many
 dab update Track --relationship MediaType --target.entity MediaType --cardinality one
 dab update MediaType --relationship Track --target.entity Track --cardinality many
+@echo Adding stored procedures
 @echo **
 @echo ** run 'dab validate' to validate your configuration **
 @echo ** run 'dab start' to start the development API host **

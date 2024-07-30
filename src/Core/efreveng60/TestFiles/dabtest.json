@@ -1,7 +1,7 @@
 {
   "ConnectionString": "Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Encrypt=false",
-  "Dacpac": null,
-  "DatabaseType": 3,
+  "Dacpac": "C:\\Code\\Github\\EFCorePowerTools\\src\\Core\\NUnitTestCore\\Dacpac\\NorthwindViews.dacpac",
+  "DatabaseType": 8,
   "ProjectPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\ScaffoldingTester\\ScaffoldingTester5",
   "Tables": [
     {
@@ -145,4 +145,4 @@
       "ObjectType": 2
     }
   ]
- }
+}
