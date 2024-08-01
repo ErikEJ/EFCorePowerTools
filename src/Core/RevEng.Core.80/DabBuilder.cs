@@ -169,7 +169,7 @@ namespace RevEng.Core
 
                 foreach (var fk in dbObject.ForeignKeys)
                 {
-                    var fkType =  GenerateEntityName(fk.PrincipalTable.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
+                    var fkType = GenerateEntityName(fk.PrincipalTable.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {type} --relationship {fkType} --target.entity {fkType} --cardinality one");
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {fkType} --relationship {type} --target.entity {type} --cardinality many");
                 }
