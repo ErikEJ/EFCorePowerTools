@@ -110,7 +110,7 @@ namespace RevEng.Core
                     dbObject.Columns
                     .Select(c => c.Name).ToList());
 
-                var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                var type = GenerateEntityName(dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
 
                 if (dbObject.PrimaryKey != null)
                 {
@@ -134,7 +134,7 @@ namespace RevEng.Core
                     dbObject.Columns
                     .Select(c => c.Name).ToList());
 
-                var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                var type = GenerateEntityName(dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
 
                 if (dbObject.PrimaryKey == null)
                 {
@@ -165,11 +165,11 @@ namespace RevEng.Core
                     continue;
                 }
 
-                var type = dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                var type = GenerateEntityName(dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
 
                 foreach (var fk in dbObject.ForeignKeys)
                 {
-                    var fkType = fk.PrincipalTable.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                    var fkType =  GenerateEntityName(fk.PrincipalTable.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {type} --relationship {fkType} --target.entity {fkType} --cardinality one");
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {fkType} --relationship {type} --target.entity {type} --cardinality many");
                 }
@@ -183,7 +183,7 @@ namespace RevEng.Core
 
                 foreach (var procedure in procedures.Routines)
                 {
-                    var type = procedure.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase);
+                    var type = GenerateEntityName(procedure.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
 
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{procedure.Schema}].[{procedure.Name}]\" --source.type \"stored-procedure\" --permissions \"anonymous:execute\" --rest.methods \"get\" --graphql.operation \"query\" ");
                 }
@@ -203,6 +203,41 @@ namespace RevEng.Core
             return dbObject.Columns
                 .Any(c => c.StoreType == "hierarchyid" || c.StoreType == "geometry" || c.StoreType == "geography")
                 || !dbObject.Columns.Any();
+        }
+
+        private static string GenerateEntityName(string value)
+        {
+            var candidateStringBuilder = new StringBuilder();
+            var previousLetterCharInWordIsLowerCase = false;
+            var isFirstCharacterInWord = true;
+
+            foreach (var c in value)
+            {
+                var isNotLetterOrDigit = !char.IsLetterOrDigit(c);
+                if (isNotLetterOrDigit
+                    || (previousLetterCharInWordIsLowerCase && char.IsUpper(c)))
+                {
+                    isFirstCharacterInWord = true;
+                    previousLetterCharInWordIsLowerCase = false;
+                    if (isNotLetterOrDigit)
+                    {
+                        continue;
+                    }
+                }
+
+                candidateStringBuilder.Append(
+                    isFirstCharacterInWord ? char.ToUpperInvariant(c) : char.ToLowerInvariant(c));
+                isFirstCharacterInWord = false;
+                if (char.IsLower(c))
+                {
+                    previousLetterCharInWordIsLowerCase = true;
+                }
+            }
+
+            var pluralizer = new HumanizerPluralizer();
+            var candidate = candidateStringBuilder.ToString();
+
+            return pluralizer.Singularize(candidate);
         }
 
         private void RemoveExcludedColumns(DatabaseTable dbObject)

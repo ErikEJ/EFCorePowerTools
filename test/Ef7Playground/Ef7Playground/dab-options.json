@@ -1,7 +1,8 @@
 ﻿{
-   "ConnectionString": "Data Source=(local);Initial Catalog=Chinook;Integrated Security=true;",
-   "Dacpac": "C:\\Code\\Github\\EFCorePowerTools\\src\\Core\\NUnitTestCore\\Dacpac\\Chinook.dacpac",
-   "DatabaseType": 8,
+   "ConnectionString": null,
+   "ConnectionStringName": "dab-connection-string",
+   "Dacpac": null,
+   "DatabaseType": 3,
    "ProjectPath": "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground",
    "Tables": [
       {
