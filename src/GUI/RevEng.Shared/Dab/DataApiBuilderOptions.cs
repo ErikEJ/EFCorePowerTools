@@ -12,6 +12,9 @@ namespace RevEng.Common.Dab
         public string ProjectPath { get; set; }
 
         public List<SerializationTableModel> Tables { get; set; }
+
         public string Dacpac { get; set; }
+
+        public string ConnectionStringName { get; set; } = "dab-connection-string";
     }
 }

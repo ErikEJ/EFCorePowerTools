@@ -14,7 +14,6 @@ using RevEng.Core.Abstractions.Model;
 #if NET8_0
 using RevEng.Common.Dab;
 using RevEng.Core.DacpacReport;
-using RevEng.Core.DataApiBuilderBuilder;
 #endif
 using RevEng.Core.Diagram;
 

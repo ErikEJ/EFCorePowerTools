@@ -13,7 +13,7 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 
-namespace RevEng.Core.DataApiBuilderBuilder
+namespace RevEng.Core
 {
     public class DabBuilder
     {
@@ -47,7 +47,7 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
             var fileName = Path.Combine(options.ProjectPath, "dab-config.cmd");
 
-            string databaseType = string.Empty;
+            var databaseType = string.Empty;
 
             switch (options.DatabaseType)
             {
@@ -86,7 +86,7 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo This cmd file creates a Data API Builder configuration based on the chosen database objects.");
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo To run the cmd, create an .env file with the following contents:");
-            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo dab-connection-string=your connection string");
+            sb.AppendLine(CultureInfo.InvariantCulture, $"@echo {options.ConnectionStringName}=your connection string");
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo ** Make sure to exclude the .env file from source control **");
             sb.AppendLine(CultureInfo.InvariantCulture, $"@echo **");
 
@@ -114,7 +114,7 @@ namespace RevEng.Core.DataApiBuilderBuilder
 
                 if (dbObject.PrimaryKey != null)
                 {
-                   sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --permissions \"anonymous:*\" ");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --permissions \"anonymous:*\" ");
                 }
             }
 
