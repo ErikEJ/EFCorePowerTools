@@ -365,10 +365,10 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.21.140";
+                        pkgVersion = "6.21.150";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.40";
+                        pkgVersion = "8.23.50";
                         break;
                 }
 
