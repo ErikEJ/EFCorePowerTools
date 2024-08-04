@@ -14,29 +14,7 @@
          "ObjectType": 0
       },
       {
-         "ExcludedColumns": [
-            "PostalCode",
-            "Phone",
-            "Fax",
-            "Email"
-         ],
-         "Name": "[dbo].[Customer]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Employee]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Genre]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Invoice]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[InvoiceLine]",
          "ObjectType": 0
       },
       {

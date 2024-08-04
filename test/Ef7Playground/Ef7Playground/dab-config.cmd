@@ -9,11 +9,7 @@ dab init -c dab-config.json --database-type mssql --connection-string "@env('dab
 @echo Adding tables
 dab add "Album" --source "[dbo].[Album]" --fields.include "AlbumId,Title,ArtistId" --permissions "anonymous:*" 
 dab add "Artist" --source "[dbo].[Artist]" --fields.include "ArtistId,Name" --permissions "anonymous:*" 
-dab add "Customer" --source "[dbo].[Customer]" --fields.include "CustomerId,FirstName,LastName,Company,Address,City,State,Country,SupportRepId" --permissions "anonymous:*" 
-dab add "Employee" --source "[dbo].[Employee]" --fields.include "EmployeeId,LastName,FirstName,Title,ReportsTo,BirthDate,HireDate,Address,City,State,Country,PostalCode,Phone,Fax,Email" --permissions "anonymous:*" 
 dab add "Genre" --source "[dbo].[Genre]" --fields.include "GenreId,Name" --permissions "anonymous:*" 
-dab add "Invoice" --source "[dbo].[Invoice]" --fields.include "InvoiceId,CustomerId,InvoiceDate,BillingAddress,BillingCity,BillingState,BillingCountry,BillingPostalCode,Total" --permissions "anonymous:*" 
-dab add "InvoiceLine" --source "[dbo].[InvoiceLine]" --fields.include "InvoiceLineId,InvoiceId,TrackId,UnitPrice,Quantity" --permissions "anonymous:*" 
 dab add "MediaType" --source "[dbo].[MediaType]" --fields.include "MediaTypeId,Name" --permissions "anonymous:*" 
 dab add "Playlist" --source "[dbo].[Playlist]" --fields.include "PlaylistId,Name" --permissions "anonymous:*" 
 dab add "PlaylistTrack" --source "[dbo].[PlaylistTrack]" --fields.include "PlaylistId,TrackId" --permissions "anonymous:*" 
@@ -22,16 +18,6 @@ dab add "Track" --source "[dbo].[Track]" --fields.include "TrackId,Name,AlbumId,
 @echo Adding relationships
 dab update Album --relationship Artist --target.entity Artist --cardinality one
 dab update Artist --relationship Album --target.entity Album --cardinality many
-dab update Customer --relationship Employee --target.entity Employee --cardinality one
-dab update Employee --relationship Customer --target.entity Customer --cardinality many
-dab update Employee --relationship Employee --target.entity Employee --cardinality one
-dab update Employee --relationship Employee --target.entity Employee --cardinality many
-dab update Invoice --relationship Customer --target.entity Customer --cardinality one
-dab update Customer --relationship Invoice --target.entity Invoice --cardinality many
-dab update InvoiceLine --relationship Invoice --target.entity Invoice --cardinality one
-dab update Invoice --relationship InvoiceLine --target.entity InvoiceLine --cardinality many
-dab update InvoiceLine --relationship Track --target.entity Track --cardinality one
-dab update Track --relationship InvoiceLine --target.entity InvoiceLine --cardinality many
 dab update PlaylistTrack --relationship Playlist --target.entity Playlist --cardinality one
 dab update Playlist --relationship PlaylistTrack --target.entity PlaylistTrack --cardinality many
 dab update PlaylistTrack --relationship Track --target.entity Track --cardinality one
