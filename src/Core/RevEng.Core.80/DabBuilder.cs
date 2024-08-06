@@ -45,7 +45,7 @@ namespace RevEng.Core
                 return string.Empty;
             }
 
-            var fileName = Path.Combine(options.ProjectPath, "dab-config.cmd");
+            var fileName = Path.Combine(options.ProjectPath, "dab-build.cmd");
 
             var databaseType = string.Empty;
 
