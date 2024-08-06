@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace RevEng.Common.Dab
 {
@@ -7,6 +8,7 @@ namespace RevEng.Common.Dab
     {
         public DatabaseType DatabaseType { get; set; }
 
+        [IgnoreDataMember]
         public string ConnectionString { get; set; }
 
         public string ProjectPath { get; set; }

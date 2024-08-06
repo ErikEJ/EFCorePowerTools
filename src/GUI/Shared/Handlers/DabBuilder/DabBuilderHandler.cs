@@ -90,13 +90,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
 
-                options.ConnectionString = dbInfo.ConnectionString;
-                await SaveOptionsAsync(project, optionsPath, options, userOptions);
-
-                await GenerateFilesAsync(optionsPath);
+                await GenerateFilesAsync(optionsPath, dbInfo.ConnectionString);
 
                 options.ConnectionString = null;
                 await SaveOptionsAsync(project, optionsPath, options, userOptions);
+
+                if (!File.Exists(Path.Combine(options.ProjectPath, ".env")) 
+                    && await VS.MessageBox.ShowConfirmAsync("Create .env file with your connection string?", "Remember to exclude from source contol!"))
+                {
+                    File.WriteAllText(Path.Combine(options.ProjectPath, ".env"), $"dab-connection-string={dbInfo.ConnectionString}");
+                }
 
                 Telemetry.TrackEvent("PowerTools.DabBuild");
             }
@@ -261,7 +264,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return pickTablesResult.ClosedByOK;
         }
 
-        private async System.Threading.Tasks.Task GenerateFilesAsync(string optionsPath)
+        private async System.Threading.Tasks.Task GenerateFilesAsync(string optionsPath, string connectionString)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -272,7 +275,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
 
             var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore8);
-            var cmdPath = await revEngRunner.GetDabConfigPathAsync(optionsPath);
+            var cmdPath = await revEngRunner.GetDabConfigPathAsync(optionsPath, connectionString);
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
 

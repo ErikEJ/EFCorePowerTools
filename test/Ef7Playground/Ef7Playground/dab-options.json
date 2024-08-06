@@ -1,5 +1,4 @@
 ﻿{
-   "ConnectionString": null,
    "ConnectionStringName": "dab-connection-string",
    "Dacpac": null,
    "DatabaseType": 3,

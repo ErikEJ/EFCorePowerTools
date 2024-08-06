@@ -129,7 +129,7 @@ namespace EfReveng
                         return 0;
                     }
 
-                    if (args.Length == 2
+                    if (args.Length == 3
                         && args[0] == "dabbuilder"
                         && new FileInfo(args[1]).Exists)
                     {
@@ -141,6 +141,8 @@ namespace EfReveng
                             await Console.Out.WriteLineAsync("Could not read options");
                             return 1;
                         }
+
+                        dabOptions.ConnectionString = args[2];
 
                         var builder = new DabBuilder(dabOptions);
 
