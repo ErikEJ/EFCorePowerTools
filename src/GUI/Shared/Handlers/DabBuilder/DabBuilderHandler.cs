@@ -96,7 +96,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await SaveOptionsAsync(project, optionsPath, options, userOptions);
 
                 if (!File.Exists(Path.Combine(options.ProjectPath, ".env"))
-                    && await VS.MessageBox.ShowConfirmAsync("Create .env file with your connection string?", "Remember to exclude from source contol!"))
+                    && await VS.MessageBox.ShowConfirmAsync("Create .env file with your connection string?", "Remember to exclude from source control!"))
                 {
                     File.WriteAllText(Path.Combine(options.ProjectPath, ".env"), $"dab-connection-string={dbInfo.ConnectionString}");
                 }
