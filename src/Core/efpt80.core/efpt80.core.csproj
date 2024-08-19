@@ -19,6 +19,7 @@
    <ItemGroup>
      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
      <PackageReference Include="EfCore.SchemaCompare" Version="8.0.4" />
+     <PackageReference Include="System.Text.Json" Version="8.0.4" />
    </ItemGroup>
 
 </Project>
