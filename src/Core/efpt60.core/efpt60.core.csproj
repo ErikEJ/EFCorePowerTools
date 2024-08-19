@@ -21,6 +21,7 @@
 
    <ItemGroup>
      <PackageReference Include="EfCore.SchemaCompare" Version="6.0.0" />
+     <PackageReference Include="Humanizer.Core" Version="2.14.1" />
    </ItemGroup>
 
 </Project>
