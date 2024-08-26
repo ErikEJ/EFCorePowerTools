@@ -574,7 +574,7 @@
   <ItemGroup>
     <PackageReference Include="AdysTech.CredentialManager" Version="2.6.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-    <PackageReference Include="Community.VisualStudio.Toolkit.17" Version="17.0.507" />
+    <PackageReference Include="Community.VisualStudio.Toolkit.17" Version="17.0.522" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.5.33428.388" />
@@ -590,7 +590,7 @@
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
     </PackageReference>
-    <PackageReference Include="NuGet.ProjectModel" Version="6.10.1" />
+    <PackageReference Include="NuGet.ProjectModel" Version="6.11.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
