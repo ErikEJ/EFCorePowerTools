@@ -634,6 +634,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 value = value.Substring(2);
             }
 
+            // support for CDATA without N prefix: <Value><![CDATA['Enum: 0-Val1, 1-Val2, 2-Val3, 3-Val4']]></Value>
+            if (value.StartsWith('\''))
+            {
+                value = value.Substring(1);
+            }
+
             if (value.EndsWith('\''))
             {
                 value = value.Remove(value.Length - 1, 1);
