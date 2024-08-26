@@ -178,6 +178,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var startInfo = await CreateStartInfoAsync(arguments);
 
+            try
+            {
+                File.WriteAllText(Path.Combine(Path.GetTempPath(), "efrevengparams.txt"), startInfo.Arguments, Encoding.UTF8);
+            }
+            catch
+            {
+                // Ignore
+            }
+
             var standardOutput = await RunProcessAsync(startInfo);
 
             return resultDeserializer.BuildDiagramResult(standardOutput);
