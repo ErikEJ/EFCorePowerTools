@@ -90,10 +90,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
 
+                await SaveOptionsAsync(project, optionsPath, options, userOptions);
+
                 await GenerateFilesAsync(optionsPath, dbInfo.ConnectionString);
 
                 options.ConnectionString = null;
-                await SaveOptionsAsync(project, optionsPath, options, userOptions);
 
                 if (!File.Exists(Path.Combine(options.ProjectPath, ".env"))
                     && await VS.MessageBox.ShowConfirmAsync("Create .env file with your connection string?", "Remember to exclude from source control!"))
