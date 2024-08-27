@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using GOEddie.Dacpac.References;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -25,14 +27,22 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+        private readonly IRelationalTypeMappingSource relationalTypeMappingSource;
 
         public SqlServerDacpacDatabaseModelFactory()
         {
         }
 
-        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
+        public SqlServerDacpacDatabaseModelFactory(IRelationalTypeMappingSource mappingSource)
+        {
+            // injections when using as a separate nuget
+            relationalTypeMappingSource = mappingSource;
+        }
+
+        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options, IRelationalTypeMappingSource mappingSource)
         {
             dacpacOptions = options;
+            relationalTypeMappingSource = mappingSource;
         }
 
         public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
@@ -365,7 +375,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #endif
         }
 
-        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+        private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
                 .Where(i => i.ColumnType != ColumnType.ColumnSet
@@ -406,6 +416,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Name = col.Name.Parts[2],
                     IsNullable = col.Nullable,
                     StoreType = storeType,
+#if CORE80
+                    // this property affects whether the bool type will be nullable
+                    DefaultValue = TryParseClrDefault(systemTypeName, defaultValue),
+#endif
                     DefaultValueSql = defaultValue,
                     ComputedColumnSql = col.Expression,
                     ValueGenerated = col.IsIdentity
@@ -647,5 +661,141 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             return value;
         }
+
+#if CORE80
+        private static bool IsNumeric(Type type)
+        {
+            type = UnwrapNullableType(type);
+
+            return IsInteger(type)
+                   || type == typeof(decimal)
+                   || type == typeof(float)
+                   || type == typeof(double);
+        }
+
+        private static bool IsInteger(Type type)
+        {
+            type = UnwrapNullableType(type);
+
+            return type == typeof(int)
+                   || type == typeof(long)
+                   || type == typeof(short)
+                   || type == typeof(byte)
+                   || type == typeof(uint)
+                   || type == typeof(ulong)
+                   || type == typeof(ushort)
+                   || type == typeof(sbyte)
+                   || type == typeof(char);
+        }
+
+        private static Type UnwrapNullableType(Type type)
+            => Nullable.GetUnderlyingType(type) ?? type;
+
+        private object TryParseClrDefault(string dataTypeName, string defaultValueSql)
+        {
+            defaultValueSql = defaultValueSql?.Trim();
+            if (string.IsNullOrEmpty(defaultValueSql))
+            {
+                return null;
+            }
+
+            var mapping = relationalTypeMappingSource?.FindMapping(dataTypeName);
+            if (mapping == null)
+            {
+                return null;
+            }
+
+            Unwrap();
+            if (defaultValueSql.StartsWith("CONVERT", StringComparison.OrdinalIgnoreCase))
+            {
+                defaultValueSql = defaultValueSql.Substring(defaultValueSql.IndexOf(',', StringComparison.CurrentCulture) + 1);
+                defaultValueSql = defaultValueSql.Substring(0, defaultValueSql.LastIndexOf(')'));
+                Unwrap();
+            }
+
+            if (defaultValueSql.Equals("NULL", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var type = mapping.ClrType;
+            if (type == typeof(bool)
+                && int.TryParse(defaultValueSql, out var intValue))
+            {
+                return intValue != 0;
+            }
+
+            if (IsNumeric(type))
+            {
+                try
+                {
+                    return Convert.ChangeType(defaultValueSql, type, CultureInfo.CurrentCulture);
+                }
+                catch (Exception exp) when (exp is InvalidCastException or FormatException or OverflowException or ArgumentNullException)
+                {
+                    // Ignored
+                    return null;
+                }
+            }
+
+            if ((defaultValueSql.StartsWith('\'') || defaultValueSql.StartsWith("N'", StringComparison.OrdinalIgnoreCase))
+                && defaultValueSql.EndsWith('\''))
+            {
+                var startIndex = defaultValueSql.IndexOf('\'', StringComparison.CurrentCulture);
+                defaultValueSql = defaultValueSql.Substring(startIndex + 1, defaultValueSql.Length - (startIndex + 2));
+
+                if (type == typeof(string))
+                {
+                    return defaultValueSql;
+                }
+
+                if (type == typeof(bool)
+                    && bool.TryParse(defaultValueSql, out var boolValue))
+                {
+                    return boolValue;
+                }
+
+                if (type == typeof(Guid)
+                    && Guid.TryParse(defaultValueSql, out var guid))
+                {
+                    return guid;
+                }
+
+                if (type == typeof(DateTime)
+                    && DateTime.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var dateTime))
+                {
+                    return dateTime;
+                }
+
+                if (type == typeof(DateOnly)
+                    && DateOnly.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var dateOnly))
+                {
+                    return dateOnly;
+                }
+
+                if (type == typeof(TimeOnly)
+                    && TimeOnly.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var timeOnly))
+                {
+                    return timeOnly;
+                }
+
+                if (type == typeof(DateTimeOffset)
+                    && DateTimeOffset.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var dateTimeOffset))
+                {
+                    return dateTimeOffset;
+                }
+            }
+
+            return null;
+
+            void Unwrap()
+            {
+                while (defaultValueSql.StartsWith('(') && defaultValueSql.EndsWith(')'))
+                {
+                    defaultValueSql = defaultValueSql.Substring(1, defaultValueSql.Length - 2).Trim();
+                }
+            }
+        }
+#endif
     }
 }
