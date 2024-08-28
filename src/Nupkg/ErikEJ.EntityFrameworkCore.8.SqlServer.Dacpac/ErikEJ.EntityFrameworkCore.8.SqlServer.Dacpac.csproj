@@ -27,7 +27,7 @@
   </PropertyGroup>  
 
   <PropertyGroup>
-    <DefineConstants>TRACE;CORE70</DefineConstants>
+    <DefineConstants>TRACE;CORE70;CORE80</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
