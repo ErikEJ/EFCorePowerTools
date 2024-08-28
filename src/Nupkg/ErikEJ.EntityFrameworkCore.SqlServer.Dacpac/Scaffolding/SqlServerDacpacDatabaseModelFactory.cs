@@ -27,12 +27,20 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+#if CORE80
         private readonly IRelationalTypeMappingSource relationalTypeMappingSource;
+#endif
 
         public SqlServerDacpacDatabaseModelFactory()
         {
         }
 
+        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
+        {
+            dacpacOptions = options;
+        }
+
+#if CORE80
         public SqlServerDacpacDatabaseModelFactory(IRelationalTypeMappingSource mappingSource)
         {
             // injections when using as a separate nuget
@@ -44,6 +52,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             dacpacOptions = options;
             relationalTypeMappingSource = mappingSource;
         }
+#endif
 
         public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
         {
@@ -373,85 +382,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 dbTable.Triggers.Add(new DatabaseTrigger { Name = "trigger" });
             }
 #endif
-        }
-
-        private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
-        {
-            var tableColumns = item.Columns
-                .Where(i => i.ColumnType != ColumnType.ColumnSet
-
-                // Computed columns not supported for now
-                // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                && i.ColumnType != ColumnType.ComputedColumn);
-
-            foreach (var col in tableColumns)
-            {
-                var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
-                string storeType = null;
-                string systemTypeName = null;
-
-                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
-                {
-                    storeType = value.StoreType;
-                    systemTypeName = value.TypeName;
-                }
-                else
-                {
-                    var dataTypeName = col.DataType.First().Name.Parts[0];
-                    if (col.DataType.First().Name.Parts.Count > 1)
-                    {
-                        dataTypeName = col.DataType.First().Name.Parts[1];
-                    }
-
-                    int maxLength = col.IsMax ? -1 : col.Length;
-                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
-                    systemTypeName = dataTypeName;
-                }
-
-                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression) : null;
-
-                var dbColumn = new DatabaseColumn
-                {
-                    Table = dbTable,
-                    Name = col.Name.Parts[2],
-                    IsNullable = col.Nullable,
-                    StoreType = storeType,
-#if CORE80
-                    // this property affects whether the bool type will be nullable
-                    DefaultValue = TryParseClrDefault(systemTypeName, defaultValue),
-#endif
-                    DefaultValueSql = defaultValue,
-                    ComputedColumnSql = col.Expression,
-                    ValueGenerated = col.IsIdentity
-                        ? ValueGenerated.OnAdd
-                        : storeType == "rowversion"
-                            ? ValueGenerated.OnAddOrUpdate
-                            : default(ValueGenerated?),
-                };
-                if (storeType == "rowversion")
-                {
-                    dbColumn["ConcurrencyToken"] = true;
-                }
-
-                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
-                    .Where(p => p.Name.Parts.Count == 5)
-                    .Where(p => p.Name.Parts[0] == "SqlColumn")
-                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
-                    .Where(p => p.Name.Parts[2] == dbTable.Name)
-                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
-                    .FirstOrDefault(p => p.Name.Parts[4] == "MS_Description");
-
-                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
-
-                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
-
-                if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
-                {
-                    dbTable.Columns.Add(dbColumn);
-                }
-            }
-
-            return tableColumns;
         }
 
         private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
@@ -797,5 +727,88 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 #endif
+
+#if CORE80
+        private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+#else
+        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+#endif
+        {
+            var tableColumns = item.Columns
+                .Where(i => i.ColumnType != ColumnType.ColumnSet
+
+                // Computed columns not supported for now
+                // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
+                && i.ColumnType != ColumnType.ComputedColumn);
+
+            foreach (var col in tableColumns)
+            {
+                var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
+                string storeType = null;
+                string systemTypeName = null;
+
+                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
+                {
+                    storeType = value.StoreType;
+                    systemTypeName = value.TypeName;
+                }
+                else
+                {
+                    var dataTypeName = col.DataType.First().Name.Parts[0];
+                    if (col.DataType.First().Name.Parts.Count > 1)
+                    {
+                        dataTypeName = col.DataType.First().Name.Parts[1];
+                    }
+
+                    int maxLength = col.IsMax ? -1 : col.Length;
+                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
+                    systemTypeName = dataTypeName;
+                }
+
+                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression) : null;
+
+                var dbColumn = new DatabaseColumn
+                {
+                    Table = dbTable,
+                    Name = col.Name.Parts[2],
+                    IsNullable = col.Nullable,
+                    StoreType = storeType,
+#if CORE80
+                    // this property affects whether the bool type will be nullable
+                    DefaultValue = TryParseClrDefault(systemTypeName, defaultValue),
+#endif
+                    DefaultValueSql = defaultValue,
+                    ComputedColumnSql = col.Expression,
+                    ValueGenerated = col.IsIdentity
+                        ? ValueGenerated.OnAdd
+                        : storeType == "rowversion"
+                            ? ValueGenerated.OnAddOrUpdate
+                            : default(ValueGenerated?),
+                };
+                if (storeType == "rowversion")
+                {
+                    dbColumn["ConcurrencyToken"] = true;
+                }
+
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 5)
+                    .Where(p => p.Name.Parts[0] == "SqlColumn")
+                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
+                    .FirstOrDefault(p => p.Name.Parts[4] == "MS_Description");
+
+                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
+
+                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+                {
+                    dbTable.Columns.Add(dbColumn);
+                }
+            }
+
+            return tableColumns;
+        }
     }
 }
