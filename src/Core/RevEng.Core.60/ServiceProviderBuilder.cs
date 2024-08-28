@@ -193,10 +193,12 @@ namespace RevEng.Core
             if (options.DatabaseType == DatabaseType.SQLServerDacpac)
             {
                 serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
-                   provider => new SqlServerDacpacDatabaseModelFactory(new SqlServerDacpacDatabaseModelFactoryOptions
+                   serviceProvider => new SqlServerDacpacDatabaseModelFactory(
+                       new SqlServerDacpacDatabaseModelFactoryOptions
                    {
                        MergeDacpacs = options.MergeDacpacs,
-                   }));
+                   },
+                       serviceProvider.GetService<IRelationalTypeMappingSource>()));
 
                 serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
                 {

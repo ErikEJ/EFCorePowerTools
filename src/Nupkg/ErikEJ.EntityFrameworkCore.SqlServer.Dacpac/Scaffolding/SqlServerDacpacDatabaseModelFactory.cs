@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using GOEddie.Dacpac.References;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -25,6 +27,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+#if CORE80
+        private readonly IRelationalTypeMappingSource relationalTypeMappingSource;
+#endif
 
         public SqlServerDacpacDatabaseModelFactory()
         {
@@ -34,6 +39,20 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         {
             dacpacOptions = options;
         }
+
+#if CORE80
+        public SqlServerDacpacDatabaseModelFactory(IRelationalTypeMappingSource mappingSource)
+        {
+            // injections when using as a separate nuget
+            relationalTypeMappingSource = mappingSource;
+        }
+
+        public SqlServerDacpacDatabaseModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options, IRelationalTypeMappingSource mappingSource)
+        {
+            dacpacOptions = options;
+            relationalTypeMappingSource = mappingSource;
+        }
+#endif
 
         public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
         {
@@ -365,81 +384,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #endif
         }
 
-        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
-        {
-            var tableColumns = item.Columns
-                .Where(i => i.ColumnType != ColumnType.ColumnSet
-
-                // Computed columns not supported for now
-                // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                && i.ColumnType != ColumnType.ComputedColumn);
-
-            foreach (var col in tableColumns)
-            {
-                var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
-                string storeType = null;
-                string systemTypeName = null;
-
-                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
-                {
-                    storeType = value.StoreType;
-                    systemTypeName = value.TypeName;
-                }
-                else
-                {
-                    var dataTypeName = col.DataType.First().Name.Parts[0];
-                    if (col.DataType.First().Name.Parts.Count > 1)
-                    {
-                        dataTypeName = col.DataType.First().Name.Parts[1];
-                    }
-
-                    int maxLength = col.IsMax ? -1 : col.Length;
-                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
-                    systemTypeName = dataTypeName;
-                }
-
-                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression) : null;
-
-                var dbColumn = new DatabaseColumn
-                {
-                    Table = dbTable,
-                    Name = col.Name.Parts[2],
-                    IsNullable = col.Nullable,
-                    StoreType = storeType,
-                    DefaultValueSql = defaultValue,
-                    ComputedColumnSql = col.Expression,
-                    ValueGenerated = col.IsIdentity
-                        ? ValueGenerated.OnAdd
-                        : storeType == "rowversion"
-                            ? ValueGenerated.OnAddOrUpdate
-                            : default(ValueGenerated?),
-                };
-                if (storeType == "rowversion")
-                {
-                    dbColumn["ConcurrencyToken"] = true;
-                }
-
-                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
-                    .Where(p => p.Name.Parts.Count == 5)
-                    .Where(p => p.Name.Parts[0] == "SqlColumn")
-                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
-                    .Where(p => p.Name.Parts[2] == dbTable.Name)
-                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
-                    .FirstOrDefault(p => p.Name.Parts[4] == "MS_Description");
-
-                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
-
-                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
-
-                if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
-                {
-                    dbTable.Columns.Add(dbColumn);
-                }
-            }
-
-            return tableColumns;
-        }
-
         private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
@@ -646,6 +590,225 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             return value;
+        }
+
+#if CORE80
+        private static bool IsNumeric(Type type)
+        {
+            type = UnwrapNullableType(type);
+
+            return IsInteger(type)
+                   || type == typeof(decimal)
+                   || type == typeof(float)
+                   || type == typeof(double);
+        }
+
+        private static bool IsInteger(Type type)
+        {
+            type = UnwrapNullableType(type);
+
+            return type == typeof(int)
+                   || type == typeof(long)
+                   || type == typeof(short)
+                   || type == typeof(byte)
+                   || type == typeof(uint)
+                   || type == typeof(ulong)
+                   || type == typeof(ushort)
+                   || type == typeof(sbyte)
+                   || type == typeof(char);
+        }
+
+        private static Type UnwrapNullableType(Type type)
+            => Nullable.GetUnderlyingType(type) ?? type;
+
+        private object TryParseClrDefault(string dataTypeName, string defaultValueSql)
+        {
+            defaultValueSql = defaultValueSql?.Trim();
+            if (string.IsNullOrEmpty(defaultValueSql))
+            {
+                return null;
+            }
+
+            var mapping = relationalTypeMappingSource?.FindMapping(dataTypeName);
+            if (mapping == null)
+            {
+                return null;
+            }
+
+            Unwrap();
+            if (defaultValueSql.StartsWith("CONVERT", StringComparison.OrdinalIgnoreCase))
+            {
+                defaultValueSql = defaultValueSql.Substring(defaultValueSql.IndexOf(',', StringComparison.CurrentCulture) + 1);
+                defaultValueSql = defaultValueSql.Substring(0, defaultValueSql.LastIndexOf(')'));
+                Unwrap();
+            }
+
+            if (defaultValueSql.Equals("NULL", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var type = mapping.ClrType;
+            if (type == typeof(bool)
+                && int.TryParse(defaultValueSql, out var intValue))
+            {
+                return intValue != 0;
+            }
+
+            if (IsNumeric(type))
+            {
+                try
+                {
+                    return Convert.ChangeType(defaultValueSql, type, CultureInfo.CurrentCulture);
+                }
+                catch (Exception exp) when (exp is InvalidCastException or FormatException or OverflowException or ArgumentNullException)
+                {
+                    // Ignored
+                    return null;
+                }
+            }
+
+            if ((defaultValueSql.StartsWith('\'') || defaultValueSql.StartsWith("N'", StringComparison.OrdinalIgnoreCase))
+                && defaultValueSql.EndsWith('\''))
+            {
+                var startIndex = defaultValueSql.IndexOf('\'', StringComparison.CurrentCulture);
+                defaultValueSql = defaultValueSql.Substring(startIndex + 1, defaultValueSql.Length - (startIndex + 2));
+
+                if (type == typeof(string))
+                {
+                    return defaultValueSql;
+                }
+
+                if (type == typeof(bool)
+                    && bool.TryParse(defaultValueSql, out var boolValue))
+                {
+                    return boolValue;
+                }
+
+                if (type == typeof(Guid)
+                    && Guid.TryParse(defaultValueSql, out var guid))
+                {
+                    return guid;
+                }
+
+                if (type == typeof(DateTime)
+                    && DateTime.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var dateTime))
+                {
+                    return dateTime;
+                }
+
+                if (type == typeof(DateOnly)
+                    && DateOnly.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var dateOnly))
+                {
+                    return dateOnly;
+                }
+
+                if (type == typeof(TimeOnly)
+                    && TimeOnly.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var timeOnly))
+                {
+                    return timeOnly;
+                }
+
+                if (type == typeof(DateTimeOffset)
+                    && DateTimeOffset.TryParse(defaultValueSql, CultureInfo.CurrentCulture, out var dateTimeOffset))
+                {
+                    return dateTimeOffset;
+                }
+            }
+
+            return null;
+
+            void Unwrap()
+            {
+                while (defaultValueSql.StartsWith('(') && defaultValueSql.EndsWith(')'))
+                {
+                    defaultValueSql = defaultValueSql.Substring(1, defaultValueSql.Length - 2).Trim();
+                }
+            }
+        }
+#endif
+
+#if CORE80
+        private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+#else
+        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
+#endif
+        {
+            var tableColumns = item.Columns
+                .Where(i => i.ColumnType != ColumnType.ColumnSet
+
+                // Computed columns not supported for now
+                // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
+                && i.ColumnType != ColumnType.ComputedColumn);
+
+            foreach (var col in tableColumns)
+            {
+                var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
+                string storeType = null;
+                string systemTypeName = null;
+
+                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
+                {
+                    storeType = value.StoreType;
+                    systemTypeName = value.TypeName;
+                }
+                else
+                {
+                    var dataTypeName = col.DataType.First().Name.Parts[0];
+                    if (col.DataType.First().Name.Parts.Count > 1)
+                    {
+                        dataTypeName = col.DataType.First().Name.Parts[1];
+                    }
+
+                    int maxLength = col.IsMax ? -1 : col.Length;
+                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
+                    systemTypeName = dataTypeName;
+                }
+
+                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression) : null;
+
+                var dbColumn = new DatabaseColumn
+                {
+                    Table = dbTable,
+                    Name = col.Name.Parts[2],
+                    IsNullable = col.Nullable,
+                    StoreType = storeType,
+#if CORE80
+                    // this property affects whether the bool type will be nullable
+                    DefaultValue = TryParseClrDefault(systemTypeName, defaultValue),
+#endif
+                    DefaultValueSql = defaultValue,
+                    ComputedColumnSql = col.Expression,
+                    ValueGenerated = col.IsIdentity
+                        ? ValueGenerated.OnAdd
+                        : storeType == "rowversion"
+                            ? ValueGenerated.OnAddOrUpdate
+                            : default(ValueGenerated?),
+                };
+                if (storeType == "rowversion")
+                {
+                    dbColumn["ConcurrencyToken"] = true;
+                }
+
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 5)
+                    .Where(p => p.Name.Parts[0] == "SqlColumn")
+                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
+                    .FirstOrDefault(p => p.Name.Parts[4] == "MS_Description");
+
+                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
+
+                var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
+
+                if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+                {
+                    dbTable.Columns.Add(dbColumn);
+                }
+            }
+
+            return tableColumns;
         }
     }
 }
