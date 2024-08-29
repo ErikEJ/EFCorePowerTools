@@ -197,8 +197,12 @@ namespace RevEng.Core
                        new SqlServerDacpacDatabaseModelFactoryOptions
                    {
                        MergeDacpacs = options.MergeDacpacs,
+#if CORE80
                    },
                        serviceProvider.GetService<IRelationalTypeMappingSource>()));
+#else
+                   }));
+#endif
 
                 serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
                 {
