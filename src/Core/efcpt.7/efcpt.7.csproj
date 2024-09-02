@@ -40,7 +40,7 @@
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="NuGet.Protocol" Version="6.10.1" />
+    <PackageReference Include="NuGet.Protocol" Version="6.11.0" />
     <PackageReference Include="Spectre.Console" Version="0.49.1" />
     <PackageReference Include="System.IO.Abstractions" Version="21.0.29" />
   </ItemGroup>
