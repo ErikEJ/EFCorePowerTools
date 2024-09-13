@@ -46,10 +46,14 @@ jobs:
 
     - name: Build reveng tools
       shell: cmd
-      run: |       
+      run: |
+        cd ${{ github.workspace}}\src\Core\efreveng60
         call ${{ github.workspace}}\src\Core\efreveng60\BuildCmdlineTool.cmd
+        cd ${{ github.workspace}}\src\Core\efreveng70
         call ${{ github.workspace}}\src\Core\efreveng70\BuildCmdlineTool.cmd
+        cd ${{ github.workspace}}\src\Core\efreveng80
         call ${{ github.workspace}}\src\Core\efreveng80\BuildCmdlineTool.cmd
+        cd ${{ github.workspace}}
 
     - name: Extract and verify reveng60 file count
       shell: cmd
