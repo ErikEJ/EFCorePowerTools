@@ -7,6 +7,7 @@ on:
       - '**/*'
       - '!.github/workflows/vsix.yml'
       - '!src/GUI/**/*'
+      - '!src/Core/**/*'
     branches:
       - 'master'
   pull_request:
@@ -43,11 +44,27 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
 
+    - name: Build reveng tools
+      shell: cmd
+      run: |       
+        call ${{ github.workspace}}\src\Core\efreveng60\BuildCmdlineTool.cmd
+        call ${{ github.workspace}}\src\Core\efreveng70\BuildCmdlineTool.cmd
+        call ${{ github.workspace}}\src\Core\efreveng80\BuildCmdlineTool.cmd
+
+    - name: Extract and verify reveng60 file count
+      shell: cmd
+      run: |
+        mkdir vsix
+        7z x src/GUI/lib/efreveng60.exe.zip -oefreveng60 -y
+        dir /a:-d /s /b "efreveng60" | find /c ":\"
+        dir /a:-d /s /b "efreveng60" | find /c ":\" > filecount.txt
+        findstr "109" filecount.txt
+
     - name: Build
       run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
       working-directory: src
 
-    - name: Extract and verify file count
+    - name: Extract and verify vsix file count
       shell: cmd
       run: |
         mkdir vsix
