@@ -208,6 +208,11 @@ namespace RevEng.Core
                 {
                     MergeDacpacs = options.MergeDacpacs,
                 });
+
+                serviceCollection.AddSqlServerDacpacFunctionDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
+                {
+                    MergeDacpacs = options.MergeDacpacs,
+                });
             }
 
             if (options.UseSpatial)

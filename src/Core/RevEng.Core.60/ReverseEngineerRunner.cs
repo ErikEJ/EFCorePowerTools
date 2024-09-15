@@ -101,7 +101,8 @@ namespace RevEng.Core
                         || options.DatabaseType == DatabaseType.Npgsql;
                     procedurePaths = scaffolder.GenerateStoredProcedures(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsProcedures);
 
-                    bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer;
+                    bool supportsFunctions = options.DatabaseType == DatabaseType.SQLServer
+                        || options.DatabaseType == DatabaseType.SQLServerDacpac;
                     functionPaths = scaffolder.GenerateFunctions(options, schemas, ref warnings, outputContextDir, modelNamespace, contextNamespace, supportsFunctions);
 
                     if (functionPaths != null || procedurePaths != null)
