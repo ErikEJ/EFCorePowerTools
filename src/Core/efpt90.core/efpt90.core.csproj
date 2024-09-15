@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>efpt</AssemblyName>
+    <RootNamespace>Modelling</RootNamespace>
+    <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>TRACE;DEBUG;CORE60;CORE90</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\efpt60.core\*.cs">
+      <Link>%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\efpt60.core\EFCoreCompareBuilder.cs" />
+  </ItemGroup>
+
+   <ItemGroup>
+     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.1.24451.1" />
+    <!--<PackageReference Include="EfCore.SchemaCompare" Version="8.0.4" />-->
+   </ItemGroup>
+
+</Project>

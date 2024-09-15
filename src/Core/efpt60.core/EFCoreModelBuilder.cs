@@ -92,7 +92,11 @@ namespace Modelling
             var reporter = new OperationReporter(
                 new OperationReportHandler());
 
+#if CORE90
+            return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, null, false, Array.Empty<string>());
+#else
             return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
+#endif
         }
 
         private static Assembly Load(string assemblyPath)

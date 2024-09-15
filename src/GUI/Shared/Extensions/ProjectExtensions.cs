@@ -264,7 +264,10 @@ namespace EFCorePowerTools.Extensions
         {
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
-            return IsNet60(targetFrameworkMonikers) || IsNet70(targetFrameworkMonikers) || IsNet80(targetFrameworkMonikers);
+            return IsNet60(targetFrameworkMonikers)
+                || IsNet70(targetFrameworkMonikers)
+                || IsNet80(targetFrameworkMonikers)
+                || IsNet90(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNet70OnlyAsync(this Project project)

@@ -10,5 +10,6 @@ namespace RevEng.Common
         EFCore6 = 2,
         EFCore7 = 3,
         EFCore8 = 4,
+        EFCore9 = 5,
     }
 }
