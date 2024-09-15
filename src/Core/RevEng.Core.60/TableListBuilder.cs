@@ -103,7 +103,8 @@ namespace RevEng.Core
         {
             var result = new List<TableModel>();
 
-            if (databaseType != DatabaseType.SQLServer)
+            if (databaseType != DatabaseType.SQLServer
+                && databaseType != DatabaseType.SQLServerDacpac)
             {
                 return result;
             }

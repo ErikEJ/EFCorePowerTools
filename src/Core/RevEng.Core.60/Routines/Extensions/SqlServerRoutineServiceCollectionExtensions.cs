@@ -58,5 +58,22 @@ namespace RevEng.Core.Routines.Extensions
                 .AddSingleton<IProcedureScaffolder, SqlServerStoredProcedureScaffolder>()
                 .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
         }
+
+        public static IServiceCollection AddSqlServerDacpacFunctionDesignTimeServices(
+            this IServiceCollection services,
+            SqlServerDacpacDatabaseModelFactoryOptions factoryOptions,
+            IOperationReporter reporter = null)
+        {
+            if (reporter == null)
+            {
+                reporter = new OperationReporter(handler: null);
+            }
+
+            return services
+                .AddSingleton<IFunctionModelFactory, SqlServerDacpacFunctionModelFactory>(
+                    provider => new SqlServerDacpacFunctionModelFactory(factoryOptions))
+                .AddSingleton<IFunctionScaffolder, SqlServerFunctionScaffolder>()
+                .AddLogging(b => b.SetMinimumLevel(LogLevel.Debug).AddProvider(new OperationLoggerProvider(reporter)));
+        }
     }
 }

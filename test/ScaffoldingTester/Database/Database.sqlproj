@@ -61,11 +61,14 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Procedures" />
+    <Folder Include="dbo\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Table1.sql" />
     <Build Include="dbo\Tables\Logger.sql" />
     <Build Include="dbo\Procedures\Procedure1.sql" />
+    <Build Include="dbo\Functions\Function1.sql" />
+    <Build Include="dbo\Functions\DatabaseScalarFunction1.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Condition="'$(NetCoreBuild)' == 'true'">
