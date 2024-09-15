@@ -193,6 +193,10 @@
       <Link>efpt80.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="..\lib\efpt90.exe.zip">
+      <Link>efpt90.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="app.config" />
     <Content Include="CodeTemplates600.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
