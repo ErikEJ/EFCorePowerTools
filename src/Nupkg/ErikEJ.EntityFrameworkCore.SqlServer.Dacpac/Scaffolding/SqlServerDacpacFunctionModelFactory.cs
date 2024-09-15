@@ -129,8 +129,21 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     if (options.FullModel)
                     {
-                        // TODO GET TVP SHAPE
-                        //func.Columns.ToList();
+                        var columnList = new List<ModuleResultElement>();
+                        var i = 0;
+                        foreach (var column in func.Columns)
+                        {
+                            columnList.Add(new ModuleResultElement
+                            {
+                                StoreType = column.DataType.First().Name.Parts[0],
+                                Nullable = column.Nullable,
+                                Name = column.Name.Parts[2],
+                                Ordinal = i++,
+                            });
+                        }
+
+                        function.Results.Add(columnList);
+
                         function.Parameters = GetFunctionParameters(func.Parameters);
                     }
 
