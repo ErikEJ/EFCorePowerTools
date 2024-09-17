@@ -50,7 +50,7 @@ Ensure you always have the latest daily build (if you are brave) by installing [
 
 ## EF Core Power Tools CLI - efcpt
 
-If you do not use Visual Studio, but for example Visual Studio Code, a cross platform dotnet tool for reverse engineering is available, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.7/readme.md)
+If you do not use Visual Studio, but for example Visual Studio Code, a cross platform dotnet tool for reverse engineering is available, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.8/readme.md)
 
 ## Related NuGet packages
 
