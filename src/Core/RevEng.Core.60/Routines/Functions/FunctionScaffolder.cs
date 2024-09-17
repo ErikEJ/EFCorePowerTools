@@ -102,6 +102,9 @@ namespace RevEng.Core.Routines.Functions
                     {
                         schemas.Add($"{routine.Schema}Schema");
                     }
+#if CORE90
+                    result.AdditionalFiles.Add(new ScaffoldedFile(Path.Combine(routine.Schema, $"{typeName}.cs"), classContent));
+#else
 
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
@@ -110,17 +113,20 @@ namespace RevEng.Core.Routines.Functions
                                 ? Path.Combine(routine.Schema, $"{typeName}.cs")
                                 : $"{typeName}.cs",
                     });
+#endif
                 }
             }
 
             var dbContext = WriteDbContext(scaffolderOptions, model, schemas.Distinct().ToList());
-
+#if CORE90
+            result.ContextFile = new ScaffoldedFile(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"), dbContext);
+#else
             result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
                 Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs")),
             };
-
+#endif
             return result;
         }
 

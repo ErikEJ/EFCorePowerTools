@@ -108,6 +108,9 @@ namespace RevEng.Common
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.8";
                         break;
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.0-rc.1.24451.1";
+                        break;
                 }
 
                 packages.Add(new NuGetPackage
@@ -168,7 +171,8 @@ namespace RevEng.Common
                             break;
                     }
 
-                    if (codeGenerationMode == CodeGenerationMode.EFCore8)
+                    if (codeGenerationMode == CodeGenerationMode.EFCore8
+                        || codeGenerationMode == CodeGenerationMode.EFCore9)
                     {
                         packages.Add(new NuGetPackage
                         {
@@ -221,7 +225,7 @@ namespace RevEng.Common
                     packages.Add(new NuGetPackage
                     {
                         PackageId = "Dapper",
-                        Version = "2.1.28",
+                        Version = "2.1.35",
                         DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
                         IsMainProviderPackage = false,
                         UseMethodName = null,
@@ -239,6 +243,9 @@ namespace RevEng.Common
                         break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.8";
+                        break;
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.0-rc.1.24451.1";
                         break;
                 }
 
@@ -286,6 +293,9 @@ namespace RevEng.Common
                         break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.4";
+                        break;
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.0-rc.1";
                         break;
                 }
 

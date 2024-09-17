@@ -7,10 +7,6 @@
   <Version>2.5.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);CORE80</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
   </ItemGroup>  
