@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>    
+    <Version>2.5.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);CORE90</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);CORE90</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Compile Include="..\efreveng60\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+    <Compile Include="..\efreveng60\Program.cs" Link="Program.cs" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevEng.Core.90\RevEng.Core.90.csproj" />
+  </ItemGroup>  
+
+</Project>

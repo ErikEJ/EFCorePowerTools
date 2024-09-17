@@ -197,6 +197,14 @@
       <Link>efpt90.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="..\lib\efreveng90.exe.zip">
+      <Link>efreveng90.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\lib\T4_900.zip">
+      <Link>T4_900.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="app.config" />
     <Content Include="CodeTemplates600.zip">
       <IncludeInVSIX>true</IncludeInVSIX>

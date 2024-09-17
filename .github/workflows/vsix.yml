@@ -49,10 +49,10 @@ jobs:
       run: |
         cd ${{ github.workspace}}\src\Core\efreveng60
         call ${{ github.workspace}}\src\Core\efreveng60\BuildCmdlineTool.cmd
-        cd ${{ github.workspace}}\src\Core\efreveng70
-        call ${{ github.workspace}}\src\Core\efreveng70\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}\src\Core\efreveng80
         call ${{ github.workspace}}\src\Core\efreveng80\BuildCmdlineTool.cmd
+        cd ${{ github.workspace}}\src\Core\efreveng90
+        call ${{ github.workspace}}\src\Core\efreveng90\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}
 
     - name: Extract and verify efreveng60.exe.zip file count
@@ -63,14 +63,6 @@ jobs:
         dir /a:-d /s /b "efreveng60" | find /c ":\" > filecount.txt
         findstr "155" filecount.txt
 
-    - name: Extract and verify efreveng70.exe.zip file count
-      shell: cmd
-      run: |
-        mkdir vsix
-        7z x src/GUI/lib/efreveng70.exe.zip -oefreveng70 -y
-        dir /a:-d /s /b "efreveng70" | find /c ":\" > filecount.txt
-        findstr "157" filecount.txt
-
     - name: Extract and verify efreveng80.exe.zip file count
       shell: cmd
       run: |
@@ -78,6 +70,14 @@ jobs:
         7z x src/GUI/lib/efreveng80.exe.zip -oefreveng80 -y
         dir /a:-d /s /b "efreveng80" | find /c ":\" > filecount.txt
         findstr "156" filecount.txt
+
+    - name: Extract and verify efreveng90.exe.zip file count
+      shell: cmd
+      run: |
+          mkdir vsix
+          7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
+          dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
+          findstr "138" filecount.txt
 
     - name: Build
       run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m

@@ -44,6 +44,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     revengVersion = "8";
                     break;
 
+                case CodeGenerationMode.EFCore9:
+                    revengVersion = "9";
+                    break;
+
                 default:
                     throw new NotSupportedException("Unsupported code generation mode");
             }
@@ -205,7 +209,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             string version = "6.0";
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore8)
+            if (codeGenerationMode == CodeGenerationMode.EFCore8
+                || codeGenerationMode == CodeGenerationMode.EFCore9)
             {
                 version = "8.0";
             }

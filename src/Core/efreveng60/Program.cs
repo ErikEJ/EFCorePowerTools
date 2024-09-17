@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Core;
 using RevEng.Core.Abstractions.Model;
-#if NET8_0
+#if NET8_0 && !CORE90
 using RevEng.Common.Dab;
 using RevEng.Core.DacpacReport;
 #endif
@@ -97,7 +97,7 @@ namespace EfReveng
                         return 0;
                     }
 
-#if NET8_0
+#if NET8_0 && !CORE90
                     if (args.Length == 2
                         && args[0] == "dacpacreport"
                         && new FileInfo(args[1]).Exists)
