@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="..\RevEng.Core.60\CrmDatabaseModelFactory.cs" />
     <Compile Remove="..\RevEng.Core.60\PatchedSqlServerDatabaseModelFactory.cs" />
   </ItemGroup>
 
