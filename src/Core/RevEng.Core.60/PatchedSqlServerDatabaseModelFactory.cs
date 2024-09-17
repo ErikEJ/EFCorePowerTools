@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Utilities;
+using Microsoft.Extensions.Logging;
 
 #nullable enable
 
@@ -635,10 +636,7 @@ WHERE "
         // This is done separately due to MARS property may be turned off
         GetColumns(connection, tables, filter, viewFilter, typeAliases, databaseCollation);
 
-        if (SupportsIndexes())
-        {
-            GetIndexes(connection, tables, filter);
-        }
+        GetIndexes(connection, tables, filter);
         
         GetForeignKeys(connection, tables, filter);
 
@@ -929,7 +927,7 @@ SELECT
     [i].[has_filter],
     [i].[filter_definition],
     [i].[fill_factor],
-    COL_NAME([ic].[object_id], [ic].[column_id]) AS [column_name],
+    [c].[name] AS [column_name],
     [ic].[is_included_column]
 FROM [sys].[indexes] AS [i]
 JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
@@ -986,7 +984,8 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]";
 
             if (primaryKeyGroups.Length == 1)
             {
-                if (TryGetPrimaryKey(primaryKeyGroups[0], out var primaryKey))
+                if (TryGetPrimaryKey(primaryKeyGroups[0], out var primaryKey)
+                    && IsValidPrimaryKey(primaryKey))
                 {
                     _logger.PrimaryKeyFound(primaryKey.Name!, DisplayName(tableSchema, tableName));
                     table.PrimaryKey = primaryKey;
@@ -1060,6 +1059,14 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]";
                 }
 
                 return true;
+            }
+
+            bool IsValidPrimaryKey(DatabasePrimaryKey primaryKey)
+            {
+                if (_engineEdition != 1000)
+                    return true;
+
+                return primaryKey.Columns.Count == 1 && primaryKey.Columns[0].StoreType == "uniqueidentifier";
             }
 
             bool TryGetUniqueConstraint(
@@ -1260,6 +1267,14 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                     foreignKey.PrincipalColumns.Add(principalColumn);
                 }
 
+                if (!invalid && _engineEdition == 1000 && !IsValidDataverseForeignKey(foreignKey))
+                {
+                    invalid = true;
+                    _logger.Logger.LogWarning("ForeignKey {ForeignKeyName} on table {TableName} is not supported in Dataverse.",
+                        fkName!,
+                        DisplayName(table.Schema, table.Name));
+                }
+
                 if (!invalid)
                 {
                     if (foreignKey.Columns.SequenceEqual(foreignKey.PrincipalColumns))
@@ -1287,6 +1302,26 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                         table.ForeignKeys.Add(foreignKey);
                     }
                 }
+
+                bool IsValidDataverseForeignKey(DatabaseForeignKey foreignKey)
+                {
+                    if (foreignKey.Columns.Count != 1)
+                        return false;
+
+                    if (foreignKey.Columns[0].StoreType != "uniqueidentifier")
+                        return false;
+
+                    if (foreignKey.PrincipalTable.PrimaryKey == null)
+                        return false;
+
+                    if (foreignKey.PrincipalTable.PrimaryKey.Columns.Count != 1)
+                        return false;
+
+                    if (foreignKey.PrincipalTable.PrimaryKey.Columns[0].Name != foreignKey.PrincipalColumns[0].Name)
+                        return false;
+
+                    return true;
+                }
             }
         }
     }
@@ -1299,9 +1334,6 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
 
     private bool SupportsSequences()
         => _compatibilityLevel >= 110 && (_engineEdition != 6 && _engineEdition != 11 && _engineEdition != 1000);
-
-    private bool SupportsIndexes()
-        => _engineEdition != 1000;
 
     private bool SupportsViews()
         => _engineEdition != 1000;
