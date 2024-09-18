@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -23,6 +23,9 @@ jobs:
   
     - name: Package CLI 8
       run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ github.event.inputs.version }} -p:InformationalVersion=8.1.${{ github.event.inputs.version }}
+
+    - name: Package CLI 9
+      run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ github.event.inputs.version }} -p:InformationalVersion=9.1.${{ github.event.inputs.version }}
 
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')

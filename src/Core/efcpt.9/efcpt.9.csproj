@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>efcpt</ToolCommandName>
+    <PackageId>ErikEJ.EFCorePowerTools.Cli</PackageId>
+    <Description>Entity Framework Core Power Tools command line tool </Description>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageVersion>9.0.1</PackageVersion>
+    <InformationalVersion>9.0.1</InformationalVersion>
+    <Version>9.0.0</Version>
+    <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+    <Authors>ErikEJ</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Copyright (c) ErikEJ 2023 - https://github.com/ErikEJ/EFCorePowerTools</Copyright>
+    <Company>ErikEJ</Company>
+    <PackageReleaseNotes>For EF Core 9</PackageReleaseNotes>
+    <PackageTags>Entity Framework Core entity-framework-core EF Data O/RM EntityFramework EntityFrameworkCore EFCore</PackageTags>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>CORE80</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\efcpt.8\Extensions\*.cs">
+      <Link>Extensions\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\efcpt.8\HostedServices\*.cs">
+      <Link>HostedServices\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\efcpt.8\Options\*.cs">
+      <Link>Options\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\efcpt.8\Services\*.cs">
+      <Link>Services\%(Filename)%(Extension)</Link>
+    </Compile>
+    <Compile Include="..\efcpt.8\Constants.cs" Link="Constants.cs" />
+    <Compile Include="..\efcpt.8\Program.cs" Link="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\efcpt.8\efcpt-readme.md" Link="efcpt-readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="..\efcpt.8\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.11.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.0.29" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RevEng.Core.90\RevEng.Core.90.csproj" />
+  </ItemGroup>
+
+</Project>

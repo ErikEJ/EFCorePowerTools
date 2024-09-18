@@ -16,10 +16,10 @@ EF Core 8:
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 8.*
 ```
 
-EF Core 7:
+EF Core 9:
 
 ```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 7.*
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 9.*
 ```
 
 EF Core 6:
