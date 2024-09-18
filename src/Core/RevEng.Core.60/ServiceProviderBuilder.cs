@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
@@ -191,9 +192,7 @@ namespace RevEng.Core
 
             if (options.DatabaseType == DatabaseType.SQLServer)
             {
-#if !CORE80
                 serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
-#endif
                 serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                 serviceCollection.AddSqlServerFunctionDesignTimeServices();
             }
