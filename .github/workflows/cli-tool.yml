@@ -18,7 +18,7 @@ env:
 
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -32,6 +32,9 @@ jobs:
   
     - name: Package CLI 8
       run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
+
+    - name: Package CLI 9
+      run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
       
     - name: Core test project
       run: dotnet test src\Core\NUnitTestCore\NUnitTestCore.csproj
