@@ -489,11 +489,11 @@ namespace UnitTests.ViewModels
         {
             var r = new SerializationTableModel[5];
 
-            r[0] = new SerializationTableModel("[dbo].[Atlas]", ObjectType.Table, new[] { "column1" });
-            r[1] = new SerializationTableModel("[unit].[test]", ObjectType.Table, new string[0]);
-            r[2] = new SerializationTableModel("[unit].[foo]", ObjectType.Table, new string[0]);
-            r[3] = new SerializationTableModel("[views].[view1]", ObjectType.View, new string[0]);
-            r[4] = new SerializationTableModel("[stored].[procedure2]", ObjectType.Procedure, new string[0]);
+            r[0] = new SerializationTableModel("[dbo].[Atlas]", ObjectType.Table, new[] { "column1" }, null);
+            r[1] = new SerializationTableModel("[unit].[test]", ObjectType.Table, new string[0], null);
+            r[2] = new SerializationTableModel("[unit].[foo]", ObjectType.Table, new string[0], null);
+            r[3] = new SerializationTableModel("[views].[view1]", ObjectType.View, new string[0], null);
+            r[4] = new SerializationTableModel("[stored].[procedure2]", ObjectType.Procedure, new string[0], null);
             return r;
         }
 

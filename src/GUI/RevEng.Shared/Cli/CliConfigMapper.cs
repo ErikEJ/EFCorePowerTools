@@ -312,7 +312,7 @@ namespace RevEng.Common.Cli
 
             var serializationTableModels = entities.Where<T>(entity => ExclusionFilter(entity, excludeAll, filters)
                 && !string.IsNullOrEmpty(entity.Name))
-                .Select(entity => new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns));
+                .Select(entity => new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns, entity.ExcludedIndexes));
             addRange(serializationTableModels);
         }
 

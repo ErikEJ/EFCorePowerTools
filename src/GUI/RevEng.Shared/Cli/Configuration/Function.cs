@@ -24,5 +24,8 @@ namespace RevEng.Common.Cli.Configuration
 
         [JsonIgnore]
         public List<string> ExcludedColumns { get; set; } = null;
+
+        [JsonIgnore]
+        public List<string> ExcludedIndexes { get; set; } = null;
     }
 }

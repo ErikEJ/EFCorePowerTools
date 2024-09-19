@@ -13,7 +13,8 @@ namespace RevEng.Common
         public SerializationTableModel(
             string name,
             ObjectType objectType,
-            IList<string> excludedColumns)
+            IList<string> excludedColumns,
+            IList<string> excludedIndexes)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -23,6 +24,7 @@ namespace RevEng.Common
             Name = name;
             ExcludedColumns = excludedColumns?.Count > 0 ? excludedColumns : null;
             ObjectType = objectType;
+            ExcludedIndexes = excludedIndexes?.Count > 0 ? excludedIndexes : null;
         }
 
         /// <summary>
@@ -42,6 +44,12 @@ namespace RevEng.Common
         /// </summary>
         [DataMember(EmitDefaultValue = false, IsRequired = false)]
         public IEnumerable<string> ExcludedColumns { get; set; }
+
+        /// <summary>
+        /// Gets or sets the indexes excluded from reverse engineering.
+        /// </summary>
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        public IEnumerable<string> ExcludedIndexes { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to exclude table from default result set discovery.
