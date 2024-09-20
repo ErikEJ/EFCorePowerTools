@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\RevEng.Core.80\DabBuilder.cs" Link="DabBuilder.cs" />
     <Compile Include="..\RevEng.Core.80\PatchedSqlServerDatabaseModelFactory.cs" Link="PatchedSqlServerDatabaseModelFactory.cs" />
     <Compile Include="..\RevEng.Core.80\SqlServerTypeMappingSource.cs" Link="SqlServerTypeMappingSource.cs" />
   </ItemGroup>

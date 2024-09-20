@@ -9,10 +9,10 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
+using RevEng.Common.Dab;
 using RevEng.Core;
 using RevEng.Core.Abstractions.Model;
 #if NET8_0 && !CORE90
-using RevEng.Common.Dab;
 using RevEng.Core.DacpacReport;
 #endif
 using RevEng.Core.Diagram;
@@ -128,6 +128,8 @@ namespace EfReveng
 
                         return 0;
                     }
+#endif
+#if NET8_0
 
                     if (args.Length == 3
                         && args[0] == "dabbuilder"
@@ -154,7 +156,6 @@ namespace EfReveng
                         return 0;
                     }
 #endif
-
                     if (!File.Exists(args[0]))
                     {
                         await Console.Out.WriteLineAsync("Error:");

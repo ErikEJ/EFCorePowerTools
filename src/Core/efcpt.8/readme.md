@@ -94,14 +94,14 @@ In the example above, only the Users table will be selected.
          "exclusionWildcard": "[other].*"
       },
       {
-         "name": "[dbo].[Users]",
-         "exclude": false
+         "name": "[dbo].[Users]"
       },
       {
          "name": "[other].[Accounts]"
       },      
       {
-         "name": "[other].[Messages]"
+         "name": "[other].[Messages]",
+         "exclude": false
       }
   ],
 ```
