@@ -17,10 +17,10 @@ namespace UnitTests
             // Arrange
             var tables = new List<SerializationTableModel>
             {
-                new SerializationTableModel("dbo.table", ObjectType.Table, null),
-                new SerializationTableModel("dbo.table.crazy", ObjectType.Table, null),
-                new SerializationTableModel("[dbo].[table]", ObjectType.Table, null),
-                new SerializationTableModel("[dbo].[table.mad]", ObjectType.Table, null),
+                new SerializationTableModel("dbo.table", ObjectType.Table, null, null),
+                new SerializationTableModel("dbo.table.crazy", ObjectType.Table, null, null),
+                new SerializationTableModel("[dbo].[table]", ObjectType.Table, null, null),
+                new SerializationTableModel("[dbo].[table.mad]", ObjectType.Table, null, null),
             };
 
             // Act
@@ -40,11 +40,11 @@ namespace UnitTests
             // Arrange
             var tables = new List<SerializationTableModel>
             {
-                new SerializationTableModel("dbo.table", ObjectType.Table, null),
-                new SerializationTableModel("dbo.table.crazy", ObjectType.Table, null),
-                new SerializationTableModel("[dbo].[table]", ObjectType.Table, null),
-                new SerializationTableModel("[dbo].[table.mad]", ObjectType.Table, null),
-                new SerializationTableModel("table", ObjectType.Table, null),
+                new SerializationTableModel("dbo.table", ObjectType.Table, null, null),
+                new SerializationTableModel("dbo.table.crazy", ObjectType.Table, null, null),
+                new SerializationTableModel("[dbo].[table]", ObjectType.Table, null, null),
+                new SerializationTableModel("[dbo].[table.mad]", ObjectType.Table, null, null),
+                new SerializationTableModel("table", ObjectType.Table, null, null),
             };
 
             // Act

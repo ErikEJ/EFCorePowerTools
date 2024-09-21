@@ -15,6 +15,11 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("excludedColumns")]
         public List<string> ExcludedColumns { get; set; } = null;
 
+        [JsonPropertyOrder(20)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("excludedIndexes")]
+        public List<string> ExcludedIndexes { get; set; } = null;
+
         [JsonPropertyOrder(30)]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("exclusionWildcard")]

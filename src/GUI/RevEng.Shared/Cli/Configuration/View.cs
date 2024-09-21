@@ -24,5 +24,8 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("name")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string Name { get; set; }
+
+        [JsonIgnore]
+        public List<string> ExcludedIndexes { get; set; } = null;
     }
 }
