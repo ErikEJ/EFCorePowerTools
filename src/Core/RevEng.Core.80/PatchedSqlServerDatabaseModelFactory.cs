@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+using RevEng.Common;
 
 #nullable enable
 namespace Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
@@ -28,6 +29,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 {
     private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
     private readonly IRelationalTypeMappingSource _typeMappingSource;
+    private readonly ReverseEngineerCommandOptions _commandOptions;
 
     private static readonly ISet<string> DateTimePrecisionTypes = new HashSet<string>
     {
@@ -89,10 +91,12 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
     /// </summary>
     public PatchedSqlServerDatabaseModelFactory(
         IDiagnosticsLogger<DbLoggerCategory.Scaffolding> logger,
-        IRelationalTypeMappingSource typeMappingSource)
+        IRelationalTypeMappingSource typeMappingSource,
+        ReverseEngineerCommandOptions commandOptions)
     {
         _logger = logger;
         _typeMappingSource = typeMappingSource;
+        _commandOptions = commandOptions;
     }
 
     /// <summary>
@@ -1075,6 +1079,7 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal];";
             var tableName = tableIndexGroup.Key.tableName;
 
             var table = tables.Single(t => t.Schema == tableSchema && t.Name == tableName);
+            var efptTableConfig = _commandOptions?.Tables?.SingleOrDefault(x => x.Name == $"[{table.Schema}].[{table.Name}]");
 
             var primaryKeyGroups = tableIndexGroup
                 .Where(ddr => ddr.GetValueOrDefault<bool>("is_primary_key"))
@@ -1109,7 +1114,11 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal];";
                 if (TryGetUniqueConstraint(uniqueConstraintGroup, out var uniqueConstraint))
                 {
                     _logger.UniqueConstraintFound(uniqueConstraintGroup.Key.Name!, DisplayName(tableSchema, tableName));
-                    table.UniqueConstraints.Add(uniqueConstraint);
+                    if (efptTableConfig == null || efptTableConfig.ExcludedIndexes == null ||
+                        !efptTableConfig.ExcludedIndexes.Contains(uniqueConstraintGroup.Key.Name))
+                    {
+                        table.UniqueConstraints.Add(uniqueConstraint);
+                    }
                 }
             }
 
@@ -1132,7 +1141,11 @@ ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal];";
                 if (TryGetIndex(indexGroup, out var index))
                 {
                     _logger.IndexFound(indexGroup.Key.Name!, DisplayName(tableSchema, tableName), indexGroup.Key.IsUnique);
-                    table.Indexes.Add(index);
+                    if (efptTableConfig == null || efptTableConfig.ExcludedIndexes == null ||
+                        !efptTableConfig.ExcludedIndexes.Contains(indexGroup.Key.Name))
+                    {
+                        table.Indexes.Add(index);
+                    }
                 }
             }
 

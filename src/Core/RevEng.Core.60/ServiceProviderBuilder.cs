@@ -192,6 +192,7 @@ namespace RevEng.Core
 
             if (options.DatabaseType == DatabaseType.SQLServer)
             {
+                serviceCollection.AddSingleton(options);
                 serviceCollection.AddSingleton<IDatabaseModelFactory, PatchedSqlServerDatabaseModelFactory>();
                 serviceCollection.AddSqlServerStoredProcedureDesignTimeServices();
                 serviceCollection.AddSqlServerFunctionDesignTimeServices();

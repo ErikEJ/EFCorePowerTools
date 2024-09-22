@@ -68,7 +68,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if (!databaseObjects.Exists(t => t.ObjectType == ObjectType.Table))
             {
                 // No tables selected, so add a dummy table in order to generate an empty DbContext
-                databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null));
+                databaseObjects.Add(new SerializationTableModel($"Dummy_{new Guid(GuidList.guidDbContextPackagePkgString)}", ObjectType.Table, null, null));
             }
 
             var commandOptions = new ReverseEngineerCommandOptions

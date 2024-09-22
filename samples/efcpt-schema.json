@@ -61,6 +61,25 @@
                                 "Email"
                             ]
                         ]
+                    },
+                    "excludedIndexes": {
+                        "type": "array",
+                        "default": [],
+                        "title": "Indexes to Exclude from code generation",
+                        "items": {
+                            "type": "string",
+                            "title": "Index",
+                            "examples": [
+                                "UX_Parent_ChildId_TopLevel",
+                                "IX_WidgetId"
+                            ]
+                        },
+                        "examples": [
+                            [
+                                "UX_Parent_ChildId_TopLevel",
+                                "IX_WidgetId"
+                            ]
+                        ]
                     }
                 },
                 "examples": [{

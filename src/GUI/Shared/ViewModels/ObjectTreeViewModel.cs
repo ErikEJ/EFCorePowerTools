@@ -81,7 +81,7 @@ namespace EFCorePowerTools.ViewModels
         {
             return Objects
                 .Where(c => c.IsSelected.Value)
-                .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name).ToList()));
+                .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name).ToList(), null));
         }
 
         public IEnumerable<Schema> GetRenamedObjects()
