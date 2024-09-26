@@ -50,7 +50,7 @@ namespace RevEng.Common
         public bool UseNoDefaultConstructor { get; set; }
         public bool UseNoNavigations { get; set; }
         public bool UseManyToManyEntity { get; set; }
-        public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore7;
+        public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore8;
         public string UiHint { get; set; }
         public List<SchemaInfo> Schemas { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
