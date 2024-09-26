@@ -3,8 +3,6 @@ dotnet publish -o bin\Release\net6.0\x64\publish -f net6.0 -c Release --no-self-
 
 if %errorlevel% equ 1 goto notbuilt
 
-del bin\Release\net6.0\x64\publish\DacFxStrongTypedCore.161.dll
-del bin\Release\net6.0\x64\publish\DacFxStrongTypedCore.161.pdb
 del bin\Release\net6.0\x64\publish\Microsoft.Data.Tools.Schema.Sql.dll
 del bin\Release\net6.0\x64\publish\Microsoft.Data.Tools.Schema.Tasks.Sql.dll
 del bin\Release\net6.0\x64\publish\Microsoft.Data.Tools.Sql.DesignServices.dll

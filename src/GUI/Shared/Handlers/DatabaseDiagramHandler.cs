@@ -143,7 +143,7 @@ namespace EFCorePowerTools.Handlers
 
         private async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas, bool erDiagram)
         {
-            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore6);
+            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
             return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas), erDiagram);
         }
 
