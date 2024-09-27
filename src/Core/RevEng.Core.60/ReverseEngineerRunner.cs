@@ -152,6 +152,11 @@ namespace RevEng.Core
                     warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
 
+                if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
+                {
+                    warnings.Add("'code-generation/use-database-names' has been set to true, but a 'efpt.renaming.json' file was also found.  'use-database-names' prevents 'efpt.renaming.json' from functioning.");
+                }
+
                 if (!options.UseHandleBars && !options.UseT4)
                 {
                     foreach (var file in filePaths.AdditionalFiles)
