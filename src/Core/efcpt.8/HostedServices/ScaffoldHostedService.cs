@@ -71,7 +71,7 @@ internal sealed class ScaffoldHostedService : HostedService
             scaffoldOptions.ConfigFile.FullName);
         DisplayService.MarkupLine();
 
-        if (commandOptions.UseDatabaseNames && commandOptions.CustomReplacers.Count > 0)
+        if (commandOptions.UseDatabaseNames && commandOptions.CustomReplacers?.Count > 0)
         {
             configWarnings.Add("'code-generation/use-database-names' has been set to true, but a 'efpt.renaming.json' file was also found.  'use-database-names' prevents 'efpt.renaming.json' from functioning.");
         }
