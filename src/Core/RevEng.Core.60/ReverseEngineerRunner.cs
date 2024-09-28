@@ -152,11 +152,6 @@ namespace RevEng.Core
                     warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
 
-                if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
-                {
-                    warnings.Add("'code-generation/use-database-names' has been set to true, but a 'efpt.renaming.json' file was also found.  'use-database-names' prevents 'efpt.renaming.json' from functioning.");
-                }
-
                 if (!options.UseHandleBars && !options.UseT4)
                 {
                     foreach (var file in filePaths.AdditionalFiles)
@@ -191,6 +186,11 @@ namespace RevEng.Core
                     && sku.Version > 12 && sku.Level > 0 && sku.Level < 130)
                 {
                     warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database engine features.");
+                }
+
+                if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
+                {
+                    warnings.Add("'use-database-names' / 'UseDatabaseNames' has been set to true, but a 'efpt.renaming.json' file was also found. This prevents 'efpt.renaming.json' from functioning.");
                 }
 
                 var result = new ReverseEngineerResult
