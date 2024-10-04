@@ -516,7 +516,7 @@ namespace EFCorePowerTools
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze
-                && project.IsSqlDatabaseProject())
+                && await project.IsSqlDatabaseProjectAsync())
             {
                 menuCommand.Visible = true;
             }
@@ -756,11 +756,11 @@ namespace EFCorePowerTools
                     || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
                 {
                     string connectionName = null;
-                    if (project.IsSqlDatabaseProject())
+                    if (await project.IsSqlDatabaseProjectAsync())
                     {
                         connectionName = project.FullPath;
 
-                        if (project.IsMsBuildSqlProjProject())
+                        if (await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync())
                         {
                             connectionName = await project.GetOutPutAssemblyPathAsync();
                         }

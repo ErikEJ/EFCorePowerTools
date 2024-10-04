@@ -239,25 +239,27 @@ namespace EFCorePowerTools.Extensions
             return project.IsCapabilityMatch("CSharp & CPS");
         }
 
-        public static bool IsSqlDatabaseProject(this Project project)
+        public static async Task<bool> IsSqlDatabaseProjectAsync(this Project project)
         {
             if (project == null)
             {
                 return false;
             }
 
-            return project.IsMsBuildSqlProjProject()
+            return await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync()
                 || project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
         }
 
-        public static bool IsMsBuildSqlProjProject(this Project project)
+        public static async Task<bool> IsMsBuildSqlProjOrMsBuildSqlProjectAsync(this Project project)
         {
             if (project == null)
             {
                 return false;
             }
 
-            return project.IsCapabilityMatch("CSharp & CPS & MSBuild.Sdk.SqlProj.BuildTSqlScript");
+            // Supports older and current MsBuild.Sdk.SqlProj projects and new SQLProject projects
+            return project.IsCapabilityMatch("CSharp & CPS & (MSBuild.Sdk.SqlProj.BuildTSqlScript | SQLProject)")
+                || (project.IsCSharpProjectPlain() && !string.IsNullOrEmpty(await project.GetAttributeAsync("SqlServerVersion")));
         }
 
         public static async Task<bool> IsNet60OrHigherAsync(this Project project)
