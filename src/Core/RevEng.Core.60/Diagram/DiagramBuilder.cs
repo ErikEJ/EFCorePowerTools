@@ -33,7 +33,7 @@ namespace RevEng.Core.Diagram
 
             this.schemas = schemas;
 
-            serviceProvider = new ServiceCollection().AddEfpt(options, new List<string>(), new List<string>(), new List<string>()).BuildServiceProvider();
+            serviceProvider = new ServiceCollection().AddEfpt(options, [], [], []).BuildServiceProvider();
         }
 
         public string GetDgmlFileName()

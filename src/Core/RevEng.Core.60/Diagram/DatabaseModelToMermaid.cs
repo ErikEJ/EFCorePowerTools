@@ -6,11 +6,30 @@ namespace RevEng.Core.Diagram
 {
     public class DatabaseModelToMermaid
     {
+        private static readonly bool[] Lookup = new bool[65536];
         private readonly DatabaseModel databaseModel;
 
         public DatabaseModelToMermaid(DatabaseModel databaseModel)
         {
             this.databaseModel = databaseModel;
+            for (char c = '0'; c <= '9'; c++)
+            {
+                Lookup[c] = true;
+            }
+
+            for (char c = 'A'; c <= 'Z'; c++)
+            {
+                Lookup[c] = true;
+            }
+
+            for (char c = 'a'; c <= 'z'; c++)
+            {
+                Lookup[c] = true;
+            }
+
+            Lookup['.'] = true;
+            Lookup['_'] = true;
+            Lookup['-'] = true;
         }
 
         public string CreateMermaid(bool createMarkdown = true)
@@ -33,12 +52,12 @@ namespace RevEng.Core.Diagram
                     continue;
                 }
 
-                var formattedTableName = table.Name.Replace(" ", string.Empty, System.StringComparison.OrdinalIgnoreCase);
+                var formattedTableName = Sanitize(table.Name);
 
                 sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {{");
                 foreach (var column in table.Columns)
                 {
-                    var formattedColumnName = column.Name.Replace(" ", string.Empty, System.StringComparison.OrdinalIgnoreCase);
+                    var formattedColumnName = Sanitize(column.Name);
 
                     var pkfk = string.Empty;
 
@@ -75,7 +94,10 @@ namespace RevEng.Core.Diagram
                         relationship = "}o--o";
                     }
 
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {relationship}| {foreignKey.PrincipalTable.Name} : {foreignKey.Name}");
+                    var formattedPrincipalTableName = Sanitize(foreignKey.PrincipalTable.Name);
+                    var formattedForeignKeyName = Sanitize(foreignKey.Name);
+
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {relationship}| {formattedPrincipalTableName} : {formattedForeignKeyName}");
                 }
             }
 
@@ -85,6 +107,27 @@ namespace RevEng.Core.Diagram
             }
 
             return sb.ToString();
+        }
+
+        private static string Sanitize(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                char[] buffer = new char[name.Length];
+                int index = 0;
+                foreach (char c in name)
+                {
+                    if (Lookup[c])
+                    {
+                        buffer[index] = c;
+                        index++;
+                    }
+                }
+
+                return new string(buffer, 0, index);
+            }
+
+            return name;
         }
     }
 }
