@@ -24,7 +24,7 @@ using RevEng.Common;
 namespace Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 
 [SuppressMessage("Major Code Smell", "S1066:Mergeable \"if\" statements should be combined", Justification = "It's OK")]
-[SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "We know!")] 
+[SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "We know!")]
 public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 {
     private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
