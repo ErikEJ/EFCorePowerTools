@@ -60,6 +60,7 @@ namespace EFCorePowerTools
         private readonly DatabaseDiagramHandler databaseDiagramHandler;
         private readonly DacpacAnalyzerHandler dacpacAnalyzerHandler;
         private readonly DabBuilderHandler dabBuilderHandler;
+        private readonly ErDiagramHandler erDiagramHandler;
         private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
@@ -72,6 +73,7 @@ namespace EFCorePowerTools
             databaseDiagramHandler = new DatabaseDiagramHandler(this);
             dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
             dabBuilderHandler = new DabBuilderHandler(this);
+            erDiagramHandler = new ErDiagramHandler(this);
         }
 
         internal EnvDTE80.DTE2 Dte2()
@@ -752,8 +754,11 @@ namespace EFCorePowerTools
                 {
                     await compareHandler.HandleComparisonAsync(path, project);
                 }
-                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml
-                    || menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram)
+                {
+                    await erDiagramHandler.BuildErDiagramAsync(project, string.Empty);
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbDgml)
                 {
                     string connectionName = null;
                     if (await project.IsSqlDatabaseProjectAsync())
@@ -766,9 +771,7 @@ namespace EFCorePowerTools
                         }
                     }
 
-                    await databaseDiagramHandler.GenerateAsync(
-                        connectionName,
-                        generateErDiagram: menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbErDiagram);
+                    await databaseDiagramHandler.GenerateAsync(connectionName);
                 }
             }
             catch (Exception ex)
@@ -890,7 +893,18 @@ namespace EFCorePowerTools
 
                             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerDiagram)
                             {
-                                await databaseDiagramHandler.GenerateAsync(connectionName, generateErDiagram: true);
+                                if ((await VS.Solutions.GetActiveItemsAsync()).Count() != 1)
+                                {
+                                    return;
+                                }
+
+                                var project = await VS.Solutions.GetActiveProjectAsync();
+                                if (project == null)
+                                {
+                                    return;
+                                }
+
+                                await erDiagramHandler.BuildErDiagramAsync(project, connectionName);
                             }
 
                             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerAnalyze)

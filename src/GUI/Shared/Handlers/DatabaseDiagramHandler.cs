@@ -24,7 +24,7 @@ namespace EFCorePowerTools.Handlers
             this.package = package;
         }
 
-        public async Task GenerateAsync(string connectionName = null, bool generateErDiagram = false)
+        public async Task GenerateAsync(string connectionName = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -50,7 +50,7 @@ namespace EFCorePowerTools.Handlers
                     connectionString = DataProtection.DecryptString(info.DatabaseModel.DataConnection.EncryptedConnectionString);
                 }
 
-                var diagramPath = await GetDiagramAsync(connectionString, info.DatabaseModel.DatabaseType, info.Schemas, generateErDiagram);
+                var diagramPath = await GetDiagramAsync(connectionString, info.DatabaseModel.DatabaseType, info.Schemas);
 
                 await ShowDiagramAsync(diagramPath);
 
@@ -141,10 +141,10 @@ namespace EFCorePowerTools.Handlers
             return (pickDataSourceResult.Payload.Connection, pickDataSourceResult.Payload.Schemas);
         }
 
-        private async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas, bool erDiagram)
+        private async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
         {
             var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
-            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas), erDiagram);
+            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas));
         }
 
         private async Task ShowDiagramAsync(string path)
