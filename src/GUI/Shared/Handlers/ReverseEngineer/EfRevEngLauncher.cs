@@ -137,9 +137,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await GetTablesInternalAsync(arguments);
         }
 
-        public async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, List<string> schemaList, bool erDiagram)
+        public async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, List<string> schemaList)
         {
-            var option = erDiagram ? "erdiagram " : "dgml ";
+            var option = "dgml ";
 
             var arguments = option + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
 
@@ -147,6 +147,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 arguments = option + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
             }
+
+            var filePath = await GetDiagramInternalAsync(arguments);
+
+            return filePath;
+        }
+
+        public async Task<string> GetErDiagramAsync(string optionsPath, string connectionString)
+        {
+            var arguments = "erdiagram " + " \"" + optionsPath.Replace("\"", "\\\"") + "\" " + " \"" + connectionString.Replace("\"", "\\\"") + "\" ";
 
             var filePath = await GetDiagramInternalAsync(arguments);
 

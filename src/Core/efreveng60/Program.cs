@@ -69,7 +69,7 @@ namespace EfReveng
                     }
 
                     if ((args.Length == 3 || args.Length == 4)
-                        && (args[0] == "dgml" || args[0] == "erdiagram")
+                        && (args[0] == "dgml")
                         && int.TryParse(args[1], out int dbType))
                     {
                         var schemas = Enumerable.Empty<string>().ToList();
@@ -130,6 +130,30 @@ namespace EfReveng
                     }
 #endif
 #if NET8_0
+                    if (args.Length == 3
+                        && args[0] == "erdiagram"
+                        && new FileInfo(args[1]).Exists)
+                    {
+                        var dabOptions = DataApiBuilderOptionsExtensions.TryRead(args[1]);
+
+                        if (dabOptions == null)
+                        {
+                            await Console.Out.WriteLineAsync("Error:");
+                            await Console.Out.WriteLineAsync("Could not read options");
+                            return 1;
+                        }
+
+                        dabOptions.ConnectionString = args[2];
+
+                        var builder = new ErDiagramBuilder(dabOptions);
+
+                        var buildResult = builder.GetErDiagramFileName();
+
+                        await Console.Out.WriteLineAsync("Result:");
+                        await Console.Out.WriteLineAsync(buildResult);
+
+                        return 0;
+                    }
 
                     if (args.Length == 3
                         && args[0] == "dabbuilder"
