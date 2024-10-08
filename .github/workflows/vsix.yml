@@ -27,7 +27,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.304'
+        dotnet-version: '8.0.306'
 
     - name: Update Version
       run: |
@@ -69,7 +69,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/lib/efreveng80.exe.zip -oefreveng80 -y
         dir /a:-d /s /b "efreveng80" | find /c ":\" > filecount.txt
-        findstr "158" filecount.txt
+        findstr "159" filecount.txt
 
     - name: Extract and verify efreveng90.exe.zip file count
       shell: cmd
