@@ -103,10 +103,10 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.33";
+                        pkgVersion = "6.0.35";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.8";
+                        pkgVersion = "8.0.10";
                         break;
                     case CodeGenerationMode.EFCore9:
                         pkgVersion = "9.0.0-rc.1.24451.1";
@@ -239,10 +239,10 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.33";
+                        pkgVersion = "6.0.35";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.8";
+                        pkgVersion = "8.0.10";
                         break;
                     case CodeGenerationMode.EFCore9:
                         pkgVersion = "9.0.0-rc.1.24451.1";
