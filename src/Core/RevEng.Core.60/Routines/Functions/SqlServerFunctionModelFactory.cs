@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -21,19 +21,10 @@ SELECT
     ROUTINE_NAME,
     CAST(CASE WHEN (DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
 FROM INFORMATION_SCHEMA.ROUTINES
+LEFT JOIN sys.extended_properties AS [ep] on [ep].major_id = object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) AND [ep].minor_id = 0 AND [ep].class = 1 and [ep].name = N'microsoft_database_tools_support'
 WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
 AND OBJECTPROPERTY(OBJECT_ID(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)), 'IsMSShipped') = 0
-AND (
-            select 
-                major_id 
-            from 
-                sys.extended_properties 
-            where 
-                major_id = object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) and 
-                minor_id = 0 and 
-                class = 1 and 
-                name = N'microsoft_database_tools_support'
-        ) IS NULL 
+AND [ep].major_id IS NULL
 AND ROUTINE_TYPE = N'FUNCTION' 
 ORDER BY ROUTINE_NAME;";
         }
