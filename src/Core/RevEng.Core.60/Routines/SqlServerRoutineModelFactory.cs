@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Routines.Extensions;
@@ -172,22 +172,28 @@ namespace RevEng.Core.Routines
             var sql = $@"
 SELECT  
     'Parameter' = p.name,  
-    'Type'   = COALESCE(type_name(p.system_type_id), type_name(p.user_type_id)),  
+    'Type'   = t.name,
     'Length'   = CAST(p.max_length AS INT),  
-    'Precision'   = CAST(case when type_name(p.system_type_id) = 'uniqueidentifier' 
-                then p.precision  
-                else OdbcPrec(p.system_type_id, p.max_length, p.precision) end AS INT),  
-    'Scale'   = CAST(OdbcScale(p.system_type_id, p.scale) AS INT),  
-    'Order'  = CAST(parameter_id AS INT),  
+    'Precision'   = CASE 
+              WHEN t.name = 'uniqueidentifier' THEN p.precision  
+              WHEN t.name IN ('decimal', 'numeric') THEN p.precision
+              WHEN t.name IN ('varchar', 'nvarchar') THEN p.max_length
+              ELSE NULL
+            END, 
+    'Scale'   = CAST(p.scale AS INT),  
+    'Order'  = CAST(p.parameter_id AS INT),  
     p.is_output AS output,
-    'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id)),
+    'TypeName' = QUOTENAME(s.name) + '.' + QUOTENAME(t.name),
 	'TypeSchema' = t.schema_id,
 	'TypeId' = p.user_type_id,
-    'RoutineName' = OBJECT_NAME(p.object_id),
-    'RoutineSchema' = OBJECT_SCHEMA_NAME(p.object_id)
+    'RoutineName' = o.name,
+    'RoutineSchema' = s.name
     from sys.parameters p
-	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
-    ORDER BY p.object_id, p.parameter_id;";
+    inner join sys.objects AS o on o.object_id = p.object_id
+	inner JOIN sys.types AS t ON p.user_type_id = t.user_type_id
+    inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
+    ORDER BY p.object_id, p.parameter_id;
+";
 
             using var adapter = new SqlDataAdapter
             {
