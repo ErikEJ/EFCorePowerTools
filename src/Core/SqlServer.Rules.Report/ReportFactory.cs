@@ -1,6 +1,5 @@
 ﻿using Microsoft.SqlServer.Dac.CodeAnalysis;
 using Microsoft.SqlServer.Dac.Model;
-using SqlServer.Dac;
 using SqlServer.Rules.Report.Properties;
 using System;
 using System.Collections.Generic;
@@ -172,12 +171,17 @@ namespace SqlServer.Rules.Report
             return from p in problems
                    select new Issue
                    {
-                       File = !string.IsNullOrWhiteSpace(p.SourceName) ? p.SourceName : p.ModelElement.Name.GetName(),
+                       File = !string.IsNullOrWhiteSpace(p.SourceName) ? p.SourceName : GetName(p.ModelElement.Name),
                        Line = p.StartLine,
                        Message = p.Description,
                        Offset = p.StartColumn.ToString(CultureInfo.InvariantCulture),
                        TypeId = p.Rule(),
                    };
+        }
+
+        private static string GetName(ObjectIdentifier identifier)
+        {
+            return "[" + string.Join("].[", identifier.Parts.Select((string x) => x)) + "]";
         }
 
         private static void SerializeReport(Report report, string outputPath)

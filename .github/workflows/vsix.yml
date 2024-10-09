@@ -98,7 +98,6 @@ jobs:
         mv src/GUI/PowerToolsExtensionPack/bin/Release/PowerToolsExtensionPack.vsix PowerToolsExtensionPack-${{ env.VERSION }}.vsix
 
     - name: Publish artifacts
-      if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && github.event_name == 'push'
       uses: actions/upload-artifact@v4
       with:
         name: Artifacts
