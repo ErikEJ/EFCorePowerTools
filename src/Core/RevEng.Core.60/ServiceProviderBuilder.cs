@@ -152,12 +152,6 @@ namespace RevEng.Core
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
 #endif
-                    if (options.UseSpatial)
-                    {
-                        var spatial = new SqliteNetTopologySuiteDesignTimeServices();
-                        spatial.ConfigureDesignTimeServices(serviceCollection);
-                    }
-
                     break;
 
                 default:
