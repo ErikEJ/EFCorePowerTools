@@ -356,7 +356,6 @@ namespace RevEng.Common.Cli
                         Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1),
                         FilterType = ExclusionFilterType.StartsWith,
                     });
-                    continue;
                 }
             }
 
