@@ -151,13 +151,13 @@ namespace RevEng.Core
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     if (options.UseSpatial)
                     {
                         var spatial = new SqliteNetTopologySuiteDesignTimeServices();
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
+
                     break;
 
                 default:
