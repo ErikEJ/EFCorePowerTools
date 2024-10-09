@@ -105,7 +105,34 @@ In the example above, only the Users table will be selected.
       }
   ],
 ```
+
 In the example above, Users and Messages tables will be selected.
+
+```json
+"tables": [
+      {
+         "exclusionWildcard": "[other].*"
+      },
+      {
+         "exclusionWildcard": "[other2].*"
+      },
+      {
+         "name": "[dbo].[Users]"
+      },
+      {
+         "name": "[other].[Accounts]"
+      },      
+      {
+         "name": "[other].[Messages]"
+      },
+      {
+         "name": "[other2].[Actions]"
+      }
+  ],
+```
+
+In the example above, Users table will be selected.
+
 
 ### Generate a Mermaid ER diagram
 
