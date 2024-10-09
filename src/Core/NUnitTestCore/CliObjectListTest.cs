@@ -105,6 +105,7 @@ namespace UnitTests
 
             config.Tables.Add(new Table { ExclusionWildcard = "*Users*" });
             config.Tables.Add(new Table { ExclusionWildcard = "*Accounts*" });
+            config.Views.Add(new View { ExclusionWildcard = "*Users*" });
 
             var result = CliConfigMapper.BuildObjectList(config);
 
