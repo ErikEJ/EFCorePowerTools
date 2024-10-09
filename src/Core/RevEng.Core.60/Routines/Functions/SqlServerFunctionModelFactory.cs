@@ -45,10 +45,12 @@ ORDER BY ROUTINE_NAME;";
 SELECT 
     c.name,
     t.name AS type_name,
+    COALESCE(ts.name, tu.name) AS type_name,
     c.column_id AS column_ordinal,
     c.is_nullable
 FROM sys.columns c
-inner JOIN sys.types AS t ON c.user_type_id = t.user_type_id
+left JOIN sys.types AS tu ON c.user_type_id = tu.user_type_id
+left JOIN sys.types AS ts ON c.system_type_id = ts.system_type_id
 inner join sys.objects AS o on o.object_id = c.object_id
 inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
 where o.name = '{module.Name}' and s.name = '{module.Schema}';";
