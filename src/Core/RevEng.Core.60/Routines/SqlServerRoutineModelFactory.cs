@@ -176,23 +176,23 @@ SELECT
     'Length'   = CAST(p.max_length AS INT),  
     'Precision'   = CASE 
               WHEN ts.name = 'uniqueidentifier' THEN p.precision  
-              WHEN t.name IN ('decimal', 'numeric') THEN p.precision
-              WHEN t.name IN ('varchar', 'nvarchar') THEN p.max_length
+              WHEN ts.name IN ('decimal', 'numeric') THEN p.precision
+              WHEN ts.name IN ('varchar', 'nvarchar') THEN p.max_length
               ELSE NULL
             END, 
     'Scale'   = CAST(p.scale AS INT),  
     'Order'  = CAST(p.parameter_id AS INT),  
     p.is_output AS output,
     'TypeName' = QUOTENAME(s.name) + '.' + QUOTENAME(tu.name),
-	'TypeSchema' = t.schema_id,
+	'TypeSchema' = tu.schema_id,
 	'TypeId' = p.user_type_id,
     'RoutineName' = o.name,
     'RoutineSchema' = s.name
     from sys.parameters p
     inner join sys.objects AS o on o.object_id = p.object_id
+    inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
     left JOIN sys.types AS tu ON p.user_type_id = tu.user_type_id
     left JOIN sys.types AS ts ON p.system_type_id = ts.system_type_id
-    inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
     ORDER BY p.object_id, p.parameter_id;
 ";
 
