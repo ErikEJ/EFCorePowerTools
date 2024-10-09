@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -336,7 +336,7 @@ namespace RevEng.Common.Cli
                         Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1).Substring(1),
                         FilterType = ExclusionFilterType.Contains,
                     });
-                    break;
+                    continue;
                 }
 
                 if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase))
@@ -346,7 +346,7 @@ namespace RevEng.Common.Cli
                         Filter = candiate.ExclusionWildcard.Substring(1),
                         FilterType = ExclusionFilterType.EndsWith,
                     });
-                    break;
+                    continue;
                 }
 
                 if (candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase))
@@ -356,7 +356,7 @@ namespace RevEng.Common.Cli
                         Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1),
                         FilterType = ExclusionFilterType.StartsWith,
                     });
-                    break;
+                    continue;
                 }
             }
 
