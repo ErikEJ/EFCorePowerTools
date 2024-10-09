@@ -44,7 +44,6 @@ ORDER BY ROUTINE_NAME;";
             var sql = $@"
 SELECT 
     c.name,
-    t.name AS type_name,
     COALESCE(ts.name, tu.name) AS type_name,
     c.column_id AS column_ordinal,
     c.is_nullable
