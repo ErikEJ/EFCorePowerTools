@@ -44,11 +44,15 @@ ORDER BY ROUTINE_NAME;";
             var sql = $@"
 SELECT 
     c.name,
-    COALESCE(type_name(c.system_type_id), type_name(c.user_type_id)) AS type_name,
+    COALESCE(ts.name, tu.name) AS type_name,
     c.column_id AS column_ordinal,
     c.is_nullable
 FROM sys.columns c
-WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
+inner join sys.types tu ON c.user_type_id = tu.user_type_id 
+inner join sys.objects AS o on o.object_id = c.object_id
+inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
+LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
+where o.name = '{module.Name}' and s.name = '{module.Schema}';";
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var adapter = new SqlDataAdapter
