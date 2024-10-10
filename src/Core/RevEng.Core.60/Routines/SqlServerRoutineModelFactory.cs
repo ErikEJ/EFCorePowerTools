@@ -163,6 +163,14 @@ namespace RevEng.Core.Routines
             };
         }
 
+        private static string GetVersion(SqlConnection connection)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT @@VERSION;";
+            var result = command.ExecuteScalar();
+            return result as string;
+        }
+
         private static Dictionary<string, List<ModuleParameter>> GetParameters(SqlConnection connection)
         {
             using var dtResult = new DataTable();
@@ -172,30 +180,52 @@ namespace RevEng.Core.Routines
             var sql = $@"
 SELECT  
     'Parameter' = p.name,  
-    'Type'   = COALESCE(ts.name, tu.name),
+    'Type'   = COALESCE(type_name(p.system_type_id), type_name(p.user_type_id)),  
     'Length'   = CAST(p.max_length AS INT),  
-    'Precision'   = CASE 
-              WHEN ts.name = 'uniqueidentifier' THEN p.precision  
-              WHEN COALESCE(ts.name, tu.name) IN ('hierarchyid') THEN p.max_length
-              WHEN ts.name IN ('nvarchar', 'nchar', 'varchar') THEN p.max_length / 2 
-              ELSE p.precision
-            END,
-    'Scale'   = CAST(p.scale AS INT),  
-    'Order'  = CAST(p.parameter_id AS INT),  
+    'Precision'   = CAST(case when type_name(p.system_type_id) = 'uniqueidentifier' 
+                then p.precision  
+                else OdbcPrec(p.system_type_id, p.max_length, p.precision) end AS INT),  
+    'Scale'   = CAST(OdbcScale(p.system_type_id, p.scale) AS INT),  
+    'Order'  = CAST(parameter_id AS INT),  
     p.is_output AS output,
-    'TypeName' = QUOTENAME(st.name) + '.' + QUOTENAME(tu.name),
-	'TypeSchema' = st.schema_id,
+    'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id)),
+	'TypeSchema' = t.schema_id,
 	'TypeId' = p.user_type_id,
-    'RoutineName' = o.name,
-    'RoutineSchema' = s.name
+    'RoutineName' = OBJECT_NAME(p.object_id),
+    'RoutineSchema' = OBJECT_SCHEMA_NAME(p.object_id)
     from sys.parameters p
-    inner join sys.objects AS o on o.object_id = p.object_id
-	inner join sys.schemas AS s on o.schema_id = s.schema_id
-    inner join sys.types tu ON p.user_type_id = tu.user_type_id 
-    LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
-	left JOIN sys.schemas AS st ON tu.schema_id = st.schema_id and tu.system_type_id != tu.user_type_id
-    ORDER BY p.object_id, p.parameter_id;
-";
+	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
+    ORDER BY p.object_id, p.parameter_id;";
+
+            if (GetVersion(connection) == "Microsoft SQL Kusto")
+            {
+                sql = $@"
+    SELECT  
+        'Parameter' = p.name,  
+        'Type'   = COALESCE(ts.name, tu.name),
+        'Length'   = CAST(p.max_length AS INT),  
+        'Precision'   = CASE 
+                  WHEN ts.name = 'uniqueidentifier' THEN p.precision  
+                  WHEN ts.name IN ('decimal', 'numeric') THEN p.precision
+                  WHEN ts.name IN ('varchar', 'nvarchar') THEN p.max_length
+                  ELSE NULL
+                END, 
+        'Scale'   = CAST(p.scale AS INT),  
+        'Order'  = CAST(p.parameter_id AS INT),  
+        p.is_output AS output,
+        'TypeName' = QUOTENAME(s.name) + '.' + QUOTENAME(tu.name),
+	    'TypeSchema' = tu.schema_id,
+	    'TypeId' = p.user_type_id,
+        'RoutineName' = o.name,
+        'RoutineSchema' = s.name
+        from sys.parameters p
+        inner join sys.objects AS o on o.object_id = p.object_id
+        inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
+        inner join sys.types tu ON p.user_type_id = tu.user_type_id 
+        LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
+        ORDER BY p.object_id, p.parameter_id;
+    ";
+            }
 
             using var adapter = new SqlDataAdapter
             {
