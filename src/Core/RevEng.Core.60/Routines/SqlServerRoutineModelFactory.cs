@@ -176,23 +176,24 @@ SELECT
     'Length'   = CAST(p.max_length AS INT),  
     'Precision'   = CASE 
               WHEN ts.name = 'uniqueidentifier' THEN p.precision  
-              WHEN ts.name IN ('decimal', 'numeric') THEN p.precision
-              WHEN ts.name IN ('varchar', 'nvarchar') THEN p.max_length
-              ELSE NULL
-            END, 
+              WHEN COALESCE(ts.name, tu.name) IN ('hierarchyid') THEN p.max_length
+              WHEN ts.name IN ('nvarchar', 'nchar', 'varchar') THEN p.max_length / 2 
+              ELSE p.precision
+            END,
     'Scale'   = CAST(p.scale AS INT),  
     'Order'  = CAST(p.parameter_id AS INT),  
     p.is_output AS output,
-    'TypeName' = QUOTENAME(s.name) + '.' + QUOTENAME(tu.name),
-	'TypeSchema' = tu.schema_id,
+    'TypeName' = QUOTENAME(st.name) + '.' + QUOTENAME(tu.name),
+	'TypeSchema' = st.schema_id,
 	'TypeId' = p.user_type_id,
     'RoutineName' = o.name,
     'RoutineSchema' = s.name
     from sys.parameters p
     inner join sys.objects AS o on o.object_id = p.object_id
-    inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
+	inner join sys.schemas AS s on o.schema_id = s.schema_id
     inner join sys.types tu ON p.user_type_id = tu.user_type_id 
     LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
+	left JOIN sys.schemas AS st ON tu.schema_id = st.schema_id and tu.system_type_id != tu.user_type_id
     ORDER BY p.object_id, p.parameter_id;
 ";
 
