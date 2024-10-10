@@ -191,8 +191,8 @@ SELECT
     from sys.parameters p
     inner join sys.objects AS o on o.object_id = p.object_id
     inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
-    left JOIN sys.types AS tu ON p.user_type_id = tu.user_type_id
-    left JOIN sys.types AS ts ON p.system_type_id = ts.system_type_id
+    inner join sys.types tu ON p.user_type_id = tu.user_type_id 
+    LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
     ORDER BY p.object_id, p.parameter_id;
 ";
 
