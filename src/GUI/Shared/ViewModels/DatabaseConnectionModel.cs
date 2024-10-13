@@ -74,9 +74,7 @@ namespace EFCorePowerTools.Common.Models
 
                         if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return FilePath.Length > 40
-                                       ? "..." + FilePath.Substring(FilePath.Length - 40)
-                                       : FilePath;
+                            return $"{Path.GetFileNameWithoutExtension(FilePath)} (.dacpac)";
                         }
                     }
 
@@ -84,6 +82,37 @@ namespace EFCorePowerTools.Common.Models
                 }
 
                 return ConnectionName;
+            }
+        }
+
+        public string ToolTip
+        {
+            get
+            {
+                if (DataConnection == null)
+                {
+                    if (DatabaseType == DatabaseType.SQLServerDacpac)
+                    {
+                        if (string.IsNullOrEmpty(FilePath))
+                        {
+                            return "<null>";
+                        }
+
+                        if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return FilePath;
+                        }
+
+                        if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            return FilePath;
+                        }
+                    }
+
+                    return ConnectionString;
+                }
+
+                return ConnectionString;
             }
         }
 

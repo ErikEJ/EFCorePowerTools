@@ -72,7 +72,24 @@
                       Style="{StaticResource SourceSelectionComboBoxStyle}"
                       ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
                       SelectedItem="{Binding SelectedDatabaseConnection, Mode=TwoWay}"
-                      DisplayMemberPath="DisplayName"/>
+                      >
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding Path=ToolTip}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            <!-- Here you can specify the Items including the Tooltip for each Item-->
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=DisplayName}" 
+                      ToolTip="{Binding Path=ToolTip}"  />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <Button Grid.Column="1"
                     Margin="8,12,0,12"
