@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -90,6 +90,22 @@ namespace UnitTests
             config.Tables.First().Exclude = false;
 
             config.Tables.Add(new Table { ExclusionWildcard = "[dbo]*" });
+
+            var result = CliConfigMapper.BuildObjectList(config);
+
+            ClassicAssert.NotNull(result);
+
+            ClassicAssert.AreEqual(3, result.Count);
+        }
+
+        [Test]
+        public void MultipleExclusionWildcardExcludes()
+        {
+            var config = GetConfig();
+
+            config.Tables.Add(new Table { ExclusionWildcard = "*Users*" });
+            config.Tables.Add(new Table { ExclusionWildcard = "*Accounts*" });
+            config.Views.Add(new View { ExclusionWildcard = "*Users*" });
 
             var result = CliConfigMapper.BuildObjectList(config);
 

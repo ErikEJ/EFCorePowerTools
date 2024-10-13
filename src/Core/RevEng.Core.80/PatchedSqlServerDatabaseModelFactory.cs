@@ -82,7 +82,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
-    private string? _version;
+    private string? _versionInformation;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -134,7 +134,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
             _compatibilityLevel = GetCompatibilityLevel(connection);
             _engineEdition = GetEngineEdition(connection);
-            _version = GetVersion(connection);
+            _versionInformation = GetVersionInformation(connection);
 
             databaseModel.DatabaseName = connection.Database;
             databaseModel.DefaultSchema = GetDefaultSchema(connection);
@@ -235,7 +235,7 @@ WHERE name = '{connection.Database}';
             return command.ExecuteScalar() as string;
         }
 
-        static string? GetVersion(DbConnection connection)
+        static string? GetVersionInformation(DbConnection connection)
         {
             using var command = connection.CreateCommand();
             command.CommandText = "SELECT @@VERSION;";
@@ -1536,8 +1536,12 @@ ORDER BY [table_schema], [table_name], [tr].[name];
 
     private bool IsFullFeaturedEngineEdition()
     {
-        return _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint
-            && _version is not "Microsoft SQL Kusto";
+        if (_versionInformation != null && _versionInformation.Contains("Kusto", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        return _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint;
     }
 
     private static string DisplayName(string? schema, string name)

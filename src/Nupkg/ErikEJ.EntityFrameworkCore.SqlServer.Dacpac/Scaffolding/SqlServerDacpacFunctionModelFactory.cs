@@ -133,9 +133,40 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         var i = 0;
                         foreach (var column in func.Columns)
                         {
+                            string storeType = null;
+
+                            if (column.ColumnType == ColumnType.ComputedColumn)
+                            {
+                                column.ExpressionDependencies.ToList().ForEach(e =>
+                                {
+                                    if (e is TSqlColumnReference colRef)
+                                    {
+                                        storeType = colRef.DataType.First().Name.Parts[0];
+                                    }
+                                });
+                            }
+
+                            if (column.ColumnType == ColumnType.Column)
+                            {
+                                if (column.DataType.First() is TSqlTableTypeReference)
+                                {
+                                    storeType = "structured";
+                                }
+                                else
+                                {
+                                    storeType = column.DataType.First().Name.Parts[0];
+                                }
+                            }
+
+                            if (storeType == null)
+                            {
+                                errors.Add($"Could not determine store type for column {column.Name.Parts[2]} in function {key}");
+                                continue;
+                            }
+
                             columnList.Add(new ModuleResultElement
                             {
-                                StoreType = column.DataType.First().Name.Parts[0],
+                                StoreType = storeType,
                                 Nullable = column.Nullable,
                                 Name = column.Name.Parts[2],
                                 Ordinal = i++,
