@@ -509,11 +509,12 @@ FROM [sys].[tables] AS [t]
 LEFT JOIN [sys].[extended_properties] AS [e] ON [e].[major_id] = [t].[object_id] AND [e].[minor_id] = 0 AND [e].[class] = 1 AND [e].[name] = 'MS_Description'";
 
         var filter = @"[t].[is_ms_shipped] = 0
-AND [t].[object_id] NOT IN (SELECT [ep].[major_id]
-        FROM [sys].[extended_properties] AS [ep]
-        WHERE [ep].[minor_id] = 0
-            AND [ep].[class] = 1
-            AND [ep].[name] = N'microsoft_database_tools_support'
+AND NOT EXISTS (SELECT *
+    FROM [sys].[extended_properties] AS [ep]
+    WHERE [ep].[major_id] = [t].[object_id]
+        AND [ep].[minor_id] = 0
+        AND [ep].[class] = 1
+        AND [ep].[name] = N'microsoft_database_tools_support'
     )
 AND [t].[name] <> '"
             + HistoryRepository.DefaultTableName
