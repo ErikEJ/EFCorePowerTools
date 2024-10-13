@@ -1535,14 +1535,7 @@ ORDER BY [table_schema], [table_name], [tr].[name];
         => IsFullFeaturedEngineEdition();
 
     private bool IsFullFeaturedEngineEdition()
-    {
-        if (_versionInformation != null && _versionInformation.Contains("Kusto", StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        return _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint;
-    }
+        => _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint && _version != "Microsoft SQL Kusto";
 
     private static string DisplayName(string? schema, string name)
         => (!string.IsNullOrEmpty(schema) ? schema + "." : "") + name;
