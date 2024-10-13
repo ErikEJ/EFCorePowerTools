@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Routines.Extensions;
@@ -163,6 +163,14 @@ namespace RevEng.Core.Routines
             };
         }
 
+        private static string GetVersion(SqlConnection connection)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT @@VERSION;";
+            var result = command.ExecuteScalar();
+            return result as string;
+        }
+
         private static Dictionary<string, List<ModuleParameter>> GetParameters(SqlConnection connection)
         {
             using var dtResult = new DataTable();
@@ -188,6 +196,36 @@ SELECT
     from sys.parameters p
 	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
     ORDER BY p.object_id, p.parameter_id;";
+
+            if (GetVersion(connection) == "Microsoft SQL Kusto")
+            {
+                sql = $@"
+    SELECT  
+        'Parameter' = p.name,  
+        'Type'   = COALESCE(ts.name, tu.name),
+        'Length'   = CAST(p.max_length AS INT),  
+        'Precision'   = CASE 
+                  WHEN ts.name = 'uniqueidentifier' THEN p.precision  
+                  WHEN ts.name IN ('decimal', 'numeric') THEN p.precision
+                  WHEN ts.name IN ('varchar', 'nvarchar') THEN p.max_length
+                  ELSE NULL
+                END, 
+        'Scale'   = CAST(p.scale AS INT),  
+        'Order'  = CAST(p.parameter_id AS INT),  
+        p.is_output AS output,
+        'TypeName' = QUOTENAME(s.name) + '.' + QUOTENAME(tu.name),
+	    'TypeSchema' = tu.schema_id,
+	    'TypeId' = p.user_type_id,
+        'RoutineName' = o.name,
+        'RoutineSchema' = s.name
+        from sys.parameters p
+        inner join sys.objects AS o on o.object_id = p.object_id
+        inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
+        inner join sys.types tu ON p.user_type_id = tu.user_type_id 
+        LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
+        ORDER BY p.object_id, p.parameter_id;
+    ";
+            }
 
             using var adapter = new SqlDataAdapter
             {

@@ -21,10 +21,14 @@ SELECT
     ROUTINE_NAME,
     CAST(CASE WHEN (DATA_TYPE != 'TABLE') THEN 1 ELSE 0 END AS bit) AS IS_SCALAR
 FROM INFORMATION_SCHEMA.ROUTINES
-LEFT JOIN sys.extended_properties AS [ep] on [ep].major_id = object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) AND [ep].minor_id = 0 AND [ep].class = 1 and [ep].name = N'microsoft_database_tools_support'
 WHERE NULLIF(ROUTINE_NAME, '') IS NOT NULL
 AND OBJECTPROPERTY(OBJECT_ID(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)), 'IsMSShipped') = 0
-AND [ep].major_id IS NULL
+AND object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) NOT IN (SELECT [ep].[major_id]
+        FROM [sys].[extended_properties] AS [ep]
+        WHERE [ep].[minor_id] = 0
+            AND [ep].[class] = 1
+            AND [ep].[name] = N'microsoft_database_tools_support'
+    )
 AND ROUTINE_TYPE = N'FUNCTION' 
 ORDER BY ROUTINE_NAME;";
         }
@@ -44,11 +48,15 @@ ORDER BY ROUTINE_NAME;";
             var sql = $@"
 SELECT 
     c.name,
-    COALESCE(type_name(c.system_type_id), type_name(c.user_type_id)) AS type_name,
+    COALESCE(ts.name, tu.name) AS type_name,
     c.column_id AS column_ordinal,
     c.is_nullable
 FROM sys.columns c
-WHERE object_id = OBJECT_ID('{module.Schema}.{module.Name}');";
+inner join sys.types tu ON c.user_type_id = tu.user_type_id 
+inner join sys.objects AS o on o.object_id = c.object_id
+inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
+LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
+where o.name = '{module.Name}' and s.name = '{module.Schema}';";
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var adapter = new SqlDataAdapter

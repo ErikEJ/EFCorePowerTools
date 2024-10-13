@@ -82,7 +82,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
-    private string? _versionInformation;
+    private string? _version;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -134,7 +134,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
             _compatibilityLevel = GetCompatibilityLevel(connection);
             _engineEdition = GetEngineEdition(connection);
-            _versionInformation = GetVersionInformation(connection);
+            _version = GetVersion(connection);
 
             databaseModel.DatabaseName = connection.Database;
             databaseModel.DefaultSchema = GetDefaultSchema(connection);
@@ -235,7 +235,7 @@ WHERE name = '{connection.Database}';
             return command.ExecuteScalar() as string;
         }
 
-        static string? GetVersionInformation(DbConnection connection)
+        static string? GetVersion(DbConnection connection)
         {
             using var command = connection.CreateCommand();
             command.CommandText = "SELECT @@VERSION;";
@@ -555,13 +555,17 @@ SELECT
             """
 FROM [sys].[tables] AS [t]
 LEFT JOIN [sys].[extended_properties] AS [e] ON [e].[major_id] = [t].[object_id] AND [e].[minor_id] = 0 AND [e].[class] = 1 AND [e].[name] = 'MS_Description'
-LEFT JOIN [sys].[extended_properties] AS [ep] ON [ep].[major_id] = [t].[object_id] AND [ep].[minor_id] = 0 AND [ep].[class] = 1 AND [ep].[name] = 'microsoft_database_tools_support'
 """);
 
         var tableFilterBuilder = new StringBuilder(
             $"""
 [t].[is_ms_shipped] = 0
-AND [ep].[major_id] is null
+AND [t].[object_id] NOT IN (SELECT [ep].[major_id]
+        FROM [sys].[extended_properties] AS [ep]
+        WHERE [ep].[minor_id] = 0
+            AND [ep].[class] = 1
+            AND [ep].[name] = N'microsoft_database_tools_support'
+    )
 AND [t].[name] <> '{HistoryRepository.DefaultTableName}'
 """);
 
@@ -743,7 +747,6 @@ FROM
 (
     SELECT [t].[name], [t].[object_id], [t].[schema_id]
     FROM [sys].[tables] t
-    LEFT JOIN [sys].[extended_properties] AS [ep] ON [ep].[major_id] = [t].[object_id] AND [ep].[minor_id] = 0 AND [ep].[class] = 1 AND [ep].[name] = 'microsoft_database_tools_support'
     WHERE {tableFilter}
 """);
 
@@ -1045,7 +1048,6 @@ FROM [sys].[indexes] AS [i]
 JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
 JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i].[index_id] = [ic].[index_id]
 JOIN [sys].[columns] AS [c] ON [ic].[object_id] = [c].[object_id] AND [ic].[column_id] = [c].[column_id]
-LEFT JOIN [sys].[extended_properties] AS [ep] ON [ep].[major_id] = [t].[object_id] AND [ep].[minor_id] = 0 AND [ep].[class] = 1 AND [ep].[name] = 'microsoft_database_tools_support'
 WHERE [i].[is_hypothetical] = 0
 AND "
             + tableFilter;
@@ -1060,7 +1062,6 @@ AND CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarcha
    JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
    JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i].[index_id] = [ic].[index_id]
    JOIN [sys].[columns] AS [c] ON [ic].[object_id] = [c].[object_id] AND [ic].[column_id] = [c].[column_id]
-   LEFT JOIN [sys].[extended_properties] AS [ep] ON [ep].[major_id] = [t].[object_id] AND [ep].[minor_id] = 0 AND [ep].[class] = 1 AND [ep].[name] = 'microsoft_database_tools_support'
    WHERE "
                 + tableFilter;
 
@@ -1308,7 +1309,6 @@ JOIN [sys].[tables] AS [t] ON [t].[object_id] = [fc].[parent_object_id]
 JOIN [sys].[columns] AS [col1] ON [col1].[column_id] = [fc].[parent_column_id] AND [col1].[object_id] = [t].[object_id]
 JOIN [sys].[tables] AS [tab2] ON [tab2].[object_id] = [fc].[referenced_object_id]
 JOIN [sys].[columns] AS [col2] ON [col2].[column_id] = [fc].[referenced_column_id] AND [col2].[object_id] = [tab2].[object_id]
-LEFT JOIN [sys].[extended_properties] AS [ep] ON [ep].[major_id] = [t].[object_id] AND [ep].[minor_id] = 0 AND [ep].[class] = 1 AND [ep].[name] = 'microsoft_database_tools_support'
 WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id];
 """;
@@ -1491,7 +1491,6 @@ SELECT
     [tr].[name] AS [trigger_name]
 FROM [sys].[triggers] AS [tr]
 JOIN [sys].[tables] AS [t] ON [tr].[parent_id] = [t].[object_id]
-LEFT JOIN [sys].[extended_properties] AS [ep] ON [ep].[major_id] = [t].[object_id] AND [ep].[minor_id] = 0 AND [ep].[class] = 1 AND [ep].[name] = 'microsoft_database_tools_support'
 WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [tr].[name];
 """;
@@ -1536,14 +1535,7 @@ ORDER BY [table_schema], [table_name], [tr].[name];
         => IsFullFeaturedEngineEdition();
 
     private bool IsFullFeaturedEngineEdition()
-    {
-        if (_versionInformation != null && _versionInformation.Contains("Kusto", StringComparison.Ordinal))
-        {
-            return false;
-        }
-
-        return _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint;
-    }
+        => _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint && _version != "Microsoft SQL Kusto";
 
     private static string DisplayName(string? schema, string name)
         => (!string.IsNullOrEmpty(schema) ? schema + "." : "") + name;
