@@ -59,7 +59,8 @@ namespace RevEng.Core
             string modelNamespace,
             string contextNamespace,
             string projectPath,
-            string outputPath)
+            string outputPath,
+            string rootNamespace)
         {
             ArgumentNullException.ThrowIfNull(options);
 
@@ -77,7 +78,7 @@ namespace RevEng.Core
 
                 ContextName = code.Identifier(options.ContextClassName),
                 ContextDir = outputContextDir,
-                RootNamespace = null,
+                RootNamespace = rootNamespace,
                 ContextNamespace = contextNamespace,
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
@@ -90,7 +91,7 @@ namespace RevEng.Core
             };
 
             var dbOptions = new DatabaseModelFactoryOptions(options.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), schemas);
-
+            
             var scaffoldedModel = ScaffoldModel(
                     options.Dacpac ?? options.ConnectionString,
                     dbOptions,
