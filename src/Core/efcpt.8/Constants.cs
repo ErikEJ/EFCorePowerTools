@@ -5,6 +5,7 @@ namespace ErikEJ.EFCorePowerTools;
 internal static class Constants
 {
     public const string ConfigFileName = RevEng.Common.Constants.ConfigFileName;
+    public const string RenamingFileName = RevEng.Common.Constants.RenamingFileName;
 
 #if CORE60
     public const CodeGenerationMode CodeGeneration = CodeGenerationMode.EFCore6;
