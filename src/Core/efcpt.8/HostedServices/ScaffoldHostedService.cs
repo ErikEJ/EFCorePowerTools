@@ -68,7 +68,8 @@ internal sealed class ScaffoldHostedService : HostedService
             reverseEngineerCommandOptions.DatabaseType,
             scaffoldOptions.Output ?? Directory.GetCurrentDirectory(),
             scaffoldOptions.IsDacpac,
-            scaffoldOptions.ConfigFile.FullName);
+            scaffoldOptions.ConfigFile.FullName,
+            scaffoldOptions.RenamingFile.FullName);
         DisplayService.MarkupLine();
 
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
