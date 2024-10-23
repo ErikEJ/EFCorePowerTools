@@ -8,6 +8,8 @@ The tool runs on any operating system with the .NET 6.0 / .NET 8.0 runtime insta
 
 For a quick intro you can watch [this 2 minute demo video](https://www.youtube.com/watch?v=mtz-O6VXAc0&t=56s).
 
+And there is a longer [30 minute demo here](https://www.youtube.com/watch?v=fwR59ep-2-8).
+
 ### Installing the tool
 
 EF Core 8:
