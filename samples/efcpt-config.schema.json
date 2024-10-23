@@ -161,16 +161,16 @@
       "type": "object",
       "properties": {
         "root-namespace": {
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "dbcontext-name": {
           "type": "string"
         },
         "dbcontext-namespace": {
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "model-namespace": {
-          "type": "string"
+          "type": [ "string", "null" ]
         }
       }
     },
@@ -181,7 +181,7 @@
           "type": "string"
         },
         "output-dbcontext-path": {
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "split-dbcontext-preview": {
           "type": "boolean"
