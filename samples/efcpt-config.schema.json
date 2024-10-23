@@ -8,18 +8,6 @@
     "code-generation": {
       "$ref": "#/definitions/CodeGeneration"
     },
-    "file-layout": {
-      "$ref": "#/definitions/FileLayout"
-    },
-    "names": {
-      "$ref": "#/definitions/Names"
-    },
-    "replacements": {
-      "$ref": "#/definitions/Replacements"
-    },
-    "type-mappings": {
-      "$ref": "#/definitions/TypeMappings"
-    },
     "tables": {
       "type": "array",
       "items": {
@@ -43,8 +31,19 @@
       "items": {
         "$ref": "#/definitions/Function"
       }
+    },
+    "names": {
+      "$ref": "#/definitions/Names"
+    },
+    "file-layout": {
+      "$ref": "#/definitions/FileLayout"
+    },
+    "replacements": {
+      "$ref": "#/definitions/Replacements"
+    },
+    "type-mappings": {
+      "$ref": "#/definitions/TypeMappings"
     }
-    
   },
   "definitions": {
     "Table": {
@@ -95,15 +94,9 @@
           "type": "boolean"
         },
         "type": {
-          "type": "object",
           "default": "all",
-          "required": [ "values" ],
-          "properties": {
-            "values": {
-              "type": "string",
-              "enum": [ "all", "dbcontext", "entities" ]
-            }
-          }
+          "enum": [ "all", "dbcontext", "entities" ],
+          "type": "string"
         },
         "use-database-names": {
           "type": "boolean"
@@ -140,7 +133,7 @@
           "type": "boolean"
         },
         "t4-template-path": {
-          "type": "string"
+          "type": [ "string", "null" ]
         },
         "use-no-navigations-preview": {
           "type": "boolean"
@@ -173,8 +166,12 @@
         "dbcontext-name": {
           "type": "string"
         },
-        "dbcontext-namespace": {},
-        "model-namespace": {}
+        "dbcontext-namespace": {
+          "type": "string"
+        },
+        "model-namespace": {
+          "type": "string"
+        }
       }
     },
     "FileLayout": {
@@ -183,7 +180,9 @@
         "output-path": {
           "type": "string"
         },
-        "output-dbcontext-path": {},
+        "output-dbcontext-path": {
+          "type": "string"
+        },
         "split-dbcontext-preview": {
           "type": "boolean"
         },
