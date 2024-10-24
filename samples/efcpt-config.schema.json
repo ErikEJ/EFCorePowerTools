@@ -10,6 +10,7 @@
     },
     "tables": {
       "type": "array",
+      "title": "List of tables discovered in the source database",
       "items": {
         "$ref": "#/definitions/Table"
       }
@@ -22,26 +23,32 @@
     },
     "stored-procedures": {
       "type": "array",
+      "title": "List of stored procedures discovered in the source database",
       "items": {
         "$ref": "#/definitions/StoredProcedure"
       }
     },
     "functions": {
       "type": "array",
+      "title": "List of scalar and TVF functions discovered in the source database",
       "items": {
         "$ref": "#/definitions/Function"
       }
     },
     "names": {
+      "title": "Custom class and namespace names",
       "$ref": "#/definitions/Names"
     },
     "file-layout": {
+      "title": "Custom file layout options",
       "$ref": "#/definitions/FileLayout"
     },
     "replacements": {
+      "title": "Custom naming options",
       "$ref": "#/definitions/Replacements"
     },
     "type-mappings": {
+      "title": "Optional type mappings",
       "$ref": "#/definitions/TypeMappings"
     }
   },
@@ -50,10 +57,34 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "title": "Full table name"
         },
         "exclude": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Set to true to exclude this table from code generation"
+        },
+        "exclusionWildcard": {
+          "type": "string",
+          "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
+        },
+        "excludedColumns": {
+            "type": "array",
+            "default": [],
+            "title": "Columns to Exclude from code generation",
+            "items": {
+                "type": "string",
+                "title": "Column"
+            }
+        },
+        "excludedIndexes": {
+            "type": "array",
+            "default": [],
+            "title": "Indexes to Exclude from code generation",
+            "items": {
+                "type": "string",
+                "title": "Index"
+            }
         }
       }
     },
@@ -62,28 +93,70 @@
       "properties": {
         "name": {
           "type": "string"
+        },
+        "exclusionWildcard": {
+            "type": "string",
+            "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
+        },
+        "excludedColumns": {
+            "type": "array",
+            "default": [],
+            "title": "Columns to Exclude from code generation",
+            "items": {
+                "type": "string",
+                "title": "Column"
+            }
         }
       }
     },
     "StoredProcedure": {
       "type": "object",
+      "title": "Stored procedure",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "title": "The stored procedure name"
+        },                    
+        "exclude": {
+          "type": "boolean",
+          "default": false,
+          "title": "Set to true to exclude this stored procedure from code generation",
+          "examples": [
+              true
+          ]
         },
         "use-legacy-resultset-discovery": {
-          "type": "boolean"
+            "type": "boolean",
+            "default": false,
+            "title": "Use sp_describe_first_result_set instead of SET FMTONLY for result set discovery"
         },
         "mapped-type": {
-          "type": "string"
+            "type": "string",
+            "default": null,
+            "title": "Name of an entity class (DbSet) in your DbContext that maps the result of the stored procedure "
+        },
+        "exclusionWildcard": {
+            "type": "string",
+            "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
         }
       }
     },
     "Function": {
       "type": "object",
+      "title": "Function",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+           "title": "Name of function"
+        },
+        "exclude": {
+            "type": "boolean",
+            "default": false,
+            "title": "Set to true to exclude this function from code generation"
+        },
+        "exclusionWildcard": {
+            "type": "string",
+            "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
         }
       }
     },
@@ -195,66 +268,92 @@
     "Names": {
       "type": "object",
       "title": "Custom class and namespace names",
+      "required": [
+          "dbcontext-name",
+          "root-namespace"
+      ],
       "properties": {
         "root-namespace": {
-          "type": [ "string", "null" ]
+          "type":"string",
+          "title": "Root namespace"
         },
         "dbcontext-name": {
-          "type": "string"
+          "type": "string",
+          "title": "Name of DbContext class"
         },
         "dbcontext-namespace": {
-          "type": [ "string", "null" ]
+          "type": [ "string", "null" ],
+          "title": "Namespace of DbContext class"
         },
         "model-namespace": {
-          "type": [ "string", "null" ]
+          "type": [ "string", "null" ],
+          "title": "Namespace of entities"
         }
       }
     },
     "FileLayout": {
       "type": "object",
+      "title": "Custom file layout options",
+      "required": [
+        "output-path"
+       ],
       "properties": {
         "output-path": {
-          "type": "string"
+          "type": "string",
+          "default": "Models",
+          "title": "Output path"
         },
         "output-dbcontext-path": {
-          "type": [ "string", "null" ]
+          "type": [ "string", "null" ],
+          "title": "DbContext output path"
         },
         "split-dbcontext-preview": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Split DbContext (preview)"
         },
         "use-schema-folders-preview": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use schema folders (preview)"
         },
         "use-schema-namespaces-preview": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use schema namespaces (preview)"
         }
       }
     },
     "TypeMappings": {
       "type": "object",
+      "title": "Optional type mappings",
       "properties": {
         "use-DateOnly-TimeOnly": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Map date and time to DateOnly/TimeOnly (mssql)"
         },
         "use-HierarchyId": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Map hierarchyId (mssql)"
         },
         "use-spatial": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Map spatial columns"
         },
         "use-NodaTime": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use NodaTime"
         }
       }
     },
     "Replacements": {
       "type": "object",
+      "title": "Custom naming options",
       "properties": {
         "preserve-casing-with-regex": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Preserve casing with regex when custom naming"
         },
         "uncountable-words": {
           "type": "array",
+          "title": "Uncountable (ignored) words for Humanizer",
           "items": {
             "$ref": "#/definitions/UncountableWord"
           }
@@ -262,7 +361,8 @@
       }
     },
     "UncountableWord": {
-      "type": "string"
+      "type": "string",
+      "title": "Word list"
     }
   }
 }

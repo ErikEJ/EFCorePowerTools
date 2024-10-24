@@ -10,7 +10,7 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("$schema")]
 #pragma warning disable CA1822
         public string JsonSchema =>
-            "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-schema.json";
+            "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-config.schema.json";
 #pragma warning restore CA1822
 
         [JsonPropertyOrder(10)]

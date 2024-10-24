@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-schema.json",
+  "$schema": "https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/samples/efcpt-config.schema.json",
   "tables": [
       {
          "name": "[dbo].[Categories]"
