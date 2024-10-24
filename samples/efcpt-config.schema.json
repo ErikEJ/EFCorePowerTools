@@ -116,66 +116,85 @@
           "title": "Type of files to generate"
         },
         "use-database-names": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use table and column names from the database"
         },
         "use-data-annotations": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use DataAnnotation attributes rather than the fluent API (as much as possible)"
         },
         "use-nullable-reference-types": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use nullable reference types"
         },
         "use-inflector": {
           "type": "boolean",
-          "default": true
+          "default": true,
+          "title": "Pluralize or singularize generated names (entity class names singular and DbSet names plural)"
         },
         "use-legacy-inflector": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use EF6 Pluralizer instead of Humanizer"
         },
         "use-many-to-many-entity": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Preserve a many to many entity instead of skipping it "
         },
         "use-t4": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Customize code using T4 templates"
         },
         "remove-defaultsql-from-bool-properties": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Remove SQL default from bool columns to avoid them being bool?"
         },
         "soft-delete-obsolete-files": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": true,
+          "title": "Run Cleanup of obsolete files"
         },
         "discover-multiple-stored-procedure-resultsets-preview": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Discover multiple result sets from SQL stored procedures (preview)"
         },
         "use-alternate-stored-procedure-resultset-discovery": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use alternate result set discovery - use sp_describe_first_result_set to retrieve stored procedure result sets"
         },
         "t4-template-path": {
-          "type": [ "string", "null" ]
+          "type": [ "string", "null" ],
+          "title": "Global path to T4 templates"
         },
         "use-no-navigations-preview": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Remove all navigation properties from the generated code (preview)"
         },
         "merge-dacpacs": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Merge .dacpac files (when using .dacpac references)"
         },
         "refresh-object-lists": {
           "type": "boolean",
           "default": true
         },
         "generate-mermaid-diagram": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Create a markdown file with a Mermaid ER diagram during scaffolding"
         },
         "use-decimal-data-annotation-for-sproc-results": {
           "type": "boolean",
+          "title": "Use explicit decimal annotation for store procedure results",
           "default": true
         },
         "use-prefix-navigation-naming": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Use prefix based naming of navigations with EF Core 8 or later"
         }
       }
     },
     "Names": {
       "type": "object",
+      "title": "Custom class and namespace names",
       "properties": {
         "root-namespace": {
           "type": [ "string", "null" ]
