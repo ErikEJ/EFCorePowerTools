@@ -89,14 +89,31 @@
     },
     "CodeGeneration": {
       "type": "object",
+      "title": "Options for code generation",
+      "required": [
+        "enable-on-configuring",
+        "type",
+        "use-database-names",
+        "use-data-annotations",
+        "use-nullable-reference-types",
+        "use-inflector",
+        "use-legacy-inflector",
+        "use-many-to-many-entity",
+        "use-t4",
+        "remove-defaultsql-from-bool-properties",
+        "soft-delete-obsolete-files",
+        "use-alternate-stored-procedure-resultset-discovery"
+      ],
       "properties": {
         "enable-on-configuring": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "Add OnConfiguring method to the DbContext"
         },
         "type": {
           "default": "all",
           "enum": [ "all", "dbcontext", "entities" ],
-          "type": "string"
+          "type": "string",
+          "title": "Type of files to generate"
         },
         "use-database-names": {
           "type": "boolean"
@@ -148,11 +165,11 @@
         "generate-mermaid-diagram": {
           "type": "boolean"
         },
-        "use-decimal-data-annotation-for-sproc-results" {
+        "use-decimal-data-annotation-for-sproc-results": {
           "type": "boolean",
           "default": true
         },
-        "use-prefix-navigation-naming" {
+        "use-prefix-navigation-naming": {
           "type": "boolean"
         }
       }
