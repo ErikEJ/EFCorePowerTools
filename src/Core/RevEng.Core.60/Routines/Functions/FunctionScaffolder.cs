@@ -72,6 +72,7 @@ namespace RevEng.Core.Routines.Functions
             ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             var result = new ScaffoldedModel();
+            var path = string.Empty;
 
             errors.AddRange(model.Errors);
 
@@ -102,16 +103,18 @@ namespace RevEng.Core.Routines.Functions
                     {
                         schemas.Add($"{routine.Schema}Schema");
                     }
+
+                    path = scaffolderOptions.UseSchemaFolders
+                                ? Path.Combine(routine.Schema, $"{typeName}.cs")
+                                : $"{typeName}.cs";
 #if CORE90
-                    result.AdditionalFiles.Add(new ScaffoldedFile(Path.Combine(routine.Schema, $"{typeName}.cs"), classContent));
+                    result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
 #else
 
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
                         Code = classContent,
-                        Path = scaffolderOptions.UseSchemaFolders
-                                ? Path.Combine(routine.Schema, $"{typeName}.cs")
-                                : $"{typeName}.cs",
+                        Path = path,
                     });
 #endif
                 }
