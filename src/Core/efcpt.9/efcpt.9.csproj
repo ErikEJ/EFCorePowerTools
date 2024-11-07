@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>CORE80</DefineConstants>
+    <DefineConstants>CORE80;CORE90</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,6 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\..\GUI\lib\T4_900.zip" Link="T4_900.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\efcpt.8\efcpt-readme.md" Link="efcpt-readme.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

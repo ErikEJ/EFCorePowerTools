@@ -1,0 +1,368 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "code-generation": {
+      "$ref": "#/definitions/CodeGeneration"
+    },
+    "tables": {
+      "type": "array",
+      "title": "List of tables discovered in the source database",
+      "items": {
+        "$ref": "#/definitions/Table"
+      }
+    },
+    "views": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/View"
+      }
+    },
+    "stored-procedures": {
+      "type": "array",
+      "title": "List of stored procedures discovered in the source database",
+      "items": {
+        "$ref": "#/definitions/StoredProcedure"
+      }
+    },
+    "functions": {
+      "type": "array",
+      "title": "List of scalar and TVF functions discovered in the source database",
+      "items": {
+        "$ref": "#/definitions/Function"
+      }
+    },
+    "names": {
+      "title": "Custom class and namespace names",
+      "$ref": "#/definitions/Names"
+    },
+    "file-layout": {
+      "title": "Custom file layout options",
+      "$ref": "#/definitions/FileLayout"
+    },
+    "replacements": {
+      "title": "Custom naming options",
+      "$ref": "#/definitions/Replacements"
+    },
+    "type-mappings": {
+      "title": "Optional type mappings",
+      "$ref": "#/definitions/TypeMappings"
+    }
+  },
+  "definitions": {
+    "Table": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Full table name"
+        },
+        "exclude": {
+          "type": "boolean",
+          "title": "Set to true to exclude this table from code generation"
+        },
+        "exclusionWildcard": {
+          "type": "string",
+          "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
+        },
+        "excludedColumns": {
+            "type": "array",
+            "default": [],
+            "title": "Columns to Exclude from code generation",
+            "items": {
+                "type": "string",
+                "title": "Column"
+            }
+        },
+        "excludedIndexes": {
+            "type": "array",
+            "default": [],
+            "title": "Indexes to Exclude from code generation",
+            "items": {
+                "type": "string",
+                "title": "Index"
+            }
+        }
+      }
+    },
+    "View": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "exclusionWildcard": {
+            "type": "string",
+            "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
+        },
+        "excludedColumns": {
+            "type": "array",
+            "default": [],
+            "title": "Columns to Exclude from code generation",
+            "items": {
+                "type": "string",
+                "title": "Column"
+            }
+        }
+      }
+    },
+    "StoredProcedure": {
+      "type": "object",
+      "title": "Stored procedure",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "The stored procedure name"
+        },                    
+        "exclude": {
+          "type": "boolean",
+          "default": false,
+          "title": "Set to true to exclude this stored procedure from code generation",
+          "examples": [
+              true
+          ]
+        },
+        "use-legacy-resultset-discovery": {
+            "type": "boolean",
+            "default": false,
+            "title": "Use sp_describe_first_result_set instead of SET FMTONLY for result set discovery"
+        },
+        "mapped-type": {
+            "type": "string",
+            "default": null,
+            "title": "Name of an entity class (DbSet) in your DbContext that maps the result of the stored procedure "
+        },
+        "exclusionWildcard": {
+            "type": "string",
+            "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
+        }
+      }
+    },
+    "Function": {
+      "type": "object",
+      "title": "Function",
+      "properties": {
+        "name": {
+          "type": "string",
+           "title": "Name of function"
+        },
+        "exclude": {
+            "type": "boolean",
+            "default": false,
+            "title": "Set to true to exclude this function from code generation"
+        },
+        "exclusionWildcard": {
+            "type": "string",
+            "title": "Exclusion pattern with * symbol, use '*' to exclude all by default"
+        }
+      }
+    },
+    "CodeGeneration": {
+      "type": "object",
+      "title": "Options for code generation",
+      "required": [
+        "enable-on-configuring",
+        "type",
+        "use-database-names",
+        "use-data-annotations",
+        "use-nullable-reference-types",
+        "use-inflector",
+        "use-legacy-inflector",
+        "use-many-to-many-entity",
+        "use-t4",
+        "remove-defaultsql-from-bool-properties",
+        "soft-delete-obsolete-files",
+        "use-alternate-stored-procedure-resultset-discovery"
+      ],
+      "properties": {
+        "enable-on-configuring": {
+          "type": "boolean",
+          "title": "Add OnConfiguring method to the DbContext"
+        },
+        "type": {
+          "default": "all",
+          "enum": [ "all", "dbcontext", "entities" ],
+          "type": "string",
+          "title": "Type of files to generate"
+        },
+        "use-database-names": {
+          "type": "boolean",
+          "title": "Use table and column names from the database"
+        },
+        "use-data-annotations": {
+          "type": "boolean",
+          "title": "Use DataAnnotation attributes rather than the fluent API (as much as possible)"
+        },
+        "use-nullable-reference-types": {
+          "type": "boolean",
+          "title": "Use nullable reference types"
+        },
+        "use-inflector": {
+          "type": "boolean",
+          "default": true,
+          "title": "Pluralize or singularize generated names (entity class names singular and DbSet names plural)"
+        },
+        "use-legacy-inflector": {
+          "type": "boolean",
+          "title": "Use EF6 Pluralizer instead of Humanizer"
+        },
+        "use-many-to-many-entity": {
+          "type": "boolean",
+          "title": "Preserve a many to many entity instead of skipping it "
+        },
+        "use-t4": {
+          "type": "boolean",
+          "title": "Customize code using T4 templates"
+        },
+        "remove-defaultsql-from-bool-properties": {
+          "type": "boolean",
+          "title": "Remove SQL default from bool columns to avoid them being bool?"
+        },
+        "soft-delete-obsolete-files": {
+          "type": "boolean",
+          "default": true,
+          "title": "Run Cleanup of obsolete files"
+        },
+        "discover-multiple-stored-procedure-resultsets-preview": {
+          "type": "boolean",
+          "title": "Discover multiple result sets from SQL stored procedures (preview)"
+        },
+        "use-alternate-stored-procedure-resultset-discovery": {
+          "type": "boolean",
+          "title": "Use alternate result set discovery - use sp_describe_first_result_set to retrieve stored procedure result sets"
+        },
+        "t4-template-path": {
+          "type": [ "string", "null" ],
+          "title": "Global path to T4 templates"
+        },
+        "use-no-navigations-preview": {
+          "type": "boolean",
+          "title": "Remove all navigation properties from the generated code (preview)"
+        },
+        "merge-dacpacs": {
+          "type": "boolean",
+          "title": "Merge .dacpac files (when using .dacpac references)"
+        },
+        "refresh-object-lists": {
+          "type": "boolean",
+          "default": true
+        },
+        "generate-mermaid-diagram": {
+          "type": "boolean",
+          "title": "Create a markdown file with a Mermaid ER diagram during scaffolding"
+        },
+        "use-decimal-data-annotation-for-sproc-results": {
+          "type": "boolean",
+          "title": "Use explicit decimal annotation for store procedure results",
+          "default": true
+        },
+        "use-prefix-navigation-naming": {
+          "type": "boolean",
+          "title": "Use prefix based naming of navigations with EF Core 8 or later"
+        }
+      }
+    },
+    "Names": {
+      "type": "object",
+      "title": "Custom class and namespace names",
+      "required": [
+          "dbcontext-name",
+          "root-namespace"
+      ],
+      "properties": {
+        "root-namespace": {
+          "type":"string",
+          "title": "Root namespace"
+        },
+        "dbcontext-name": {
+          "type": "string",
+          "title": "Name of DbContext class"
+        },
+        "dbcontext-namespace": {
+          "type": [ "string", "null" ],
+          "title": "Namespace of DbContext class"
+        },
+        "model-namespace": {
+          "type": [ "string", "null" ],
+          "title": "Namespace of entities"
+        }
+      }
+    },
+    "FileLayout": {
+      "type": "object",
+      "title": "Custom file layout options",
+      "required": [
+        "output-path"
+       ],
+      "properties": {
+        "output-path": {
+          "type": "string",
+          "default": "Models",
+          "title": "Output path"
+        },
+        "output-dbcontext-path": {
+          "type": [ "string", "null" ],
+          "title": "DbContext output path"
+        },
+        "split-dbcontext-preview": {
+          "type": "boolean",
+          "title": "Split DbContext (preview)"
+        },
+        "use-schema-folders-preview": {
+          "type": "boolean",
+          "title": "Use schema folders (preview)"
+        },
+        "use-schema-namespaces-preview": {
+          "type": "boolean",
+          "title": "Use schema namespaces (preview)"
+        }
+      }
+    },
+    "TypeMappings": {
+      "type": "object",
+      "title": "Optional type mappings",
+      "properties": {
+        "use-DateOnly-TimeOnly": {
+          "type": "boolean",
+          "title": "Map date and time to DateOnly/TimeOnly (mssql)"
+        },
+        "use-HierarchyId": {
+          "type": "boolean",
+          "title": "Map hierarchyId (mssql)"
+        },
+        "use-spatial": {
+          "type": "boolean",
+          "title": "Map spatial columns"
+        },
+        "use-NodaTime": {
+          "type": "boolean",
+          "title": "Use NodaTime"
+        }
+      }
+    },
+    "Replacements": {
+      "type": "object",
+      "title": "Custom naming options",
+      "properties": {
+        "preserve-casing-with-regex": {
+          "type": "boolean",
+          "title": "Preserve casing with regex when custom naming"
+        },
+        "uncountable-words": {
+          "type": "array",
+          "title": "Uncountable (ignored) words for Humanizer",
+          "items": {
+            "$ref": "#/definitions/UncountableWord"
+          }
+        }
+      }
+    },
+    "UncountableWord": {
+      "type": "string",
+      "title": "Word list"
+    }
+  }
+}

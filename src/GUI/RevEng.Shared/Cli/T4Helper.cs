@@ -17,6 +17,11 @@ namespace RevEng.Common.Cli
                 t4Version = "800";
             }
 
+            if (codeGenerationMode == CodeGenerationMode.EFCore9)
+            {
+                t4Version = "900";
+            }
+
             var zipName = $"T4_{t4Version}.zip";
 
             var toDir = Path.Combine(projectPath, "CodeTemplates");

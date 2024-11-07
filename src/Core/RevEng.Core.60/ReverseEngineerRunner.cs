@@ -195,7 +195,7 @@ namespace RevEng.Core
 
                 if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
                 {
-                    warnings.Add("'use-database-names' / 'UseDatabaseNames' has been set to true, but a 'efpt.renaming.json' file was also found. This prevents 'efpt.renaming.json' from functioning.");
+                    warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
                 }
 
                 var result = new ReverseEngineerResult

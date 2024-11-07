@@ -61,7 +61,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/lib/efreveng60.exe.zip -oefreveng60 -y
         dir /a:-d /s /b "efreveng60" | find /c ":\" > filecount.txt
-        findstr "157" filecount.txt
+        findstr "158" filecount.txt
 
     - name: Extract and verify efreveng80.exe.zip file count
       shell: cmd

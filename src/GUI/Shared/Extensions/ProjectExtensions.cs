@@ -149,7 +149,7 @@ namespace EFCorePowerTools.Extensions
                 renamingPath = Path.GetDirectoryName(optionsPath);
             }
 
-            const string efptRenamingJson = "efpt.renaming.json";
+            const string efptRenamingJson = RevEng.Common.Constants.RenamingFileName;
             const string efptRenamingNavJson = "efpt.property-renaming.json";
             return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
         }

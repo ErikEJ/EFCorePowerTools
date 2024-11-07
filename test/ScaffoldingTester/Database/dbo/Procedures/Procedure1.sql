@@ -3,4 +3,5 @@
 	@param2 int
 AS
 	SELECT @param1, @param2
+	SELECT * FROM sys.objects
 RETURN 0

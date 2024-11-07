@@ -11,7 +11,14 @@ namespace RevEng.Common.Cli
 {
     public static class CliConfigMapper
     {
-        public static ReverseEngineerCommandOptions ToCommandOptions(this CliConfig config, string connectionString, DatabaseType databaseType, string projectPath, bool isDacpac, string configPath)
+        public static ReverseEngineerCommandOptions ToCommandOptions(
+            this CliConfig config,
+            string connectionString,
+            DatabaseType databaseType,
+            string projectPath,
+            bool isDacpac,
+            string configPath,
+            string renamingPath)
         {
             if (config is null)
             {
@@ -31,6 +38,11 @@ namespace RevEng.Common.Cli
             if (string.IsNullOrEmpty(configPath))
             {
                 throw new ArgumentNullException(nameof(configPath));
+            }
+
+            if (string.IsNullOrEmpty(renamingPath))
+            {
+                throw new ArgumentNullException(nameof(renamingPath));
             }
 
             var selectedToBeGenerated = config.CodeGeneration.Type.ToUpperInvariant() switch
@@ -64,7 +76,7 @@ namespace RevEng.Common.Cli
                 IncludeConnectionString = !isDacpac && config.CodeGeneration.EnableOnConfiguring,
                 SelectedToBeGenerated = selectedToBeGenerated,
                 Dacpac = isDacpac ? connectionString : null,
-                CustomReplacers = GetNamingOptions(configPath),
+                CustomReplacers = GetNamingOptions(configPath, renamingPath),
                 UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
                 UncountableWords = replacements.UncountableWords?.ToList(),
                 UseSpatial = typeMappings.UseSpatial,
@@ -155,7 +167,7 @@ namespace RevEng.Common.Cli
                 IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
                 SelectedToBeGenerated = selectedToBeGenerated,
                 Dacpac = null,
-                CustomReplacers = GetNamingOptions(configPath),
+                CustomReplacers = GetNamingOptions(configPath, Constants.RenamingFileName),
                 UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
                 UncountableWords = replacements.UncountableWords?.ToList(),
                 UseSpatial = typeMappings.UseSpatial,
@@ -479,9 +491,9 @@ namespace RevEng.Common.Cli
             return DbContextNamer.GetDatabaseName(connectionString, databaseType) + "Context";
         }
 
-        private static List<Schema> GetNamingOptions(string configPath)
+        private static List<Schema> GetNamingOptions(string configPath, string renamingFileName)
         {
-            var path = Path.Combine(Path.GetDirectoryName(configPath), "efpt.renaming.json");
+            var path = Path.Combine(Path.GetDirectoryName(configPath), renamingFileName);
             if (!File.Exists(path))
             {
                 return new List<Schema>();

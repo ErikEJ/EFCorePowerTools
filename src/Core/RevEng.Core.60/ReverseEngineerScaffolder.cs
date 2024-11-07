@@ -20,7 +20,7 @@ namespace RevEng.Core
 {
     public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
     {
-        private static readonly string[] Separator = new string[] { "\r\n", "\r" };
+        private static readonly string[] Separator = new string[] { "\r\n", "\r", "\n" };
 
         private readonly IDatabaseModelFactory databaseModelFactory;
         private readonly IScaffoldingModelFactory factory;
