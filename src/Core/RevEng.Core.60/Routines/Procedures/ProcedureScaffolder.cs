@@ -74,6 +74,7 @@ namespace RevEng.Core.Routines.Procedures
             ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             var result = new ScaffoldedModel();
+            var path = string.Empty;
 
             errors.AddRange(model.Errors);
 
@@ -105,15 +106,17 @@ namespace RevEng.Core.Routines.Procedures
                         schemas.Add($"{routine.Schema}Schema");
                     }
 
+                    path = scaffolderOptions.UseSchemaFolders
+                                ? Path.Combine(routine.Schema, $"{typeName}.cs")
+                                : $"{typeName}.cs";
+
 #if CORE90
-                    result.AdditionalFiles.Add(new ScaffoldedFile(Path.Combine(routine.Schema, $"{typeName}.cs"), classContent));
+                    result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
 #else
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
                         Code = classContent,
-                        Path = scaffolderOptions.UseSchemaFolders
-                                ? Path.Combine(routine.Schema, $"{typeName}.cs")
-                                : $"{typeName}.cs",
+                        Path = path,
                     });
 #endif
                 }
@@ -123,25 +126,29 @@ namespace RevEng.Core.Routines.Procedures
 
             if (!string.IsNullOrEmpty(dbContextInterface))
             {
+                path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, $"I{scaffolderOptions.ContextName}{FileNameSuffix}.cs"));
 #if CORE90
-                result.AdditionalFiles.Add(new ScaffoldedFile($"I{scaffolderOptions.ContextName}{FileNameSuffix}.cs", dbContextInterface));
+                result.AdditionalFiles.Add(new ScaffoldedFile(path, dbContextInterface));
 #else
                 result.AdditionalFiles.Add(new ScaffoldedFile
                 {
                     Code = dbContextInterface,
-                    Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, $"I{scaffolderOptions.ContextName}{FileNameSuffix}.cs")),
+                    Path = path,
                 });
 #endif
             }
 
             var dbContext = WriteDbContext(scaffolderOptions, model, schemas.Distinct().ToList());
+
+            path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"));
+
 #if CORE90
-            result.ContextFile = new ScaffoldedFile(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"), dbContext);
+            result.ContextFile = new ScaffoldedFile(path, dbContext);
 #else
             result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs")),
+                Path = path,
             };
 #endif
 
