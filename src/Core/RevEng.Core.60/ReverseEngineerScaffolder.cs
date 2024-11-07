@@ -86,7 +86,7 @@ namespace RevEng.Core
                 SuppressOnConfiguring = !options.IncludeConnectionString,
                 UseNullableReferenceTypes = options.UseNullableReferences,
 #if CORE70 || CORE80
-                ProjectDir = options.UseT4 ? (options.T4TemplatePath ?? projectPath) : null,
+                ProjectDir = (options.UseT4 || options.UseT4Split) ? (options.T4TemplatePath ?? projectPath) : null,
 #endif
             };
 

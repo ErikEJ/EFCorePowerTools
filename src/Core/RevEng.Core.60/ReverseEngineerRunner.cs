@@ -86,7 +86,7 @@ namespace RevEng.Core
                 SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath, options.ProjectRootNamespace);
 
 #if CORE70 || CORE80
-                if (options.UseT4)
+                if (options.UseT4 || options.UseT4Split)
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
                     {
@@ -139,13 +139,17 @@ namespace RevEng.Core
                     }
 
                     RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
-                    if (!options.UseHandleBars && !options.UseT4)
+                    if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                     {
                         PostProcess(filePaths.ContextFile, options.UseNullableReferences);
                     }
 
                     entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName);
-                    entityTypeConfigurationPaths.AddRange(MoveConfigurationFiles(filePaths.AdditionalFiles));
+
+                    if (options.UseT4Split)
+                    {
+                        entityTypeConfigurationPaths.AddRange(MoveConfigurationFiles(filePaths.AdditionalFiles));
+                    }
                 }
                 else if (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
                     || options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction))
@@ -153,7 +157,7 @@ namespace RevEng.Core
                     warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
 
-                if (!options.UseHandleBars && !options.UseT4)
+                if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                 {
                     foreach (var file in filePaths.AdditionalFiles)
                     {

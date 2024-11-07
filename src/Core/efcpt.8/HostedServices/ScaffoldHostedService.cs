@@ -84,6 +84,18 @@ internal sealed class ScaffoldHostedService : HostedService
 #pragma warning restore S2583 // Conditionally executed code should be reachable
 #pragma warning restore S2589 // Boolean expressions should not be gratuitous
 
+        if (commandOptions.UseT4 && commandOptions.UseT4Split)
+        {
+            DisplayService.MarkupLine("Both UseT4 and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.", Color.Yellow);
+            commandOptions.UseT4Split = false;
+        }
+
+        if (commandOptions.UseT4Split && commandOptions.UseDbContextSplitting)
+        {
+            DisplayService.MarkupLine("Both UseDbContextSplitting and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.", Color.Yellow);
+            commandOptions.UseT4Split = false;
+        }
+
         sw = Stopwatch.StartNew();
         var result = DisplayService.Wait(
             "Generating EF Core DbContext and entity classes...",
