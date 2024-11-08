@@ -83,14 +83,14 @@ namespace RevEng.Core
 
             try
             {
-                SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
+                SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath, options.ProjectRootNamespace);
 
 #if CORE70 || CORE80
-                if (options.UseT4)
+                if (options.UseT4 || options.UseT4Split)
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
                     {
-                        scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
+                        scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath, options.ProjectRootNamespace);
                     }
                 }
 #endif
@@ -139,12 +139,17 @@ namespace RevEng.Core
                     }
 
                     RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
-                    if (!options.UseHandleBars && !options.UseT4)
+                    if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                     {
                         PostProcess(filePaths.ContextFile, options.UseNullableReferences);
                     }
 
                     entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName);
+
+                    if (options.UseT4Split)
+                    {
+                        entityTypeConfigurationPaths.AddRange(MoveConfigurationFiles(filePaths.AdditionalFiles));
+                    }
                 }
                 else if (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
                     || options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction))
@@ -152,7 +157,7 @@ namespace RevEng.Core
                     warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
 
-                if (!options.UseHandleBars && !options.UseT4)
+                if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                 {
                     foreach (var file in filePaths.AdditionalFiles)
                     {
@@ -191,6 +196,18 @@ namespace RevEng.Core
                 if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
                 {
                     warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
+                }
+
+                if (options.UseT4 && options.UseT4Split)
+                {
+                    warnings.Add("Both UseT4 and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.");
+                    options.UseT4Split = false;
+                }
+
+                if (options.UseT4Split && options.UseDbContextSplitting)
+                {
+                    warnings.Add("Both UseDbContextSplitting and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.");
+                    options.UseT4Split = false;
                 }
 
                 var result = new ReverseEngineerResult
@@ -321,6 +338,22 @@ namespace RevEng.Core
             }
 
             return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName);
+        }
+
+        // If we didn't split, we might have used EntityTypeConfiguration.t4.  In that case, <ModelName>Configuration.cs files were generated.
+        private static List<string> MoveConfigurationFiles(IList<string> files)
+        {
+            var configurationFiles = files.Where(x => x.EndsWith("Configuration.cs", StringComparison.InvariantCulture)).ToList();
+
+            var movedFiles = new List<string>();
+            foreach (var configurationFile in configurationFiles)
+            {
+                var newFileName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations", Path.GetFileName(configurationFile));
+                File.Move(configurationFile, newFileName, overwrite: true);
+                movedFiles.Add(newFileName);
+            }
+
+            return movedFiles;
         }
 
         private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor)

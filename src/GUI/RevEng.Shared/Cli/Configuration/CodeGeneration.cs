@@ -85,5 +85,9 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyOrder(200)]
         [JsonPropertyName("use-t4")]
         public bool UseT4 { get; set; }
+
+        [JsonPropertyOrder(210)]
+        [JsonPropertyName("use-t4-split")]
+        public bool UseT4Split { get; set; }
     }
 }

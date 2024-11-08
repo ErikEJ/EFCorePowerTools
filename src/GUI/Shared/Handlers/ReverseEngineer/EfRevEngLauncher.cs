@@ -95,6 +95,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseHandleBars = options.UseHandleBars,
                 UseT4 = options.UseT4,
                 T4TemplatePath = options.T4TemplatePath != null ? PathHelper.GetAbsPath(options.T4TemplatePath, options.ProjectPath) : null,
+                UseT4Split = options.UseT4Split,
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UncountableWords = options.UncountableWords,

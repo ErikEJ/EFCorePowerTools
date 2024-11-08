@@ -74,9 +74,9 @@ internal sealed class ScaffoldHostedService : HostedService
 
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
 #pragma warning disable S2583 // Conditionally executed code should be reachable
-        if (commandOptions.UseT4 && Constants.Version > 6)
+        if ((commandOptions.UseT4 || commandOptions.UseT4Split) && Constants.Version > 6)
         {
-            var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath, Constants.CodeGeneration);
+            var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath, Constants.CodeGeneration, commandOptions.UseT4Split);
             if (!string.IsNullOrEmpty(t4Result))
             {
                 DisplayService.MarkupLine(t4Result, Color.Default);

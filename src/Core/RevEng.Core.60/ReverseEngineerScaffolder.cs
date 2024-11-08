@@ -59,7 +59,8 @@ namespace RevEng.Core
             string modelNamespace,
             string contextNamespace,
             string projectPath,
-            string outputPath)
+            string outputPath,
+            string rootNameSpace)
         {
             ArgumentNullException.ThrowIfNull(options);
 
@@ -77,7 +78,7 @@ namespace RevEng.Core
 
                 ContextName = code.Identifier(options.ContextClassName),
                 ContextDir = outputContextDir,
-                RootNamespace = null,
+                RootNamespace = rootNameSpace,
                 ContextNamespace = contextNamespace,
                 ModelNamespace = modelNamespace,
                 SuppressConnectionStringWarning = false,
@@ -85,7 +86,7 @@ namespace RevEng.Core
                 SuppressOnConfiguring = !options.IncludeConnectionString,
                 UseNullableReferenceTypes = options.UseNullableReferences,
 #if CORE70 || CORE80
-                ProjectDir = options.UseT4 ? (options.T4TemplatePath ?? projectPath) : null,
+                ProjectDir = (options.UseT4 || options.UseT4Split) ? (options.T4TemplatePath ?? projectPath) : null,
 #endif
             };
 
