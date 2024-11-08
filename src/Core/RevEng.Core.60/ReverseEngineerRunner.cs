@@ -198,6 +198,18 @@ namespace RevEng.Core
                     warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
                 }
 
+                if (options.UseT4 && options.UseT4Split)
+                {
+                    warnings.Add("Both UseT4 and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.");
+                    options.UseT4Split = false;
+                }
+
+                if (options.UseT4Split && options.UseDbContextSplitting)
+                {
+                    warnings.Add("Both UseDbContextSplitting and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.");
+                    options.UseT4Split = false;
+                }
+
                 var result = new ReverseEngineerResult
                 {
                     EntityErrors = errors,

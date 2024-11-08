@@ -217,6 +217,11 @@
           "type": "boolean",
           "title": "Customize code using T4 templates"
         },
+        "use-t4-split": {
+          "type": "boolean",
+          "default": false,
+          "title": "Customize code using T4 templates including EntityTypeConfiguration.t4.  This cannot be used in combination with use-t4 or split-dbcontext-preview"
+      },
         "remove-defaultsql-from-bool-properties": {
           "type": "boolean",
           "title": "Remove SQL default from bool columns to avoid them being bool?"
