@@ -17,6 +17,7 @@
 <#@ import namespace="Microsoft.Extensions.DependencyInjection" #>
 <#@ import namespace="Microsoft.EntityFrameworkCore.Metadata.Builders" #>
 <#
+    // Template version: 800_Split - please do NOT remove this line
     if (!ProductInfo.GetVersion().StartsWith("8.0"))
     {
         Warning("Your templates were created using an older version of Entity Framework. Additional features and bug fixes may be available. See https://aka.ms/efcore-docs-updating-templates for more information.");
