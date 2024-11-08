@@ -348,7 +348,19 @@ namespace RevEng.Core
             var movedFiles = new List<string>();
             foreach (var configurationFile in configurationFiles)
             {
-                var newFileName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations", Path.GetFileName(configurationFile));
+                var newDirectoryName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations");
+                if (newDirectoryName is null)
+                {
+                    throw new InvalidOperationException("Could not determine directory name for configuration file.");
+                }
+
+                if (!Directory.Exists(newDirectoryName))
+                {
+                    Directory.CreateDirectory(newDirectoryName);
+                }
+
+                var newFileName = Path.Combine(newDirectoryName, Path.GetFileName(configurationFile));
+
                 File.Move(configurationFile, newFileName, overwrite: true);
                 movedFiles.Add(newFileName);
             }
