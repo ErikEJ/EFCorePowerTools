@@ -155,98 +155,136 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            try
+            using (var shell = package.Resolve<IDisposableShell>().SetProgressInterval(20))
             {
-                if (await VSHelper.IsDebugModeAsync())
+                try
                 {
-                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
-                    return;
-                }
-
-                var renamingPath = project.GetRenamingPath(optionsPath);
-                var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
-                if (!string.IsNullOrEmpty(referenceRenamingPath) && File.Exists(referenceRenamingPath))
-                {
-                    VSHelper.ShowMessage("Property renaming (experimental) is no longer available. See GitHub issue #2171.");
-                }
-
-                var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
-
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
-
-                if (options == null
-                    && optionsPath.EndsWith(Constants.ConfigFileName)
-                    && File.Exists(optionsPath))
-                {
-                    var config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(optionsPath, Encoding.UTF8));
-                    options = config.ToOptions(Path.GetDirectoryName(project.FullPath), optionsPath);
-                }
-
-                var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
-
-                var newOptions = false;
-
-                if (options == null)
-                {
-                    options = new ReverseEngineerOptions
+                    await shell.ShowMessageAsync("Loading connection configuration");
+                    if (await VSHelper.IsDebugModeAsync())
                     {
-                        ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
-                        OutputPath = "Models",
-                    };
-                    newOptions = true;
-                }
-
-                if (userOptions == null)
-                {
-                    userOptions = new ReverseEngineerUserOptions
-                    {
-                        UiHint = uiHint ?? options.UiHint,
-                    };
-                }
-
-                options.UiHint = uiHint ?? userOptions.UiHint;
-
-                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
-                mappedTypes = options.Tables?
-                    .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
-                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
-
-                options.ProjectPath = Path.GetDirectoryName(project.FullPath);
-                options.OptionsPath = Path.GetDirectoryName(optionsPath);
-
-                bool forceEdit = false;
-
-                var neededPackages = new List<NuGetPackage>();
-
-                DatabaseConnectionModel dbInfo = null;
-
-                if (onlyGenerate || fromSqlProj)
-                {
-                    forceEdit = !await ChooseDataBaseConnectionByUiHintAsync(options);
-
-                    if (forceEdit)
-                    {
-                        await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh);
+                        VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                        return;
                     }
-                    else
-                    {
-                        dbInfo = await GetDatabaseInfoAsync(options);
 
-                        if (dbInfo == null)
+                    var renamingPath = project.GetRenamingPath(optionsPath);
+                    var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
+                    if (!string.IsNullOrEmpty(referenceRenamingPath) && File.Exists(referenceRenamingPath))
+                    {
+                        VSHelper.ShowMessage("Property renaming (experimental) is no longer available. See GitHub issue #2171.");
+                    }
+
+                    var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
+
+                    var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
+                    if (options == null
+                        && optionsPath.EndsWith(Constants.ConfigFileName)
+                        && File.Exists(optionsPath))
+                    {
+                        var config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(optionsPath, Encoding.UTF8));
+                        options = config.ToOptions(Path.GetDirectoryName(project.FullPath), optionsPath);
+                    }
+
+                    var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
+
+                    var newOptions = false;
+
+                    if (options == null)
+                    {
+                        options = new ReverseEngineerOptions
                         {
+                            ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
+                            OutputPath = "Models",
+                        };
+                        newOptions = true;
+                    }
+
+                    if (userOptions == null)
+                    {
+                        userOptions = new ReverseEngineerUserOptions
+                        {
+                            UiHint = uiHint ?? options.UiHint,
+                        };
+                    }
+
+                    options.UiHint = uiHint ?? userOptions.UiHint;
+
+                    legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
+                    mappedTypes = options.Tables?
+                        .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
+                        .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
+
+                    options.ProjectPath = Path.GetDirectoryName(project.FullPath);
+                    options.OptionsPath = Path.GetDirectoryName(optionsPath);
+
+                    bool forceEdit = false;
+
+                    var neededPackages = new List<NuGetPackage>();
+
+                    DatabaseConnectionModel dbInfo = null;
+
+                    if (onlyGenerate || fromSqlProj)
+                    {
+                        forceEdit = !await ChooseDataBaseConnectionByUiHintAsync(options);
+
+                        if (forceEdit)
+                        {
+                            await shell.ShowMessageAsync(ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh);
+                        }
+                        else
+                        {
+                            dbInfo = await GetDatabaseInfoAsync(options);
+
+                            if (dbInfo == null)
+                            {
+                                return;
+                            }
+
+                            options.CustomReplacers = namingOptionsAndPath.Item1;
+                            options.InstallNuGetPackage = !onlyGenerate;
+                        }
+                    }
+
+                    if (!onlyGenerate || forceEdit)
+                    {
+                        if (!fromSqlProj)
+                        {
+                            if (!await ChooseDataBaseConnectionAsync(options, project))
+                            {
+                                await VS.StatusBar.ClearAsync();
+                                return;
+                            }
+
+                            if (newOptions)
+                            {
+                                options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
+                            }
+
+                            await shell.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
+
+                            dbInfo = await GetDatabaseInfoAsync(options);
+
+                            if (dbInfo == null)
+                            {
+                                await VS.StatusBar.ClearAsync();
+                                return;
+                            }
+                        }
+
+                        await shell.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
+
+                        if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
+                        {
+                            await VS.StatusBar.ClearAsync();
                             return;
                         }
 
-                        options.CustomReplacers = namingOptionsAndPath.Item1;
-                        options.InstallNuGetPackage = !onlyGenerate;
-                    }
-                }
+                        await shell.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
-                if (!onlyGenerate || forceEdit)
-                {
-                    if (!fromSqlProj)
-                    {
-                        if (!await ChooseDataBaseConnectionAsync(options, project))
+                        neededPackages = await project.GetNeededPackagesAsync(options);
+                        options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+
+                        if (!await GetModelOptionsAsync(options, project.Name))
                         {
                             await VS.StatusBar.ClearAsync();
                             return;
@@ -254,76 +292,43 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                         if (newOptions)
                         {
-                            options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
+                            // HACK Work around for issue with web app project system on initial run
+                            userOptions = null;
                         }
 
-                        await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
-
-                        dbInfo = await GetDatabaseInfoAsync(options);
-
-                        if (dbInfo == null)
-                        {
-                            await VS.StatusBar.ClearAsync();
-                            return;
-                        }
+                        await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                     }
 
-                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
+                    await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
-                    if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
+                    var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                    if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
                     {
-                        await VS.StatusBar.ClearAsync();
-                        return;
+                        missingProviderPackage = null;
                     }
 
-                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
+                    await shell.ShowMessageAsync("Completing process");
+                    await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
 
-                    neededPackages = await project.GetNeededPackagesAsync(options);
-                    options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
-
-                    if (!await GetModelOptionsAsync(options, project.Name))
+                    var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
+                    if (File.Exists(postRunFile))
                     {
-                        await VS.StatusBar.ClearAsync();
-                        return;
+                        Process.Start($"\"{postRunFile}\"");
                     }
 
-                    if (newOptions)
+                    Telemetry.TrackEvent("PowerTools.ReverseEngineer");
+                }
+                catch (AggregateException ae)
+                {
+                    foreach (var innerException in ae.Flatten().InnerExceptions)
                     {
-                        // HACK Work around for issue with web app project system on initial run
-                        userOptions = null;
+                        package.LogError(new List<string>(), innerException);
                     }
-
-                    await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
-
-                await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
-
-                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
-                if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
+                catch (Exception exception)
                 {
-                    missingProviderPackage = null;
+                    package.LogError(new List<string>(), exception);
                 }
-
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
-
-                var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
-                if (File.Exists(postRunFile))
-                {
-                    Process.Start($"\"{postRunFile}\"");
-                }
-
-                Telemetry.TrackEvent("PowerTools.ReverseEngineer");
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var innerException in ae.Flatten().InnerExceptions)
-                {
-                    package.LogError(new List<string>(), innerException);
-                }
-            }
-            catch (Exception exception)
-            {
-                package.LogError(new List<string>(), exception);
             }
         }
 
@@ -738,7 +743,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
         }
 
-        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options,  ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
+        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
             if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {

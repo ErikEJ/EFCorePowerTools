@@ -65,6 +65,9 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\MainShell.xaml.cs">
+      <DependentUpon>MainShell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ConnectionDialog.xaml.cs">
       <DependentUpon>ConnectionDialog.xaml</DependentUpon>
     </Compile>
@@ -402,7 +405,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.de.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.ja.resx" />
@@ -509,6 +514,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\MainShell.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

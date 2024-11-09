@@ -119,6 +119,11 @@ namespace EFCorePowerTools
             return extensionServices.GetService<TView>();
         }
 
+        internal TView Resolve<TView>()
+        {
+            return extensionServices.GetService<TView>();
+        }
+
         internal async Task<Version> VisualStudioVersionAsync()
         {
             return await VS.Shell.GetVsVersionAsync();
@@ -954,9 +959,11 @@ namespace EFCorePowerTools
         private IServiceProvider CreateServiceProvider()
         {
             var services = new ServiceCollection();
+            services.AddTransient<IDisposableShell, DisposableShell>();
 
             // Register models
-            services.AddSingleton<AboutExtensionModel>();
+            services.AddSingleton<AboutExtensionModel>()
+                    .AddSingleton<IShell, MainShell>();
 
             // Register views
             services.AddTransient<IAboutDialog, AboutDialog>()
@@ -975,7 +982,8 @@ namespace EFCorePowerTools
                     .AddTransient<ICompareResultDialog, CompareResultDialog>();
 
             // Register view models
-            services.AddTransient<IAboutViewModel, AboutViewModel>()
+            services.AddTransient<IShellViewModel, ShellViewModel>()
+                    .AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickConfigViewModel, PickConfigViewModel>()
                     .AddTransient<IPickProjectViewModel, PickProjectViewModel>()
                     .AddTransient<IPickConnectionViewModel, PickConnectionViewModel>()

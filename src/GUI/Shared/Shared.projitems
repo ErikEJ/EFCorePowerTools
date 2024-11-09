@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BLL\IExtensionVersionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Models\ProjectModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IShellViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\TemplateTypeItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\CodeGenerationItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
@@ -36,11 +37,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\ObjectTypeIcon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\SearchMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\DisposableShell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IAboutDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IAdvancedModelingOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\ICompareOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\ICompareResultDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IDisposableShell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IModelingOptionsDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickProjectDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickConfigDialog.cs" />
@@ -48,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickSchemasDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickServerDatabaseDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickTablesDialog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IShell.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\PickTablesDialogResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolInvertConverter.cs" />
@@ -129,6 +133,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeRootItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ShellViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickProjectViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickConfigViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickConnectionViewModel.cs" />
