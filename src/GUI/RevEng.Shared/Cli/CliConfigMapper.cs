@@ -163,6 +163,7 @@ namespace RevEng.Common.Cli
                 UseDatabaseNames = config.CodeGeneration.UseDatabaseNames,
                 UseInflector = config.CodeGeneration.UseInflector,
                 UseT4 = config.CodeGeneration.UseT4,
+                UseT4Split = config.CodeGeneration.UseT4Split,
                 T4TemplatePath = config.CodeGeneration.T4TemplatePath != null ? PathHelper.GetAbsPath(config.CodeGeneration.T4TemplatePath, projectPath) : null,
                 IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
                 SelectedToBeGenerated = selectedToBeGenerated,

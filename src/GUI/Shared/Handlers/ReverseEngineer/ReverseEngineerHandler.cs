@@ -561,7 +561,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDatabaseNames = options.UseDatabaseNames,
                 UsePluralizer = options.UseInflector,
                 UseDbContextSplitting = options.UseDbContextSplitting,
-                UseHandlebars = options.UseHandleBars || options.UseT4,
+                UseHandlebars = options.UseHandleBars || options.UseT4 || options.UseT4Split,
                 SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
                 IncludeConnectionString = options.IncludeConnectionString,
                 OutputPath = options.OutputPath,
@@ -607,7 +607,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 || modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 1;
             options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars && isHandleBarsLanguage;
             options.SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage;
+
             options.UseT4 = modelingOptionsResult.Payload.UseHandlebars && !isHandleBarsLanguage;
+
+            if (modelingOptionsResult.Payload.UseHandlebars
+                && modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 4)
+            {
+                options.UseT4 = false;
+                options.UseT4Split = true;
+            }
 
             options.InstallNuGetPackage = modelingOptionsResult.Payload.InstallNuGetPackage;
             options.UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations;
@@ -648,7 +656,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var stopWatch = Stopwatch.StartNew();
 
-            if (options.UseHandleBars || (options.UseT4 && string.IsNullOrEmpty(options.T4TemplatePath)))
+            if (options.UseHandleBars || ((options.UseT4 || options.UseT4Split) && string.IsNullOrEmpty(options.T4TemplatePath)))
             {
                 var result = reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
                 if (!string.IsNullOrEmpty(result))
