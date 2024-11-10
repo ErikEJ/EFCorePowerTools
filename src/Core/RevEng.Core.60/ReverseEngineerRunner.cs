@@ -75,6 +75,8 @@ namespace RevEng.Core
                     : PathHelper.GetNamespaceFromOutputPath(outputContextDir, options.ProjectPath, options.ProjectRootNamespace);
             }
 
+            ValidateOptions(options, warnings);
+
             var entityTypeConfigurationPaths = new List<string>();
             SavedModelFiles procedurePaths = null;
             SavedModelFiles functionPaths = null;
@@ -193,23 +195,6 @@ namespace RevEng.Core
                     warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database engine features.");
                 }
 
-                if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
-                {
-                    warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
-                }
-
-                if (options.UseT4 && options.UseT4Split)
-                {
-                    warnings.Add("Both UseT4 and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.");
-                    options.UseT4Split = false;
-                }
-
-                if (options.UseT4Split && options.UseDbContextSplitting)
-                {
-                    warnings.Add("Both UseDbContextSplitting and UseT4Split are set to true.  Only one of thse should be used, UseT4Split will be ignored.");
-                    options.UseT4Split = false;
-                }
-
                 var result = new ReverseEngineerResult
                 {
                     EntityErrors = errors,
@@ -304,6 +289,32 @@ namespace RevEng.Core
             return result;
         }
 #endif
+
+        private static void ValidateOptions(ReverseEngineerCommandOptions options, List<string> warnings)
+        {
+            if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
+            {
+                warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
+            }
+
+            if (options.UseT4 && options.UseT4Split)
+            {
+                warnings.Add("Both UseT4 and UseT4Split are set to true.  Only one of these should be used, UseT4Split will be used.");
+                options.UseT4 = false;
+            }
+
+            if (options.UseDbContextSplitting)
+            {
+                warnings.Add("UseDbContextSplitting (preview) is obsolete, please switch to the T4 split DbContext template.");
+                options.UseDbContextSplitting = false;
+            }
+
+            if (options.UseT4Split && options.UseDbContextSplitting)
+            {
+                warnings.Add("Both UseDbContextSplitting (preview) and UseT4Split are set to true. Only one of these should be used, UseT4Split will be used.");
+                options.UseDbContextSplitting = false;
+            }
+        }
 
         private static SavedModelFiles CreateCleanupPaths(SavedModelFiles procedurePaths, SavedModelFiles functionPaths, SavedModelFiles filePaths)
         {
