@@ -340,7 +340,7 @@
     <value>Vyhledávání objektů</value>
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
-    <value>Rozdělit DbContext do konfiguračních tříd (preview)</value>
+    <value>Rozdělit DbContext do konfiguračních tříd (obsolete)</value>
   </data>
   <data name="SQLiteExperience" xml:space="preserve">
     <value>Improve your SQLite experience</value>

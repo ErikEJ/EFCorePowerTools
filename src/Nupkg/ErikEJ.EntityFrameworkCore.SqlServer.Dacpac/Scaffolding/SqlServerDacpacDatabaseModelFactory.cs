@@ -185,9 +185,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return dbModel;
         }
 
-        public DatabaseModel Create(DbConnection connection, IEnumerable<string> tables, IEnumerable<string> schemas)
-            => throw new NotImplementedException();
-
         private static Dictionary<string, (string A, string B)> GetTypeAliases(TSqlTypedModel model)
         {
             var items = model.GetObjects<TSqlDataType>(DacQueryScopes.UserDefined)

@@ -340,7 +340,7 @@
     <value>Objekte suchen</value>
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
-    <value>DbContext in Konfigurationsklassen aufteilen (Vorschau)</value>
+    <value>DbContext in Konfigurationsklassen aufteilen (Obsolete)</value>
   </data>
   <data name="SQLiteExperience" xml:space="preserve">
     <value>SQLite Experience verbessern</value>
