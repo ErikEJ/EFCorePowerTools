@@ -306,7 +306,6 @@ namespace RevEng.Core
             if (options.UseDbContextSplitting)
             {
                 warnings.Add("UseDbContextSplitting (preview) is obsolete, please switch to the T4 split DbContext template.");
-                options.UseDbContextSplitting = false;
             }
 
             if (options.UseT4Split && options.UseDbContextSplitting)
