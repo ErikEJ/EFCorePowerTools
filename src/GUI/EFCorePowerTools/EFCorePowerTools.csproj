@@ -59,6 +59,18 @@
     <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="Wizard\WizardPage1.cs">
+      <DependentUpon>WizardPage1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\WizardPage2.cs">
+      <DependentUpon>WizardPage2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\WizardPage3.cs">
+      <DependentUpon>WizardPage3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\WizardDialogBox.cs">
+      <DependentUpon>WizardDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AdvancedModelingOptionsDialog.xaml.cs">
       <DependentUpon>AdvancedModelingOptionsDialog.xaml</DependentUpon>
     </Compile>
@@ -140,8 +152,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Wizard\WizardData.cs" />
+    <Compile Include="Wizard\WizardLauncher.cs" />
+    <Compile Include="Wizard\WizardResult.cs" />
+    <Compile Include="Wizard\WizardResultPageFunction.cs" />
+    <Compile Include="Wizard\WizardReturnEventArgs.cs" />
+    <Compile Include="Wizard\WizardReturnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Wizard\WizardUprade.qea" />
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
     <Resource Include="Resources\Table.png" />
@@ -556,6 +575,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Wizard\WizardDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\WizardPage1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\WizardPage2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\WizardPage3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Content Include="db.png">
@@ -605,6 +640,7 @@
     <PackageReference Include="NuGet.ProjectModel" Version="6.11.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

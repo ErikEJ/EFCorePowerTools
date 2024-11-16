@@ -204,7 +204,7 @@
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="{x:Static locale:SharedLocale.Ok}"
                              IsDefault="True"
-                             Command="{Binding OkCommand}"/>
+                             Command="{Binding OkCommand}" />
             <dw:DialogButton TabIndex="8"
                              Style="{StaticResource SourceSelectionButtonStyle}"
                              Content="{x:Static locale:SharedLocale.Cancel}"

@@ -84,8 +84,18 @@
     </Menus>
 
     <Buttons>
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidWizardPoc" priority="0x0100" type="Button">
+        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
+        <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Reverse Engineer (beta)</ButtonText>
+        </Strings>
+      </Button>
 
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0100" type="Button">
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0101" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -386,6 +396,7 @@
 
       <!-- Project Menu Entries -->
       <IDSymbol name="cmdidReverseEngineerCodeFirst" value="0x0001" />
+      <IDSymbol name="cmdidWizardPoc" value="0x0002" />
       <IDSymbol name="cmdidReverseEngineerRefresh" value="0x0007" />
       <IDSymbol name="cmdidReverseEngineerDab" value="0x0012" />
       <IDSymbol name="cmdidEdmProjectMenuItemsGroup" value="0x0002" />

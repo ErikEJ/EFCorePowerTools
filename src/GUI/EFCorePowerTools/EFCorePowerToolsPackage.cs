@@ -14,6 +14,7 @@ using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.DAL;
 using EFCorePowerTools.Dialogs;
 using EFCorePowerTools.Extensions;
@@ -26,6 +27,7 @@ using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Options;
 using EFCorePowerTools.ViewModels;
+using EFCorePowerTools.Wizard;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
@@ -52,6 +54,7 @@ namespace EFCorePowerTools
     {
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
+        private readonly RevEngWizardHandler revEngWizardHandler;
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
@@ -65,6 +68,7 @@ namespace EFCorePowerTools
 
         public EFCorePowerToolsPackage()
         {
+            revEngWizardHandler = new RevEngWizardHandler(this);
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
@@ -138,6 +142,14 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidWizardPoc)));
+
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
@@ -381,6 +393,9 @@ namespace EFCorePowerTools
 
             switch ((uint)menuCommand.CommandID.ID)
             {
+                case PkgCmdIDList.cmdidWizardPoc:
+                    menuCommand.Text = "Reverse Engineer (beta)";
+                    break;
                 case PkgCmdIDList.cmdidAbout:
                     menuCommand.Text = ButtonLocale.cmdidAbout;
                     break;
@@ -440,6 +455,7 @@ namespace EFCorePowerTools
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
                 menuCommand.Visible = await project.CanUseReverseEngineerAsync();
@@ -644,6 +660,11 @@ namespace EFCorePowerTools
 
                 string filename = item.FullPath;
 
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
+                {
+                    await revEngWizardHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                }
+
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
                     await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
@@ -702,6 +723,11 @@ namespace EFCorePowerTools
                     {
                         return;
                     }
+                }
+
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
+                {
+                    await revEngWizardHandler.ReverseEngineerCodeFirstAsync();
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
@@ -959,7 +985,8 @@ namespace EFCorePowerTools
             services.AddSingleton<AboutExtensionModel>();
 
             // Register views
-            services.AddTransient<IAboutDialog, AboutDialog>()
+            services.AddTransient<IWizardView, WizardDialogBox>()
+                    .AddTransient<IAboutDialog, AboutDialog>()
                     .AddTransient<IPickConfigDialog, PickConfigDialog>()
                     .AddTransient<IPickProjectDialog, PickProjectDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()

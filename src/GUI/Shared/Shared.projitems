@@ -50,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickTablesDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\PickTablesDialogResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Wizard\IWizardView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolInvertConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\CollectionCountToEnabledConverter.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DacpacAnalyzerHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerUserOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DatabaseDiagramHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Wizard\RevEngWizardHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlConnectionStringBuilderHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlProjHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
