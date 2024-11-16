@@ -7,30 +7,30 @@ The beta process aims to improve the developer UX
 [Main README.md](README.md)
 
 # Reverse Engineering Wizard
-The following demonstrates the wizard at work, don't be distracted by the design or colors as XAML can be
-easily configured to look as required.  At this point it is a POC to demonstrate that a wizard can be used within
-the existing EFCorePowerTools project.  The code for the wizard comes from the https://github.com/microsoft/WPF-Samples 
-project [Windows/Wizard folder] - refactored for our purposes.
+The following video demonstrates the wizard at work.  Don't be distracted by its current design as XAML can be easily configured 
+to look as required.  At this point, it is a POC to demonstrate that a wizard can be used within the existing EFCorePowerTools 
+project.  The code for the wizard comes from the [Microsoft WPF-Samples](https://github.com/microsoft/WPF-Samples) project [Windows/Wizard folder] which was slightly refactored for our purposes.
 
-Where the patterns and design are subject to discussion and approval, the proposed path would be to use the MPV-VM pattern
-[as much as possible] to more effectively utilize the POC wizard framework.  Unlike true MVP-VM, much of the view[s] code-behind
-logic may remain in-tact to minimize the refactor effort.
+Where the patterns and design are subject to discussion and approval, the proposed path would be to use the Model-View-Presenter, View-Model [MPV-VM] pattern which is described below.  However, unlike true MVP-VM, the view's code-behind logic may remain intact to minimize the refactor effort; with MVP-VM the view does not contain business logic.
 
 https://github.com/user-attachments/assets/8a4cd041-92eb-4a54-baf2-ae7ce30055c1
 
-The sequence diagram below relects a high level view of the primary classes, note that below each timeline
-(gray text) the location of the class is displayed, e.g., RegEngWizardhandler.cs is under the Shared / Handlers / 
-Wizard folder.
+The sequence diagram below is a high level view of the wizard's primary classes.  Note that the location of each
+class within the solution is located below each timeline box (in gray), e.g., RegEngWizardhandler.cs is located 
+under the solution's Shared / Handlers / Wizard folder.
 <img src="img/mvpvm-wizard.png"/>
 Figure 1 
 
 # MVP-VM
-The pattern suggested is the Model-View-Presenter, View-Model pattern.   The current design lends itself to this because
-it isn't a true MVVM pattern; the handler actually performs much of the business logic communicating through the View.
-MVVM is more a "widget" pattern that mirrors MVC (Model-View-Controller).  Like MVC, the View and ViewModel contain all of the code
-and are generally not easily reused because of the tight coupling, nor do they easily communicate with other widgets. 
-Note: MVC evolved to MVP (Model-View-Presenter pattern to overcome these limitations).   MVP, like MVP-VM is more of a 
-framework pattern (required for our use case).
+The pattern suggested for the proposed work is the Model-View-Presenter, View-Model pattern. The current design lends 
+itself to this because it isn't a true MVVM pattern; unlike MVVM, the existing handler performs much of the business logic 
+invoking business logic within each of the view's code-behind classes, thus effectively overcoming some MVVM limitations.
+Traditional MVVM is more a "widget" pattern that mirrors the MVC pattern (adapted for WPF).  With MVVM, the view and view 
+model contain all of the logic and as such cannot be easily reused because of the tight coupling between the view, view model, 
+and its logic layers. 
+
+Note: MVC evolved to the [Model-View-Presenter](https://www.wildcrest.com/Potel/Portfolio/mvp.pdf) pattern to overcome such 
+limitations. MVP-VM (like MVP) is more of a framework pattern which will required for our use case.
 
 ## Presenter (RevEngWizardHandler)
 The presenter has primary responsibility for communicating with the business logic layer to populate the view model(s).
@@ -38,21 +38,22 @@ This pattern allows the views and view models to remain decoupled (lending to ea
 and view models do not access the business and/or data layers directly.
 ## Model 
 Business and data access layers compose the model (in the MVC days it might have been referred to as application model).  
-The presenter will use the business logic layer to populate the view models as required.   The business logic layer is 
-the only component(s) that communicate with the data
-access layer.
+The presenter will use the business logic layer to populate the view models as required.   Under MVP-VM, the business 
+logic layer is the only component that communicate with the data access layer.
 ## Views / View Models
-The views reflect the data that is on its ViewModel. Outside of the UI behavior logic there is generally no business 
-logic within the view code-behind.  Under MVP-VM it is easy to reuse views, and view-models, with other 
-views and view-models as there is no coupling (the presenters do all the work). 
+The view reflects the data that is on its view model. Outside of the UI behavior logic, there is generally no business 
+logic within the view code-behind using MVP-VM. Under MVP-VM it is easy to reuse views and view-models because of this decoupling. 
 
-For more indepth information you can visit my [MVPVM Design Pattern - The Model-View-Presenter-ViewModel Design Pattern for WPF (2011)](https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/december/mvpvm-design-pattern-the-model-view-presenter-viewmodel-design-pattern-for-wpf) 
+Note: for more indepth information on MVP-VM you can read my MSDN 2011 article [MVP-VM Design Pattern for WPF](https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/december/mvpvm-design-pattern-the-model-view-presenter-viewmodel-design-pattern-for-wpf) 
+
+## Proposed design
+The below use case diagram reflects the relationships between the existing, and new, components.
 
 <img src="img/mvpvm-uml.png"/>
 Figure 2
 
 # High level UML for current design 
-These diagrams are not all inclusive but will provide a high level view of applicable classes and primary processes invoked.
+These diagrams are not all inclusive, but will provide a high level view of applicable classes and primary processes invoked.
 ## Page 1 - Choose Your Data Connection
 <img src="img/mvpvm-pg1.png"/>
 Figure 3
