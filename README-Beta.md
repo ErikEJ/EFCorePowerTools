@@ -13,7 +13,7 @@ the existing EFCorePowerTools project.  The code for the wizard comes from the h
 project [Windows/Wizard folder] - refactored for our purposes.
 
 Where the patterns and design are subject to discussion and approval, the proposed path would be to use the MPV-VM pattern
-[as much as possible] to more effectively utilize the POC wizard framework.  Unlike true MVP-VM, much of the View code-behind
+[as much as possible] to more effectively utilize the POC wizard framework.  Unlike true MVP-VM, much of the view[s] code-behind
 logic may remain in-tact to minimize the refactor effort.
 
 https://github.com/user-attachments/assets/8a4cd041-92eb-4a54-baf2-ae7ce30055c1
