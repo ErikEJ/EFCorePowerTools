@@ -8,6 +8,8 @@ Aims to lower the bar for getting started with EF Core, by providing GUI based a
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
+[Reverse Engineering Wizard (beta)](README-Beta.md) <img src="new.png" width="75"/>
+
 [Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
 [Demo video - Introduction](https://youtu.be/uph-AGyOd8c)
