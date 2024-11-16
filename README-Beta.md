@@ -16,9 +16,7 @@ Where the patterns and design are subject to discussion and approval, the propos
 [as much as possible] to more effectively utilize the POC wizard framework.  Unlike true MVP-VM, much of the View code-behind
 logic may remain in-tact to minimize the refactor effort.
 
-<video autoplay loop width="800" controls>
-  <source src="img/mvpvm-demo.mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/8a4cd041-92eb-4a54-baf2-ae7ce30055c1
 
 The sequence diagram below relects a high level view of the primary classes, note that below each timeline
 (gray text) the location of the class is displayed, e.g., RegEngWizardhandler.cs is under the Shared / Handlers / 
