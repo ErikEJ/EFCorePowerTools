@@ -6,7 +6,8 @@ using EFCorePowerTools.Contracts.Wizard;
 
 namespace EFCorePowerTools.Wizard
 {
-    public class WizardLauncher(WizardData wizardViewModel, IWizardView wizardView) : PageFunction<WizardResult>
+    public class WizardLauncher(WizardDataViewModel wizardViewModel, IWizardView wizardView)
+        : PageFunction<WizardResult>
     {
         protected override void Start()
         {

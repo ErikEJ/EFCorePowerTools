@@ -727,7 +727,7 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
                 {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstAsync();
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync();
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)

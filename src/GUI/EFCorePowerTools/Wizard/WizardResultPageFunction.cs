@@ -6,9 +6,12 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
+        /// <summary>
+        /// Provide derived classes access to an instance of the WizardView.
+        /// </summary>
         protected readonly IWizardView wizardView;
 
-        public WizardResultPageFunction(WizardData wizardViewModel, IWizardView wizardView)
+        public WizardResultPageFunction(WizardDataViewModel wizardViewModel, IWizardView wizardView)
         {
             DataContext = wizardViewModel;
             this.wizardView = wizardView;

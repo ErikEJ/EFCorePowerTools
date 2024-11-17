@@ -7,7 +7,7 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class WizardPage3 : WizardResultPageFunction
     {
-        public WizardPage3(WizardData wizardViewModel, IWizardView wizardView)
+        public WizardPage3(WizardDataViewModel wizardViewModel, IWizardView wizardView)
             : base(wizardViewModel, wizardView)
         {
             InitializeComponent();

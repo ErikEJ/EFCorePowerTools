@@ -1,17 +1,21 @@
 ﻿// // Copyright (c) Microsoft. All rights reserved.
 // // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using EFCorePowerTools.BLL;
 using EFCorePowerTools.Contracts.Wizard;
 
 namespace EFCorePowerTools.Wizard
 {
     public class WizardDialogBox : NavigationWindow, IWizardView
     {
-        private readonly WizardData wizardViewModel = new();
+        private readonly WizardDataViewModel wizardViewModel = new();
 
-        public WizardDialogBox()
+        public WizardDialogBox(IReverseEngineerBll bll)
         {
             InitializeComponent();
+
+            // Assign the Business logic layer used for processing
+            Bll = bll;
 
             // Launch the wizard
             var wizardLauncher = new WizardLauncher(wizardViewModel, this);
@@ -21,7 +25,8 @@ namespace EFCorePowerTools.Wizard
 
         public event WizardReturnEventHandler WizardReturn;
 
-        public WizardData WizardData { get; private set; }
+        public WizardDataViewModel WizardDataViewModel { get; private set; }
+        public IReverseEngineerBll Bll { get; set; }
 
         public void WizardReturnInvoke(object sender, WizardReturnEventArgs e)
         {
@@ -31,7 +36,7 @@ namespace EFCorePowerTools.Wizard
         private void WizardLauncher_WizardReturn(object sender, WizardReturnEventArgs e)
         {
             // Handle wizard return
-            WizardData = e.Data as WizardData;
+            WizardDataViewModel = e.Data as WizardDataViewModel;
             if (DialogResult == null)
             {
                 DialogResult = e.Result == WizardResult.Finished;

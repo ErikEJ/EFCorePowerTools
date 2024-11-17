@@ -8,7 +8,7 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class WizardPage2 : WizardResultPageFunction
     {
-        public WizardPage2(WizardData wizardViewModel, IWizardView wizardView)
+        public WizardPage2(WizardDataViewModel wizardViewModel, IWizardView wizardView)
             : base(wizardViewModel, wizardView)
         {
             InitializeComponent();
@@ -17,7 +17,7 @@ namespace EFCorePowerTools.Wizard
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Go to next wizard page
-            var wizardPage3 = new WizardPage3((WizardData)DataContext, wizardView);
+            var wizardPage3 = new WizardPage3((WizardDataViewModel)DataContext, wizardView);
             wizardPage3.Return += WizardPage_Return;
             NavigationService?.Navigate(wizardPage3);
         }

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
@@ -24,7 +27,12 @@ using RevEng.Common.Cli.Configuration;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
-    internal class RevEngWizardHandler
+    /// <summary>
+    /// BillKrat.2024.11.27 - in an effort to minimize code changes we'll let the Handler (presenter)
+    /// serve as the business logic layer since all of the primary logic resides in it. Later, the
+    /// code implementation of IReverseEngineerBll can be moved into its own class.
+    /// </summary>
+    internal class RevEngWizardHandler : IReverseEngineerBll
     {
         private readonly EFCorePowerToolsPackage package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
@@ -39,74 +47,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             vsDataHelper = new VsDataHelper();
         }
 
-        public async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            var project = candidateProjects[0];
-
-            if (candidateProjects.Count > 1)
-            {
-                var pcd = package.GetView<IPickProjectDialog>();
-                pcd.PublishProjects(candidateProjects.Select(m => new ProjectModel
-                {
-                    Project = m,
-                }));
-
-                var pickProjectResult = pcd.ShowAndAwaitUserResponse(true);
-                if (!pickProjectResult.ClosedByOK)
-                {
-                    return (null, null);
-                }
-
-                project = pickProjectResult.Payload.Project;
-            }
-
-            var optionsPaths = project.GetConfigFiles();
-            var optionsPath = optionsPaths[0];
-
-            if (File.Exists(optionsPath))
-            {
-                return (null, project);
-            }
-
-            var options = new ReverseEngineerOptions
-            {
-                Tables = new List<SerializationTableModel>(),
-                CodeGenerationMode = CodeGenerationMode.EFCore8,
-                DatabaseType = DatabaseType.SQLServerDacpac,
-                UiHint = sqlProjectPath,
-                ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
-                OutputPath = "Models",
-            };
-
-            await SaveOptionsAsync(project, optionsPath, options, null, new Tuple<List<Schema>, string>(null, null));
-
-            return (optionsPath, project);
-        }
-
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(string uiHint = null)
+        /// <summary>
+        /// Entry point of the Wizard invoked by the EfCorePowerToolsPackage (menu select).
+        /// </summary>
+        /// <returns>void.</returns>
+        public async Task ReverseEngineerCodeFirstLaunchWizardAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             try
             {
-                var wizard = new WizardDialogBox();
-                var showDialog = wizard.ShowDialog();
-                var dialogResult = showDialog != null && (bool)showDialog;
-                var result = dialogResult
-                        ? $"{wizard.WizardData.DataItem1}\n" +
-                          $"{wizard.WizardData.DataItem2}\n" +
-                          $"{wizard.WizardData.DataItem3}"
-                        : "Canceled.";
-
-                await VS.MessageBox.ShowAsync(
-                    "EF Core Power Tools",
-                    result,
-                    icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
-                    buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
-                return;
-
                 var project = await VS.Solutions.GetActiveProjectAsync();
 
                 if (project == null)
@@ -120,6 +70,49 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
                     return;
                 }
+
+                // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
+                // which this class implements.  The wizard pages will use the BLL to process
+                // data using existing business logic.
+                var wizard = new WizardDialogBox(this);
+                var showDialog = wizard.ShowDialog();
+                var dialogResult = showDialog != null && (bool)showDialog;
+                var result = dialogResult
+                        ? $"{wizard.WizardDataViewModel.DataItem1}\n" +
+                          $"{wizard.WizardDataViewModel.DataItem2}\n" +
+                          $"{wizard.WizardDataViewModel.DataItem3}"
+                        : "Canceled.";
+
+                await VS.MessageBox.ShowAsync(
+                    "EF Core Power Tools",
+                    result,
+                    icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
+                    buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var innerException in ae.Flatten().InnerExceptions)
+                {
+                    package.LogError(new List<string>(), innerException);
+                }
+            }
+            catch (Exception exception)
+            {
+                package.LogError(new List<string>(), exception);
+            }
+        }
+
+        /// <summary>
+        /// Implements: IReverseEngineerBll
+        /// Prior name: ReverseEngineerCodeFirstAsync(string uiHint = null)
+        /// Invoked by: WizardPage1
+        /// </summary>
+        /// <returns> List of ConfigModel </returns>
+        public async Task<List<ConfigModel>> PickConfigDialogInitializeAsync()
+        {
+            try
+            {
+                var project = await VS.Solutions.GetActiveProjectAsync();
 
                 var projectPath = project.FullPath;
                 var optionsPaths = project.GetConfigFiles();
@@ -135,25 +128,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync($"Using CLI config in read-only mode, manually edit the file to make changes.");
                 }
 
-                if (optionsPaths.Count > 1)
+                var results = optionsPaths.Select(m => new ConfigModel
                 {
-                    var pcd = package.GetView<IPickConfigDialog>();
-                    pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
-                    {
-                        ConfigPath = m,
-                        ProjectPath = projectPath,
-                    }));
+                    ConfigPath = m,
+                    ProjectPath = projectPath,
+                }).ToList();
 
-                    var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
-                    if (!pickConfigResult.ClosedByOK)
-                    {
-                        return;
-                    }
-
-                    optionsPath = pickConfigResult.Payload.ConfigPath;
-                }
-
-                await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint);
+                await VS.StatusBar.ShowMessageAsync($"PickConfigDialog initialization complete");
+                return results;
             }
             catch (AggregateException ae)
             {
@@ -161,14 +143,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     package.LogError(new List<string>(), innerException);
                 }
+
+                return null;
             }
             catch (Exception exception)
             {
                 package.LogError(new List<string>(), exception);
+                return null;
             }
         }
 
-        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
+        public async Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -830,5 +815,87 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
+
+        private async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var project = candidateProjects[0];
+
+            if (candidateProjects.Count > 1)
+            {
+                var pcd = package.GetView<IPickProjectDialog>();
+                pcd.PublishProjects(candidateProjects.Select(m => new ProjectModel
+                {
+                    Project = m,
+                }));
+
+                var pickProjectResult = pcd.ShowAndAwaitUserResponse(true);
+                if (!pickProjectResult.ClosedByOK)
+                {
+                    return (null, null);
+                }
+
+                project = pickProjectResult.Payload.Project;
+            }
+
+            var optionsPaths = project.GetConfigFiles();
+            var optionsPath = optionsPaths[0];
+
+            if (File.Exists(optionsPath))
+            {
+                return (null, project);
+            }
+
+            var options = new ReverseEngineerOptions
+            {
+                Tables = new List<SerializationTableModel>(),
+                CodeGenerationMode = CodeGenerationMode.EFCore8,
+                DatabaseType = DatabaseType.SQLServerDacpac,
+                UiHint = sqlProjectPath,
+                ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
+                OutputPath = "Models",
+            };
+
+            await SaveOptionsAsync(project, optionsPath, options, null, new Tuple<List<Schema>, string>(null, null));
+
+            return (optionsPath, project);
+        }
+
     }
+
+    /// <summary>
+    /// Didn't want to pull in another assembly - grab AsyncHelper code
+    /// https://github.com/aspnet/AspNetIdentity/blob/main/src/Microsoft.AspNet.Identity.Core/AsyncHelper.cs.
+    /// </summary>
+    public static class AsyncHelper
+    {
+        private static readonly TaskFactory _myTaskFactory = new TaskFactory(CancellationToken.None,
+            TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
+
+        public static TResult RunSync<TResult>(Func<Task<TResult>> func)
+        {
+            var cultureUi = CultureInfo.CurrentUICulture;
+            var culture = CultureInfo.CurrentCulture;
+            return _myTaskFactory.StartNew(() =>
+            {
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = cultureUi;
+                return func();
+            }).Unwrap().GetAwaiter().GetResult();
+        }
+
+        public static void RunSync(Func<Task> func)
+        {
+            var cultureUi = CultureInfo.CurrentUICulture;
+            var culture = CultureInfo.CurrentCulture;
+            _myTaskFactory.StartNew(() =>
+            {
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = cultureUi;
+                return func();
+            }).Unwrap().GetAwaiter().GetResult();
+        }
+    }
+
 }
