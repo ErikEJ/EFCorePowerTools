@@ -29,7 +29,7 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="6.21.160" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="6.0.3" />
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="6.0.1" />
-    <PackageReference Include="System.CodeDom" Version="8.0.0" />
+    <PackageReference Include="System.CodeDom" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
