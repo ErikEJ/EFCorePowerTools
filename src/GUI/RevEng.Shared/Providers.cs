@@ -292,10 +292,10 @@ namespace RevEng.Common
                         pkgVersion = "6.0.29";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.10";
+                        pkgVersion = "8.0.11";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.0-rc.2";
+                        pkgVersion = "9.0.0";
                         break;
                 }
 
