@@ -1,5 +1,5 @@
 {
-  "description": "A package that contains EF Core Power Tools and some useful DDEX providers and other extensions that improve your experience when using EF Core Power Tools: [VisualStudio.Data.Sqlite](https://marketplace.visualstudio.com/items?itemName=bricelam.VSDataSqlite) and [Npgsql PostgreSQL Integration](https://marketplace.visualstudio.com/items?itemName=RojanskyS.NpgsqlPostgreSQLIntegration)",
+  "description": "A package that contains EF Core Power Tools, some useful DDEX providers and other extensions that improve your experience when using EF Core Power Tools: [VisualStudio.Data.Sqlite](https://marketplace.visualstudio.com/items?itemName=bricelam.VSDataSqlite) and [Npgsql PostgreSQL Integration](https://marketplace.visualstudio.com/items?itemName=RojanskyS.NpgsqlPostgreSQLIntegration)",
   "version": "1.0.0.0",
   "extensions": [
     {
