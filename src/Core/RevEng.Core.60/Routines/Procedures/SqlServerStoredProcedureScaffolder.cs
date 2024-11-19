@@ -152,7 +152,7 @@ namespace RevEng.Core.Routines.Procedures
 
                     foreach (var parameter in outParams)
                     {
-                        Sb.AppendLine($"{Code.Identifier(parameter.Name)}.SetValue({ParameterPrefix}{parameter.Name}.Value);");
+                        Sb.AppendLine($"{Code.Identifier(parameter.Name)}?.SetValue({ParameterPrefix}{parameter.Name}.Value);");
                     }
 
                     if (procedure.SupportsMultipleResultSet)
