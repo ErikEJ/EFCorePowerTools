@@ -39,7 +39,7 @@ namespace RevEng.Core.Routines.Procedures
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase)
         {
             ArgumentNullException.ThrowIfNull(procedure);
 
@@ -59,9 +59,9 @@ namespace RevEng.Core.Routines.Procedures
 
             var fullExec = GenerateProcedureStatement(procedure, retValueName, useAsyncCalls);
 
-            var multiResultId = GenerateMultiResultId(procedure, model);
+            var multiResultId = GenerateMultiResultId(procedure, model, usePascalCase);
 
-            var identifier = ScaffoldHelper.GenerateIdentifierName(procedure, model);
+            var identifier = ScaffoldHelper.GenerateIdentifierName(procedure, model, Code, usePascalCase);
 
             var returnClass = identifier + "Result";
 
@@ -134,7 +134,7 @@ namespace RevEng.Core.Routines.Procedures
 
                             using (Sb.Indent())
                             {
-                                var statements = GenerateMultiResultStatement(procedure, model, useAsyncCalls);
+                                var statements = GenerateMultiResultStatement(procedure, model, useAsyncCalls, usePascalCase);
                                 Sb.AppendLine($"_ = {statements};");
                             }
 
@@ -171,54 +171,6 @@ namespace RevEng.Core.Routines.Procedures
 
                 Sb.AppendLine("}");
             }
-        }
-
-        private static string GenerateMultiResultId(Routine procedure, RoutineModel model)
-        {
-            if (procedure.Results.Count == 1)
-            {
-                return null;
-            }
-
-            var ids = new List<string>();
-            var i = 1;
-            foreach (var resultSet in procedure.Results)
-            {
-                var suffix = $"{i++}";
-
-                var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model) + "Result" + suffix;
-                ids.Add($"List<{typeName}> Result{suffix}");
-            }
-
-            return $"({string.Join(", ", ids)})";
-        }
-
-        private static string GenerateMultiResultStatement(Routine procedure, RoutineModel model, bool useAsyncCalls)
-        {
-            if (procedure.Results.Count == 1)
-            {
-                return null;
-            }
-
-            var ids = new List<string>();
-            var i = 1;
-            foreach (var resultSet in procedure.Results)
-            {
-                var suffix = $"{i++}";
-
-                var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model) + "Result" + suffix;
-
-                if (useAsyncCalls)
-                {
-                    ids.Add($"(await reader.ReadAsync<{typeName}>()).ToList()");
-                }
-                else
-                {
-                    ids.Add($"(reader.Read<{typeName}>()).ToList()");
-                }
-            }
-
-            return $"({string.Join(", ", ids)})";
         }
 
         private static string GenerateProcedureStatement(Routine procedure, string retValueName, bool useAsyncCalls)
@@ -276,6 +228,54 @@ namespace RevEng.Core.Routines.Procedures
             line += useAsyncCalls ? ", CancellationToken cancellationToken = default)" : ")";
 
             return line;
+        }
+
+        private string GenerateMultiResultId(Routine procedure, RoutineModel model, bool usePascalCase)
+        {
+            if (procedure.Results.Count == 1)
+            {
+                return null;
+            }
+
+            var ids = new List<string>();
+            var i = 1;
+            foreach (var resultSet in procedure.Results)
+            {
+                var suffix = $"{i++}";
+
+                var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model, Code, usePascalCase) + "Result" + suffix;
+                ids.Add($"List<{typeName}> Result{suffix}");
+            }
+
+            return $"({string.Join(", ", ids)})";
+        }
+
+        private string GenerateMultiResultStatement(Routine procedure, RoutineModel model, bool useAsyncCalls, bool usePascalCase)
+        {
+            if (procedure.Results.Count == 1)
+            {
+                return null;
+            }
+
+            var ids = new List<string>();
+            var i = 1;
+            foreach (var resultSet in procedure.Results)
+            {
+                var suffix = $"{i++}";
+
+                var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model, Code, usePascalCase) + "Result" + suffix;
+
+                if (useAsyncCalls)
+                {
+                    ids.Add($"(await reader.ReadAsync<{typeName}>()).ToList()");
+                }
+                else
+                {
+                    ids.Add($"(reader.Read<{typeName}>()).ToList()");
+                }
+            }
+
+            return $"({string.Join(", ", ids)})";
         }
 
         private void GenerateParameterVar(ModuleParameter parameter, Routine procedure)

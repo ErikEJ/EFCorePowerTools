@@ -34,5 +34,10 @@ namespace RevEng.Core.Abstractions.Metadata
 
         public List<ModuleParameter> Parameters { get; set; } = new List<ModuleParameter>();
         public List<List<ModuleResultElement>> Results { get; set; } = new List<List<ModuleResultElement>>();
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

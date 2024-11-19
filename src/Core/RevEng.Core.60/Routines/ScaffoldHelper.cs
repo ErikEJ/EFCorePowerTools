@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Design;
 using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Routines
@@ -111,55 +112,81 @@ namespace RevEng.Core.Routines
             return reader.ReadToEnd();
         }
 
-        public static string GenerateIdentifierName(Routine routine, RoutineModel model)
+        public static string GenerateIdentifierName(Routine routine, RoutineModel model, ICSharpHelper code, bool usePascalCase)
         {
             ArgumentNullException.ThrowIfNull(routine);
 
             ArgumentNullException.ThrowIfNull(model);
 
-            return CreateIdentifier(GenerateUniqueName(routine, model)).Item1;
+            if (usePascalCase)
+            {
+                var name = GenerateUniqueName(routine, model);
+
+                return CreateIdentifier(name, name, true).Item1;
+            }
+            else
+            {
+                var identifier = code.Identifier(GenerateUniqueName(routine, model));
+
+                return GenerateIdentifier(identifier);
+            }
         }
 
-        public static Tuple<string, string> GeneratePropertyName(string propertyName)
+        public static Tuple<string, string> GeneratePropertyName(string propertyName, ICSharpHelper code, bool usePascalCase)
         {
             ArgumentNullException.ThrowIfNull(propertyName);
 
-            return CreateIdentifier(propertyName);
+            var identifier = code.Identifier(propertyName, capitalize: true);
+
+            return CreateIdentifier(GenerateIdentifier(identifier), propertyName, usePascalCase);
         }
 
-        public static Tuple<string, string> CreateIdentifier(string name)
+        public static Tuple<string, string> CreateIdentifier(string name, string propertyName, bool usePascalCase)
         {
-            var original = name;
-
-            var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
-
-            string columAttribute = null;
-
-            if (!isValid)
+            if (!usePascalCase)
             {
-                columAttribute = $"[Column(\"{name}\")]";
+                var original = name;
 
-                // File name contains invalid chars, remove them
-                var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
-                name = regex.Replace(name, string.Empty);
+                var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
 
-                if (string.IsNullOrWhiteSpace(name))
+                string columAttribute = null;
+
+                if (!isValid)
                 {
-                    // we cannot fix it
-                    name = original;
+                    columAttribute = $"[Column(\"{name}\")]";
+
+                    // File name contains invalid chars, remove them
+                    var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
+                    name = regex.Replace(name, string.Empty);
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        // we cannot fix it
+                        name = original;
+                    }
+                    else if (!char.IsLetter(name, 0))
+                    {
+                        name = name.Insert(0, "_");
+                    }
                 }
-                else if (!char.IsLetter(name, 0))
+
+                if (KeyWords.Contains(name))
                 {
-                    name = name.Insert(0, "_");
+                    name = "@" + name;
                 }
+
+                return new Tuple<string, string>(name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase), columAttribute);
             }
-
-            if (KeyWords.Contains(name))
+            else
             {
-                name = "@" + name;
-            }
+                string columAttribute = null;
+                if (!name.Equals(propertyName, StringComparison.Ordinal))
+                {
+                    columAttribute = $"[Column(\"{propertyName}\")]";
+                }
 
-            return new Tuple<string, string>(name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase), columAttribute);
+                return new Tuple<string, string>(name, columAttribute);
+            }
         }
 
         private static string GenerateUniqueName(Routine routine, RoutineModel model)
@@ -177,6 +204,38 @@ namespace RevEng.Core.Routines
             }
 
             return routine.Name;
+        }
+
+        private static string GenerateIdentifier(string value)
+        {
+            var candidateStringBuilder = new StringBuilder();
+            var previousLetterCharInWordIsLowerCase = false;
+            var isFirstCharacterInWord = true;
+
+            foreach (var c in value)
+            {
+                var isNotLetterOrDigit = !char.IsLetterOrDigit(c);
+                if (isNotLetterOrDigit
+                    || (previousLetterCharInWordIsLowerCase && char.IsUpper(c)))
+                {
+                    isFirstCharacterInWord = true;
+                    previousLetterCharInWordIsLowerCase = false;
+                    if (isNotLetterOrDigit)
+                    {
+                        continue;
+                    }
+                }
+
+                candidateStringBuilder.Append(
+                    isFirstCharacterInWord ? char.ToUpperInvariant(c) : char.ToLowerInvariant(c));
+                isFirstCharacterInWord = false;
+                if (char.IsLower(c))
+                {
+                    previousLetterCharInWordIsLowerCase = true;
+                }
+            }
+
+            return candidateStringBuilder.ToString();
         }
     }
 }

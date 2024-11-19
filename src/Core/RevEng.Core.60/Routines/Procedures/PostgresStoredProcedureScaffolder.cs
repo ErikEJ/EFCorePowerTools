@@ -40,7 +40,7 @@ namespace RevEng.Core.Routines.Procedures
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase)
         {
             ArgumentNullException.ThrowIfNull(procedure);
 
@@ -56,7 +56,7 @@ namespace RevEng.Core.Routines.Procedures
 
             var fullExec = GenerateProcedureStatement(procedure, useAsyncCalls);
 
-            var identifier = ScaffoldHelper.GenerateIdentifierName(procedure, model);
+            var identifier = ScaffoldHelper.GenerateIdentifierName(procedure, model, Code, usePascalCase);
 
             var returnClass = identifier + "Result";
 
