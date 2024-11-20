@@ -136,9 +136,16 @@ namespace RevEng.Core.Routines
         {
             ArgumentNullException.ThrowIfNull(propertyName);
 
-            var identifier = code.Identifier(propertyName, capitalize: true);
+            if (!usePascalCase)
+            {
+                return CreateIdentifier(propertyName, propertyName, false);
+            }
+            else
+            {
+                var identifier = code.Identifier(propertyName, capitalize: true);
 
-            return CreateIdentifier(GenerateIdentifier(identifier), propertyName, usePascalCase);
+                return CreateIdentifier(GenerateIdentifier(identifier), propertyName, true);
+            }
         }
 
         public static Tuple<string, string> CreateIdentifier(string name, string propertyName, bool usePascalCase)

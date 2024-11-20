@@ -382,7 +382,9 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.ProductId, "ProductsOrder_Details");
 
-            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.OrderId)
+                .HasComment("OrderID comment")
+                .HasColumnName("OrderID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Quantity).HasDefaultValue((short)1);
             entity.Property(e => e.UnitPrice).HasColumnType("money");

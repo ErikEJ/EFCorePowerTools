@@ -10,6 +10,9 @@ namespace ScaffoldingTester.Models;
 /// </summary>
 public partial class OrderDetail
 {
+    /// <summary>
+    /// OrderID comment
+    /// </summary>
     public int OrderId { get; set; }
 
     public int ProductId { get; set; }
