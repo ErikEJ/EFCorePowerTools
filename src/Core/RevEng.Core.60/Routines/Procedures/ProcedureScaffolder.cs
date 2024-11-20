@@ -97,7 +97,7 @@ namespace RevEng.Core.Routines.Procedures
                         suffix = $"{i++}";
                     }
 
-                    var typeName = ScaffoldHelper.GenerateIdentifierName(routine, model) + "Result" + suffix;
+                    var typeName = ScaffoldHelper.GenerateIdentifierName(routine, model, Code, scaffolderOptions.UsePascalIdentifiers) + "Result" + suffix;
 
                     var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
 
@@ -155,7 +155,7 @@ namespace RevEng.Core.Routines.Procedures
             return result;
         }
 
-        protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls);
+        protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase);
 
         private List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
@@ -229,7 +229,7 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     foreach (var procedure in model.Routines)
                     {
-                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls);
+                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers);
                         Sb.AppendLine(";");
                     }
                 }
@@ -306,7 +306,7 @@ namespace RevEng.Core.Routines.Procedures
 
                     Sb.AppendLine("}");
 #if !CORE80
-                    GenerateOnModelCreating(model);
+                    GenerateOnModelCreating(model, scaffolderOptions.UsePascalIdentifiers);
 #endif
                 }
 
@@ -333,7 +333,7 @@ namespace RevEng.Core.Routines.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls);
+                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers);
                 }
 
                 if (model.Routines.Exists(r => r.SupportsMultipleResultSet))
@@ -350,7 +350,7 @@ namespace RevEng.Core.Routines.Procedures
         }
 
 #if !CORE80
-        private void GenerateOnModelCreating(RoutineModel model)
+        private void GenerateOnModelCreating(RoutineModel model, bool usePascalCase)
         {
             Sb.AppendLine();
             Sb.AppendLine($"protected void OnModelCreatingGenerated{FileNameSuffix}(ModelBuilder modelBuilder)");
@@ -375,7 +375,7 @@ namespace RevEng.Core.Routines.Procedures
                             suffix = string.Empty;
                         }
 
-                        var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model) + "Result" + suffix;
+                        var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model, Code, usePascalCase) + "Result" + suffix;
 
                         Sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey().ToView(null);");
                     }
@@ -477,7 +477,7 @@ namespace RevEng.Core.Routines.Procedures
 
             using (Sb.Indent())
             {
-                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation);
+                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation, options.UsePascalIdentifiers);
             }
 
             Sb.AppendLine("}");
@@ -485,24 +485,24 @@ namespace RevEng.Core.Routines.Procedures
             return Sb.ToString();
         }
 
-        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation)
+        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
         {
             Sb.AppendLine($"public partial class {name}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())
             {
-                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation);
+                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation, usePascalCase);
             }
 
             Sb.AppendLine("}");
         }
 
-        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation)
+        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
         {
             foreach (var property in resultElements.OrderBy(e => e.Ordinal))
             {
-                var propertyNames = ScaffoldHelper.GeneratePropertyName(property.Name);
+                var propertyNames = ScaffoldHelper.GeneratePropertyName(property.Name, Code, usePascalCase);
 
                 if (property.StoreType == "decimal" && useDecimalDataAnnotation)
                 {

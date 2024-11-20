@@ -61,10 +61,10 @@ namespace RevEng.Core.Routines.Functions
                 {
                     foreach (var function in model.Routines)
                     {
-                        GenerateFunctionStub(function, model);
+                        GenerateFunctionStub(function, model, scaffolderOptions.UsePascalIdentifiers);
                     }
 
-                    GenerateModelCreation(model);
+                    GenerateModelCreation(model, scaffolderOptions.UsePascalIdentifiers);
                 }
 
                 Sb.AppendLine("}");
@@ -75,7 +75,7 @@ namespace RevEng.Core.Routines.Functions
             return Sb.ToString();
         }
 
-        private void GenerateModelCreation(RoutineModel model)
+        private void GenerateModelCreation(RoutineModel model, bool usePascalCase)
         {
             Sb.AppendLine();
             Sb.AppendLine("protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)");
@@ -85,7 +85,7 @@ namespace RevEng.Core.Routines.Functions
             {
                 foreach (var function in model.Routines.Cast<Function>().Where(f => !f.IsScalar))
                 {
-                    var typeName = ScaffoldHelper.GenerateIdentifierName(function, model) + "Result";
+                    var typeName = ScaffoldHelper.GenerateIdentifierName(function, model, Code, usePascalCase) + "Result";
 
                     Sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey();");
                 }
@@ -94,12 +94,12 @@ namespace RevEng.Core.Routines.Functions
             Sb.AppendLine("}");
         }
 
-        private void GenerateFunctionStub(Routine function, RoutineModel model)
+        private void GenerateFunctionStub(Routine function, RoutineModel model, bool usePascalCase)
         {
             var paramStrings = function.Parameters
                 .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter())} {p.Name}");
 
-            var identifier = ScaffoldHelper.GenerateIdentifierName(function, model);
+            var identifier = ScaffoldHelper.GenerateIdentifierName(function, model, Code, usePascalCase);
 
             Sb.AppendLine();
 

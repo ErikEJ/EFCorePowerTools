@@ -146,6 +146,7 @@ namespace RevEng.Core
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
                     UseAsyncCalls = options.UseAsyncCalls,
+                    UsePascalIdentifiers = options.UsePascalNamesForStoredProceduresAndFunctions,
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);
@@ -211,6 +212,7 @@ namespace RevEng.Core
                     UseAsyncCalls = options.UseAsyncCalls,
                     UseSchemaNamespaces = options.UseSchemaNamespaces,
                     UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
+                    UsePascalIdentifiers = options.UsePascalNamesForStoredProceduresAndFunctions,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);

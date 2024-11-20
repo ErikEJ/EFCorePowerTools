@@ -95,7 +95,7 @@ namespace RevEng.Core.Routines.Functions
                         suffix = $"{i++}";
                     }
 
-                    var typeName = ScaffoldHelper.GenerateIdentifierName(routine, model) + "Result" + suffix;
+                    var typeName = ScaffoldHelper.GenerateIdentifierName(routine, model, Code, scaffolderOptions.UsePascalIdentifiers) + "Result" + suffix;
 
                     var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
 
@@ -164,7 +164,7 @@ namespace RevEng.Core.Routines.Functions
 
             using (Sb.Indent())
             {
-                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation);
+                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation, options.UsePascalIdentifiers);
             }
 
             Sb.AppendLine("}");
@@ -172,24 +172,24 @@ namespace RevEng.Core.Routines.Functions
             return Sb.ToString();
         }
 
-        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation)
+        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
         {
             Sb.AppendLine($"public partial class {name}");
             Sb.AppendLine("{");
 
             using (Sb.Indent())
             {
-                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation);
+                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation, usePascalCase);
             }
 
             Sb.AppendLine("}");
         }
 
-        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation)
+        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
         {
             foreach (var property in resultElements.OrderBy(e => e.Ordinal))
             {
-                var propertyNames = ScaffoldHelper.GeneratePropertyName(property.Name);
+                var propertyNames = ScaffoldHelper.GeneratePropertyName(property.Name, Code, usePascalCase);
 
                 if (property.StoreType == "decimal" && useDecimalDataAnnotation)
                 {
