@@ -120,6 +120,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
                 UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
                 UsePrefixNavigationNaming = options.UsePrefixNavigationNaming,
+                UseDatabaseNamesForRoutines = options.UseDatabaseNamesForRoutines,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

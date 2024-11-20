@@ -53,6 +53,10 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("use-database-names")]
         public bool UseDatabaseNames { get; set; }
 
+        [JsonPropertyOrder(125)]
+        [JsonPropertyName("use-database-names-for-routines")]
+        public bool UseDatabaseNamesForRoutines { get; set; }
+
         [JsonPropertyOrder(130)]
         [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
         public bool UseDecimalDataAnnotation { get; set; } = true;

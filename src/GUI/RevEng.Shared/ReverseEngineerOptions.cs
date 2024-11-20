@@ -63,6 +63,6 @@ namespace RevEng.Common
         public bool UseDecimalDataAnnotationForSprocResult { get; set; } = true;
         public bool UsePrefixNavigationNaming { get; set; }
         public bool UseAsyncStoredProcedureCalls { get; set; } = true;
-        public bool UsePascalNamesForStoredProceduresAndFunctions { get; set; } = true;
+        public bool UseDatabaseNamesForRoutines { get; set; }
     }
 }

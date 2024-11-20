@@ -95,6 +95,7 @@ namespace RevEng.Common.Cli
                 MergeDacpacs = config.CodeGeneration.MergeDacpacs,
                 UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
+                UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
 
                 // Not supported:
                 UseHandleBars = false,
