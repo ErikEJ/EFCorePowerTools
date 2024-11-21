@@ -146,6 +146,10 @@ namespace RevEng.Common
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.1";
                             break;
+
+                        case CodeGenerationMode.EFCore9:
+                            pkgVersion = "9.0.0";
+                            break;
                     }
 
                     packages.Add(new NuGetPackage
@@ -168,6 +172,9 @@ namespace RevEng.Common
                             break;
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
+                            break;
+                        case CodeGenerationMode.EFCore9:
+                            pkgVersion = "9.0.0";
                             break;
                     }
 
@@ -269,6 +276,10 @@ namespace RevEng.Common
 
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
+                            break;
+
+                        case CodeGenerationMode.EFCore9:
+                            pkgVersion = "9.1.0";
                             break;
                     }
 
