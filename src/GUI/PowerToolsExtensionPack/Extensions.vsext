@@ -25,6 +25,10 @@
     {
       "vsixId": "SqlFormatter.fdf96f87-bc61-43ec-bc52-50fd011fd54f",
       "name": "SQL Formatter for Visual Studio"
+    },
+    {
+      "vsixId": "97edd510-988c-473f-9858-ddd5223eab1d",
+      "name": "T4 Language"
     }
   ]
 }
