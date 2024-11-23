@@ -141,7 +141,7 @@ namespace RevEng.Core
                 var functionOptions = new ModuleScaffolderOptions
                 {
                     ContextDir = outputContextDir,
-                    ContextName = code.Identifier(options.ContextClassName, null, true),
+                    ContextName = code.Identifier(options.ContextClassName),
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
@@ -204,7 +204,7 @@ namespace RevEng.Core
                 var procedureOptions = new ModuleScaffolderOptions
                 {
                     ContextDir = outputContextDir,
-                    ContextName = code.Identifier(options.ContextClassName, null, true),
+                    ContextName = code.Identifier(options.ContextClassName),
                     ContextNamespace = contextNamespace,
                     ModelNamespace = modelNamespace,
                     NullableReferences = options.UseNullableReferences,
