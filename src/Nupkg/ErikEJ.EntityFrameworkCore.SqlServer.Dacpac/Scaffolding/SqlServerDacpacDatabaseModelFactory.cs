@@ -734,7 +734,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var uqs = table.UniqueConstraints.ToList();
             foreach (var uq in uqs)
             {
-                if (dacpacOptions.ExcludedIndexes != null
+                if (dacpacOptions != null
+                    && dacpacOptions.ExcludedIndexes != null
                     && dacpacOptions.ExcludedIndexes.TryGetValue(table.Name.ToString(), out var indexes)
                     && indexes != null
                     && uq.Name.HasName
@@ -786,7 +787,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     continue;
                 }
 
-                if (dacpacOptions.ExcludedIndexes != null
+                if (dacpacOptions != null
+                    && dacpacOptions.ExcludedIndexes != null
                     && dacpacOptions.ExcludedIndexes.TryGetValue(table.Name.ToString(), out var indexes)
                     && indexes != null
                     && indexes.Contains(ix.Name.Parts[2]))
