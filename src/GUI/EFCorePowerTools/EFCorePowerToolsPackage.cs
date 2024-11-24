@@ -297,6 +297,14 @@ namespace EFCorePowerTools
                         new CommandID(
                             GuidList.GuidReverseEngineerMenu,
                             (int)PkgCmdIDList.cmdidReverseEngineerRefresh)));
+
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
+                        OnReverseEngineerConfigFileMenuInvokeHandler,
+                        null,
+                        OnReverseEngineerConfigFileMenuBeforeQueryStatus,
+                        new CommandID(
+                            GuidList.GuidReverseEngineerMenu,
+                            (int)PkgCmdIDList.cmdidDabStart)));
                 }
 
                 typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
@@ -327,6 +335,12 @@ namespace EFCorePowerTools
                 && itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
         }
 
+        private static bool IsDabConfigFile(string itemName)
+        {
+            return itemName != null
+                && itemName.Equals("dab-config.json", StringComparison.OrdinalIgnoreCase);
+        }
+
 #pragma warning disable VSTHRD100 // Avoid async void methods
         private async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
@@ -345,6 +359,10 @@ namespace EFCorePowerTools
                 case PkgCmdIDList.cmdidReverseEngineerRefresh:
                     menuCommand.Text = ButtonLocale.cmdidReverseEngineerRefresh;
                     break;
+                case PkgCmdIDList.cmdidDabStart:
+                    menuCommand.Text = "EF Core Power Tools - Start DAB";
+                    break;
+
                 default:
                     break;
             }
@@ -362,6 +380,12 @@ namespace EFCorePowerTools
 
             if (item == null)
             {
+                return;
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDabStart)
+            {
+                menuCommand.Visible = IsDabConfigFile(item.Text);
                 return;
             }
 
@@ -631,11 +655,6 @@ namespace EFCorePowerTools
                     return;
                 }
 
-                if (!IsConfigFile(item.Text))
-                {
-                    return;
-                }
-
                 Project project = FindProject(item);
                 if (project == null)
                 {
@@ -646,11 +665,30 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
+                    if (!IsConfigFile(item.Text))
+                    {
+                        return;
+                    }
+
                     await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
                 {
+                    if (!IsConfigFile(item.Text))
+                    {
+                        return;
+                    }
+
                     await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+                }
+                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDabStart)
+                {
+                    if (!IsDabConfigFile(item.Text))
+                    {
+                        return;
+                    }
+
+                    await VS.MessageBox.ShowConfirmAsync("Launch DAB");
                 }
             }
             catch (Exception ex)

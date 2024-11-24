@@ -276,6 +276,19 @@
         </Strings>
       </Button>
 
+      <Button guid="guidReverseEngineerMenu" id="cmdidDabStart" priority="0x0100" type="Button">
+        <Parent guid="guidReverseEngineerMenu" id="idReverseEngineerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="StartupApplication" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <CommandName>EF Core Power Tools - Start DAB</CommandName>
+          <ButtonText>EF Core Power Tools - Start DAB</ButtonText>
+        </Strings>
+      </Button>
+
       <Button guid="guidVSPackageCommandProjectContextMenuCmdSet" id="Command1Id" type="Button">
         <Icon guid="ImageCatalogGuid" id="DatabaseScript" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -405,6 +418,7 @@
       <IDSymbol name="idReverseEngineerMenuGroup" value="0x1100" />
       <IDSymbol name="cmdidReverseEngineerEdit" value="0x1101" />
       <IDSymbol name="cmdidReverseEngineerRefresh" value="0x1102" />
+      <IDSymbol name="cmdidDabStart" value="0x1103" />
     </GuidSymbol>
 
     <GuidSymbol name="guidVSPackageCommandProjectContextMenu" value="{069acb34-c12c-4e1c-ae69-1f9295046c84}" />
