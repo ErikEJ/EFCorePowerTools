@@ -66,7 +66,7 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    if (version.Major != 6 && version.Major != 7 && version.Major != 8)
+                    if (version.Major != 6 && version.Major != 7 && version.Major != 8 && version.Major != 9)
                     {
                         VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
@@ -86,6 +86,11 @@ namespace EFCorePowerTools.Handlers.Compare
                     {
                         nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 1, 0));
                         nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(8, 0, 0));
+                    }
+                    else if (version.Major == 9)
+                    {
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 4, 0));
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(9, 0, 0));
                     }
 
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
