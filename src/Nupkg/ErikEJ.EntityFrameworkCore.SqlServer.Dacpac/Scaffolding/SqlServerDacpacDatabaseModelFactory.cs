@@ -290,85 +290,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetUniqueConstraints(TSqlTable table, DatabaseTable dbTable)
-        {
-            var uqs = table.UniqueConstraints.ToList();
-            foreach (var uq in uqs)
-            {
-                var uniqueConstraint = new DatabaseUniqueConstraint
-                {
-                    Name = uq.Name.HasName ? uq.Name.Parts[1] : null,
-                    Table = dbTable,
-                };
-
-                if (uq.Clustered)
-                {
-                    uniqueConstraint["SqlServer:Clustered"] = true;
-                }
-
-                foreach (var uqCol in uq.Columns)
-                {
-                    var dbCol = dbTable.Columns
-                        .SingleOrDefault(c => c.Name == uqCol.Name.Parts[2]);
-
-                    if (dbCol == null)
-                    {
-                        continue;
-                    }
-
-                    uniqueConstraint.Columns.Add(dbCol);
-                }
-
-                if (uniqueConstraint.Columns.Count > 0)
-                {
-                    dbTable.UniqueConstraints.Add(uniqueConstraint);
-                }
-            }
-        }
-
-        private static void GetIndexes(TSqlTable table, DatabaseTable dbTable)
-        {
-            var ixs = table.Indexes.ToList();
-            foreach (var sqlIx in ixs)
-            {
-                var ix = sqlIx as TSqlIndex;
-
-                if (sqlIx == null)
-                {
-                    continue;
-                }
-
-                var index = new DatabaseIndex
-                {
-                    Name = ix.Name.Parts[2],
-                    Table = dbTable,
-                    IsUnique = ix.Unique,
-                    Filter = ix.FilterPredicate,
-                };
-
-                if (ix.Clustered)
-                {
-                    index["SqlServer:Clustered"] = true;
-                }
-
-                foreach (var column in ix.Columns)
-                {
-                    var dbCol = dbTable.Columns
-                        .SingleOrDefault(c => c.Name == column.Name.Parts[2]);
-
-                    if (dbCol != null)
-                    {
-                        index.Columns.Add(dbCol);
-                    }
-                }
-
-                if (index.Columns.Count > 0)
-                {
-                    dbTable.Indexes.Add(index);
-                }
-            }
-        }
-
         private static void GetTriggers(TSqlTable table, DatabaseTable dbTable)
         {
 #if CORE70
@@ -806,6 +727,104 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             return tableColumns;
+        }
+
+        private void GetUniqueConstraints(TSqlTable table, DatabaseTable dbTable)
+        {
+            var uqs = table.UniqueConstraints.ToList();
+            foreach (var uq in uqs)
+            {
+                if (dacpacOptions != null
+                    && dacpacOptions.ExcludedIndexes != null
+                    && dacpacOptions.ExcludedIndexes.TryGetValue(table.Name.ToString(), out var indexes)
+                    && indexes != null
+                    && uq.Name.HasName
+                    && indexes.Contains(uq.Name.Parts[1]))
+                {
+                    continue;
+                }
+
+                var uniqueConstraint = new DatabaseUniqueConstraint
+                {
+                    Name = uq.Name.HasName ? uq.Name.Parts[1] : null,
+                    Table = dbTable,
+                };
+
+                if (uq.Clustered)
+                {
+                    uniqueConstraint["SqlServer:Clustered"] = true;
+                }
+
+                foreach (var uqCol in uq.Columns)
+                {
+                    var dbCol = dbTable.Columns
+                        .SingleOrDefault(c => c.Name == uqCol.Name.Parts[2]);
+
+                    if (dbCol == null)
+                    {
+                        continue;
+                    }
+
+                    uniqueConstraint.Columns.Add(dbCol);
+                }
+
+                if (uniqueConstraint.Columns.Count > 0)
+                {
+                    dbTable.UniqueConstraints.Add(uniqueConstraint);
+                }
+            }
+        }
+
+        private void GetIndexes(TSqlTable table, DatabaseTable dbTable)
+        {
+            var ixs = table.Indexes.ToList();
+            foreach (var sqlIx in ixs)
+            {
+                var ix = sqlIx as TSqlIndex;
+
+                if (sqlIx == null)
+                {
+                    continue;
+                }
+
+                if (dacpacOptions != null
+                    && dacpacOptions.ExcludedIndexes != null
+                    && dacpacOptions.ExcludedIndexes.TryGetValue(table.Name.ToString(), out var indexes)
+                    && indexes != null
+                    && indexes.Contains(ix.Name.Parts[2]))
+                {
+                    continue;
+                }
+
+                var index = new DatabaseIndex
+                {
+                    Name = ix.Name.Parts[2],
+                    Table = dbTable,
+                    IsUnique = ix.Unique,
+                    Filter = ix.FilterPredicate,
+                };
+
+                if (ix.Clustered)
+                {
+                    index["SqlServer:Clustered"] = true;
+                }
+
+                foreach (var column in ix.Columns)
+                {
+                    var dbCol = dbTable.Columns
+                        .SingleOrDefault(c => c.Name == column.Name.Parts[2]);
+
+                    if (dbCol != null)
+                    {
+                        index.Columns.Add(dbCol);
+                    }
+                }
+
+                if (index.Columns.Count > 0)
+                {
+                    dbTable.Indexes.Add(index);
+                }
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+using System.Linq;
 #if !CORE80
 using Microsoft.EntityFrameworkCore.SqlServer.Design;
 #endif
@@ -198,11 +199,14 @@ namespace RevEng.Core
 
             if (options.DatabaseType == DatabaseType.SQLServerDacpac)
             {
+                var excludedIndexes = options.Tables?.Select(t => new { t.Name, t.ExcludedIndexes });
+
                 serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
                    serviceProvider => new SqlServerDacpacDatabaseModelFactory(
                        new SqlServerDacpacDatabaseModelFactoryOptions
                    {
                        MergeDacpacs = options.MergeDacpacs,
+                       ExcludedIndexes = excludedIndexes?.ToDictionary(t => t.Name, t => t.ExcludedIndexes),
 #if CORE80
                    },
                        serviceProvider.GetService<IRelationalTypeMappingSource>()));

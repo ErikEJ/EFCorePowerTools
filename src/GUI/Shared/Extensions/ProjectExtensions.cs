@@ -257,7 +257,7 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
-            // Supports older and current MsBuild.Sdk.SqlProj projects and new SQLProject projects
+            // Supports older and current MsBuild.Sdk.SqlProj projects and new Microsoft.Build.Sql projects
             return project.IsCapabilityMatch("CSharp & CPS & (MSBuild.Sdk.SqlProj.BuildTSqlScript | SQLProject)")
                 || (project.IsCSharpProjectPlain() && !string.IsNullOrEmpty(await project.GetAttributeAsync("SqlServerVersion")));
         }
