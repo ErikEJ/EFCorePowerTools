@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Contracts.ViewModels
@@ -8,6 +9,8 @@ namespace EFCorePowerTools.Contracts.ViewModels
         string Schema { get; set; }
 
         bool HasPrimaryKey { get; }
+
+        IEnumerable<string> ExcludedIndexes { get; set; }
 
         ObjectType ObjectType { get; set; }
 

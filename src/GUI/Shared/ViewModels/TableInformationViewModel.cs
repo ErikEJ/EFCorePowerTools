@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace EFCorePowerTools.ViewModels
             SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
             Columns.CollectionChanged += Columns_CollectionChanged;
         }
+
+        public IEnumerable<string> ExcludedIndexes { get; set; }
 
         public string Schema
         {
