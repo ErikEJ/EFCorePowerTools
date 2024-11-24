@@ -32,6 +32,16 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             vsDataHelper = new VsDataHelper();
         }
 
+        public void LaunchDab(string configPath)
+        {
+            var path = Path.GetDirectoryName(configPath);
+
+            var proc = new Process();
+            proc.StartInfo.FileName = "cmd";
+            proc.StartInfo.Arguments = $" /k \"cd /d {path} && dab start\"";
+            proc.Start();
+        }
+
         public async System.Threading.Tasks.Task BuildDabConfigAsync(Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();

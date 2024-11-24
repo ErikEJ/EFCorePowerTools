@@ -360,7 +360,7 @@ namespace EFCorePowerTools
                     menuCommand.Text = ButtonLocale.cmdidReverseEngineerRefresh;
                     break;
                 case PkgCmdIDList.cmdidDabStart:
-                    menuCommand.Text = "EF Core Power Tools - Start DAB";
+                    menuCommand.Text = "Start Data API Builder";
                     break;
 
                 default:
@@ -688,7 +688,7 @@ namespace EFCorePowerTools
                         return;
                     }
 
-                    await VS.MessageBox.ShowConfirmAsync("Launch DAB");
+                    dabBuilderHandler.LaunchDab(item.FullPath);
                 }
             }
             catch (Exception ex)
