@@ -23,6 +23,7 @@ namespace EFCorePowerTools.Wizard
             {
                 wizardViewModel.Configurations.Add(option);
             }
+
             OnConfigurationChange(options.FirstOrDefault());
         }
 

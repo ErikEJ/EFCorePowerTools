@@ -4,7 +4,7 @@
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     x:Class="EFCorePowerTools.Wizard.WizardPage3"
     KeepAlive="True"
-    FocusManager.FocusedElement="{Binding ElementName=dataItem2TextBox}" 
+    FocusManager.FocusedElement="{Binding ElementName=dataItem3TextBox}" 
     WindowTitle="Choose Your Settings For Project">
     <Grid Background="Bisque">
         <Grid.ColumnDefinitions>
