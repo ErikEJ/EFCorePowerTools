@@ -4,7 +4,6 @@
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     x:Class="EFCorePowerTools.Wizard.WizardPage1"
     KeepAlive="True"
-    FocusManager.FocusedElement="{Binding ElementName=dataItem1TextBox}" 
     WindowTitle="Choose Your Data Connection"
     >
     <Grid Background="Aqua">
@@ -15,23 +14,20 @@
             <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.Row="0">Config File:</Label>
-        <ComboBox Grid.Column="2"
+        <Label Grid.Column="1" Grid.Row="1">Config File:</Label>
+        <ComboBox Grid.Column="2" Grid.Row="1"
                       x:Name="DatabaseConnectionCombobox"
                       TabIndex="1"
                       ItemsSource="{Binding Configurations, Mode=OneWay}"
                       SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay}"
                       DisplayMemberPath="DisplayName"/>
-
-        <Label Grid.Column="1" Grid.Row="1">Data Item 1:</Label>
-        <TextBox Name="dataItem1TextBox" Grid.Column="2" Grid.Row="1" Padding="5,0,0,0" Text="{Binding Path=DataItem1}" />
-
+      
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button Name="backButton" IsEnabled="False" Width="50" xml:space="preserve">&lt; _Back</Button>
             <Button Name="nextButton" Click="NextButton_Click"  Width="50" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>

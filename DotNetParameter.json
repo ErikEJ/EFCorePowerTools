@@ -1,0 +1,104 @@
+﻿
+Arguments
+"C:\Users\billkratochvil\AppData\Local\Temp\efreveng8.2.6.0.1\efreveng80.dll" 
+"C:\Users\billkratochvil\AppData\Local\Temp\rxrguykk.lfv.json"
+Process.Start(arguments)
+
+Result:
+{
+   "ContextConfigurationFilePaths": [ ],
+   "ContextFilePath": "X:\\blogapi\\blogapi\\Models\\db_a2cb58_adventure_1Context.cs",
+   "DatabaseEdition": 2,
+   "DatabaseEditionId": 1293598313,
+   "DatabaseLevel": 120,
+   "DatabaseVersion": 13,
+   "EntityErrors": [ ],
+   "EntityTypeFilePaths": [
+      "X:\\blogapi\\blogapi\\Models\\Triple.cs",
+      "X:\\blogapi\\blogapi\\Models\\TriplesCrossRef.cs"
+   ],
+   "EntityWarnings": [
+      "Your database compatibility level is only '120', consider updating to 130 or higher to take full advantage of new database engine features."
+   ]
+}
+
+PostRun File : X:\blogapi\blogapi\efpt.postrun.cmd
+
+parameter file:
+
+{
+   "ConnectionString": "Data Source=...",
+   "ContextClassName": "db_a2cb58_adventure_1Context",
+   "ContextNamespace": null,
+   "CustomReplacers": [
+      {
+         "SchemaName": "dbo",
+         "Tables": [
+            {
+               "Columns": [
+                  {
+                     "Name": "Value",
+                     "NewName": "TagValue"
+                  }
+               ],
+               "Name": "Triples",
+               "NewName": "Triples"
+            }
+         ],
+         "UseSchemaName": false
+      }
+   ],
+   "Dacpac": null,
+   "DatabaseType": 3,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "MergeDacpacs": false,
+   "ModelNamespace": null,
+   "OptionsPath": "X:\\blogapi\\blogapi",
+   "OutputContextPath": null,
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectPath": "X:\\blogapi\\blogapi",
+   "ProjectRootNamespace": "blogapi",
+   "RunCleanup": true,
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Triples]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TriplesCrossRef]",
+         "ObjectType": 0
+      }
+   ],
+   "UncountableWords": null,
+   "UseAsyncCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotation": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseLegacyResultSetDiscovery": false,
+   "UseManyToManyEntity": false,
+   "UseMultipleSprocResultSets": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

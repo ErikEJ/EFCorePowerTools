@@ -246,6 +246,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     if (!fromSqlProj)
                     {
+                        // #1 load database connections (IPickServerDatabaseDialog)
                         if (!await ChooseDataBaseConnectionAsync(options, project))
                         {
                             await VS.StatusBar.ClearAsync();
@@ -268,6 +269,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         }
                     }
 
+                    // #2 load tables (IPickTablesDialog)
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
                     if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
@@ -276,6 +278,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         return;
                     }
 
+                    // #3 Load modeling options (IModelingOptionsDialog)
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
@@ -738,7 +741,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
         }
 
-        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options,  ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
+        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
             if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {

@@ -59,6 +59,7 @@
     <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="Wizard\WizardDataViewModel.cs" />
     <Compile Include="Wizard\WizardPage1.cs">
       <DependentUpon>WizardPage1.xaml</DependentUpon>
     </Compile>
@@ -152,7 +153,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Wizard\WizardDataViewModel.cs" />
     <Compile Include="Wizard\WizardLauncher.cs" />
     <Compile Include="Wizard\WizardResult.cs" />
     <Compile Include="Wizard\WizardResultPageFunction.cs" />

@@ -17,6 +17,7 @@ using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.ViewModels;
 using EFCorePowerTools.Wizard;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
@@ -51,7 +52,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         /// Entry point of the Wizard invoked by the EfCorePowerToolsPackage (menu select).
         /// </summary>
         /// <returns>void.</returns>
-        public async Task ReverseEngineerCodeFirstLaunchWizardAsync()
+        public async Task ReverseEngineerCodeFirstLaunchWizardAsync(EventArgs e)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -74,7 +75,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
                 // which this class implements.  The wizard pages will use the BLL to process
                 // data using existing business logic.
-                var wizard = new WizardDialogBox(this);
+                var wizard = new WizardDialogBox(this, e);
                 var showDialog = wizard.ShowDialog();
                 var dialogResult = showDialog != null && (bool)showDialog;
                 var result = dialogResult
@@ -108,7 +109,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         /// Invoked by: WizardPage1
         /// </summary>
         /// <returns> List of ConfigModel </returns>
-        public async Task<List<ConfigModel>> PickConfigDialogInitializeAsync()
+        public async Task<List<ConfigModel>> PickConfigDialogInitializeAsync(WizardDataViewModel viewModel = null)
         {
             try
             {
@@ -128,11 +129,24 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync($"Using CLI config in read-only mode, manually edit the file to make changes.");
                 }
 
+                // Provides list of all configurations to Wizard Page 1
                 var results = optionsPaths.Select(m => new ConfigModel
                 {
                     ConfigPath = m,
                     ProjectPath = projectPath,
                 }).ToList();
+
+                // These are legacy parameters that would have been passed on to 
+                // next step.  We'll populate viewmodel with them which will have
+                // only have been provided as a parameter from wizard
+                if (viewModel != null)
+                {
+                    viewModel.Project = project;
+                    viewModel.OptionsPath = optionsPath;
+                    viewModel.OnlyGenerate = false;
+                    viewModel.FromSqlProject = false;
+                    viewModel.UiHint = null;
+                }
 
                 await VS.StatusBar.ShowMessageAsync($"PickConfigDialog initialization complete");
                 return results;
@@ -153,7 +167,111 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
+        public async Task PickDatabaseConnectionAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            try
+            {
+                if (await VSHelper.IsDebugModeAsync())
+                {
+                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                    return;
+                }
+
+                var renamingPath = project.GetRenamingPath(optionsPath);
+                var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
+                if (!string.IsNullOrEmpty(referenceRenamingPath) && File.Exists(referenceRenamingPath))
+                {
+                    VSHelper.ShowMessage("Property renaming (experimental) is no longer available. See GitHub issue #2171.");
+                }
+
+                var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
+
+                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
+
+                if (options == null
+                    && optionsPath.EndsWith(Constants.ConfigFileName)
+                    && File.Exists(optionsPath))
+                {
+                    var config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(optionsPath, Encoding.UTF8));
+                    options = config.ToOptions(Path.GetDirectoryName(project.FullPath), optionsPath);
+                }
+
+                var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
+
+                var newOptions = false;
+
+                if (options == null)
+                {
+                    options = new ReverseEngineerOptions
+                    {
+                        ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
+                        OutputPath = "Models",
+                    };
+                    newOptions = true;
+                }
+
+                if (userOptions == null)
+                {
+                    userOptions = new ReverseEngineerUserOptions
+                    {
+                        UiHint = uiHint ?? options.UiHint,
+                    };
+                }
+
+                options.UiHint = uiHint ?? userOptions.UiHint;
+
+                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
+                mappedTypes = options.Tables?
+                    .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
+                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
+
+                options.ProjectPath = Path.GetDirectoryName(project.FullPath);
+                options.OptionsPath = Path.GetDirectoryName(optionsPath);
+
+                bool forceEdit = false;
+
+                var neededPackages = new List<NuGetPackage>();
+
+                DatabaseConnectionModel dbInfo = null;
+
+                // #1 Get Database Connection
+                if (!await ChooseDataBaseConnectionAsync(options, project))
+                {
+                    await VS.StatusBar.ClearAsync();
+                    return;
+                }
+
+                if (newOptions)
+                {
+                    options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
+                }
+
+                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
+
+                dbInfo = await GetDatabaseInfoAsync(options);
+
+                if (dbInfo == null)
+                {
+                    await VS.StatusBar.ClearAsync();
+                    return;
+                }
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var innerException in ae.Flatten().InnerExceptions)
+                {
+                    package.LogError(new List<string>(), innerException);
+                }
+            }
+            catch (Exception exception)
+            {
+                package.LogError(new List<string>(), exception);
+            }
+        }
+
+        public async Task PickDatabaseTablesAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

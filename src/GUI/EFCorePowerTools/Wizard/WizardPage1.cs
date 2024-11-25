@@ -18,14 +18,11 @@ namespace EFCorePowerTools.Wizard
 
             this.wizardViewModel = wizardViewModel;
 
-            // TODO: create an RunAsync function that follows best practices (versus Result)
-            var options = wizardView.Bll.PickConfigDialogInitializeAsync().Result;
-
+            var options = wizardViewModel.Bll.PickConfigDialogInitializeAsync(wizardViewModel).Result;
             foreach (var option in options)
             {
                 wizardViewModel.Configurations.Add(option);
             }
-
             OnConfigurationChange(options.FirstOrDefault());
         }
 
@@ -44,6 +41,7 @@ namespace EFCorePowerTools.Wizard
         protected void OnConfigurationChange(ConfigModel config)
         {
             wizardViewModel.SelectedConfiguration = config;
+            wizardViewModel.OptionsPath = config.ConfigPath;
         }
     }
 }

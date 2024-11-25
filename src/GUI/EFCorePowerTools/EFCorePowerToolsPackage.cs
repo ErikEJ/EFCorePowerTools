@@ -12,6 +12,7 @@ using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.BLL;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
@@ -662,7 +663,8 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
                 {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(
+                        new WizardEventArgs { Project = project, Filename = filename, OnlyGenerate = false });
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
@@ -727,7 +729,7 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
                 {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync();
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs.Empty);
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)

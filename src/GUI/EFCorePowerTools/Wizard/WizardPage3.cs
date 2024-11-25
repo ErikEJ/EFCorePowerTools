@@ -2,6 +2,7 @@
 // // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.ViewModels;
 
 namespace EFCorePowerTools.Wizard
 {

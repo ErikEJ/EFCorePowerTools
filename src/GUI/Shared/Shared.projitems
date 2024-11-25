@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BLL\IExtensionVersionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BLL\IReverseEngineerBll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\WizardEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Models\ProjectModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\TemplateTypeItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\CodeGenerationItem.cs" />
