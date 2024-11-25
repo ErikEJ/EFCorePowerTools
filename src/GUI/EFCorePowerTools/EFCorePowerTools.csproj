@@ -610,7 +610,7 @@
     <PackageReference Include="MvvmLightLibs">
       <Version>5.4.1.1</Version>
     </PackageReference>
-    <PackageReference Include="NuGet.ProjectModel" Version="6.11.1" />
+    <PackageReference Include="NuGet.ProjectModel" Version="6.12.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
   </ItemGroup>
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
