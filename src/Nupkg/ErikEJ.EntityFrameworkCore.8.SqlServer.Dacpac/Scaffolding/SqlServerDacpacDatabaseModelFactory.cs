@@ -27,9 +27,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
-#if CORE80
+
         private readonly IRelationalTypeMappingSource relationalTypeMappingSource;
-#endif
 
         public SqlServerDacpacDatabaseModelFactory()
         {
@@ -40,7 +39,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             dacpacOptions = options;
         }
 
-#if CORE80
         public SqlServerDacpacDatabaseModelFactory(IRelationalTypeMappingSource mappingSource)
         {
             // injections when using as a separate nuget
@@ -52,7 +50,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             dacpacOptions = options;
             relationalTypeMappingSource = mappingSource;
         }
-#endif
 
         public DatabaseModel Create(DbConnection connection, DatabaseModelFactoryOptions options)
         {
@@ -292,14 +289,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private static void GetTriggers(TSqlTable table, DatabaseTable dbTable)
         {
-#if CORE70
             var triggers = table.Triggers.ToList();
 
             if (triggers.Count != 0)
             {
                 dbTable.Triggers.Add(new DatabaseTrigger { Name = "trigger" });
             }
-#endif
         }
 
         private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
@@ -510,7 +505,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return value;
         }
 
-#if CORE80
         private static bool IsNumeric(Type type)
         {
             type = UnwrapNullableType(type);
@@ -644,13 +638,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 }
             }
         }
-#endif
 
-#if CORE80
         private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
-#else
-        private static IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
-#endif
         {
             var tableColumns = item.Columns
                 .Where(i => i.ColumnType != ColumnType.ColumnSet
@@ -691,10 +680,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Name = col.Name.Parts[2],
                     IsNullable = col.Nullable,
                     StoreType = storeType,
-#if CORE80
+
                     // this property affects whether the bool type will be nullable
                     DefaultValue = TryParseClrDefault(systemTypeName, defaultValue),
-#endif
                     DefaultValueSql = defaultValue,
                     ComputedColumnSql = col.Expression,
                     ValueGenerated = col.IsIdentity

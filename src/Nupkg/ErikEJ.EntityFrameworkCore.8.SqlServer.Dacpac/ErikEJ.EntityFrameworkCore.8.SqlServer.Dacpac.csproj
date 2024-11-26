@@ -26,33 +26,6 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>  
 
-  <PropertyGroup>
-    <DefineConstants>TRACE;CORE70;CORE80</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\DacpacMerger.cs" Link="DacpacConsolidate\DacpacMerger.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Design\SqlServerDacpacDesignTimeServices.cs" Link="Design\SqlServerDacpacDesignTimeServices.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\Scaffolding\SqlServerDacpacFunctionModelFactory.cs" Link="Scaffolding\SqlServerDacpacFunctionModelFactory.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\AliasResolutionVisitor.cs" Link="SqlSharpener\AliasResolutionVisitor.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\DataType.cs" Link="SqlSharpener\DataType.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\DataTypeHelper.cs" Link="SqlSharpener\DataTypeHelper.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Column.cs" Link="SqlSharpener\Model\Column.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Procedure.cs" Link="SqlSharpener\Model\Procedure.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Select.cs" Link="SqlSharpener\Model\Select.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\SelectColumn.cs" Link="SqlSharpener\Model\SelectColumn.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\Model\Table.cs" Link="SqlSharpener\Model\Table.cs" />
-    <Compile Include="..\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\SqlSharpener\SelectVisitor.cs" Link="SqlSharpener\SelectVisitor.cs" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.4.92" />
