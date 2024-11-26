@@ -158,33 +158,29 @@ namespace EFCorePowerTools.ViewModels
         private void Loaded_Executed()
         {
             // Database connection first
-            if (DatabaseConnections.Any(c => c.FilePath == null)
-                && !string.IsNullOrEmpty(UiHint)
-                && SelectedDatabaseConnection == null)
-            {
-                var candidate = DatabaseConnections
-                    .FirstOrDefault(m => m.ConnectionName == UiHint);
+            var candidate = DatabaseConnections.FirstOrDefault(m =>
+                    m.FilePath == null
+                    && !string.IsNullOrEmpty(UiHint)
+                    && SelectedDatabaseConnection == null
+                    && m.ConnectionName.Equals(UiHint, StringComparison.OrdinalIgnoreCase));
 
-                if (candidate != null)
-                {
-                    SelectedDatabaseConnection = candidate;
-                    return;
-                }
+            if (candidate != null)
+            {
+                SelectedDatabaseConnection = candidate;
+                return;
             }
 
             // Database definitions (SQL project) second
-            if (DatabaseConnections.Any(c => !string.IsNullOrWhiteSpace(c.FilePath)
-                && c.FilePath.EndsWith(".sqlproj")))
-            {
-                var candidate = DatabaseConnections
-                    .FirstOrDefault(m => !string.IsNullOrWhiteSpace(m.FilePath)
-                        && m.FilePath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
-                        && m.FilePath.Equals(uiHint));
+            candidate = DatabaseConnections.FirstOrDefault(c =>
+                !string.IsNullOrWhiteSpace(c.FilePath)
+                && !string.IsNullOrEmpty(UiHint)
+                && SelectedDatabaseConnection == null
+                && c.FilePath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
+                && c.FilePath.Equals(UiHint, StringComparison.OrdinalIgnoreCase));
 
-                if (candidate != null)
-                {
-                    SelectedDatabaseConnection = candidate;
-                }
+            if (candidate != null)
+            {
+                SelectedDatabaseConnection = candidate;
             }
         }
 
