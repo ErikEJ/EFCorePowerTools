@@ -7,17 +7,13 @@
     <RootNamespace>Modelling</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>TRACE;DEBUG;CORE60;CORE90</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CORE90</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\efpt60.core\*.cs">
+    <Compile Include="..\efpt80.core\*.cs">
       <Link>%(Filename)%(Extension)</Link>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\efpt60.core\EFCoreCompareBuilder.cs" />
   </ItemGroup>
 
    <ItemGroup>
