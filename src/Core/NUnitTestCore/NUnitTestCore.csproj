@@ -98,7 +98,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
   </ItemGroup>
 
 </Project>

@@ -96,11 +96,8 @@ namespace RevEng.Core.Routines
 
         public static string GetDbContextExtensionsText(bool useAsyncCalls)
         {
-#if CORE80
             var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensionsSqlQuery" : "RevEng.Core.DbContextExtensionsSqlQuery.Sync";
-#else
-            var dbContextExtensionTemplateName = useAsyncCalls ? "RevEng.Core.DbContextExtensions" : "RevEng.Core.DbContextExtensions.Sync";
-#endif
+
             var assembly = typeof(ScaffoldHelper).GetTypeInfo().Assembly;
             using var stream = assembly.GetManifestResourceStream(dbContextExtensionTemplateName);
             if (stream == null)

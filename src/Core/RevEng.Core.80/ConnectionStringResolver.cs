@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Npgsql;
 
-#if !CORE80
+#if !CORE90
 using FirebirdSql.Data.FirebirdClient;
 using MySqlConnector;
 using Oracle.ManagedDataAccess.Client;
@@ -67,7 +67,7 @@ namespace RevEng.Core
                 // Ignore
             }
 
-#if !CORE80
+#if !CORE90
             try
             {
                 var a = new MySqlConnectionStringBuilder(connectionString);

@@ -87,7 +87,6 @@ namespace RevEng.Core
             {
                 SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath, options.ProjectRootNamespace);
 
-#if CORE70 || CORE80
                 if (options.UseT4 || options.UseT4Split)
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
@@ -95,7 +94,7 @@ namespace RevEng.Core
                         scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath, options.ProjectRootNamespace);
                     }
                 }
-#endif
+
                 if (options.SelectedToBeGenerated != 2)
                 {
                     bool supportsProcedures = options.DatabaseType == DatabaseType.SQLServerDacpac
@@ -110,30 +109,13 @@ namespace RevEng.Core
                     if (functionPaths != null || procedurePaths != null)
                     {
                         var dbContextLines = File.ReadAllLines(filePaths.ContextFile).ToList();
-                        if (procedurePaths != null)
-                        {
-                            var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
-                            if (index != -1)
-                            {
-#if CORE70
-                                dbContextLines.Insert(index, "        OnModelCreatingGeneratedProcedures(modelBuilder);");
-#elif CORE80
-#else
-                                dbContextLines.Insert(index, "            OnModelCreatingGeneratedProcedures(modelBuilder);");
-#endif
-                            }
-                        }
 
                         if (functionPaths != null)
                         {
                             var index = dbContextLines.FindIndex(l => l.Contains("        OnModelCreatingPartial(modelBuilder);", StringComparison.Ordinal));
                             if (index != -1)
                             {
-#if CORE70 || CORE80
                                 dbContextLines.Insert(index, "        OnModelCreatingGeneratedFunctions(modelBuilder);");
-#else
-                                dbContextLines.Insert(index, "            OnModelCreatingGeneratedFunctions(modelBuilder);");
-#endif
                             }
                         }
 
@@ -261,7 +243,6 @@ namespace RevEng.Core
             }
         }
 
-#if CORE70 || CORE80
         private static List<(string Path, string OutputPath)> GetAlternateCodeTemplatePaths(string projectPath)
         {
             var result = new List<(string Path, string OutputPath)>();
@@ -288,7 +269,6 @@ namespace RevEng.Core
 
             return result;
         }
-#endif
 
         private static void ValidateOptions(ReverseEngineerCommandOptions options, List<string> warnings)
         {

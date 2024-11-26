@@ -26,9 +26,6 @@ using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
 using System.Linq;
-#if !CORE80
-using Microsoft.EntityFrameworkCore.SqlServer.Design;
-#endif
 
 namespace RevEng.Core
 {
@@ -66,17 +63,10 @@ namespace RevEng.Core
                         options.DatabaseType,
                         options.UseManyToManyEntity));
 
-#if CORE80
             if (options.CustomReplacers != null || options.UsePrefixNavigationNaming)
             {
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
-#else
-            if (options.CustomReplacers != null)
-            {
-                serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.CustomReplacers, options.PreserveCasingWithRegex));
-            }
-#endif
 
 #if !CORE90
             if (options.UseHandleBars)
@@ -204,15 +194,11 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
                    serviceProvider => new SqlServerDacpacDatabaseModelFactory(
                        new SqlServerDacpacDatabaseModelFactoryOptions
-                   {
-                       MergeDacpacs = options.MergeDacpacs,
-                       ExcludedIndexes = excludedIndexes?.ToDictionary(t => t.Name, t => t.ExcludedIndexes),
-#if CORE80
-                   },
+                       {
+                           MergeDacpacs = options.MergeDacpacs,
+                           ExcludedIndexes = excludedIndexes?.ToDictionary(t => t.Name, t => t.ExcludedIndexes),
+                       },
                        serviceProvider.GetService<IRelationalTypeMappingSource>()));
-#else
-                   }));
-#endif
 
                 serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
                 {
@@ -242,20 +228,12 @@ namespace RevEng.Core
                 var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                 nodaTime.ConfigureDesignTimeServices(serviceCollection);
             }
-#if CORE80
+
             serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
                 provider => new SqlServerTypeMappingSource(
                     provider.GetService<TypeMappingSourceDependencies>(),
                     provider.GetService<RelationalTypeMappingSourceDependencies>(),
                     options.UseDateOnlyTimeOnly));
-#endif
-#if !CORE80
-            if (options.UseDateOnlyTimeOnly)
-            {
-                var dateOnlyTimeOnly = new SqlServerDateOnlyTimeOnlyDesignTimeServices();
-                dateOnlyTimeOnly.ConfigureDesignTimeServices(serviceCollection);
-            }
-#endif
         }
     }
 }
