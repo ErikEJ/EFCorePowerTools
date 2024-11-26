@@ -47,21 +47,11 @@ jobs:
     - name: Build reveng tools
       shell: cmd
       run: |
-        cd ${{ github.workspace}}\src\Core\efreveng60
-        call ${{ github.workspace}}\src\Core\efreveng60\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}\src\Core\efreveng80
         call ${{ github.workspace}}\src\Core\efreveng80\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}\src\Core\efreveng90
         call ${{ github.workspace}}\src\Core\efreveng90\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}
-
-    - name: Extract and verify efreveng60.exe.zip file count
-      shell: cmd
-      run: |
-        mkdir vsix
-        7z x src/GUI/lib/efreveng60.exe.zip -oefreveng60 -y
-        dir /a:-d /s /b "efreveng60" | find /c ":\" > filecount.txt
-        findstr "159" filecount.txt
 
     - name: Extract and verify efreveng80.exe.zip file count
       shell: cmd

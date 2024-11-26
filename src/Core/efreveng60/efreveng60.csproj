@@ -13,12 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="TestFiles\*.*">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>  
 
 </Project>

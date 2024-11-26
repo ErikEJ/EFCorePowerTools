@@ -14,24 +14,15 @@ namespace RevEng.Core
     {
         private readonly List<Schema> customNameOptions;
         private readonly bool preserveCasingUsingRegex;
-#if CORE80
         private readonly bool usePrefixNaming;
-#endif
         public ReplacingCandidateNamingService(
-#if CORE80
             bool usePrefixNaming,
             List<Schema> customNameOptions,
             bool preserveCasingUsingRegex = false)
-#else
-            List<Schema> customNameOptions,
-            bool preserveCasingUsingRegex = false)
-#endif
         {
             this.customNameOptions = customNameOptions;
             this.preserveCasingUsingRegex = preserveCasingUsingRegex;
-#if CORE80
             this.usePrefixNaming = usePrefixNaming;
-#endif
         }
 
         public override string GenerateCandidateIdentifier(DatabaseTable originalTable)
@@ -143,7 +134,6 @@ namespace RevEng.Core
             return base.GenerateCandidateIdentifier(originalColumn);
         }
 
-#if CORE80
         public override string GetDependentEndCandidateNavigationPropertyName(IReadOnlyForeignKey foreignKey)
         {
             ArgumentNullException.ThrowIfNull(foreignKey);
@@ -221,7 +211,7 @@ namespace RevEng.Core
                 ? commonPrefix[..(i + 1)]
                 : commonPrefix;
         }
-#endif
+
         private static string GenerateIdentifier(string value)
         {
             var candidateStringBuilder = new StringBuilder();

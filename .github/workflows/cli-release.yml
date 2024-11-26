@@ -17,9 +17,6 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.403'
-
-    - name: Package CLI 6
-      run: dotnet pack src\Core\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ github.event.inputs.version }} -p:InformationalVersion=6.1.${{ github.event.inputs.version }}
   
     - name: Package CLI 8
       run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ github.event.inputs.version }} -p:InformationalVersion=8.1.${{ github.event.inputs.version }}

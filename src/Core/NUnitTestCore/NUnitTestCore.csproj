@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -96,9 +96,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
-    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.6.SqlServer.Dacpac.csproj" />
-    <ProjectReference Include="..\RevEng.Core.60\RevEng.Core.60.csproj" />
+    <ProjectReference Include="..\RevEng.Core.80\RevEng.Core.80.csproj" />
   </ItemGroup>
 
 </Project>

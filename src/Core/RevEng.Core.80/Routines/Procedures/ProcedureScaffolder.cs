@@ -305,9 +305,6 @@ namespace RevEng.Core.Routines.Procedures
                     }
 
                     Sb.AppendLine("}");
-#if !CORE80
-                    GenerateOnModelCreating(model, scaffolderOptions.UsePascalIdentifiers);
-#endif
                 }
 
                 Sb.AppendLine("}");
@@ -348,43 +345,6 @@ namespace RevEng.Core.Routines.Procedures
 
             return Sb.ToString();
         }
-
-#if !CORE80
-        private void GenerateOnModelCreating(RoutineModel model, bool usePascalCase)
-        {
-            Sb.AppendLine();
-            Sb.AppendLine($"protected void OnModelCreatingGenerated{FileNameSuffix}(ModelBuilder modelBuilder)");
-            Sb.AppendLine("{");
-
-            using (Sb.Indent())
-            {
-                foreach (var procedure in model.Routines.Cast<Procedure>().Where(p => string.IsNullOrEmpty(p.MappedType)))
-                {
-                    if (procedure.NoResultSet)
-                    {
-                        continue;
-                    }
-
-                    var i = 1;
-                    foreach (var resultSet in procedure.Results)
-                    {
-                        var suffix = $"{i++}";
-
-                        if (!procedure.SupportsMultipleResultSet)
-                        {
-                            suffix = string.Empty;
-                        }
-
-                        var typeName = ScaffoldHelper.GenerateIdentifierName(procedure, model, Code, usePascalCase) + "Result" + suffix;
-
-                        Sb.AppendLine($"modelBuilder.Entity<{typeName}>().HasNoKey().ToView(null);");
-                    }
-                }
-            }
-
-            Sb.AppendLine("}");
-        }
-#endif
 
         private void GenerateDapperSupport(bool useAsyncCalls)
         {

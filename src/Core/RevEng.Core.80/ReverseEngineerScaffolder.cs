@@ -85,9 +85,7 @@ namespace RevEng.Core
                 ConnectionString = options.ConnectionString,
                 SuppressOnConfiguring = !options.IncludeConnectionString,
                 UseNullableReferenceTypes = options.UseNullableReferences,
-#if CORE70 || CORE80
                 ProjectDir = (options.UseT4 || options.UseT4Split) ? (options.T4TemplatePath ?? projectPath) : null,
-#endif
             };
 
             var dbOptions = new DatabaseModelFactoryOptions(options.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), schemas);
@@ -492,11 +490,8 @@ namespace RevEng.Core
 
             var model = factory.Create(databaseModel, modelOptions) ?? throw new InvalidOperationException($"No model from provider {factory.GetType().ShortDisplayName()}");
 
-#if CORE70 || CORE80
             var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions);
-#else
-            var codeGenerator = ModelCodeGeneratorSelector.Select(codeOptions.Language);
-#endif
+
             var codeModel = codeGenerator.GenerateModel(model, codeOptions);
             if (entitiesOnly)
             {
