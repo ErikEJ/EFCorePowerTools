@@ -10,9 +10,7 @@
     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
     x:Class="EFCorePowerTools.Wizard.WizardPage1"
     KeepAlive="True"
-    WindowTitle="Choose Your Database Objects"
-    MinWidth="420"
-    MinHeight="160">
+    WindowTitle="Choose Your Database Objects">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

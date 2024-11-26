@@ -31,14 +31,20 @@ namespace EFCorePowerTools.Wizard
             {
                 foreach (var model in models)
                 {
-                    viewModel.DatabaseConnections.Add(model);
+                    if (!models.Any(db => db.DisplayName == model.DisplayName))
+                    {
+                        viewModel.DatabaseConnections.Add(model);
+                    }
                 }
             };
             addDefinitions = models =>
             {
                 foreach (var model in models)
                 {
-                    viewModel.DatabaseConnections.Add(model);
+                    if (!models.Any(db => db.DisplayName == model.DisplayName))
+                    {
+                        viewModel.DatabaseConnections.Add(model);
+                    }
                 }
             };
             addSchemas = models =>
@@ -46,13 +52,15 @@ namespace EFCorePowerTools.Wizard
                 viewModel.FilterSchemas = models.Any();
                 foreach (var model in models)
                 {
-                    viewModel.Schemas.Add(model);
+                    if (!viewModel.Schemas.Exists(m => m.Name == model.Name))
+                    {
+                        viewModel.Schemas.Add(model);
+                    }
                 }
             };
             codeGeneration = (codeGeneration, allowedVersions) =>
             {
-                if (allowedVersions.Count == 1
-                    && allowedVersions[0].Value == "DAB")
+                if (allowedVersions.Count == 1 && allowedVersions[0].Value == "DAB")
                 {
                     grdRow1.Height = new GridLength(0);
                     grdRow2.Height = new GridLength(0);
@@ -63,7 +71,10 @@ namespace EFCorePowerTools.Wizard
 
                 foreach (var item in allowedVersions)
                 {
-                    viewModel.CodeGenerationModeList.Add(item);
+                    if (!viewModel.CodeGenerationModeList.Any(a => a.Value == item.Value))
+                    {
+                        viewModel.CodeGenerationModeList.Add(item);
+                    }
                 }
 
                 if (!allowedVersions.Any())
@@ -86,7 +97,10 @@ namespace EFCorePowerTools.Wizard
             var options = wizardViewModel.Bll.PickConfigDialogInitializeAsync(wizardViewModel).Result;
             foreach (var option in options)
             {
-                wizardViewModel.Configurations.Add(option);
+                if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
+                {
+                    wizardViewModel.Configurations.Add(option);
+                }
             }
 
             OnConfigurationChange(options.FirstOrDefault());
