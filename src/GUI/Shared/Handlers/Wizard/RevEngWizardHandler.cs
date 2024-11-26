@@ -14,10 +14,10 @@ using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EFCorePowerTools.ViewModels;
 using EFCorePowerTools.Wizard;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
@@ -35,17 +35,19 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
     /// </summary>
     internal class RevEngWizardHandler : IReverseEngineerBll
     {
+        private readonly IWizardViewModel wizardViewModel;
         private readonly EFCorePowerToolsPackage package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
 
-        public RevEngWizardHandler(EFCorePowerToolsPackage package)
+        public RevEngWizardHandler(EFCorePowerToolsPackage package, IWizardViewModel viewModel)
         {
             this.package = package;
             reverseEngineerHelper = new ReverseEngineerHelper();
             vsDataHelper = new VsDataHelper();
+            wizardViewModel = viewModel;
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
                 // which this class implements.  The wizard pages will use the BLL to process
                 // data using existing business logic.
-                var wizard = new WizardDialogBox(this, e);
+                var wizard = new WizardDialogBox(this, e, wizardViewModel);
                 var showDialog = wizard.ShowDialog();
                 var dialogResult = showDialog != null && (bool)showDialog;
                 var result = dialogResult
@@ -167,7 +169,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async Task PickDatabaseConnectionAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
+        public async Task PickDatabaseConnectionAsync(
+            Project project,
+            string optionsPath,
+            bool onlyGenerate,
+            bool fromSqlProj = false,
+            string uiHint = null,
+            IPickServerDatabaseDialog databaseDialog = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -237,7 +245,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 DatabaseConnectionModel dbInfo = null;
 
                 // #1 Get Database Connection
-                if (!await ChooseDataBaseConnectionAsync(options, project))
+                if (!await ChooseDataBaseConnectionAsync(options, project, databaseDialog))
                 {
                     await VS.StatusBar.ClearAsync();
                     return;
@@ -510,12 +518,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return false;
         }
 
-        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
+        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project, IPickServerDatabaseDialog dialog = null)
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
-            var psd = package.GetView<IPickServerDatabaseDialog>();
+            var psd = dialog ?? package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
             {
@@ -557,22 +565,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 psd.PublishUiHint(options.UiHint);
             }
 
-            var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
-            if (!pickDataSourceResult.ClosedByOK)
-            {
-                return false;
-            }
+            var pickDataSourceResult = psd.GetResults();
 
-            options.CodeGenerationMode = pickDataSourceResult.Payload.CodeGenerationMode;
-            options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
-            options.Schemas = options.FilterSchemas ? pickDataSourceResult.Payload.Schemas?.ToList() : null;
-            options.UiHint = pickDataSourceResult.Payload.UiHint;
-            options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
+            options.CodeGenerationMode = pickDataSourceResult.CodeGenerationMode;
+            options.FilterSchemas = pickDataSourceResult.FilterSchemas;
+            options.Schemas = options.FilterSchemas ? pickDataSourceResult.Schemas?.ToList() : null;
+            options.UiHint = pickDataSourceResult.UiHint;
+            options.Dacpac = pickDataSourceResult.Connection?.FilePath;
 
-            if (pickDataSourceResult.Payload.Connection != null)
+            if (pickDataSourceResult.Connection != null)
             {
-                options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
-                options.DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType;
+                options.ConnectionString = pickDataSourceResult.Connection.ConnectionString;
+                options.DatabaseType = pickDataSourceResult.Connection.DatabaseType;
             }
 
             return true;

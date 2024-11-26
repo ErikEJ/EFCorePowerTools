@@ -131,6 +131,11 @@ namespace EFCorePowerTools.Dialogs
             this.uiHint(uiHint);
         }
 
+        public (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) GetResults()
+        {
+            return getDialogResult();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -153,5 +158,6 @@ namespace EFCorePowerTools.Dialogs
             };
             process.Start();
         }
+
     }
 }

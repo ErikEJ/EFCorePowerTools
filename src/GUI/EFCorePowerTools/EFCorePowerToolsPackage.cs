@@ -55,7 +55,7 @@ namespace EFCorePowerTools
     {
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
-        private readonly RevEngWizardHandler revEngWizardHandler;
+        private RevEngWizardHandler revEngWizardHandler;
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
@@ -69,7 +69,6 @@ namespace EFCorePowerTools
 
         public EFCorePowerToolsPackage()
         {
-            revEngWizardHandler = new RevEngWizardHandler(this);
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
@@ -1004,7 +1003,8 @@ namespace EFCorePowerTools
                     .AddTransient<ICompareResultDialog, CompareResultDialog>();
 
             // Register view models
-            services.AddTransient<IAboutViewModel, AboutViewModel>()
+            services.AddTransient<IWizardViewModel, WizardDataViewModel>()
+                    .AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickConfigViewModel, PickConfigViewModel>()
                     .AddTransient<IPickProjectViewModel, PickProjectViewModel>()
                     .AddTransient<IPickConnectionViewModel, PickConnectionViewModel>()
@@ -1034,7 +1034,13 @@ namespace EFCorePowerTools
                     .AddSingleton<ICredentialStore, CredentialStore>()
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
 
-            return services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
+
+            // We need to resolve our view model and assign it to our new wizard handler
+            var viewModel = provider.GetService<IWizardViewModel>(); // GetService(typeof(IWizardViewModel));
+            revEngWizardHandler = new RevEngWizardHandler(this, (IWizardViewModel)viewModel);
+
+            return provider;
         }
 
         private void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)

@@ -8,11 +8,12 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class WizardPage2 : WizardResultPageFunction
     {
-        public WizardPage2(WizardDataViewModel wizardViewModel, IWizardView wizardView)
-            : base(wizardViewModel, wizardView)
+        public WizardPage2(WizardDataViewModel viewModel, IWizardView wizardView)
+            : base(viewModel, wizardView)
         {
             InitializeComponent();
         }
+
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Go to next wizard page

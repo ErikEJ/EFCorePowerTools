@@ -12,5 +12,6 @@ namespace EFCorePowerTools.Contracts.Views
         void PublishSchemas(IEnumerable<SchemaInfo> schemas);
         void PublishCodeGenerationMode(CodeGenerationMode codeGenerationMode, IList<CodeGenerationItem> allowedVersions);
         void PublishUiHint(string uiHint);
+        (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) GetResults();
     }
 }

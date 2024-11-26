@@ -5,16 +5,17 @@ using System;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.Wizard;
-using EFCorePowerTools.ViewModels;
 
 namespace EFCorePowerTools.Wizard
 {
     public class WizardDialogBox : NavigationWindow, IWizardView
     {
-        private readonly WizardDataViewModel wizardViewModel = new();
+        private readonly WizardDataViewModel wizardViewModel;
 
-        public WizardDialogBox(IReverseEngineerBll bll, EventArgs e)
+        public WizardDialogBox(IReverseEngineerBll bll, EventArgs e, IWizardViewModel viewModel)
         {
+            wizardViewModel = (WizardDataViewModel)viewModel;
+
             InitializeComponent();
 
             if (e is WizardEventArgs args)
