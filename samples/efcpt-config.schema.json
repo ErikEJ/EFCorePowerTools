@@ -270,7 +270,8 @@
         },
         "use-database-names-for-routines": {
           "type": "boolean",
-          "title": "Use stored procedure, stored procedure result and function names from the database"
+          "title": "Use stored procedure, stored procedure result and function names from the database",
+          "default": true
         }
       }
     },
