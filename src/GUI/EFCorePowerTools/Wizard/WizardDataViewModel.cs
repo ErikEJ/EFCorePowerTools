@@ -4,8 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.BLL;
@@ -23,6 +25,9 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1124:DoNotUseRegions", Justification = "Reviewed.")]
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1123:Do not place regions within elements", Justification = "<Pending>")]
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "<Pending>")]
     /// <summary>
     /// WizardData will serve as view model for the wizard pages.
     /// </summary>
@@ -32,26 +37,32 @@ namespace EFCorePowerTools.Wizard
             IVisualStudioAccess visualStudioAccess,
             ICredentialStore credentialStore,
             Func<IPickSchemasDialog> pickSchemasDialogFactory,
-            Func<IPickConnectionDialog> pickConnectionDialogFactory)
+            Func<IPickConnectionDialog> pickConnectionDialogFactory,
+            IObjectTreeViewModel treeviewModel)
         {
             this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
             this.pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
             this.pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
             this.credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
 
-            LoadedCommand = new RelayCommand(Loaded_Executed);
+            #region WizardPage1 - Configuration / database connection
+            Page1LoadedCommand = new RelayCommand(Page1Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
             AddAdhocDatabaseConnectionCommand = new RelayCommand(AddAdhocDatabaseConnection_Executed);
             AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
             RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
             FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
-
-            CodeGenerationModeList = new ObservableCollection<CodeGenerationItem>();
-
-            DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
+            CodeGenerationModeList = [];
+            DatabaseConnections = [];
             Schemas = new List<SchemaInfo>();
             DatabaseConnections.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseConnections));
+            #endregion
 
+            #region WizardPage2 - Database Objects
+            ObjectTree = treeviewModel;
+            ObjectTree.ObjectSelectionChanged += (s, e) => UpdateTableSelectionThreeState();
+            SearchText = string.Empty;
+            #endregion
         }
 
         private readonly IVisualStudioAccess visualStudioAccess;
@@ -65,15 +76,18 @@ namespace EFCorePowerTools.Wizard
         private int codeGenerationMode;
         private ConfigModel selectedConfiguration;
 
-        public IReverseEngineerBll Bll { get; set; }
+        public string DataItem1 { get; set; }
+        public string DataItem2 { get; set; }
+        public string DataItem3 { get; set; }
 
+        public IReverseEngineerBll Bll { get; set; }
         public Project Project { get; internal set; }
         public string Filename { get; internal set; }
         public bool OnlyGenerate { get; internal set; }
         public string OptionsPath { get; internal set; }
         public bool FromSqlProject { get; internal set; }
 
-        //-- Configuration
+        #region //-- WizardPage1 - Configuration
         public ObservableCollection<ConfigModel> Configurations { get; set; } = [];
 
         public ConfigModel SelectedConfiguration
@@ -90,9 +104,9 @@ namespace EFCorePowerTools.Wizard
                 RaisePropertyChanged();
             }
         }
-
-        //-- Database connection
-        public ICommand LoadedCommand { get; set; }
+        #endregion
+        #region //-- WizardPage1 - Database connection
+        public ICommand Page1LoadedCommand { get; set; }
         public ICommand AddDatabaseConnectionCommand { get; set; }
         public ICommand AddAdhocDatabaseConnectionCommand { get; set; }
         public ICommand AddDatabaseDefinitionCommand { get; set; }
@@ -150,9 +164,6 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
-        public string DataItem1 { get; set; }
-        public string DataItem2 { get; set; }
-        public string DataItem3 { get; set; }
 
         public string UiHint
         {
@@ -191,7 +202,7 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
-        private void Loaded_Executed()
+        private void Page1Loaded_Executed()
         {
             // Database connection first
             if (DatabaseConnections.Any(c => c.FilePath == null) && SelectedDatabaseConnection == null)
@@ -370,6 +381,140 @@ namespace EFCorePowerTools.Wizard
                        ? subset.OrderBy(m => Path.GetFileNameWithoutExtension(m.FilePath)).First()
                        : null;
         }
+        #endregion
+
+        #region //-- WizardPage2 - Database objects
+        public RelayCommand Page2LoadedCommand { get; set; }
+        private bool? tableSelectionThreeState;
+        private string searchText;
+        private SearchMode searchMode = SearchMode.Text;
+
+        public IObjectTreeViewModel ObjectTree { get; set; }
+
+        public bool? TableSelectionThreeState
+        {
+            get => tableSelectionThreeState;
+            set
+            {
+                if (Equals(value, tableSelectionThreeState))
+                {
+                    return;
+                }
+
+                tableSelectionThreeState = value;
+                RaisePropertyChanged();
+                HandleTableSelectionThreeStateChange(value);
+            }
+        }
+
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                if (Equals(value, searchText))
+                {
+                    return;
+                }
+
+                searchText = value;
+                RaisePropertyChanged();
+                HandleSearchTextChange(searchText, searchMode);
+            }
+        }
+
+        public SearchMode SearchMode
+        {
+            get => searchMode;
+            set
+            {
+                if (Equals(value, searchMode))
+                {
+                    return;
+                }
+
+                searchMode = value;
+                RaisePropertyChanged();
+                HandleSearchTextChange(searchText, searchMode);
+            }
+        }
+
+        public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
+        {
+            if (objects == null)
+            {
+                return;
+            }
+
+            ObjectTree.AddObjects(objects, customReplacers);
+        }
+
+        public void SelectObjects(IEnumerable<SerializationTableModel> objects)
+        {
+            if (objects == null)
+            {
+                return;
+            }
+
+            ObjectTree.SelectObjects(objects);
+        }
+
+        public SerializationTableModel[] GetSelectedObjects()
+        {
+            return ObjectTree
+                .GetSelectedObjects()
+                .ToArray();
+        }
+
+        public Schema[] GetRenamedObjects()
+        {
+            return ObjectTree
+                .GetRenamedObjects()
+                .ToArray();
+        }
+
+        // private bool Ok_CanExecute()
+        //    => ObjectTree.GetSelectedObjects().Any(c => c.ObjectType.HasColumns())
+        // || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.Procedure)
+        // || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.ScalarFunction)
+        private void Cancel_Executed()
+        {
+            // CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
+        }
+
+        private void HandleTableSelectionThreeStateChange(bool? selectionMode)
+        {
+            if (selectionMode == null)
+            {
+                return;
+            }
+
+            ObjectTree.SetSelectionState(selectionMode.Value);
+            SearchText = string.Empty;
+        }
+
+        private void HandleSearchTextChange(string text, SearchMode searchMode)
+        {
+            _ = Task.Delay(TimeSpan.FromMilliseconds(300))
+                .ContinueWith(
+                _ =>
+                {
+                    if (text != SearchText)
+                    {
+                        return;
+                    }
+
+                    ObjectTree.Search(SearchText, searchMode);
+                },
+                TaskScheduler.Default);
+        }
+
+        private void UpdateTableSelectionThreeState()
+        {
+            TableSelectionThreeState = ObjectTree.GetSelectionState();
+        }
+
+        #endregion
 
     }
 }

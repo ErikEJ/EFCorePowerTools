@@ -1036,9 +1036,8 @@ namespace EFCorePowerTools
 
             var provider = services.BuildServiceProvider();
 
-            // We need to resolve our view model and assign it to our new wizard handler
-            var viewModel = provider.GetService<IWizardViewModel>(); // GetService(typeof(IWizardViewModel));
-            revEngWizardHandler = new RevEngWizardHandler(this, (IWizardViewModel)viewModel);
+            var viewModel = provider.GetService<IWizardViewModel>();
+            revEngWizardHandler = new RevEngWizardHandler(this, viewModel);
 
             return provider;
         }

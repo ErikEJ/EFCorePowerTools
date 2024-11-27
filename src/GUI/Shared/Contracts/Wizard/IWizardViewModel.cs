@@ -1,6 +1,9 @@
-﻿namespace EFCorePowerTools.Contracts.Wizard
+﻿using EFCorePowerTools.Contracts.ViewModels;
+
+namespace EFCorePowerTools.Contracts.Wizard
 {
     public interface IWizardViewModel
     {
+        public IObjectTreeViewModel ObjectTree { get; set; }
     }
 }

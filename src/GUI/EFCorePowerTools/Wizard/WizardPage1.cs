@@ -31,7 +31,7 @@ namespace EFCorePowerTools.Wizard
             {
                 foreach (var model in models)
                 {
-                    if (!models.Any(db => db.DisplayName == model.DisplayName))
+                    if (!viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName))
                     {
                         viewModel.DatabaseConnections.Add(model);
                     }
@@ -41,7 +41,7 @@ namespace EFCorePowerTools.Wizard
             {
                 foreach (var model in models)
                 {
-                    if (!models.Any(db => db.DisplayName == model.DisplayName))
+                    if (!viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName))
                     {
                         viewModel.DatabaseConnections.Add(model);
                     }
@@ -125,7 +125,7 @@ namespace EFCorePowerTools.Wizard
 
             var project = wizardViewModel.Project;
             var optionsPath = wizardViewModel.OptionsPath;
-            var result = wizardViewModel.Bll.PickDatabaseConnectionAsync(project, optionsPath, false, false, null, this);
+            wizardViewModel.Bll.PickDatabaseConnectionAsync(project, optionsPath, false, false, null, this);
         }
 
         public void PublishConnections(IEnumerable<DatabaseConnectionModel> connections)

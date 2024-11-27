@@ -169,13 +169,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async Task PickDatabaseConnectionAsync(
-            Project project,
-            string optionsPath,
-            bool onlyGenerate,
-            bool fromSqlProj = false,
-            string uiHint = null,
-            IPickServerDatabaseDialog databaseDialog = null)
+        public async Task PickDatabaseConnectionAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickServerDatabaseDialog databaseDialog = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -230,10 +224,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.UiHint = uiHint ?? userOptions.UiHint;
 
-                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
+                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList()
+                    ?? [];
+
                 mappedTypes = options.Tables?
                     .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
-                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
+                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType)
+                    ?? [];
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
@@ -279,7 +276,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        public async Task PickDatabaseTablesAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
+        public async Task PickDatabaseTablesAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickTablesDialog pickTablesDialog = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -334,10 +331,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.UiHint = uiHint ?? userOptions.UiHint;
 
-                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
+                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList()
+                    ?? [];
+
                 mappedTypes = options.Tables?
                     .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
-                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
+                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType)
+                    ?? [];
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
@@ -400,7 +400,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
                     // #2 Get Database Objects
-                    if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
+                    if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath, pickTablesDialog))
                     {
                         await VS.StatusBar.ClearAsync();
                         return;
@@ -409,27 +409,29 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
-                    options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+                    options.InstallNuGetPackage = neededPackages
+                        .Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
 
-                    // #3 Get options
-                    if (!await GetModelOptionsAsync(options, project.Name))
-                    {
-                        await VS.StatusBar.ClearAsync();
-                        return;
-                    }
+                    //// #3 Get options
+                    //if (!await GetModelOptionsAsync(options, project.Name))
+                    //{
+                    //    await VS.StatusBar.ClearAsync();
+                    //    return;
+                    //}
 
-                    if (newOptions)
-                    {
-                        // HACK Work around for issue with web app project system on initial run
-                        userOptions = null;
-                    }
+                    //if (newOptions)
+                    //{
+                    //    // HACK Work around for issue with web app project system on initial run
+                    //    userOptions = null;
+                    //}
 
-                    await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+                    //await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
-                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                var missingProviderPackage = neededPackages
+                    .Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
                 if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
                 {
                     missingProviderPackage = null;
@@ -618,7 +620,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return dbInfo;
         }
 
-        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath)
+        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, IPickTablesDialog pickTablesDialog = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -656,7 +658,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ClearAsync();
 
-            var ptd = package.GetView<IPickTablesDialog>()
+            /*
+                HERE IS WHERE THE WORK GOES
+             */
+            var ptd = pickTablesDialog ?? package.GetView<IPickTablesDialog>()
                               .AddTables(predefinedTables, namingOptionsAndPath.Item1)
                               .PreselectTables(preselectedTables)
                               .SqliteToolboxInstall(isSqliteToolboxInstalled);

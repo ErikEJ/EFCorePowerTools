@@ -3,27 +3,398 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     x:Class="EFCorePowerTools.Wizard.WizardPage2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ext="clr-namespace:EFCorePowerTools.Extensions"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:contractvm="clr-namespace:EFCorePowerTools.Contracts.ViewModels"
+    xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
+    xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"    
     KeepAlive="True"
-    FocusManager.FocusedElement="{Binding ElementName=dataItem2TextBox}" 
     WindowTitle="Choose Your Settings For Project">
-    <Grid Background="Aqua">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="10" />
-        </Grid.ColumnDefinitions>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Page2LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Background="LightGray">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
+                <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter" />
+                <converter:CollectionCountToEnabledConverter x:Key="CollectionCountToEnabledConverter" />
+                <converter:ColumnEnabledConverter x:Key="ColumnEnabledConverter" />
+                <converter:EnumToLabelConverter x:Key="EnumToLabelConverter" />
+                <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+                <converter:LevelToWidthConverter x:Key="LevelToWidthConverter" />
+                <converter:ObjectTypeIconToImageStyleConverter x:Key="ObjectTypeIconToImageStyleConverter">
+                <converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
+                        <ResourceDictionary>
+                            <Style x:Key="TableImageStyle"
+                      TargetType="Image">
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="ViewImageStyle"
+                      TargetType="Image">
+                                <Setter Property="ToolTip" Value="" />
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="ProcedureImageStyle"
+                      TargetType="Image">
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedures.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="ScalarFunctionImageStyle"
+                      TargetType="Image">
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/ScalarFunction.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="TableWithoutKeyImageStyle"
+                      TargetType="Image">
+                                <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.NoPrimaryKey}" />
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                        </ResourceDictionary>
+                    </converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
+                </converter:ObjectTypeIconToImageStyleConverter>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary>
+                        <Style x:Key="TableSelectionCheckBoxStyle" TargetType="CheckBox">
+                            <Setter Property="Margin" Value="0, 0, 0, 0"/>
+                            <Setter Property="Padding" Value="0, 0, 0, 0"/>
+                            <Setter Property="IsTabStop" Value="False" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style x:Key="PrimaryKeyImageStyle" TargetType="Image">
+                            <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.CannotUncheckPrimaryKey}"/>
+                            <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/KeyVertical.png"/>
+                            <Setter Property="Width" Value="16"/>
+                            <Setter Property="Height" Value="16"/>
+                            <Setter Property="Margin" Value="0, 0, 0, 0"/>
+                        </Style>
+                        <Style x:Key="ColumnImageStyle" TargetType="Image">
+                            <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Column.png"/>
+                            <Setter Property="Width" Value="16"/>
+                            <Setter Property="Height" Value="16"/>
+                            <Setter Property="Margin" Value="0, 0, 0, 0"/>
+                        </Style>
+                        <Style x:Key="SchemaImageStyle" TargetType="Image">
+                            <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Schema.png"/>
+                            <Setter Property="Width" Value="16"/>
+                            <Setter Property="Height" Value="16"/>
+                            <Setter Property="Margin" Value="0, 0, 0, 0"/>
+                        </Style>
+                        <Style x:Key="TreeTextBlockStyle" TargetType="TextBlock">
+                            <Setter Property="Margin" Value="3, 0, 0, 0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style x:Key="ColumnNameTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource ResourceKey=TreeTextBlockStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPrimaryKey}" Value="True">
+                                    <Setter Property="Foreground" Value="#FF707070"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <Style x:Key="RenameTextBoxStyle" TargetType="TextBox">
+                            <Setter Property="Margin" Value="3, 0, 0, 0"/>
+                        </Style>
+
+                    </ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.Row="1">Data Item 2:</Label>
-        <TextBox Name="dataItem2TextBox" Grid.Column="2" Grid.Row="1" Padding="5,0,0,0" Text="{Binding Path=DataItem2, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid Margin="12,0"
+                  Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="80"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="20"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CheckBox IsChecked="{Binding TableSelectionThreeState}"
+                          Margin="22,0,0,0"
+                          IsThreeState="False"
+                          VerticalAlignment="Center" 
+                          Grid.Column="0"/>
+            <Label Content="{x:Static locale:ReverseEngineerLocale.Search}"
+                   Margin="30,0,0,0"
+                   Grid.Column="1"
+                   VerticalAlignment="Center"/>
+            <TextBox ToolTip="{x:Static locale:ReverseEngineerLocale.SearchForObjects}"
+                     Height="22"
+                     TextWrapping="Wrap"
+                     Background="White"
+                     Foreground="Black"
+                     HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Center"
+                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="2" 
+                     x:Name="Search">
+            </TextBox>
 
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Name="MainButton" Grid.Column="3" Height="22" BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush, ElementName=Search}">
+                <Button.Content>
+                    <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/GlyphDown.png" Width="16"/>
+                </Button.Content>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Click">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <BooleanAnimationUsingKeyFrames Storyboard.TargetName="ContextPopup" 
+                                                                    Storyboard.TargetProperty="IsOpen">
+                                        <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True" />
+                                    </BooleanAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Popup x:Name="ContextPopup" 
+                   PlacementTarget="{Binding ElementName=MainButton}" 
+                   Placement="Bottom" 
+                   StaysOpen="False">
+                <Border BorderThickness="1" BorderBrush="LightGray" Background="#FFF0F0F0">
+                    <StackPanel>
+                        <RadioButton Margin="8"
+                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.Text}}"
+                                     Content="{x:Static locale:ReverseEngineerLocale.UseTextSearch}"></RadioButton>
+                        <RadioButton Margin="8,0,8,8"
+                                     IsChecked="{Binding SearchMode, Converter={StaticResource EnumToBoolConverter}, ConverterParameter={x:Static contractvm:SearchMode.RegularExpression}}"
+                                     Content="{x:Static locale:ReverseEngineerLocale.UseRegularExpression}"></RadioButton>
+                    </StackPanel>
+                </Border>
+            </Popup>
+        </Grid>
+
+        <TreeView Margin="12,0"
+                  ItemsSource="{Binding ObjectTree.Types}"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Standard"
+                  Grid.Row="1"
+                  x:Name="tree"
+                  Focusable="True"
+                  KeyUp="Tree_KeyUp">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="Padding" Value="1"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.ItemContainerStyle>
+
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type viewModels:ObjectTreeRootItemViewModel}" ItemsSource="{Binding Path=Schemas}">
+                    <HierarchicalDataTemplate.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="Padding" Value="1"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </HierarchicalDataTemplate.ItemContainerStyle>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Style="{StaticResource TableSelectionCheckBoxStyle}" 
+                                  IsChecked="{Binding IsSelected, Mode=OneWay}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="true" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <Image Style="{Binding ObjectTypeIcon, Converter={StaticResource ObjectTypeIconToImageStyleConverter}}" />
+                        <TextBlock Text="{Binding Text}" 
+                                   Style="{StaticResource ResourceKey=TreeTextBlockStyle}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate DataType="{x:Type viewModels:SchemaInformationViewModel}" ItemsSource="{Binding Path=Objects}">
+                    <HierarchicalDataTemplate.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="Padding" Value="1"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </HierarchicalDataTemplate.ItemContainerStyle>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Unchecked="CheckBox_Unchecked" Style="{StaticResource TableSelectionCheckBoxStyle}"
+                                  IsChecked="{Binding IsSelected, Mode=OneWay}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="true" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <Image Style="{StaticResource SchemaImageStyle}" />
+                        <TextBlock Text="{Binding Name}" 
+                                   Style="{StaticResource ResourceKey=TreeTextBlockStyle}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+
+                <HierarchicalDataTemplate DataType="{x:Type viewModels:TableInformationViewModel}" ItemsSource="{Binding Path=Columns}">
+                    <HierarchicalDataTemplate.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="Padding" Value="1"></Setter>
+                        </Style>
+                    </HierarchicalDataTemplate.ItemContainerStyle>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Unchecked="CheckBox_Unchecked" Style="{StaticResource TableSelectionCheckBoxStyle}"
+                                  IsChecked="{Binding IsSelected, Mode=OneWay}" 
+                                  Grid.Column="0">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="true" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <Image Style="{Binding ObjectTypeIcon, Converter={StaticResource ObjectTypeIconToImageStyleConverter}}"
+                               Grid.Column="1" />
+                        <TextBlock Text="{Binding DisplayName}" 
+                                   Style="{StaticResource ResourceKey=TreeTextBlockStyle}" 
+                                   Grid.Column="2" />
+                        <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
+                                 Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 Style="{StaticResource RenameTextBoxStyle}"
+                                 ext:FocusExtensions.IsFocused="{Binding IsEditing}"
+                                 KeyUp="TreeTextRenamer_KeyUp"
+                                 Grid.Column="2">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding ConfirmEditCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Grid>
+                </HierarchicalDataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:ColumnInformationViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=OneWay}"
+                                  Style="{StaticResource TableSelectionCheckBoxStyle}"
+                                  IsEnabled="{Binding IsEnabled, Mode=OneWay}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="true" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <Image Style="{StaticResource ColumnImageStyle}"
+                               Visibility="{Binding IsColumn, Converter={StaticResource BoolToVisibilityConverter}}"
+                               Grid.Column="1" />
+                        <Image Style="{StaticResource PrimaryKeyImageStyle}"
+                               Visibility="{Binding IsPrimaryKey, Converter={StaticResource BoolToVisibilityConverter}}"
+                               Grid.Column="1" />
+                        <TextBlock Text="{Binding DisplayName}" 
+                                   Style="{StaticResource ColumnNameTextBlockStyle}" 
+                                   Grid.Column="2" />
+                        <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
+                                 Style="{StaticResource RenameTextBoxStyle}"
+                                 Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 ext:FocusExtensions.IsFocused="{Binding IsEditing}"
+                                 KeyUp="TreeTextRenamer_KeyUp"
+                                 Grid.Column="2">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding ConfirmEditCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Grid>
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+
+        <TextBlock
+            Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}"
+                Margin="12,20,12,0">
+                <Hyperlink                   
+                    x:Name="SqliteToolboxLink"
+                    RequestNavigate="SqliteToolboxLink_RequestNavigate"
+                    NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox"></Hyperlink>
+        </TextBlock>
+
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="12,10">
+            <Button Content="{x:Static locale:SharedLocale.Ok}"
+                             IsDefault="True"
+                             HorizontalAlignment="Right"
+                             TabIndex="6"
+                             Margin="0,0,12,8"
+                             Command="{Binding OkCommand}" />
+            <Button Content="{x:Static locale:SharedLocale.Cancel}"
+                             IsCancel="True"
+                             HorizontalAlignment="Right"
+                             TabIndex="7"
+                             Margin="0,0,0,8"
+                             Command="{Binding CancelCommand}" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">
+                <TextBlock Text="{x:Static locale:ReverseEngineerLocale.UncheckingFileRemoved}" />
+            </StatusBar>
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
             <Button Name="backButton" Click="BackButton_Click" Width="50" xml:space="preserve">&lt; _Back</Button>
             <Button Name="nextButton" Click="NextButton_Click" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
             <Button Name="cancelButton" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>

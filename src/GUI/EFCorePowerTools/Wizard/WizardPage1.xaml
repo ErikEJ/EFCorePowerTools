@@ -14,7 +14,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+            <i:InvokeCommandAction Command="{Binding Page1LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     
