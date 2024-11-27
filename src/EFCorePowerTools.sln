@@ -137,7 +137,6 @@ Global
 		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
