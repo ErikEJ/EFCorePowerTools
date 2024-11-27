@@ -154,7 +154,7 @@ namespace EFCorePowerTools.Helpers
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9 (preview)" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
             }
 
             if (!list.Any())
