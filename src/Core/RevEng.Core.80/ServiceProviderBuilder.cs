@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 #if !CORE90
-using EntityFrameworkCore.Scaffolding.Handlebars;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 #endif
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
@@ -68,7 +68,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
-#if !CORE90
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -79,7 +78,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
-#endif
+
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
                 if (options.UseLegacyPluralizer)
