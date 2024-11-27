@@ -729,7 +729,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
-                VSHelper.ShowMessage(errors);
+                VSHelper.ShowWarning(errors);
             }
 
             if (revEngResult.EntityErrors.Any())

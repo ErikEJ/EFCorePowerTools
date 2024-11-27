@@ -35,5 +35,10 @@ namespace EFCorePowerTools.Helpers
         {
             return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK);
         }
+
+        public static VSConstants.MessageBoxResult ShowWarning(string messageText)
+        {
+            return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK, icon: OLEMSGICON.OLEMSGICON_WARNING);
+        }
     }
 }
