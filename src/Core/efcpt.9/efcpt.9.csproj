@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>CORE80</DefineConstants>
+    <DefineConstants>CORE80;CORE90</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -59,7 +59,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="NuGet.Protocol" Version="6.11.1" />
     <PackageReference Include="Spectre.Console" Version="0.49.1" />
-    <PackageReference Include="System.IO.Abstractions" Version="21.0.29" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.1.3" />
   </ItemGroup>
 
   <ItemGroup>

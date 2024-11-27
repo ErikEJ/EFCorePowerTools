@@ -2,7 +2,6 @@
    "CodeGenerationMode": 4,
    "ContextClassName": "ChinookContext",
    "ContextNamespace": null,
-   "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": true,
    "ModelNamespace": null,
@@ -11,7 +10,7 @@
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "ConsoleApp",
    "Schemas": null,
-   "SelectedHandlebarsLanguage": 0,
+   "SelectedHandlebarsLanguage": 4,
    "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
    "Tables": [
@@ -60,12 +59,13 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "dg-pf2wppld\\sqlexpress.Chinook.dbo",
+   "UiHint": null,
    "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": false,
-   "UseDbContextSplitting": true,
+   "UseDbContextSplitting": false,
    "UseDecimalDataAnnotationForSprocResult": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
@@ -78,8 +78,10 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": true,
-   "UseT4": false
+   "UseT4": false,
+   "UseT4Split": true
 }

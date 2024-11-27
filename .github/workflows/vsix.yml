@@ -89,7 +89,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix -ovsix -y
         dir /a:-d /s /b "vsix" | find /c ":\" > filecount.txt
-        findstr "79" filecount.txt
+        findstr "81" filecount.txt
 
     - name: Move build output
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')

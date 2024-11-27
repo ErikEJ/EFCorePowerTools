@@ -328,7 +328,7 @@
     <value>Nesneleri ara</value>
   </data>
   <data name="SplitDbContextIntoConfigurationClasses" xml:space="preserve">
-    <value>DbContext'i yapılandırma sınıflarına böl (önizleme)</value>
+    <value>DbContext'i yapılandırma sınıflarına böl (obsolete)</value>
   </data>
   <data name="SqlServerNoViewDefinitionRights" xml:space="preserve">
     <value>SQL Server kullanıcısının 'VIEW DEFINITION' hakkı yok. Varsayılan kısıtlamalar kullanılamayabilir.</value>

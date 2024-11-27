@@ -8,7 +8,7 @@ namespace RevEng.Common.Cli
 {
     public static class T4Helper
     {
-        public static string DropT4Templates(string projectPath, CodeGenerationMode codeGenerationMode)
+        public static string DropT4Templates(string projectPath, CodeGenerationMode codeGenerationMode, bool useEntityTypeSplitting = false)
         {
             string t4Version = "703";
 
@@ -20,6 +20,11 @@ namespace RevEng.Common.Cli
             if (codeGenerationMode == CodeGenerationMode.EFCore9)
             {
                 t4Version = "900";
+            }
+
+            if (useEntityTypeSplitting)
+            {
+                t4Version += "_Split";
             }
 
             var zipName = $"T4_{t4Version}.zip";
@@ -49,6 +54,16 @@ namespace RevEng.Common.Cli
                 }
 
                 target = Path.Combine(toDir, "EFCore", "DbContext.t4");
+                if (File.Exists(target))
+                {
+                    var content = File.ReadAllText(target, Encoding.UTF8);
+                    if (content.IndexOf(check, StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+                        return error;
+                    }
+                }
+
+                target = Path.Combine(toDir, "EFCore", "EntityTypeConfiguration.t4");
                 if (File.Exists(target))
                 {
                     var content = File.ReadAllText(target, Encoding.UTF8);

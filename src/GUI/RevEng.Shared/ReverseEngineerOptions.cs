@@ -29,6 +29,7 @@ namespace RevEng.Common
         public List<string> UncountableWords { get; set; }
         public bool UseHandleBars { get; set; }
         public bool UseT4 { get; set; }
+        public bool UseT4Split { get; set; }
         public int SelectedHandlebarsLanguage { get; set; } = 2;
         public bool IncludeConnectionString { get; set; }
         public int SelectedToBeGenerated { get; set; }

@@ -75,6 +75,11 @@ namespace EFCorePowerTools.Helpers
                         throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
                 }
 
+                if (selectedOption == 4)
+                {
+                    t4Version += "_Split";
+                }
+
                 zipName = $"T4_{t4Version}.zip";
             }
 
@@ -171,9 +176,10 @@ namespace EFCorePowerTools.Helpers
             if (codeGenerationMode == CodeGenerationMode.EFCore7
                 || codeGenerationMode == CodeGenerationMode.EFCore8)
             {
+                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
+                list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
                 list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
-                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
                 list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
             }
             else if (codeGenerationMode == CodeGenerationMode.EFCore6)
@@ -184,6 +190,7 @@ namespace EFCorePowerTools.Helpers
             else if (codeGenerationMode == CodeGenerationMode.EFCore9)
             {
                 list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
+                list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
                 list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
             }
 

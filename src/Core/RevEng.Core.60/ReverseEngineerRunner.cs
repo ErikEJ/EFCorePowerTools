@@ -75,6 +75,8 @@ namespace RevEng.Core
                     : PathHelper.GetNamespaceFromOutputPath(outputContextDir, options.ProjectPath, options.ProjectRootNamespace);
             }
 
+            ValidateOptions(options, warnings);
+
             var entityTypeConfigurationPaths = new List<string>();
             SavedModelFiles procedurePaths = null;
             SavedModelFiles functionPaths = null;
@@ -83,14 +85,14 @@ namespace RevEng.Core
 
             try
             {
-                SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath);
+                SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath, options.ProjectRootNamespace);
 
 #if CORE70 || CORE80
-                if (options.UseT4)
+                if (options.UseT4 || options.UseT4Split)
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
                     {
-                        scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath);
+                        scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath, options.ProjectRootNamespace);
                     }
                 }
 #endif
@@ -139,12 +141,17 @@ namespace RevEng.Core
                     }
 
                     RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
-                    if (!options.UseHandleBars && !options.UseT4)
+                    if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                     {
                         PostProcess(filePaths.ContextFile, options.UseNullableReferences);
                     }
 
                     entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName);
+
+                    if (options.UseT4Split)
+                    {
+                        entityTypeConfigurationPaths.AddRange(MoveConfigurationFiles(filePaths.AdditionalFiles));
+                    }
                 }
                 else if (options.Tables.Exists(t => t.ObjectType == ObjectType.Procedure)
                     || options.Tables.Exists(t => t.ObjectType == ObjectType.ScalarFunction))
@@ -152,7 +159,7 @@ namespace RevEng.Core
                     warnings.Add("Selected stored procedures/scalar functions will not be generated, as 'Entity Types only' was selected");
                 }
 
-                if (!options.UseHandleBars && !options.UseT4)
+                if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                 {
                     foreach (var file in filePaths.AdditionalFiles)
                     {
@@ -186,11 +193,6 @@ namespace RevEng.Core
                     && sku.Version > 12 && sku.Level > 0 && sku.Level < 130)
                 {
                     warnings.Add($"Your database compatibility level is only '{sku.Level}', consider updating to 130 or higher to take full advantage of new database engine features.");
-                }
-
-                if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
-                {
-                    warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
                 }
 
                 var result = new ReverseEngineerResult
@@ -288,6 +290,31 @@ namespace RevEng.Core
         }
 #endif
 
+        private static void ValidateOptions(ReverseEngineerCommandOptions options, List<string> warnings)
+        {
+            if (options.UseDatabaseNames && options.CustomReplacers?.Count > 0)
+            {
+                warnings.Add($"'use-database-names' / 'UseDatabaseNames' has been set to true, but a '{Constants.RenamingFileName}' file was also found. This prevents '{Constants.RenamingFileName}' from functioning.");
+            }
+
+            if (options.UseT4 && options.UseT4Split)
+            {
+                warnings.Add("Both UseT4 and UseT4Split are set to true.  Only one of these should be used, UseT4Split will be used.");
+                options.UseT4 = false;
+            }
+
+            if (options.UseDbContextSplitting)
+            {
+                warnings.Add("UseDbContextSplitting (preview) is obsolete, please switch to the T4 split DbContext template.");
+            }
+
+            if (options.UseT4Split && options.UseDbContextSplitting)
+            {
+                warnings.Add("Both UseDbContextSplitting (preview) and UseT4Split are set to true. Only one of these should be used, UseT4Split will be used.");
+                options.UseDbContextSplitting = false;
+            }
+        }
+
         private static SavedModelFiles CreateCleanupPaths(SavedModelFiles procedurePaths, SavedModelFiles functionPaths, SavedModelFiles filePaths)
         {
             var cleanUpPaths = new SavedModelFiles(filePaths.ContextFile, filePaths.AdditionalFiles);
@@ -321,6 +348,34 @@ namespace RevEng.Core
             }
 
             return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName);
+        }
+
+        // If we didn't split, we might have used EntityTypeConfiguration.t4.  In that case, <ModelName>Configuration.cs files were generated.
+        private static List<string> MoveConfigurationFiles(IList<string> files)
+        {
+            var configurationFiles = files.Where(x => x.EndsWith("Configuration.cs", StringComparison.InvariantCulture)).ToList();
+
+            var movedFiles = new List<string>();
+            foreach (var configurationFile in configurationFiles)
+            {
+                var newDirectoryName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations");
+                if (newDirectoryName is null)
+                {
+                    throw new InvalidOperationException("Could not determine directory name for configuration file.");
+                }
+
+                if (!Directory.Exists(newDirectoryName))
+                {
+                    Directory.CreateDirectory(newDirectoryName);
+                }
+
+                var newFileName = Path.Combine(newDirectoryName, Path.GetFileName(configurationFile));
+
+                File.Move(configurationFile, newFileName, overwrite: true);
+                movedFiles.Add(newFileName);
+            }
+
+            return movedFiles;
         }
 
         private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor)
