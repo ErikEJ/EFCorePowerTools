@@ -22,6 +22,7 @@ using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
 using EFCorePowerTools.Handlers.Compare;
 using EFCorePowerTools.Handlers.ReverseEngineer;
+using EFCorePowerTools.Handlers.Wizard;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.ItemWizard;
 using EFCorePowerTools.Locales;
@@ -55,7 +56,7 @@ namespace EFCorePowerTools
     {
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
-        private RevEngWizardHandler revEngWizardHandler;
+        private readonly RevEngWizardHandler revEngWizardHandler;
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
@@ -69,6 +70,7 @@ namespace EFCorePowerTools
 
         public EFCorePowerToolsPackage()
         {
+            revEngWizardHandler = new RevEngWizardHandler(this);
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
@@ -394,7 +396,7 @@ namespace EFCorePowerTools
             switch ((uint)menuCommand.CommandID.ID)
             {
                 case PkgCmdIDList.cmdidWizardPoc:
-                    menuCommand.Text = "Reverse Engineer (beta)";
+                    menuCommand.Text = "Reverse Engineer (experimental)";
                     break;
                 case PkgCmdIDList.cmdidAbout:
                     menuCommand.Text = ButtonLocale.cmdidAbout;
@@ -728,7 +730,7 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
                 {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs.Empty);
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(new WizardEventArgs());
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
@@ -1035,10 +1037,6 @@ namespace EFCorePowerTools
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
 
             var provider = services.BuildServiceProvider();
-
-            var viewModel = provider.GetService<IWizardViewModel>();
-            revEngWizardHandler = new RevEngWizardHandler(this, viewModel);
-
             return provider;
         }
 

@@ -158,6 +158,5 @@ namespace EFCorePowerTools.Dialogs
             };
             process.Start();
         }
-
     }
 }

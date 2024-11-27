@@ -15,6 +15,5 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public bool FromSqlProject { get; set; }
 
         public string UiHint { get; set; }
-
     }
 }

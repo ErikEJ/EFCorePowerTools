@@ -15,7 +15,5 @@ namespace EFCorePowerTools.BLL
         Task<List<ConfigModel>> PickConfigDialogInitializeAsync(WizardDataViewModel viewModel = null);
         Task PickDatabaseConnectionAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickServerDatabaseDialog databaseDialg = null);
         Task PickDatabaseTablesAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickTablesDialog pickTablesDialog = null);
-
-
     }
 }

@@ -15,7 +15,8 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class WizardPage1 : WizardResultPageFunction, IPickServerDatabaseDialog
     {
-        private WizardDataViewModel wizardViewModel;
+        private readonly IWizardView wizardView;
+        private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)> getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addDefinitions;
@@ -92,6 +93,7 @@ namespace EFCorePowerTools.Wizard
             };
             InitializeComponent();
 
+            this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
             var options = wizardViewModel.Bll.PickConfigDialogInitializeAsync(wizardViewModel).Result;
@@ -115,17 +117,17 @@ namespace EFCorePowerTools.Wizard
         }
 
         /// <summary>
-        /// Code to invoke when the Configuration [dropdown] changes
+        /// Code to invoke when the Configuration [dropdown] changes.
         /// </summary>
-        /// <param name="config">ConfigModel to set as selected</param>
+        /// <param name="config">ConfigModel to set as selected.</param>
         public void OnConfigurationChange(ConfigModel config)
         {
             wizardViewModel.SelectedConfiguration = config;
             wizardViewModel.OptionsPath = config.ConfigPath;
 
-            var project = wizardViewModel.Project;
-            var optionsPath = wizardViewModel.OptionsPath;
-            wizardViewModel.Bll.PickDatabaseConnectionAsync(project, optionsPath, false, false, null, this);
+            // var project = wizardViewModel.Project;
+            // var optionsPath = wizardViewModel.OptionsPath;
+            // wizardViewModel.Bll.PickDatabaseConnectionAsync(project, optionsPath, false, false, null, this);
         }
 
         public void PublishConnections(IEnumerable<DatabaseConnectionModel> connections)

@@ -12,6 +12,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modelling", "Modelling", "{D1EDDE24-5DC8-407E-BE37-77AD0B75759D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RevEng", "RevEng", "{F33E4994-452C-4C09-9FB5-C2E17D0884B6}"
+	ProjectSection(SolutionItems) = preProject
+		GUI\EFCorePowerTools\Wizard\WizardPage1.cs = GUI\EFCorePowerTools\Wizard\WizardPage1.cs
+		GUI\EFCorePowerTools\Wizard\WizardPage1.xaml = GUI\EFCorePowerTools\Wizard\WizardPage1.xaml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RevEng.Common", "GUI\RevEng.Shared\RevEng.Common.csproj", "{D4594A0C-B02F-469D-9521-F0BDD5A30FC0}"
 EndProject

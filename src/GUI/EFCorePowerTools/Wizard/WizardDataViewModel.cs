@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,9 +24,6 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1124:DoNotUseRegions", Justification = "Reviewed.")]
-    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1123:Do not place regions within elements", Justification = "<Pending>")]
-    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "<Pending>")]
     /// <summary>
     /// WizardData will serve as view model for the wizard pages.
     /// </summary>
@@ -38,12 +34,14 @@ namespace EFCorePowerTools.Wizard
             ICredentialStore credentialStore,
             Func<IPickSchemasDialog> pickSchemasDialogFactory,
             Func<IPickConnectionDialog> pickConnectionDialogFactory,
-            IObjectTreeViewModel treeviewModel)
+            IObjectTreeViewModel treeviewModel,
+            IServiceProvider provider)
         {
             this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
             this.pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
             this.pickConnectionDialogFactory = pickConnectionDialogFactory ?? throw new ArgumentNullException(nameof(pickConnectionDialogFactory));
             this.credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
+            this.serviceProvider = provider;
 
             #region WizardPage1 - Configuration / database connection
             Page1LoadedCommand = new RelayCommand(Page1Loaded_Executed);
@@ -65,6 +63,7 @@ namespace EFCorePowerTools.Wizard
             #endregion
         }
 
+        private readonly IServiceProvider serviceProvider;
         private readonly IVisualStudioAccess visualStudioAccess;
         private readonly ICredentialStore credentialStore;
         private readonly Func<IPickSchemasDialog> pickSchemasDialogFactory;
@@ -76,11 +75,17 @@ namespace EFCorePowerTools.Wizard
         private int codeGenerationMode;
         private ConfigModel selectedConfiguration;
 
+        public IServiceProvider ServiceProvider
+        {
+            get { return serviceProvider; }
+        }
+
+        public IReverseEngineerBll Bll { get; set; }
+
         public string DataItem1 { get; set; }
         public string DataItem2 { get; set; }
         public string DataItem3 { get; set; }
 
-        public IReverseEngineerBll Bll { get; set; }
         public Project Project { get; internal set; }
         public string Filename { get; internal set; }
         public bool OnlyGenerate { get; internal set; }
@@ -163,7 +168,6 @@ namespace EFCorePowerTools.Wizard
                 RaisePropertyChanged();
             }
         }
-
 
         public string UiHint
         {
@@ -341,7 +345,7 @@ namespace EFCorePowerTools.Wizard
             SelectedDatabaseConnection = newDatabaseDefinition;
         }
 
-        private bool Ok_CanExecute() => SelectedDatabaseConnection != null;
+        // private bool Ok_CanExecute() => SelectedDatabaseConnection != null;
 
         private bool RemoveDatabaseConnection_CanExecute() => SelectedDatabaseConnection != null && SelectedDatabaseConnection.FilePath == null;
 
@@ -477,10 +481,11 @@ namespace EFCorePowerTools.Wizard
         //    => ObjectTree.GetSelectedObjects().Any(c => c.ObjectType.HasColumns())
         // || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.Procedure)
         // || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.ScalarFunction)
-        private void Cancel_Executed()
-        {
-            // CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
-        }
+
+        // private void Cancel_Executed()
+        // {
+        // CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
+        // }
 
         private void HandleTableSelectionThreeStateChange(bool? selectionMode)
         {

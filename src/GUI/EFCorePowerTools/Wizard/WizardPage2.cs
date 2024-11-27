@@ -18,7 +18,8 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class WizardPage2 : WizardResultPageFunction, IPickTablesDialog
     {
-        private WizardDataViewModel wizardViewModel;
+        private readonly IWizardView wizardView;
+        // private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<SerializationTableModel[]> getDialogResult;
         private readonly Func<Schema[]> getReplacerResult;
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
@@ -26,9 +27,9 @@ namespace EFCorePowerTools.Wizard
         private bool sqliteToolboxInstalled;
 
         public WizardPage2(WizardDataViewModel viewModel, IWizardView wizardView)
-        : base(viewModel, wizardView)
+            : base(viewModel, wizardView)
         {
-            //telemetryAccess.TrackPageView(nameof(PickTablesDialog));
+            // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
 
             DataContext = viewModel;
             getDialogResult = viewModel.GetSelectedObjects;
@@ -38,61 +39,33 @@ namespace EFCorePowerTools.Wizard
 
             InitializeComponent();
 
-            this.wizardViewModel = viewModel;
+            this.wizardView = wizardView;
+            // this.wizardViewModel = viewModel;
             viewModel.Page2LoadedCommand = new RelayCommand(Page2Loaded_Executed);
         }
 
-        private void Page2Loaded_Executed()
+        public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)
         {
-            //var project = wizardViewModel.Project;
-            //var optionsPath = wizardViewModel.OptionsPath;
-            //var onlyGenerate = wizardViewModel.OnlyGenerate;
-            //var fromSqlProject = wizardViewModel.FromSqlProject;
-            //var uiHint = wizardViewModel.UiHint;
-            //wizardViewModel.Bll.PickDatabaseTablesAsync(project, optionsPath, onlyGenerate, fromSqlProject, uiHint, this);
-        }
-
-        public void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Go to next wizard page
-            var wizardPage3 = new WizardPage3((WizardDataViewModel)DataContext, wizardView);
-            wizardPage3.Return += WizardPage_Return;
-            NavigationService?.Navigate(wizardPage3);
-        }
-
-        (bool ClosedByOK, PickTablesDialogResult Payload) IDialog<PickTablesDialogResult>.ShowAndAwaitUserResponse(bool modal)
-        {
-            bool closedByOkay;
-
             if (modal)
             {
-                // closedByOkay = ShowModal() == true;
+                Debug.WriteLine("Modal");
             }
             else
             {
-                // closedByOkay = ShowDialog() == true;
+                Debug.WriteLine("Not modal");
             }
 
-            //return (closedByOkay, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
+            // return (closedByOkay, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
             return (false, new PickTablesDialogResult());
         }
 
-        PickTablesDialogResult GetResults()
-        {
-            return new PickTablesDialogResult
-            {
-                Objects = getDialogResult(),
-                CustomReplacers = getReplacerResult(),
-            };
-        }
-
-        IPickTablesDialog IPickTablesDialog.AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers)
+        public IPickTablesDialog AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers)
         {
             addTables(tables, customReplacers);
             return this;
         }
 
-        IPickTablesDialog IPickTablesDialog.PreselectTables(IEnumerable<SerializationTableModel> tables)
+        public IPickTablesDialog PreselectTables(IEnumerable<SerializationTableModel> tables)
         {
             selectTables(tables);
             return this;
@@ -102,6 +75,33 @@ namespace EFCorePowerTools.Wizard
         {
             sqliteToolboxInstalled = installed;
             return this;
+        }
+
+        public PickTablesDialogResult GetResults()
+        {
+            return new PickTablesDialogResult
+            {
+                Objects = getDialogResult(),
+                CustomReplacers = getReplacerResult(),
+            };
+        }
+
+        private void Page2Loaded_Executed()
+        {
+            // var project = wizardViewModel.Project;
+            // var optionsPath = wizardViewModel.OptionsPath;
+            // var onlyGenerate = wizardViewModel.OnlyGenerate;
+            // var fromSqlProject = wizardViewModel.FromSqlProject;
+            // var uiHint = wizardViewModel.UiHint;
+            // wizardViewModel.Bll.PickDatabaseTablesAsync(project, optionsPath, onlyGenerate, fromSqlProject, uiHint, this);
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Go to next wizard page
+            var wizardPage3 = new WizardPage3((WizardDataViewModel)DataContext, wizardView);
+            wizardPage3.Return += WizardPage_Return;
+            NavigationService?.Navigate(wizardPage3);
         }
 
         private void CheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)
@@ -181,6 +181,5 @@ namespace EFCorePowerTools.Wizard
                 }
             }
         }
-
     }
 }

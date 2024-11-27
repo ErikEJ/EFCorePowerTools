@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
-using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
-using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EFCorePowerTools.Wizard;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using NuGet.Versioning;
@@ -26,35 +23,75 @@ using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
 
-namespace EFCorePowerTools.Handlers.ReverseEngineer
+namespace EFCorePowerTools.Handlers.Wizard
 {
-    /// <summary>
-    /// BillKrat.2024.11.27 - in an effort to minimize code changes we'll let the Handler (presenter)
-    /// serve as the business logic layer since all of the primary logic resides in it. Later, the
-    /// code implementation of IReverseEngineerBll can be moved into its own class.
-    /// </summary>
-    internal class RevEngWizardHandler : IReverseEngineerBll
+    internal class RevEngWizardHandler
     {
-        private readonly IWizardViewModel wizardViewModel;
         private readonly EFCorePowerToolsPackage package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
 
-        public RevEngWizardHandler(EFCorePowerToolsPackage package, IWizardViewModel viewModel)
+        public RevEngWizardHandler(EFCorePowerToolsPackage package)
         {
             this.package = package;
             reverseEngineerHelper = new ReverseEngineerHelper();
             vsDataHelper = new VsDataHelper();
-            wizardViewModel = viewModel;
         }
 
-        /// <summary>
-        /// Entry point of the Wizard invoked by the EfCorePowerToolsPackage (menu select).
-        /// </summary>
-        /// <returns>void.</returns>
-        public async Task ReverseEngineerCodeFirstLaunchWizardAsync(EventArgs e)
+        public async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var project = candidateProjects[0];
+
+            if (candidateProjects.Count > 1)
+            {
+                var pcd = package.GetView<IPickProjectDialog>();
+                pcd.PublishProjects(candidateProjects.Select(m => new ProjectModel
+                {
+                    Project = m,
+                }));
+
+                var pickProjectResult = pcd.ShowAndAwaitUserResponse(true);
+                if (!pickProjectResult.ClosedByOK)
+                {
+                    return (null, null);
+                }
+
+                project = pickProjectResult.Payload.Project;
+            }
+
+            var optionsPaths = project.GetConfigFiles();
+            var optionsPath = optionsPaths[0];
+
+            if (File.Exists(optionsPath))
+            {
+                return (null, project);
+            }
+
+            var options = new ReverseEngineerOptions
+            {
+                Tables = new List<SerializationTableModel>(),
+                CodeGenerationMode = CodeGenerationMode.EFCore8,
+                DatabaseType = DatabaseType.SQLServerDacpac,
+                UiHint = sqlProjectPath,
+                ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
+                OutputPath = "Models",
+            };
+
+            await SaveOptionsAsync(project, optionsPath, options, null, new Tuple<List<Schema>, string>(null, null));
+
+            return (optionsPath, project);
+        }
+
+        internal async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs args)
+        {
+            await ReverseEngineerCodeFirstAsync(args.Project, args.OptionsPath, args.OnlyGenerate, args.FromSqlProject, args.UiHint);
+        }
+
+        private async Task ReverseEngineerCodeFirstAsync(string uiHint = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -74,49 +111,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
 
-                // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
-                // which this class implements.  The wizard pages will use the BLL to process
-                // data using existing business logic.
-                var wizard = new WizardDialogBox(this, e, wizardViewModel);
-                var showDialog = wizard.ShowDialog();
-                var dialogResult = showDialog != null && (bool)showDialog;
-                var result = dialogResult
-                        ? $"{wizard.WizardDataViewModel.DataItem1}\n" +
-                          $"{wizard.WizardDataViewModel.DataItem2}\n" +
-                          $"{wizard.WizardDataViewModel.DataItem3}"
-                        : "Canceled.";
-
-                await VS.MessageBox.ShowAsync(
-                    "EF Core Power Tools",
-                    result,
-                    icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
-                    buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var innerException in ae.Flatten().InnerExceptions)
-                {
-                    package.LogError(new List<string>(), innerException);
-                }
-            }
-            catch (Exception exception)
-            {
-                package.LogError(new List<string>(), exception);
-            }
-        }
-
-        /// <summary>
-        /// Implements: IReverseEngineerBll
-        /// Prior name: ReverseEngineerCodeFirstAsync(string uiHint = null)
-        /// Invoked by: WizardPage1
-        /// </summary>
-        /// <returns> List of ConfigModel </returns>
-        public async Task<List<ConfigModel>> PickConfigDialogInitializeAsync(WizardDataViewModel viewModel = null)
-        {
-            try
-            {
-                var project = await VS.Solutions.GetActiveProjectAsync();
-
                 var projectPath = project.FullPath;
                 var optionsPaths = project.GetConfigFiles();
                 var cliOptionsPath = project.GetCliConfigFile();
@@ -131,27 +125,25 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     await VS.StatusBar.ShowMessageAsync($"Using CLI config in read-only mode, manually edit the file to make changes.");
                 }
 
-                // Provides list of all configurations to Wizard Page 1
-                var results = optionsPaths.Select(m => new ConfigModel
+                if (optionsPaths.Count > 1)
                 {
-                    ConfigPath = m,
-                    ProjectPath = projectPath,
-                }).ToList();
+                    var pcd = package.GetView<IPickConfigDialog>();
+                    pcd.PublishConfigurations(optionsPaths.Select(m => new ConfigModel
+                    {
+                        ConfigPath = m,
+                        ProjectPath = projectPath,
+                    }));
 
-                // These are legacy parameters that would have been passed on to 
-                // next step.  We'll populate viewmodel with them which will have
-                // only have been provided as a parameter from wizard
-                if (viewModel != null)
-                {
-                    viewModel.Project = project;
-                    viewModel.OptionsPath = optionsPath;
-                    viewModel.OnlyGenerate = false;
-                    viewModel.FromSqlProject = false;
-                    viewModel.UiHint = null;
+                    var pickConfigResult = pcd.ShowAndAwaitUserResponse(true);
+                    if (!pickConfigResult.ClosedByOK)
+                    {
+                        return;
+                    }
+
+                    optionsPath = pickConfigResult.Payload.ConfigPath;
                 }
 
-                await VS.StatusBar.ShowMessageAsync($"PickConfigDialog initialization complete");
-                return results;
+                await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint);
             }
             catch (AggregateException ae)
             {
@@ -159,17 +151,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     package.LogError(new List<string>(), innerException);
                 }
-
-                return null;
             }
             catch (Exception exception)
             {
                 package.LogError(new List<string>(), exception);
-                return null;
             }
         }
 
-        public async Task PickDatabaseConnectionAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickServerDatabaseDialog databaseDialog = null)
+        private async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -224,120 +213,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.UiHint = uiHint ?? userOptions.UiHint;
 
-                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList()
-                    ?? [];
-
+                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList() ?? new List<string>();
                 mappedTypes = options.Tables?
                     .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
-                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType)
-                    ?? [];
-
-                options.ProjectPath = Path.GetDirectoryName(project.FullPath);
-                options.OptionsPath = Path.GetDirectoryName(optionsPath);
-
-                bool forceEdit = false;
-
-                var neededPackages = new List<NuGetPackage>();
-
-                DatabaseConnectionModel dbInfo = null;
-
-                // #1 Get Database Connection
-                if (!await ChooseDataBaseConnectionAsync(options, project, databaseDialog))
-                {
-                    await VS.StatusBar.ClearAsync();
-                    return;
-                }
-
-                if (newOptions)
-                {
-                    options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
-                }
-
-                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
-
-                dbInfo = await GetDatabaseInfoAsync(options);
-
-                if (dbInfo == null)
-                {
-                    await VS.StatusBar.ClearAsync();
-                    return;
-                }
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var innerException in ae.Flatten().InnerExceptions)
-                {
-                    package.LogError(new List<string>(), innerException);
-                }
-            }
-            catch (Exception exception)
-            {
-                package.LogError(new List<string>(), exception);
-            }
-        }
-
-        public async Task PickDatabaseTablesAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickTablesDialog pickTablesDialog = null)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            try
-            {
-                if (await VSHelper.IsDebugModeAsync())
-                {
-                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
-                    return;
-                }
-
-                var renamingPath = project.GetRenamingPath(optionsPath);
-                var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
-                if (!string.IsNullOrEmpty(referenceRenamingPath) && File.Exists(referenceRenamingPath))
-                {
-                    VSHelper.ShowMessage("Property renaming (experimental) is no longer available. See GitHub issue #2171.");
-                }
-
-                var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
-
-                var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
-
-                if (options == null
-                    && optionsPath.EndsWith(Constants.ConfigFileName)
-                    && File.Exists(optionsPath))
-                {
-                    var config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(optionsPath, Encoding.UTF8));
-                    options = config.ToOptions(Path.GetDirectoryName(project.FullPath), optionsPath);
-                }
-
-                var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
-
-                var newOptions = false;
-
-                if (options == null)
-                {
-                    options = new ReverseEngineerOptions
-                    {
-                        ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
-                        OutputPath = "Models",
-                    };
-                    newOptions = true;
-                }
-
-                if (userOptions == null)
-                {
-                    userOptions = new ReverseEngineerUserOptions
-                    {
-                        UiHint = uiHint ?? options.UiHint,
-                    };
-                }
-
-                options.UiHint = uiHint ?? userOptions.UiHint;
-
-                legacyDiscoveryObjects = options.Tables?.Where(t => t.UseLegacyResultSetDiscovery).Select(t => t.Name).ToList()
-                    ?? [];
-
-                mappedTypes = options.Tables?
-                    .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
-                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType)
-                    ?? [];
+                    .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
@@ -374,7 +253,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     if (!fromSqlProj)
                     {
-                        // #1 Get Database Connection
+                        // #1 load database connections (IPickServerDatabaseDialog)
                         if (!await ChooseDataBaseConnectionAsync(options, project))
                         {
                             await VS.StatusBar.ClearAsync();
@@ -397,41 +276,39 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         }
                     }
 
+                    // #2 load tables (IPickTablesDialog)
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
 
-                    // #2 Get Database Objects
-                    if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath, pickTablesDialog))
+                    if (!await LoadDataBaseObjectsAsync(options, dbInfo, namingOptionsAndPath))
                     {
                         await VS.StatusBar.ClearAsync();
                         return;
                     }
 
+                    // #3 Load modeling options (IModelingOptionsDialog)
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
-                    options.InstallNuGetPackage = neededPackages
-                        .Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+                    options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
 
-                    //// #3 Get options
-                    //if (!await GetModelOptionsAsync(options, project.Name))
-                    //{
-                    //    await VS.StatusBar.ClearAsync();
-                    //    return;
-                    //}
+                    if (!await GetModelOptionsAsync(options, project.Name))
+                    {
+                        await VS.StatusBar.ClearAsync();
+                        return;
+                    }
 
-                    //if (newOptions)
-                    //{
-                    //    // HACK Work around for issue with web app project system on initial run
-                    //    userOptions = null;
-                    //}
+                    if (newOptions)
+                    {
+                        // HACK Work around for issue with web app project system on initial run
+                        userOptions = null;
+                    }
 
-                    //await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+                    await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
-                var missingProviderPackage = neededPackages
-                    .Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
                 if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
                 {
                     missingProviderPackage = null;
@@ -520,12 +397,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return false;
         }
 
-        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project, IPickServerDatabaseDialog dialog = null)
+        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
-            var psd = dialog ?? package.GetView<IPickServerDatabaseDialog>();
+            var psd = package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
             {
@@ -567,18 +444,22 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 psd.PublishUiHint(options.UiHint);
             }
 
-            var pickDataSourceResult = psd.GetResults();
-
-            options.CodeGenerationMode = pickDataSourceResult.CodeGenerationMode;
-            options.FilterSchemas = pickDataSourceResult.FilterSchemas;
-            options.Schemas = options.FilterSchemas ? pickDataSourceResult.Schemas?.ToList() : null;
-            options.UiHint = pickDataSourceResult.UiHint;
-            options.Dacpac = pickDataSourceResult.Connection?.FilePath;
-
-            if (pickDataSourceResult.Connection != null)
+            var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
+            if (!pickDataSourceResult.ClosedByOK)
             {
-                options.ConnectionString = pickDataSourceResult.Connection.ConnectionString;
-                options.DatabaseType = pickDataSourceResult.Connection.DatabaseType;
+                return false;
+            }
+
+            options.CodeGenerationMode = pickDataSourceResult.Payload.CodeGenerationMode;
+            options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
+            options.Schemas = options.FilterSchemas ? pickDataSourceResult.Payload.Schemas?.ToList() : null;
+            options.UiHint = pickDataSourceResult.Payload.UiHint;
+            options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
+
+            if (pickDataSourceResult.Payload.Connection != null)
+            {
+                options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
+                options.DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType;
             }
 
             return true;
@@ -620,7 +501,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return dbInfo;
         }
 
-        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, IPickTablesDialog pickTablesDialog = null)
+        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -658,10 +539,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             await VS.StatusBar.ClearAsync();
 
-            /*
-                HERE IS WHERE THE WORK GOES
-             */
-            var ptd = pickTablesDialog ?? package.GetView<IPickTablesDialog>()
+            var ptd = package.GetView<IPickTablesDialog>()
                               .AddTables(predefinedTables, namingOptionsAndPath.Item1)
                               .PreselectTables(preselectedTables)
                               .SqliteToolboxInstall(isSqliteToolboxInstalled);
@@ -693,7 +571,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDatabaseNames = options.UseDatabaseNames,
                 UsePluralizer = options.UseInflector,
                 UseDbContextSplitting = options.UseDbContextSplitting,
-                UseHandlebars = options.UseHandleBars || options.UseT4,
+                UseHandlebars = options.UseHandleBars || options.UseT4 || options.UseT4Split,
                 SelectedHandlebarsLanguage = options.SelectedHandlebarsLanguage,
                 IncludeConnectionString = options.IncludeConnectionString,
                 OutputPath = options.OutputPath,
@@ -739,7 +617,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 || modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 1;
             options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars && isHandleBarsLanguage;
             options.SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage;
+
             options.UseT4 = modelingOptionsResult.Payload.UseHandlebars && !isHandleBarsLanguage;
+
+            if (modelingOptionsResult.Payload.UseHandlebars
+                && modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 4)
+            {
+                options.UseT4 = false;
+                options.UseT4Split = true;
+            }
 
             options.InstallNuGetPackage = modelingOptionsResult.Payload.InstallNuGetPackage;
             options.UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations;
@@ -780,7 +666,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var stopWatch = Stopwatch.StartNew();
 
-            if (options.UseHandleBars || (options.UseT4 && string.IsNullOrEmpty(options.T4TemplatePath)))
+            if (options.UseHandleBars || ((options.UseT4 || options.UseT4Split) && string.IsNullOrEmpty(options.T4TemplatePath)))
             {
                 var result = reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
                 if (!string.IsNullOrEmpty(result))
@@ -866,7 +752,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 package.LogError(revEngResult.EntityWarnings, null);
             }
 
-            Telemetry.TrackFrameworkUse(nameof(RevEngWizardHandler), options.CodeGenerationMode);
+            Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
         }
 
@@ -942,87 +828,5 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
-
-        private async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            var project = candidateProjects[0];
-
-            if (candidateProjects.Count > 1)
-            {
-                var pcd = package.GetView<IPickProjectDialog>();
-                pcd.PublishProjects(candidateProjects.Select(m => new ProjectModel
-                {
-                    Project = m,
-                }));
-
-                var pickProjectResult = pcd.ShowAndAwaitUserResponse(true);
-                if (!pickProjectResult.ClosedByOK)
-                {
-                    return (null, null);
-                }
-
-                project = pickProjectResult.Payload.Project;
-            }
-
-            var optionsPaths = project.GetConfigFiles();
-            var optionsPath = optionsPaths[0];
-
-            if (File.Exists(optionsPath))
-            {
-                return (null, project);
-            }
-
-            var options = new ReverseEngineerOptions
-            {
-                Tables = new List<SerializationTableModel>(),
-                CodeGenerationMode = CodeGenerationMode.EFCore8,
-                DatabaseType = DatabaseType.SQLServerDacpac,
-                UiHint = sqlProjectPath,
-                ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
-                OutputPath = "Models",
-            };
-
-            await SaveOptionsAsync(project, optionsPath, options, null, new Tuple<List<Schema>, string>(null, null));
-
-            return (optionsPath, project);
-        }
-
     }
-
-    /// <summary>
-    /// Didn't want to pull in another assembly - grab AsyncHelper code
-    /// https://github.com/aspnet/AspNetIdentity/blob/main/src/Microsoft.AspNet.Identity.Core/AsyncHelper.cs.
-    /// </summary>
-    public static class AsyncHelper
-    {
-        private static readonly TaskFactory _myTaskFactory = new TaskFactory(CancellationToken.None,
-            TaskCreationOptions.None, TaskContinuationOptions.None, TaskScheduler.Default);
-
-        public static TResult RunSync<TResult>(Func<Task<TResult>> func)
-        {
-            var cultureUi = CultureInfo.CurrentUICulture;
-            var culture = CultureInfo.CurrentCulture;
-            return _myTaskFactory.StartNew(() =>
-            {
-                Thread.CurrentThread.CurrentCulture = culture;
-                Thread.CurrentThread.CurrentUICulture = cultureUi;
-                return func();
-            }).Unwrap().GetAwaiter().GetResult();
-        }
-
-        public static void RunSync(Func<Task> func)
-        {
-            var cultureUi = CultureInfo.CurrentUICulture;
-            var culture = CultureInfo.CurrentCulture;
-            _myTaskFactory.StartNew(() =>
-            {
-                Thread.CurrentThread.CurrentCulture = culture;
-                Thread.CurrentThread.CurrentUICulture = cultureUi;
-                return func();
-            }).Unwrap().GetAwaiter().GetResult();
-        }
-    }
-
 }
