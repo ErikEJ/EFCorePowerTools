@@ -12,6 +12,7 @@ using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
@@ -442,6 +443,8 @@ namespace EFCorePowerTools.Wizard
                 HandleSearchTextChange(searchText, searchMode);
             }
         }
+
+        public WizardEventArgs WizardEventArgs { get; set; }
 
         public void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers)
         {

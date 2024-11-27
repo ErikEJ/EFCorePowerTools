@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
-using EFCorePowerTools.Contracts.Views;
-using EFCorePowerTools.Wizard;
+using EFCorePowerTools.Contracts.EventArgs;
+using RevEng.Common;
 
 namespace EFCorePowerTools.BLL
 {
@@ -12,8 +13,20 @@ namespace EFCorePowerTools.BLL
     /// </summary>
     public interface IReverseEngineerBll
     {
-        Task<List<ConfigModel>> PickConfigDialogInitializeAsync(WizardDataViewModel viewModel = null);
-        Task PickDatabaseConnectionAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickServerDatabaseDialog databaseDialg = null);
-        Task PickDatabaseTablesAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, IPickTablesDialog pickTablesDialog = null);
+        Task ReverseEngineerCodeFirstAsync(string uiHint = null, WizardEventArgs wizardArgs = null);
+
+        Task ReverseEngineerCodeFirstAsync(
+            Project project,
+            string optionsPath,
+            bool onlyGenerate,
+            bool fromSqlProj = false,
+            string uiHint = null,
+            WizardEventArgs wizardArgs = null);
+
+        Task<bool> LoadDataBaseObjectsAsync(
+            ReverseEngineerOptions options,
+            DatabaseConnectionModel dbInfo,
+            Tuple<List<Schema>, string> namingOptionsAndPath,
+            WizardEventArgs wizardArgs = null);
     }
 }

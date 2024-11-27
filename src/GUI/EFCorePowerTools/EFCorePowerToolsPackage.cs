@@ -665,7 +665,13 @@ namespace EFCorePowerTools
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
                 {
                     await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(
-                        new WizardEventArgs { Project = project, Filename = filename, OnlyGenerate = false });
+                        new WizardEventArgs
+                        {
+                            Project = project,
+                            Filename = filename,
+                            OnlyGenerate = false,
+                            ServiceProvider = extensionServices,
+                        });
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
@@ -730,7 +736,10 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
                 {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(new WizardEventArgs());
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(new WizardEventArgs()
+                    {
+                        ServiceProvider = extensionServices,
+                    });
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)

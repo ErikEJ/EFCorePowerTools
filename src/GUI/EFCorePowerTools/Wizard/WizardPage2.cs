@@ -12,6 +12,7 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
@@ -19,7 +20,7 @@ namespace EFCorePowerTools.Wizard
     public partial class WizardPage2 : WizardResultPageFunction, IPickTablesDialog
     {
         private readonly IWizardView wizardView;
-        // private readonly WizardDataViewModel wizardViewModel;
+        private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<SerializationTableModel[]> getDialogResult;
         private readonly Func<Schema[]> getReplacerResult;
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
@@ -37,11 +38,12 @@ namespace EFCorePowerTools.Wizard
             addTables = viewModel.AddObjects;
             selectTables = viewModel.SelectObjects;
 
-            InitializeComponent();
-
             this.wizardView = wizardView;
-            // this.wizardViewModel = viewModel;
+            this.wizardViewModel = viewModel;
+
             viewModel.Page2LoadedCommand = new RelayCommand(Page2Loaded_Executed);
+
+            InitializeComponent();
         }
 
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)
@@ -55,8 +57,7 @@ namespace EFCorePowerTools.Wizard
                 Debug.WriteLine("Not modal");
             }
 
-            // return (closedByOkay, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
-            return (false, new PickTablesDialogResult());
+            return (true, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
         }
 
         public IPickTablesDialog AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers)
@@ -88,12 +89,14 @@ namespace EFCorePowerTools.Wizard
 
         private void Page2Loaded_Executed()
         {
-            // var project = wizardViewModel.Project;
-            // var optionsPath = wizardViewModel.OptionsPath;
-            // var onlyGenerate = wizardViewModel.OnlyGenerate;
-            // var fromSqlProject = wizardViewModel.FromSqlProject;
-            // var uiHint = wizardViewModel.UiHint;
-            // wizardViewModel.Bll.PickDatabaseTablesAsync(project, optionsPath, onlyGenerate, fromSqlProject, uiHint, this);
+            var wea = wizardViewModel.WizardEventArgs;
+
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                wea.PickTablesDialogComplete = true;
+                wea.PickTablesDialog = this;
+                await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.RevEngOptions, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+            });
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)

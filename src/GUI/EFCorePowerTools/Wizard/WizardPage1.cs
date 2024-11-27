@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
+using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
@@ -17,7 +19,7 @@ namespace EFCorePowerTools.Wizard
     {
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
-        private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)> getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint, WizardEventArgs WizardArgs)> getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addDefinitions;
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
@@ -27,7 +29,22 @@ namespace EFCorePowerTools.Wizard
         public WizardPage1(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
-            getDialogResult = () => (viewModel.SelectedDatabaseConnection, (CodeGenerationMode)viewModel.CodeGenerationMode, viewModel.FilterSchemas, viewModel.Schemas.ToArray(), viewModel.UiHint);
+            var wizardArgs = new WizardEventArgs
+            {
+                PickServerDatabaseDialog = this,
+            };
+
+            getDialogResult = () =>
+            {
+                wizardViewModel.WizardEventArgs = wizardArgs;
+                return (
+                    viewModel.SelectedDatabaseConnection,
+                    (CodeGenerationMode)viewModel.CodeGenerationMode,
+                    viewModel.FilterSchemas,
+                    viewModel.Schemas.ToArray(),
+                    viewModel.UiHint,
+                    wizardArgs);
+            };
             addConnections = models =>
             {
                 foreach (var model in models)
@@ -96,8 +113,13 @@ namespace EFCorePowerTools.Wizard
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
-            var options = wizardViewModel.Bll.PickConfigDialogInitializeAsync(wizardViewModel).Result;
-            foreach (var option in options)
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                wizardArgs.PickServerDatabaseComplete = true;
+                await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, wizardArgs);
+            });
+
+            foreach (var option in wizardArgs.Options)
             {
                 if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
                 {
@@ -105,7 +127,7 @@ namespace EFCorePowerTools.Wizard
                 }
             }
 
-            OnConfigurationChange(options.FirstOrDefault());
+            OnConfigurationChange(wizardArgs.Options.FirstOrDefault());
         }
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
@@ -122,12 +144,13 @@ namespace EFCorePowerTools.Wizard
         /// <param name="config">ConfigModel to set as selected.</param>
         public void OnConfigurationChange(ConfigModel config)
         {
+            if (config == null)
+            {
+                return;
+            }
+
             wizardViewModel.SelectedConfiguration = config;
             wizardViewModel.OptionsPath = config.ConfigPath;
-
-            // var project = wizardViewModel.Project;
-            // var optionsPath = wizardViewModel.OptionsPath;
-            // wizardViewModel.Bll.PickDatabaseConnectionAsync(project, optionsPath, false, false, null, this);
         }
 
         public void PublishConnections(IEnumerable<DatabaseConnectionModel> connections)
@@ -155,12 +178,19 @@ namespace EFCorePowerTools.Wizard
             this.uiHint(uiHint);
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (
+                DatabaseConnectionModel Connection,
+                CodeGenerationMode CodeGenerationMode,
+                bool FilterSchemas,
+                SchemaInfo[] Schemas,
+                string UiHint,
+                WizardEventArgs WizardArgs) Payload)
+            ShowAndAwaitUserResponse(bool modal)
         {
-            throw new NotImplementedException();
+            return (true, getDialogResult());
         }
 
-        public (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) GetResults()
+        public (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint, WizardEventArgs WizardArgs) GetResults()
         {
             return getDialogResult();
         }

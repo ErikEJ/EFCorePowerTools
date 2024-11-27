@@ -8,14 +8,18 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
+using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.Wizard;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using NuGet.Versioning;
@@ -25,7 +29,7 @@ using RevEng.Common.Cli.Configuration;
 
 namespace EFCorePowerTools.Handlers.Wizard
 {
-    internal class RevEngWizardHandler
+    internal class RevEngWizardHandler : IReverseEngineerBll
     {
         private readonly EFCorePowerToolsPackage package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
@@ -40,7 +44,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             vsDataHelper = new VsDataHelper();
         }
 
-        public async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
+        public async Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -88,10 +92,58 @@ namespace EFCorePowerTools.Handlers.Wizard
 
         internal async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs args)
         {
-            await ReverseEngineerCodeFirstAsync(args.Project, args.OptionsPath, args.OnlyGenerate, args.FromSqlProject, args.UiHint);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            try
+            {
+                var project = await VS.Solutions.GetActiveProjectAsync();
+
+                if (project == null)
+                {
+                    await VS.StatusBar.ShowMessageAsync($"Unable to find active project");
+                    return;
+                }
+
+                if (await VSHelper.IsDebugModeAsync())
+                {
+                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                    return;
+                }
+
+                var wizardViewModel = args.ServiceProvider.GetService<IWizardViewModel>();
+
+                // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
+                // which this class implements.  The wizard pages will use the BLL to process
+                // data using existing business logic.
+                var wizard = new WizardDialogBox(this, args, wizardViewModel);
+                var showDialog = wizard.ShowDialog();
+                var dialogResult = showDialog != null && (bool)showDialog;
+                var result = dialogResult
+                        ? $"{wizard.WizardDataViewModel.DataItem1}\n" +
+                          $"{wizard.WizardDataViewModel.DataItem2}\n" +
+                          $"{wizard.WizardDataViewModel.DataItem3}"
+                        : "Canceled.";
+
+                await VS.MessageBox.ShowAsync(
+                    "EF Core Power Tools",
+                    result,
+                    icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
+                    buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var innerException in ae.Flatten().InnerExceptions)
+                {
+                    package.LogError(new List<string>(), innerException);
+                }
+            }
+            catch (Exception exception)
+            {
+                package.LogError(new List<string>(), exception);
+            }
         }
 
-        private async Task ReverseEngineerCodeFirstAsync(string uiHint = null)
+        public async Task ReverseEngineerCodeFirstAsync(string uiHint = null, WizardEventArgs wizardArgs = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -141,9 +193,30 @@ namespace EFCorePowerTools.Handlers.Wizard
                     }
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
+
+                    // If not null then the wizard is invoking this process
+                    if (wizardArgs != null)
+                    {
+                        wizardArgs.Project = project;
+                        wizardArgs.OptionsPath = optionsPath;
+                        wizardArgs.OnlyGenerate = false;
+                        wizardArgs.FromSqlProject = false;
+                        wizardArgs.UiHint = uiHint;
+                    }
+                }
+                else
+                {
+                    if (wizardArgs != null)
+                    {
+                        wizardArgs.Options.Add(new ConfigModel
+                        {
+                            ConfigPath = optionsPath,
+                            ProjectPath = projectPath,
+                        });
+                    }
                 }
 
-                await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint);
+                await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint, wizardArgs);
             }
             catch (AggregateException ae)
             {
@@ -158,7 +231,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             }
         }
 
-        private async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null)
+        public async Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, WizardEventArgs wizardArgs = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -254,7 +327,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                     if (!fromSqlProj)
                     {
                         // #1 load database connections (IPickServerDatabaseDialog)
-                        if (!await ChooseDataBaseConnectionAsync(options, project))
+                        if (!await ChooseDataBaseConnectionAsync(options, project, wizardArgs))
                         {
                             await VS.StatusBar.ClearAsync();
                             return;
@@ -269,8 +342,11 @@ namespace EFCorePowerTools.Handlers.Wizard
 
                         dbInfo = await GetDatabaseInfoAsync(options);
 
-                        if (dbInfo == null)
+                        if (dbInfo == null || wizardArgs.PickServerDatabaseComplete)
                         {
+                            wizardArgs.DbInfo = dbInfo;
+                            wizardArgs.RevEngOptions = options;
+                            wizardArgs.NamingOptionsAndPath = namingOptionsAndPath;
                             await VS.StatusBar.ClearAsync();
                             return;
                         }
@@ -397,12 +473,12 @@ namespace EFCorePowerTools.Handlers.Wizard
             return false;
         }
 
-        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
+        private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project, WizardEventArgs wizardArgs = null)
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
-            var psd = package.GetView<IPickServerDatabaseDialog>();
+            var psd = wizardArgs.PickServerDatabaseDialog ?? package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
             {
@@ -501,7 +577,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return dbInfo;
         }
 
-        private async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath)
+        public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -539,10 +615,10 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             await VS.StatusBar.ClearAsync();
 
-            var ptd = package.GetView<IPickTablesDialog>()
-                              .AddTables(predefinedTables, namingOptionsAndPath.Item1)
-                              .PreselectTables(preselectedTables)
-                              .SqliteToolboxInstall(isSqliteToolboxInstalled);
+            var ptd = wizardArgs?.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
+            ptd.AddTables(predefinedTables, namingOptionsAndPath.Item1)
+               .PreselectTables(preselectedTables)
+               .SqliteToolboxInstall(isSqliteToolboxInstalled);
 
             var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
 
