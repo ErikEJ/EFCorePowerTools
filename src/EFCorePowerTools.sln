@@ -64,6 +64,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efreveng90", "Core\efreveng
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efcpt.9", "Core\efcpt.9\efcpt.9.csproj", "{E54F79D2-D056-4B97-8D63-ADBB01A49F9E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac", "Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj", "{3B144F11-5B79-443C-98F8-80B4F12625FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,9 @@ Global
 		{E54F79D2-D056-4B97-8D63-ADBB01A49F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E54F79D2-D056-4B97-8D63-ADBB01A49F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E54F79D2-D056-4B97-8D63-ADBB01A49F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +158,7 @@ Global
 		{AB4A3E35-AEEA-4C80-8506-08812CE84701} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{F2B3BA67-1A3D-4A1B-BB58-77A3D7C67A58} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{E54F79D2-D056-4B97-8D63-ADBB01A49F9E} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
+		{3B144F11-5B79-443C-98F8-80B4F12625FD} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}

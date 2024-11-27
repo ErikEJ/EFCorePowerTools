@@ -1,0 +1,84 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
+    <PackageVersion>9.0.0</PackageVersion>    
+    <NoWarn>$(NoWarn);EF1001</NoWarn>    
+    <Authors>ErikEJ</Authors>
+    <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
+    <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
+    <PackageReleaseNotes>For EF Core 9.0 with DacFX 162.5</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
+    <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
+    <MinClientVersion>5.0</MinClientVersion>    
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyName>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</AssemblyName>
+    <RepositoryUrl>https://github.com/ErikEJ/EFCorePowerTools</RepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>  
+
+  <ItemGroup>
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\CustomData.cs" Link="DacpacConsolidate\CustomData.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\DacpacConsolidator.cs" Link="DacpacConsolidate\DacpacConsolidator.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\DacpacMerger.cs" Link="DacpacConsolidate\DacpacMerger.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\DacpacXml.cs" Link="DacpacConsolidate\DacpacXml.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Design\SqlServerDacpacDesignTimeServices.cs" Link="Design\SqlServerDacpacDesignTimeServices.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacFunctionModelFactory.cs" Link="Scaffolding\SqlServerDacpacFunctionModelFactory.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\AliasResolutionVisitor.cs" Link="SqlSharpener\AliasResolutionVisitor.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\DataType.cs" Link="SqlSharpener\DataType.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\DataTypeHelper.cs" Link="SqlSharpener\DataTypeHelper.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\Model\Column.cs" Link="SqlSharpener\Model\Column.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\Model\Procedure.cs" Link="SqlSharpener\Model\Procedure.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\Model\Select.cs" Link="SqlSharpener\Model\Select.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\Model\SelectColumn.cs" Link="SqlSharpener\Model\SelectColumn.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\Model\Table.cs" Link="SqlSharpener\Model\Table.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\SelectVisitor.cs" Link="SqlSharpener\SelectVisitor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.5.57" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\readme.md" Link="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Core\DacFxStrongTypedCore.161\bin\$(Configuration)\netstandard2.1\DacFxStrongTypedCore.161.dll">
+      <Visible>false</Visible>
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework)</PackagePath>
+    </None>
+    <None Include="..\..\Core\RevEng.Core.Abstractions\bin\$(Configuration)\netstandard2.0\RevEng.Core.Abstractions.dll">
+      <Visible>false</Visible>
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework)</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\DacFxStrongTypedCore.161\DacFxStrongTypedCore.161.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>
