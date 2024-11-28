@@ -233,6 +233,10 @@ namespace EFCorePowerTools.Handlers.Wizard
 
         public async Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, WizardEventArgs wizardArgs = null)
         {
+            // Ensure that there is an instance of wizardArgs so that we don't have to
+            // have extra logic checks for null downstream
+            wizardArgs = wizardArgs ?? new WizardEventArgs();
+
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             try
@@ -478,7 +482,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
-            var psd = wizardArgs.PickServerDatabaseDialog ?? package.GetView<IPickServerDatabaseDialog>();
+            var psd = wizardArgs?.PickServerDatabaseDialog ?? package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
             {
@@ -627,7 +631,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return pickTablesResult.ClosedByOK;
         }
 
-        private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName)
+        private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName, WizardEventArgs wizardArgs = null)
         {
             var classBasis = DbContextNamer.GetDatabaseName(options.ConnectionString, options.DatabaseType);
 
@@ -671,8 +675,8 @@ namespace EFCorePowerTools.Handlers.Wizard
                 T4TemplatePath = options.T4TemplatePath,
             };
 
-            var modelDialog = package.GetView<IModelingOptionsDialog>()
-                                          .ApplyPresets(presets);
+            var modelDialog = wizardArgs?.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
+            modelDialog.ApplyPresets(presets);
 
             var allowedTemplates = reverseEngineerHelper.CalculateAllowedTemplates(options.CodeGenerationMode);
 

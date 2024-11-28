@@ -20,6 +20,7 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public bool FromSqlProject { get; set; }
 
         public string UiHint { get; set; }
+        public List<ConfigModel> Options { get; set; } = [];
 
         public IServiceProvider ServiceProvider { get; set; }
 
@@ -34,6 +35,8 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public IPickTablesDialog PickTablesDialog { get; set; }
         public bool PickTablesDialogComplete { get; set; }
 
-        public List<ConfigModel> Options { get; set; } = [];
+        // WizardPage3
+        public IModelingOptionsDialog ModelingOptionsDialog { get; set; }
+        public bool ModelingDialogOptionsComplete { get; set; }
     }
 }

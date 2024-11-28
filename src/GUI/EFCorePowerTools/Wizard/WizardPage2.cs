@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -89,6 +90,11 @@ namespace EFCorePowerTools.Wizard
 
         private void Page2Loaded_Executed()
         {
+            if (wizardViewModel.GetSelectedObjects().Any())
+            {
+                return;
+            }
+
             var wea = wizardViewModel.WizardEventArgs;
 
             ThreadHelper.JoinableTaskFactory.Run(async () =>

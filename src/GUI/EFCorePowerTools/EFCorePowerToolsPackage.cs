@@ -57,7 +57,8 @@ namespace EFCorePowerTools
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
         private readonly RevEngWizardHandler revEngWizardHandler;
-        private readonly ReverseEngineerHandler reverseEngineerHandler;
+        private readonly RevEngWizardHandler reverseEngineerHandler;
+        // private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
         private readonly DgmlNugetHandler dgmlNugetHandler;
@@ -71,7 +72,8 @@ namespace EFCorePowerTools
         public EFCorePowerToolsPackage()
         {
             revEngWizardHandler = new RevEngWizardHandler(this);
-            reverseEngineerHandler = new ReverseEngineerHandler(this);
+            reverseEngineerHandler = new RevEngWizardHandler(this);
+            // reverseEngineerHandler = new ReverseEngineerHandler(this);
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
             dgmlNugetHandler = new DgmlNugetHandler();
