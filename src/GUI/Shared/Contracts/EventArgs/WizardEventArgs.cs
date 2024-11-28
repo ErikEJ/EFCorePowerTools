@@ -20,7 +20,7 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public bool FromSqlProject { get; set; }
 
         public string UiHint { get; set; }
-        public List<ConfigModel> Options { get; set; } = [];
+        public List<ConfigModel> Configurations { get; set; } = [];
 
         public IServiceProvider ServiceProvider { get; set; }
 
@@ -28,7 +28,7 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public IPickServerDatabaseDialog PickServerDatabaseDialog { get; set; }
         public bool PickServerDatabaseComplete { get; set; }
         public DatabaseConnectionModel DbInfo { get; set; }
-        public ReverseEngineerOptions RevEngOptions { get; set; }
+        public ReverseEngineerOptions Options { get; set; }
         public Tuple<List<Schema>, string> NamingOptionsAndPath { get; set; }
 
         // WizardPage2
@@ -38,5 +38,6 @@ namespace EFCorePowerTools.Contracts.EventArgs
         // WizardPage3
         public IModelingOptionsDialog ModelingOptionsDialog { get; set; }
         public bool ModelingDialogOptionsComplete { get; set; }
+        public bool NewOptions { get; set; }
     }
 }

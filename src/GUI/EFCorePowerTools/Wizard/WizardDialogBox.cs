@@ -18,12 +18,12 @@ namespace EFCorePowerTools.Wizard
 
             InitializeComponent();
 
-            if (e is WizardEventArgs args)
+            if (e is WizardEventArgs wizardArgs)
             {
-                wizardViewModel.UiHint = args.UiHint;
-                wizardViewModel.Project = args.Project;
-                wizardViewModel.Filename = args.Filename;
-                wizardViewModel.OnlyGenerate = args.OnlyGenerate;
+                wizardViewModel.WizardEventArgs = wizardArgs;
+                wizardViewModel.UiHint = wizardArgs.UiHint;
+                wizardViewModel.Filename = wizardArgs.Filename;
+                wizardViewModel.OnlyGenerate = wizardArgs.OnlyGenerate;
             }
 
             // Assign the Business logic layer used for processing

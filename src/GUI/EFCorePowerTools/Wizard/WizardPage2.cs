@@ -9,9 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Locales;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
@@ -58,6 +60,7 @@ namespace EFCorePowerTools.Wizard
                 Debug.WriteLine("Not modal");
             }
 
+            wizardViewModel.WizardEventArgs.PickTablesDialogComplete = true;
             return (true, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
         }
 
@@ -96,12 +99,11 @@ namespace EFCorePowerTools.Wizard
             }
 
             var wea = wizardViewModel.WizardEventArgs;
-
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                wea.PickTablesDialogComplete = true;
                 wea.PickTablesDialog = this;
-                await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.RevEngOptions, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
+                await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
             });
         }
 

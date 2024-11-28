@@ -3,28 +3,254 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     x:Class="EFCorePowerTools.Wizard.WizardPage3"
+    xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
     KeepAlive="True"
-
-    FocusManager.FocusedElement="{Binding ElementName=dataItem3TextBox}" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
+    xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    mc:Ignorable="d"
+    Background="#FFF0F0F0"
     WindowTitle="Choose Your Settings For Project">
-    <Grid Background="Bisque">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="10" />
-        </Grid.ColumnDefinitions>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Page3LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Margin="12,0,10,0">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
+                <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+                <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter" />
+                <converter:CollectionCountToEnabledConverter x:Key="CollectionCountToEnabledConverter" />
+                <converter:ColumnEnabledConverter x:Key="ColumnEnabledConverter" />
+                <converter:EnumToLabelConverter x:Key="EnumToLabelConverter" />
+                <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
+                <converter:LevelToWidthConverter x:Key="LevelToWidthConverter" />
+                <converter:ObjectTypeIconToImageStyleConverter x:Key="ObjectTypeIconToImageStyleConverter">
+                    <converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
+                        <ResourceDictionary>
+                            <Style x:Key="TableImageStyle"
+                      TargetType="Image">
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="ViewImageStyle"
+                      TargetType="Image">
+                                <Setter Property="ToolTip" Value="" />
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="ProcedureImageStyle"
+                      TargetType="Image">
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedures.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="ScalarFunctionImageStyle"
+                      TargetType="Image">
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/ScalarFunction.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                            <Style x:Key="TableWithoutKeyImageStyle"
+                      TargetType="Image">
+                                <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.NoPrimaryKey}" />
+                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning.png" />
+                                <Setter Property="Width" Value="16" />
+                                <Setter Property="Height" Value="16" />
+                                <Setter Property="Margin" Value="0,0,0,0" />
+                            </Style>
+                        </ResourceDictionary>
+                    </converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
+                </converter:ObjectTypeIconToImageStyleConverter>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary>
+                        <Style x:Key="GenerationOptionsCheckBoxStyle"
+                           TargetType="CheckBox">
+                            <Setter Property="Margin" Value="0, 8, 0, 8"/>
+                        </Style>
+                        <Style x:Key="GenerationOptionsNamingCheckBoxStyle"
+                           TargetType="CheckBox">
+                            <Setter Property="Margin" Value="5, 6, 5, 6"/>
+                        </Style>
+                        <Style x:Key="LastGenerationOptionsNamingCheckBoxStyle"
+                           TargetType="CheckBox">
+                            <Setter Property="Margin" Value="5, 6, 5, 0"/>
+                        </Style>
+                        <Style TargetType="TextBox" x:Key="TextInputStyle">
+                            <Setter Property="Height" Value="26"/>
+                            <Setter Property="Margin" Value="0,2,0,15"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        </Style>
+                        <Style TargetType="GroupBox" x:Key="NamingGroupBoxStyle">
+                            <Setter Property="Margin" Value="0,15,0,5"/>
+                            <Setter Property="Padding" Value="0,5,0,0"/>
+                        </Style>
+                        <Style TargetType="StackPanel" x:Key="ButtonRowStyle">
+                            <Setter Property="Orientation" Value="Horizontal"/>
+                            <Setter Property="Margin" Value="0,40,0,0"/>
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                        <Style x:Key="GenerationMethodComboBoxStyle"
+                        TargetType="ComboBox">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="IsEditable" Value="False"/>
+                            <Setter Property="MinWidth" Value="200"/>
+                        </Style>
+                        <Style x:Key="HandlebarsLanguageComboBoxStyle"
+                        TargetType="ComboBox">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="IsEditable" Value="False"/>
+                            <Setter Property="MinWidth" Value="172"/>
+                            <Setter Property="Height" Value="23"/>
+                        </Style>
+                    </ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10" />
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.Row="1">Data Item 3:</Label>
-        <TextBox Name="dataItem3TextBox" Grid.Column="2" Grid.Row="1" Padding="5,0,0,0" Text="{Binding Path=DataItem3, UpdateSourceTrigger=PropertyChanged}" />
+        <DockPanel Grid.Row="0"  >
+            <dw:LiveTextBlock Margin="5" 
+                Text="{x:Static locale:ReverseEngineerLocale.ContextName}"/>
+            <TextBox 
+                x:Name="FirstTextBox"
+                Margin="5"
+                Style="{StaticResource TextInputStyle}"
+                TabIndex="0"                 
+                Text="{Binding Model.ModelName, Mode=TwoWay}" />
+        </DockPanel>
 
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+        <DockPanel Grid.Row="1">
+            <dw:LiveTextBlock Margin="5,5,18,5" 
+                Text="{x:Static locale:ReverseEngineerLocale.Namespace}"/>
+            <TextBox TabIndex="1"
+                Margin="5"
+                Style="{StaticResource TextInputStyle}"
+                Text="{Binding Model.Namespace, Mode=TwoWay}"/>
+        </DockPanel>
+
+        <dw:LiveTextBlock Grid.Row="4"
+                          Text="{x:Static locale:ReverseEngineerLocale.EntityTypesPath}"/>
+        <TextBox Grid.Row="5"
+                 TabIndex="2"
+                 Style="{StaticResource TextInputStyle}"
+                 Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
+
+
+        <dw:LiveTextBlock Grid.Row="6"
+                          Text="{x:Static locale:ReverseEngineerLocale.WhatToGenerate}"/>
+        <ComboBox Grid.Row="6"
+                  TabIndex="6"
+                  ItemsSource="{Binding GenerationModeList}"
+                  Style="{StaticResource GenerationMethodComboBoxStyle}"
+                  SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
+
+        <GroupBox Grid.Row="7"
+                  Header="{x:Static locale:ReverseEngineerLocale.Naming}"
+                  Style="{StaticResource NamingGroupBoxStyle}">
+            <StackPanel>
+                <CheckBox TabIndex="7"
+                          Content="{x:Static locale:ReverseEngineerLocale.PluralizeSingularizeObjectNames}"
+                          IsChecked="{Binding Model.UsePluralizer}"
+                          Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
+                <CheckBox TabIndex="8"
+                          Content="{x:Static locale:ReverseEngineerLocale.UseNamesFromDatabase}"
+                          IsChecked="{Binding Model.UseDatabaseNames}"
+                          Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
+            </StackPanel>
+        </GroupBox>
+
+        <CheckBox Grid.Row="8"
+                  TabIndex="8"
+                  Content="{x:Static locale:ReverseEngineerLocale.UseDataAnnotations}"
+                  IsChecked="{Binding Model.UseDataAnnotations}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="9">
+            <CheckBox TabIndex="10"
+                      Name="UseHandlebarsCheckbox"
+                      Content="{x:Static locale:ReverseEngineerLocale.CustomizeUsingHandlebars}"
+                      IsChecked="{Binding Model.UseHandlebars}"
+                      Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+            <ComboBox
+                  TabIndex="11"
+                  Margin="12,0,0,0"
+                  Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
+                  ItemsSource="{Binding TemplateTypeList, Mode=OneWay}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Value"
+                  SelectedValue="{Binding SelectedTemplateType, Mode=TwoWay}" />
+        </StackPanel>
+
+        <CheckBox Grid.Row="10"
+                  TabIndex="12"
+                  Content="{x:Static locale:ReverseEngineerLocale.IncludeConnectionStringGeneratedCode}"
+                  IsChecked="{Binding Model.IncludeConnectionString}"
+                  IsEnabled="{Binding MayIncludeConnectionString}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+
+        <CheckBox Grid.Row="11"
+                  TabIndex="14"
+                  Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
+                  IsChecked="{Binding Model.InstallNuGetPackage}" 
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+        
+        <StackPanel Orientation="Horizontal"
+            Grid.Row="12">
+            <TextBlock 
+                FontSize="18"
+                ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}"
+                Margin="0,2,0,4" >
+                <Hyperlink
+                    x:Name="DocLink"
+                    RequestNavigate="DocLink_RequestNavigate"
+                    NavigateUri="https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering"><Run Text="{x:Static locale:ReverseEngineerLocale.Help}"/></Hyperlink>
+            </TextBlock>
+            <Label Padding="6, 2, 2, 0" ToolTip="{x:Static locale:ReverseEngineerLocale.Rate}" Height="30">
+                <Hyperlink FontSize="18" ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}" Click="Hyperlink_Click" TextDecorations="Underline"  NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details">
+                    <Hyperlink.Style>
+                        <Style TargetType="{x:Type Hyperlink}"
+                            BasedOn="{StaticResource {x:Type Hyperlink}}">
+                            <Setter Property="Foreground" Value="ForestGreen"/>
+                        </Style>
+                    </Hyperlink.Style>
+                    <Run Text="{x:Static locale:ReverseEngineerLocale.Rate}"/>
+                </Hyperlink>
+            </Label>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,12,5">
+            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" Margin="0,0,10,0"/>
             <Button Name="backButton" Click="BackButton_Click" Width="50" xml:space="preserve">&lt; _Back</Button>
             <Button Name="nextButton" IsEnabled="False" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
             <Button Name="cancelButton" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>

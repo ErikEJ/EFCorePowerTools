@@ -29,21 +29,17 @@ namespace EFCorePowerTools.Wizard
         public WizardPage1(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
-            var wizardArgs = new WizardEventArgs
-            {
-                PickServerDatabaseDialog = this,
-            };
-
             getDialogResult = () =>
             {
-                wizardViewModel.WizardEventArgs = wizardArgs;
+                wizardViewModel.WizardEventArgs.PickServerDatabaseComplete = true;
+
                 return (
                     viewModel.SelectedDatabaseConnection,
                     (CodeGenerationMode)viewModel.CodeGenerationMode,
                     viewModel.FilterSchemas,
                     viewModel.Schemas.ToArray(),
                     viewModel.UiHint,
-                    wizardArgs);
+                    viewModel.WizardEventArgs);
             };
             addConnections = models =>
             {
@@ -54,7 +50,11 @@ namespace EFCorePowerTools.Wizard
                         viewModel.DatabaseConnections.Add(model);
                     }
                 }
+
+                viewModel.SelectedDatabaseConnection = viewModel.DatabaseConnections.FirstOrDefault();
+                wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
             };
+
             addDefinitions = models =>
             {
                 foreach (var model in models)
@@ -115,11 +115,11 @@ namespace EFCorePowerTools.Wizard
 
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                wizardArgs.PickServerDatabaseComplete = true;
-                await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, wizardArgs);
+                viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
+                await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
             });
 
-            foreach (var option in wizardArgs.Options)
+            foreach (var option in viewModel.WizardEventArgs.Configurations)
             {
                 if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
                 {
@@ -127,7 +127,7 @@ namespace EFCorePowerTools.Wizard
                 }
             }
 
-            OnConfigurationChange(wizardArgs.Options.FirstOrDefault());
+            OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
         }
 
         public void NextButton_Click(object sender, RoutedEventArgs e)

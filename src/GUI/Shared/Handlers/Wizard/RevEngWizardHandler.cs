@@ -90,7 +90,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return (optionsPath, project);
         }
 
-        internal async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs args)
+        internal async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs wizardArgs)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -110,18 +110,17 @@ namespace EFCorePowerTools.Handlers.Wizard
                     return;
                 }
 
-                var wizardViewModel = args.ServiceProvider.GetService<IWizardViewModel>();
+                var wizardViewModel = wizardArgs.ServiceProvider.GetService<IWizardViewModel>();
+                wizardArgs.Project = project; // we'll need this downstream
 
                 // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
                 // which this class implements.  The wizard pages will use the BLL to process
                 // data using existing business logic.
-                var wizard = new WizardDialogBox(this, args, wizardViewModel);
+                var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
                 var showDialog = wizard.ShowDialog();
                 var dialogResult = showDialog != null && (bool)showDialog;
                 var result = dialogResult
-                        ? $"{wizard.WizardDataViewModel.DataItem1}\n" +
-                          $"{wizard.WizardDataViewModel.DataItem2}\n" +
-                          $"{wizard.WizardDataViewModel.DataItem3}"
+                        ? $"{wizard.WizardDataViewModel.DialogResult}"
                         : "Canceled.";
 
                 await VS.MessageBox.ShowAsync(
@@ -208,7 +207,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                 {
                     if (wizardArgs != null)
                     {
-                        wizardArgs.Options.Add(new ConfigModel
+                        wizardArgs.Configurations.Add(new ConfigModel
                         {
                             ConfigPath = optionsPath,
                             ProjectPath = projectPath,
@@ -303,6 +302,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                 var neededPackages = new List<NuGetPackage>();
 
                 DatabaseConnectionModel dbInfo = null;
+                wizardArgs.NewOptions = newOptions;
 
                 if (onlyGenerate || fromSqlProj)
                 {
@@ -349,7 +349,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                         if (dbInfo == null || wizardArgs.PickServerDatabaseComplete)
                         {
                             wizardArgs.DbInfo = dbInfo;
-                            wizardArgs.RevEngOptions = options;
+                            wizardArgs.Options = options;
                             wizardArgs.NamingOptionsAndPath = namingOptionsAndPath;
                             await VS.StatusBar.ClearAsync();
                             return;
@@ -631,7 +631,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return pickTablesResult.ClosedByOK;
         }
 
-        private async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName, WizardEventArgs wizardArgs = null)
+        public async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName, WizardEventArgs wizardArgs = null)
         {
             var classBasis = DbContextNamer.GetDatabaseName(options.ConnectionString, options.DatabaseType);
 
@@ -836,7 +836,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
         }
 
-        private async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
+        public async Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
             if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {

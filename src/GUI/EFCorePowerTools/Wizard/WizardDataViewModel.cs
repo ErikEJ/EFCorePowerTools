@@ -31,12 +31,13 @@ namespace EFCorePowerTools.Wizard
     public class WizardDataViewModel : ViewModelBase, IWizardViewModel
     {
         public WizardDataViewModel(
-            IVisualStudioAccess visualStudioAccess,
+            IServiceProvider provider,
             ICredentialStore credentialStore,
+            IObjectTreeViewModel treeviewModel,
+            IVisualStudioAccess visualStudioAccess,
             Func<IPickSchemasDialog> pickSchemasDialogFactory,
             Func<IPickConnectionDialog> pickConnectionDialogFactory,
-            IObjectTreeViewModel treeviewModel,
-            IServiceProvider provider)
+            Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory)
         {
             this.visualStudioAccess = visualStudioAccess ?? throw new ArgumentNullException(nameof(visualStudioAccess));
             this.pickSchemasDialogFactory = pickSchemasDialogFactory ?? throw new ArgumentNullException(nameof(pickSchemasDialogFactory));
@@ -62,6 +63,24 @@ namespace EFCorePowerTools.Wizard
             ObjectTree.ObjectSelectionChanged += (s, e) => UpdateTableSelectionThreeState();
             SearchText = string.Empty;
             #endregion
+
+            #region WizardPage3 - Modeling Options
+            this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
+            Title = string.Empty;
+            MayIncludeConnectionString = true;
+            AdvancedCommand = new RelayCommand(Advanced_Executed);
+            Model = new ModelingOptionsModel();
+            Model.PropertyChanged += Model_PropertyChanged;
+
+            TemplateTypeList = [];
+
+            GenerationModeList =
+            [
+                ReverseEngineerLocale.EntityTypesAndContext,
+                ReverseEngineerLocale.DbContextOnly,
+                ReverseEngineerLocale.EntityTypesOnly,
+            ];
+            #endregion
         }
 
         private readonly IServiceProvider serviceProvider;
@@ -69,12 +88,17 @@ namespace EFCorePowerTools.Wizard
         private readonly ICredentialStore credentialStore;
         private readonly Func<IPickSchemasDialog> pickSchemasDialogFactory;
         private readonly Func<IPickConnectionDialog> pickConnectionDialogFactory;
+        private readonly Func<IAdvancedModelingOptionsDialog> advancedModelingOptionsDialogFactory;
 
         private DatabaseConnectionModel selectedDatabaseConnection;
         private bool filterSchemas = false;
         private string uiHint;
         private int codeGenerationMode;
         private ConfigModel selectedConfiguration;
+
+        private string title;
+        private bool mayIncludeConnectionString;
+        private int selectedTemplateType;
 
         public IServiceProvider ServiceProvider
         {
@@ -83,9 +107,7 @@ namespace EFCorePowerTools.Wizard
 
         public IReverseEngineerBll Bll { get; set; }
 
-        public string DataItem1 { get; set; }
-        public string DataItem2 { get; set; }
-        public string DataItem3 { get; set; }
+        public string DialogResult { get; set; } = "DialogResult in WizardDataViewModel";
 
         public Project Project { get; internal set; }
         public string Filename { get; internal set; }
@@ -116,7 +138,7 @@ namespace EFCorePowerTools.Wizard
         public ICommand AddDatabaseConnectionCommand { get; set; }
         public ICommand AddAdhocDatabaseConnectionCommand { get; set; }
         public ICommand AddDatabaseDefinitionCommand { get; set; }
-        public ICommand RemoveDatabaseConnectionCommand { get; set; }
+        public RelayCommand RemoveDatabaseConnectionCommand { get; set; }
         public RelayCommand FilterSchemasCommand { get; set; }
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; set; } = [];
@@ -348,7 +370,10 @@ namespace EFCorePowerTools.Wizard
 
         // private bool Ok_CanExecute() => SelectedDatabaseConnection != null;
 
-        private bool RemoveDatabaseConnection_CanExecute() => SelectedDatabaseConnection != null && SelectedDatabaseConnection.FilePath == null;
+        private bool RemoveDatabaseConnection_CanExecute()
+        {
+            return SelectedDatabaseConnection != null && SelectedDatabaseConnection.FilePath == null;
+        }
 
         private void FilterSchemas_Executed()
         {
@@ -520,6 +545,159 @@ namespace EFCorePowerTools.Wizard
         private void UpdateTableSelectionThreeState()
         {
             TableSelectionThreeState = ObjectTree.GetSelectionState();
+        }
+
+        #endregion
+
+        #region //-- WizardPage3 - Modeling Options / Advanced
+        public RelayCommand Page3LoadedCommand { get; set; }
+
+        public ICommand AdvancedCommand { get; }
+
+        public ModelingOptionsModel Model { get; }
+        public IReadOnlyList<string> GenerationModeList { get; }
+        public IReadOnlyList<string> HandlebarsLanguageList { get; }
+
+        public ObservableCollection<TemplateTypeItem> TemplateTypeList { get; }
+
+        public int SelectedTemplateType
+        {
+            get => selectedTemplateType;
+            set
+            {
+                if (value == selectedTemplateType)
+                {
+                    return;
+                }
+
+                selectedTemplateType = value;
+                Model.SelectedHandlebarsLanguage = selectedTemplateType;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string Title
+        {
+            get => title;
+            private set
+            {
+                if (value == title)
+                {
+                    return;
+                }
+
+                title = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool MayIncludeConnectionString
+        {
+            get => mayIncludeConnectionString;
+            private set
+            {
+                if (value == mayIncludeConnectionString)
+                {
+                    return;
+                }
+
+                mayIncludeConnectionString = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public void ApplyPresets(ModelingOptionsModel presets)
+        {
+            Model.InstallNuGetPackage = presets.InstallNuGetPackage;
+            Model.SelectedToBeGenerated = presets.SelectedToBeGenerated;
+            Model.SelectedHandlebarsLanguage = presets.SelectedHandlebarsLanguage;
+            Model.IncludeConnectionString = presets.IncludeConnectionString;
+            Model.UseHandlebars = presets.UseHandlebars;
+            Model.UsePluralizer = presets.UsePluralizer;
+            Model.UseDatabaseNames = presets.UseDatabaseNames;
+            Model.Namespace = presets.Namespace;
+            Model.OutputPath = presets.OutputPath;
+            Model.OutputContextPath = presets.OutputContextPath;
+            Model.UseSchemaFolders = presets.UseSchemaFolders;
+            Model.ModelNamespace = presets.ModelNamespace;
+            Model.ContextNamespace = presets.ContextNamespace;
+            Model.ModelName = presets.ModelName;
+            Model.UseDataAnnotations = presets.UseDataAnnotations;
+            Model.UseDbContextSplitting = presets.UseDbContextSplitting;
+            Model.ProjectName = presets.ProjectName;
+            Model.DacpacPath = presets.DacpacPath;
+            Model.MapSpatialTypes = presets.MapSpatialTypes;
+            Model.MapHierarchyId = presets.MapHierarchyId;
+            Model.MapNodaTimeTypes = presets.MapNodaTimeTypes;
+            Model.UseEf6Pluralizer = presets.UseEf6Pluralizer;
+            Model.UseBoolPropertiesWithoutDefaultSql = presets.UseBoolPropertiesWithoutDefaultSql;
+            Model.UseNoDefaultConstructor = presets.UseNoDefaultConstructor;
+            Model.UseNoNavigations = presets.UseNoNavigations;
+            Model.UseNullableReferences = presets.UseNullableReferences;
+            Model.UseNoObjectFilter = presets.UseNoObjectFilter;
+            Model.UseManyToManyEntity = presets.UseManyToManyEntity;
+            Model.UseDateOnlyTimeOnly = presets.UseDateOnlyTimeOnly;
+            Model.UseSchemaNamespaces = presets.UseSchemaNamespaces;
+            Model.T4TemplatePath = presets.T4TemplatePath;
+
+            Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(ModelingOptionsModel.DacpacPath):
+                    if (!string.IsNullOrWhiteSpace(Model.DacpacPath))
+                    {
+                        MayIncludeConnectionString = false;
+                        Model.IncludeConnectionString = false;
+                    }
+                    else
+                    {
+                        MayIncludeConnectionString = true;
+                    }
+
+                    break;
+
+                case nameof(ModelingOptionsModel.SelectedToBeGenerated):
+                    if (Model.InstallNuGetPackage && Model.SelectedToBeGenerated == 2)
+                    {
+                        Model.InstallNuGetPackage = false;
+                    }
+
+                    break;
+            }
+        }
+
+        private void Advanced_Executed()
+        {
+            IAdvancedModelingOptionsDialog dialog = advancedModelingOptionsDialogFactory();
+            dialog.ApplyPresets(Model);
+            var advancedModelingOptionsResult = dialog.ShowAndAwaitUserResponse(true);
+            if (!advancedModelingOptionsResult.ClosedByOK)
+            {
+                return;
+            }
+
+            Model.UseDbContextSplitting = advancedModelingOptionsResult.Payload.UseDbContextSplitting;
+            Model.MapSpatialTypes = advancedModelingOptionsResult.Payload.MapSpatialTypes;
+            Model.MapHierarchyId = advancedModelingOptionsResult.Payload.MapHierarchyId;
+            Model.MapNodaTimeTypes = advancedModelingOptionsResult.Payload.MapNodaTimeTypes;
+            Model.UseEf6Pluralizer = advancedModelingOptionsResult.Payload.UseEf6Pluralizer;
+            Model.UseBoolPropertiesWithoutDefaultSql = advancedModelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
+            Model.UseNoDefaultConstructor = advancedModelingOptionsResult.Payload.UseNoDefaultConstructor;
+            Model.UseNullableReferences = advancedModelingOptionsResult.Payload.UseNullableReferences;
+            Model.UseNoObjectFilter = advancedModelingOptionsResult.Payload.UseNoObjectFilter;
+            Model.UseNoNavigations = advancedModelingOptionsResult.Payload.UseNoNavigations;
+            Model.UseSchemaFolders = advancedModelingOptionsResult.Payload.UseSchemaFolders;
+            Model.UseManyToManyEntity = advancedModelingOptionsResult.Payload.UseManyToManyEntity;
+            Model.UseDateOnlyTimeOnly = advancedModelingOptionsResult.Payload.UseDateOnlyTimeOnly;
+            Model.ContextNamespace = advancedModelingOptionsResult.Payload.ContextNamespace;
+            Model.OutputContextPath = advancedModelingOptionsResult.Payload.OutputContextPath;
+            Model.ModelNamespace = advancedModelingOptionsResult.Payload.ModelNamespace;
+            Model.UseSchemaNamespaces = advancedModelingOptionsResult.Payload.UseSchemaNamespaces;
+            Model.T4TemplatePath = advancedModelingOptionsResult.Payload.T4TemplatePath;
         }
 
         #endregion
