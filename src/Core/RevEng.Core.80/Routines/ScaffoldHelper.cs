@@ -115,11 +115,11 @@ namespace RevEng.Core.Routines
 
             ArgumentNullException.ThrowIfNull(model);
 
-            if (usePascalCase)
+            if (!usePascalCase)
             {
                 var name = GenerateUniqueName(routine, model);
 
-                return CreateIdentifier(name, name, true).Item1;
+                return CreateIdentifier(name, name, false).Item1;
             }
             else
             {
