@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Contracts.EventArgs
@@ -39,5 +40,7 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public IModelingOptionsDialog ModelingOptionsDialog { get; set; }
         public bool ModelingDialogOptionsComplete { get; set; }
         public bool NewOptions { get; set; }
+        public ReverseEngineerUserOptions UserOptions { get; set; }
+        public bool ForceEdit { get; set; }
     }
 }

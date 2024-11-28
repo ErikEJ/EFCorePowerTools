@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Documents;
 using Community.VisualStudio.Toolkit;
@@ -12,9 +13,12 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
+using EFCorePowerTools.Handlers.Wizard;
+using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
+using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
@@ -81,7 +85,6 @@ namespace EFCorePowerTools.Wizard
 
                 await VS.StatusBar.ClearAsync();
             });
-
             FirstTextBox.Focus();
         }
 
@@ -102,6 +105,50 @@ namespace EFCorePowerTools.Wizard
                 StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
             };
             process.Start();
+        }
+
+        private void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+            var wea = wizardViewModel.WizardEventArgs;
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                var project = wea.Project;
+                var optionsPath = wea.OptionsPath;
+                var options = wea.Options;
+                var userOptions = wea.UserOptions;
+                var namingOptionsAndPath = wea.NamingOptionsAndPath;
+                var onlyGenerate = wea.OnlyGenerate;
+                var forceEdit = wea.ForceEdit;
+
+                await VS.StatusBar.ShowMessageAsync("Saving Options...");
+
+                await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+
+                await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
+
+                var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
+                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
+                {
+                    missingProviderPackage = null;
+                }
+
+                await VS.StatusBar.ShowMessageAsync("Generating Files...");
+
+                await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+
+                var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
+                if (File.Exists(postRunFile))
+                {
+                    await VS.StatusBar.ShowMessageAsync("Invoking Post Run File...");
+
+                    Process.Start($"\"{postRunFile}\"");
+                }
+
+                await VS.StatusBar.ClearAsync();
+
+                Telemetry.TrackEvent("PowerTools.ReverseEngineer");
+            });
         }
     }
 }

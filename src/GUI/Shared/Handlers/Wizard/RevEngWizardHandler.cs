@@ -207,6 +207,12 @@ namespace EFCorePowerTools.Handlers.Wizard
                 {
                     if (wizardArgs != null)
                     {
+                        wizardArgs.Project = project;
+                        wizardArgs.OptionsPath = optionsPath;
+                        wizardArgs.OnlyGenerate = false;
+                        wizardArgs.FromSqlProject = false;
+                        wizardArgs.UiHint = uiHint;
+
                         wizardArgs.Configurations.Add(new ConfigModel
                         {
                             ConfigPath = optionsPath,
@@ -383,6 +389,10 @@ namespace EFCorePowerTools.Handlers.Wizard
                         userOptions = null;
                     }
 
+                    wizardArgs.UserOptions = userOptions;
+                    wizardArgs.ForceEdit = forceEdit;
+                    wizardArgs.OptionsPath = optionsPath;
+
                     await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
@@ -417,7 +427,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             }
         }
 
-        private static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
+        public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
         {
             var nuGetHelper = new NuGetHelper();
 
@@ -738,7 +748,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return true;
         }
 
-        private async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+        public async Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

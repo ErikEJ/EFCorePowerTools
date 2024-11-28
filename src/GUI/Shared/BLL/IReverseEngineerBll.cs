@@ -41,5 +41,12 @@ namespace EFCorePowerTools.BLL
             ReverseEngineerOptions options,
             string projectName,
             WizardEventArgs wizardArgs = null);
+
+        Task GenerateFilesAsync(
+            Project project,
+            ReverseEngineerOptions options,
+            string missingProviderPackage,
+            bool onlyGenerate,
+            List<NuGetPackage> packages);
     }
 }
