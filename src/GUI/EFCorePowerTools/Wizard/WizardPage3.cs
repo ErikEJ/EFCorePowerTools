@@ -24,6 +24,7 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class WizardPage3 : WizardResultPageFunction, IModelingOptionsDialog
     {
+        // private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<ModelingOptionsModel> getDialogResult;
         private readonly Action<ModelingOptionsModel> applyPresets;
@@ -33,6 +34,7 @@ namespace EFCorePowerTools.Wizard
             : base(wizardViewModel, wizardView)
         {
             // telemetryAccess.TrackPageView(nameof(EfCoreModelDialog));
+            // this.wizardView = wizardView;
             this.wizardViewModel = wizardViewModel;
             getDialogResult = () => wizardViewModel.Model;
             applyPresets = wizardViewModel.ApplyPresets;
@@ -107,7 +109,7 @@ namespace EFCorePowerTools.Wizard
             process.Start();
         }
 
-        private void FinishButton_Click(object sender, RoutedEventArgs e)
+        private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
             var wea = wizardViewModel.WizardEventArgs;
             ThreadHelper.JoinableTaskFactory.Run(async () =>
@@ -148,6 +150,9 @@ namespace EFCorePowerTools.Wizard
                 await VS.StatusBar.ClearAsync();
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
+
+                // Exit wizard
+                base.FinishButton_Click(sender, e);
             });
         }
     }

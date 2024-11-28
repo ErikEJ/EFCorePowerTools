@@ -118,16 +118,21 @@ namespace EFCorePowerTools.Handlers.Wizard
                 // data using existing business logic.
                 var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
                 var showDialog = wizard.ShowDialog();
-                var dialogResult = showDialog != null && (bool)showDialog;
-                var result = dialogResult
-                        ? $"{wizard.WizardDataViewModel.DialogResult}"
-                        : "Canceled.";
 
-                await VS.MessageBox.ShowAsync(
-                    "EF Core Power Tools",
-                    result,
-                    icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
-                    buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                var isOk = showDialog != null && (bool)showDialog;
+                if (isOk)
+                {
+                    await Task.Yield();
+                }
+                else
+                {
+                    await VS.MessageBox.ShowAsync(
+                       "EF Core Power Tools",
+                       "Process cancelled",
+                       icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
+                       buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                }
+
             }
             catch (AggregateException ae)
             {
