@@ -108,17 +108,20 @@ namespace EFCorePowerTools.Wizard
             {
                 viewModel.UiHint = uiHint;
             };
+
             InitializeComponent();
 
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
+            Statusbar.Status.ShowStatus("Loading options...");
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
                 viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
                 await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
             });
 
+            Statusbar.Status.ShowStatus("Loading configurations...");
             foreach (var option in viewModel.WizardEventArgs.Configurations)
             {
                 if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
@@ -132,6 +135,8 @@ namespace EFCorePowerTools.Wizard
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
+            Statusbar.Status.ShowStatus("Loading database data...");
+
             // Go to next wizard page
             var wizardPage2 = new WizardPage2((WizardDataViewModel)DataContext, wizardView);
             wizardPage2.Return += WizardPage_Return;
@@ -149,6 +154,7 @@ namespace EFCorePowerTools.Wizard
                 return;
             }
 
+            Statusbar.Status.ShowStatus("Loaded successfully");
             wizardViewModel.SelectedConfiguration = config;
             wizardViewModel.OptionsPath = config.ConfigPath;
         }

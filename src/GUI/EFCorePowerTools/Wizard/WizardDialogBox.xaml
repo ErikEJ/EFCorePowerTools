@@ -3,6 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="EFCorePowerTools.Wizard.NavigationWindow"
     WindowStartupLocation="CenterScreen"
-    Height="520"
+    Height="560"
     Width="420"
     Title="Wizard Dialog Box" />

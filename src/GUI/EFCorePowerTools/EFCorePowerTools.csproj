@@ -59,6 +59,12 @@
     <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="Westwind.WPF.Statusbar\StatusBarControl.xaml.cs">
+      <DependentUpon>StatusBarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
+    <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
+    <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
     <Compile Include="Wizard\WizardDataViewModel.cs" />
     <Compile Include="Wizard\WizardPage1.cs">
       <DependentUpon>WizardPage1.xaml</DependentUpon>
@@ -160,6 +166,16 @@
     <Compile Include="Wizard\WizardReturnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-check.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-exclamation.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-green.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-notch.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-red.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\triangle-exclamation.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Icon-512.png" />
+    <Content Include="Westwind.WPF.Statusbar\icon.png" />
+    <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
+    <None Include="Westwind.WPF.Statusbar\README.md" />
     <None Include="Wizard\WizardUprade.qea" />
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
@@ -582,6 +598,18 @@
     <Page Include="Dialogs\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Westwind.WPF.Statusbar\Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Westwind.WPF.Statusbar\Assets\Icons\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Westwind.WPF.Statusbar\StatusBarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Wizard\WizardDialogBox.xaml">
       <Generator>MSBuild:Compile</Generator>
