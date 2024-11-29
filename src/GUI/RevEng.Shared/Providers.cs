@@ -389,7 +389,7 @@ namespace RevEng.Common
                         pkgVersion = "6.21.160";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.60";
+                        pkgVersion = "8.23.50";
                         break;
                 }
 
