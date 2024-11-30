@@ -131,11 +131,18 @@ namespace EFCorePowerTools.Wizard
             }
 
             OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
+
+            Loaded += WizardPage1_Loaded;
+        }
+
+        private void WizardPage1_Loaded(object sender, RoutedEventArgs e)
+        {
+            Statusbar.Status.ShowStatus("Ready");
         }
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            Statusbar.Status.ShowStatus("Loading database data...");
+            Statusbar.Status.ShowStatusProgress("Loading database data...");
 
             // Go to next wizard page
             var wizardPage2 = new WizardPage2((WizardDataViewModel)DataContext, wizardView);

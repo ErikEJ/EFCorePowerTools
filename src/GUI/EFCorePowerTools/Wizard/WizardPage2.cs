@@ -169,6 +169,19 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
+        private void SolutionTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (tree.SelectedItem is ITableInformationViewModel
+                || (tree.SelectedItem is IColumnInformationViewModel cvm && cvm.IsTableSelected))
+            {
+                tree.ContextMenu = tree.Resources["RenamePopup"] as ContextMenu;
+            }
+            else
+            {
+                tree.ContextMenu = null;
+            }
+        }
+
         private void SqliteToolboxLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             var process = new Process
@@ -190,6 +203,18 @@ namespace EFCorePowerTools.Wizard
                 {
                     // Ignore
                 }
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (tree.SelectedItem is IColumnInformationViewModel cvm && cvm.IsTableSelected)
+            {
+                cvm.StartEditCommand.Execute(null);
+            }
+            else if (tree.SelectedItem is ITableInformationViewModel tvm)
+            {
+                tvm.StartEditCommand.Execute(null);
             }
         }
     }

@@ -132,7 +132,6 @@ namespace EFCorePowerTools.Handlers.Wizard
                        icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
                        buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
                 }
-
             }
             catch (AggregateException ae)
             {

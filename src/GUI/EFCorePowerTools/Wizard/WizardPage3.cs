@@ -75,7 +75,7 @@ namespace EFCorePowerTools.Wizard
 
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
+                Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.LoadingOptions);
 
                 wea.ModelingOptionsDialog = this;
 
@@ -85,7 +85,7 @@ namespace EFCorePowerTools.Wizard
 
                 await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
 
-                await VS.StatusBar.ClearAsync();
+                Statusbar.Status.ShowStatus("Ready");
             });
             FirstTextBox.Focus();
         }
@@ -111,6 +111,8 @@ namespace EFCorePowerTools.Wizard
 
         private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
+            Statusbar.Status.ShowStatusProgress("Generating files...");
+
             var wea = wizardViewModel.WizardEventArgs;
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
@@ -122,7 +124,7 @@ namespace EFCorePowerTools.Wizard
                 var onlyGenerate = wea.OnlyGenerate;
                 var forceEdit = wea.ForceEdit;
 
-                await VS.StatusBar.ShowMessageAsync("Saving Options...");
+                await VS.StatusBar.ShowMessageAsync("Saving options...");
 
                 await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
@@ -142,12 +144,14 @@ namespace EFCorePowerTools.Wizard
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
                 {
-                    await VS.StatusBar.ShowMessageAsync("Invoking Post Run File...");
+                    Statusbar.Status.ShowStatusProgress("Invoking Post Run File...");
 
                     Process.Start($"\"{postRunFile}\"");
                 }
 
                 await VS.StatusBar.ClearAsync();
+
+                Statusbar.Status.ShowStatus("Process completed");
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
 

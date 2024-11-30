@@ -10,6 +10,7 @@
     xmlns:contractvm="clr-namespace:EFCorePowerTools.Contracts.ViewModels"
     xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"    
     KeepAlive="True"
     Background="#FFF0F0F0"
@@ -124,7 +125,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -191,17 +194,19 @@
             </Popup>
         </Grid>
 
-        <TreeView Margin="12,0"
+        <TreeView Grid.Row="1"
+                  Margin="12,0"
                   ItemsSource="{Binding ObjectTree.Types}"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Standard"
-                  Grid.Row="1"
                   x:Name="tree"
                   Focusable="True"
+                  SelectedItemChanged="SolutionTree_SelectedItemChanged"
                   KeyUp="Tree_KeyUp">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="Padding" Value="1"></Setter>
+                    <Setter Property="IsExpanded" Value="True"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -211,10 +216,14 @@
             </TreeView.ItemContainerStyle>
 
             <TreeView.Resources>
+                <ContextMenu x:Key="RenamePopup">
+                    <MenuItem Header="Rename" Click="MenuItem_Click"/>
+                </ContextMenu>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:ObjectTreeRootItemViewModel}" ItemsSource="{Binding Path=Schemas}">
                     <HierarchicalDataTemplate.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
                             <Setter Property="Padding" Value="1"></Setter>
+                            <Setter Property="IsExpanded" Value="True"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -358,8 +367,7 @@
             </TreeView.Resources>
         </TreeView>
 
-        <TextBlock
-            Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}"
+        <TextBlock  Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}"
                 Margin="12,20,12,0">
                 <Hyperlink                   
                     x:Name="SqliteToolboxLink"
@@ -373,13 +381,13 @@
             </StatusBar>
         </StackPanel>
 
-
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,12,10">
             <Button Name="backButton" Click="BackButton_Click" Width="50" xml:space="preserve">&lt; _Back</Button>
             <Button Name="nextButton" Click="NextButton_Click" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
             <Button Name="cancelButton" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
             <Button Name="finishButton" IsEnabled="False" Width="50" Margin="10,0,0,0" >_Finish</Button>
         </StackPanel>
+        <statusbar:StatusbarControl Grid.Row="4" x:Name="Statusbar"/>
     </Grid>
 </local:WizardResultPageFunction>
 

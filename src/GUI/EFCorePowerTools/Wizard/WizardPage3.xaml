@@ -10,6 +10,7 @@
     xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
     xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     mc:Ignorable="d"
     Background="#FFF0F0F0"
@@ -120,6 +121,7 @@
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -132,10 +134,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0"  >
@@ -160,11 +162,11 @@
 
         <dw:LiveTextBlock Grid.Row="4"
                           Text="{x:Static locale:ReverseEngineerLocale.EntityTypesPath}"/>
+        
         <TextBox Grid.Row="5"
                  TabIndex="2"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
-
 
         <dw:LiveTextBlock Grid.Row="6"
                           Text="{x:Static locale:ReverseEngineerLocale.WhatToGenerate}"/>
@@ -195,8 +197,8 @@
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
 
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="9">
+        <StackPanel Grid.Row="9" 
+                    Orientation="Horizontal">
             <CheckBox TabIndex="10"
                       Name="UseHandlebarsCheckbox"
                       Content="{x:Static locale:ReverseEngineerLocale.CustomizeUsingHandlebars}"
@@ -224,9 +226,9 @@
                   Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        
-        <StackPanel Orientation="Horizontal"
-            Grid.Row="12">
+
+        <StackPanel Grid.Row="12"
+                    Orientation="Horizontal" >
             <TextBlock 
                 FontSize="18"
                 ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}"
@@ -256,5 +258,7 @@
             <Button Name="cancelButton" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
             <Button Name="finishButton" Click="FinishButton_Click" Width="50" Margin="10,0,0,0" IsDefault="True">_Finish</Button>
         </StackPanel>
+
+        <statusbar:StatusbarControl Grid.Row="14" x:Name="Statusbar"/>
     </Grid>
 </local:WizardResultPageFunction>

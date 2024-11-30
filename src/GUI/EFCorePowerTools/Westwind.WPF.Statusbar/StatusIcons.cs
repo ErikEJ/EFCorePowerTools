@@ -4,7 +4,6 @@ using System.Windows.Media;
 
 namespace Westwind.Wpf.Statusbar
 {
-
     /// <summary>
     /// Class that holds the default icons used for status messages
     /// retrieved from internal Geometry resources.
