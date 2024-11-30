@@ -25,6 +25,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
         private readonly Action<CodeGenerationMode, IList<CodeGenerationItem>> codeGeneration;
         private readonly Action<string> uiHint;
+        private bool isInitialized;
 
         public WizardPage1(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -109,34 +110,42 @@ namespace EFCorePowerTools.Wizard
                 viewModel.UiHint = uiHint;
             };
 
-            InitializeComponent();
-
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
-            Statusbar.Status.ShowStatus("Loading options...");
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
-                await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
-            });
-
-            Statusbar.Status.ShowStatus("Loading configurations...");
-            foreach (var option in viewModel.WizardEventArgs.Configurations)
-            {
-                if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
-                {
-                    wizardViewModel.Configurations.Add(option);
-                }
-            }
-
-            OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
-
             Loaded += WizardPage1_Loaded;
+
+            InitializeComponent();
         }
 
         private void WizardPage1_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!isInitialized)
+            {
+                var viewModel = wizardViewModel;
+
+                Statusbar.Status.ShowStatusProgress("Loading options...");
+
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
+                    await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
+                });
+
+                Statusbar.Status.ShowStatus("Loading configurations...");
+                foreach (var option in viewModel.WizardEventArgs.Configurations)
+                {
+                    if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
+                    {
+                        wizardViewModel.Configurations.Add(option);
+                    }
+                }
+
+                OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
+
+                isInitialized = true;
+            }
+
             Statusbar.Status.ShowStatus("Ready");
         }
 

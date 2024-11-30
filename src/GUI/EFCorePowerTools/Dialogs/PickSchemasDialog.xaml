@@ -40,13 +40,14 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid>
             <ListBox ItemsSource="{Binding Schemas}" SelectedItem="{Binding SelectedSchema, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Cursor="Hand" Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -56,22 +57,22 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    FocusManager.FocusedElement="{Binding ElementName=InputBox}"
                     Margin="0,5,0,0">
-            <dw:ImageButton TabIndex="4" 
-                            ImageNormal="pack://application:,,,/EFCorePowerTools;component/Resources/Add.png"
-                            ImageHover="pack://application:,,,/EFCorePowerTools;component/Resources/Add.png"
-                            ImagePressed="pack://application:,,,/EFCorePowerTools;component/Resources/Add.png"
-                            Command="{Binding AddCommand}"/>
-            <dw:ImageButton TabIndex="5"
-                            ImageNormal="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png"
-                            ImageHover="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png"
-                            ImagePressed="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png"
-                            Margin="5,0,0,0"
-                            Content="{x:Static locale:SharedLocale.Cancel}"
-                            Command="{Binding RemoveCommand}"/>
+            <Button TabIndex="4" Command="{Binding AddCommand}">
+                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Add.png"/>
+            </Button>
+            <Button TabIndex="5" Command="{Binding RemoveCommand}" Margin="5,0,0,0">
+                <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png"/>
+            </Button>
+            <TextBox Name="InputBox" Height="22"
+                     VerticalContentAlignment="Center"
+                     Width="330" Margin="5,0,0,0" 
+                     Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibilityConverter}}"
+                     Text="{Binding SelectedSchema.Name, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1"
+        <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"

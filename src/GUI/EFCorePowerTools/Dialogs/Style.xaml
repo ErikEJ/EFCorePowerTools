@@ -2,9 +2,17 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:vs_shell="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
 
-    <Style TargetType="TextBox">
+    <!--<Style TargetType="TextBox">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static vs_shell:EnvironmentColors.ToolWindowTextBrushKey}}" />
         <Setter Property="Background" Value="{DynamicResource {x:Static vs_shell:EnvironmentColors.ToolWindowBackgroundBrushKey}}" />
+    </Style>-->
+
+    <Style TargetType="Button">
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style TargetType="vs_shell:DialogButton">
+        <Setter Property="Cursor" Value="Hand" />
     </Style>
 
     <SolidColorBrush x:Key="DialogWindowBackgroundColor"

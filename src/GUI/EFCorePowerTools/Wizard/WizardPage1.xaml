@@ -182,7 +182,6 @@
                              Command="{Binding FilterSchemasCommand}"/>
                     </StackPanel>
 
-
                     <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,12,10">
                         <Button IsEnabled="False" Width="50" xml:space="preserve">&lt; _Back</Button>
                         <Button Click="NextButton_Click"  Width="50" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>

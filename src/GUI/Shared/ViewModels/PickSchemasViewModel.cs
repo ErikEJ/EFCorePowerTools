@@ -46,8 +46,24 @@ namespace EFCorePowerTools.ViewModels
 
                 selectedSchema = value;
                 RaisePropertyChanged();
+                IsSelected = selectedSchema != null;
             }
         }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return isSelected;
+            }
+            set
+            {
+                isSelected = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool isSelected;
 
         private void Ok_Executed()
         {
@@ -70,7 +86,9 @@ namespace EFCorePowerTools.ViewModels
 
         private void Add_Executed()
         {
-            Schemas.Add(new SchemaInfo());
+            var newRecord = new SchemaInfo();
+            SelectedSchema = newRecord;
+            Schemas.Add(newRecord);
         }
 
         private void Remove_Executed()
