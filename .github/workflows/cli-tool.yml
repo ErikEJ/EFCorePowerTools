@@ -25,7 +25,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.404'
+        dotnet-version: '9.0.100'
   
     - name: Package CLI 8
       run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
