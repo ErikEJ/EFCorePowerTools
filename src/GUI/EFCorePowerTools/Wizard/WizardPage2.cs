@@ -51,15 +51,6 @@ namespace EFCorePowerTools.Wizard
 
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)
         {
-            if (modal)
-            {
-                Debug.WriteLine("Modal");
-            }
-            else
-            {
-                Debug.WriteLine("Not modal");
-            }
-
             wizardViewModel.WizardEventArgs.PickTablesDialogComplete = true;
             return (true, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
         }
@@ -182,6 +173,18 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
+        private void TreeNodeContextMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (tree.SelectedItem is IColumnInformationViewModel cvm && cvm.IsTableSelected)
+            {
+                cvm.StartEditCommand.Execute(null);
+            }
+            else if (tree.SelectedItem is ITableInformationViewModel tvm)
+            {
+                tvm.StartEditCommand.Execute(null);
+            }
+        }
+
         private void SqliteToolboxLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
             var process = new Process
@@ -203,18 +206,6 @@ namespace EFCorePowerTools.Wizard
                 {
                     // Ignore
                 }
-            }
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            if (tree.SelectedItem is IColumnInformationViewModel cvm && cvm.IsTableSelected)
-            {
-                cvm.StartEditCommand.Execute(null);
-            }
-            else if (tree.SelectedItem is ITableInformationViewModel tvm)
-            {
-                tvm.StartEditCommand.Execute(null);
             }
         }
     }

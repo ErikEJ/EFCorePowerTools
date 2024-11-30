@@ -64,6 +64,7 @@ namespace EFCorePowerTools.ViewModels
         }
 
         private bool isSelected;
+        private bool isRemovedData;
 
         private void Ok_Executed()
         {
@@ -77,7 +78,7 @@ namespace EFCorePowerTools.ViewModels
             CloseRequested?.Invoke(this, new CloseRequestedEventArgs(true));
         }
 
-        private bool Ok_CanExecute() => Schemas.Any();
+        private bool Ok_CanExecute() => Schemas.Any() || isRemovedData;
 
         private void Cancel_Executed()
         {
@@ -95,6 +96,7 @@ namespace EFCorePowerTools.ViewModels
         {
             Schemas.Remove(SelectedSchema);
             SelectedSchema = null;
+            isRemovedData = true;
         }
 
         private bool Remove_CanExecute() => SelectedSchema != null;

@@ -217,7 +217,7 @@
 
                     <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                         <Button IsEnabled="False" Width="50" xml:space="preserve">&lt; _Back</Button>
-                        <Button Click="NextButton_Click"  Width="50" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
+                        <Button x:Name="NextButton" Click="NextButton_Click"  Width="50" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
                         <Button Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
                         <Button IsEnabled="False" Width="50" Margin="10,0,0,0">_Finish</Button>
                     </StackPanel>

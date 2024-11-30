@@ -47,7 +47,7 @@
             <ListBox ItemsSource="{Binding Schemas}" SelectedItem="{Binding SelectedSchema, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Cursor="Hand" Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Cursor="Hand" Width="330" Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -62,7 +62,9 @@
             <Button TabIndex="4" Command="{Binding AddCommand}">
                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Add.png"/>
             </Button>
-            <Button TabIndex="5" Command="{Binding RemoveCommand}" Margin="5,0,0,0">
+            <Button TabIndex="5" 
+                    Command="{Binding RemoveCommand}" 
+                    Margin="5,0,0,0">
                 <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png"/>
             </Button>
             <TextBox Name="InputBox" Height="22"

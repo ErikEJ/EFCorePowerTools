@@ -217,7 +217,7 @@
 
             <TreeView.Resources>
                 <ContextMenu x:Key="RenamePopup">
-                    <MenuItem Header="Rename  F2" Click="MenuItem_Click"/>
+                    <MenuItem Header="Rename  F2" Click="TreeNodeContextMenuItem_Click"/>
                 </ContextMenu>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:ObjectTreeRootItemViewModel}" ItemsSource="{Binding Path=Schemas}">
                     <HierarchicalDataTemplate.ItemContainerStyle>

@@ -11,10 +11,6 @@
         <Setter Property="Cursor" Value="Hand" />
     </Style>
 
-    <Style TargetType="vs_shell:DialogButton">
-        <Setter Property="Cursor" Value="Hand" />
-    </Style>
-
     <SolidColorBrush x:Key="DialogWindowBackgroundColor"
                      Color="#FFF0F0F0" />
     <SolidColorBrush x:Key="DisabledTextBlockTextColor"

@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Locales;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -124,7 +126,7 @@ namespace EFCorePowerTools.Wizard
             {
                 var viewModel = wizardViewModel;
 
-                Statusbar.Status.ShowStatusProgress("Loading options...");
+                Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.GettingReadyToConnect);
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
@@ -132,7 +134,6 @@ namespace EFCorePowerTools.Wizard
                     await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
                 });
 
-                Statusbar.Status.ShowStatus("Loading configurations...");
                 foreach (var option in viewModel.WizardEventArgs.Configurations)
                 {
                     if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
@@ -144,14 +145,18 @@ namespace EFCorePowerTools.Wizard
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
 
                 isInitialized = true;
+                NextButton.IsEnabled = true;
             }
 
-            Statusbar.Status.ShowStatus("Ready");
+            Statusbar.Status.ShowStatus();
         }
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            Statusbar.Status.ShowStatusProgress("Loading database data...");
+            Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.LoadingDatabaseObjects);
+
+            NextButton.IsEnabled = false;
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 
             // Go to next wizard page
             var wizardPage2 = new WizardPage2((WizardDataViewModel)DataContext, wizardView);
@@ -170,7 +175,7 @@ namespace EFCorePowerTools.Wizard
                 return;
             }
 
-            Statusbar.Status.ShowStatus("Loaded successfully");
+            Statusbar.Status.ShowStatus();
             wizardViewModel.SelectedConfiguration = config;
             wizardViewModel.OptionsPath = config.ConfigPath;
         }
