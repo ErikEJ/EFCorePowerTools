@@ -66,7 +66,7 @@ namespace EFCorePowerTools.Wizard
 
             #region WizardPage3 - Modeling Options
             this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
-            Title = string.Empty;
+
             MayIncludeConnectionString = true;
             AdvancedCommand = new RelayCommand(Advanced_Executed);
             Model = new ModelingOptionsModel();
@@ -579,7 +579,7 @@ namespace EFCorePowerTools.Wizard
         public string Title
         {
             get => title;
-            private set
+            set
             {
                 if (value == title)
                 {

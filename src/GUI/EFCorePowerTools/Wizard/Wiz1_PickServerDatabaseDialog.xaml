@@ -9,10 +9,10 @@
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
     xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
-    x:Class="EFCorePowerTools.Wizard.WizardPage1"
+    x:Class="EFCorePowerTools.Wizard.Wiz1_PickServerDatabaseDialog"
     KeepAlive="True"
     Background="#FFF0F0F0"    
-    WindowTitle="Choose Your Database Objects">
+    WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

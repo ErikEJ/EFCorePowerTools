@@ -20,7 +20,7 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
-    public partial class WizardPage2 : WizardResultPageFunction, IPickTablesDialog
+    public partial class Wiz2_PickTablesDialog : WizardResultPageFunction, IPickTablesDialog
     {
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
@@ -30,7 +30,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
         private bool sqliteToolboxInstalled;
 
-        public WizardPage2(WizardDataViewModel viewModel, IWizardView wizardView)
+        public Wiz2_PickTablesDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
             // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
@@ -101,7 +101,7 @@ namespace EFCorePowerTools.Wizard
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Go to next wizard page
-            var wizardPage3 = new WizardPage3((WizardDataViewModel)DataContext, wizardView);
+            var wizardPage3 = new Wiz3_EfCoreModelDialog((WizardDataViewModel)DataContext, wizardView);
             wizardPage3.Return += WizardPage_Return;
             NavigationService?.Navigate(wizardPage3);
         }
@@ -196,6 +196,8 @@ namespace EFCorePowerTools.Wizard
 
         private void DialogWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
+            WindowTitle = ReverseEngineerLocale.ChooseDatabaseObjects;
+
             if (!sqliteToolboxInstalled)
             {
                 try

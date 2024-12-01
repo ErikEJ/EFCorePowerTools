@@ -22,7 +22,7 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
-    public partial class WizardPage3 : WizardResultPageFunction, IModelingOptionsDialog
+    public partial class Wiz3_EfCoreModelDialog : WizardResultPageFunction, IModelingOptionsDialog
     {
         // private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
@@ -30,7 +30,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<ModelingOptionsModel> applyPresets;
         private readonly Action<TemplateTypeItem, IList<TemplateTypeItem>> setTemplateTypes;
 
-        public WizardPage3(WizardDataViewModel wizardViewModel, IWizardView wizardView)
+        public Wiz3_EfCoreModelDialog(WizardDataViewModel wizardViewModel, IWizardView wizardView)
             : base(wizardViewModel, wizardView)
         {
             // telemetryAccess.TrackPageView(nameof(EfCoreModelDialog));
@@ -87,6 +87,8 @@ namespace EFCorePowerTools.Wizard
 
                 Statusbar.Status.ShowStatus("Ready");
             });
+
+            WindowTitle = wizardViewModel.Title;
             FirstTextBox.Focus();
         }
 

@@ -17,7 +17,7 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
-    public partial class WizardPage1 : WizardResultPageFunction, IPickServerDatabaseDialog
+    public partial class Wiz1_PickServerDatabaseDialog : WizardResultPageFunction, IPickServerDatabaseDialog
     {
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
@@ -29,7 +29,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<string> uiHint;
         private bool isInitialized;
 
-        public WizardPage1(WizardDataViewModel viewModel, IWizardView wizardView)
+        public Wiz1_PickServerDatabaseDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
             getDialogResult = () =>
@@ -148,6 +148,7 @@ namespace EFCorePowerTools.Wizard
                 NextButton.IsEnabled = true;
             }
 
+            WindowTitle = ReverseEngineerLocale.ChooseDatabaseConnection;
             Statusbar.Status.ShowStatus();
         }
 
@@ -159,7 +160,7 @@ namespace EFCorePowerTools.Wizard
             Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 
             // Go to next wizard page
-            var wizardPage2 = new WizardPage2((WizardDataViewModel)DataContext, wizardView);
+            var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
             wizardPage2.Return += WizardPage_Return;
             NavigationService?.Navigate(wizardPage2);
         }

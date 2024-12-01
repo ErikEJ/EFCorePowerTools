@@ -18,7 +18,7 @@ namespace EFCorePowerTools.Wizard
             KeepAlive = true;
 
             // Launch the wizard
-            var wizardPage1 = new WizardPage1(wizardViewModel, wizardView);
+            var wizardPage1 = new Wiz1_PickServerDatabaseDialog(wizardViewModel, wizardView);
             wizardPage1.Return += WizardPage_Return;
             NavigationService?.Navigate(wizardPage1);
         }

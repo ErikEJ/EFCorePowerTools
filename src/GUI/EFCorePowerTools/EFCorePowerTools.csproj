@@ -67,14 +67,14 @@
     <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
     <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
     <Compile Include="Wizard\WizardDataViewModel.cs" />
-    <Compile Include="Wizard\WizardPage1.cs">
-      <DependentUpon>WizardPage1.xaml</DependentUpon>
+    <Compile Include="Wizard\Wiz1_PickServerDatabaseDialog.cs">
+      <DependentUpon>Wiz1_PickServerDatabaseDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wizard\WizardPage2.cs">
-      <DependentUpon>WizardPage2.xaml</DependentUpon>
+    <Compile Include="Wizard\Wiz2_PickTablesDialog.cs">
+      <DependentUpon>Wiz2_PickTablesDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wizard\WizardPage3.cs">
-      <DependentUpon>WizardPage3.xaml</DependentUpon>
+    <Compile Include="Wizard\Wiz3_EfCoreModelDialog.cs">
+      <DependentUpon>Wiz3_EfCoreModelDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wizard\WizardDialogBox.cs">
       <DependentUpon>WizardDialogBox.xaml</DependentUpon>
@@ -616,15 +616,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Wizard\WizardPage1.xaml">
+    <Page Include="Wizard\Wiz1_PickServerDatabaseDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Wizard\WizardPage2.xaml">
+    <Page Include="Wizard\Wiz2_PickTablesDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Wizard\WizardPage3.xaml">
+    <Page Include="Wizard\Wiz3_EfCoreModelDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
