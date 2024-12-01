@@ -12,6 +12,7 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.ViewModels;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 

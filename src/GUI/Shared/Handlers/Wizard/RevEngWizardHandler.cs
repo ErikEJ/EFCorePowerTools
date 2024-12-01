@@ -90,6 +90,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return (optionsPath, project);
         }
 
+        // Note: entry point for launching wizard [experimental] menu options
         internal async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs wizardArgs)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -115,7 +116,8 @@ namespace EFCorePowerTools.Handlers.Wizard
 
                 // WizardDialogBox constructor is expecting instance of IReverseEngineerBll
                 // which this class implements.  The wizard pages will use the BLL to process
-                // data using existing business logic.
+                // data using existing business logic; to simplify wizard refactor this handler
+                // serves as the BLL (and DAL)
                 var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
                 var showDialog = wizard.ShowDialog();
 
@@ -146,6 +148,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             }
         }
 
+        // Note: invoked by wizard page 1 (Wiz1_PickServerDatabaseDialog)
         public async Task ReverseEngineerCodeFirstAsync(string uiHint = null, WizardEventArgs wizardArgs = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -197,7 +200,7 @@ namespace EFCorePowerTools.Handlers.Wizard
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
 
-                    // If not null then the wizard is invoking this process
+                    // If not null then the wizard is invoking this process so we'll update state
                     if (wizardArgs != null)
                     {
                         wizardArgs.Project = project;
@@ -207,7 +210,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                         wizardArgs.UiHint = uiHint;
                     }
                 }
-                else
+                else // If optionsPath == 1 then we'll add configuration and update state for subsequent processing
                 {
                     if (wizardArgs != null)
                     {
@@ -312,7 +315,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                 var neededPackages = new List<NuGetPackage>();
 
                 DatabaseConnectionModel dbInfo = null;
-                wizardArgs.NewOptions = newOptions;
+                wizardArgs.NewOptions = newOptions;  // update wizard args with new options state
 
                 if (onlyGenerate || fromSqlProj)
                 {
@@ -358,6 +361,9 @@ namespace EFCorePowerTools.Handlers.Wizard
 
                         if (dbInfo == null || wizardArgs.PickServerDatabaseComplete)
                         {
+                            // If being invoked by the wizard and PickServerDatabaseComplete then we'll update
+                            // the wizard args state so that it can continue processing.  This handler is no
+                            // longer driving the logic flow - the wizard pages are.
                             wizardArgs.DbInfo = dbInfo;
                             wizardArgs.Options = options;
                             wizardArgs.NamingOptionsAndPath = namingOptionsAndPath;
@@ -393,10 +399,6 @@ namespace EFCorePowerTools.Handlers.Wizard
                         userOptions = null;
                     }
 
-                    wizardArgs.UserOptions = userOptions;
-                    wizardArgs.ForceEdit = forceEdit;
-                    wizardArgs.OptionsPath = optionsPath;
-
                     await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
 
@@ -431,6 +433,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             }
         }
 
+        // Note: static method invoked by wizard page 3 (Wiz3_EfCoreModelDiagram)
         public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
         {
             var nuGetHelper = new NuGetHelper();
@@ -496,6 +499,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
             var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
 
+            // If the wizard is driving then it's implementation of the interface will be used.
             var psd = wizardArgs?.PickServerDatabaseDialog ?? package.GetView<IPickServerDatabaseDialog>();
 
             if (databaseList != null && databaseList.Any())
@@ -595,6 +599,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return dbInfo;
         }
 
+        // Note: invoked by page 2 of the wizard (Wiz2_PickTablesDialog)
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -633,6 +638,7 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             await VS.StatusBar.ClearAsync();
 
+            // If the wizard is driving then it's implementation of the interface will be used.
             var ptd = wizardArgs?.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
             ptd.AddTables(predefinedTables, namingOptionsAndPath.Item1)
                .PreselectTables(preselectedTables)
@@ -645,6 +651,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return pickTablesResult.ClosedByOK;
         }
 
+        // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDiagram)
         public async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName, WizardEventArgs wizardArgs = null)
         {
             var classBasis = DbContextNamer.GetDatabaseName(options.ConnectionString, options.DatabaseType);
@@ -689,6 +696,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                 T4TemplatePath = options.T4TemplatePath,
             };
 
+            // If the wizard is driving then it's implementation of the interface will be used.
             var modelDialog = wizardArgs?.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
             modelDialog.ApplyPresets(presets);
 
@@ -752,6 +760,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return true;
         }
 
+        // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
         public async Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -850,6 +859,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
         }
 
+        // Note: invoked by page 3 of wizard (Wiz_EfCoreModelDialog)
         public async Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
             if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))

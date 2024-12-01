@@ -66,7 +66,6 @@
     <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
     <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
     <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
-    <Compile Include="Wizard\WizardDataViewModel.cs" />
     <Compile Include="Wizard\Wiz1_PickServerDatabaseDialog.cs">
       <DependentUpon>Wiz1_PickServerDatabaseDialog.xaml</DependentUpon>
     </Compile>

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.ViewModels;
 
 namespace EFCorePowerTools.Wizard
 {

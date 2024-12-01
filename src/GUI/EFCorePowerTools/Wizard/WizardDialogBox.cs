@@ -5,6 +5,7 @@ using System;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.ViewModels;
 
 namespace EFCorePowerTools.Wizard
 {

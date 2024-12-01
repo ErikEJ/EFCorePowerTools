@@ -14,6 +14,7 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;

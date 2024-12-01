@@ -16,6 +16,7 @@ using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers.Wizard;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;

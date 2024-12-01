@@ -23,7 +23,7 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Wizard
+namespace EFCorePowerTools.ViewModels
 {
     /// <summary>
     /// WizardData will serve as view model for the wizard pages.
