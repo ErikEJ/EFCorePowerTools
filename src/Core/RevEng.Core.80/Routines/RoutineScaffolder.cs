@@ -313,6 +313,13 @@ namespace RevEng.Core.Routines
                     }
                 }
 
+                if (useDecimalDataAnnotation
+                    && (property.StoreType == "varchar" || property.StoreType == "nvarchar")
+                    && property.MaxLength > 0)
+                {
+                    Sb.AppendLine($"[StringLength({property.MaxLength})]");
+                }
+
                 var propertyType = typeMapper.GetClrType(property);
                 var nullableAnnotation = string.Empty;
                 var defaultAnnotation = string.Empty;
