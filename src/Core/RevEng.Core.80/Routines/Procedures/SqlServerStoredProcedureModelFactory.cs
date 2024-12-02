@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -126,6 +126,7 @@ ORDER BY ROUTINE_NAME;";
                             StoreType = storeType,
                             Precision = (short?)row["NumericPrecision"],
                             Scale = (short?)row["NumericScale"],
+                            MaxLength = (short)row["ColumnSize"],
                         });
                     }
                 }
@@ -183,6 +184,7 @@ ORDER BY ROUTINE_NAME;";
                         StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
                         Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)row["is_nullable"],
+                        MaxLength = row["max_length"] == DBNull.Value ? (short)0 : short.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture),
                     };
 
                     list.Add(parameter);
