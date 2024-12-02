@@ -1,12 +1,17 @@
-﻿<Project Sdk="MSBuild.Sdk.SqlProj/2.9.1">
+﻿<Project Sdk="MSBuild.Sdk.SqlProj/3.0.0">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-	  <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>  
+    <TargetFramework>netstandard2.1</TargetFramework>
+	<RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>  
   </PropertyGroup>
 
 	<ItemGroup>
 		<Content Include="..\Database\dbo\**\*.sql" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.1.1" />
+		<PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.1.1" />
+	</ItemGroup>	
 
 </Project>

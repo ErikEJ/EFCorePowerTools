@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScaffoldingTester.Models
 {
-    public partial class tvpResult
+    public partial class TvpResult
     {
         public int Id { get; set; }
         public string Name { get; set; }
