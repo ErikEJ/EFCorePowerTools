@@ -145,6 +145,7 @@ namespace RevEng.Core
                     NullableReferences = options.UseNullableReferences,
                     UseAsyncCalls = options.UseAsyncCalls,
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
+                    UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);

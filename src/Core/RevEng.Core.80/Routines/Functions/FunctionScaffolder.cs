@@ -80,7 +80,7 @@ namespace RevEng.Core.Routines.Functions
 
             foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
-                int i = 1;
+                var i = 1;
 
                 foreach (var resultSet in routine.Results)
                 {
@@ -110,7 +110,6 @@ namespace RevEng.Core.Routines.Functions
 #if CORE90
                     result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
 #else
-
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
                         Code = classContent,
@@ -121,13 +120,15 @@ namespace RevEng.Core.Routines.Functions
             }
 
             var dbContext = WriteDbContext(scaffolderOptions, model, schemas.Distinct().ToList());
+
+            path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"));
 #if CORE90
-            result.ContextFile = new ScaffoldedFile(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"), dbContext);
+            result.ContextFile = new ScaffoldedFile(path, dbContext);
 #else
             result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs")),
+                Path = path,
             };
 #endif
             return result;
@@ -204,8 +205,8 @@ namespace RevEng.Core.Routines.Functions
                 }
 
                 var propertyType = typeMapper.GetClrType(property);
-                string nullableAnnotation = string.Empty;
-                string defaultAnnotation = string.Empty;
+                var nullableAnnotation = string.Empty;
+                var defaultAnnotation = string.Empty;
 
                 if (nullableReferences && !propertyType.IsValueType)
                 {
