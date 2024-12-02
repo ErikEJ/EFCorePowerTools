@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -18,6 +19,10 @@ using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
+using Microsoft.PowerPlatform.Dataverse.Client;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Metadata.Query;
 using RevEng.Common;
 
 #nullable enable
@@ -123,6 +128,20 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
         var databaseModel = new DatabaseModel();
 
         var connectionStartedOpen = connection.State == ConnectionState.Open;
+
+        // Avoid multiple login prompts for Dataverse by authenticating once with the Dataverse service client
+        // and reusing the access token for the TDS Endpoint connection as well.
+        var connectionStringParser = new SqlConnectionStringBuilder(connection.ConnectionString);
+        if (connection is SqlConnection sqlConnection &&
+            sqlConnection.AccessToken == null &&
+            connectionStringParser.DataSource.Contains("dynamics.com"))
+        {
+            connectionStringParser.Authentication = SqlAuthenticationMethod.NotSpecified;
+            connection.ConnectionString = connectionStringParser.ToString();
+            var serviceClient = new ServiceClient($"AuthType=OAuth;Username={connectionStringParser.UserID};Url=https://{connectionStringParser.DataSource};AppId=51f81489-12ee-4a9e-aaae-a2591f45987d;RedirectUri=http://localhost;LoginPrompt=Auto");
+            sqlConnection.AccessTokenCallback = (_, __) => Task.FromResult(new SqlAuthenticationToken(serviceClient.CurrentAccessToken, DateTimeOffset.MaxValue));
+        }
+
         if (!connectionStartedOpen)
         {
             connection.Open();
@@ -699,18 +718,165 @@ AND [v].[is_date_correlation_view] = 0
         // This is done separately due to MARS property may be turned off
         GetColumns(connection, tables, tableFilterSql, viewFilter, typeAliases, databaseCollation);
 
-        GetIndexes(connection, tables, tableFilterSql);
-
-        GetForeignKeys(connection, tables, tableFilterSql);
-
-        if (SupportsTriggers())
+        if (_engineEdition == EngineEdition.DynamicsTdsEndpoint)
         {
-            GetTriggers(connection, tables, tableFilterSql);
+            GetDataverseMetadata(connection, tables);
+        }
+        else
+        {
+            GetIndexes(connection, tables, tableFilterSql);
+
+            GetForeignKeys(connection, tables, tableFilterSql);
+
+            if (SupportsTriggers())
+            {
+                GetTriggers(connection, tables, tableFilterSql);
+            }
         }
 
         foreach (var table in tables)
         {
             databaseModel.Tables.Add(table);
+        }
+    }
+
+    private void GetDataverseMetadata(DbConnection connection, List<DatabaseTable> tables)
+    {
+        var serviceClient = new ServiceClient(new Uri($"https://{connection.DataSource}"), async _ => (await ((SqlConnection)connection).AccessTokenCallback(null, System.Threading.CancellationToken.None)).AccessToken);
+        var metadataQuery = new EntityQueryExpression
+        {
+            Properties = new MetadataPropertiesExpression(
+                nameof(EntityMetadata.LogicalName),
+                nameof(EntityMetadata.SchemaName),
+                nameof(EntityMetadata.PrimaryIdAttribute),
+                nameof(EntityMetadata.Attributes),
+                nameof(EntityMetadata.ManyToOneRelationships),
+                nameof(EntityMetadata.Keys)),
+            AttributeQuery = new AttributeQueryExpression
+            {
+                Properties = new MetadataPropertiesExpression(
+                    nameof(AttributeMetadata.LogicalName),
+                    nameof(AttributeMetadata.SchemaName))
+            },
+            RelationshipQuery = new RelationshipQueryExpression
+            {
+                Properties = new MetadataPropertiesExpression(
+                    nameof(OneToManyRelationshipMetadata.SchemaName),
+                    nameof(OneToManyRelationshipMetadata.ReferencingAttribute),
+                    nameof(OneToManyRelationshipMetadata.ReferencedEntity),
+                    nameof(OneToManyRelationshipMetadata.ReferencedAttribute),
+                    nameof(OneToManyRelationshipMetadata.CascadeConfiguration))
+            },
+            KeyQuery = new EntityKeyQueryExpression
+            {
+                Properties = new MetadataPropertiesExpression(
+                    nameof(EntityKeyMetadata.SchemaName),
+                    nameof(EntityKeyMetadata.KeyAttributes))
+            }
+        };
+        var metadata = (RetrieveMetadataChangesResponse)serviceClient.Execute(new RetrieveMetadataChangesRequest { Query = metadataQuery });
+
+        foreach (var entity in metadata.EntityMetadata)
+        {
+            // Check if the entity is in the table list
+            var table = tables.SingleOrDefault(t => t.Name == entity.LogicalName);
+            if (table is null)
+            {
+                continue;
+            }
+
+            // Use the schema names for tables and columns instead of the default logical names for more standard .NET naming
+            // Only switch to the schema names if they are the same as the logical name except in a different case.
+            if (entity.SchemaName != entity.LogicalName && entity.LogicalName.Equals(entity.SchemaName, StringComparison.OrdinalIgnoreCase))
+            {
+                table.Name = entity.SchemaName;
+            }
+
+            foreach (var attr in entity.Attributes)
+            {
+                var col = table.Columns.SingleOrDefault(c => c.Name == attr.LogicalName);
+
+                if (col != null && attr.SchemaName != attr.LogicalName && attr.LogicalName.Equals(attr.SchemaName, StringComparison.OrdinalIgnoreCase))
+                {
+                    col.Name = attr.SchemaName;
+                }
+            }
+
+            // Add the primary key column
+            table.PrimaryKey = new DatabasePrimaryKey
+            {
+                Table = table,
+                Name = entity.PrimaryIdAttribute,
+                Columns =
+                {
+                    table.Columns.Single(c => c.Name.Equals(entity.PrimaryIdAttribute, StringComparison.OrdinalIgnoreCase))
+                }
+            };
+
+            // Add the alternate keys
+            foreach (var key in entity.Keys)
+            {
+                var uniqueConstraint = new DatabaseUniqueConstraint
+                {
+                    Table = table,
+                    Name = key.SchemaName,
+                };
+
+                var hasAllColumns = true;
+
+                foreach (var attr in key.KeyAttributes)
+                {
+                    var col = table.Columns.SingleOrDefault(c => c.Name.Equals(attr, StringComparison.OrdinalIgnoreCase));
+
+                    if (col != null)
+                    {
+                        uniqueConstraint.Columns.Add(col);
+                    }
+                    else
+                    {
+                        hasAllColumns = false;
+                    }
+                }
+
+                if (hasAllColumns)
+                {
+                    table.UniqueConstraints.Add(uniqueConstraint);
+                }
+            }
+
+            // Add the foreign key relationships
+            foreach (var relationship in entity.ManyToOneRelationships)
+            {
+                var referencedTable = tables.SingleOrDefault(t => t.Name.Equals(relationship.ReferencedEntity, StringComparison.OrdinalIgnoreCase));
+
+                if (referencedTable is null)
+                {
+                    continue;
+                }
+
+                var referencingColumn = table.Columns.SingleOrDefault(c => c.Name.Equals(relationship.ReferencingAttribute, StringComparison.OrdinalIgnoreCase));
+                var referencedColumn = referencedTable.Columns.SingleOrDefault(c => c.Name.Equals(relationship.ReferencedAttribute, StringComparison.OrdinalIgnoreCase));
+
+                if (referencingColumn is null || referencedColumn is null)
+                {
+                    continue;
+                }
+
+                table.ForeignKeys.Add(new DatabaseForeignKey
+                {
+                    Table = table,
+                    PrincipalTable = referencedTable,
+                    Name = relationship.SchemaName,
+                    Columns =
+                    {
+                        referencingColumn
+                    },
+                    PrincipalColumns =
+                    {
+                        referencedColumn
+                    }
+                });
+            }
         }
     }
 
