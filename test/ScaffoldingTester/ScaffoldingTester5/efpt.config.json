@@ -1,8 +1,7 @@
 ﻿{
-   "CodeGenerationMode": 2,
+   "CodeGenerationMode": 4,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
-   "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": true,
    "ModelNamespace": null,
@@ -10,7 +9,6 @@
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "ScaffoldingTester",
-   "RemoveValueGeneratedOnAdd": false,
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
@@ -174,10 +172,6 @@
          "ObjectType": 1
       },
       {
-         "Name": "[dbo].[SpecialTypes]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[Ten Most Expensive Products]",
          "ObjectType": 1
       },
@@ -194,10 +188,12 @@
          "ObjectType": 2
       }
    ],
-   "UiHint": "dg-pf2wppld\\sqlexpress.Northwind.dbo",
+   "UiHint": null,
    "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
    "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseDecimalDataAnnotationForSprocResult": true,
@@ -212,8 +208,10 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
-   "UseT4": false
+   "UseT4": false,
+   "UseT4Split": false
 }
