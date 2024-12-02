@@ -109,7 +109,6 @@ namespace RevEng.Core.Routines.Procedures
                     path = scaffolderOptions.UseSchemaFolders
                                 ? Path.Combine(routine.Schema, $"{typeName}.cs")
                                 : $"{typeName}.cs";
-
 #if CORE90
                     result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
 #else
@@ -151,7 +150,6 @@ namespace RevEng.Core.Routines.Procedures
                 Path = path,
             };
 #endif
-
             return result;
         }
 
