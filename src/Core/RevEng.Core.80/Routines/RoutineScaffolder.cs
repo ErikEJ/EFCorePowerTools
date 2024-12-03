@@ -260,6 +260,11 @@ namespace RevEng.Core.Routines
 
             Sb.AppendLine("using System;");
             Sb.AppendLine("using System.Collections.Generic;");
+            if (options.UseDecimalDataAnnotation)
+            {
+                Sb.AppendLine("using System.ComponentModel.DataAnnotations;");
+            }
+
             Sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
             Sb.AppendLine();
 
@@ -317,7 +322,9 @@ namespace RevEng.Core.Routines
                     && (property.StoreType == "varchar" || property.StoreType == "nvarchar")
                     && property.MaxLength > 0)
                 {
-                    Sb.AppendLine($"[StringLength({property.MaxLength})]");
+                    var maxLength = property.StoreType == "varchar" ? property.MaxLength : property.MaxLength / 2;
+
+                    Sb.AppendLine($"[StringLength({maxLength})]");
                 }
 
                 var propertyType = typeMapper.GetClrType(property);

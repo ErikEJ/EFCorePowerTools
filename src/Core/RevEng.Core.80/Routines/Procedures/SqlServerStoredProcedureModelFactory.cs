@@ -126,7 +126,7 @@ ORDER BY ROUTINE_NAME;";
                             StoreType = storeType,
                             Precision = (short?)row["NumericPrecision"],
                             Scale = (short?)row["NumericScale"],
-                            MaxLength = (short)row["ColumnSize"],
+                            MaxLength = (int)row["ColumnSize"],
                         });
                     }
                 }
@@ -184,7 +184,7 @@ ORDER BY ROUTINE_NAME;";
                         StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
                         Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)row["is_nullable"],
-                        MaxLength = row["max_length"] == DBNull.Value ? (short)0 : short.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture),
+                        MaxLength = row["max_length"] == DBNull.Value ? 0 : int.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture),
                     };
 
                     list.Add(parameter);
