@@ -3,18 +3,22 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models;
-
-/// <summary>
-/// Shipper table comment
-/// </summary>
-public partial class Shipper
+namespace ScaffoldingTester.Models
 {
-    public int ShipperId { get; set; }
+    /// <summary>
+    /// Shipper table comment
+    /// </summary>
+    public partial class Shipper
+    {
+        public Shipper()
+        {
+            Orders = new HashSet<Order>();
+        }
 
-    public string CompanyName { get; set; }
+        public int ShipperId { get; set; }
+        public string CompanyName { get; set; }
+        public string Phone { get; set; }
 
-    public string Phone { get; set; }
-
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+        public virtual ICollection<Order> Orders { get; set; }
+    }
 }

@@ -21,10 +21,6 @@ namespace RevEng.Core.Routines.Functions
             FileNameSuffix = ".Functions";
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase)
-        {
-        }
-
         protected override string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
             ArgumentNullException.ThrowIfNull(scaffolderOptions);

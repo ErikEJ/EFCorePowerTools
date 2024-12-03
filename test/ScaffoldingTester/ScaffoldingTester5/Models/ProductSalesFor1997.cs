@@ -3,13 +3,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models;
-
-public partial class ProductSalesFor1997
+namespace ScaffoldingTester.Models
 {
-    public string CategoryName { get; set; }
-
-    public string ProductName { get; set; }
-
-    public decimal? ProductSales { get; set; }
+    public partial class ProductSalesFor1997
+    {
+        public string CategoryName { get; set; }
+        public string ProductName { get; set; }
+        public decimal? ProductSales { get; set; }
+    }
 }

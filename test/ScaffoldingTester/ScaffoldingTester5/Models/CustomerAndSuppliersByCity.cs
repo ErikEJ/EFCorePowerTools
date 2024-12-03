@@ -3,15 +3,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models;
-
-public partial class CustomerAndSuppliersByCity
+namespace ScaffoldingTester.Models
 {
-    public string City { get; set; }
-
-    public string CompanyName { get; set; }
-
-    public string ContactName { get; set; }
-
-    public string Relationship { get; set; }
+    public partial class CustomerAndSuppliersByCity
+    {
+        public string City { get; set; }
+        public string CompanyName { get; set; }
+        public string ContactName { get; set; }
+        public string Relationship { get; set; }
+    }
 }

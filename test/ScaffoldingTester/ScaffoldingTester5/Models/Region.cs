@@ -3,13 +3,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models;
-
-public partial class Region
+namespace ScaffoldingTester.Models
 {
-    public int RegionId { get; set; }
+    public partial class Region
+    {
+        public Region()
+        {
+            Territories = new HashSet<Territory>();
+        }
 
-    public string RegionDescription { get; set; }
+        public int RegionId { get; set; }
+        public string RegionDescription { get; set; }
 
-    public virtual ICollection<Territory> Territories { get; set; } = new List<Territory>();
+        public virtual ICollection<Territory> Territories { get; set; }
+    }
 }

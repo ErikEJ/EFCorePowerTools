@@ -3,13 +3,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models;
-
-public partial class CustomerDemographic
+namespace ScaffoldingTester.Models
 {
-    public string CustomerTypeId { get; set; }
+    public partial class CustomerDemographic
+    {
+        public CustomerDemographic()
+        {
+            Customers = new HashSet<Customer>();
+        }
 
-    public string CustomerDesc { get; set; }
+        public string CustomerTypeId { get; set; }
+        public string CustomerDesc { get; set; }
 
-    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+        public virtual ICollection<Customer> Customers { get; set; }
+    }
 }
