@@ -421,6 +421,12 @@ namespace RevEng.Core.Routines.Procedures
 
             Sb.AppendLine("using System;");
             Sb.AppendLine("using System.Collections.Generic;");
+
+            if (options.UseDecimalDataAnnotation)
+            {
+                Sb.AppendLine("using System.ComponentModel.DataAnnotations;");
+            }
+
             Sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
             Sb.AppendLine();
 
@@ -472,6 +478,16 @@ namespace RevEng.Core.Routines.Procedures
                     {
                         Sb.AppendLine(propertyNames.Item2);
                     }
+                }
+
+                if (useDecimalDataAnnotation
+                    && ((property.StoreType.StartsWith("varchar", StringComparison.OrdinalIgnoreCase)
+                        || property.StoreType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase))
+                    && property.MaxLength > 0))
+                {
+                    var maxLength = property.StoreType.StartsWith("varchar", StringComparison.OrdinalIgnoreCase) ? property.MaxLength : property.MaxLength / 2;
+
+                    Sb.AppendLine($"[StringLength({maxLength})]");
                 }
 
                 var propertyType = typeMapper.GetClrType(property);

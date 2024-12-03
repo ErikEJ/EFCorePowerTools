@@ -3,13 +3,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models
+namespace ScaffoldingTester.Models;
+
+public partial class Special
 {
-    public partial class Special
-    {
-        public int Id { get; set; }
-        public DateTime? TheDate { get; set; }
-        public TimeSpan? TheTime { get; set; }
-        public string Testname { get; set; }
-    }
+    public int Id { get; set; }
+
+    public DateTime? TheDate { get; set; }
+
+    public TimeSpan? TheTime { get; set; }
+
+    public string Testname { get; set; }
 }
