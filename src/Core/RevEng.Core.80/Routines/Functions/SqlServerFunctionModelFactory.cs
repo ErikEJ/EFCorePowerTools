@@ -80,7 +80,7 @@ where o.name = '{module.Name}' and s.name = '{module.Schema}';";
                         StoreType = res["type_name"].ToString(),
                         Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)res["is_nullable"],
-                        MaxLength = res["max_length"] == DBNull.Value ? (short)0 : short.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture),
+                        MaxLength = res["max_length"] == DBNull.Value ? 0 : int.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture),
                     };
 
                     list.Add(parameter);

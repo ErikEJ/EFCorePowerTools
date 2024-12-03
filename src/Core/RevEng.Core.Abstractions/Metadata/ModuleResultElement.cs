@@ -8,6 +8,6 @@
         public bool Nullable { get; set; }
         public short? Precision { get; set; }
         public short? Scale { get; set; }
-        public short MaxLength { get; set; }
+        public int MaxLength { get; set; }
     }
 }
