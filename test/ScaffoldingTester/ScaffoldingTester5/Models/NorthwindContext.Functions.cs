@@ -11,20 +11,20 @@ namespace ScaffoldingTester.Models
     {
 
         [DbFunction("ISOweek", "dbo")]
-        public static int? Isoweek(DateTime? DATE)
+        public static int? ISOweek(DateTime? DATE)
         {
             throw new NotSupportedException("This method can only be called from Entity Framework Core queries");
         }
 
         [DbFunction("tvp", "dbo")]
-        public IQueryable<TvpResult> Tvp(int? storeid)
+        public IQueryable<tvpResult> tvp(int? storeid)
         {
-            return FromExpression(() => Tvp(storeid));
+            return FromExpression(() => tvp(storeid));
         }
 
         protected void OnModelCreatingGeneratedFunctions(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TvpResult>().HasNoKey();
+            modelBuilder.Entity<tvpResult>().HasNoKey();
         }
     }
 }
