@@ -9,7 +9,9 @@ namespace ScaffoldingTester.Models
     public partial class MultiSetResult
     {
         public int ShipperID { get; set; }
+        [StringLength(40)]
         public string CompanyName { get; set; }
+        [StringLength(24)]
         public string Phone { get; set; }
     }
 }
