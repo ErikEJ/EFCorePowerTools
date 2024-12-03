@@ -74,13 +74,23 @@ where o.name = '{module.Name}' and s.name = '{module.Schema}';";
             {
                 if (res != null)
                 {
+                    var storeType = res["type_name"].ToString();
+                    var maxLength = res["max_length"] == DBNull.Value ? 0 : int.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture);
+
+                    if (storeType != null
+                        && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
+                        && maxLength > 0)
+                    {
+                        maxLength = maxLength / 2;
+                    }
+
                     var parameter = new ModuleResultElement()
                     {
                         Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
-                        StoreType = res["type_name"].ToString(),
+                        StoreType = storeType,
                         Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)res["is_nullable"],
-                        MaxLength = res["max_length"] == DBNull.Value ? 0 : int.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture),
+                        MaxLength = maxLength,
                     };
 
                     list.Add(parameter);

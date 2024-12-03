@@ -178,13 +178,23 @@ ORDER BY ROUTINE_NAME;";
                         continue;
                     }
 
+                    var storeType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString();
+                    var maxLength = row["max_length"] == DBNull.Value ? 0 : int.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture);
+
+                    if (storeType != null
+                        && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
+                        && maxLength > 0)
+                    {
+                        maxLength = maxLength / 2;
+                    }
+
                     var parameter = new ModuleResultElement()
                     {
                         Name = name,
-                        StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
+                        StoreType = storeType,
                         Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)row["is_nullable"],
-                        MaxLength = row["max_length"] == DBNull.Value ? 0 : int.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture),
+                        MaxLength = maxLength,
                     };
 
                     list.Add(parameter);

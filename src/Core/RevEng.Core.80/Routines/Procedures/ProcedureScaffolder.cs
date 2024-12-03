@@ -485,9 +485,7 @@ namespace RevEng.Core.Routines.Procedures
                         || property.StoreType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase))
                     && property.MaxLength > 0))
                 {
-                    var maxLength = property.StoreType.StartsWith("varchar", StringComparison.OrdinalIgnoreCase) ? property.MaxLength : property.MaxLength / 2;
-
-                    Sb.AppendLine($"[StringLength({maxLength})]");
+                    Sb.AppendLine($"[StringLength({property.MaxLength})]");
                 }
 
                 var propertyType = typeMapper.GetClrType(property);
