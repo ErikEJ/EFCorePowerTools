@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Routines
@@ -93,6 +94,37 @@ namespace RevEng.Core.Routines
             "volatile",
             "while",
         };
+
+        public static SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
+        {
+            ArgumentNullException.ThrowIfNull(scaffoldedModel);
+
+            Directory.CreateDirectory(outputDir);
+
+            var contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
+            var path = Path.GetDirectoryName(contextPath);
+            if (path != null)
+            {
+                Directory.CreateDirectory(path);
+                File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
+            }
+
+            var additionalFiles = new List<string>();
+
+            foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
+            {
+                var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
+                var addpath = Path.GetDirectoryName(additionalFilePath);
+                if (addpath != null)
+                {
+                    Directory.CreateDirectory(addpath);
+                    File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
+                    additionalFiles.Add(additionalFilePath);
+                }
+            }
+
+            return new SavedModelFiles(contextPath, additionalFiles);
+        }
 
         public static string GetDbContextExtensionsText(bool useAsyncCalls)
         {
