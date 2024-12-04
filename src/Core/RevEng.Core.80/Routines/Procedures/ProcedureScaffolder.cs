@@ -45,7 +45,6 @@ namespace RevEng.Core.Routines.Procedures
             ArgumentNullException.ThrowIfNull(model);
 
             ArgumentNullException.ThrowIfNull(errors);
-
             ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             var result = new ScaffoldedModel();
