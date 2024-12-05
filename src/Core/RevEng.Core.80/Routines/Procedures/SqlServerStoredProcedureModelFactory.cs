@@ -195,6 +195,8 @@ ORDER BY ROUTINE_NAME;";
                         Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)row["is_nullable"],
                         MaxLength = maxLength,
+                        Precision = (byte)row["precision"],
+                        Scale = (byte)row["scale"],
                     };
 
                     list.Add(parameter);
