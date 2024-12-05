@@ -29,7 +29,7 @@ namespace EFCorePowerTools.Wizard
             // NOTE: We need this custom event because the Return event cannot be
             // registered by window code - if WizardDialogBox registers an event handler with
             // the WizardLauncher's Return event, the event is not raised.
-            wizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(e.Result, wizardViewModel));
+            wizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(e.Result));
             OnReturn(null);
         }
     }

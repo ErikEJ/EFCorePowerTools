@@ -23,17 +23,17 @@ namespace EFCorePowerTools.Wizard
 
         public void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Canceled, DataContext));
+            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Canceled));
         }
 
         public void WizardPage_Return(object sender, ReturnEventArgs<WizardResult> e)
         {
-            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished, DataContext));
+            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished));
         }
 
         public void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished, DataContext));
+            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished));
         }
     }
 }

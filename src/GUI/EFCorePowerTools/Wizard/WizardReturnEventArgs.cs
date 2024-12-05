@@ -5,13 +5,11 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardReturnEventArgs
     {
-        public WizardReturnEventArgs(WizardResult result, object data)
+        public WizardResult Result { get; }
+
+        public WizardReturnEventArgs(WizardResult result)
         {
             Result = result;
-            Data = data;
         }
-
-        public WizardResult Result { get; }
-        public object Data { get; }
     }
 }

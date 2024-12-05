@@ -11,11 +11,10 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardDialogBox : NavigationWindow, IWizardView
     {
-        private readonly WizardDataViewModel wizardViewModel;
 
         public WizardDialogBox(IReverseEngineerBll bll, EventArgs e, IWizardViewModel viewModel)
         {
-            wizardViewModel = (WizardDataViewModel)viewModel;
+            var wizardViewModel = (WizardDataViewModel)viewModel;
 
             InitializeComponent();
 
@@ -38,17 +37,13 @@ namespace EFCorePowerTools.Wizard
 
         public event WizardReturnEventHandler WizardReturn;
 
-        public WizardDataViewModel WizardDataViewModel { get; private set; }
-
         public void WizardReturnInvoke(object sender, WizardReturnEventArgs e)
         {
-            WizardReturn?.Invoke(this, new WizardReturnEventArgs(e.Result, wizardViewModel));
+            WizardReturn?.Invoke(this, new WizardReturnEventArgs(e.Result));
         }
 
         private void WizardLauncher_WizardReturn(object sender, WizardReturnEventArgs e)
         {
-            // Handle wizard return
-            WizardDataViewModel = e.Data as WizardDataViewModel;
             if (DialogResult == null)
             {
                 DialogResult = e.Result == WizardResult.Finished;

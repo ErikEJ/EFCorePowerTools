@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Threading;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -58,7 +57,6 @@ namespace EFCorePowerTools.Wizard
                 viewModel.SelectedDatabaseConnection = viewModel.DatabaseConnections.FirstOrDefault();
                 wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
             };
-
             addDefinitions = models =>
             {
                 foreach (var model in models)
@@ -107,7 +105,6 @@ namespace EFCorePowerTools.Wizard
 
                 viewModel.CodeGenerationMode = (int)codeGeneration;
             };
-
             uiHint = uiHint =>
             {
                 viewModel.UiHint = uiHint;
@@ -156,9 +153,6 @@ namespace EFCorePowerTools.Wizard
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
             Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.LoadingDatabaseObjects);
-
-            NextButton.IsEnabled = false;
-            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 
             // Go to next wizard page
             var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
