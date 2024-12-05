@@ -51,7 +51,9 @@ SELECT
     COALESCE(ts.name, tu.name) AS type_name,
     c.column_id AS column_ordinal,
     c.is_nullable,
-    c.max_length    
+    c.max_length,
+    c.precision,
+    c.scale
 FROM sys.columns c
 inner join sys.types tu ON c.user_type_id = tu.user_type_id 
 inner join sys.objects AS o on o.object_id = c.object_id
@@ -91,6 +93,8 @@ where o.name = '{module.Name}' and s.name = '{module.Schema}';";
                         Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)res["is_nullable"],
                         MaxLength = maxLength,
+                        Precision = (byte)res["precision"],
+                        Scale = (byte)res["scale"],
                     };
 
                     list.Add(parameter);
