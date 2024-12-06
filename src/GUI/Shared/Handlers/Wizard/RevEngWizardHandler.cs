@@ -210,7 +210,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                         wizardArgs.UiHint = uiHint;
                     }
                 }
-                else // If optionsPath == 1 then we'll add configuration and update state for subsequent processing
+                else
                 {
                     if (wizardArgs != null)
                     {

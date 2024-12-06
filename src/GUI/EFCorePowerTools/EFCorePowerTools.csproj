@@ -66,6 +66,9 @@
     <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
     <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
     <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
+    <Compile Include="Wizard\Wiz4_StatusDialog.xaml.cs">
+      <DependentUpon>Wiz4_StatusDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wizard\Wiz1_PickServerDatabaseDialog.cs">
       <DependentUpon>Wiz1_PickServerDatabaseDialog.xaml</DependentUpon>
     </Compile>
@@ -608,6 +611,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Westwind.WPF.Statusbar\StatusBarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Wiz4_StatusDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

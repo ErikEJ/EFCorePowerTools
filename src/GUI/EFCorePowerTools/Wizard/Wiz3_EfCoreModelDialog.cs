@@ -25,7 +25,7 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class Wiz3_EfCoreModelDialog : WizardResultPageFunction, IModelingOptionsDialog
     {
-        // private readonly IWizardView wizardView;
+        private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<ModelingOptionsModel> getDialogResult;
         private readonly Action<ModelingOptionsModel> applyPresets;
@@ -35,7 +35,7 @@ namespace EFCorePowerTools.Wizard
             : base(wizardViewModel, wizardView)
         {
             // telemetryAccess.TrackPageView(nameof(EfCoreModelDialog));
-            // this.wizardView = wizardView;
+            this.wizardView = wizardView;
             this.wizardViewModel = wizardViewModel;
             getDialogResult = () => wizardViewModel.Model;
             applyPresets = wizardViewModel.ApplyPresets;
@@ -112,6 +112,14 @@ namespace EFCorePowerTools.Wizard
             process.Start();
         }
 
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Go to next wizard page
+            var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
+            wizardPage4.Return += WizardPage_Return;
+            NavigationService?.Navigate(wizardPage4);
+        }
+
         private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
             Statusbar.Status.ShowStatusProgress("Generating files...");
@@ -157,9 +165,6 @@ namespace EFCorePowerTools.Wizard
                 Statusbar.Status.ShowStatus("Process completed");
 
                 Telemetry.TrackEvent("PowerTools.ReverseEngineer");
-
-                // Exit wizard
-                base.FinishButton_Click(sender, e);
             });
         }
     }

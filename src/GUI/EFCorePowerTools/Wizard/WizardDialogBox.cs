@@ -11,7 +11,6 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardDialogBox : NavigationWindow, IWizardView
     {
-
         public WizardDialogBox(IReverseEngineerBll bll, EventArgs e, IWizardViewModel viewModel)
         {
             var wizardViewModel = (WizardDataViewModel)viewModel;

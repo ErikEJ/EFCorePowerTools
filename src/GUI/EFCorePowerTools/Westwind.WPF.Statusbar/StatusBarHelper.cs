@@ -139,7 +139,11 @@ namespace Westwind.Wpf.Statusbar
         /// <param name="timeout">optional timeout. -1 means revert back to default icon after default timeout</param>
         /// <param name="imageSource">Optional imageSource. Defaults to checkbox circle</param>
         /// <param name="flashIcon">if true flashes the icon by briefly making it larger</param>
-        public void ShowStatusSuccess(string message, int timeout = -1, ImageSource imageSource = null, bool flashIcon = true)
+        public void ShowStatusSuccess(
+            string message,
+            int timeout = -1,
+            ImageSource imageSource = null,
+            bool flashIcon = true)
         {
             if (timeout == -1)
             {
@@ -161,7 +165,9 @@ namespace Westwind.Wpf.Statusbar
         /// <param name="timeout">optional timeout. -1 means return to default icon after timeout.</param>
         /// <param name="imageSource">Optional imageSource. Defaults to red error triangle</param>
         /// <param name="flashIcon">if true flashes the icon by briefly making it larger</param>
-        public void ShowStatusError(string message, int timeout = -1,
+        public void ShowStatusError(
+            string message,
+            int timeout = -1,
             ImageSource imageSource = null,
             bool flashIcon = true)
         {
@@ -185,7 +191,9 @@ namespace Westwind.Wpf.Statusbar
         /// <param name="timeout">optional timeout. -1 means revert back to default icon after default timeout</param>
         /// <param name="imageSource">Optional imageSource. Defaults to orange warning triangle</param>
         /// <param name="flashIcon">if true flashes the icon by briefly making it larger</param>
-        public void ShowStatusWarning(string message, int timeout = -1,
+        public void ShowStatusWarning(
+            string message,
+            int timeout = -1,
             ImageSource imageSource = null,
             bool flashIcon = true)
         {
@@ -210,7 +218,12 @@ namespace Westwind.Wpf.Statusbar
         /// <param name="imageSource">Optional imageSource. Defaults to spinning circle</param>
         /// <param name="spin">Determines whether the icons should spin (true by default)</param>
         /// <param name="flashIcon">If true flashes the icon when first displayed</param>
-        public void ShowStatusProgress(string message, int timeout = 0, ImageSource imageSource = null, bool spin = true, bool flashIcon = false)
+        public void ShowStatusProgress(
+            string message,
+            int timeout = 0,
+            ImageSource imageSource = null,
+            bool spin = true,
+            bool flashIcon = false)
         {
             if (timeout == -1)
             {
@@ -324,7 +337,9 @@ namespace Westwind.Wpf.Statusbar
         /// </summary>
         /// <param name="imageSource">Allows you to explcitly set the icon's imageSource</param>
         /// <param name="spin">Optionally spin the icon</param>
-        public void SetStatusIcon(ImageSource imageSource, bool spin = false)
+        public void SetStatusIcon(
+            ImageSource imageSource,
+            bool spin = false)
         {
             StatusImage.Source = imageSource;
 

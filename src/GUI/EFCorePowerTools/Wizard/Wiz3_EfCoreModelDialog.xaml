@@ -254,9 +254,9 @@
         <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,12,5">
             <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" Margin="0,0,10,0"/>
             <Button Name="backButton" Click="BackButton_Click" Width="50" xml:space="preserve">&lt; _Back</Button>
-            <Button Name="nextButton" IsEnabled="False" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
+            <Button Name="nextButton" Click="NextButton_Click" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
             <Button Name="cancelButton" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
-            <Button Name="finishButton" Click="FinishButton_Click" Width="50" Margin="10,0,0,0" IsDefault="True">_Finish</Button>
+            <Button Name="generateButton" Click="FinishButton_Click" Width="60" Margin="10,0,0,0" IsDefault="True">_Generate</Button>
         </StackPanel>
 
         <statusbar:StatusbarControl Grid.Row="14" x:Name="Statusbar"/>

@@ -11,7 +11,10 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -19,6 +22,7 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class Wiz1_PickServerDatabaseDialog : WizardResultPageFunction, IPickServerDatabaseDialog
     {
+        private readonly IMessenger messenger;
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint, WizardEventArgs WizardArgs)> getDialogResult;
@@ -32,6 +36,29 @@ namespace EFCorePowerTools.Wizard
         public Wiz1_PickServerDatabaseDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
+            messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
+            messenger.Register<ShowStatusbarMessage>(this, (message) =>
+            {
+                switch (message.Type)
+                {
+                    case StatusbarMessageTypes.Status:
+                        Statusbar.Status.ShowStatus(); // defaults to Ready
+                        break;
+                    case StatusbarMessageTypes.Progress:
+                        Statusbar.Status.ShowStatusProgress(message.Content);
+                        break;
+                    case StatusbarMessageTypes.Success:
+                        Statusbar.Status.ShowStatusSuccess(message.Content);
+                        break;
+                    case StatusbarMessageTypes.Error:
+                        Statusbar.Status.ShowStatusError(message.Content);
+                        break;
+                    case StatusbarMessageTypes.Warning:
+                        Statusbar.Status.ShowStatusWarning(message.Content);
+                        break;
+                }
+            });
+
             getDialogResult = () =>
             {
                 wizardViewModel.WizardEventArgs.PickServerDatabaseComplete = true;
@@ -124,7 +151,7 @@ namespace EFCorePowerTools.Wizard
             {
                 var viewModel = wizardViewModel;
 
-                Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.GettingReadyToConnect);
+                messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.GettingReadyToConnect));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
@@ -152,7 +179,7 @@ namespace EFCorePowerTools.Wizard
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.LoadingDatabaseObjects);
+            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
 
             // Go to next wizard page
             var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
