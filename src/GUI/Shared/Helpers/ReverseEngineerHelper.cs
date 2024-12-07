@@ -48,9 +48,6 @@ namespace EFCorePowerTools.Helpers
                     case CodeGenerationMode.EFCore6:
                         zipName = "CodeTemplates600.zip";
                         break;
-                    case CodeGenerationMode.EFCore7:
-                        zipName = "CodeTemplates700.zip";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         zipName = "CodeTemplates800.zip";
                         break;
@@ -65,9 +62,6 @@ namespace EFCorePowerTools.Helpers
             {
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore7:
-                        t4Version = "703";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         t4Version = "800";
                         break;
@@ -146,14 +140,12 @@ namespace EFCorePowerTools.Helpers
 
             if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
             {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (unsupported)" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6 (unsupported)" });
             }
 
             if (minimumVersion.Major >= 8)
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (unsupported)" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
             }
 
@@ -176,8 +168,8 @@ namespace EFCorePowerTools.Helpers
         {
             var list = new List<TemplateTypeItem>();
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore7
-                || codeGenerationMode == CodeGenerationMode.EFCore8)
+            if (codeGenerationMode == CodeGenerationMode.EFCore8
+               || codeGenerationMode == CodeGenerationMode.EFCore9)
             {
                 list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
                 list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
@@ -189,12 +181,6 @@ namespace EFCorePowerTools.Helpers
             {
                 list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
-            }
-            else if (codeGenerationMode == CodeGenerationMode.EFCore9)
-            {
-                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
-                list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
-                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
             }
 
             return list;

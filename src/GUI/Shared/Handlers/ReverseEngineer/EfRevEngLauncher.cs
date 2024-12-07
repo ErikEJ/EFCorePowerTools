@@ -36,10 +36,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     revengVersion = "6";
                     break;
 
-                case CodeGenerationMode.EFCore7:
-                    revengVersion = "7";
-                    break;
-
                 case CodeGenerationMode.EFCore8:
                     revengVersion = "8";
                     break;

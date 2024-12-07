@@ -161,24 +161,8 @@
       <Link>efreveng60.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\lib\efpt70.exe.zip">
-      <Link>efpt70.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efreveng70.exe.zip">
-      <Link>efreveng70.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\T4_703.zip">
-      <Link>T4_703.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\DacFX161.zip">
       <Link>DacFX161.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efpt70sc.exe.zip">
-      <Link>efpt70sc.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="..\lib\efreveng80.exe.zip">
@@ -215,9 +199,6 @@
     </Content>
     <None Include="app.config" />
     <Content Include="CodeTemplates600.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="CodeTemplates700.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="CodeTemplates800.zip">
