@@ -15,20 +15,20 @@ namespace RevEng.Core
 {
     public class DataverseModelFactoryExtension
     {
-        private readonly ServiceClient _serviceClient;
+        private readonly ServiceClient serviceClient;
 
         public DataverseModelFactoryExtension(ServiceClient serviceClient)
         {
-            _serviceClient = serviceClient;
+            this.serviceClient = serviceClient;
         }
 
         /// <summary>
         /// Checks if the connection is for a Dataverse instance and creates a new <see cref="DataverseModelFactoryExtension"/>
         /// if so.
         /// </summary>
-        /// <param name="connection">The database connection to use to connect to Dataverse</param>
-        /// <param name="dataverse">Set to a new <see cref="DataverseModelFactoryExtension"/> if the <paramref name="connection"/> represents a connection to a Dataverse TDS Endpoint</param>
-        /// <returns><see langword="true"/> if the <paramref name="connection"/> represents a connection to a Dataverse TDS Endpoint, or <see langword="false"/> otherwise</returns>
+        /// <param name="connection">The database connection to use to connect to Dataverse.</param>
+        /// <param name="dataverse">Set to a new <see cref="DataverseModelFactoryExtension"/> if the <paramref name="connection"/> represents a connection to a Dataverse TDS Endpoint.</param>
+        /// <returns><see langword="true"/> if the <paramref name="connection"/> represents a connection to a Dataverse TDS Endpoint, or <see langword="false"/> otherwise.</returns>
         public static bool TryCreate(DbConnection connection, out DataverseModelFactoryExtension dataverse)
         {
             ArgumentNullException.ThrowIfNull(connection);
@@ -53,7 +53,7 @@ namespace RevEng.Core
         /// <summary>
         /// Updates the <paramref name="tables"/> with metadata from the Dataverse instance.
         /// </summary>
-        /// <param name="tables">The table definitions that have already been loaded from the Dataverse TDS Endpoint</param>
+        /// <param name="tables">The table definitions that have already been loaded from the Dataverse TDS Endpoint.</param>
         public void GetDataverseMetadata(List<DatabaseTable> tables)
         {
             var metadataQuery = new EntityQueryExpression
@@ -87,7 +87,7 @@ namespace RevEng.Core
                         nameof(EntityKeyMetadata.KeyAttributes)),
                 },
             };
-            var metadata = (RetrieveMetadataChangesResponse)_serviceClient.Execute(new RetrieveMetadataChangesRequest { Query = metadataQuery });
+            var metadata = (RetrieveMetadataChangesResponse)serviceClient.Execute(new RetrieveMetadataChangesRequest { Query = metadataQuery });
 
             foreach (var entity in metadata.EntityMetadata)
             {

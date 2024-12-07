@@ -89,7 +89,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
     private string? _version;
-    private DataverseModelFactoryExtension _dataverse;
+    private DataverseModelFactoryExtension? _dataverse;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -711,7 +711,7 @@ AND [v].[is_date_correlation_view] = 0
         // This is done separately due to MARS property may be turned off
         GetColumns(connection, tables, tableFilterSql, viewFilter, typeAliases, databaseCollation);
 
-        if (_engineEdition == EngineEdition.DynamicsTdsEndpoint)
+        if (_dataverse != null)
         {
             _dataverse.GetDataverseMetadata(tables);
         }
