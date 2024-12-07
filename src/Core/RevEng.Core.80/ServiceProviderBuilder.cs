@@ -18,8 +18,8 @@ using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-#if !CORE90
 using Oracle.EntityFrameworkCore.Design.Internal;
+#if !CORE90
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using RevEng.Common;
@@ -121,12 +121,12 @@ namespace RevEng.Core
                     }
 
                     break;
-
+#endif
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-
+#if !CORE90
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);

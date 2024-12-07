@@ -391,6 +391,9 @@ namespace RevEng.Common
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.23.50";
                         break;
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.23.60";
+                        break;
                 }
 
                 packages.Add(new NuGetPackage
