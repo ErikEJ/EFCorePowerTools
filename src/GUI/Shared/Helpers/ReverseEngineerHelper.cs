@@ -146,14 +146,14 @@ namespace EFCorePowerTools.Helpers
 
             if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
             {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (unsupported)" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6 (unsupported)" });
             }
 
             if (minimumVersion.Major >= 8)
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7 (unsupported)" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
             }
 

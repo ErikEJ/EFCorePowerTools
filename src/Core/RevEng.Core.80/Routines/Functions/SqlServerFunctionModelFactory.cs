@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -50,7 +50,10 @@ SELECT
     c.name,
     COALESCE(ts.name, tu.name) AS type_name,
     c.column_id AS column_ordinal,
-    c.is_nullable
+    c.is_nullable,
+    c.max_length,
+    c.precision,
+    c.scale
 FROM sys.columns c
 inner join sys.types tu ON c.user_type_id = tu.user_type_id 
 inner join sys.objects AS o on o.object_id = c.object_id
@@ -73,12 +76,25 @@ where o.name = '{module.Name}' and s.name = '{module.Schema}';";
             {
                 if (res != null)
                 {
+                    var storeType = res["type_name"].ToString();
+                    var maxLength = res["max_length"] == DBNull.Value ? 0 : int.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture);
+
+                    if (storeType != null
+                        && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
+                        && maxLength > 0)
+                    {
+                        maxLength = maxLength / 2;
+                    }
+
                     var parameter = new ModuleResultElement()
                     {
                         Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
-                        StoreType = res["type_name"].ToString(),
+                        StoreType = storeType,
                         Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)res["is_nullable"],
+                        MaxLength = maxLength,
+                        Precision = (byte)res["precision"],
+                        Scale = (byte)res["scale"],
                     };
 
                     list.Add(parameter);

@@ -3,14 +3,17 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models
+namespace ScaffoldingTester.Models;
+
+public partial class Person
 {
-    public partial class Person
-    {
-        public int Id { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string LastName { get; set; }
+
+    public string FirstName { get; set; }
+
+    public string Address { get; set; }
+
+    public string City { get; set; }
 }

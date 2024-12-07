@@ -3,13 +3,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models
+namespace ScaffoldingTester.Models;
+
+public partial class SalesTotalsByAmount
 {
-    public partial class SalesTotalsByAmount
-    {
-        public decimal? SaleAmount { get; set; }
-        public int OrderId { get; set; }
-        public string CompanyName { get; set; }
-        public DateTime? ShippedDate { get; set; }
-    }
+    public decimal? SaleAmount { get; set; }
+
+    public int OrderId { get; set; }
+
+    public string CompanyName { get; set; }
+
+    public DateTime? ShippedDate { get; set; }
 }

@@ -3,12 +3,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models
+namespace ScaffoldingTester.Models;
+
+public partial class SummaryOfSalesByQuarter
 {
-    public partial class SummaryOfSalesByQuarter
-    {
-        public DateTime? ShippedDate { get; set; }
-        public int OrderId { get; set; }
-        public decimal? Subtotal { get; set; }
-    }
+    public DateTime? ShippedDate { get; set; }
+
+    public int OrderId { get; set; }
+
+    public decimal? Subtotal { get; set; }
 }

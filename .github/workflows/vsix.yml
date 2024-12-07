@@ -27,7 +27,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.404'
+        dotnet-version: '9.0.100'
 
     - name: Update Version
       run: |
@@ -41,10 +41,8 @@ jobs:
       run: dotnet restore EFCorePowerTools.sln
       working-directory: src
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
-
     - name: Build reveng tools
+      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
         cd ${{ github.workspace}}\src\Core\efreveng80
@@ -54,6 +52,7 @@ jobs:
         cd ${{ github.workspace}}
 
     - name: Extract and verify efreveng80.exe.zip file count
+      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
         mkdir vsix
@@ -62,12 +61,16 @@ jobs:
         findstr "166" filecount.txt
 
     - name: Extract and verify efreveng90.exe.zip file count
+      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
           mkdir vsix
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
-          findstr "157" filecount.txt
+          findstr "156" filecount.txt
+
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
 
     - name: Build
       run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m

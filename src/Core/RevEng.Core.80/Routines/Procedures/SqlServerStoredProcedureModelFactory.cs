@@ -1,4 +1,4 @@
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
@@ -126,6 +126,7 @@ ORDER BY ROUTINE_NAME;";
                             StoreType = storeType,
                             Precision = (short?)row["NumericPrecision"],
                             Scale = (short?)row["NumericScale"],
+                            MaxLength = (int)row["ColumnSize"],
                         });
                     }
                 }
@@ -177,12 +178,25 @@ ORDER BY ROUTINE_NAME;";
                         continue;
                     }
 
+                    var storeType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString();
+                    var maxLength = row["max_length"] == DBNull.Value ? 0 : int.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture);
+
+                    if (storeType != null
+                        && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
+                        && maxLength > 0)
+                    {
+                        maxLength = maxLength / 2;
+                    }
+
                     var parameter = new ModuleResultElement()
                     {
                         Name = name,
-                        StoreType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString(),
+                        StoreType = storeType,
                         Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
                         Nullable = (bool)row["is_nullable"],
+                        MaxLength = maxLength,
+                        Precision = (byte)row["precision"],
+                        Scale = (byte)row["scale"],
                     };
 
                     list.Add(parameter);

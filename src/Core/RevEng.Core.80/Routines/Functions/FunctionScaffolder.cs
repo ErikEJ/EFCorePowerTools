@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using NetTopologySuite.Geometries;
-using RevEng.Common;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Routines.Extensions;
@@ -20,47 +17,21 @@ namespace RevEng.Core.Routines.Functions
         internal readonly ICSharpHelper Code;
         internal IndentedStringBuilder Sb;
 #pragma warning restore SA1401 // Fields should be private
-        private readonly IClrTypeMapper typeMapper;
+        private readonly Scaffolder scaffolder;
 
         protected FunctionScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
         {
             ArgumentNullException.ThrowIfNull(code);
 
             Code = code;
-            this.typeMapper = typeMapper;
+            scaffolder = new Scaffolder(code, typeMapper);
         }
 
         public string FileNameSuffix { get; set; }
 
         public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
         {
-            ArgumentNullException.ThrowIfNull(scaffoldedModel);
-
-            Directory.CreateDirectory(outputDir);
-
-            var contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
-            var path = Path.GetDirectoryName(contextPath);
-            if (path != null)
-            {
-                Directory.CreateDirectory(path);
-                File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
-            }
-
-            var additionalFiles = new List<string>();
-
-            foreach (var entityTypeFile in scaffoldedModel.AdditionalFiles)
-            {
-                var additionalFilePath = Path.Combine(outputDir, entityTypeFile.Path);
-                var addpath = Path.GetDirectoryName(additionalFilePath);
-                if (addpath != null)
-                {
-                    Directory.CreateDirectory(addpath);
-                    File.WriteAllText(additionalFilePath, entityTypeFile.Code, Encoding.UTF8);
-                    additionalFiles.Add(additionalFilePath);
-                }
-            }
-
-            return new SavedModelFiles(contextPath, additionalFiles);
+            return ScaffoldHelper.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls);
         }
 
         public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
@@ -68,7 +39,6 @@ namespace RevEng.Core.Routines.Functions
             ArgumentNullException.ThrowIfNull(model);
 
             ArgumentNullException.ThrowIfNull(errors);
-
             ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             var result = new ScaffoldedModel();
@@ -80,7 +50,7 @@ namespace RevEng.Core.Routines.Functions
 
             foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
-                int i = 1;
+                var i = 1;
 
                 foreach (var resultSet in routine.Results)
                 {
@@ -97,7 +67,7 @@ namespace RevEng.Core.Routines.Functions
 
                     var typeName = ScaffoldHelper.GenerateIdentifierName(routine, model, Code, scaffolderOptions.UsePascalIdentifiers) + "Result" + suffix;
 
-                    var classContent = WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
+                    var classContent = scaffolder.WriteResultClass(resultSet, scaffolderOptions, typeName, routine.Schema);
 
                     if (!string.IsNullOrEmpty(routine.Schema))
                     {
@@ -110,7 +80,6 @@ namespace RevEng.Core.Routines.Functions
 #if CORE90
                     result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
 #else
-
                     result.AdditionalFiles.Add(new ScaffoldedFile
                     {
                         Code = classContent,
@@ -121,106 +90,20 @@ namespace RevEng.Core.Routines.Functions
             }
 
             var dbContext = WriteDbContext(scaffolderOptions, model, schemas.Distinct().ToList());
+
+            path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"));
 #if CORE90
-            result.ContextFile = new ScaffoldedFile(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"), dbContext);
+            result.ContextFile = new ScaffoldedFile(path, dbContext);
 #else
             result.ContextFile = new ScaffoldedFile
             {
                 Code = dbContext,
-                Path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs")),
+                Path = path,
             };
 #endif
             return result;
         }
 
         protected abstract string WriteDbContext(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas);
-
-        private string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name, string schemaName)
-        {
-            var @namespace = options.ModelNamespace;
-
-            Sb = new IndentedStringBuilder();
-
-            Sb.AppendLine(PathHelper.Header);
-
-            if (resultElements.Exists(p => typeMapper.GetClrType(p) == typeof(Geometry)))
-            {
-                Sb.AppendLine("using NetTopologySuite.Geometries;");
-            }
-
-            Sb.AppendLine("using System;");
-            Sb.AppendLine("using System.Collections.Generic;");
-            Sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
-            Sb.AppendLine();
-
-            if (options.NullableReferences)
-            {
-                Sb.AppendLine("#nullable enable");
-                Sb.AppendLine();
-            }
-
-            Sb.AppendLine($"namespace {@namespace}{(options.UseSchemaNamespaces ? $".{schemaName}Schema" : string.Empty)}");
-            Sb.AppendLine("{");
-
-            using (Sb.Indent())
-            {
-                GenerateClass(resultElements, name, options.NullableReferences, options.UseDecimalDataAnnotation, options.UsePascalIdentifiers);
-            }
-
-            Sb.AppendLine("}");
-
-            return Sb.ToString();
-        }
-
-        private void GenerateClass(List<ModuleResultElement> resultElements, string name, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
-        {
-            Sb.AppendLine($"public partial class {name}");
-            Sb.AppendLine("{");
-
-            using (Sb.Indent())
-            {
-                GenerateProperties(resultElements, nullableReferences, useDecimalDataAnnotation, usePascalCase);
-            }
-
-            Sb.AppendLine("}");
-        }
-
-        private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
-        {
-            foreach (var property in resultElements.OrderBy(e => e.Ordinal))
-            {
-                var propertyNames = ScaffoldHelper.GeneratePropertyName(property.Name, Code, usePascalCase);
-
-                if (property.StoreType == "decimal" && useDecimalDataAnnotation)
-                {
-                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(propertyNames.Item2))
-                    {
-                        Sb.AppendLine(propertyNames.Item2);
-                    }
-                }
-
-                var propertyType = typeMapper.GetClrType(property);
-                string nullableAnnotation = string.Empty;
-                string defaultAnnotation = string.Empty;
-
-                if (nullableReferences && !propertyType.IsValueType)
-                {
-                    if (property.Nullable)
-                    {
-                        nullableAnnotation = "?";
-                    }
-                    else
-                    {
-                        defaultAnnotation = $" = default!;";
-                    }
-                }
-
-                Sb.AppendLine($"public {Code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
-            }
-        }
     }
 }
