@@ -52,6 +52,7 @@ namespace EFCorePowerTools.Wizard
             wizardViewModel.Page3LoadedCommand = new RelayCommand(Page3Loaded_Executed);
 
             InitializeComponent();
+            InitializeMessengerWithStatusbar(Statusbar);
         }
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)

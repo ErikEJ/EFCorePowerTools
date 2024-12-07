@@ -3,49 +3,23 @@
 
 using System.Windows;
 using EFCorePowerTools.Contracts.Wizard;
-using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace EFCorePowerTools.Wizard
 {
     public partial class Wiz4_StatusDialog : WizardResultPageFunction
     {
-        private readonly IMessenger messenger;
         private readonly IWizardView wizardView;
 
         public Wiz4_StatusDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
-            messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
-            messenger.Register<ShowStatusbarMessage>(this, (message) =>
-            {
-                switch (message.Type)
-                {
-                    case StatusbarMessageTypes.Status:
-                        Statusbar.Status.ShowStatus(); // defaults to Ready
-                        break;
-                    case StatusbarMessageTypes.Progress:
-                        Statusbar.Status.ShowStatusProgress(message.Content);
-                        break;
-                    case StatusbarMessageTypes.Success:
-                        Statusbar.Status.ShowStatusSuccess(message.Content);
-                        break;
-                    case StatusbarMessageTypes.Error:
-                        Statusbar.Status.ShowStatusError(message.Content);
-                        break;
-                    case StatusbarMessageTypes.Warning:
-                        Statusbar.Status.ShowStatusWarning(message.Content);
-                        break;
-                }
-            });
-
             this.wizardView = wizardView;
 
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
+            InitializeMessengerWithStatusbar(Statusbar);
         }
 
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)

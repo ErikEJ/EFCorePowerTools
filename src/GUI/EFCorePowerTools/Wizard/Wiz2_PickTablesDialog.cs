@@ -16,8 +16,6 @@ using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -25,7 +23,6 @@ namespace EFCorePowerTools.Wizard
 {
     public partial class Wiz2_PickTablesDialog : WizardResultPageFunction, IPickTablesDialog
     {
-        private readonly IMessenger messenger;
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
         private readonly Func<SerializationTableModel[]> getDialogResult;
@@ -39,29 +36,6 @@ namespace EFCorePowerTools.Wizard
         {
             // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
 
-            messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
-            messenger.Register<ShowStatusbarMessage>(this, (message) =>
-            {
-                switch (message.Type)
-                {
-                    case StatusbarMessageTypes.Status:
-                        Statusbar.Status.ShowStatus(); // defaults to Ready
-                        break;
-                    case StatusbarMessageTypes.Progress:
-                        Statusbar.Status.ShowStatusProgress(message.Content);
-                        break;
-                    case StatusbarMessageTypes.Success:
-                        Statusbar.Status.ShowStatusSuccess(message.Content);
-                        break;
-                    case StatusbarMessageTypes.Error:
-                        Statusbar.Status.ShowStatusError(message.Content);
-                        break;
-                    case StatusbarMessageTypes.Warning:
-                        Statusbar.Status.ShowStatusWarning(message.Content);
-                        break;
-                }
-            });
-
             DataContext = viewModel;
             getDialogResult = viewModel.GetSelectedObjects;
             getReplacerResult = viewModel.GetRenamedObjects;
@@ -74,6 +48,7 @@ namespace EFCorePowerTools.Wizard
             viewModel.Page2LoadedCommand = new RelayCommand(Page2Loaded_Executed);
 
             InitializeComponent();
+            InitializeMessengerWithStatusbar(Statusbar);
         }
 
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)

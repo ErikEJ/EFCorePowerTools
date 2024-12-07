@@ -830,6 +830,9 @@ namespace EFCorePowerTools.Handlers.Wizard
                         await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                     }
                 }
+
+                // BillKrat.Insert messenger.ShowContent
+
             }
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
