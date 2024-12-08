@@ -305,6 +305,8 @@ namespace EFCorePowerTools.Helpers
                     return "SqlServer";
                 case DatabaseType.Firebird:
                     return "Firebird";
+                case DatabaseType.Snowflake:
+                    return "Snowflake";
                 default:
                     return "[ProviderName]";
             }

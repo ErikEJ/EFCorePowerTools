@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 #if !CORE90
+using EFCore.Snowflake.Design.Internal;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 #endif
 using EntityFrameworkCore.Scaffolding.Handlebars;
@@ -130,6 +131,11 @@ namespace RevEng.Core
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
+
+                case DatabaseType.Snowflake:
+                    var snowflakeProvider = new SnowflakeDesignTimeServices();
+                    snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 #endif
                 case DatabaseType.SQLite:
