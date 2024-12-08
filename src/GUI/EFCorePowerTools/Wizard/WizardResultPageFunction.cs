@@ -11,7 +11,6 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
-        private bool isPageInitialized;
         private string initStatusMessage;
         private StatusbarControl statusbarCtrl;
 
@@ -59,28 +58,31 @@ namespace EFCorePowerTools.Wizard
             });
 
             statusbarCtrl.Loaded += StatusbarCtrl_Loaded;
-            statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
         }
 
         private void StatusbarCtrl_Loaded(object sender, RoutedEventArgs e)
         {
-            statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 500);
             statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
+            statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 500);
+            OnPageLoaded(sender, e);
         }
 
         private void StatusbarCtrl_StatusEvent(object sender, StatusbarEventArgs e)
         {
             if (e.EventType == StatusbarEventType.Reset)
             {
-                isPageInitialized = true;
-
                 // We're done with this reset event - only fires once
                 statusbarCtrl.StatusEvent -= StatusbarCtrl_StatusEvent;
 
+                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage);
                 OnPageVisible(sender, e);
-
-                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 100);
+                messenger.Send(new ShowStatusbarMessage());
             }
+        }
+
+        protected virtual void OnPageLoaded(object sender, RoutedEventArgs e)
+        {
+            // Intended to be overridden
         }
 
         protected virtual void OnPageVisible(object sender, StatusbarEventArgs e)

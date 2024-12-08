@@ -18,7 +18,6 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
-using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -31,6 +30,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Func<ModelingOptionsModel> getDialogResult;
         private readonly Action<ModelingOptionsModel> applyPresets;
         private readonly Action<TemplateTypeItem, IList<TemplateTypeItem>> setTemplateTypes;
+        private bool isPageInitialized;
 
         public Wiz3_EfCoreModelDialog(WizardDataViewModel wizardViewModel, IWizardView wizardView)
             : base(wizardViewModel, wizardView)
@@ -49,12 +49,45 @@ namespace EFCorePowerTools.Wizard
 
                 wizardViewModel.SelectedTemplateType = templateType.Key;
             };
-
-            wizardViewModel.Page3LoadedCommand = new RelayCommand(Page3Loaded_Executed);
-
             InitializeComponent();
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingOptions);
         }
+
+        //protected override void OnPageLoaded(object sender, RoutedEventArgs e)
+        //{
+        //    if (isPageInitialized)
+        //    {
+        //        messenger.Send(new ShowStatusbarMessage());
+        //    }
+        //}
+
+        protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+        {
+            if (isPageInitialized)
+            {
+                return;
+            }
+
+            isPageInitialized = true;
+            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
+
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                var wea = wizardViewModel.WizardEventArgs;
+                wea.ModelingOptionsDialog = this;
+
+                var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
+                wea.Options.InstallNuGetPackage = neededPackages
+                    .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
+
+                await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
+
+            });
+
+            messenger.Send(new ShowStatusbarMessage());
+            FirstTextBox.Focus();
+        }
+
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
         {
@@ -72,28 +105,6 @@ namespace EFCorePowerTools.Wizard
             setTemplateTypes(templateType, allowedTemplateTypes);
         }
 
-        public void Page3Loaded_Executed()
-        {
-            var wea = wizardViewModel.WizardEventArgs;
-
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                Statusbar.Status.ShowStatusProgress(ReverseEngineerLocale.LoadingOptions);
-
-                wea.ModelingOptionsDialog = this;
-
-                var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
-                wea.Options.InstallNuGetPackage = neededPackages
-                    .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
-
-                await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
-
-                Statusbar.Status.ShowStatus("Ready");
-            });
-
-            WindowTitle = wizardViewModel.Title;
-            FirstTextBox.Focus();
-        }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {

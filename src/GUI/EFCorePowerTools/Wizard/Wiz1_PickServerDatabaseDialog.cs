@@ -28,7 +28,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
         private readonly Action<CodeGenerationMode, IList<CodeGenerationItem>> codeGeneration;
         private readonly Action<string> uiHint;
-        private bool isInitialized;
+        private bool isPageInitialized;
 
         public Wiz1_PickServerDatabaseDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -114,25 +114,31 @@ namespace EFCorePowerTools.Wizard
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
-            Loaded += WizardPage1_Loaded;
-
             InitializeComponent();
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.GettingReadyToConnect);
         }
 
-        private void WizardPage1_Loaded(object sender, RoutedEventArgs e)
+        protected override void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            if (!isInitialized)
+            //if (isPageInitialized)
+            //{
+            //    messenger.Send(new ShowStatusbarMessage());
+            //}
+        }
+
+        protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+        {
+            if (!isPageInitialized)
             {
                 var viewModel = wizardViewModel;
-
-                messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.GettingReadyToConnect));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
                     await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
                 });
+
+                messenger.Send(new ShowStatusbarMessage("Loading configuration"));
 
                 foreach (var option in viewModel.WizardEventArgs.Configurations)
                 {
@@ -144,12 +150,9 @@ namespace EFCorePowerTools.Wizard
 
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
 
-                isInitialized = true;
+                isPageInitialized = true;
                 NextButton.IsEnabled = true;
             }
-
-            WindowTitle = ReverseEngineerLocale.ChooseDatabaseConnection;
-            Statusbar.Status.ShowStatus();
         }
 
         public void NextButton_Click(object sender, RoutedEventArgs e)

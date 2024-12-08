@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -29,6 +28,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
         private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
         private bool sqliteToolboxInstalled;
+        private bool isPageInitialized;
 
         public Wiz2_PickTablesDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -48,13 +48,22 @@ namespace EFCorePowerTools.Wizard
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingDatabaseObjects);
         }
 
+        //protected override void OnPageLoaded(object sender, RoutedEventArgs e)
+        //{
+        //    if (isPageInitialized)
+        //    {
+        //        messenger.Send(new ShowStatusbarMessage());
+        //    }
+        //}
+
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (wizardViewModel.GetSelectedObjects().Any())
+            if (isPageInitialized)
             {
                 return;
             }
 
+            isPageInitialized = true;
             var wea = wizardViewModel.WizardEventArgs;
             wea.PickTablesDialog = this;
 

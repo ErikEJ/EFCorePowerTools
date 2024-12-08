@@ -96,7 +96,7 @@ namespace EFCorePowerTools.ViewModels
         private int codeGenerationMode;
         private ConfigModel selectedConfiguration;
 
-        private string title;
+        private string title = "Hello world";
         private bool mayIncludeConnectionString;
         private int selectedTemplateType;
 
