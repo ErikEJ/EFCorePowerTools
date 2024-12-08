@@ -7,9 +7,9 @@
             Type = StatusbarMessageTypes.Status;
         }
 
-        public ShowStatusbarMessage(string content)
+        public ShowStatusbarMessage(string message)
         {
-            Content = content;
+            Message = message;
         }
 
         /// <summary>
@@ -18,8 +18,10 @@
         public StatusbarMessageTypes Type { get; set; } = StatusbarMessageTypes.Progress;
 
         /// <summary>
-        /// Gets or sets Content to display in statusbar
+        /// Gets or sets message to display in statusbar
         /// </summary>
+        public string Message { get; set; }
+
         public string Content { get; set; }
     }
 }

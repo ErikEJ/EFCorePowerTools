@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using EFCorePowerTools.Messages;
 using Westwind.Wpf.Statusbar.Utilities;
 
 namespace Westwind.Wpf.Statusbar
@@ -26,6 +27,7 @@ namespace Westwind.Wpf.Statusbar
     /// </remarks>
     public class StatusbarHelper
     {
+        public event EventHandler<StatusbarEventArgs> StatusEvent;
         private readonly DebounceDispatcher debounce = new DebounceDispatcher();
 
         /// <summary>
@@ -267,11 +269,12 @@ namespace Westwind.Wpf.Statusbar
             if (!noDispatcher)
             {
                 // run in a dispatcher here to force the UI to be updated before render cycle
-                // Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
-                ShowStatusInternal(message, timeoutMs, imageSource, spin, flashIcon: flashIcon);
-                // ));
+                Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
+                    ShowStatusInternal(message, timeoutMs, imageSource, spin, flashIcon: flashIcon)
+                ));
 
-                // BillKrat: the above dispatcher did not work as expected.  Using the following:
+                // BillKrat: Allow the page to refresh so we don't have to look at blank page while
+                //           the data loads
                 Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
             }
             else
@@ -315,6 +318,7 @@ namespace Westwind.Wpf.Statusbar
                     if (!dontResetToDefault)
                     {
                         ShowStatus(null, 0);
+                        StatusEvent?.Invoke(this, new StatusbarEventArgs(StatusbarEventType.Reset));
                     }
                 }, null);
             }

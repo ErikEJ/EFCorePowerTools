@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using EFCorePowerTools.Messages;
 
 namespace Westwind.Wpf.Statusbar
 {
@@ -27,6 +29,8 @@ namespace Westwind.Wpf.Statusbar
     /// </remarks>
     public partial class StatusbarControl : UserControl
     {
+        public event EventHandler<StatusbarEventArgs> StatusEvent;
+
         /// <summary>
         /// Gets statusbarHelper instance that provides core
         /// status bar display functionality
@@ -41,6 +45,7 @@ namespace Westwind.Wpf.Statusbar
             InitializeComponent();
 
             Status = new StatusbarHelper(StatusText, StatusIcon);
+            Status.StatusEvent += (s, e) => StatusEvent?.Invoke(s, e); // Bubble event
         }
 
         /// <summary>

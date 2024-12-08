@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar);
+            InitializeMessengerWithStatusbar(Statusbar, "Loading Status");
         }
 
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)

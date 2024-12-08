@@ -117,7 +117,7 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage1_Loaded;
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar);
+            InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.GettingReadyToConnect);
         }
 
         private void WizardPage1_Loaded(object sender, RoutedEventArgs e)
@@ -154,8 +154,6 @@ namespace EFCorePowerTools.Wizard
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
-
             // Go to next wizard page
             var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
             wizardPage2.Return += WizardPage_Return;

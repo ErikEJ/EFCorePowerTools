@@ -18,7 +18,9 @@ using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.Messages;
 using EFCorePowerTools.Wizard;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
@@ -790,11 +792,11 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 
+            var finalText = string.Empty;
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
                 && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
             {
                 var readmeName = "PowerToolsReadMe.md";
-                var finalText = string.Empty;
                 var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
 
                 if (packages.Any())
@@ -830,9 +832,6 @@ namespace EFCorePowerTools.Handlers.Wizard
                         await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                     }
                 }
-
-                // BillKrat.Insert messenger.ShowContent
-
             }
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
@@ -841,7 +840,12 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
 
-            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
+            var completedMessage = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss"));
+            await VS.StatusBar.ShowMessageAsync(completedMessage);
+
+            var messenger = await package.GetServiceAsync<IMessenger>();
+
+            messenger.Send(new ShowStatusbarMessage { Content = finalText, Message = completedMessage });
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {

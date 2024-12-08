@@ -11,21 +11,30 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
+        private bool isPageInitialized;
+        private string initStatusMessage;
+        private StatusbarControl statusbarCtrl;
+
         protected IMessenger messenger;
 
         private WizardDataViewModel viewModel;
 
         private IWizardView WizardView { get; set; }
 
-        public WizardResultPageFunction(WizardDataViewModel wizardViewModel, IWizardView wizardView)
+        public WizardResultPageFunction(
+            WizardDataViewModel wizardViewModel,
+            IWizardView wizardView)
         {
             this.viewModel = wizardViewModel;
             DataContext = wizardViewModel;
             this.WizardView = wizardView;
         }
 
-        public void InitializeMessengerWithStatusbar(StatusbarControl statusbarCtrl)
+        public void InitializeMessengerWithStatusbar(StatusbarControl statusbarCtrl, string initStatusMessage)
         {
+            this.statusbarCtrl = statusbarCtrl;
+            this.initStatusMessage = initStatusMessage;
+
             messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
             messenger.Register<ShowStatusbarMessage>(this, (message) =>
             {
@@ -35,19 +44,48 @@ namespace EFCorePowerTools.Wizard
                         statusbarCtrl.Status.ShowStatus(); // defaults to Ready
                         break;
                     case StatusbarMessageTypes.Progress:
-                        statusbarCtrl.Status.ShowStatusProgress(message.Content);
+                        statusbarCtrl.Status.ShowStatusProgress(message.Message);
                         break;
                     case StatusbarMessageTypes.Success:
-                        statusbarCtrl.Status.ShowStatusSuccess(message.Content);
+                        statusbarCtrl.Status.ShowStatusSuccess(message.Message);
                         break;
                     case StatusbarMessageTypes.Error:
-                        statusbarCtrl.Status.ShowStatusError(message.Content);
+                        statusbarCtrl.Status.ShowStatusError(message.Message);
                         break;
                     case StatusbarMessageTypes.Warning:
-                        statusbarCtrl.Status.ShowStatusWarning(message.Content);
+                        statusbarCtrl.Status.ShowStatusWarning(message.Message);
                         break;
                 }
             });
+
+            statusbarCtrl.Loaded += StatusbarCtrl_Loaded;
+            statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
+        }
+
+        private void StatusbarCtrl_Loaded(object sender, RoutedEventArgs e)
+        {
+            statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 500);
+            statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
+        }
+
+        private void StatusbarCtrl_StatusEvent(object sender, StatusbarEventArgs e)
+        {
+            if (e.EventType == StatusbarEventType.Reset)
+            {
+                isPageInitialized = true;
+
+                // We're done with this reset event - only fires once
+                statusbarCtrl.StatusEvent -= StatusbarCtrl_StatusEvent;
+
+                OnPageVisible(sender, e);
+
+                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 100);
+            }
+        }
+
+        protected virtual void OnPageVisible(object sender, StatusbarEventArgs e)
+        {
+            // Intended to be overridden
         }
 
         public void BackButton_Click(object sender, RoutedEventArgs e)

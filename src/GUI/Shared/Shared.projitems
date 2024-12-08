@@ -116,6 +116,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\ReverseEngineerWizardLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowStatusbarMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarEventType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarMessageTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AboutExtensionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ConfigModel.cs" />

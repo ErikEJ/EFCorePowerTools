@@ -16,6 +16,7 @@ using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers.Wizard;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
@@ -52,7 +53,7 @@ namespace EFCorePowerTools.Wizard
             wizardViewModel.Page3LoadedCommand = new RelayCommand(Page3Loaded_Executed);
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar);
+            InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingOptions);
         }
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
@@ -123,7 +124,8 @@ namespace EFCorePowerTools.Wizard
 
         private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            Statusbar.Status.ShowStatusProgress("Generating files...");
+            NextButton_Click(sender, e);
+            messenger.Send(new ShowStatusbarMessage("Generating files"));
 
             var wea = wizardViewModel.WizardEventArgs;
             ThreadHelper.JoinableTaskFactory.Run(async () =>

@@ -15,7 +15,6 @@ using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
-using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -45,10 +44,36 @@ namespace EFCorePowerTools.Wizard
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
-            viewModel.Page2LoadedCommand = new RelayCommand(Page2Loaded_Executed);
-
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar);
+            InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingDatabaseObjects);
+        }
+
+        protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+        {
+            if (wizardViewModel.GetSelectedObjects().Any())
+            {
+                return;
+            }
+
+            var wea = wizardViewModel.WizardEventArgs;
+            wea.PickTablesDialog = this;
+
+            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
+
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+            });
+
+            messenger.Send(new ShowStatusbarMessage());
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Go to next wizard page
+            var wizardPage3 = new Wiz3_EfCoreModelDialog((WizardDataViewModel)DataContext, wizardView);
+            wizardPage3.Return += WizardPage_Return;
+            NavigationService?.Navigate(wizardPage3);
         }
 
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)
@@ -82,31 +107,6 @@ namespace EFCorePowerTools.Wizard
                 Objects = getDialogResult(),
                 CustomReplacers = getReplacerResult(),
             };
-        }
-
-        private void Page2Loaded_Executed()
-        {
-            if (wizardViewModel.GetSelectedObjects().Any())
-            {
-                return;
-            }
-
-            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
-            var wea = wizardViewModel.WizardEventArgs;
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                wea.PickTablesDialog = this;
-                await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
-            });
-            messenger.Send(new ShowStatusbarMessage()); // reset statusbar to ready
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Go to next wizard page
-            var wizardPage3 = new Wiz3_EfCoreModelDialog((WizardDataViewModel)DataContext, wizardView);
-            wizardPage3.Return += WizardPage_Return;
-            NavigationService?.Navigate(wizardPage3);
         }
 
         private void CheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)

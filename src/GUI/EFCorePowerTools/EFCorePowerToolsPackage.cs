@@ -72,7 +72,6 @@ namespace EFCorePowerTools
         public EFCorePowerToolsPackage()
         {
             revEngWizardHandler = new RevEngWizardHandler(this);
-            // reverseEngineerHandler = new RevEngWizardHandler(this);
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
@@ -121,10 +120,18 @@ namespace EFCorePowerTools
             });
         }
 
+        internal async Task<TService> GetServiceAsync<TService>()
+        {
+            var service = extensionServices.GetService<TService>();
+            await Task.Yield();
+            return service;
+        }
+
         internal TView GetView<TView>()
             where TView : IView
         {
             return extensionServices.GetService<TView>();
+
         }
 
         internal async Task<Version> VisualStudioVersionAsync()
