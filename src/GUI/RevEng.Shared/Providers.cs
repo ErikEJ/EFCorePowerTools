@@ -41,6 +41,9 @@ namespace RevEng.Common
                 case "FirebirdSql.EntityFrameworkCore.Firebird":
                     return DatabaseType.Firebird;
 
+                case "EFCore.Snowflake":
+                    return DatabaseType.Snowflake;
+
                 default:
                     return DatabaseType.Undefined;
             }
@@ -443,6 +446,28 @@ namespace RevEng.Common
                 });
             }
 
+            if (databaseType == DatabaseType.Snowflake)
+            {
+                var pkgVersion = string.Empty;
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.8";
+                        break;
+
+                    default: throw new NotImplementedException();
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "EFCore.Snowflake",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Snowflake",
+                });
+            }
+
             return packages;
         }
 
@@ -518,6 +543,10 @@ namespace RevEng.Common
                 {
                     "FirebirdSql.EntityFrameworkCore.Firebird",
                     new List<string> { "firebird" }
+                },
+                {
+                    "EFCore.Snowflake",
+                    new List<string> { "snowflake" }
                 },
             };
         }

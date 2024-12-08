@@ -5,11 +5,10 @@ using System.IO;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using Npgsql;
-
+using Oracle.ManagedDataAccess.Client;
 #if !CORE90
 using FirebirdSql.Data.FirebirdClient;
 using MySqlConnector;
-using Oracle.ManagedDataAccess.Client;
 #endif
 
 namespace RevEng.Core
@@ -67,21 +66,20 @@ namespace RevEng.Core
                 // Ignore
             }
 
-#if !CORE90
             try
             {
-                var a = new MySqlConnectionStringBuilder(connectionString);
-                aliases.Add("mysql");
+                var a = new OracleConnectionStringBuilder(connectionString);
+                aliases.Add("oracle");
             }
             catch
             {
                 // Ignore
             }
-
+#if !CORE90
             try
             {
-                var a = new OracleConnectionStringBuilder(connectionString);
-                aliases.Add("oracle");
+                var a = new MySqlConnectionStringBuilder(connectionString);
+                aliases.Add("mysql");
             }
             catch
             {
@@ -98,7 +96,6 @@ namespace RevEng.Core
                 // Ignore
             }
 #endif
-
             return aliases;
         }
 

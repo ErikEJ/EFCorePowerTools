@@ -40,6 +40,7 @@
             SelectedValue="{Binding DbType, Mode=TwoWay}" 
             SelectedValuePath="Tag" Grid.Row="3" Margin="12,2" Width="136" HorizontalAlignment="Left" >
                 <ComboBoxItem Tag="6" >MySQL</ComboBoxItem>
+                <ComboBoxItem Tag="11" >Snowflake</ComboBoxItem>
             </ComboBox>
 
         </Grid>
