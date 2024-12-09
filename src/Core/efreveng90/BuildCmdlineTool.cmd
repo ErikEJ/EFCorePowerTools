@@ -16,6 +16,7 @@ rd bin\Release\net8.0\x64\publish\runtimes\android-arm /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\android-arm64 /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\android-x64 /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\android-x86 /Q /S
+rd bin\Release\net8.0\x64\publish\runtimes\browser /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\browser-wasm /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\linux /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\linux-arm /Q /S
