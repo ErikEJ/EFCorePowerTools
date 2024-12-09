@@ -702,5 +702,8 @@ namespace EFCorePowerTools.ViewModels
 
         #endregion
 
+        public RelayCommand Page4LoadedCommand { get; set; }
+
+
     }
 }

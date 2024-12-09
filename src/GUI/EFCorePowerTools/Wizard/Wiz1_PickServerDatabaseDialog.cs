@@ -118,14 +118,6 @@ namespace EFCorePowerTools.Wizard
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.GettingReadyToConnect);
         }
 
-        protected override void OnPageLoaded(object sender, RoutedEventArgs e)
-        {
-            //if (isPageInitialized)
-            //{
-            //    messenger.Send(new ShowStatusbarMessage());
-            //}
-        }
-
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
             if (!isPageInitialized)

@@ -3,13 +3,17 @@
 
 using System.Windows;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
+using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Wizard
 {
     public partial class Wiz4_StatusDialog : WizardResultPageFunction
     {
         private readonly IWizardView wizardView;
+        private readonly WizardDataViewModel wizardViewModel;
+        private bool isPageInitialized;
 
         public Wiz4_StatusDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -25,8 +29,26 @@ namespace EFCorePowerTools.Wizard
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)
         {
             WindowTitle = "Status";
-            Statusbar.Status.ShowStatus();
+            Statusbar.Status.ShowStatus("ready");
         }
+
+        protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+        {
+            if (!isPageInitialized)
+            {
+                isPageInitialized = true;
+
+                messenger.Send(new ShowStatusbarMessage("Loading status"));
+
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    // await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                });
+
+                messenger.Send(new ShowStatusbarMessage());
+            }
+        }
+
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {

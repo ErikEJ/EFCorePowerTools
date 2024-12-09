@@ -11,6 +11,7 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
+        private bool isPageLoaded;
         private string initStatusMessage;
         private StatusbarControl statusbarCtrl;
 
@@ -62,9 +63,17 @@ namespace EFCorePowerTools.Wizard
 
         private void StatusbarCtrl_Loaded(object sender, RoutedEventArgs e)
         {
-            statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
-            statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 500);
-            OnPageLoaded(sender, e);
+            if (!isPageLoaded)
+            {
+                statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
+                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 500);
+                OnPageLoaded(sender, e);
+                isPageLoaded = true;
+            }
+            else
+            {
+                statusbarCtrl.Status.ShowStatus("Ready");
+            }
         }
 
         private void StatusbarCtrl_StatusEvent(object sender, StatusbarEventArgs e)
@@ -76,7 +85,7 @@ namespace EFCorePowerTools.Wizard
 
                 statusbarCtrl.Status.ShowStatusProgress(initStatusMessage);
                 OnPageVisible(sender, e);
-                messenger.Send(new ShowStatusbarMessage());
+                // messenger.Send(new ShowStatusbarMessage());
             }
         }
 

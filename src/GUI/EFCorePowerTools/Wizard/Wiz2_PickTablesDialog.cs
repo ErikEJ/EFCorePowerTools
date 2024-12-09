@@ -48,33 +48,23 @@ namespace EFCorePowerTools.Wizard
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingDatabaseObjects);
         }
 
-        //protected override void OnPageLoaded(object sender, RoutedEventArgs e)
-        //{
-        //    if (isPageInitialized)
-        //    {
-        //        messenger.Send(new ShowStatusbarMessage());
-        //    }
-        //}
-
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (isPageInitialized)
+            if (!isPageInitialized)
             {
-                return;
+                isPageInitialized = true;
+                var wea = wizardViewModel.WizardEventArgs;
+                wea.PickTablesDialog = this;
+
+                messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
+
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                });
+
+                messenger.Send(new ShowStatusbarMessage());
             }
-
-            isPageInitialized = true;
-            var wea = wizardViewModel.WizardEventArgs;
-            wea.PickTablesDialog = this;
-
-            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
-
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
-            });
-
-            messenger.Send(new ShowStatusbarMessage());
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)

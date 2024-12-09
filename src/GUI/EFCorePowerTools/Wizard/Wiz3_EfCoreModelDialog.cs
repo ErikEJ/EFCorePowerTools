@@ -53,39 +53,29 @@ namespace EFCorePowerTools.Wizard
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingOptions);
         }
 
-        //protected override void OnPageLoaded(object sender, RoutedEventArgs e)
-        //{
-        //    if (isPageInitialized)
-        //    {
-        //        messenger.Send(new ShowStatusbarMessage());
-        //    }
-        //}
-
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (isPageInitialized)
+            if (!isPageInitialized)
             {
-                return;
+                isPageInitialized = true;
+                messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
+
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    var wea = wizardViewModel.WizardEventArgs;
+                    wea.ModelingOptionsDialog = this;
+
+                    var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
+                    wea.Options.InstallNuGetPackage = neededPackages
+                        .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
+
+                    await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
+
+                });
+
+                messenger.Send(new ShowStatusbarMessage());
+                FirstTextBox.Focus();
             }
-
-            isPageInitialized = true;
-            messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
-
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                var wea = wizardViewModel.WizardEventArgs;
-                wea.ModelingOptionsDialog = this;
-
-                var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
-                wea.Options.InstallNuGetPackage = neededPackages
-                    .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
-
-                await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
-
-            });
-
-            messenger.Send(new ShowStatusbarMessage());
-            FirstTextBox.Focus();
         }
 
 
