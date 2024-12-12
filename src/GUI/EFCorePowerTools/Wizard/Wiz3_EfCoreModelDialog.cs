@@ -55,11 +55,11 @@ namespace EFCorePowerTools.Wizard
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
             var viewModel = wizardViewModel;
-            isPageLoaded = viewModel.IsPage3Initialized;
+            IsPageLoaded = viewModel.IsPage3Initialized;
 
-            if (!isPageLoaded)
+            if (!IsPageLoaded)
             {
-                messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
+                Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
@@ -87,10 +87,10 @@ namespace EFCorePowerTools.Wizard
             }
             else
             {
+                wizardViewModel.IsPage3Initialized = true;
                 var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage4.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage4);
-                wizardViewModel.IsPage3Initialized = true;
             }
         }
 
@@ -133,7 +133,7 @@ namespace EFCorePowerTools.Wizard
         private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
             NextButton_Click(sender, e);
-            messenger.Send(new ShowStatusbarMessage("Generating files"));
+            Messenger.Send(new ShowStatusbarMessage("Generating files"));
 
             var wea = wizardViewModel.WizardEventArgs;
             ThreadHelper.JoinableTaskFactory.Run(async () =>

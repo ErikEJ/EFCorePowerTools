@@ -120,9 +120,9 @@ namespace EFCorePowerTools.Wizard
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
             var viewModel = wizardViewModel;
-            isPageLoaded = viewModel.IsPage1Initialized;
+            IsPageLoaded = viewModel.IsPage1Initialized;
 
-            if (!isPageLoaded)
+            if (!IsPageLoaded)
             {
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
@@ -130,7 +130,7 @@ namespace EFCorePowerTools.Wizard
                     await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
                 });
 
-                messenger.Send(new ShowStatusbarMessage("Loading configuration"));
+                Messenger.Send(new ShowStatusbarMessage("Loading configuration"));
 
                 foreach (var option in viewModel.WizardEventArgs.Configurations)
                 {
@@ -141,6 +141,7 @@ namespace EFCorePowerTools.Wizard
                 }
 
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
+
             }
         }
 
@@ -153,10 +154,10 @@ namespace EFCorePowerTools.Wizard
             }
             else
             {
+                wizardViewModel.IsPage1Initialized = true;
                 var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage2.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage2);
-                wizardViewModel.IsPage1Initialized = true;
             }
         }
 

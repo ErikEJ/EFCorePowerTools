@@ -303,7 +303,7 @@ namespace Westwind.Wpf.Statusbar
             {
                 message = DefaultStatusText;
                 SetStatusIcon();
-                milliSeconds = 1000;
+                milliSeconds = 100;
             }
 
             StatusText.Text = message;

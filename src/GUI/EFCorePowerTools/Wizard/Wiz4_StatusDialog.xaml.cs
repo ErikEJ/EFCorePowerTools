@@ -35,13 +35,13 @@ namespace EFCorePowerTools.Wizard
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
             var viewModel = wizardViewModel;
-            isPageLoaded = viewModel.IsPage4Initialized;
+            IsPageLoaded = viewModel.IsPage4Initialized;
 
-            if (!isPageLoaded)
+            if (!IsPageLoaded)
             {
                 viewModel.IsPage4Initialized = true;
 
-                messenger.Send(new ShowStatusbarMessage("Loading status"));
+                Messenger.Send(new ShowStatusbarMessage("Loading status"));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {

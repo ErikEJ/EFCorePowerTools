@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -50,14 +51,14 @@ namespace EFCorePowerTools.Wizard
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
             var viewModel = wizardViewModel;
-            isPageLoaded = viewModel.IsPage2Initialized;
+            IsPageLoaded = viewModel.IsPage2Initialized;
 
-            if (!isPageLoaded)
+            if (!IsPageLoaded && !wizardViewModel.GetSelectedObjects().Any())
             {
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.PickTablesDialog = this;
 
-                messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
+                Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
@@ -75,10 +76,10 @@ namespace EFCorePowerTools.Wizard
             }
             else
             {
+                wizardViewModel.IsPage2Initialized = true;
                 var wizardPage3 = new Wiz3_EfCoreModelDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage3.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage3);
-                wizardViewModel.IsPage2Initialized = true;
             }
         }
 

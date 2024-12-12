@@ -11,14 +11,13 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
+        private readonly WizardDataViewModel viewModel;
+        private readonly IWizardView wizardView;
         private string initStatusMessage;
         private StatusbarControl statusbarCtrl;
-        private WizardDataViewModel viewModel;
 
-        protected bool isPageLoaded;
-        protected IMessenger messenger;
-
-        private IWizardView WizardView { get; set; }
+        protected IMessenger Messenger { get; set; }
+        public bool IsPageLoaded { get; set; }
 
         public WizardResultPageFunction(
             WizardDataViewModel wizardViewModel,
@@ -26,7 +25,7 @@ namespace EFCorePowerTools.Wizard
         {
             this.viewModel = wizardViewModel;
             DataContext = wizardViewModel;
-            this.WizardView = wizardView;
+            this.wizardView = wizardView;
         }
 
         public void InitializeMessengerWithStatusbar(StatusbarControl statusbarCtrl, string initStatusMessage)
@@ -34,8 +33,8 @@ namespace EFCorePowerTools.Wizard
             this.statusbarCtrl = statusbarCtrl;
             this.initStatusMessage = initStatusMessage;
 
-            messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
-            messenger.Register<ShowStatusbarMessage>(this, (message) =>
+            Messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
+            Messenger.Register<ShowStatusbarMessage>(this, (message) =>
             {
                 switch (message.Type)
                 {
@@ -62,12 +61,16 @@ namespace EFCorePowerTools.Wizard
 
         private void StatusbarCtrl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!isPageLoaded)
+            if (!IsPageLoaded)
             {
-                isPageLoaded = true;
+                IsPageLoaded = true;
                 statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
-                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 1000);
+                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 100);
                 OnPageLoaded(sender, e);
+            }
+            else
+            {
+                statusbarCtrl.Status.ShowStatus(); // defaults to Ready
             }
         }
 
@@ -97,23 +100,21 @@ namespace EFCorePowerTools.Wizard
         {
             // Go to previous wizard page
             NavigationService?.GoBack();
-
-            statusbarCtrl.Status.ShowStatus(); // defaults to Ready
         }
 
         public void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Canceled));
+            wizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Canceled));
         }
 
         public void WizardPage_Return(object sender, ReturnEventArgs<WizardResult> e)
         {
-            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished));
+            wizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished));
         }
 
         public void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            WizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished));
+            wizardView.WizardReturnInvoke(this, new WizardReturnEventArgs(WizardResult.Finished));
         }
     }
 }
