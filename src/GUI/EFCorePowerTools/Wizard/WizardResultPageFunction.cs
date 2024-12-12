@@ -11,13 +11,12 @@ namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
-        private bool isPageLoaded;
         private string initStatusMessage;
         private StatusbarControl statusbarCtrl;
-
-        protected IMessenger messenger;
-
         private WizardDataViewModel viewModel;
+
+        protected bool isPageLoaded;
+        protected IMessenger messenger;
 
         private IWizardView WizardView { get; set; }
 
@@ -41,7 +40,7 @@ namespace EFCorePowerTools.Wizard
                 switch (message.Type)
                 {
                     case StatusbarMessageTypes.Status:
-                        statusbarCtrl.Status.ShowStatus(); // defaults to Ready
+                        statusbarCtrl.Status.ShowStatus();
                         break;
                     case StatusbarMessageTypes.Progress:
                         statusbarCtrl.Status.ShowStatusProgress(message.Message);
@@ -65,14 +64,10 @@ namespace EFCorePowerTools.Wizard
         {
             if (!isPageLoaded)
             {
-                statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
-                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 500);
-                OnPageLoaded(sender, e);
                 isPageLoaded = true;
-            }
-            else
-            {
-                statusbarCtrl.Status.ShowStatus("Ready");
+                statusbarCtrl.StatusEvent += StatusbarCtrl_StatusEvent;
+                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage, 1000);
+                OnPageLoaded(sender, e);
             }
         }
 
@@ -82,10 +77,9 @@ namespace EFCorePowerTools.Wizard
             {
                 // We're done with this reset event - only fires once
                 statusbarCtrl.StatusEvent -= StatusbarCtrl_StatusEvent;
-
-                statusbarCtrl.Status.ShowStatusProgress(initStatusMessage);
                 OnPageVisible(sender, e);
-                // messenger.Send(new ShowStatusbarMessage());
+
+                statusbarCtrl.Status.ShowStatus();
             }
         }
 
@@ -103,6 +97,8 @@ namespace EFCorePowerTools.Wizard
         {
             // Go to previous wizard page
             NavigationService?.GoBack();
+
+            statusbarCtrl.Status.ShowStatus(); // defaults to Ready
         }
 
         public void CancelButton_Click(object sender, RoutedEventArgs e)

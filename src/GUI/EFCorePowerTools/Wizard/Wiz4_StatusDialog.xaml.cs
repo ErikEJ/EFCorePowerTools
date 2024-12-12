@@ -13,12 +13,12 @@ namespace EFCorePowerTools.Wizard
     {
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
-        private bool isPageInitialized;
 
         public Wiz4_StatusDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
             this.wizardView = wizardView;
+            this.wizardViewModel = viewModel;
 
             Loaded += WizardPage4_Loaded;
 
@@ -34,18 +34,19 @@ namespace EFCorePowerTools.Wizard
 
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (!isPageInitialized)
+            var viewModel = wizardViewModel;
+            isPageLoaded = viewModel.IsPage4Initialized;
+
+            if (!isPageLoaded)
             {
-                isPageInitialized = true;
+                viewModel.IsPage4Initialized = true;
 
                 messenger.Send(new ShowStatusbarMessage("Loading status"));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    // await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                    // await wizardViewModel.Bll.xxx(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
                 });
-
-                messenger.Send(new ShowStatusbarMessage());
             }
         }
 

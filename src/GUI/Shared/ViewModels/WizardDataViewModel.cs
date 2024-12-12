@@ -115,9 +115,8 @@ namespace EFCorePowerTools.ViewModels
         public string OptionsPath { get; internal set; }
         public bool FromSqlProject { get; internal set; }
 
-        #region //-- WizardPage1 - Configuration
+        #region //-- WizardPage1 - Configuration and DatabaseObjects
         public ObservableCollection<ConfigModel> Configurations { get; set; } = [];
-
         public ConfigModel SelectedConfiguration
         {
             get => selectedConfiguration;
@@ -132,8 +131,7 @@ namespace EFCorePowerTools.ViewModels
                 RaisePropertyChanged();
             }
         }
-        #endregion
-        #region //-- WizardPage1 - Database connection
+        public bool IsPage1Initialized { get; set; }
         public ICommand Page1LoadedCommand { get; set; }
         public ICommand AddDatabaseConnectionCommand { get; set; }
         public ICommand AddAdhocDatabaseConnectionCommand { get; set; }
@@ -414,6 +412,7 @@ namespace EFCorePowerTools.ViewModels
         #endregion
 
         #region //-- WizardPage2 - Database objects
+        public bool IsPage2Initialized { get; set; }
         public RelayCommand Page2LoadedCommand { get; set; }
         private bool? tableSelectionThreeState;
         private string searchText;
@@ -550,6 +549,8 @@ namespace EFCorePowerTools.ViewModels
         #endregion
 
         #region //-- WizardPage3 - Modeling Options / Advanced
+        public bool IsPage3Initialized { get; set; }
+
         public RelayCommand Page3LoadedCommand { get; set; }
 
         public ICommand AdvancedCommand { get; }
@@ -702,6 +703,7 @@ namespace EFCorePowerTools.ViewModels
 
         #endregion
 
+        public bool IsPage4Initialized { get; set; }
         public RelayCommand Page4LoadedCommand { get; set; }
 
 

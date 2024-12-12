@@ -303,6 +303,7 @@ namespace Westwind.Wpf.Statusbar
             {
                 message = DefaultStatusText;
                 SetStatusIcon();
+                milliSeconds = 1000;
             }
 
             StatusText.Text = message;
@@ -317,7 +318,7 @@ namespace Westwind.Wpf.Statusbar
                 {
                     if (!dontResetToDefault)
                     {
-                        ShowStatus(null, 0);
+                        // ShowStatus(null, 0);  // Trigger reset event to invoke OnPageVisible
                         StatusEvent?.Invoke(this, new StatusbarEventArgs(StatusbarEventType.Reset));
                     }
                 }, null);

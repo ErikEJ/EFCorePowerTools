@@ -30,7 +30,6 @@ namespace EFCorePowerTools.Wizard
         private readonly Func<ModelingOptionsModel> getDialogResult;
         private readonly Action<ModelingOptionsModel> applyPresets;
         private readonly Action<TemplateTypeItem, IList<TemplateTypeItem>> setTemplateTypes;
-        private bool isPageInitialized;
 
         public Wiz3_EfCoreModelDialog(WizardDataViewModel wizardViewModel, IWizardView wizardView)
             : base(wizardViewModel, wizardView)
@@ -55,9 +54,11 @@ namespace EFCorePowerTools.Wizard
 
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (!isPageInitialized)
+            var viewModel = wizardViewModel;
+            isPageLoaded = viewModel.IsPage3Initialized;
+
+            if (!isPageLoaded)
             {
-                isPageInitialized = true;
                 messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
@@ -73,11 +74,25 @@ namespace EFCorePowerTools.Wizard
 
                 });
 
-                messenger.Send(new ShowStatusbarMessage());
                 FirstTextBox.Focus();
             }
         }
 
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Go to next wizard page
+            if (wizardViewModel.IsPage3Initialized)
+            {
+                NavigationService.GoForward();
+            }
+            else
+            {
+                var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
+                wizardPage4.Return += WizardPage_Return;
+                NavigationService?.Navigate(wizardPage4);
+                wizardViewModel.IsPage3Initialized = true;
+            }
+        }
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
         {
@@ -113,14 +128,6 @@ namespace EFCorePowerTools.Wizard
                 StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
             };
             process.Start();
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Go to next wizard page
-            var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
-            wizardPage4.Return += WizardPage_Return;
-            NavigationService?.Navigate(wizardPage4);
         }
 
         private new void FinishButton_Click(object sender, RoutedEventArgs e)

@@ -650,6 +650,7 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             options.Tables = pickTablesResult.Payload.Objects.ToList();
             options.CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList();
+
             return pickTablesResult.ClosedByOK;
         }
 
@@ -759,6 +760,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             options.UseSchemaNamespaces = modelingOptionsResult.Payload.UseSchemaNamespaces;
             options.T4TemplatePath = modelingOptionsResult.Payload.T4TemplatePath;
 
+            await Task.Yield();
             return true;
         }
 

@@ -28,7 +28,6 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
         private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
         private bool sqliteToolboxInstalled;
-        private bool isPageInitialized;
 
         public Wiz2_PickTablesDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -50,9 +49,11 @@ namespace EFCorePowerTools.Wizard
 
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (!isPageInitialized)
+            var viewModel = wizardViewModel;
+            isPageLoaded = viewModel.IsPage2Initialized;
+
+            if (!isPageLoaded)
             {
-                isPageInitialized = true;
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.PickTablesDialog = this;
 
@@ -62,17 +63,23 @@ namespace EFCorePowerTools.Wizard
                 {
                     await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
                 });
-
-                messenger.Send(new ShowStatusbarMessage());
             }
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Go to next wizard page
-            var wizardPage3 = new Wiz3_EfCoreModelDialog((WizardDataViewModel)DataContext, wizardView);
-            wizardPage3.Return += WizardPage_Return;
-            NavigationService?.Navigate(wizardPage3);
+            if (wizardViewModel.IsPage2Initialized)
+            {
+                NavigationService.GoForward();
+            }
+            else
+            {
+                var wizardPage3 = new Wiz3_EfCoreModelDialog((WizardDataViewModel)DataContext, wizardView);
+                wizardPage3.Return += WizardPage_Return;
+                NavigationService?.Navigate(wizardPage3);
+                wizardViewModel.IsPage2Initialized = true;
+            }
         }
 
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)

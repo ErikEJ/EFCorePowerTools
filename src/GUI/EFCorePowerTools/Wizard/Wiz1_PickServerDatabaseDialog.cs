@@ -28,7 +28,6 @@ namespace EFCorePowerTools.Wizard
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
         private readonly Action<CodeGenerationMode, IList<CodeGenerationItem>> codeGeneration;
         private readonly Action<string> uiHint;
-        private bool isPageInitialized;
 
         public Wiz1_PickServerDatabaseDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -120,10 +119,11 @@ namespace EFCorePowerTools.Wizard
 
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
         {
-            if (!isPageInitialized)
-            {
-                var viewModel = wizardViewModel;
+            var viewModel = wizardViewModel;
+            isPageLoaded = viewModel.IsPage1Initialized;
 
+            if (!isPageLoaded)
+            {
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
@@ -141,18 +141,23 @@ namespace EFCorePowerTools.Wizard
                 }
 
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
-
-                isPageInitialized = true;
-                NextButton.IsEnabled = true;
             }
         }
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Go to next wizard page
-            var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
-            wizardPage2.Return += WizardPage_Return;
-            NavigationService?.Navigate(wizardPage2);
+            if (wizardViewModel.IsPage1Initialized)
+            {
+                NavigationService.GoForward();
+            }
+            else
+            {
+                var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
+                wizardPage2.Return += WizardPage_Return;
+                NavigationService?.Navigate(wizardPage2);
+                wizardViewModel.IsPage1Initialized = true;
+            }
         }
 
         /// <summary>
