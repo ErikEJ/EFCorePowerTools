@@ -20,9 +20,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
-#if !CORE90
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
-#endif
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
@@ -110,7 +108,7 @@ namespace RevEng.Core
                     AddPostgresProviderServices(serviceCollection, options);
 
                     break;
-#if !CORE90
+
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -122,7 +120,7 @@ namespace RevEng.Core
                     }
 
                     break;
-#endif
+
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
