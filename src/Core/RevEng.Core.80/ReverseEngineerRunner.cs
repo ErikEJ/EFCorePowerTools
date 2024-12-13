@@ -338,6 +338,26 @@ namespace RevEng.Core
             var movedFiles = new List<string>();
             foreach (var configurationFile in configurationFiles)
             {
+                // This handles the scenario where an Entity ends with the word "Configuration" such as "SoftwareConfiguration".  In this scenario
+                // there would be 2 files "SoftwareConfiguration.cs" and "SoftwareConfigurationConfiguration.cs".  The former is the entity model itself
+                // which should not be moved.  We're also checking to make sure the line isn't part of a comment block. (to handle a scenario where someone
+                // has customized the EntityType.t4 to include a comment block that points to the EntityTypeConfiguration file)
+                bool isConfigFile = false;
+                foreach (var line in File.ReadLines(configurationFile))
+                {
+                    if (line.Contains("EntityTypeConfiguration<", StringComparison.Ordinal)
+                        && !(line.Trim().StartsWith('/') || line.Trim().StartsWith('*')))
+                    {
+                        isConfigFile = true;
+                        break;
+                    }
+                }
+
+                if (!isConfigFile)
+                {
+                    continue;
+                }
+
                 var newDirectoryName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations");
                 if (newDirectoryName is null)
                 {
