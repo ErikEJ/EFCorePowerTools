@@ -44,7 +44,7 @@ namespace RevEng.Core.Routines.Procedures
             ArgumentNullException.ThrowIfNull(procedure);
 
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name)}")
+                .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name, capitalize: false)}")
                 .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
@@ -54,7 +54,7 @@ namespace RevEng.Core.Routines.Procedures
             var retValueName = allOutParams[allOutParams.Count - 1].Name;
 
             var outParamStrings = outParams
-                .Select(p => $"OutputParameter<{Code.Reference(p.ClrTypeFromSqlParameter())}> {Code.Identifier(p.Name)}")
+                .Select(p => $"OutputParameter<{Code.Reference(p.ClrTypeFromSqlParameter())}> {Code.Identifier(p.Name, capitalize: false)}")
                 .ToList();
 
             var fullExec = GenerateProcedureStatement(procedure, retValueName, useAsyncCalls);
@@ -152,7 +152,7 @@ namespace RevEng.Core.Routines.Procedures
 
                     foreach (var parameter in outParams)
                     {
-                        Sb.AppendLine($"{Code.Identifier(parameter.Name)}?.SetValue({ParameterPrefix}{parameter.Name}.Value);");
+                        Sb.AppendLine($"{Code.Identifier(parameter.Name, capitalize: false)}?.SetValue({ParameterPrefix}{parameter.Name}.Value);");
                     }
 
                     if (procedure.SupportsMultipleResultSet)
@@ -361,10 +361,12 @@ namespace RevEng.Core.Routines.Procedures
 
         private void AppendValue(ModuleParameter parameter)
         {
-            var value = parameter.Nullable ? $"{Code.Identifier(parameter.Name)} ?? Convert.DBNull" : $"{Code.Identifier(parameter.Name)}";
+            var name = Code.Identifier(parameter.Name, capitalize: false);
+
+            var value = parameter.Nullable ? $"{name} ?? Convert.DBNull" : $"{name}";
             if (parameter.Output)
             {
-                value = parameter.Nullable ? $"{Code.Identifier(parameter.Name)}?._value ?? Convert.DBNull" : $"{Code.Identifier(parameter.Name)}?._value";
+                value = parameter.Nullable ? $"{name}?._value ?? Convert.DBNull" : $"{name}?._value";
             }
 
             Sb.AppendLine($"Value = {value},");
