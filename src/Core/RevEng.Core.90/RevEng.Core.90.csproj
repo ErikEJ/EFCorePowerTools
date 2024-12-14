@@ -44,6 +44,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0-preview.2.efcore.9.0.0" />
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="9.0.0" />
     <PackageReference Include="System.CodeDom" Version="8.0.0" />
+    <PackageReference Include="UnicodeInformation" Version="2.7.1" />
   </ItemGroup>
 
   <ItemGroup>

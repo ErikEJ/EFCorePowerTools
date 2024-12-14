@@ -88,9 +88,13 @@ namespace RevEng.Core.Routines
 
         private void GenerateProperties(List<ModuleResultElement> resultElements, bool nullableReferences, bool useDecimalDataAnnotation, bool usePascalCase)
         {
+            var propertyNames = new List<string>();
+
+            int i = 0;
+
             foreach (var property in resultElements.OrderBy(e => e.Ordinal))
             {
-                var propertyNames = ScaffoldHelper.GeneratePropertyName(property.Name, Code, usePascalCase);
+                var propertyNameAndAttribute = ScaffoldHelper.GeneratePropertyName(property.Name, Code, usePascalCase);
 
                 if (property.StoreType == "decimal" && useDecimalDataAnnotation)
                 {
@@ -98,9 +102,9 @@ namespace RevEng.Core.Routines
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(propertyNames.Item2))
+                    if (!string.IsNullOrEmpty(propertyNameAndAttribute.Item2))
                     {
-                        Sb.AppendLine(propertyNames.Item2);
+                        Sb.AppendLine(propertyNameAndAttribute.Item2);
                     }
                 }
 
@@ -128,7 +132,16 @@ namespace RevEng.Core.Routines
                     }
                 }
 
-                Sb.AppendLine($"public {Code.Reference(propertyType)}{nullableAnnotation} {propertyNames.Item1} {{ get; set; }}{defaultAnnotation}");
+                var propertyName = propertyNameAndAttribute.Item1;
+
+                if (propertyNames.Contains(propertyName, StringComparer.Ordinal))
+                {
+                    propertyName = $"{propertyName}_Duplicate{i++}";
+                }
+
+                propertyNames.Add(propertyNameAndAttribute.Item1);
+
+                Sb.AppendLine($"public {Code.Reference(propertyType)}{nullableAnnotation} {propertyName} {{ get; set; }}{defaultAnnotation}");
             }
         }
     }
