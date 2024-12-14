@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Unicode;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using RevEng.Core.Abstractions.Metadata;
@@ -151,7 +152,7 @@ namespace RevEng.Core.Routines
             {
                 var name = GenerateUniqueName(routine, model);
 
-                return CreateIdentifier(name, name, false).Item1;
+                return CreateIdentifier(name, name, code).Item1;
             }
             else
             {
@@ -167,54 +168,12 @@ namespace RevEng.Core.Routines
 
             if (!usePascalCase)
             {
-                return CreateIdentifier(propertyName, propertyName, false);
+                return CreateIdentifier(propertyName, propertyName, code);
             }
             else
             {
-                var identifier = code.Identifier(propertyName, capitalize: true);
+                var name = GenerateIdentifier(code.Identifier(propertyName, capitalize: true));
 
-                return CreateIdentifier(GenerateIdentifier(identifier), propertyName, true);
-            }
-        }
-
-        public static Tuple<string, string> CreateIdentifier(string name, string propertyName, bool usePascalCase)
-        {
-            if (!usePascalCase)
-            {
-                var original = name;
-
-                var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
-
-                string columAttribute = null;
-
-                if (!isValid)
-                {
-                    columAttribute = $"[Column(\"{name}\")]";
-
-                    // File name contains invalid chars, remove them
-                    var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
-                    name = regex.Replace(name, string.Empty);
-
-                    if (string.IsNullOrWhiteSpace(name))
-                    {
-                        // we cannot fix it
-                        name = original;
-                    }
-                    else if (!char.IsLetter(name, 0))
-                    {
-                        name = name.Insert(0, "_");
-                    }
-                }
-
-                if (KeyWords.Contains(name))
-                {
-                    name = "@" + name;
-                }
-
-                return new Tuple<string, string>(name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase), columAttribute);
-            }
-            else
-            {
                 string columAttribute = null;
                 if (!name.Equals(propertyName, StringComparison.Ordinal))
                 {
@@ -223,6 +182,54 @@ namespace RevEng.Core.Routines
 
                 return new Tuple<string, string>(name, columAttribute);
             }
+        }
+
+        public static Tuple<string, string> CreateIdentifier(string name, string propertyName, ICSharpHelper code)
+        {
+            var original = name;
+
+            var isValid = System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(name);
+
+            string columAttribute = null;
+
+            if (!isValid)
+            {
+                columAttribute = $"[Column(\"{name}\")]";
+
+                // File name contains invalid chars, remove them
+                var regex = new Regex(@"[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Nl}\p{Mn}\p{Mc}\p{Cf}\p{Pc}\p{Lm}]", RegexOptions.None, TimeSpan.FromSeconds(5));
+                name = regex.Replace(name, string.Empty);
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    var fixedName = string.Empty;
+                    foreach (var chr in original)
+                    {
+#pragma warning disable S1643 // Strings should not be concatenated using '+' in a loop
+                        fixedName += UnicodeInfo.GetName(chr) + " ";
+#pragma warning restore S1643 // Strings should not be concatenated using '+' in a loop
+                    }
+
+                    name = GenerateIdentifier(fixedName);
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        // we cannot fix it
+                        name = original;
+                    }
+                }
+                else if (!char.IsLetter(name, 0))
+                {
+                    name = name.Insert(0, "_");
+                }
+            }
+
+            if (KeyWords.Contains(name))
+            {
+                name = "@" + name;
+            }
+
+            return new Tuple<string, string>(name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase), columAttribute);
         }
 
         private static string GenerateUniqueName(Routine routine, RoutineModel model)
