@@ -657,6 +657,18 @@ namespace EFCorePowerTools.Handlers.Wizard
         // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDiagram)
         public async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName, WizardEventArgs wizardArgs = null)
         {
+            // If this is being invoked by wizard then get fresh list of selected files for processing
+            // (developer can select/deselect other objects).
+            if (wizardArgs.PickTablesDialogComplete)
+            {
+                // If the wizard is driving then it's implementation of the interface will be used.
+                var ptd = wizardArgs.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
+                var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
+
+                options.Tables = pickTablesResult.Payload.Objects.ToList();
+                options.CustomReplacers = pickTablesResult.Payload.CustomReplacers.ToList();
+            }
+
             var classBasis = DbContextNamer.GetDatabaseName(options.ConnectionString, options.DatabaseType);
 
             if (string.IsNullOrEmpty(options.ContextClassName))

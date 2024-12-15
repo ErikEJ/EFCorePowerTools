@@ -80,6 +80,8 @@ namespace EFCorePowerTools.Wizard
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
+            ShowAndAwaitUserResponse(true);
+
             // Go to next wizard page
             if (wizardViewModel.IsPage3Initialized)
             {
@@ -132,7 +134,10 @@ namespace EFCorePowerTools.Wizard
 
         private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            NextButton_Click(sender, e);
+            ShowAndAwaitUserResponse(true);
+
+            nextButton.IsEnabled = true;
+            // NextButton_Click(sender, e);
             Messenger.Send(new ShowStatusbarMessage("Generating files"));
 
             var wea = wizardViewModel.WizardEventArgs;
