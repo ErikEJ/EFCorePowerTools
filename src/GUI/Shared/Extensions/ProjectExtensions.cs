@@ -46,6 +46,20 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
+        public static async Task<string> GetDacpacPathAsync(this Project project)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var assemblyName = await project.GetAttributeAsync("SqlTargetPath");
+
+            if (string.IsNullOrEmpty(assemblyName))
+            {
+                assemblyName = await project.GetAttributeAsync("TargetPath");
+            }
+
+            return assemblyName;
+        }
+
         public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -54,7 +68,6 @@ namespace EFCorePowerTools.Extensions
 
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
-            var assemblyNameDacpac = assemblyName + ".dacpac";
 
             var outputPath = await GetOutputPathAsync(project);
 
@@ -71,11 +84,6 @@ namespace EFCorePowerTools.Extensions
             if (File.Exists(Path.Combine(outputPath, assemblyNameDll)))
             {
                 return Path.Combine(outputPath, assemblyNameDll);
-            }
-
-            if (File.Exists(Path.Combine(outputPath, assemblyNameDacpac)))
-            {
-                return Path.Combine(outputPath, assemblyNameDacpac);
             }
 
             return null;

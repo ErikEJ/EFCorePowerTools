@@ -49,6 +49,33 @@ namespace RevEng.Common
             }
         }
 
+        public static string ToDatabaseShortName(this DatabaseType databaseType)
+        {
+            switch (databaseType)
+            {
+                case DatabaseType.Undefined:
+                    return "Undefined";
+                case DatabaseType.SQLServer:
+                    return "mssql";
+                case DatabaseType.SQLite:
+                    return "sqlite";
+                case DatabaseType.Npgsql:
+                    return "npgsql";
+                case DatabaseType.Mysql:
+                    return "mysql";
+                case DatabaseType.Oracle:
+                    return "oracle";
+                case DatabaseType.SQLServerDacpac:
+                    return "mssql";
+                case DatabaseType.Firebird:
+                    return "firebird";
+                case DatabaseType.Snowflake:
+                    return "snowflake";
+                default:
+                    return "Undefined";
+            }
+        }
+
         public static HashSet<DatabaseType> GetDabProviders()
             {
             return new HashSet<DatabaseType>
