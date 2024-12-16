@@ -71,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ModelingGenerationMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CustomNameOptionsExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ReverseEngineerUserOptionsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\CliHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ErDiagramHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DabBuilderHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DacpacAnalyzerHandler.cs" />

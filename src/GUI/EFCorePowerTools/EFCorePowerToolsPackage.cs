@@ -61,6 +61,7 @@ namespace EFCorePowerTools
         private readonly DacpacAnalyzerHandler dacpacAnalyzerHandler;
         private readonly DabBuilderHandler dabBuilderHandler;
         private readonly ErDiagramHandler erDiagramHandler;
+        private readonly CliHandler cliHandler;
         private IServiceProvider extensionServices;
 
         public EFCorePowerToolsPackage()
@@ -74,6 +75,7 @@ namespace EFCorePowerTools
             dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
             dabBuilderHandler = new DabBuilderHandler(this);
             erDiagramHandler = new ErDiagramHandler(this);
+            cliHandler = new CliHandler(this);
         }
 
         internal EnvDTE80.DTE2 Dte2()
@@ -331,8 +333,15 @@ namespace EFCorePowerTools
         private static bool IsConfigFile(string itemName)
         {
             return itemName != null
-                && itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase)
-                && itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase);
+                && ((itemName.StartsWith("efpt.", StringComparison.OrdinalIgnoreCase)
+                    && itemName.EndsWith(".config.json", StringComparison.OrdinalIgnoreCase))
+                || itemName.Equals("efcpt-config.json", StringComparison.OrdinalIgnoreCase));
+        }
+
+        private static bool IsCliConfigFile(string itemName)
+        {
+            return itemName != null
+                && itemName.Equals("efcpt-config.json", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsDabConfigFile(string itemName)
@@ -670,7 +679,14 @@ namespace EFCorePowerTools
                         return;
                     }
 
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                    if (IsCliConfigFile(item.Text))
+                    {
+                        await cliHandler.EditConfigAsync(project);
+                    }
+                    else
+                    {
+                        await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                    }
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
                 {
@@ -679,7 +695,14 @@ namespace EFCorePowerTools
                         return;
                     }
 
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+                    if (IsCliConfigFile(item.Text))
+                    {
+                        await cliHandler.RunCliAsync(project);
+                    }
+                    else
+                    {
+                        await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, true);
+                    }
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDabStart)
                 {
@@ -805,7 +828,7 @@ namespace EFCorePowerTools
 
                         if (await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync())
                         {
-                            connectionName = await project.GetOutPutAssemblyPathAsync();
+                            connectionName = await project.GetDacpacPathAsync();
                         }
                     }
 
