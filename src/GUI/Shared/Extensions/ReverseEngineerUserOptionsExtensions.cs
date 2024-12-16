@@ -35,6 +35,7 @@ namespace EFCorePowerTools.Extensions
         {
             if (!string.IsNullOrEmpty(options.UiHint)
                 && (options.UiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase)
+                    || options.UiHint.EndsWith(".csproj", System.StringComparison.OrdinalIgnoreCase)
                     || options.UiHint.EndsWith(".dacpac", System.StringComparison.OrdinalIgnoreCase)))
             {
                 options.UiHint = SqlProjHelper.SetRelativePathForSqlProj(options.UiHint, projectDirectory);

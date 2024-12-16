@@ -104,7 +104,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             databaseList = databaseList.Where(databaseList => Providers.GetDabProviders().Contains(databaseList.Value.DatabaseType))
                 .ToDictionary(databaseList => databaseList.Key, databaseList => databaseList.Value);
 
-            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
+            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
 
             var psd = package.GetView<IPickServerDatabaseDialog>();
 
@@ -173,7 +173,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await SqlProjHelper.BuildSqlProjAsync(options.Dacpac);
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
