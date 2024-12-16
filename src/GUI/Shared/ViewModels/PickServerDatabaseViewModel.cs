@@ -175,7 +175,6 @@ namespace EFCorePowerTools.ViewModels
                 !string.IsNullOrWhiteSpace(c.FilePath)
                 && !string.IsNullOrEmpty(UiHint)
                 && SelectedDatabaseConnection == null
-                && c.FilePath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
                 && c.FilePath.Equals(UiHint, StringComparison.OrdinalIgnoreCase));
 
             if (candidate != null)

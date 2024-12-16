@@ -35,6 +35,7 @@ namespace EFCorePowerTools.Helpers
             }
 
             if (uiHint.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
+                || uiHint.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase)
                 || uiHint.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
             {
                 return PathHelper.GetAbsPath(uiHint, projectDirectory);
@@ -43,7 +44,7 @@ namespace EFCorePowerTools.Helpers
             return uiHint;
         }
 
-        public static async Task<string[]> GetDacpacFilesInActiveSolutionAsync()
+        public static async Task<string[]> GetDacpacProjectsInActiveSolutionAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -59,20 +60,10 @@ namespace EFCorePowerTools.Helpers
                     continue;
                 }
 
-                if (item.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                if (await item.IsSqlDatabaseProjectAsync())
                 {
                     result.Add(item.FullPath);
                     continue;
-                }
-
-                if (await item.IsMsBuildSqlProjOrMsBuildSqlProjectAsync())
-                {
-                    var dacpacPath = await item.GetDacpacPathAsync();
-
-                    if (!string.IsNullOrEmpty(dacpacPath))
-                    {
-                        result.Add(dacpacPath);
-                    }
                 }
 
                 try
@@ -92,11 +83,12 @@ namespace EFCorePowerTools.Helpers
 
             return result
                 .Where(s => s.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                .Concat(result.Where(s => s.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase)))
                 .Concat(result.Where(s => s.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)))
                 .ToArray();
         }
 
-        public static async Task<string> BuildSqlProjAsync(string sqlprojPath)
+        public static async Task<string> BuildSqlProjectAsync(string sqlprojPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -113,7 +105,7 @@ namespace EFCorePowerTools.Helpers
 
             if (!await VS.Build.ProjectIsUpToDateAsync(project))
             {
-                var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Rebuild);
+                var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Build);
 
                 if (!ok)
                 {

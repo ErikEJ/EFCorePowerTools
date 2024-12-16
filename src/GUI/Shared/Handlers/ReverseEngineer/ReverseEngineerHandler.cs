@@ -369,12 +369,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
             }
 
-            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
-            if (dacpacList != null && dacpacList.Any() && !string.IsNullOrEmpty(options.UiHint)
-                    && options.UiHint.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
+            if (dacpacList != null && dacpacList.Any() && !string.IsNullOrEmpty(options.UiHint))
             {
                 var candidate = dacpacList
-                    .Where(m => !string.IsNullOrWhiteSpace(m) && m.EndsWith(".sqlproj"))
+                    .Where(m => !string.IsNullOrWhiteSpace(m))
                     .FirstOrDefault(m => m.Equals(options.UiHint, StringComparison.OrdinalIgnoreCase));
 
                 if (candidate != null)
@@ -390,7 +389,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
-            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
+            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
 
             var psd = package.GetView<IPickServerDatabaseDialog>();
 
@@ -474,7 +473,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await SqlProjHelper.BuildSqlProjAsync(options.Dacpac);
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);

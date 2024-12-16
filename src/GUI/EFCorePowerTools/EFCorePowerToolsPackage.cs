@@ -46,7 +46,7 @@ namespace EFCorePowerTools
         name: "Auto load based on rules",
         expression: "CSharpConfig & (SingleProject | MultipleProjects) ",
         termNames: new[] { "CSharpConfig", "SingleProject", "MultipleProjects" },
-        termValues: new[] { "ActiveProjectCapability:CSharp & CPS & !MSBuild.Sdk.SqlProj.BuildTSqlScript", VSConstants.UICONTEXT.SolutionHasSingleProject_string, VSConstants.UICONTEXT.SolutionHasMultipleProjects_string })]
+        termValues: new[] { "ActiveProjectCapability:CSharp & CPS", VSConstants.UICONTEXT.SolutionHasSingleProject_string, VSConstants.UICONTEXT.SolutionHasMultipleProjects_string })]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class EFCorePowerToolsPackage : AsyncPackage
     {
@@ -533,7 +533,7 @@ namespace EFCorePowerTools
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojCreate)
             {
-                if (!project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                if (!(await project.IsSqlDatabaseProjectAsync()))
                 {
                     return;
                 }

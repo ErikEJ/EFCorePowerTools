@@ -36,7 +36,7 @@ namespace EFCorePowerTools.Handlers
                 }
                 else
                 {
-                    dacpacPath = await SqlProjHelper.BuildSqlProjAsync(path);
+                    dacpacPath = await SqlProjHelper.BuildSqlProjectAsync(path);
                 }
 
                 await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 2, 3);

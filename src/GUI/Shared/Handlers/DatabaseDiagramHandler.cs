@@ -41,7 +41,7 @@ namespace EFCorePowerTools.Handlers
 
                 if (info.DatabaseModel.DatabaseType == DatabaseType.SQLServerDacpac)
                 {
-                    connectionString = await SqlProjHelper.BuildSqlProjAsync(info.DatabaseModel.FilePath);
+                    connectionString = await SqlProjHelper.BuildSqlProjectAsync(info.DatabaseModel.FilePath);
                 }
 
                 if (info.DatabaseModel.DataConnection != null)
@@ -77,7 +77,7 @@ namespace EFCorePowerTools.Handlers
         {
             var vsDataHelper = new VsDataHelper();
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
-            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
+            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
 
             if (!string.IsNullOrEmpty(connectionName) && databaseList != null && databaseList.Any())
             {
