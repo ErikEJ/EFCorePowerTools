@@ -111,15 +111,6 @@ namespace EFCorePowerTools.Helpers
                 return null;
             }
 
-            var assemblyPath = await project.GetDacpacPathAsync();
-
-            var searchPath = Path.GetDirectoryName(assemblyPath);
-
-            if (string.IsNullOrEmpty(searchPath))
-            {
-                searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
-            }
-
             if (!await VS.Build.ProjectIsUpToDateAsync(project))
             {
                 var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Rebuild);
@@ -130,19 +121,11 @@ namespace EFCorePowerTools.Helpers
                 }
             }
 
-            if (!Directory.Exists(searchPath))
-            {
-                return null;
-            }
+            var dacpacPath = await project.GetDacpacPathAsync();
 
-            var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories)
-                .Where(f => !f.EndsWith("\\msdb.dacpac", StringComparison.OrdinalIgnoreCase)
-                    && !f.EndsWith("\\master.dacpac", StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            if (files.Count == 1)
+            if (!string.IsNullOrEmpty(dacpacPath))
             {
-                return files[0];
+                return dacpacPath;
             }
 
             throw new InvalidOperationException("Dacpac build failed, please pick the file manually");
