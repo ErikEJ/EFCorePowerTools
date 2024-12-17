@@ -7,7 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Documents;
-using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
@@ -27,27 +26,29 @@ namespace EFCorePowerTools.Wizard
     {
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
-        private readonly Func<ModelingOptionsModel> getDialogResult;
+        private readonly Func<ModelingOptionsModel> getDialogResultPg3;
         private readonly Action<ModelingOptionsModel> applyPresets;
         private readonly Action<TemplateTypeItem, IList<TemplateTypeItem>> setTemplateTypes;
 
-        public Wiz3_EfCoreModelDialog(WizardDataViewModel wizardViewModel, IWizardView wizardView)
-            : base(wizardViewModel, wizardView)
+        public Wiz3_EfCoreModelDialog(WizardDataViewModel viewModel, IWizardView wizardView)
+            : base(viewModel, wizardView)
         {
             // telemetryAccess.TrackPageView(nameof(EfCoreModelDialog));
             this.wizardView = wizardView;
-            this.wizardViewModel = wizardViewModel;
-            getDialogResult = () => wizardViewModel.Model;
-            applyPresets = wizardViewModel.ApplyPresets;
+            this.wizardViewModel = viewModel;
+
+            getDialogResultPg3 = () => viewModel.Model;
+            applyPresets = viewModel.ApplyPresets;
             setTemplateTypes = (templateType, templateTypes) =>
             {
                 foreach (var item in templateTypes)
                 {
-                    wizardViewModel.TemplateTypeList.Add(item);
+                    viewModel.TemplateTypeList.Add(item);
                 }
 
-                wizardViewModel.SelectedTemplateType = templateType.Key;
+                viewModel.SelectedTemplateType = templateType.Key;
             };
+
             InitializeComponent();
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingOptions);
         }
@@ -59,23 +60,83 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
+                var wea = wizardViewModel.WizardEventArgs;
+                wea.ModelingOptionsDialog = this;
+
                 Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    var wea = wizardViewModel.WizardEventArgs;
-                    wea.ModelingOptionsDialog = this;
-
                     var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
                     wea.Options.InstallNuGetPackage = neededPackages
                         .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
 
                     await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
 
+                    if (wea.NewOptions)
+                    {
+                        // HACK Work around for issue with web app project system on initial run
+                        wea.UserOptions = null;
+                    }
                 });
 
                 FirstTextBox.Focus();
             }
+        }
+
+        private new void FinishButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowAndAwaitUserResponse(true);
+
+            nextButton.IsEnabled = true;
+
+            NextButton_Click(sender, e);
+
+            Messenger.Send(new ShowStatusbarMessage("Generating files"));
+
+            var wea = wizardViewModel.WizardEventArgs;
+
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                var project = wea.Project;
+                var optionsPath = wea.OptionsPath;
+                var options = wea.Options;
+                var userOptions = wea.UserOptions;
+                var namingOptionsAndPath = wea.NamingOptionsAndPath;
+                var onlyGenerate = wea.OnlyGenerate;
+                var forceEdit = wea.ForceEdit;
+
+                // await VS.StatusBar.ShowMessageAsync("Saving options...");
+
+                await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+
+                await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
+
+                var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
+                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
+                {
+                    missingProviderPackage = null;
+                }
+
+                // await VS.StatusBar.ShowMessageAsync("Generating Files...");
+
+                await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+
+                var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
+                if (File.Exists(postRunFile))
+                {
+                    // Statusbar.Status.ShowStatusProgress("Invoking Post Run File...");
+
+                    Process.Start($"\"{postRunFile}\"");
+                }
+
+                // await VS.StatusBar.ClearAsync();
+            });
+
+            Statusbar.Status.ShowStatus("Process completed");
+
+            Telemetry.TrackEvent("PowerTools.ReverseEngineer");
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
@@ -98,7 +159,7 @@ namespace EFCorePowerTools.Wizard
 
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
         {
-            return (true, getDialogResult());
+            return (true, getDialogResultPg3());
         }
 
         public IModelingOptionsDialog ApplyPresets(ModelingOptionsModel presets)
@@ -130,58 +191,6 @@ namespace EFCorePowerTools.Wizard
                 StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
             };
             process.Start();
-        }
-
-        private new void FinishButton_Click(object sender, RoutedEventArgs e)
-        {
-            ShowAndAwaitUserResponse(true);
-
-            nextButton.IsEnabled = true;
-            // NextButton_Click(sender, e);
-            Messenger.Send(new ShowStatusbarMessage("Generating files"));
-
-            var wea = wizardViewModel.WizardEventArgs;
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                var project = wea.Project;
-                var optionsPath = wea.OptionsPath;
-                var options = wea.Options;
-                var userOptions = wea.UserOptions;
-                var namingOptionsAndPath = wea.NamingOptionsAndPath;
-                var onlyGenerate = wea.OnlyGenerate;
-                var forceEdit = wea.ForceEdit;
-
-                await VS.StatusBar.ShowMessageAsync("Saving options...");
-
-                await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
-
-                await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
-
-                var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
-                var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
-                if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
-                {
-                    missingProviderPackage = null;
-                }
-
-                await VS.StatusBar.ShowMessageAsync("Generating Files...");
-
-                await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
-
-                var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
-                if (File.Exists(postRunFile))
-                {
-                    Statusbar.Status.ShowStatusProgress("Invoking Post Run File...");
-
-                    Process.Start($"\"{postRunFile}\"");
-                }
-
-                await VS.StatusBar.ClearAsync();
-
-                Statusbar.Status.ShowStatus("Process completed");
-
-                Telemetry.TrackEvent("PowerTools.ReverseEngineer");
-            });
         }
     }
 }

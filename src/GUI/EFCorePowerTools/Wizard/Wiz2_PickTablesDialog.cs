@@ -24,7 +24,7 @@ namespace EFCorePowerTools.Wizard
     {
         private readonly IWizardView wizardView;
         private readonly WizardDataViewModel wizardViewModel;
-        private readonly Func<SerializationTableModel[]> getDialogResult;
+        private readonly Func<SerializationTableModel[]> getDialogResultPg2;
         private readonly Func<Schema[]> getReplacerResult;
         private readonly Action<IEnumerable<TableModel>, IEnumerable<Schema>> addTables;
         private readonly Action<IEnumerable<SerializationTableModel>> selectTables;
@@ -34,15 +34,14 @@ namespace EFCorePowerTools.Wizard
             : base(viewModel, wizardView)
         {
             // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
-
             DataContext = viewModel;
-            getDialogResult = viewModel.GetSelectedObjects;
+            this.wizardView = wizardView;
+            this.wizardViewModel = viewModel;
+
+            getDialogResultPg2 = viewModel.GetSelectedObjects;
             getReplacerResult = viewModel.GetRenamedObjects;
             addTables = viewModel.AddObjects;
             selectTables = viewModel.SelectObjects;
-
-            this.wizardView = wizardView;
-            this.wizardViewModel = viewModel;
 
             InitializeComponent();
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingDatabaseObjects);
@@ -86,7 +85,7 @@ namespace EFCorePowerTools.Wizard
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)
         {
             wizardViewModel.WizardEventArgs.PickTablesDialogComplete = true;
-            return (true, new PickTablesDialogResult { Objects = getDialogResult(), CustomReplacers = getReplacerResult() });
+            return (true, new PickTablesDialogResult { Objects = getDialogResultPg2(), CustomReplacers = getReplacerResult() });
         }
 
         public IPickTablesDialog AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers)
@@ -111,7 +110,7 @@ namespace EFCorePowerTools.Wizard
         {
             return new PickTablesDialogResult
             {
-                Objects = getDialogResult(),
+                Objects = getDialogResultPg2(),
                 CustomReplacers = getReplacerResult(),
             };
         }

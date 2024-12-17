@@ -186,7 +186,6 @@
                         <Button IsEnabled="False" Width="50" xml:space="preserve">&lt; _Back</Button>
                         <Button Click="NextButton_Click"  Width="50" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
                         <Button Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
-                        <Button IsEnabled="False" Width="60" Margin="10,0,0,0">_Generate</Button>
                     </StackPanel>
 
                 </Grid>
@@ -219,7 +218,6 @@
                         <Button IsEnabled="False" Width="50" xml:space="preserve">&lt; _Back</Button>
                         <Button x:Name="NextButton" Click="NextButton_Click"  Width="50" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
                         <Button Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
-                        <Button IsEnabled="False" Width="60" Margin="10,0,0,0">_Generate</Button>
                     </StackPanel>
 
                 </Grid>

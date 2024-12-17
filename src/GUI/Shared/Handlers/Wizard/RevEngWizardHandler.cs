@@ -373,6 +373,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                             return;
                         }
                     }
+                    //------ WIZARD STOPS HERE ---- INVOKES METHODS DIRECTLY --------//
 
                     // #2 load tables (IPickTablesDialog)
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
@@ -387,7 +388,8 @@ namespace EFCorePowerTools.Handlers.Wizard
                     await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingOptions);
 
                     neededPackages = await project.GetNeededPackagesAsync(options);
-                    options.InstallNuGetPackage = neededPackages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+                    options.InstallNuGetPackage = neededPackages
+                        .Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
 
                     if (!await GetModelOptionsAsync(options, project.Name))
                     {
