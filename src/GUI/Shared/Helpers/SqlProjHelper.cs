@@ -137,13 +137,14 @@ namespace EFCorePowerTools.Helpers
                 if (item.Type == SolutionItemType.PhysicalFile)
                 {
                     var file = item as PhysicalFile;
-                    var fullPath = file.FullPath;
+                    var fullPath = file.Parent?.FullPath;
 
                     if (file.Extension == ".dacpac"
                         && !string.IsNullOrEmpty(fullPath)
-                        && !fullPath.StartsWith(Path.GetDirectoryName(item.FullPath), StringComparison.OrdinalIgnoreCase))
+                        && !string.IsNullOrEmpty(file.FullPath)
+                        && !fullPath.StartsWith(Path.GetDirectoryName(file.FullPath), StringComparison.OrdinalIgnoreCase))
                     {
-                        files.Add(fullPath);
+                        files.Add(file.FullPath);
                     }
                 }
             }
