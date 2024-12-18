@@ -35,11 +35,11 @@ jobs:
   
     - name: Package CLI 8
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj --no-build -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
 
     - name: Package CLI 9
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj --no-build -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
       
     - name: Core test project
       run: dotnet test src\Core\NUnitTestCore\NUnitTestCore.csproj
