@@ -137,7 +137,7 @@ namespace EFCorePowerTools.Helpers
                 if (item.Type == SolutionItemType.PhysicalFile)
                 {
                     var file = item as PhysicalFile;
-                    var fullPath = file.Parent.FullPath;
+                    var fullPath = file.Parent?.FullPath;
 
                     if (file.Extension == ".dacpac"
                         && !string.IsNullOrEmpty(fullPath)
