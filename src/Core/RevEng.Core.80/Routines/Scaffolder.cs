@@ -102,7 +102,7 @@ namespace RevEng.Core.Routines
                 }
                 else if (property.StoreType == "money" && useDecimalDataAnnotation)
                 {
-                    Sb.AppendLine($"[Column(TypeName = \"{property.StoreType}\")]");
+                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}\")]");
                 }
                 else
                 {
