@@ -100,6 +100,10 @@ namespace RevEng.Core.Routines
                 {
                     Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
                 }
+                else if (property.StoreType == "money" && useDecimalDataAnnotation)
+                {
+                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}\")]");
+                }
                 else
                 {
                     if (!string.IsNullOrEmpty(propertyNameAndAttribute.Item2))
