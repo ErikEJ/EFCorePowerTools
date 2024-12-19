@@ -659,9 +659,11 @@ namespace EFCorePowerTools.Handlers.Wizard
         // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDiagram)
         public async Task<bool> GetModelOptionsAsync(ReverseEngineerOptions options, string projectName, WizardEventArgs wizardArgs = null)
         {
+            var isInvokedByWizard = wizardArgs.PickTablesDialogComplete;
+
             // If this is being invoked by wizard then get fresh list of selected files for processing
             // (developer can select/deselect other objects).
-            if (wizardArgs.PickTablesDialogComplete)
+            if (isInvokedByWizard)
             {
                 // If the wizard is driving then it's implementation of the interface will be used.
                 var ptd = wizardArgs.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
@@ -732,49 +734,62 @@ namespace EFCorePowerTools.Handlers.Wizard
                 return false;
             }
 
-            var isHandleBarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 0
-                || modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 1;
-            options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars && isHandleBarsLanguage;
-            options.SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage;
+            if (isInvokedByWizard)
+            {
+                return true;
+            }
 
-            options.UseT4 = modelingOptionsResult.Payload.UseHandlebars && !isHandleBarsLanguage;
+            return GetModelOptionsPostDialog(options, projectName, wizardArgs, modelingOptionsResult.Payload);
+        }
 
-            if (modelingOptionsResult.Payload.UseHandlebars
-                && modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 4)
+        public bool GetModelOptionsPostDialog(
+            ReverseEngineerOptions options,
+            string projectName,
+            WizardEventArgs wizardArgs = null,
+            ModelingOptionsModel modelingOptionsResult = null)
+        {
+            var isHandleBarsLanguage = modelingOptionsResult.SelectedHandlebarsLanguage == 0
+                || modelingOptionsResult.SelectedHandlebarsLanguage == 1;
+            options.UseHandleBars = modelingOptionsResult.UseHandlebars && isHandleBarsLanguage;
+            options.SelectedHandlebarsLanguage = modelingOptionsResult.SelectedHandlebarsLanguage;
+
+            options.UseT4 = modelingOptionsResult.UseHandlebars && !isHandleBarsLanguage;
+
+            if (modelingOptionsResult.UseHandlebars
+                && modelingOptionsResult.SelectedHandlebarsLanguage == 4)
             {
                 options.UseT4 = false;
                 options.UseT4Split = true;
             }
 
-            options.InstallNuGetPackage = modelingOptionsResult.Payload.InstallNuGetPackage;
-            options.UseFluentApiOnly = !modelingOptionsResult.Payload.UseDataAnnotations;
-            options.ContextClassName = modelingOptionsResult.Payload.ModelName;
-            options.OutputPath = modelingOptionsResult.Payload.OutputPath;
-            options.OutputContextPath = modelingOptionsResult.Payload.OutputContextPath;
-            options.ContextNamespace = modelingOptionsResult.Payload.ContextNamespace;
-            options.UseSchemaFolders = modelingOptionsResult.Payload.UseSchemaFolders;
-            options.ModelNamespace = modelingOptionsResult.Payload.ModelNamespace;
-            options.ProjectRootNamespace = modelingOptionsResult.Payload.Namespace;
-            options.UseDatabaseNames = modelingOptionsResult.Payload.UseDatabaseNames;
-            options.UseInflector = modelingOptionsResult.Payload.UsePluralizer;
-            options.UseLegacyPluralizer = modelingOptionsResult.Payload.UseEf6Pluralizer;
-            options.UseSpatial = modelingOptionsResult.Payload.MapSpatialTypes;
-            options.UseHierarchyId = modelingOptionsResult.Payload.MapHierarchyId;
-            options.UseNodaTime = modelingOptionsResult.Payload.MapNodaTimeTypes;
-            options.UseDbContextSplitting = modelingOptionsResult.Payload.UseDbContextSplitting;
-            options.IncludeConnectionString = modelingOptionsResult.Payload.IncludeConnectionString;
-            options.SelectedToBeGenerated = modelingOptionsResult.Payload.SelectedToBeGenerated;
-            options.UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.Payload.UseBoolPropertiesWithoutDefaultSql;
-            options.UseNullableReferences = modelingOptionsResult.Payload.UseNullableReferences;
-            options.UseNoObjectFilter = modelingOptionsResult.Payload.UseNoObjectFilter;
-            options.UseNoNavigations = modelingOptionsResult.Payload.UseNoNavigations;
-            options.UseNoDefaultConstructor = modelingOptionsResult.Payload.UseNoDefaultConstructor;
-            options.UseManyToManyEntity = modelingOptionsResult.Payload.UseManyToManyEntity;
-            options.UseDateOnlyTimeOnly = modelingOptionsResult.Payload.UseDateOnlyTimeOnly;
-            options.UseSchemaNamespaces = modelingOptionsResult.Payload.UseSchemaNamespaces;
-            options.T4TemplatePath = modelingOptionsResult.Payload.T4TemplatePath;
+            options.InstallNuGetPackage = modelingOptionsResult.InstallNuGetPackage;
+            options.UseFluentApiOnly = !modelingOptionsResult.UseDataAnnotations;
+            options.ContextClassName = modelingOptionsResult.ModelName;
+            options.OutputPath = modelingOptionsResult.OutputPath;
+            options.OutputContextPath = modelingOptionsResult.OutputContextPath;
+            options.ContextNamespace = modelingOptionsResult.ContextNamespace;
+            options.UseSchemaFolders = modelingOptionsResult.UseSchemaFolders;
+            options.ModelNamespace = modelingOptionsResult.ModelNamespace;
+            options.ProjectRootNamespace = modelingOptionsResult.Namespace;
+            options.UseDatabaseNames = modelingOptionsResult.UseDatabaseNames;
+            options.UseInflector = modelingOptionsResult.UsePluralizer;
+            options.UseLegacyPluralizer = modelingOptionsResult.UseEf6Pluralizer;
+            options.UseSpatial = modelingOptionsResult.MapSpatialTypes;
+            options.UseHierarchyId = modelingOptionsResult.MapHierarchyId;
+            options.UseNodaTime = modelingOptionsResult.MapNodaTimeTypes;
+            options.UseDbContextSplitting = modelingOptionsResult.UseDbContextSplitting;
+            options.IncludeConnectionString = modelingOptionsResult.IncludeConnectionString;
+            options.SelectedToBeGenerated = modelingOptionsResult.SelectedToBeGenerated;
+            options.UseBoolPropertiesWithoutDefaultSql = modelingOptionsResult.UseBoolPropertiesWithoutDefaultSql;
+            options.UseNullableReferences = modelingOptionsResult.UseNullableReferences;
+            options.UseNoObjectFilter = modelingOptionsResult.UseNoObjectFilter;
+            options.UseNoNavigations = modelingOptionsResult.UseNoNavigations;
+            options.UseNoDefaultConstructor = modelingOptionsResult.UseNoDefaultConstructor;
+            options.UseManyToManyEntity = modelingOptionsResult.UseManyToManyEntity;
+            options.UseDateOnlyTimeOnly = modelingOptionsResult.UseDateOnlyTimeOnly;
+            options.UseSchemaNamespaces = modelingOptionsResult.UseSchemaNamespaces;
+            options.T4TemplatePath = modelingOptionsResult.T4TemplatePath;
 
-            await Task.Yield();
             return true;
         }
 

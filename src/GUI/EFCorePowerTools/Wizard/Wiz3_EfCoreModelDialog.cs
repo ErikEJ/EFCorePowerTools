@@ -86,7 +86,16 @@ namespace EFCorePowerTools.Wizard
 
         private new void FinishButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowAndAwaitUserResponse(true);
+            var wea = wizardViewModel.WizardEventArgs;
+            var project = wea.Project;
+            var optionsPath = wea.OptionsPath;
+            var options = wea.Options;
+            var userOptions = wea.UserOptions;
+            var namingOptionsAndPath = wea.NamingOptionsAndPath;
+            var onlyGenerate = wea.OnlyGenerate;
+            var forceEdit = wea.ForceEdit;
+
+            wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
 
             nextButton.IsEnabled = true;
 
@@ -94,17 +103,10 @@ namespace EFCorePowerTools.Wizard
 
             Messenger.Send(new ShowStatusbarMessage("Generating files"));
 
-            var wea = wizardViewModel.WizardEventArgs;
+            this.applyPresets(wizardViewModel.Model);
 
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                var project = wea.Project;
-                var optionsPath = wea.OptionsPath;
-                var options = wea.Options;
-                var userOptions = wea.UserOptions;
-                var namingOptionsAndPath = wea.NamingOptionsAndPath;
-                var onlyGenerate = wea.OnlyGenerate;
-                var forceEdit = wea.ForceEdit;
 
                 // await VS.StatusBar.ShowMessageAsync("Saving options...");
 

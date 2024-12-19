@@ -42,6 +42,12 @@ namespace EFCorePowerTools.BLL
             string projectName,
             WizardEventArgs wizardArgs = null);
 
+        bool GetModelOptionsPostDialog(
+            ReverseEngineerOptions options,
+            string projectName,
+            WizardEventArgs wizardArgs = null,
+            ModelingOptionsModel modelingOptionsResult = null);
+
         Task GenerateFilesAsync(
             Project project,
             ReverseEngineerOptions options,
