@@ -1,11 +1,13 @@
 ﻿// // Copyright (c) Microsoft. All rights reserved.
 // // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Diagnostics;
 using System.Windows;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using Microsoft.VisualStudio.Shell;
+using Markdown = Markdig.Markdown;
 
 namespace EFCorePowerTools.Wizard
 {
@@ -45,11 +47,11 @@ namespace EFCorePowerTools.Wizard
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    // await wizardViewModel.Bll.xxx(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                    var xaml = new MarkDigHelper().Parse(viewModel.WizardEventArgs.ReadmeMd);
+                    Debug.WriteLine(xaml);
                 });
             }
         }
-
 
         public void NextButton_Click(object sender, RoutedEventArgs e)
         {
@@ -57,6 +59,18 @@ namespace EFCorePowerTools.Wizard
             var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
             wizardPage2.Return += WizardPage_Return;
             NavigationService?.Navigate(wizardPage2);
+        }
+
+    }
+
+    public class MarkDigHelper
+    {
+        // https://github.com/Kryptos-FR/markdig.wpf/blob/main/src/Markdig.Xaml.ConsoleApp/Program.cs
+        public string Parse(string markdown)
+        {
+            var xaml = Markdown.Parse(markdown);
+            var html = Markdown.ToHtml(markdown);
+            return null;
         }
     }
 }

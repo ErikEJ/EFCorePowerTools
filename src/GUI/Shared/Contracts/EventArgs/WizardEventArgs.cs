@@ -42,5 +42,6 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public bool NewOptions { get; set; }
         public ReverseEngineerUserOptions UserOptions { get; set; }
         public bool ForceEdit { get; set; }
+        public string ReadmeMd { get; set; }
     }
 }

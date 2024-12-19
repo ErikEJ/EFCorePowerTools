@@ -794,7 +794,7 @@ namespace EFCorePowerTools.Handlers.Wizard
         }
 
         // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
-        public async Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+        public async Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -895,6 +895,8 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
+
+            return finalText;
         }
 
         // Note: invoked by page 3 of wizard (Wiz_EfCoreModelDialog)

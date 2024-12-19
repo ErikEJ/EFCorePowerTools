@@ -48,7 +48,7 @@ namespace EFCorePowerTools.BLL
             WizardEventArgs wizardArgs = null,
             ModelingOptionsModel modelingOptionsResult = null);
 
-        Task GenerateFilesAsync(
+        Task<string> GenerateFilesAsync(
             Project project,
             ReverseEngineerOptions options,
             string missingProviderPackage,

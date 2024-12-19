@@ -123,7 +123,7 @@ namespace EFCorePowerTools.Wizard
 
                 // await VS.StatusBar.ShowMessageAsync("Generating Files...");
 
-                await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+                wea.ReadmeMd = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
