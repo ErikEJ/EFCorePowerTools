@@ -8,7 +8,7 @@
     <Content Include="Resources\RulesTransform.xslt" />
   </ItemGroup>	
   <ItemGroup>
-    <PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.1.1" />
+    <PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.1.2" />
     <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.1.1" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.4.92" />
     <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />    
