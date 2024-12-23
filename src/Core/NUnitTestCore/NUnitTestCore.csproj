@@ -91,7 +91,7 @@
     <EmbeddedResource Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml" Link="template.dgml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="nunit" Version="4.3.0" />
+    <PackageReference Include="nunit" Version="4.3.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <!-- Updated due to vulnerable 4.3.0 package -->
