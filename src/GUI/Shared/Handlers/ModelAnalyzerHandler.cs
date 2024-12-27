@@ -52,7 +52,7 @@ namespace EFCorePowerTools.Handlers
                     return;
                 }
 
-                if (!Version.TryParse(result.Item2, out Version version))
+                if (!Version.TryParse(result.Item2, out Version _))
                 {
                     VSHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
                     if (!result.Item1)

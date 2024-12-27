@@ -154,7 +154,7 @@ namespace EFCorePowerTools.Helpers
             {
                 var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
                 return providerManager != null &&
-                    providerManager.Providers.TryGetValue(id, out IVsDataProvider provider);
+                    providerManager.Providers.TryGetValue(id, out IVsDataProvider _);
             }
             catch
             {

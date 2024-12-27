@@ -53,7 +53,7 @@ namespace UnitTests
             // Assert
         }
 
-        private string ReadAllText(string file)
+        private static string ReadAllText(string file)
         {
             return File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, file));
         }
