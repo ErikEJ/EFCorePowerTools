@@ -361,7 +361,7 @@ namespace EFCorePowerTools.Extensions
         {
             string result = null;
 
-            project.GetItemInfo(out IVsHierarchy hierarchy, out uint itemId, out _);
+            project.GetItemInfo(out IVsHierarchy hierarchy, out uint _, out _);
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
