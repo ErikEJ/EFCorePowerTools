@@ -11,7 +11,7 @@
   <PropertyGroup Label="Analyzer settings">
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest-all</AnalysisLevel>
-    <AnalysisLevelStyle>latest-8</AnalysisLevelStyle>
+    <AnalysisLevelStyle>latest-all</AnalysisLevelStyle>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
