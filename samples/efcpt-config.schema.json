@@ -275,7 +275,7 @@
         },
         "use-internal-access-modifiers-for-sprocs-and-functions": {
           "type": "boolean",
-          "title": "When generating the stored procedure classes and helpers, set them to internal instead of public.",
+          "title": "When generating the stored procedure and function classes and helpers, set them to internal instead of public.",
           "default": false
         }
       }
