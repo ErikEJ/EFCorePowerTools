@@ -171,16 +171,16 @@ namespace EFCorePowerTools.Handlers.Compare
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
-        private async Task<IEnumerable<string>> GetDbContextTypesAsync(string outputPath, Project project)
+        private static async Task<IEnumerable<string>> GetDbContextTypesAsync(string outputPath, Project project)
         {
             var processLauncher = new ProcessLauncher(project);
 
@@ -196,7 +196,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new InvalidOperationException(processResult);
             }
 
-            var modelResults = processLauncher.BuildModelResult(processResult);
+            var modelResults = ProcessLauncher.BuildModelResult(processResult);
             var result = new List<string>();
 
             foreach (var modelResult in modelResults)
@@ -207,7 +207,7 @@ namespace EFCorePowerTools.Handlers.Compare
             return result;
         }
 
-        private async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(
+        private static async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(
             string outputPath,
             Project project,
             DatabaseConnectionModel connection,
@@ -227,7 +227,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new InvalidOperationException(processResult);
             }
 
-            var modelResults = processLauncher.BuildModelResult(processResult);
+            var modelResults = ProcessLauncher.BuildModelResult(processResult);
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<List<CompareLogModel>>(modelResults[0].Item2);
         }

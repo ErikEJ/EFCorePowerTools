@@ -58,7 +58,7 @@ namespace EFCorePowerTools.Handlers
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
@@ -71,6 +71,20 @@ namespace EFCorePowerTools.Handlers
             }
 
             return schemaList;
+        }
+
+        private static async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
+        {
+            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
+            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas));
+        }
+
+        private static async Task ShowDiagramAsync(string path)
+        {
+            if (File.Exists(path))
+            {
+                await VS.Documents.OpenInPreviewTabAsync(path);
+            }
         }
 
         private async Task<(DatabaseConnectionModel DatabaseModel, SchemaInfo[] Schemas)> ChooseDataBaseConnectionAsync(string connectionName = null)
@@ -139,20 +153,6 @@ namespace EFCorePowerTools.Handlers
             }
 
             return (pickDataSourceResult.Payload.Connection, pickDataSourceResult.Payload.Schemas);
-        }
-
-        private async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, SchemaInfo[] schemas)
-        {
-            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
-            return await launcher.GetDiagramAsync(connectionString, databaseType, GetSchemas(schemas));
-        }
-
-        private async Task ShowDiagramAsync(string path)
-        {
-            if (File.Exists(path))
-            {
-                await VS.Documents.OpenInPreviewTabAsync(path);
-            }
         }
     }
 }

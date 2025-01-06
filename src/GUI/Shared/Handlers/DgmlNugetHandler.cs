@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using System.Text;
 using Community.VisualStudio.Toolkit;
@@ -9,9 +8,9 @@ using Microsoft.VisualStudio.Shell;
 
 namespace EFCorePowerTools.Handlers
 {
-    internal class DgmlNugetHandler
+    internal static class DgmlNugetHandler
     {
-        public async System.Threading.Tasks.Task InstallDgmlNugetAsync(Project project)
+        public static async System.Threading.Tasks.Task InstallDgmlNugetAsync(Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -26,16 +25,14 @@ namespace EFCorePowerTools.Handlers
             Telemetry.TrackEvent("PowerTools.InstallDgmlNuget");
         }
 
-        public void UnzipT4Templates(Project project)
+        public static void UnzipT4Templates(Project project)
         {
-            var helper = new ReverseEngineerHelper();
-
             var path = Path.GetDirectoryName(project.FullPath);
 
-            helper.DropT4Templates(path);
+            ReverseEngineerHelper.DropT4Templates(path);
         }
 
-        private string GetReadme()
+        private static string GetReadme()
         {
             var resourceName = "EFCorePowerTools.DgmlBuilder.readme.txt";
 

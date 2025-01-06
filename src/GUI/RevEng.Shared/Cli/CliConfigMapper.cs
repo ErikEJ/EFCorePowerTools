@@ -100,7 +100,7 @@ namespace RevEng.Common.Cli
                 // Not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
-                OptionsPath = null, // handlebars support, will not support it
+                OptionsPath = null, // handlebars support, will not support it (looks like it is not used!)
 
                 // Not implemented:
                 UseNoDefaultConstructor = false, // not implemented, will consider if asked for

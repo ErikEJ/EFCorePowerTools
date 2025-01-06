@@ -29,7 +29,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             vsDataHelper = new VsDataHelper();
         }
 
-        public async Task EditConfigAsync(Project project)
+        public static async Task EditConfigAsync(Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -49,12 +49,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
@@ -116,13 +116,69 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
+        }
+
+        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(DataApiBuilderOptions options)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var dbInfo = new DatabaseConnectionModel();
+
+            if (!string.IsNullOrEmpty(options.ConnectionString))
+            {
+                dbInfo.ConnectionString = options.ConnectionString;
+                dbInfo.DatabaseType = options.DatabaseType;
+            }
+
+            if (!string.IsNullOrEmpty(options.Dacpac))
+            {
+                dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
+                dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
+                options.ConnectionString = dbInfo.ConnectionString;
+                options.DatabaseType = dbInfo.DatabaseType;
+
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
+                if (string.IsNullOrEmpty(options.Dacpac))
+                {
+                    VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
+                    return null;
+                }
+
+                dbInfo.FilePath = options.Dacpac;
+            }
+
+            if (dbInfo.DatabaseType == DatabaseType.Undefined)
+            {
+                VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
+                return null;
+            }
+
+            return dbInfo;
+        }
+
+        private static void SaveOptions(Project project, string optionsPath, ReverseEngineerUserOptions userOptions)
+        {
+            if (userOptions != null && !string.IsNullOrEmpty(userOptions.UiHint))
+            {
+                File.WriteAllText(optionsPath + ".user", userOptions.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);
+            }
+        }
+
+        private static void LaunchCli(string configPath, DatabaseConnectionModel database)
+        {
+            var path = Path.GetDirectoryName(configPath);
+
+            var proc = new Process();
+            proc.StartInfo.FileName = "cmd";
+            proc.StartInfo.Arguments = $" /k \"cd /d {path} && efcpt \"{database.FilePath ?? database.ConnectionString}\" {database.DatabaseType.ToDatabaseShortName()}\"";
+            proc.Start();
         }
 
         private async Task<bool> ChooseDataBaseConnectionAsync(DataApiBuilderOptions options, ReverseEngineerUserOptions userOptions)
@@ -184,62 +240,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             return true;
-        }
-
-        private async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(DataApiBuilderOptions options)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            var dbInfo = new DatabaseConnectionModel();
-
-            if (!string.IsNullOrEmpty(options.ConnectionString))
-            {
-                dbInfo.ConnectionString = options.ConnectionString;
-                dbInfo.DatabaseType = options.DatabaseType;
-            }
-
-            if (!string.IsNullOrEmpty(options.Dacpac))
-            {
-                dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
-                options.ConnectionString = dbInfo.ConnectionString;
-                options.DatabaseType = dbInfo.DatabaseType;
-
-                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
-                if (string.IsNullOrEmpty(options.Dacpac))
-                {
-                    VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
-                    return null;
-                }
-
-                dbInfo.FilePath = options.Dacpac;
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Undefined)
-            {
-                VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
-                return null;
-            }
-
-            return dbInfo;
-        }
-
-        private void SaveOptions(Project project, string optionsPath, ReverseEngineerUserOptions userOptions)
-        {
-            if (userOptions != null && !string.IsNullOrEmpty(userOptions.UiHint))
-            {
-                File.WriteAllText(optionsPath + ".user", userOptions.Write(Path.GetDirectoryName(project.FullPath)), Encoding.UTF8);
-            }
-        }
-
-        private void LaunchCli(string configPath, DatabaseConnectionModel database)
-        {
-            var path = Path.GetDirectoryName(configPath);
-
-            var proc = new Process();
-            proc.StartInfo.FileName = "cmd";
-            proc.StartInfo.Arguments = $" /k \"cd /d {path} && efcpt \"{database.FilePath ?? database.ConnectionString}\" {database.DatabaseType.ToDatabaseShortName()}\"";
-            proc.Start();
         }
     }
 }
