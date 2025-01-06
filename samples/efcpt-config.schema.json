@@ -272,6 +272,11 @@
           "type": "boolean",
           "title": "Use stored procedure, stored procedure result and function names from the database",
           "default": true
+        },
+        "use-internal-access-modifiers-for-sprocs-and-functions": {
+          "type": "boolean",
+          "title": "When generating the stored procedure classes and helpers, set them to internal instead of public.",
+          "default": false
         }
       }
     },

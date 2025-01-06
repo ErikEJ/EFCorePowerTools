@@ -146,6 +146,7 @@ namespace RevEng.Core
                     UseAsyncCalls = options.UseAsyncCalls,
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                     UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
+                    UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);
@@ -156,7 +157,8 @@ namespace RevEng.Core
                         functionScaffoldedModel,
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
                         contextNamespace,
-                        options.UseAsyncCalls);
+                        options.UseAsyncCalls,
+                        functionOptions.UseInternalAccessModifier);
                 }
             }
 
@@ -212,6 +214,7 @@ namespace RevEng.Core
                     UseSchemaNamespaces = options.UseSchemaNamespaces,
                     UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
+                    UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);
@@ -222,7 +225,8 @@ namespace RevEng.Core
                         procedureScaffoldedModel,
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
                         contextNamespace,
-                        options.UseAsyncCalls);
+                        options.UseAsyncCalls,
+                        procedureOptions.UseInternalAccessModifier);
                 }
             }
 

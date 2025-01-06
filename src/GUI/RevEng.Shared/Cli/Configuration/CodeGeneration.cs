@@ -93,5 +93,9 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyOrder(210)]
         [JsonPropertyName("use-t4-split")]
         public bool UseT4Split { get; set; }
+
+        [JsonPropertyOrder(220)]
+        [JsonPropertyName("use-internal-access-modifiers-for-sprocs-and-functions")]
+        public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
     }
 }

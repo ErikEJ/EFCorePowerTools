@@ -25,7 +25,6 @@ namespace RevEng.Core.Routines.Procedures
         protected ProcedureScaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
         {
             ArgumentNullException.ThrowIfNull(code);
-
             Code = code;
             this.typeMapper = typeMapper;
             scaffolder = new Scaffolder(code, typeMapper);
@@ -35,7 +34,7 @@ namespace RevEng.Core.Routines.Procedures
 
         public string ProviderUsing { get; set; }
 
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls)
+        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier)
         {
             return ScaffoldHelper.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls);
         }
@@ -175,6 +174,7 @@ namespace RevEng.Core.Routines.Procedures
             ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             ArgumentNullException.ThrowIfNull(model);
+            string accessModifier = scaffolderOptions.UseInternalAccessModifier ? "internal" : "public";
 
             Sb = new IndentedStringBuilder();
 
@@ -194,7 +194,7 @@ namespace RevEng.Core.Routines.Procedures
 
             using (Sb.Indent())
             {
-                Sb.AppendLine($"public partial interface I{scaffolderOptions.ContextName}{FileNameSuffix}");
+                Sb.AppendLine($"{accessModifier} partial interface I{scaffolderOptions.ContextName}{FileNameSuffix}");
                 Sb.AppendLine("{");
                 using (Sb.Indent())
                 {
@@ -219,6 +219,8 @@ namespace RevEng.Core.Routines.Procedures
 
             ArgumentNullException.ThrowIfNull(model);
 
+            string accessModifier = scaffolderOptions.UseInternalAccessModifier ? "internal" : "public";
+
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
@@ -237,7 +239,7 @@ namespace RevEng.Core.Routines.Procedures
 
             using (Sb.Indent())
             {
-                Sb.AppendLine($"public partial class {scaffolderOptions.ContextName}");
+                Sb.AppendLine($"{accessModifier} partial class {scaffolderOptions.ContextName}");
                 Sb.AppendLine("{");
                 using (Sb.Indent())
                 {
@@ -281,7 +283,7 @@ namespace RevEng.Core.Routines.Procedures
                 Sb.AppendLine("}");
                 Sb.AppendLine();
 
-                Sb.AppendLine($"public partial class {scaffolderOptions.ContextName}{FileNameSuffix} : I{scaffolderOptions.ContextName}{FileNameSuffix}");
+                Sb.AppendLine($"{accessModifier} partial class {scaffolderOptions.ContextName}{FileNameSuffix} : I{scaffolderOptions.ContextName}{FileNameSuffix}");
                 Sb.AppendLine("{");
 
                 using (Sb.Indent())
