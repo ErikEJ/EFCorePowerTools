@@ -186,7 +186,7 @@ namespace RevEng.Common.Cli
                 UseDecimalDataAnnotationForSprocResult = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
-                
+
                 // HandleBars templates are not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
