@@ -9,8 +9,6 @@ namespace UnitTests
     [TestFixture]
     public class ReverseEngineerHelperTest
     {
-        private readonly ReverseEngineerHelper helper = new ReverseEngineerHelper();
-
         [Test]
         public void CanParseTables()
         {
@@ -24,7 +22,7 @@ namespace UnitTests
             };
 
             // Act
-            var result = helper.NormalizeTables(tables, true);
+            var result = ReverseEngineerHelper.NormalizeTables(tables, true);
 
             // Assert
             ClassicAssert.AreEqual(4, result.Count);
@@ -48,7 +46,7 @@ namespace UnitTests
             };
 
             // Act
-            var result = helper.NormalizeTables(tables, false);
+            var result = ReverseEngineerHelper.NormalizeTables(tables, false);
 
             // Assert
             ClassicAssert.AreEqual(5, result.Count);
