@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using EFCorePowerTools.Contracts.ViewModels;
-using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Locales;
 using RevEng.Common;
 
@@ -14,7 +13,7 @@ namespace EFCorePowerTools.Helpers
 {
     public class ReverseEngineerHelper
     {
-        public List<SerializationTableModel> NormalizeTables(List<SerializationTableModel> tables, bool shouldFix)
+        public static List<SerializationTableModel> NormalizeTables(List<SerializationTableModel> tables, bool shouldFix)
         {
             var result = new List<SerializationTableModel>();
             foreach (var table in tables)
@@ -31,12 +30,12 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public void DropT4Templates(string projectPath)
+        public static void DropT4Templates(string projectPath)
         {
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore8, false);
         }
 
-        public string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
+        public static string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
             string t4Version = "703";
@@ -134,6 +133,94 @@ namespace EFCorePowerTools.Helpers
             return string.Empty;
         }
 
+        public static string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
+        {
+            var errors = new StringBuilder();
+            if (revEngResult.EntityErrors.Count == 0)
+            {
+                errors.Append(ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine);
+            }
+            else
+            {
+                errors.Append(ReverseEngineerLocale.CheckOutputWindowForErrors + Environment.NewLine);
+            }
+
+            if (revEngResult.EntityWarnings.Count > 0)
+            {
+                if (revEngResult.EntityWarnings.Exists(w => w.IndexOf("Could not find type mapping", StringComparison.OrdinalIgnoreCase) >= 0))
+                {
+                    revEngResult.EntityWarnings.Add("Consider enabling more type mappings via 'Advanced' options.");
+                }
+
+                errors.Append(ReverseEngineerLocale.CheckOutputWindowForWarnings + Environment.NewLine);
+            }
+
+            if (!string.IsNullOrEmpty(missingProviderPackage))
+            {
+                errors.AppendLine();
+                errors.AppendFormat(string.Format(ReverseEngineerLocale.PackageNotFoundInProject, missingProviderPackage));
+            }
+
+            return errors.ToString();
+        }
+
+        public static string GetReadMeText(ReverseEngineerOptions options, string content)
+        {
+            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
+                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
+                .Replace("[ContextName]", options.ContextClassName);
+        }
+
+        public static string GetReadMeText(ReverseEngineerOptions options, string content, List<NuGetPackage> packages)
+        {
+            var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
+                .Select(p => $"Use{p.UseMethodName}()").ToList();
+
+            var useText = string.Empty;
+
+            if (extraPackages.Count > 0)
+            {
+                useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
+            }
+
+            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
+                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
+                .Replace("[UseList]", useText)
+                .Replace("[ContextName]", options.ContextClassName);
+        }
+
+        public static string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
+        {
+            if (revEngResult.HasIssues)
+            {
+                var warningText = new StringBuilder();
+
+                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
+                warningText.AppendLine();
+
+                foreach (var errorItem in revEngResult.EntityErrors)
+                {
+                    warningText.AppendLine(errorItem);
+                    warningText.AppendLine();
+                }
+
+                foreach (var warningItem in revEngResult.EntityWarnings)
+                {
+                    warningText.AppendLine(warningItem);
+                    warningText.AppendLine();
+                }
+
+                finalText = finalText + Environment.NewLine + warningText.ToString();
+            }
+
+            return finalText;
+        }
+
+        public static bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
+        }
+
         public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
         {
             var list = new List<CodeGenerationItem>();
@@ -186,95 +273,7 @@ namespace EFCorePowerTools.Helpers
             return list;
         }
 
-        public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
-        {
-            var errors = new StringBuilder();
-            if (revEngResult.EntityErrors.Count == 0)
-            {
-                errors.Append(ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine);
-            }
-            else
-            {
-                errors.Append(ReverseEngineerLocale.CheckOutputWindowForErrors + Environment.NewLine);
-            }
-
-            if (revEngResult.EntityWarnings.Count > 0)
-            {
-                if (revEngResult.EntityWarnings.Exists(w => w.IndexOf("Could not find type mapping", StringComparison.OrdinalIgnoreCase) >= 0))
-                {
-                    revEngResult.EntityWarnings.Add("Consider enabling more type mappings via 'Advanced' options.");
-                }
-
-                errors.Append(ReverseEngineerLocale.CheckOutputWindowForWarnings + Environment.NewLine);
-            }
-
-            if (!string.IsNullOrEmpty(missingProviderPackage))
-            {
-                errors.AppendLine();
-                errors.AppendFormat(string.Format(ReverseEngineerLocale.PackageNotFoundInProject, missingProviderPackage));
-            }
-
-            return errors.ToString();
-        }
-
-        public string GetReadMeText(ReverseEngineerOptions options, string content)
-        {
-            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
-                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
-                .Replace("[ContextName]", options.ContextClassName);
-        }
-
-        public string GetReadMeText(ReverseEngineerOptions options, string content, List<NuGetPackage> packages)
-        {
-            var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
-                .Select(p => $"Use{p.UseMethodName}()").ToList();
-
-            var useText = string.Empty;
-
-            if (extraPackages.Count > 0)
-            {
-                useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
-            }
-
-            return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
-                .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
-                .Replace("[UseList]", useText)
-                .Replace("[ContextName]", options.ContextClassName);
-        }
-
-        public string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
-        {
-            if (revEngResult.HasIssues)
-            {
-                var warningText = new StringBuilder();
-
-                warningText.AppendLine("Some issues were discovered during reverse engineering, consider addressing them:");
-                warningText.AppendLine();
-
-                foreach (var errorItem in revEngResult.EntityErrors)
-                {
-                    warningText.AppendLine(errorItem);
-                    warningText.AppendLine();
-                }
-
-                foreach (var warningItem in revEngResult.EntityWarnings)
-                {
-                    warningText.AppendLine(warningItem);
-                    warningText.AppendLine();
-                }
-
-                finalText = finalText + Environment.NewLine + warningText.ToString();
-            }
-
-            return finalText;
-        }
-
-        public bool IsDirectoryEmpty(string path)
-        {
-            return !Directory.EnumerateFileSystemEntries(path).Any();
-        }
-
-        private string ReplaceFirst(string text, string search, string replace)
+        private static string ReplaceFirst(string text, string search, string replace)
         {
             int pos = text.IndexOf(search);
             if (pos < 0)
@@ -285,7 +284,7 @@ namespace EFCorePowerTools.Helpers
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
-        private string GetProviderName(DatabaseType databaseType)
+        private static string GetProviderName(DatabaseType databaseType)
         {
             switch (databaseType)
             {

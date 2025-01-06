@@ -27,7 +27,7 @@ namespace EFCorePowerTools.Handlers
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
     }

@@ -53,12 +53,9 @@ namespace EFCorePowerTools
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
         private readonly ReverseEngineerHandler reverseEngineerHandler;
-        private readonly ModelAnalyzerHandler modelAnalyzerHandler;
         private readonly AboutHandler aboutHandler;
-        private readonly DgmlNugetHandler dgmlNugetHandler;
         private readonly CompareHandler compareHandler;
         private readonly DatabaseDiagramHandler databaseDiagramHandler;
-        private readonly DacpacAnalyzerHandler dacpacAnalyzerHandler;
         private readonly DabBuilderHandler dabBuilderHandler;
         private readonly ErDiagramHandler erDiagramHandler;
         private readonly CliHandler cliHandler;
@@ -67,24 +64,20 @@ namespace EFCorePowerTools
         public EFCorePowerToolsPackage()
         {
             reverseEngineerHandler = new ReverseEngineerHandler(this);
-            modelAnalyzerHandler = new ModelAnalyzerHandler(this);
             aboutHandler = new AboutHandler(this);
-            dgmlNugetHandler = new DgmlNugetHandler();
             compareHandler = new CompareHandler(this);
             databaseDiagramHandler = new DatabaseDiagramHandler(this);
-            dacpacAnalyzerHandler = new DacpacAnalyzerHandler(this);
             dabBuilderHandler = new DabBuilderHandler(this);
             erDiagramHandler = new ErDiagramHandler(this);
             cliHandler = new CliHandler(this);
         }
 
-        internal EnvDTE80.DTE2 Dte2()
+        internal static async Task<Version> VisualStudioVersionAsync()
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            return GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
+            return await VS.Shell.GetVsVersionAsync();
         }
 
-        internal void LogError(List<string> statusMessages, Exception exception)
+        internal static void LogError(List<string> statusMessages, Exception exception)
         {
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
@@ -115,15 +108,16 @@ namespace EFCorePowerTools
             });
         }
 
+        internal EnvDTE80.DTE2 Dte2()
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            return GetService(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
+        }
+
         internal TView GetView<TView>()
             where TView : IView
         {
             return extensionServices.GetService<TView>();
-        }
-
-        internal async Task<Version> VisualStudioVersionAsync()
-        {
-            return await VS.Shell.GetVsVersionAsync();
         }
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
@@ -351,7 +345,7 @@ namespace EFCorePowerTools
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
-        private async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
+        private static async void OnReverseEngineerConfigFileMenuBeforeQueryStatus(object sender, EventArgs e)
 #pragma warning restore VSTHRD100 // Avoid async void methods
         {
             var menuCommand = sender as OleMenuCommand;
@@ -399,6 +393,111 @@ namespace EFCorePowerTools
             }
 
             menuCommand.Visible = IsConfigFile(item.Text) && (await project.CanUseReverseEngineerAsync());
+        }
+
+#pragma warning disable VSTHRD100 // Avoid async void methods
+        private static async void OnSqlProjectMenuBeforeQueryStatus(object sender, EventArgs e)
+#pragma warning restore VSTHRD100 // Avoid async void methods
+        {
+            var menuCommand = sender as OleMenuCommand;
+
+            if (menuCommand == null)
+            {
+                return;
+            }
+
+            switch ((uint)menuCommand.CommandID.ID)
+            {
+                case PkgCmdIDList.cmdidSqlprojCreate:
+                    menuCommand.Text = ButtonLocale.cmdidSqlprojCreate;
+                    break;
+                case PkgCmdIDList.cmdidSqlprojAnalyze:
+                    menuCommand.Text = ButtonLocale.cmdidSqlprojAnalyze;
+                    break;
+                default:
+                    break;
+            }
+
+            menuCommand.Visible = false;
+
+            var project = await VS.Solutions.GetActiveProjectAsync();
+
+            if (project == null)
+            {
+                return;
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojCreate)
+            {
+                if (!(await project.IsSqlDatabaseProjectAsync()))
+                {
+                    return;
+                }
+
+                var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
+                    .Where(p => p.IsCSharpProject())
+                    .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
+
+                if (!candidateProjects.Any())
+                {
+                    return;
+                }
+
+                menuCommand.Visible = true;
+            }
+
+            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze
+                && await project.IsSqlDatabaseProjectAsync())
+            {
+                menuCommand.Visible = true;
+            }
+        }
+
+        private static void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            VSHelper.ShowMessage(msg.Content);
+        }
+
+        private static Project FindProject(SolutionItem item)
+        {
+            var parent = item.Parent;
+            while (parent != null && !(parent is Project))
+            {
+                parent = parent.Parent;
+            }
+
+            return parent as Project;
+        }
+
+        private static async Task<string> LocateProjectAssemblyPathAsync(Project project)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            try
+            {
+                if (!await VS.Build.BuildProjectAsync(project))
+                {
+                    await VS.StatusBar.ShowMessageAsync(SharedLocale.BuildFailed);
+
+                    return null;
+                }
+
+                var path = await project.GetOutPutAssemblyPathAsync();
+                if (path != null)
+                {
+                    return path;
+                }
+
+                await VS.StatusBar.ShowMessageAsync(SharedLocale.UnableToLocateProjectAssembly);
+            }
+            catch (Exception ex)
+            {
+                LogError(new List<string>(), ex);
+            }
+
+            return null;
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -496,64 +595,6 @@ namespace EFCorePowerTools
             {
                 menuCommand.Visible = await project.IsNet60OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
-            }
-        }
-
-#pragma warning disable VSTHRD100 // Avoid async void methods
-        private async void OnSqlProjectMenuBeforeQueryStatus(object sender, EventArgs e)
-#pragma warning restore VSTHRD100 // Avoid async void methods
-        {
-            var menuCommand = sender as OleMenuCommand;
-
-            if (menuCommand == null)
-            {
-                return;
-            }
-
-            switch ((uint)menuCommand.CommandID.ID)
-            {
-                case PkgCmdIDList.cmdidSqlprojCreate:
-                    menuCommand.Text = ButtonLocale.cmdidSqlprojCreate;
-                    break;
-                case PkgCmdIDList.cmdidSqlprojAnalyze:
-                    menuCommand.Text = ButtonLocale.cmdidSqlprojAnalyze;
-                    break;
-                default:
-                    break;
-            }
-
-            menuCommand.Visible = false;
-
-            var project = await VS.Solutions.GetActiveProjectAsync();
-
-            if (project == null)
-            {
-                return;
-            }
-
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojCreate)
-            {
-                if (!(await project.IsSqlDatabaseProjectAsync()))
-                {
-                    return;
-                }
-
-                var candidateProjects = (await VS.Solutions.GetAllProjectsAsync())
-                    .Where(p => p.IsCSharpProject())
-                    .Where(p => p.Children.All(c => !c.Text.Equals("efpt.config.json", StringComparison.OrdinalIgnoreCase))).ToList();
-
-                if (!candidateProjects.Any())
-                {
-                    return;
-                }
-
-                menuCommand.Visible = true;
-            }
-
-            if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze
-                && await project.IsSqlDatabaseProjectAsync())
-            {
-                menuCommand.Visible = true;
             }
         }
 
@@ -681,7 +722,7 @@ namespace EFCorePowerTools
 
                     if (IsCliConfigFile(item.Text))
                     {
-                        await cliHandler.EditConfigAsync(project);
+                        await CliHandler.EditConfigAsync(project);
                     }
                     else
                     {
@@ -711,24 +752,13 @@ namespace EFCorePowerTools
                         return;
                     }
 
-                    dabBuilderHandler.LaunchDab(item.FullPath);
+                    DabBuilderHandler.LaunchDab(item.FullPath);
                 }
             }
             catch (Exception ex)
             {
                 LogError(new List<string>(), ex);
             }
-        }
-
-        private Project FindProject(SolutionItem item)
-        {
-            var parent = item.Parent;
-            while (parent != null && !(parent is Project))
-            {
-                parent = parent.Parent;
-            }
-
-            return parent as Project;
         }
 
 #pragma warning disable VSTHRD100 // Avoid async void methods
@@ -785,23 +815,23 @@ namespace EFCorePowerTools
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
-                    await dgmlNugetHandler.InstallDgmlNugetAsync(project);
+                    await DgmlNugetHandler.InstallDgmlNugetAsync(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
                 {
-                    dgmlNugetHandler.UnzipT4Templates(project);
+                    DgmlNugetHandler.UnzipT4Templates(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {
-                    await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
+                    await ModelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Dgml);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild)
                 {
-                    await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Ddl);
+                    await ModelAnalyzerHandler.GenerateAsync(path, project, GenerationType.Ddl);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDebugViewBuild)
                 {
-                    await modelAnalyzerHandler.GenerateAsync(path, project, GenerationType.DebugView);
+                    await ModelAnalyzerHandler.GenerateAsync(path, project, GenerationType.DebugView);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidAbout)
                 {
@@ -889,7 +919,7 @@ namespace EFCorePowerTools
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlprojAnalyze)
                 {
-                    await dacpacAnalyzerHandler.GenerateAsync(sqlproject.FullPath, isConnectionString: false);
+                    await DacpacAnalyzerHandler.GenerateAsync(sqlproject.FullPath, isConnectionString: false);
                 }
             }
             catch (Exception ex)
@@ -970,7 +1000,7 @@ namespace EFCorePowerTools
 
                             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidServerExplorerAnalyze)
                             {
-                                await dacpacAnalyzerHandler.GenerateAsync(DataProtection.DecryptString(connection.EncryptedConnectionString), isConnectionString: true);
+                                await DacpacAnalyzerHandler.GenerateAsync(DataProtection.DecryptString(connection.EncryptedConnectionString), isConnectionString: true);
                                 return;
                             }
                         }
@@ -981,35 +1011,6 @@ namespace EFCorePowerTools
             {
                 LogError(new List<string>(), ex);
             }
-        }
-
-        private async Task<string> LocateProjectAssemblyPathAsync(Project project)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            try
-            {
-                if (!await VS.Build.BuildProjectAsync(project))
-                {
-                    await VS.StatusBar.ShowMessageAsync(SharedLocale.BuildFailed);
-
-                    return null;
-                }
-
-                var path = await project.GetOutPutAssemblyPathAsync();
-                if (path != null)
-                {
-                    return path;
-                }
-
-                await VS.StatusBar.ShowMessageAsync(SharedLocale.UnableToLocateProjectAssembly);
-            }
-            catch (Exception ex)
-            {
-                LogError(new List<string>(), ex);
-            }
-
-            return null;
         }
 
         private IServiceProvider CreateServiceProvider()
@@ -1067,13 +1068,6 @@ namespace EFCorePowerTools
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
 
             return services.BuildServiceProvider();
-        }
-
-        private void HandleShowMessageBoxMessage(ShowMessageBoxMessage msg)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            VSHelper.ShowMessage(msg.Content);
         }
     }
 }

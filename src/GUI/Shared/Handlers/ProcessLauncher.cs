@@ -25,6 +25,41 @@ namespace EFCorePowerTools.Handlers
             this.project = project;
         }
 
+        public static List<Tuple<string, string>> BuildModelResult(string modelInfo)
+        {
+            var result = new List<Tuple<string, string>>();
+
+            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var context in contexts)
+            {
+                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.IndexOf("DebugView:", StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    continue;
+                }
+
+                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
+                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
+            }
+
+            return result;
+        }
+
         public static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
@@ -71,41 +106,6 @@ namespace EFCorePowerTools.Handlers
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
             return GetOutputInternalAsync(outputPath, generationType, contextName, null);
-        }
-
-        public List<Tuple<string, string>> BuildModelResult(string modelInfo)
-        {
-            var result = new List<Tuple<string, string>>();
-
-            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var context in contexts)
-            {
-                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (context.IndexOf("DebugView:", StringComparison.OrdinalIgnoreCase) < 0)
-                {
-                    continue;
-                }
-
-                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
-            }
-
-            return result;
         }
 
         private static string FixExtension(string startupOutputPath)

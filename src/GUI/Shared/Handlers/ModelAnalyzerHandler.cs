@@ -13,16 +13,9 @@ using NuGet.Versioning;
 
 namespace EFCorePowerTools.Handlers
 {
-    internal class ModelAnalyzerHandler
+    internal static class ModelAnalyzerHandler
     {
-        private readonly EFCorePowerToolsPackage package;
-
-        public ModelAnalyzerHandler(EFCorePowerToolsPackage package)
-        {
-            this.package = package;
-        }
-
-        public async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
+        public static async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -83,7 +76,7 @@ namespace EFCorePowerTools.Handlers
                     throw new InvalidOperationException(processResult);
                 }
 
-                var modelResult = processLauncher.BuildModelResult(processResult);
+                var modelResult = ProcessLauncher.BuildModelResult(processResult);
 
                 switch (generationType)
                 {
@@ -115,11 +108,11 @@ namespace EFCorePowerTools.Handlers
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
-        private async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
+        private static async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
         {
             string target = null;
 
@@ -149,7 +142,7 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private string GetTemplate()
+        private static string GetTemplate()
         {
             var resourceName = "EFCorePowerTools.DgmlBuilder.template.dgml";
 
