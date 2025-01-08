@@ -96,6 +96,7 @@ namespace RevEng.Common.Cli
                 UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
                 UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
+                UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
 
                 // Not supported:
                 UseHandleBars = false,
@@ -184,6 +185,7 @@ namespace RevEng.Common.Cli
                 ProjectRootNamespace = names.RootNamespace,
                 UseDecimalDataAnnotationForSprocResult = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
+                UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
 
                 // HandleBars templates are not supported:
                 UseHandleBars = false,

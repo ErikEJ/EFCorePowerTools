@@ -62,5 +62,6 @@ namespace RevEng.Common
         public bool UseDateOnlyTimeOnly { get; set; }
         public bool UsePrefixNavigationNaming { get; set; }
         public bool UseDatabaseNamesForRoutines { get; set; }
+        public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
     }
 }

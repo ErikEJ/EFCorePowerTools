@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace #NAMESPACE#
 {
-    public static class DbContextExtensions
+    #ACCESSMODIFIER# static class DbContextExtensions
     {
         public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default)
            where T : class
@@ -35,7 +35,7 @@ namespace #NAMESPACE#
         }
     }
 
-    public class OutputParameter<TValue>
+    #ACCESSMODIFIER# class OutputParameter<TValue>
     {
         private bool _valueSet = false;
 

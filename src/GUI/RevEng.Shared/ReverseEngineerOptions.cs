@@ -64,5 +64,6 @@ namespace RevEng.Common
         public bool UsePrefixNavigationNaming { get; set; }
         public bool UseAsyncStoredProcedureCalls { get; set; } = true;
         public bool UseDatabaseNamesForRoutines { get; set; } = true;
+        public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
     }
 }

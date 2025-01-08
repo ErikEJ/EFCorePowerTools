@@ -293,6 +293,12 @@ namespace RevEng.Core
                 warnings.Add("Both UseDbContextSplitting (preview) and UseT4Split are set to true. Only one of these should be used, UseT4Split will be used.");
                 options.UseDbContextSplitting = false;
             }
+
+            if (options.UseInternalAccessModifiersForSprocsAndFunctions && !(options.UseT4 || options.UseT4Split))
+            {
+                warnings.Add("UseInternalAccessModifiersForSprocsAndFunctions is set to true, but UseT4 or UseT4Split are not true.  This will result in conflicting access modifiers for the partial DBContext class.  This option is intended for when the T4 templates have been used and are setting the DBContext class to internal rather than public.  UseInternalAccessModifiersForSprocsAndFunctions will be reset to false to ensure a valid DBContext is generated.");
+                options.UseInternalAccessModifiersForSprocsAndFunctions = false;
+            }
         }
 
         private static SavedModelFiles CreateCleanupPaths(SavedModelFiles procedurePaths, SavedModelFiles functionPaths, SavedModelFiles filePaths)

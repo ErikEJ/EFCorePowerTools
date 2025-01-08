@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Design;
@@ -26,6 +25,8 @@ namespace RevEng.Core.Routines.Functions
             ArgumentNullException.ThrowIfNull(scaffolderOptions);
 
             ArgumentNullException.ThrowIfNull(model);
+
+            string accessModifier = scaffolderOptions.UseInternalAccessModifier ? "internal" : "public";
 
             Sb = new IndentedStringBuilder();
 
@@ -53,7 +54,7 @@ namespace RevEng.Core.Routines.Functions
 
             using (Sb.Indent())
             {
-                Sb.AppendLine($"public partial class {scaffolderOptions.ContextName}");
+                Sb.AppendLine($"{accessModifier} partial class {scaffolderOptions.ContextName}");
 
                 Sb.AppendLine("{");
 
