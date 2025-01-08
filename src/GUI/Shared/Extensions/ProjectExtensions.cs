@@ -254,8 +254,8 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
-            return await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync()
-                || project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
+            return project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
+                || await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync();
         }
 
         public static async Task<bool> IsMsBuildSqlProjOrMsBuildSqlProjectAsync(this Project project)
