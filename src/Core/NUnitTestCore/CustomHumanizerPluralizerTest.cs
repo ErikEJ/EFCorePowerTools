@@ -1,6 +1,5 @@
 ﻿using Humanizer.Inflections;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using RevEng.Core;
 
 namespace UnitTests
@@ -42,7 +41,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Pluralize(word);
 
-            ClassicAssert.True(word == result);
+            Assert.True(word == result);
         }
 
         private static void Singularize(string word)
@@ -51,7 +50,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Singularize(word);
 
-            ClassicAssert.True(word == result);
+            Assert.True(word == result);
         }
     }
 }

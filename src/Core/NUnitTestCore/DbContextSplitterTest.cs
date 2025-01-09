@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using RevEng.Core;
 
 namespace UnitTests
@@ -12,7 +11,7 @@ namespace UnitTests
         {
             var result = DbContextSplitter.Split("C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground\\Models\\NorthwindContext.cs", "Test", false, "NorthwindContext");
 
-            ClassicAssert.NotNull(result);
+            Assert.NotNull(result);
         }
     }
 }
