@@ -5,7 +5,6 @@ using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using RevEng.Core.Abstractions;
 
 namespace UnitTests
@@ -35,7 +34,7 @@ namespace UnitTests
             var dbModel = factory.Create(dacpac, options);
 
             // Assert
-            ClassicAssert.AreEqual(11, dbModel.Tables.Count());
+            Assert.AreEqual(11, dbModel.Tables.Count());
         }
 
         [Test]
@@ -50,10 +49,10 @@ namespace UnitTests
             var dbModel = factory.Create(dacpac, options);
 
             // Assert
-            ClassicAssert.AreEqual(3, dbModel.Tables.Count());
-            ClassicAssert.AreEqual("Album", dbModel.Tables[0].Name);
-            ClassicAssert.AreEqual(1, dbModel.Tables[0].ForeignKeys.Count);
-            ClassicAssert.AreEqual(3, dbModel.Tables[0].Columns.Count);
+            Assert.AreEqual(3, dbModel.Tables.Count());
+            Assert.AreEqual("Album", dbModel.Tables[0].Name);
+            Assert.AreEqual(1, dbModel.Tables[0].ForeignKeys.Count);
+            Assert.AreEqual(3, dbModel.Tables[0].Columns.Count);
         }
 
         [Test]
@@ -68,14 +67,14 @@ namespace UnitTests
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            ClassicAssert.AreEqual(2, dbModel.Tables.Count());
+            Assert.AreEqual(2, dbModel.Tables.Count());
 
-            ClassicAssert.AreEqual("FilteredIndexTable", dbModel.Tables[1].Name);
-            ClassicAssert.AreEqual(0, dbModel.Tables[1].ForeignKeys.Count);
-            ClassicAssert.AreEqual(2, dbModel.Tables[1].Columns.Count);
+            Assert.AreEqual("FilteredIndexTable", dbModel.Tables[1].Name);
+            Assert.AreEqual(0, dbModel.Tables[1].ForeignKeys.Count);
+            Assert.AreEqual(2, dbModel.Tables[1].Columns.Count);
 
-            ClassicAssert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            ClassicAssert.AreEqual(5, dbModel.Tables[0].Columns.Count);
+            Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
+            Assert.AreEqual(5, dbModel.Tables[0].Columns.Count);
         }
 
         [Test]
@@ -90,10 +89,10 @@ namespace UnitTests
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual(1, dbModel.Tables.Count());
 
-            ClassicAssert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            ClassicAssert.AreEqual(5, dbModel.Tables[0].Columns.Count);
+            Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
+            Assert.AreEqual(5, dbModel.Tables[0].Columns.Count);
         }
 
         [Test]
@@ -108,12 +107,12 @@ namespace UnitTests
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual(1, dbModel.Tables.Count());
 
-            ClassicAssert.AreEqual("TypeAlias", dbModel.Tables[0].Name);
-            ClassicAssert.AreEqual(2, dbModel.Tables[0].Columns.Count);
+            Assert.AreEqual("TypeAlias", dbModel.Tables[0].Name);
+            Assert.AreEqual(2, dbModel.Tables[0].Columns.Count);
 
-            ClassicAssert.AreEqual("nvarchar(max)", dbModel.Tables[0].Columns[1].StoreType);
+            Assert.AreEqual("nvarchar(max)", dbModel.Tables[0].Columns[1].StoreType);
         }
 
         [Test]
@@ -128,8 +127,8 @@ namespace UnitTests
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count());
-            ClassicAssert.AreEqual(1, dbModel.Tables
+            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual(1, dbModel.Tables
                 .Count(t => t.Columns.Any(c => c.DefaultValueSql != null)));
         }
 
@@ -144,7 +143,7 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(91, dbModel.Tables.Count());
+            Assert.AreEqual(91, dbModel.Tables.Count());
         }
 
         [Test]
@@ -158,7 +157,7 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("Issue208.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual(1, dbModel.Tables.Count());
         }
 
         [Test]
@@ -172,7 +171,7 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("Issue210.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(2, dbModel.Tables.Count());
+            Assert.AreEqual(2, dbModel.Tables.Count());
         }
 
         [Test]
@@ -185,8 +184,8 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count());
-            ClassicAssert.AreEqual("mat", dbModel.Tables.Single().Schema);
+            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.AreEqual("mat", dbModel.Tables.Single().Schema);
         }
 
         [Test]
@@ -199,9 +198,9 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(2, dbModel.Tables.Count());
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+            Assert.AreEqual(2, dbModel.Tables.Count());
+            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
+            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
         }
 
         [Test]
@@ -215,8 +214,8 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("Temporal.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Tables.Count());
-            ClassicAssert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal));
+            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal));
         }
 
         [Test]
@@ -230,10 +229,10 @@ namespace UnitTests
             var dbModel = factory.Create(TestPath("TvpParams.dacpac"), options);
 
             // Assert
-            ClassicAssert.AreEqual(1, dbModel.Routines.Count);
-            ClassicAssert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
-            ClassicAssert.AreEqual("[Constant].[NumberIDList]", dbModel.Routines[0].Parameters[0].TypeName);
-            ClassicAssert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
+            Assert.AreEqual(1, dbModel.Routines.Count);
+            Assert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
+            Assert.AreEqual("[Constant].[NumberIDList]", dbModel.Routines[0].Parameters[0].TypeName);
+            Assert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
         }
 
         private string TestPath(string file)
