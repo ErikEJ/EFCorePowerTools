@@ -30,7 +30,7 @@
     <!--<PackageReference Include="EFCore.Snowflake" Version="8.0.8" />-->
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="9.0.0-beta1" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="9.1.0" />
-    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="12.0.0-alpha1" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="12.0.0-beta1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
@@ -43,7 +43,7 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.60" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0-preview.2.efcore.9.0.0" />
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="9.0.0" />
-    <PackageReference Include="System.CodeDom" Version="8.0.0" />
+    <PackageReference Include="System.CodeDom" Version="9.0.0" />
     <PackageReference Include="UnicodeInformation" Version="2.7.1" />
   </ItemGroup>
 
