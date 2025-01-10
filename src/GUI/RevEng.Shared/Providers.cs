@@ -460,6 +460,10 @@ namespace RevEng.Common
                         pkgVersion = "11.0.0";
                         break;
 
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "12.0.0-beta1";
+                        break;
+
                     default: throw new NotImplementedException();
                 }
 
