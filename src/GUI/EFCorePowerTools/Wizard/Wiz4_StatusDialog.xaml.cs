@@ -1,13 +1,10 @@
 ﻿// // Copyright (c) Microsoft. All rights reserved.
 // // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Diagnostics;
 using System.Windows;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
-using Microsoft.VisualStudio.Shell;
-using Markdown = Markdig.Markdown;
 
 namespace EFCorePowerTools.Wizard
 {
@@ -31,7 +28,6 @@ namespace EFCorePowerTools.Wizard
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)
         {
             WindowTitle = "Status";
-            Statusbar.Status.ShowStatus("ready");
         }
 
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
@@ -41,15 +37,9 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
-                viewModel.IsPage4Initialized = true;
+                // viewModel.IsPage4Initialized = true;
 
                 Messenger.Send(new ShowStatusbarMessage("Loading status"));
-
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
-                {
-                    var xaml = new MarkDigHelper().Parse(viewModel.WizardEventArgs.ReadmeMd);
-                    Debug.WriteLine(xaml);
-                });
             }
         }
 
@@ -61,16 +51,5 @@ namespace EFCorePowerTools.Wizard
             NavigationService?.Navigate(wizardPage2);
         }
 
-    }
-
-    public class MarkDigHelper
-    {
-        // https://github.com/Kryptos-FR/markdig.wpf/blob/main/src/Markdig.Xaml.ConsoleApp/Program.cs
-        public string Parse(string markdown)
-        {
-            var xaml = Markdown.Parse(markdown);
-            var html = Markdown.ToHtml(markdown);
-            return null;
-        }
     }
 }

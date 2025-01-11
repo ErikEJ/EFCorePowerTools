@@ -322,6 +322,50 @@
                     </Grid>
                 </HierarchicalDataTemplate>
 
+                <HierarchicalDataTemplate DataType="{x:Type viewModels:ColumnChildrenViewModel}" ItemsSource="{Binding Path=Children}">
+                    <HierarchicalDataTemplate.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="Padding" Value="1"></Setter>
+                        </Style>
+                    </HierarchicalDataTemplate.ItemContainerStyle>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Unchecked="CheckBox_Unchecked" Style="{StaticResource TableSelectionCheckBoxStyle}"
+                                  IsChecked="{Binding IsSelected, Mode=OneWay}" 
+                                  Grid.Column="0">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="true" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding SetSelectedCommand}" CommandParameter="false" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </CheckBox>
+                        <Image Style="{Binding ObjectTypeIcon, Converter={StaticResource ObjectTypeIconToImageStyleConverter}}"
+                               Grid.Column="1" />
+                        <TextBlock Text="{Binding DisplayName}" 
+                                   Style="{StaticResource ResourceKey=TreeTextBlockStyle}" 
+                                   Grid.Column="2" />
+                        <TextBox Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged}" 
+                                 Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 Style="{StaticResource RenameTextBoxStyle}"
+                                 ext:FocusExtensions.IsFocused="{Binding IsEditing}"
+                                 KeyUp="TreeTextRenamer_KeyUp"
+                                 Grid.Column="2">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding ConfirmEditCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Grid>
+                </HierarchicalDataTemplate>
+
                 <DataTemplate DataType="{x:Type viewModels:ColumnInformationViewModel}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -382,9 +426,10 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,12,10">
-            <Button Name="backButton" Click="BackButton_Click" Width="50" xml:space="preserve">&lt; _Back</Button>
-            <Button Name="nextButton" Click="NextButton_Click" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
-            <Button Name="cancelButton" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
+            <Button Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
+            <Button Name="nextButton" Click="NextButton_Click" Width="70" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
+            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False" Command="{Binding AdvancedCommand}" Width="70" Margin="10,0,0,0" />
+            <Button Name="cancelButton" Click="CancelButton_Click" Width="70" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="4" x:Name="Statusbar"/>
     </Grid>

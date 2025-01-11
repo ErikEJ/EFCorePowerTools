@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\WizardEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Models\ProjectModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IColumnChildrenViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\TemplateTypeItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\CodeGenerationItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickServerDatabaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickTablesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SchemaInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ColumnChildrenViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TableInformationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WizardDataViewModel.cs" />
   </ItemGroup>

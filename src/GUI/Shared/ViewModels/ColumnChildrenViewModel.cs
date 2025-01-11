@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows.Input;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Locales;
@@ -7,31 +9,47 @@ using EFCorePowerTools.Messages;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using RevEng.Common;
 
 namespace EFCorePowerTools.ViewModels
 {
-    public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewModel
+    public class ColumnChildrenViewModel : ViewModelBase, IColumnChildrenViewModel
     {
         private readonly IMessenger messenger;
 
         private string name;
         private string newName;
+        private string schema;
+        private ObjectType objectType;
 
-        private bool isPrimaryKey;
-        private bool isForeignKey;
-
-        private bool isTableSelected;
-        private bool isSelected;
+        private bool isSelected = false;
         private bool isEditing;
 
-        public ColumnInformationViewModel(IMessenger messenger)
+        private bool isVisible = true;
+
+        public ColumnChildrenViewModel(IMessenger messenger)
         {
             this.messenger = messenger;
             StartEditCommand = new RelayCommand(StartEdit_Execute);
             ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
             CancelEditCommand = new RelayCommand(CancelEdit_Execute);
             SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
-            Children.CollectionChanged += Children_CollectionChanged;
+            Children.CollectionChanged += Columns_CollectionChanged;
+        }
+
+        public string Schema
+        {
+            get => schema;
+            set
+            {
+                if (Equals(value, schema))
+                {
+                    return;
+                }
+
+                schema = value;
+                RaisePropertyChanged();
+            }
         }
 
         public string Name
@@ -46,6 +64,7 @@ namespace EFCorePowerTools.ViewModels
 
                 name = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(DisplayName));
             }
         }
 
@@ -73,42 +92,45 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public bool IsPrimaryKey
+        public string ModelDisplayName { get; set; }
+
+        public bool HasPrimaryKey
         {
-            get => isPrimaryKey;
+            get => Columns.Any(c => c.IsPrimaryKey);
+        }
+
+        public ObjectType ObjectType
+        {
+            get => objectType;
             set
             {
-                if (Equals(value, isPrimaryKey))
+                if (Equals(value, objectType))
                 {
                     return;
                 }
 
-                isPrimaryKey = value;
+                objectType = value;
                 RaisePropertyChanged();
-                RaisePropertyChanged(nameof(IsEnabled));
+                RaisePropertyChanged(nameof(ObjectTypeIcon));
             }
         }
 
-        public bool IsForeignKey
+        public ObjectTypeIcon ObjectTypeIcon
         {
-            get => isForeignKey;
-            set
+            get
             {
-                if (Equals(value, isForeignKey))
+                if (ObjectType == ObjectType.Table && !HasPrimaryKey)
                 {
-                    return;
+                    return ObjectTypeIcon.TableWithoutKey;
                 }
-
-                isForeignKey = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(IsEnabled));
+                else
+                {
+                    return (ObjectTypeIcon)Enum.Parse(typeof(ObjectTypeIcon), ObjectType.ToString());
+                }
             }
         }
 
-        public bool IsColumn
-        {
-            get => !isPrimaryKey;
-        }
+        public ObservableCollection<IColumnInformationViewModel> Columns { get; } = new ObservableCollection<IColumnInformationViewModel>();
 
         public bool? IsSelected
         {
@@ -121,6 +143,26 @@ namespace EFCorePowerTools.ViewModels
                 }
 
                 isSelected = value.Value;
+                RaisePropertyChanged();
+                foreach (var column in Columns)
+                {
+                    column.IsTableSelected = isSelected;
+                    column.SetSelected(isSelected);
+                }
+            }
+        }
+
+        public bool IsVisible
+        {
+            get => isVisible;
+            set
+            {
+                if (Equals(value, isVisible))
+                {
+                    return;
+                }
+
+                isVisible = value;
                 RaisePropertyChanged();
             }
         }
@@ -140,24 +182,6 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
-        public bool IsTableSelected
-        {
-            get => isTableSelected;
-            set
-            {
-                if (Equals(value, isTableSelected))
-                {
-                    return;
-                }
-
-                isTableSelected = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(IsEnabled));
-            }
-        }
-
-        public bool IsEnabled { get => IsTableSelected && !IsPrimaryKey && !IsForeignKey; }
-
         public ICommand StartEditCommand { get; }
 
         public ICommand ConfirmEditCommand { get; }
@@ -166,12 +190,7 @@ namespace EFCorePowerTools.ViewModels
 
         public ICommand SetSelectedCommand { get; }
 
-        public ObservableCollection<IColumnChildrenViewModel> Children { get; set; } = new ObservableCollection<IColumnChildrenViewModel>();
-
-        public void SetSelected(bool value)
-        {
-            IsSelected = value;
-        }
+        public ObservableCollection<IObjectTreeEditableViewModel> Children { get; set; } = new ObservableCollection<IObjectTreeEditableViewModel>();
 
         private void StartEdit_Execute()
         {
@@ -199,20 +218,17 @@ namespace EFCorePowerTools.ViewModels
             IsEditing = false;
         }
 
-        private void SetSelected_Execute(bool value)
-        {
-            if (IsEnabled)
-            {
-                IsSelected = value;
-            }
-        }
-
-        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             foreach (var item in e.NewItems)
             {
-                RaisePropertyChanged(nameof(Name));
+                RaisePropertyChanged(nameof(HasPrimaryKey));
             }
+        }
+
+        private void SetSelected_Execute(bool value)
+        {
+            IsSelected = value;
         }
     }
 }

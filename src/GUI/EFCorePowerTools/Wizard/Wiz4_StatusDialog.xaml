@@ -30,17 +30,18 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0">
+        <WebBrowser x:Name="webBrowser" Grid.Row="0">
             
-        </TextBlock>
-        <Button Grid.Row="1" Name="finishButton" Click="FinishButton_Click" 
+        </WebBrowser>
+        <!--<Button Grid.Row="1" Name="finishButton" Click="FinishButton_Click" 
                 HorizontalAlignment="Right"
                 Width="50" 
-                Margin="15,0">_Finish</Button>
+                Margin="15,0">_Finish</Button>-->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,17,5">
-            <Button Name="backButton" Click="BackButton_Click" Width="50" xml:space="preserve">&lt; _Back</Button>
-            <Button Name="nextButton" IsEnabled="False" Width="50" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
-            <Button Name="cancelButton" IsEnabled="False" Click="CancelButton_Click" Width="50" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
+            <Button Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; _Back</Button>
+            <Button Name="nextButton" IsEnabled="false"  Width="70" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
+            <Button Content="Finish" Click="FinishButton_Click" Width="70" Margin="10,0,0,0" />
+            <Button Name="cancelButton" IsEnabled="False" Click="CancelButton_Click" Width="70" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="3" x:Name="Statusbar"/>
     </Grid>

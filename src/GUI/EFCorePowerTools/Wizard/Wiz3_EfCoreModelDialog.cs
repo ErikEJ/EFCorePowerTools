@@ -99,7 +99,7 @@ namespace EFCorePowerTools.Wizard
 
             nextButton.IsEnabled = true;
 
-            NextButton_Click(sender, e);
+            // NextButton_Click(sender, e);
 
             Messenger.Send(new ShowStatusbarMessage("Generating files"));
 

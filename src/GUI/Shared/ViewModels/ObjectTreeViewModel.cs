@@ -16,16 +16,21 @@ namespace EFCorePowerTools.ViewModels
         private readonly Func<ISchemaInformationViewModel> schemaInformationViewModelFactory;
         private readonly Func<ITableInformationViewModel> tableInformationViewModelFactory;
         private readonly Func<IColumnInformationViewModel> columnInformationViewModelFactory;
+        private readonly Func<IColumnChildrenViewModel> columnChildrenViewModelFactory;
         private IEnumerable<Schema> allSchemas = new List<Schema>();
 
         public ObjectTreeViewModel(
             Func<ISchemaInformationViewModel> schemaInformationViewModelFactory,
             Func<ITableInformationViewModel> tableInformationViewModelFactory,
-            Func<IColumnInformationViewModel> columnInformationViewModelFactory)
+            Func<IColumnInformationViewModel> columnInformationViewModelFactory,
+            Func<IColumnChildrenViewModel> columnChildrenViewModelFactory
+            )
         {
             this.schemaInformationViewModelFactory = schemaInformationViewModelFactory ?? throw new ArgumentNullException(nameof(schemaInformationViewModelFactory));
             this.tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
             this.columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
+            this.columnChildrenViewModelFactory = columnChildrenViewModelFactory ?? throw new ArgumentNullException(nameof(columnChildrenViewModelFactory));
+
         }
 
         public event EventHandler ObjectSelectionChanged;
@@ -231,6 +236,15 @@ namespace EFCorePowerTools.ViewModels
                                 cvm.NewName = columnReplacers?.Find(c => c.Name != null && c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase))?.NewName ?? column.Name;
                                 cvm.IsPrimaryKey = column.IsPrimaryKey;
                                 cvm.IsForeignKey = column.IsForeignKey;
+
+                                if (cvm.IsForeignKey)
+                                {
+                                    var child = columnChildrenViewModelFactory();
+                                    child.Name = "Test";
+                                    child.NewName = "Test1";
+                                    cvm.Children.Add(child);
+                                }
+
                                 tvm.Columns.Add(cvm);
                             }
                         }

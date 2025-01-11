@@ -823,6 +823,7 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 
+            var readmePath = string.Empty;
             var finalText = string.Empty;
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
                 && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
@@ -839,7 +840,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                     finalText = reverseEngineerHelper.GetReadMeText(options, template);
                 }
 
-                var readmePath = Path.Combine(Path.GetTempPath(), readmeName);
+                readmePath = Path.Combine(Path.GetTempPath(), readmeName);
 
                 finalText = reverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
 
