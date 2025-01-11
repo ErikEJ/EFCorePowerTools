@@ -702,5 +702,19 @@ namespace EFCorePowerTools.ViewModels
 
         public bool IsPage4Initialized { get; set; }
         public RelayCommand Page4LoadedCommand { get; set; }
+
+        private string _generateStatus = string.Empty;
+        public string GenerateStatus
+        {
+            get
+            {
+                return _generateStatus;
+            }
+            set
+            {
+                _generateStatus = value;
+                this.RaisePropertyChanged("GenerateStatus");
+            }
+        }
     }
 }

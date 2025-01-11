@@ -53,6 +53,7 @@ namespace EFCorePowerTools.BLL
             ReverseEngineerOptions options,
             string missingProviderPackage,
             bool onlyGenerate,
-            List<NuGetPackage> packages);
+            List<NuGetPackage> packages,
+            bool isCalledByWizard = false);
     }
 }

@@ -96,7 +96,7 @@ namespace EFCorePowerTools.Wizard
             var forceEdit = wea.ForceEdit;
 
             wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
-
+            cancelButton.IsEnabled = false; // Once processed we can't cancel - only finish
             nextButton.IsEnabled = true;
 
             // NextButton_Click(sender, e);
@@ -121,22 +121,17 @@ namespace EFCorePowerTools.Wizard
                     missingProviderPackage = null;
                 }
 
-                // await VS.StatusBar.ShowMessageAsync("Generating Files...");
-
-                wea.ReadmeMd = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+                wea.ReadmeMd = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
                 {
-                    // Statusbar.Status.ShowStatusProgress("Invoking Post Run File...");
-
                     Process.Start($"\"{postRunFile}\"");
                 }
-
-                // await VS.StatusBar.ClearAsync();
             });
 
-            Statusbar.Status.ShowStatus("Process completed");
+            Statusbar.Status.ShowStatus();
+            wizardViewModel.GenerateStatus = wea.ReadmeMd;
 
             Telemetry.TrackEvent("PowerTools.ReverseEngineer");
         }
@@ -156,6 +151,10 @@ namespace EFCorePowerTools.Wizard
                 var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage4.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage4);
+
+
+                Statusbar.Status.ShowStatus("Generating files...");
+                FinishButton_Click(sender, e);
             }
         }
 

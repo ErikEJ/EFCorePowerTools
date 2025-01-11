@@ -22,7 +22,7 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar, "Loading Status");
+            InitializeMessengerWithStatusbar(Statusbar, "Generating files...");
         }
 
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)
@@ -38,18 +38,14 @@ namespace EFCorePowerTools.Wizard
             if (!IsPageLoaded)
             {
                 // viewModel.IsPage4Initialized = true;
-
-                Messenger.Send(new ShowStatusbarMessage("Loading status"));
+                Statusbar.Status.ShowStatus("Process completed");
+                // Messenger.Send(new ShowStatusbarMessage("Loading status"));
             }
         }
 
-        public void NextButton_Click(object sender, RoutedEventArgs e)
+        private void TextChangedEventHandler(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            // Go to next wizard page
-            var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);
-            wizardPage2.Return += WizardPage_Return;
-            NavigationService?.Navigate(wizardPage2);
+            Statusbar.Status.ShowStatus(); // Will reset status bar
         }
-
     }
 }

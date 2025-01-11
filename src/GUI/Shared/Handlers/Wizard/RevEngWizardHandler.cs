@@ -794,7 +794,7 @@ namespace EFCorePowerTools.Handlers.Wizard
         }
 
         // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
-        public async Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+        public async Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -881,7 +881,14 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
-                VSHelper.ShowMessage(errors);
+                if (isCalledByWizard)
+                {
+                    finalText = errors; // This will be surfaced to wizard.
+                }
+                else
+                {
+                    VSHelper.ShowMessage(errors);
+                }
             }
 
             if (revEngResult.EntityErrors.Any())
