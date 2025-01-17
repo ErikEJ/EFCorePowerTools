@@ -31,6 +31,7 @@ RevEng.Common.dll
 ## Certificate renewal notes
 
 - 365 day cert must be bought again every year
+https://certmanager.certum.pl/dashboard 
 - select automatic identity validation, using face recognition
 - required documents: 
   - utility bill with my name and address on it
