@@ -394,6 +394,10 @@ namespace RevEng.Common
                         pkgVersion = "8.0.1";
                         break;
 
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.0-preview.2.efcore.9.0.0";
+                        break;
+
                     default: throw new NotImplementedException();
                 }
 
