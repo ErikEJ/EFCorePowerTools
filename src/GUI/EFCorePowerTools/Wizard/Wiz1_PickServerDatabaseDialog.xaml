@@ -185,13 +185,13 @@
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button IsEnabled="False" Width="70" xml:space="preserve">&lt; Previous</Button>
-            <Button x:Name="NextButton" Click="NextButton_Click"  Width="70" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
-            <Button IsTabStop="False"  Width="70"
+            <Button Margin="0,0,5,0" IsEnabled="False" Width="70" xml:space="preserve">&lt; Previous</Button>
+            <Button Margin="0,0,5,0" x:Name="NextButton" Click="NextButton_Click"  Width="70" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
+            <Button Margin="0,0,5,0" IsTabStop="False"  Width="70"
                              ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
                              Content="{x:Static locale:ReverseEngineerLocale.Add}"
                              Command="{Binding FilterSchemasCommand}"/>
-            <Button Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
+            <Button Margin="0,0,5,0" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="2" x:Name="Statusbar"/>
     </Grid>

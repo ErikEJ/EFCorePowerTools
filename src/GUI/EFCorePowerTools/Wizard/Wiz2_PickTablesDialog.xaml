@@ -424,10 +424,10 @@
         </StackPanel>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" >
-            <Button Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
-            <Button Name="nextButton" Click="NextButton_Click" Width="70" xml:space="preserve">_Next &gt;</Button>
-            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False" Command="{Binding AdvancedCommand}" Width="70" />
-            <Button Name="cancelButton" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
+            <Button Margin="0,0,5,0" Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
+            <Button Margin="0,0,5,0" Name="nextButton" Click="NextButton_Click" Width="70" xml:space="preserve">_Next &gt;</Button>
+            <Button Margin="0,0,5,0" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False" Command="{Binding AdvancedCommand}" Width="70" />
+            <Button Margin="0,0,5,0" Name="cancelButton" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="5" x:Name="Statusbar"/>
     </Grid>

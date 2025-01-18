@@ -84,7 +84,7 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
-        private new void FinishButton_Click(object sender, RoutedEventArgs e)
+        private void GenerateFiles_Click(object sender, RoutedEventArgs e)
         {
             var wea = wizardViewModel.WizardEventArgs;
             var project = wea.Project;
@@ -95,6 +95,7 @@ namespace EFCorePowerTools.Wizard
             var onlyGenerate = wea.OnlyGenerate;
             var forceEdit = wea.ForceEdit;
 
+            wizardViewModel.GenerateStatus = string.Empty;
             wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
             cancelButton.IsEnabled = false; // Once processed we can't cancel - only finish
             nextButton.IsEnabled = true;
@@ -146,9 +147,8 @@ namespace EFCorePowerTools.Wizard
                 var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage4.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage4);
-
                 Statusbar.Status.ShowStatus("Generating files...");
-                FinishButton_Click(sender, e);
+                GenerateFiles_Click(sender, e);
             }
         }
 
