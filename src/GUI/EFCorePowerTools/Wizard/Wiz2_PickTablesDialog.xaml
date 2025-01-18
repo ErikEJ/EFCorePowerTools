@@ -406,11 +406,9 @@
             </TreeView.Resources>
         </TreeView>
 
-        
         <TextBlock  Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}" 
                     Margin="5,0"
-                    Visibility="Collapsed"
-                    >
+                    Visibility="Collapsed" >
                 <Hyperlink                   
                     x:Name="SqliteToolboxLink"
                     RequestNavigate="SqliteToolboxLink_RequestNavigate"

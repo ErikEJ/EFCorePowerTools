@@ -218,5 +218,10 @@ namespace EFCorePowerTools.Wizard
                 }
             }
         }
+
+        private void OpenBrowserWithLink(string link)
+        {
+            Process.Start(new ProcessStartInfo(link));
+        }
     }
 }

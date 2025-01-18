@@ -177,6 +177,7 @@ namespace EFCorePowerTools.Wizard
                 StartInfo = new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri),
             };
             process.Start();
+            e.Handled = true;
         }
 
         private void DocLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -186,6 +187,21 @@ namespace EFCorePowerTools.Wizard
                 StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
             };
             process.Start();
+        }
+
+        private void OpenBrowserHelp(object sender, RoutedEventArgs e)
+        {
+            OpenBrowserWithLink("https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering");
+        }
+
+        private void OpenBrowserRate(object sender, RoutedEventArgs e)
+        {
+            OpenBrowserWithLink("https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details");
+        }
+
+        private void OpenBrowserWithLink(string link)
+        {
+            Process.Start(new ProcessStartInfo(link));
         }
     }
 }
