@@ -881,9 +881,24 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
+                Func<string, string, string> isNotEmptyProvideHeader = (str, header) =>
+                {
+                    if (string.IsNullOrEmpty(str) || string.IsNullOrEmpty(str.Trim()))
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return $"\r\n{header}:\r\n" + str;
+                    }
+                };
+
                 if (isCalledByWizard)
                 {
-                    finalText = errors; // This will be surfaced to wizard.
+                    string eWarnings = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityWarnings), "Warning");
+                    string eErrors = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityErrors), "Error");
+
+                    finalText = $"{eWarnings}{eErrors}"; // This will be surfaced to wizard.
                 }
                 else
                 {

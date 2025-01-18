@@ -99,17 +99,12 @@ namespace EFCorePowerTools.Wizard
             cancelButton.IsEnabled = false; // Once processed we can't cancel - only finish
             nextButton.IsEnabled = true;
 
-            // NextButton_Click(sender, e);
-
             Messenger.Send(new ShowStatusbarMessage("Generating files"));
 
             this.applyPresets(wizardViewModel.Model);
 
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-
-                // await VS.StatusBar.ShowMessageAsync("Saving options...");
-
                 await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
                 await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
@@ -121,7 +116,7 @@ namespace EFCorePowerTools.Wizard
                     missingProviderPackage = null;
                 }
 
-                wea.ReadmeMd = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
+                wea.ReverseEngineerStatus = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -131,7 +126,7 @@ namespace EFCorePowerTools.Wizard
             });
 
             Statusbar.Status.ShowStatus();
-            wizardViewModel.GenerateStatus = wea.ReadmeMd;
+            wizardViewModel.GenerateStatus = wea.ReverseEngineerStatus;
 
             Telemetry.TrackEvent("PowerTools.ReverseEngineer");
         }
@@ -151,7 +146,6 @@ namespace EFCorePowerTools.Wizard
                 var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage4.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage4);
-
 
                 Statusbar.Status.ShowStatus("Generating files...");
                 FinishButton_Click(sender, e);

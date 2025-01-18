@@ -48,8 +48,9 @@ namespace EFCorePowerTools.Wizard
         {
             var viewModel = wizardViewModel;
             IsPageLoaded = viewModel.IsPage2Initialized;
+            var isDataLoaded = wizardViewModel.ObjectTree.Types.Any();
 
-            if (!IsPageLoaded && !wizardViewModel.GetSelectedObjects().Any())
+            if (!IsPageLoaded && !isDataLoaded)
             {
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.PickTablesDialog = this;
@@ -100,6 +101,7 @@ namespace EFCorePowerTools.Wizard
         public IPickTablesDialog SqliteToolboxInstall(bool installed)
         {
             sqliteToolboxInstalled = installed;
+            DialogWindow_Loaded(this, null);
             return this;
         }
 

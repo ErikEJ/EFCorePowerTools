@@ -37,9 +37,7 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
-                // viewModel.IsPage4Initialized = true;
                 Statusbar.Status.ShowStatus("Process completed");
-                // Messenger.Send(new ShowStatusbarMessage("Loading status"));
             }
         }
 

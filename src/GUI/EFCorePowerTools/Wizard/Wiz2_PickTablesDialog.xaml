@@ -22,7 +22,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid Margin="12,0" >
+    <Grid>
         <Grid.Resources>
             <ResourceDictionary>
                 <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
@@ -125,12 +125,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="80"></ColumnDefinition>
@@ -157,7 +158,6 @@
                      Grid.Column="2" 
                      x:Name="Search">
             </TextBox>
-
             <Button Name="MainButton" Grid.Column="3" Height="22" BorderThickness="0,1,1,1" BorderBrush="{Binding BorderBrush, ElementName=Search}">
                 <Button.Content>
                     <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/GlyphDown.png" Width="16"/>
@@ -193,9 +193,7 @@
                 </Border>
             </Popup>
         </Grid>
-
-        <TreeView Grid.Row="1"
-                  Margin="12,0"
+        <TreeView Grid.Row="1" Margin="5,0,5,5"
                   ItemsSource="{Binding ObjectTree.Types}"
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Standard"
@@ -206,7 +204,6 @@
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="Padding" Value="1"></Setter>
-                    <Setter Property="IsExpanded" Value="True"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -214,7 +211,6 @@
                     </Style.Triggers>
                 </Style>
             </TreeView.ItemContainerStyle>
-
             <TreeView.Resources>
                 <ContextMenu x:Key="RenamePopup">
                     <MenuItem Header="Rename  F2" Click="TreeNodeContextMenuItem_Click"/>
@@ -223,7 +219,6 @@
                     <HierarchicalDataTemplate.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
                             <Setter Property="Padding" Value="1"></Setter>
-                            <Setter Property="IsExpanded" Value="True"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -411,27 +406,30 @@
             </TreeView.Resources>
         </TreeView>
 
-        <TextBlock  Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}"
-                Margin="12,20,12,0">
+        
+        <TextBlock  Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}" 
+                    Margin="5,0"
+                    Visibility="Collapsed"
+                    >
                 <Hyperlink                   
                     x:Name="SqliteToolboxLink"
                     RequestNavigate="SqliteToolboxLink_RequestNavigate"
                     NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox"></Hyperlink>
         </TextBlock>
 
-        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+        <StackPanel Grid.Row="3" VerticalAlignment="Bottom">
             <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">
                 <TextBlock Text="{x:Static locale:ReverseEngineerLocale.UncheckingFileRemoved}" />
             </StatusBar>
         </StackPanel>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,12,10">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
-            <Button Name="nextButton" Click="NextButton_Click" Width="70" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
-            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False" Command="{Binding AdvancedCommand}" Width="70" Margin="10,0,0,0" />
-            <Button Name="cancelButton" Click="CancelButton_Click" Width="70" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
+            <Button Name="nextButton" Click="NextButton_Click" Width="70" xml:space="preserve">_Next &gt;</Button>
+            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False" Command="{Binding AdvancedCommand}" Width="70" />
+            <Button Name="cancelButton" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
         </StackPanel>
-        <statusbar:StatusbarControl Grid.Row="4" x:Name="Statusbar"/>
+        <statusbar:StatusbarControl Grid.Row="5" x:Name="Statusbar"/>
     </Grid>
 </local:WizardResultPageFunction>
 

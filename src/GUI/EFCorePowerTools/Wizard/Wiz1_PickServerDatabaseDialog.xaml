@@ -24,9 +24,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!-- TODO: Move the stack panel for navigation outside of tab items, put under tab control -->
-        <TabControl Margin="0">
+        <TabControl Margin="5" >
             <TabItem Header="Connection String">
                 <Grid Margin="12,0">
                     <Grid.Resources>
@@ -54,8 +54,6 @@
                         <RowDefinition x:Name="grdRow1" Height="Auto" />
                         <RowDefinition x:Name="grdRow2" Height="Auto" />
                         <RowDefinition x:Name="grdRow3" Height="Auto" />
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,16" Grid.RowSpan="2">
@@ -64,7 +62,6 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-
                         <ComboBox Grid.Column="0"
                       x:Name="DatabaseConnectionCombobox"
                       TabIndex="1"
@@ -89,27 +86,22 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-
                         <Button Grid.Column="1"
-                    Margin="8,12,0,12"
-                    ToolTip="{x:Static locale:ReverseEngineerLocale.RemoveSelectedConnection}"
-                    Command="{Binding RemoveDatabaseConnectionCommand}">
+                                Margin="8,12,0,12"
+                                ToolTip="{x:Static locale:ReverseEngineerLocale.RemoveSelectedConnection}"
+                                Command="{Binding RemoveDatabaseConnectionCommand}">
                             <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png" />
                         </Button>
-
                         <xctk:DropDownButton Grid.Column="2"
                               Width="72"
                               Margin="12,12,0,12"
                               Content="{x:Static locale:ReverseEngineerLocale.Add}"                              
-                              TabIndex="2"                              
-                              >
+                              TabIndex="2" >
                             <xctk:DropDownButton.DropDownContent>
                                 <StackPanel>
-                                    <MenuItem 
-                            Header="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
-                            Command="{Binding AddDatabaseConnectionCommand}"
-                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnectionTip}"
-                            >
+                                    <MenuItem Header="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
+                                            Command="{Binding AddDatabaseConnectionCommand}"
+                                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnectionTip}" >
                                         <MenuItem.Icon>
                                             <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
                                         </MenuItem.Icon>
@@ -117,8 +109,7 @@
                                     <MenuItem 
                             Header="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
                             Command="{Binding AddDatabaseDefinitionCommand}"
-                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
-                            >
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}">
                                         <MenuItem.Icon>
                                             <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/DatabaseSchema.png" />
                                         </MenuItem.Icon>
@@ -126,8 +117,7 @@
                                     <MenuItem 
                             Header="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
                             Command="{Binding AddAdhocDatabaseConnectionCommand}"
-                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnectionTip}"
-                            >
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnectionTip}">
                                         <MenuItem.Icon>
                                             <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
                                         </MenuItem.Icon>
@@ -136,11 +126,9 @@
                                 </StackPanel>
                             </xctk:DropDownButton.DropDownContent>
                         </xctk:DropDownButton>
-
                     </Grid>
 
                     <TextBlock Grid.Row="1" VerticalAlignment="Bottom" Text="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"  />
-
                     <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,15" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="110*"/>
@@ -160,25 +148,13 @@
                   DisplayMemberPath="Value"
                   SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />
                     </Grid>
-
-                    <StackPanel 
-                    Grid.Row="3" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Center">
+                    <StackPanel Grid.Row="3" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Center">
                         <CheckBox x:Name="FilterSchemas" IsTabStop="False" IsChecked="{Binding FilterSchemas}">
                             <TextBlock Text="{x:Static locale:ReverseEngineerLocale.FilterSchemas}" />
                         </CheckBox>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10" Grid.ColumnSpan="2">
-                        <Button IsEnabled="False" Width="70" xml:space="preserve">&lt; Previous</Button>
-                        <Button Click="NextButton_Click"  Width="70" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
-                        <Button IsTabStop="False" Margin="10,0,0,0" Width="70"
-                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
-                             Content="{x:Static locale:ReverseEngineerLocale.Add}"
-                             Command="{Binding FilterSchemasCommand}"/>
-                        <Button Click="CancelButton_Click" Width="70" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -205,20 +181,18 @@
                       ItemsSource="{Binding Configurations, Mode=OneWay}"
                       SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay}"
                       DisplayMemberPath="DisplayName"/>
-
-                    <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,11,0">
-                        <Button IsEnabled="False" Width="70" xml:space="preserve">&lt; Previous</Button>
-                        <Button x:Name="NextButton" Click="NextButton_Click"  Width="70" Margin="10,0,0,0" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
-                        <Button IsTabStop="False" Margin="10,0,0,0" Width="70"
-                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
-                             Content="{x:Static locale:ReverseEngineerLocale.Add}"
-                             Command="{Binding FilterSchemasCommand}"/>
-                        <Button Click="CancelButton_Click" Width="70" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
-                    </StackPanel>
-
                 </Grid>
             </TabItem>
         </TabControl>
-        <statusbar:StatusbarControl Grid.Row="1" x:Name="Statusbar"/>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button IsEnabled="False" Width="70" xml:space="preserve">&lt; Previous</Button>
+            <Button x:Name="NextButton" Click="NextButton_Click"  Width="70" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
+            <Button IsTabStop="False"  Width="70"
+                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
+                             Content="{x:Static locale:ReverseEngineerLocale.Add}"
+                             Command="{Binding FilterSchemasCommand}"/>
+            <Button Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
+        </StackPanel>
+        <statusbar:StatusbarControl Grid.Row="2" x:Name="Statusbar"/>
     </Grid>
 </local:WizardResultPageFunction>

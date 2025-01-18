@@ -22,7 +22,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid Margin="12,0,10,0">
+    <Grid>
         <Grid.Resources>
             <ResourceDictionary>
                 <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
@@ -136,10 +136,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <DockPanel Grid.Row="0"  >
             <dw:LiveTextBlock Margin="5" 
                 Text="{x:Static locale:ReverseEngineerLocale.ContextName}"/>
@@ -150,33 +149,28 @@
                 TabIndex="0"                 
                 Text="{Binding Model.ModelName, Mode=TwoWay}" />
         </DockPanel>
-
         <DockPanel Grid.Row="1">
-            <dw:LiveTextBlock Margin="5,5,18,5" 
+            <dw:LiveTextBlock Margin="5" 
                 Text="{x:Static locale:ReverseEngineerLocale.Namespace}"/>
             <TextBox TabIndex="1"
                 Margin="5"
                 Style="{StaticResource TextInputStyle}"
                 Text="{Binding Model.Namespace, Mode=TwoWay}"/>
         </DockPanel>
-
-        <dw:LiveTextBlock Grid.Row="4"
+        <dw:LiveTextBlock Grid.Row="4" Margin="5"
                           Text="{x:Static locale:ReverseEngineerLocale.EntityTypesPath}"/>
-        
-        <TextBox Grid.Row="5"
+        <TextBox Grid.Row="5" Margin="5"
                  TabIndex="2"
                  Style="{StaticResource TextInputStyle}"
                  Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
-
-        <dw:LiveTextBlock Grid.Row="6"
+        <dw:LiveTextBlock Grid.Row="6" Margin="5"
                           Text="{x:Static locale:ReverseEngineerLocale.WhatToGenerate}"/>
-        <ComboBox Grid.Row="6"
+        <ComboBox Grid.Row="6" Margin="5"
                   TabIndex="6"
                   ItemsSource="{Binding GenerationModeList}"
                   Style="{StaticResource GenerationMethodComboBoxStyle}"
                   SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
-
-        <GroupBox Grid.Row="7"
+        <GroupBox Grid.Row="7" Margin="5"
                   Header="{x:Static locale:ReverseEngineerLocale.Naming}"
                   Style="{StaticResource NamingGroupBoxStyle}">
             <StackPanel>
@@ -190,14 +184,12 @@
                           Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
             </StackPanel>
         </GroupBox>
-
-        <CheckBox Grid.Row="8"
+        <CheckBox Grid.Row="8" Margin="5"
                   TabIndex="8"
                   Content="{x:Static locale:ReverseEngineerLocale.UseDataAnnotations}"
                   IsChecked="{Binding Model.UseDataAnnotations}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-
-        <StackPanel Grid.Row="9" 
+        <StackPanel Grid.Row="9" Margin="5"
                     Orientation="Horizontal">
             <CheckBox TabIndex="10"
                       Name="UseHandlebarsCheckbox"
@@ -213,21 +205,18 @@
                   DisplayMemberPath="Value"
                   SelectedValue="{Binding SelectedTemplateType, Mode=TwoWay}" />
         </StackPanel>
-
-        <CheckBox Grid.Row="10"
+        <CheckBox Grid.Row="10" Margin="5"
                   TabIndex="12"
                   Content="{x:Static locale:ReverseEngineerLocale.IncludeConnectionStringGeneratedCode}"
                   IsChecked="{Binding Model.IncludeConnectionString}"
                   IsEnabled="{Binding MayIncludeConnectionString}"
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-
-        <CheckBox Grid.Row="11"
+        <CheckBox Grid.Row="11" Margin="5"
                   TabIndex="14"
                   Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-
-        <StackPanel Grid.Row="12"
+        <StackPanel Grid.Row="12" Margin="5"
                     Orientation="Horizontal" >
             <TextBlock 
                 FontSize="18"
@@ -250,16 +239,12 @@
                 </Hyperlink>
             </Label>
         </StackPanel>
-        <!--<StackPanel Grid.Row="12" Orientation="Horizontal" HorizontalAlignment="Right" Height="25">
-            <Button Name="generateButton" Click="FinishButton_Click" Width="60" Margin="5,0,10,0" IsDefault="True">_Generate</Button>
-        </StackPanel>-->
-        <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,12,5">
+        <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
-            <Button Name="nextButton" Click="NextButton_Click" Width="70" Margin="10,0,0,0" xml:space="preserve">_Next &gt;</Button>
-            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" Width="70" Margin="10,0,0,0" />
-            <Button Name="cancelButton" Click="CancelButton_Click" Width="70" Margin="10,0,0,0" IsCancel="True">_Cancel</Button>
+            <Button Name="nextButton" Click="NextButton_Click" Width="70" xml:space="preserve">_Next &gt;</Button>
+            <Button Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" Width="70" />
+            <Button Name="cancelButton" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
         </StackPanel>
-
         <statusbar:StatusbarControl Grid.Row="14" x:Name="Statusbar"/>
     </Grid>
 </local:WizardResultPageFunction>
