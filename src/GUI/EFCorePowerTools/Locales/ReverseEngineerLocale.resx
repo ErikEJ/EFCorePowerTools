@@ -432,4 +432,22 @@
   <data name="NavigationFinish" xml:space="preserve">
     <value></value>
   </data>
+  <data name="InstallSqliteToolbox" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusBarLoadingConfiguration" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusbarGeneratingFiles" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusbarProcessCompleted" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusbarLoadingBrowser" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusbarReady" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

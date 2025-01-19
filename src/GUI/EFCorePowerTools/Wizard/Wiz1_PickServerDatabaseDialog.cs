@@ -127,7 +127,7 @@ namespace EFCorePowerTools.Wizard
                     await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
                 });
 
-                Messenger.Send(new ShowStatusbarMessage("Loading configuration"));
+                Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.StatusBarLoadingConfiguration));
 
                 foreach (var option in viewModel.WizardEventArgs.Configurations)
                 {

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Navigation;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -80,7 +81,7 @@ namespace EFCorePowerTools.Wizard
             // Subscribe to status event, once the 2 seconds (2000 ms) expires
             // the StatusbarEventType.Reset will be raised by ShowStatus
             statusbarCtrl.StatusEvent += Statusbar_StatusEvent;
-            statusbarCtrl.Status.ShowStatus("Loading browser...", 2000, null, true, true, true);
+            statusbarCtrl.Status.ShowStatus(ReverseEngineerLocale.StatusbarLoadingBrowser, 2000, null, true, true, true);
             Process.Start(new ProcessStartInfo(link));
         }
 

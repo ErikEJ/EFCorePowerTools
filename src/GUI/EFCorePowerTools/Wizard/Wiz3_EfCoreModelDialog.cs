@@ -1,7 +1,4 @@
-﻿// // Copyright (c) Microsoft. All rights reserved.
-// // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -99,7 +96,7 @@ namespace EFCorePowerTools.Wizard
             cancelButton.IsEnabled = false; // Once processed we can't cancel - only finish
             nextButton.IsEnabled = true;
 
-            Messenger.Send(new ShowStatusbarMessage("Generating files"));
+            Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.StatusBarLoadingConfiguration));
 
             this.applyPresets(wizardViewModel.Model);
 
@@ -146,7 +143,7 @@ namespace EFCorePowerTools.Wizard
                 var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
                 wizardPage4.Return += WizardPage_Return;
                 NavigationService?.Navigate(wizardPage4);
-                Statusbar.Status.ShowStatus("Generating files...");
+                Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarGeneratingFiles);
                 GenerateFiles_Click(sender, e);
             }
         }

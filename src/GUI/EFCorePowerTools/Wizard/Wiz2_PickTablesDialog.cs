@@ -204,7 +204,7 @@ namespace EFCorePowerTools.Wizard
             {
                 try
                 {
-                    SqliteToolboxLink.Inlines.Add(new Run("Install SQLite Toolbox"));
+                    SqliteToolboxLink.Inlines.Add(new Run(ReverseEngineerLocale.InstallSqliteToolbox));
                 }
                 catch
                 {

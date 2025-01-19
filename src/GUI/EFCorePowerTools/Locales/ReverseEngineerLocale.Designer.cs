@@ -477,6 +477,15 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string InstallSqliteToolbox {
+            get {
+                return ResourceManager.GetString("InstallSqliteToolbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string LoadingDatabaseObjects {
             get {
                 return ResourceManager.GetString("LoadingDatabaseObjects", resourceCulture);
@@ -795,6 +804,51 @@ namespace EFCorePowerTools.Locales {
         public static string SQLServerVersionNotSupported {
             get {
                 return ResourceManager.GetString("SQLServerVersionNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StatusbarGeneratingFiles {
+            get {
+                return ResourceManager.GetString("StatusbarGeneratingFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StatusbarLoadingBrowser {
+            get {
+                return ResourceManager.GetString("StatusbarLoadingBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StatusBarLoadingConfiguration {
+            get {
+                return ResourceManager.GetString("StatusBarLoadingConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StatusbarProcessCompleted {
+            get {
+                return ResourceManager.GetString("StatusbarProcessCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string StatusbarReady {
+            get {
+                return ResourceManager.GetString("StatusbarReady", resourceCulture);
             }
         }
         

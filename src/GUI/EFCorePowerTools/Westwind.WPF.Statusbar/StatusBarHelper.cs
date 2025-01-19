@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using Westwind.Wpf.Statusbar.Utilities;
 
@@ -52,7 +53,7 @@ namespace Westwind.Wpf.Statusbar
         /// <summary>
         /// Gets or sets the default status text to revert to when status is reset to default.
         /// </summary>
-        public string DefaultStatusText { get; set; } = "Ready";
+        public string DefaultStatusText { get; set; } = ReverseEngineerLocale.StatusbarReady;
 
         /// <summary>
         /// Gets or sets default timeout for how long a status message displays.

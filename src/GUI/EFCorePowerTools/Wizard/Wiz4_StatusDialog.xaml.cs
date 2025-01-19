@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 
@@ -17,7 +18,7 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar, "Generating files...");
+            InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.StatusbarGeneratingFiles);
         }
 
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)
@@ -31,7 +32,7 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
-                Statusbar.Status.ShowStatus("Process completed");
+                Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarProcessCompleted);
             }
         }
 
