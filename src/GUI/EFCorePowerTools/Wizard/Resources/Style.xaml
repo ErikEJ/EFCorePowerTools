@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vs_shell="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
+
+    <!--<Style TargetType="TextBox">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static vs_shell:EnvironmentColors.ToolWindowTextBrushKey}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static vs_shell:EnvironmentColors.ToolWindowBackgroundBrushKey}}" />
+    </Style>-->
+
+    <Style TargetType="Button">
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <SolidColorBrush x:Key="DialogWindowBackgroundColor"
+                     Color="#FFF0F0F0" />
+    <SolidColorBrush x:Key="DisabledTextBlockTextColor"
+                     Color="#FF707070" />
+
+</ResourceDictionary>

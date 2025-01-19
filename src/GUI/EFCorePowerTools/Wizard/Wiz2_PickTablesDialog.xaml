@@ -25,58 +25,8 @@
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>
-                <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
-                <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-                <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter" />
-                <converter:CollectionCountToEnabledConverter x:Key="CollectionCountToEnabledConverter" />
-                <converter:ColumnEnabledConverter x:Key="ColumnEnabledConverter" />
-                <converter:EnumToLabelConverter x:Key="EnumToLabelConverter" />
-                <converter:EnumToBoolConverter x:Key="EnumToBoolConverter" />
-                <converter:LevelToWidthConverter x:Key="LevelToWidthConverter" />
-                <converter:ObjectTypeIconToImageStyleConverter x:Key="ObjectTypeIconToImageStyleConverter">
-                <converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
-                        <ResourceDictionary>
-                            <Style x:Key="TableImageStyle"
-                      TargetType="Image">
-                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/Table.png" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Margin" Value="0,0,0,0" />
-                            </Style>
-                            <Style x:Key="ViewImageStyle"
-                      TargetType="Image">
-                                <Setter Property="ToolTip" Value="" />
-                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/View.png" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Margin" Value="0,0,0,0" />
-                            </Style>
-                            <Style x:Key="ProcedureImageStyle"
-                      TargetType="Image">
-                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/DatabaseStoredProcedures.png" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Margin" Value="0,0,0,0" />
-                            </Style>
-                            <Style x:Key="ScalarFunctionImageStyle"
-                      TargetType="Image">
-                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/ScalarFunction.png" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Margin" Value="0,0,0,0" />
-                            </Style>
-                            <Style x:Key="TableWithoutKeyImageStyle"
-                      TargetType="Image">
-                                <Setter Property="ToolTip" Value="{x:Static locale:ReverseEngineerLocale.NoPrimaryKey}" />
-                                <Setter Property="Source" Value="/EFCorePowerTools;component/Resources/TableWarning.png" />
-                                <Setter Property="Width" Value="16" />
-                                <Setter Property="Height" Value="16" />
-                                <Setter Property="Margin" Value="0,0,0,0" />
-                            </Style>
-                        </ResourceDictionary>
-                    </converter:ObjectTypeIconToImageStyleConverter.ResourceDictionary>
-                </converter:ObjectTypeIconToImageStyleConverter>
                 <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Resources\Converter.xaml"/>
                     <ResourceDictionary>
                         <Style x:Key="TableSelectionCheckBoxStyle" TargetType="CheckBox">
                             <Setter Property="Margin" Value="0, 0, 0, 0"/>
