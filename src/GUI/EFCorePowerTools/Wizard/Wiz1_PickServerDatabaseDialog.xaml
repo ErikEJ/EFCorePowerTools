@@ -1,17 +1,16 @@
 ﻿<local:WizardResultPageFunction
+    x:Class="EFCorePowerTools.Wizard.Wiz1_PickServerDatabaseDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
-    x:Class="EFCorePowerTools.Wizard.Wiz1_PickServerDatabaseDialog"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     KeepAlive="True"
-    Background="#FFF0F0F0"    
     WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}">
 
     <i:Interaction.Triggers>
@@ -19,7 +18,6 @@
             <i:InvokeCommandAction Command="{Binding Page1LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>
@@ -28,6 +26,9 @@
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>
+        <Grid.Background>
+            <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+        </Grid.Background>        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -193,7 +194,7 @@
         </TabControl>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource NavButton}" Content="&lt; Previous" IsEnabled="False" />
-            <Button Style="{StaticResource NavButton}" Content="_Next &gt;" Click="NextButton_Click" IsDefault="True" />
+            <Button Style="{StaticResource NavButton}" Content="_Next &gt;" Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Add}" ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}" Command="{Binding FilterSchemasCommand}"/>
             <Button Style="{StaticResource NavButton}" Content="Cancel" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>

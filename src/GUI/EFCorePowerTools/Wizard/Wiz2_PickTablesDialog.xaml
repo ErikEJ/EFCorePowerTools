@@ -1,19 +1,18 @@
 ﻿<local:WizardResultPageFunction
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     x:Class="EFCorePowerTools.Wizard.Wiz2_PickTablesDialog"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ext="clr-namespace:EFCorePowerTools.Extensions"
-    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:contractvm="clr-namespace:EFCorePowerTools.Contracts.ViewModels"
     xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
-    xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
-    xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="clr-namespace:EFCorePowerTools.Extensions"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"    
+    xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
+    xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     KeepAlive="True"
-    Background="#FFF0F0F0"
     WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseObjects}">
 
     <i:Interaction.Triggers>
@@ -21,7 +20,6 @@
             <i:InvokeCommandAction Command="{Binding Page2LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Grid>
         <Grid.Resources>
             <ResourceDictionary>
@@ -31,6 +29,9 @@
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>
+        <Grid.Background>
+            <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -326,7 +327,7 @@
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Style="{StaticResource NavButton}" Content="&lt; Previous" Click="BackButton_Click" />
-            <Button Style="{StaticResource NavButton}" Content="Next &gt;" Click="NextButton_Click" IsDefault="True" />
+            <Button Style="{StaticResource NavButton}" Content="Next &gt;" Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False"/>
             <Button Style="{StaticResource NavButton}" Content="Cancel" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>

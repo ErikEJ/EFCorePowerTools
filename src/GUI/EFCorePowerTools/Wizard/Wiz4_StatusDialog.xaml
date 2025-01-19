@@ -1,17 +1,16 @@
 ﻿<local:WizardResultPageFunction
+    x:Class="EFCorePowerTools.Wizard.Wiz4_StatusDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
-    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
-    x:Class="EFCorePowerTools.Wizard.Wiz4_StatusDialog"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     KeepAlive="True"
-    Background="#FFF0F0F0"    
     WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}">
 
     <i:Interaction.Triggers>
@@ -19,8 +18,17 @@
             <i:InvokeCommandAction Command="{Binding Page4LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Resources\Style.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.Background>
+            <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -45,10 +53,10 @@
                 </TextBox>
             </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
-            <Button Margin="0,0,5,0" Name="backButton" IsEnabled="False" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; _Previous</Button>
-            <Button Margin="0,0,5,0" Name="nextButton" IsEnabled="false" Width="70" xml:space="preserve">_Next &gt;</Button>
-            <Button Margin="0,0,5,0" Content="Finish" Click="FinishButton_Click" Width="70" />
-            <Button Margin="0,0,5,0" Name="cancelButton" IsEnabled="False" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
+            <Button Style="{StaticResource NavButton}" Content="&lt; _Previous" IsEnabled="False" />
+            <Button Style="{StaticResource NavButton}" Content="Next &gt;" IsEnabled="False"/>
+            <Button Style="{StaticResource NavButton}" Content="Finish" Click="FinishButton_Click"/>
+            <Button Style="{StaticResource NavButton}" Content="Cancel" IsEnabled="False" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="3" x:Name="Statusbar"/>
     </Grid>
