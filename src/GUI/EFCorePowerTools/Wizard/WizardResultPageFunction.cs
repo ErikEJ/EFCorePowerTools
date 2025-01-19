@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Navigation;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Messages;
@@ -71,6 +72,26 @@ namespace EFCorePowerTools.Wizard
             else
             {
                 statusbarCtrl.Status.ShowStatus(); // defaults to Ready
+            }
+        }
+
+        protected void OpenBrowserWithLink(string link)
+        {
+            // Subscribe to status event, once the 2 seconds (2000 ms) expires
+            // the StatusbarEventType.Reset will be raised by ShowStatus
+            statusbarCtrl.StatusEvent += Statusbar_StatusEvent;
+            statusbarCtrl.Status.ShowStatus("Loading browser...", 2000, null, true, true, true);
+            Process.Start(new ProcessStartInfo(link));
+        }
+
+        private void Statusbar_StatusEvent(object sender, StatusbarEventArgs e)
+        {
+            if (e.EventType == StatusbarEventType.Reset)
+            {
+                // Unsubscribe to event and ShowStatus with no message to 
+                // reset to Ready
+                statusbarCtrl.StatusEvent -= Statusbar_StatusEvent;
+                statusbarCtrl.Status.ShowStatus(); // Reset
             }
         }
 

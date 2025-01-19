@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Documents;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
@@ -168,27 +167,6 @@ namespace EFCorePowerTools.Wizard
             setTemplateTypes(templateType, allowedTemplateTypes);
         }
 
-
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            var hyperlink = sender as Hyperlink;
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(hyperlink.NavigateUri.AbsoluteUri),
-            };
-            process.Start();
-            e.Handled = true;
-        }
-
-        private void DocLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
-            };
-            process.Start();
-        }
-
         private void OpenBrowserHelp(object sender, RoutedEventArgs e)
         {
             OpenBrowserWithLink("https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering");
@@ -197,11 +175,6 @@ namespace EFCorePowerTools.Wizard
         private void OpenBrowserRate(object sender, RoutedEventArgs e)
         {
             OpenBrowserWithLink("https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&amp;ssr=false#review-details");
-        }
-
-        private void OpenBrowserWithLink(string link)
-        {
-            Process.Start(new ProcessStartInfo(link));
         }
     }
 }

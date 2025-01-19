@@ -222,7 +222,8 @@
                   Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
                   IsChecked="{Binding Model.InstallNuGetPackage}" 
                   Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
-        <StackPanel Grid.Row="12" Margin="5" Orientation="Horizontal" >
+        <StackPanel Grid.Row="12" HorizontalAlignment="Center">
+        <StackPanel Margin="5" Orientation="Horizontal" >
             <Button Click="OpenBrowserHelp" FontSize="18" Margin="0,0,10,0" 
                 Style="{StaticResource HyperlinkLikeButton}"
                 ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}">
@@ -233,6 +234,7 @@
                 ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}">
                 <Underline>* Rate</Underline>
             </Button>
+        </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Margin="0,0,5,0" Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>

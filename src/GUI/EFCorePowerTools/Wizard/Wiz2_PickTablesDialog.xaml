@@ -117,7 +117,12 @@
                         <Style x:Key="RenameTextBoxStyle" TargetType="TextBox">
                             <Setter Property="Margin" Value="3, 0, 0, 0"/>
                         </Style>
-
+                        <Style x:Key="HyperlinkLikeButton" TargetType="Button">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Style>
                     </ResourceDictionary>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
@@ -405,22 +410,20 @@
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
-
-        <TextBlock  Grid.Row="2" ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}" 
-                    Margin="5,0"
-                    Visibility="Collapsed" >
-                <Hyperlink                   
-                    x:Name="SqliteToolboxLink"
-                    RequestNavigate="SqliteToolboxLink_RequestNavigate"
-                    NavigateUri="https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox"></Hyperlink>
-        </TextBlock>
-
+        <Button Grid.Row="2" Margin="0,0,0,5" Width="125" 
+                x:Name="sqliteButton"
+                Click="OpenBrowserSqlite" 
+                Visibility="Collapsed" 
+                Style="{StaticResource HyperlinkLikeButton}"
+                ToolTip="{x:Static locale:ReverseEngineerLocale.SQLiteExperience}">
+            <Underline x:Name="SqliteToolboxLink"></Underline>
+        </Button>
         <StackPanel Grid.Row="3" VerticalAlignment="Bottom">
             <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">
-                <TextBlock Text="{x:Static locale:ReverseEngineerLocale.UncheckingFileRemoved}" />
+                <TextBlock Margin="35,0" 
+                           Text="{x:Static locale:ReverseEngineerLocale.UncheckingFileRemoved}" />
             </StatusBar>
         </StackPanel>
-
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Margin="0,0,5,0" Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
             <Button Margin="0,0,5,0" Name="nextButton" Click="NextButton_Click" Width="70" xml:space="preserve">_Next &gt;</Button>

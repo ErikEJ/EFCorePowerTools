@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -101,6 +100,10 @@ namespace EFCorePowerTools.Wizard
         public IPickTablesDialog SqliteToolboxInstall(bool installed)
         {
             sqliteToolboxInstalled = installed;
+            sqliteButton.Visibility = sqliteToolboxInstalled
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
             DialogWindow_Loaded(this, null);
             return this;
         }
@@ -193,15 +196,6 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
-        private void SqliteToolboxLink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(e.Uri.AbsoluteUri),
-            };
-            process.Start();
-        }
-
         private void DialogWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             WindowTitle = ReverseEngineerLocale.ChooseDatabaseObjects;
@@ -219,9 +213,9 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
-        private void OpenBrowserWithLink(string link)
+        private void OpenBrowserSqlite(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(link));
+            OpenBrowserWithLink("https://marketplace.visualstudio.com/items?itemName=ErikEJ.SQLServerCompactSQLiteToolbox");
         }
     }
 }

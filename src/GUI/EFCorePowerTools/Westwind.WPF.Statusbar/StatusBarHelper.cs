@@ -318,7 +318,6 @@ namespace Westwind.Wpf.Statusbar
                 {
                     if (!dontResetToDefault)
                     {
-                        // ShowStatus(null, 0);  // Trigger reset event to invoke OnPageVisible
                         StatusEvent?.Invoke(this, new StatusbarEventArgs(StatusbarEventType.Reset));
                     }
                 }, null);
