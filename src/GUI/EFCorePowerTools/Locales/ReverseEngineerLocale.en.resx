@@ -142,7 +142,7 @@
     <value>Add Schemas to filter</value>
   </data>
   <data name="Advanced" xml:space="preserve">
-    <value>Advanced...</value>
+    <value>Advanced</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
     <value>Always include all database objects</value>
@@ -419,5 +419,17 @@
   </data>
   <data name="WhatToGenerate" xml:space="preserve">
     <value>What to generate</value>
+  </data>
+  <data name="NavigationNext" xml:space="preserve">
+    <value>Next &gt;</value>
+  </data>
+  <data name="NavigationPrevious" xml:space="preserve">
+    <value>&lt; Previous</value>
+  </data>
+  <data name="NavigationCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NavigationFinish" xml:space="preserve">
+    <value>Finish</value>
   </data>
 </root>

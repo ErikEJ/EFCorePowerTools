@@ -193,10 +193,10 @@
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource NavButton}" Content="&lt; Previous" IsEnabled="False" />
-            <Button Style="{StaticResource NavButton}" Content="_Next &gt;" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" IsEnabled="False" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Add}" ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}" Command="{Binding FilterSchemasCommand}"/>
-            <Button Style="{StaticResource NavButton}" Content="Cancel" Click="CancelButton_Click" IsCancel="True"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="2" x:Name="Statusbar"/>
     </Grid>

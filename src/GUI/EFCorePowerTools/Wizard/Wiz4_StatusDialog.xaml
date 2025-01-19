@@ -53,10 +53,10 @@
                 </TextBox>
             </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
-            <Button Style="{StaticResource NavButton}" Content="&lt; _Previous" IsEnabled="False" />
-            <Button Style="{StaticResource NavButton}" Content="Next &gt;" IsEnabled="False"/>
-            <Button Style="{StaticResource NavButton}" Content="Finish" Click="FinishButton_Click"/>
-            <Button Style="{StaticResource NavButton}" Content="Cancel" IsEnabled="False" IsCancel="True"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" IsEnabled="False" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" IsEnabled="False"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationFinish}" Click="FinishButton_Click"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" IsEnabled="False" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="3" x:Name="Statusbar"/>
     </Grid>

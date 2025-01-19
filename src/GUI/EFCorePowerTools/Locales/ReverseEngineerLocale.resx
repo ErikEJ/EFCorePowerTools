@@ -420,4 +420,16 @@
   <data name="WhatToGenerate" xml:space="preserve">
     <value />
   </data>
+  <data name="NavigationNext" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NavigationPrevious" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NavigationCancel" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NavigationFinish" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

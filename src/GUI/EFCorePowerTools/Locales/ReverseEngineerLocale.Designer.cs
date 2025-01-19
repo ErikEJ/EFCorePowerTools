@@ -567,6 +567,42 @@ namespace EFCorePowerTools.Locales {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string NavigationCancel {
+            get {
+                return ResourceManager.GetString("NavigationCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NavigationFinish {
+            get {
+                return ResourceManager.GetString("NavigationFinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NavigationNext {
+            get {
+                return ResourceManager.GetString("NavigationNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NavigationPrevious {
+            get {
+                return ResourceManager.GetString("NavigationPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string NewNameCannotBeEmpty {
             get {
                 return ResourceManager.GetString("NewNameCannotBeEmpty", resourceCulture);

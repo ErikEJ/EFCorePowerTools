@@ -131,20 +131,20 @@
             <Button Click="OpenBrowserHelp" FontSize="18" Margin="0,0,10,0" 
                 Style="{StaticResource HyperlinkLikeButton}"
                 ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}">
-                <Underline>Help</Underline>
+                <Underline><Run Text="{x:Static locale:ReverseEngineerLocale.Help}"></Run></Underline>
             </Button>
             <Button Click="OpenBrowserRate" FontSize="18" 
                 Style="{StaticResource HyperlinkLikeButton}"
                 ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}">
-                <Underline>* Rate</Underline>
+                <Underline><Run Text="{x:Static locale:ReverseEngineerLocale.Rate}"></Run></Underline>
             </Button>
         </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" >
-            <Button Style="{StaticResource NavButton}" Content="&lt; Previous" Click="BackButton_Click"/>
-            <Button Style="{StaticResource NavButton}" Content="Next &gt;" Name="nextButton" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" Click="BackButton_Click"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" Name="nextButton" Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" />
-            <Button Style="{StaticResource NavButton}" Content="Cancel" Name="cancelButton" Click="CancelButton_Click" IsCancel="True"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Name="cancelButton" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="14" x:Name="Statusbar"/>
     </Grid>
