@@ -123,7 +123,7 @@ namespace EFCorePowerTools.Wizard
 
             if (checkBox.IsChecked == false)
             {
-                statusBar.Visibility = System.Windows.Visibility.Visible;
+                uncheckWarning.Visibility = Visibility.Visible;
             }
         }
 

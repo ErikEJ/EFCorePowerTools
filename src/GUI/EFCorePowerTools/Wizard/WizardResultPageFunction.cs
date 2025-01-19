@@ -88,7 +88,7 @@ namespace EFCorePowerTools.Wizard
         {
             if (e.EventType == StatusbarEventType.Reset)
             {
-                // Unsubscribe to event and ShowStatus with no message to 
+                // Unsubscribe to event and ShowStatus with no message to
                 // reset to Ready
                 statusbarCtrl.StatusEvent -= Statusbar_StatusEvent;
                 statusbarCtrl.Status.ShowStatus(); // Reset

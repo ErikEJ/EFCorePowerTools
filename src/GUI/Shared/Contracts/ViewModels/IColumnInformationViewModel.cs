@@ -17,6 +17,5 @@ namespace EFCorePowerTools.Contracts.ViewModels
         bool IsEnabled { get; }
 
         void SetSelected(bool value);
-
     }
 }

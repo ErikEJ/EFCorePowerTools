@@ -128,6 +128,7 @@ namespace EFCorePowerTools.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         public bool IsPage1Initialized { get; set; }
         public ICommand Page1LoadedCommand { get; set; }
         public ICommand AddDatabaseConnectionCommand { get; set; }
@@ -703,16 +704,16 @@ namespace EFCorePowerTools.ViewModels
         public bool IsPage4Initialized { get; set; }
         public RelayCommand Page4LoadedCommand { get; set; }
 
-        private string _generateStatus = string.Empty;
+        private string generateStatus = string.Empty;
         public string GenerateStatus
         {
             get
             {
-                return _generateStatus;
+                return generateStatus;
             }
             set
             {
-                _generateStatus = value;
+                generateStatus = value;
                 this.RaisePropertyChanged("GenerateStatus");
             }
         }

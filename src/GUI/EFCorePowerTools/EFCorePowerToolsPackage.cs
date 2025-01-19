@@ -131,7 +131,6 @@ namespace EFCorePowerTools
             where TView : IView
         {
             return extensionServices.GetService<TView>();
-
         }
 
         internal async Task<Version> VisualStudioVersionAsync()

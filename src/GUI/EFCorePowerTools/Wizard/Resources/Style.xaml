@@ -3,7 +3,10 @@
                     xmlns:vs_shell="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
                     xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
                     >
-
+    <Style x:Key="NavButton" TargetType="Button">
+        <Setter Property="Margin" Value="0,0,5,0"/>
+        <Setter Property="Width" Value="70"/>
+    </Style>
     <Style x:Key="TableSelectionCheckBoxStyle" TargetType="CheckBox">
         <Setter Property="Margin" Value="0, 0, 0, 0"/>
         <Setter Property="Padding" Value="0, 0, 0, 0"/>

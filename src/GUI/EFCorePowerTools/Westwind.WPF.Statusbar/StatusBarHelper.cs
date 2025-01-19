@@ -269,9 +269,7 @@ namespace Westwind.Wpf.Statusbar
             if (!noDispatcher)
             {
                 // run in a dispatcher here to force the UI to be updated before render cycle
-                Dispatcher.CurrentDispatcher.Invoke((Action)(() =>
-                    ShowStatusInternal(message, timeoutMs, imageSource, spin, flashIcon: flashIcon)
-                ));
+                Dispatcher.CurrentDispatcher.Invoke(() => ShowStatusInternal(message, timeoutMs, imageSource, spin, flashIcon: flashIcon));
 
                 // BillKrat: Allow the page to refresh so we don't have to look at blank page while
                 //           the data loads

@@ -152,7 +152,6 @@
                                    Style="{StaticResource ResourceKey=TreeTextBlockStyle}" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:SchemaInformationViewModel}" ItemsSource="{Binding Path=Objects}">
                     <HierarchicalDataTemplate.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
@@ -181,7 +180,6 @@
                                    Style="{StaticResource ResourceKey=TreeTextBlockStyle}" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
-
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:TableInformationViewModel}" ItemsSource="{Binding Path=Columns}">
                     <HierarchicalDataTemplate.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
@@ -225,7 +223,6 @@
                         </TextBox>
                     </Grid>
                 </HierarchicalDataTemplate>
-
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:ColumnChildrenViewModel}" ItemsSource="{Binding Path=Children}">
                     <HierarchicalDataTemplate.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
@@ -269,7 +266,6 @@
                         </TextBox>
                     </Grid>
                 </HierarchicalDataTemplate>
-
                 <DataTemplate DataType="{x:Type viewModels:ColumnInformationViewModel}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -323,16 +319,16 @@
             <Underline x:Name="SqliteToolboxLink"></Underline>
         </Button>
         <StackPanel Grid.Row="3" VerticalAlignment="Bottom">
-            <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="statusBar">
+            <StatusBar Visibility="Collapsed" Background="LemonChiffon" x:Name="uncheckWarning">
                 <TextBlock Margin="35,0" 
                            Text="{x:Static locale:ReverseEngineerLocale.UncheckingFileRemoved}" />
             </StatusBar>
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" >
-            <Button Margin="0,0,5,0" Name="backButton" Click="BackButton_Click" Width="70" xml:space="preserve">&lt; Previous</Button>
-            <Button Margin="0,0,5,0" Name="nextButton" Click="NextButton_Click" Width="70" xml:space="preserve">_Next &gt;</Button>
-            <Button Margin="0,0,5,0" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False" Command="{Binding AdvancedCommand}" Width="70" />
-            <Button Margin="0,0,5,0" Name="cancelButton" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
+            <Button Style="{StaticResource NavButton}" Content="&lt; Previous" Click="BackButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="Next &gt;" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" IsEnabled="False"/>
+            <Button Style="{StaticResource NavButton}" Content="Cancel" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="5" x:Name="Statusbar"/>
     </Grid>

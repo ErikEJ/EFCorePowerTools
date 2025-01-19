@@ -138,7 +138,6 @@ namespace EFCorePowerTools.Wizard
                 }
 
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
-
             }
         }
 

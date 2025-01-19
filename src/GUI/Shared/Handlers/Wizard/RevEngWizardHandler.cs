@@ -373,6 +373,7 @@ namespace EFCorePowerTools.Handlers.Wizard
                             return;
                         }
                     }
+
                     //------ WIZARD STOPS HERE ---- INVOKES METHODS DIRECTLY --------//
 
                     // #2 load tables (IPickTablesDialog)
@@ -716,7 +717,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             };
 
             // If the wizard is driving then it's implementation of the interface will be used.
-            var modelDialog = wizardArgs?.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
+            var modelDialog = wizardArgs.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
             modelDialog.ApplyPresets(presets);
 
             var allowedTemplates = reverseEngineerHelper.CalculateAllowedTemplates(options.CodeGenerationMode);

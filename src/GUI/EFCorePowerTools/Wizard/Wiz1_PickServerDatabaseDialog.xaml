@@ -21,6 +21,13 @@
     </i:Interaction.Triggers>
 
     <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Resources\Style.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -185,13 +192,14 @@
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Margin="0,0,5,0" IsEnabled="False" Width="70" xml:space="preserve">&lt; Previous</Button>
-            <Button Margin="0,0,5,0" x:Name="NextButton" Click="NextButton_Click"  Width="70" xml:space="preserve" IsDefault="True">_Next &gt;</Button>
-            <Button Margin="0,0,5,0" IsTabStop="False"  Width="70"
-                             ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
-                             Content="{x:Static locale:ReverseEngineerLocale.Add}"
-                             Command="{Binding FilterSchemasCommand}"/>
-            <Button Margin="0,0,5,0" Click="CancelButton_Click" Width="70" IsCancel="True">_Cancel</Button>
+            <Button Style="{StaticResource NavButton}" Content="&lt; Previous" IsEnabled="False" />
+            <Button Style="{StaticResource NavButton}" Content="_Next &gt;" IsDefault="True"
+                    Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Add}" 
+                    ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
+                    Command="{Binding FilterSchemasCommand}"/>
+            <Button Style="{StaticResource NavButton}" Content="Cancel"
+                    Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="2" x:Name="Statusbar"/>
     </Grid>

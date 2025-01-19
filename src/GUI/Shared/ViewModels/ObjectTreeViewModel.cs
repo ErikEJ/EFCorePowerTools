@@ -23,14 +23,12 @@ namespace EFCorePowerTools.ViewModels
             Func<ISchemaInformationViewModel> schemaInformationViewModelFactory,
             Func<ITableInformationViewModel> tableInformationViewModelFactory,
             Func<IColumnInformationViewModel> columnInformationViewModelFactory,
-            Func<IColumnChildrenViewModel> columnChildrenViewModelFactory
-            )
+            Func<IColumnChildrenViewModel> columnChildrenViewModelFactory)
         {
             this.schemaInformationViewModelFactory = schemaInformationViewModelFactory ?? throw new ArgumentNullException(nameof(schemaInformationViewModelFactory));
             this.tableInformationViewModelFactory = tableInformationViewModelFactory ?? throw new ArgumentNullException(nameof(tableInformationViewModelFactory));
             this.columnInformationViewModelFactory = columnInformationViewModelFactory ?? throw new ArgumentNullException(nameof(columnInformationViewModelFactory));
             this.columnChildrenViewModelFactory = columnChildrenViewModelFactory ?? throw new ArgumentNullException(nameof(columnChildrenViewModelFactory));
-
         }
 
         public event EventHandler ObjectSelectionChanged;
