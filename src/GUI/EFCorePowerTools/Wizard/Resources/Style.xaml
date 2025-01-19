@@ -7,6 +7,8 @@
         <Setter Property="Margin" Value="0,0,5,0"/>
         <Setter Property="Width" Value="70"/>
     </Style>
+    
+    <!-- Wizard Page 2 -->
     <Style x:Key="TableSelectionCheckBoxStyle" TargetType="CheckBox">
         <Setter Property="Margin" Value="0, 0, 0, 0"/>
         <Setter Property="Padding" Value="0, 0, 0, 0"/>
@@ -53,4 +55,8 @@
         <Setter Property="Cursor" Value="Hand" />
     </Style>
 
+    <!-- Wizard Page 3 -->
+    
+    
+    
 </ResourceDictionary>
