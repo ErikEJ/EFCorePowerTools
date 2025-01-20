@@ -2,67 +2,95 @@
 
 Reverse engineering and model visualization tools for EF Core in Visual Studio 2022.
 
-The beta process aims to improve the developer UX
+The Reverse Engineering (experimental) process aims to improve the developer UX
 
 [Main README.md](README.md)
 
 # Reverse Engineering Wizard
-The following video demonstrates the wizard at work.  Don't be distracted by its current design as XAML can be easily configured 
-to look as required.  At this point, it is a POC to demonstrate that a wizard can be used within the existing EFCorePowerTools 
-project.  The code for the wizard comes from the [Microsoft WPF-Samples](https://github.com/microsoft/WPF-Samples) project [Windows/Wizard folder] which was slightly refactored for our purposes.
+Below is a 20k foot overview of the four wizard pages that comprise the wizard steps.  It is beyond the scope of this
+document to go into great detail, however topics that impacted the development process will be addressed.
 
-Where the patterns and design are subject to discussion and approval, the proposed path would be to use the Model-View-Presenter, View-Model [MPV-VM] pattern which is described below.  However, unlike true MVP-VM, the view's code-behind logic may remain intact to minimize the refactor effort; with MVP-VM the view does not contain business logic.
+<img src="img/UML-Wizard.png"/> 
 
-https://github.com/user-attachments/assets/8a4cd041-92eb-4a54-baf2-ae7ce30055c1
+Figure 1
 
-The sequence diagram below is a high level view of the wizard's primary classes.  Note that the location of each
-class within the solution is located below each timeline box (in gray), e.g., RegEngWizardhandler.cs is located 
-under the solution's Shared / Handlers / Wizard folder.
-<img src="img/mvpvm-wizard.png"/>
-Figure 1 
+## Gap analysis
+During the gap analysis, with the goal of making as few code changes as possible, it was found that the 
+ReverseEngineerHandler was the main class that managed the loading of the primary view dialogs for the reverse
+engineering process.   
 
-# MVP-VM
-The pattern suggested for the proposed work is the Model-View-Presenter, View-Model pattern. The current design lends 
-itself to this because it isn't a true MVVM pattern; unlike MVVM, the existing handler performs much of the business logic 
-invoking business logic within each of the view's code-behind classes, thus effectively overcoming some MVVM limitations.
-Traditional MVVM is more a "widget" pattern that mirrors the MVC pattern (adapted for WPF).  With MVVM, the view and view 
-model contain all of the logic and as such cannot be easily reused because of the tight coupling between the view, view model, 
-and its logic layers. 
+Each of the three main view dialogs: PickServerDatabaseDialog, PickTableDialog, and EfCoreModalDialog, 
+had their own interfaces and view models.  The views handled the processing and returned results that would be used
+by the ReverseEngineerHandler to process subsequent views.
 
-Note: MVC evolved to the [Model-View-Presenter](https://www.wildcrest.com/Potel/Portfolio/mvp.pdf) pattern to overcome such 
-limitations. MVP-VM (like MVP) is more of a framework pattern which will required for our use case.
+The path forward was to copy the ReverseEngineerHandler, name the copy RevEngWizardHandler, and provide it an interface
+IReverseEngineerBll [using the handlers function names].  The wizard pages would simply see the implementation of
+IReverseEngineerBll as an instance that can later be easily replaced.  Currently, via the interface instance the wizard 
+pages are recursively invoking the methods on the handler - effectively reusing existing code.
 
-## Presenter (RevEngWizardHandler)
-The presenter has primary responsibility for communicating with the business logic layer to populate the view model(s).
-This pattern allows the views and view models to remain decoupled (lending to easier reuse and unit testing); Views
-and view models do not access the business and/or data layers directly.
-## Model 
-Business and data access layers compose the model (in the MVC days it might have been referred to as application model).  
-The presenter will use the business logic layer to populate the view models as required.   Under MVP-VM, the business 
-logic layer is the only component that communicate with the data access layer.
-## Views / View Models
-The view reflects the data that is on its view model. Outside of the UI behavior logic, there is generally no business 
-logic within the view code-behind using MVP-VM. Under MVP-VM it is easy to reuse views and view-models because of this decoupling. 
+To assist in maintaining state, and minimizing any code changes, the new WizardDataViewModel contains the 
+properties of the existing three view models, and provides an instance of a WizardEventArgs which is an EventArg 
+designed to maintain state, it is passed to each wizard page.  
 
-Note: for more indepth information on MVP-VM you can read my MSDN 2011 article [MVP-VM Design Pattern for WPF](https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/december/mvpvm-design-pattern-the-model-view-presenter-viewmodel-design-pattern-for-wpf) 
+The WizardDataViewModel is shared between all wizard pages.  Since all of the existing XAML (from the three view dialogs noted above) were copied to the new 
+pages with a "wiz" prefix, it effectively allowed the views to work with the new shared view model with no real code changes.
 
-## Proposed design
-The below use case diagram reflects the relationships between the existing, and new, components.
+### 20k foot process flow
+The RevEngWizardHandler (using Microsoft's wizard infrastructure) will hit Wiz1_PickServerDatabaseDialog resulting in the 
+OnPageVisible() function being invoked. As the [Next] button is clicked, the subsequent page OnPageVisible() will be 
+invoked which in turn invokes the applicable method on the implementation of the BLL instance [RevEngWizardHandler].
 
-<img src="img/mvpvm-uml.png"/>
+Note with the wiz3_EfCoreModelDialog view that we stray from this pattern.  Instead, we invoke NextButton_Click() 
+which in turn invokes the status page and then invokes the GenerateFiles_Click() function.  This is because we initially
+had only the three pages [consistent with original design].  Later, we added the status page which only needed to show 
+the results of the third page, so instead of refactoring the code the data was set on the shared WizardDataViewModel 
+which made it available on the last status page.
+
+### About OnPageVisible()...
+In a perfect world we would be able to tap into the page loaded event and start processing.  Unfortunately, like WinForms
+the WPF framework does not behave as expected once you put a load on it.  e.g., the wizard worked great until we 
+actually requested data.  Once there was a data request the UI froze (lower priority) and it wouldn't resume until
+the data processing was completed.   So upon clicking "Next", the page would not advance and you wouldn't see
+the helpful status bar message UNTIL the data process was complete, which wasn't very useful.
+
+In the WinForm world we could request a DoEvents() and it would give the UI a chance to breathe (catch up); there
+is an equivalent in the WPF world.  Instead of duplicating the wheel, I found an awesome StatusBar control by Rick Strahl
+on GitHub that did all the heavy lifting in a cool way.  I added the main bits to EFCorePowerTools project under the 
+Westwind.WPF.Statusbar folder since it wasn't going to be a plug'n play with NuGet.  This allowed me to make some minor 
+modifications so that the UI would have a chance to breathe, move to the next page, and refresh the statusbar, 
+BEFORE it started the heavy lifting - the Statusbar raises an event which invokes the OnPageVisible() event.  I also 
+tweaked Rick's code to give the UI a chance to breathe before continuing (a heavier WPF DoEvents process).   
+
+HOWEVER, great care needs to be taken that the status bar is not accessed while accessing the BLL asynchronously, we 
+can't be in a new thread switching back to the UI thread and have two threads using the UI thread at the same time - 
+age old issue with DoEvents and WPFs underpinnings - would be nice if they provided a safe OnPageVisible()...  To this
+purpose you'll find I keep the code very tight when I'm invoking the BLL code asynchronously in my OnPageVisible functions.
+Note that the BLL cannot access the status bar (reference code in red). 
+
+EFCorePowerTools wizard framework attempts to establish a pattern that takes this heavy lifting off our plate should 
+additional pages be required.
+
+<img src="img/asynctight.png"/>
+
 Figure 2
 
-# High level UML for current design 
+## Original Code UML
 These diagrams are not all inclusive, but will provide a high level view of applicable classes and primary processes invoked.
-## Page 1 - Choose Your Data Connection
+### Choose Your Data Connection (wiz pg 1)
+
 <img src="img/mvpvm-pg1.png"/>
+
 Figure 3
 
-## Page 2 - Choose Your Database Objects
+### Choose Your Database Objects (wiz pg 2)
+
 <img src="img/mvpvm-pg2.png"/>
+
 Figure 4
 
-## Page 3 - Choose Your Settings For Project
+### Choose Your Settings For Project (wiz pg 3)
+
 <img src="img/mvpvm-pg3.png"/>
+
 Figure 5
 
