@@ -8,7 +8,7 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Handlers.Wizard;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;

@@ -22,7 +22,6 @@ using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers;
 using EFCorePowerTools.Handlers.Compare;
 using EFCorePowerTools.Handlers.ReverseEngineer;
-using EFCorePowerTools.Handlers.Wizard;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.ItemWizard;
 using EFCorePowerTools.Locales;

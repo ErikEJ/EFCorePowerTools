@@ -15,7 +15,6 @@ using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
-using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
@@ -29,9 +28,9 @@ using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
 
-namespace EFCorePowerTools.Handlers.Wizard
+namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
-    internal class RevEngWizardHandler : IReverseEngineerBll
+    public class RevEngWizardHandler : IReverseEngineerBll
     {
         private readonly EFCorePowerToolsPackage package;
         private readonly ReverseEngineerHelper reverseEngineerHelper;
@@ -46,7 +45,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             vsDataHelper = new VsDataHelper();
         }
 
-        public async Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
+        public async System.Threading.Tasks.Task<(string OptionsPath, Project Project)> DropSqlprojOptionsAsync(List<Project> candidateProjects, string sqlProjectPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -93,7 +92,7 @@ namespace EFCorePowerTools.Handlers.Wizard
         }
 
         // Note: entry point for launching wizard [experimental] menu options
-        internal async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs wizardArgs)
+        public async Task ReverseEngineerCodeFirstLaunchWizardAsync(WizardEventArgs wizardArgs)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -141,12 +140,12 @@ namespace EFCorePowerTools.Handlers.Wizard
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
@@ -236,16 +235,16 @@ namespace EFCorePowerTools.Handlers.Wizard
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
-        public async Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, WizardEventArgs wizardArgs = null)
+        public async System.Threading.Tasks.Task ReverseEngineerCodeFirstAsync(Project project, string optionsPath, bool onlyGenerate, bool fromSqlProj = false, string uiHint = null, WizardEventArgs wizardArgs = null)
         {
             // Ensure that there is an instance of wizardArgs so that we don't have to
             // have extra logic checks for null downstream
@@ -429,16 +428,15 @@ namespace EFCorePowerTools.Handlers.Wizard
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
-        // Note: static method invoked by wizard page 3 (Wiz3_EfCoreModelDiagram)
         public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
         {
             var nuGetHelper = new NuGetHelper();
@@ -465,6 +463,190 @@ namespace EFCorePowerTools.Handlers.Wizard
             }
         }
 
+        // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
+        public async System.Threading.Tasks.Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
+
+            var stopWatch = Stopwatch.StartNew();
+
+            if (options.UseHandleBars || ((options.UseT4 || options.UseT4Split) && string.IsNullOrEmpty(options.T4TemplatePath)))
+            {
+                var result = ReverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    await VS.MessageBox.ShowAsync(
+                        "EF Core Power Tools",
+                        result,
+                        icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
+                        buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
+                }
+            }
+
+            options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
+
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
+
+            var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
+
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
+
+            var readmePath = string.Empty;
+            var finalText = string.Empty;
+            if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
+                && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
+            {
+                var readmeName = "PowerToolsReadMe.md";
+                var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
+
+                if (packages.Any())
+                {
+                    finalText = ReverseEngineerHelper.GetReadMeText(options, template, packages);
+                }
+                else
+                {
+                    finalText = ReverseEngineerHelper.GetReadMeText(options, template);
+                }
+
+                readmePath = Path.Combine(Path.GetTempPath(), readmeName);
+
+                finalText = ReverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
+
+                File.WriteAllText(readmePath, finalText, Encoding.UTF8);
+
+                if (revEngResult.HasIssues)
+                {
+                    if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
+                    {
+                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                    }
+
+                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                }
+                else
+                {
+                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+
+                    if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
+                    {
+                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                    }
+                }
+            }
+
+            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
+
+            stopWatch.Stop();
+
+            var errors = ReverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
+
+            var completedMessage = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss"));
+            await VS.StatusBar.ShowMessageAsync(completedMessage);
+
+            var messenger = await package.GetServiceAsync<IMessenger>();
+
+            messenger.Send(new ShowStatusbarMessage { Content = finalText, Message = completedMessage });
+
+            if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
+            {
+                Func<string, string, string> isNotEmptyProvideHeader = (str, header) =>
+                {
+                    if (string.IsNullOrEmpty(str) || string.IsNullOrEmpty(str.Trim()))
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return $"\r\n{header}:\r\n" + str;
+                    }
+                };
+
+                if (isCalledByWizard)
+                {
+                    string eWarnings = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityWarnings), "Warning");
+                    string eErrors = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityErrors), "Error");
+
+                    finalText = $"{eWarnings}{eErrors}"; // This will be surfaced to wizard.
+                }
+                else
+                {
+                    VSHelper.ShowMessage(errors);
+                }
+            }
+
+            if (revEngResult.EntityErrors.Any())
+            {
+                EFCorePowerToolsPackage.LogError(revEngResult.EntityErrors, null);
+            }
+
+            if (revEngResult.EntityWarnings.Any())
+            {
+                EFCorePowerToolsPackage.LogError(revEngResult.EntityWarnings, null);
+            }
+
+            Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
+            Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
+
+            return finalText;
+        }
+
+        private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
+        {
+            var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
+
+            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+        }
+
+        private static async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, CodeGenerationMode codeGenerationMode, SchemaInfo[] schemas)
+        {
+            if (dbInfo.DataConnection != null)
+            {
+                dbInfo.DataConnection.Open();
+                dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
+            }
+
+            var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
+            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+        }
+
+        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var dbInfo = new DatabaseConnectionModel();
+
+            if (!string.IsNullOrEmpty(options.ConnectionString))
+            {
+                dbInfo.ConnectionString = options.ConnectionString;
+                dbInfo.DatabaseType = options.DatabaseType;
+            }
+
+            if (!string.IsNullOrEmpty(options.Dacpac))
+            {
+                dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
+                dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
+                options.ConnectionString = dbInfo.ConnectionString;
+                options.DatabaseType = dbInfo.DatabaseType;
+
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
+                if (string.IsNullOrEmpty(options.Dacpac))
+                {
+                    VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
+                    return null;
+                }
+            }
+
+            if (dbInfo.DatabaseType == DatabaseType.Undefined)
+            {
+                VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
+                return null;
+            }
+
+            return dbInfo;
+        }
+
         private async Task<bool> ChooseDataBaseConnectionByUiHintAsync(ReverseEngineerOptions options)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -481,12 +663,11 @@ namespace EFCorePowerTools.Handlers.Wizard
                 }
             }
 
-            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
-            if (dacpacList != null && dacpacList.Any() && !string.IsNullOrEmpty(options.UiHint)
-                    && options.UiHint.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
+            if (dacpacList != null && dacpacList.Any() && !string.IsNullOrEmpty(options.UiHint))
             {
                 var candidate = dacpacList
-                    .Where(m => !string.IsNullOrWhiteSpace(m) && m.EndsWith(".sqlproj"))
+                    .Where(m => !string.IsNullOrWhiteSpace(m))
                     .FirstOrDefault(m => m.Equals(options.UiHint, StringComparison.OrdinalIgnoreCase));
 
                 if (candidate != null)
@@ -502,7 +683,7 @@ namespace EFCorePowerTools.Handlers.Wizard
         private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project, WizardEventArgs wizardArgs = null)
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
-            var dacpacList = await SqlProjHelper.GetDacpacFilesInActiveSolutionAsync();
+            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
 
             // If the wizard is driving then it's implementation of the interface will be used.
             var psd = wizardArgs?.PickServerDatabaseDialog ?? package.GetView<IPickServerDatabaseDialog>();
@@ -568,42 +749,6 @@ namespace EFCorePowerTools.Handlers.Wizard
             return true;
         }
 
-        private async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            var dbInfo = new DatabaseConnectionModel();
-
-            if (!string.IsNullOrEmpty(options.ConnectionString))
-            {
-                dbInfo.ConnectionString = options.ConnectionString;
-                dbInfo.DatabaseType = options.DatabaseType;
-            }
-
-            if (!string.IsNullOrEmpty(options.Dacpac))
-            {
-                dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
-                options.ConnectionString = dbInfo.ConnectionString;
-                options.DatabaseType = dbInfo.DatabaseType;
-
-                options.Dacpac = await SqlProjHelper.BuildSqlProjAsync(options.Dacpac);
-                if (string.IsNullOrEmpty(options.Dacpac))
-                {
-                    VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
-                    return null;
-                }
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Undefined)
-            {
-                VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
-                return null;
-            }
-
-            return dbInfo;
-        }
-
         // Note: invoked by page 2 of the wizard (Wiz2_PickTablesDialog)
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
         {
@@ -637,7 +782,7 @@ namespace EFCorePowerTools.Handlers.Wizard
 
             if (options.Tables?.Count > 0)
             {
-                var normalizedTables = reverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
+                var normalizedTables = ReverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
                 preselectedTables.AddRange(normalizedTables);
             }
 
@@ -794,137 +939,7 @@ namespace EFCorePowerTools.Handlers.Wizard
             return true;
         }
 
-        // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
-        public async Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
-
-            var stopWatch = Stopwatch.StartNew();
-
-            if (options.UseHandleBars || ((options.UseT4 || options.UseT4Split) && string.IsNullOrEmpty(options.T4TemplatePath)))
-            {
-                var result = reverseEngineerHelper.DropTemplates(options.OptionsPath, options.ProjectPath, options.CodeGenerationMode, options.UseHandleBars, options.SelectedHandlebarsLanguage);
-                if (!string.IsNullOrEmpty(result))
-                {
-                    await VS.MessageBox.ShowAsync(
-                        "EF Core Power Tools",
-                        result,
-                        icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
-                        buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
-                }
-            }
-
-            options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
-
-            var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
-
-            var readmePath = string.Empty;
-            var finalText = string.Empty;
-            if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
-                && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
-            {
-                var readmeName = "PowerToolsReadMe.md";
-                var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
-
-                if (packages.Any())
-                {
-                    finalText = reverseEngineerHelper.GetReadMeText(options, template, packages);
-                }
-                else
-                {
-                    finalText = reverseEngineerHelper.GetReadMeText(options, template);
-                }
-
-                readmePath = Path.Combine(Path.GetTempPath(), readmeName);
-
-                finalText = reverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
-
-                File.WriteAllText(readmePath, finalText, Encoding.UTF8);
-
-                if (revEngResult.HasIssues)
-                {
-                    if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
-                    {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                    }
-
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                }
-                else
-                {
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
-
-                    if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
-                    {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                    }
-                }
-            }
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 4, 4);
-
-            stopWatch.Stop();
-
-            var errors = reverseEngineerHelper.ReportRevEngErrors(revEngResult, missingProviderPackage);
-
-            var completedMessage = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss"));
-            await VS.StatusBar.ShowMessageAsync(completedMessage);
-
-            var messenger = await package.GetServiceAsync<IMessenger>();
-
-            messenger.Send(new ShowStatusbarMessage { Content = finalText, Message = completedMessage });
-
-            if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
-            {
-                Func<string, string, string> isNotEmptyProvideHeader = (str, header) =>
-                {
-                    if (string.IsNullOrEmpty(str) || string.IsNullOrEmpty(str.Trim()))
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        return $"\r\n{header}:\r\n" + str;
-                    }
-                };
-
-                if (isCalledByWizard)
-                {
-                    string eWarnings = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityWarnings), "Warning");
-                    string eErrors = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityErrors), "Error");
-
-                    finalText = $"{eWarnings}{eErrors}"; // This will be surfaced to wizard.
-                }
-                else
-                {
-                    VSHelper.ShowMessage(errors);
-                }
-            }
-
-            if (revEngResult.EntityErrors.Any())
-            {
-                package.LogError(revEngResult.EntityErrors, null);
-            }
-
-            if (revEngResult.EntityWarnings.Any())
-            {
-                package.LogError(revEngResult.EntityWarnings, null);
-            }
-
-            Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
-            Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
-
-            return finalText;
-        }
-
-        // Note: invoked by page 3 of wizard (Wiz_EfCoreModelDialog)
-        public async Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
+        public async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
             if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {
@@ -976,25 +991,6 @@ namespace EFCorePowerTools.Handlers.Wizard
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 await project.AddExistingFilesAsync(new List<string> { renamingOptions.Item2 }.ToArray());
             }
-        }
-
-        private async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
-        {
-            var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
-
-            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
-        }
-
-        private async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, CodeGenerationMode codeGenerationMode, SchemaInfo[] schemas)
-        {
-            if (dbInfo.DataConnection != null)
-            {
-                dbInfo.DataConnection.Open();
-                dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
-            }
-
-            var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, schemas);
-            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
     }
 }
