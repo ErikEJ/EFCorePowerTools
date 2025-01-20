@@ -3,11 +3,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingTester.Models
+namespace ScaffoldingTester.Models;
+
+public partial class ProductsAboveAveragePrice
 {
-    public partial class ProductsAboveAveragePrice
-    {
-        public string ProductName { get; set; }
-        public decimal? UnitPrice { get; set; }
-    }
+    public string ProductName { get; set; }
+
+    public decimal? UnitPrice { get; set; }
 }

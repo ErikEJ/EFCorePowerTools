@@ -13,5 +13,7 @@ namespace RevEng.Core.Abstractions
         public virtual bool UseAsyncCalls { get; set; }
         public virtual bool UseSchemaNamespaces { get; set; }
         public virtual bool UseDecimalDataAnnotation { get; set; }
+        public virtual bool UsePascalIdentifiers { get; set; }
+        public virtual bool UseInternalAccessModifier { get; set; }
     }
 }

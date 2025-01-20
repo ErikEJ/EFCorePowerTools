@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
@@ -95,11 +96,13 @@ namespace RevEng.Common.Cli
                 MergeDacpacs = config.CodeGeneration.MergeDacpacs,
                 UseDecimalDataAnnotation = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
+                UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
+                UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
 
                 // Not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
-                OptionsPath = null, // handlebars support, will not support it
+                OptionsPath = null, // handlebars support, will not support it (looks like it is not used!)
 
                 // Not implemented:
                 UseNoDefaultConstructor = false, // not implemented, will consider if asked for
@@ -183,19 +186,28 @@ namespace RevEng.Common.Cli
                 ProjectRootNamespace = names.RootNamespace,
                 UseDecimalDataAnnotationForSprocResult = config.CodeGeneration.UseDecimalDataAnnotation,
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
+                UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
+                UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
 
                 // HandleBars templates are not supported:
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
-                OptionsPath = null, // handlebars support, will not support it
+                OptionsPath = null, // handlebars support, will not support it (not in use!) - [IgnoreDataMember]
 
                 // Not implemented:
                 UseNoDefaultConstructor = false, // not implemented, will consider if asked for
-                DefaultDacpacSchema = null, // not implemented, will consider if asked for
+                DefaultDacpacSchema = null, // not implemented, will consider if asked for - [IgnoreDataMember]
                 UseNoObjectFilter = false, // will add all objects and use exclusions to filter list - "refresh-object-lists" allows you to avoid this (switch to manual)
                 UseAsyncStoredProcedureCalls = true, // not implemented
                 FilterSchemas = false, // not implemented
-                Schemas = null, // not implemented
+                Schemas = null, // not implemented,
+
+                CodeGenerationMode = CodeGenerationMode.EFCore8, // not implemented/persisted
+
+                ConnectionString = null, // not persisted, set at runtime - [IgnoreDataMember]
+                DatabaseType = DatabaseType.Undefined, // not persisted, set at runtime - [IgnoreDataMember]
+                InstallNuGetPackage = false, // not persisted, set at runtime - [IgnoreDataMember]
+                UiHint = null, // not persisted, set in .user file
             };
 
             if (config.FileLayout is null)

@@ -16,8 +16,8 @@
   </ItemGroup>  
 
   <ItemGroup>
-    <Compile Include="..\efreveng60\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-    <Compile Include="..\efreveng60\Program.cs" Link="Program.cs" />
+    <Compile Include="..\efreveng80\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
+    <Compile Include="..\efreveng80\Program.cs" Link="Program.cs" />
   </ItemGroup>  
 
   <ItemGroup>

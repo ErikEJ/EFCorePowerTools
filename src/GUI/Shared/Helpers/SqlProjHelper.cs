@@ -19,7 +19,7 @@ namespace EFCorePowerTools.Helpers
                 uiHint = PathExtensions.GetRelativePath(projectDirectory, uiHint);
             }
 
-            if (Path.IsPathRooted(uiHint) || uiHint.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
+            if (Path.IsPathRooted(uiHint))
             {
                 return null;
             }
@@ -34,7 +34,9 @@ namespace EFCorePowerTools.Helpers
                 return uiHint;
             }
 
-            if (uiHint.EndsWith(".sqlproj", System.StringComparison.OrdinalIgnoreCase))
+            if (uiHint.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
+                || uiHint.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase)
+                || uiHint.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
             {
                 return PathHelper.GetAbsPath(uiHint, projectDirectory);
             }
@@ -42,7 +44,7 @@ namespace EFCorePowerTools.Helpers
             return uiHint;
         }
 
-        public static async Task<string[]> GetDacpacFilesInActiveSolutionAsync()
+        public static async Task<string[]> GetDacpacProjectsInActiveSolutionAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -58,15 +60,10 @@ namespace EFCorePowerTools.Helpers
                     continue;
                 }
 
-                if (item.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                if (await item.IsSqlDatabaseProjectAsync())
                 {
                     result.Add(item.FullPath);
                     continue;
-                }
-
-                if (await item.IsMsBuildSqlProjOrMsBuildSqlProjectAsync())
-                {
-                    AddFiles(result, Path.GetDirectoryName(item.FullPath), "*.dacpac");
                 }
 
                 try
@@ -86,11 +83,12 @@ namespace EFCorePowerTools.Helpers
 
             return result
                 .Where(s => s.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase))
+                .Concat(result.Where(s => s.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase)))
                 .Concat(result.Where(s => s.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase)))
                 .ToArray();
         }
 
-        public static async Task<string> BuildSqlProjAsync(string sqlprojPath)
+        public static async Task<string> BuildSqlProjectAsync(string sqlprojPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -105,18 +103,9 @@ namespace EFCorePowerTools.Helpers
                 return null;
             }
 
-            var assemblyPath = await project.GetOutPutAssemblyPathAsync();
-
-            var searchPath = Path.GetDirectoryName(assemblyPath);
-
-            if (string.IsNullOrEmpty(searchPath))
-            {
-                searchPath = Path.Combine(Path.GetDirectoryName(project.FullPath), "bin");
-            }
-
             if (!await VS.Build.ProjectIsUpToDateAsync(project))
             {
-                var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Rebuild);
+                var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Build);
 
                 if (!ok)
                 {
@@ -124,32 +113,14 @@ namespace EFCorePowerTools.Helpers
                 }
             }
 
-            if (!Directory.Exists(searchPath))
-            {
-                return null;
-            }
+            var dacpacPath = await project.GetDacpacPathAsync();
 
-            var files = Directory.GetFiles(searchPath, "*.dacpac", SearchOption.AllDirectories)
-                .Where(f => !f.EndsWith("\\msdb.dacpac", StringComparison.OrdinalIgnoreCase)
-                    && !f.EndsWith("\\master.dacpac", StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            if (files.Count == 1)
+            if (!string.IsNullOrEmpty(dacpacPath))
             {
-                return files[0];
+                return dacpacPath;
             }
 
             throw new InvalidOperationException("Dacpac build failed, please pick the file manually");
-        }
-
-        private static void AddFiles(HashSet<string> result, string path, string pattern)
-        {
-            var searchPath = Path.Combine(path, "bin");
-
-            foreach (var file in Directory.GetFiles(searchPath, pattern, SearchOption.AllDirectories))
-            {
-                result.Add(file);
-            }
         }
 
         private static async System.Threading.Tasks.Task LinkedFilesSearchAsync(IEnumerable<SolutionItem> projectItems, HashSet<string> files)
@@ -166,11 +137,14 @@ namespace EFCorePowerTools.Helpers
                 if (item.Type == SolutionItemType.PhysicalFile)
                 {
                     var file = item as PhysicalFile;
-                    var fullPath = file.FullPath;
+                    var fullPath = file.Parent?.FullPath;
 
-                    if (file.Extension == ".dacpac" && !string.IsNullOrEmpty(fullPath))
+                    if (file.Extension == ".dacpac"
+                        && !string.IsNullOrEmpty(fullPath)
+                        && !string.IsNullOrEmpty(file.FullPath)
+                        && !fullPath.StartsWith(Path.GetDirectoryName(file.FullPath), StringComparison.OrdinalIgnoreCase))
                     {
-                        files.Add(fullPath);
+                        files.Add(file.FullPath);
                     }
                 }
             }

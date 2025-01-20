@@ -8,27 +8,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>TRACE;CORE60;CORE80;CORE90</DefineConstants>
+    <DefineConstants>TRACE;CORE90</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\RevEng.Core.60\*.cs" Link="%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Routines\Extensions\*.cs" Link="Routines\Extensions\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Routines\Functions\*.cs" Link="Routines\Functions\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Routines\Procedures\*.cs" Link="Routines\Procedures\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.60\Diagram\*.cs" Link="Diagram\%(Filename)%(Extension)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\RevEng.Core.60\CustomTemplateFileService.cs" />
-    <Compile Remove="..\RevEng.Core.60\PatchedSqlServerDatabaseModelFactory.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\RevEng.Core.80\DabBuilder.cs" Link="DabBuilder.cs" />
-    <Compile Include="..\RevEng.Core.80\PatchedSqlServerDatabaseModelFactory.cs" Link="PatchedSqlServerDatabaseModelFactory.cs" />
-    <Compile Include="..\RevEng.Core.80\SqlServerTypeMappingSource.cs" Link="SqlServerTypeMappingSource.cs" />
+    <Compile Include="..\RevEng.Core.80\*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\Extensions\*.cs" Link="Routines\Extensions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\Functions\*.cs" Link="Routines\Functions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\Procedures\*.cs" Link="Routines\Procedures\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Diagram\*.cs" Link="Diagram\%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,25 +27,28 @@
 
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
-<!--    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="8.0.0" />
-    <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="8.0.1" />
-    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="11.0.0" />-->
+    <!--<PackageReference Include="EFCore.Snowflake" Version="8.0.8" />-->
+    <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="9.0.0-beta1" />
+    <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="9.1.0" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="12.0.0-beta1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.2.24474.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-rc.2.24474.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="9.0.0-rc.2.24474.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.0-rc.2.24474.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-rc.2.24474.1" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="9.0.0-rc.2" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="9.0.0-rc.2" />
-<!--    <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.23.50" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="8.0.2" />-->
-    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="9.0.0-rc.1.24451.1" />
-    <PackageReference Include="System.CodeDom" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
+    <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="9.0.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="9.0.2" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.60" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0-preview.2.efcore.9.0.0" />
+    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="9.0.0" />
+    <PackageReference Include="System.CodeDom" Version="9.0.1" />
+    <PackageReference Include="UnicodeInformation" Version="2.7.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\..\GUI\RevEng.Shared\RevEng.Common.csproj" />
   </ItemGroup>

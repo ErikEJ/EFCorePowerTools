@@ -10,9 +10,9 @@ using NuGet.Versioning;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
-    public class NupkgExtractor
+    public static class NupkgExtractor
     {
-        public async Task ExtractNupgkAsync(string packageId, string version, DirectoryInfo directory)
+        public static async Task ExtractNupgkAsync(string packageId, string version, DirectoryInfo directory)
         {
             var logger = NullLogger.Instance;
             var cancellationToken = CancellationToken.None;

@@ -29,8 +29,9 @@ namespace EFCorePowerTools
         public const uint cmdidServerExplorerDiagram = 258;
         public const uint cmdidServerExplorerAnalyze = 260;
 
-        // Config file (efpt.config.json) context menu
+        // Config file (efpt.config.json/dab-config.json) context menu
         public const uint cmdidReverseEngineerEdit = 0x1101;
         public const uint cmdidReverseEngineerRefresh = 0x1102;
+        public const uint cmdidDabStart = 0x1103;
     }
 }

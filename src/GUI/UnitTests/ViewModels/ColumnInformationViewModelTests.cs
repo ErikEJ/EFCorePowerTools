@@ -204,7 +204,7 @@ namespace UnitTests.ViewModels
             ClassicAssert.AreSame(vm.Name, vm.NewName);
         }
 
-        private ColumnInformationViewModel CreateViewModel()
+        private static ColumnInformationViewModel CreateViewModel()
         {
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();

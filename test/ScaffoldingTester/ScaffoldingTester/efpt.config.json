@@ -15,6 +15,9 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "ExcludedIndexes": [
+            "PK_Categories"
+         ],
          "Name": "[dbo].[Categories]",
          "ObjectType": 0
       },
@@ -164,6 +167,7 @@
    "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": true,
    "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": false,
    "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseDecimalDataAnnotationForSprocResult": true,
@@ -182,5 +186,6 @@
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": false,
-   "UseT4": false
+   "UseT4": false,
+   "UseT4Split": false
 }

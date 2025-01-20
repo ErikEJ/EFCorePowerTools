@@ -47,6 +47,9 @@
     <Content Include="..\..\GUI\lib\T4_900.zip" Link="T4_900.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\GUI\lib\T4_900_Split.zip" Link="T4_900_Split.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\efcpt.8\efcpt-readme.md" Link="efcpt-readme.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -57,9 +60,9 @@
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="NuGet.Protocol" Version="6.11.1" />
+    <PackageReference Include="NuGet.Protocol" Version="6.12.1" />
     <PackageReference Include="Spectre.Console" Version="0.49.1" />
-    <PackageReference Include="System.IO.Abstractions" Version="21.1.3" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.2.1" />
   </ItemGroup>
 
   <ItemGroup>

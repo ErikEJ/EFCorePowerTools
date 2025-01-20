@@ -102,7 +102,7 @@
       <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
-      <Version>4.2.2</Version>
+      <Version>4.3.2</Version>
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter">
       <Version>4.6.0</Version>

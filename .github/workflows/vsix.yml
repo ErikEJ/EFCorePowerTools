@@ -27,7 +27,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.306'
+        dotnet-version: '9.0.100'
 
     - name: Update Version
       run: |
@@ -41,43 +41,36 @@ jobs:
       run: dotnet restore EFCorePowerTools.sln
       working-directory: src
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
-
     - name: Build reveng tools
+      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
-        cd ${{ github.workspace}}\src\Core\efreveng60
-        call ${{ github.workspace}}\src\Core\efreveng60\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}\src\Core\efreveng80
         call ${{ github.workspace}}\src\Core\efreveng80\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}\src\Core\efreveng90
         call ${{ github.workspace}}\src\Core\efreveng90\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}
 
-    - name: Extract and verify efreveng60.exe.zip file count
-      shell: cmd
-      run: |
-        mkdir vsix
-        7z x src/GUI/lib/efreveng60.exe.zip -oefreveng60 -y
-        dir /a:-d /s /b "efreveng60" | find /c ":\" > filecount.txt
-        findstr "158" filecount.txt
-
     - name: Extract and verify efreveng80.exe.zip file count
+      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
         mkdir vsix
         7z x src/GUI/lib/efreveng80.exe.zip -oefreveng80 -y
         dir /a:-d /s /b "efreveng80" | find /c ":\" > filecount.txt
-        findstr "157" filecount.txt
+        findstr "165" filecount.txt
 
     - name: Extract and verify efreveng90.exe.zip file count
+      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
           mkdir vsix
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
-          findstr "143" filecount.txt
+          findstr "150" filecount.txt
+
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v2
 
     - name: Build
       run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
@@ -89,7 +82,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix -ovsix -y
         dir /a:-d /s /b "vsix" | find /c ":\" > filecount.txt
-        findstr "81" filecount.txt
+        findstr "77" filecount.txt
 
     - name: Move build output
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')

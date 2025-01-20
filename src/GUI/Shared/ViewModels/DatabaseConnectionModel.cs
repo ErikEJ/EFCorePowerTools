@@ -67,9 +67,10 @@ namespace EFCorePowerTools.Common.Models
                             return "<null>";
                         }
 
-                        if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase))
+                        if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase)
+                            || FilePath.EndsWith(".csproj", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return $"{Path.GetFileNameWithoutExtension(FilePath)} (.dacpac)";
+                            return $"{Path.GetFileNameWithoutExtension(FilePath)} (SQL Project)";
                         }
 
                         if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
@@ -97,13 +98,7 @@ namespace EFCorePowerTools.Common.Models
                         {
                             return "<null>";
                         }
-
-                        if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            return FilePath;
-                        }
-
-                        if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
+                        else
                         {
                             return FilePath;
                         }

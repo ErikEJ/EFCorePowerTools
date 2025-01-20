@@ -81,7 +81,7 @@ namespace EFCorePowerTools.ViewModels
         {
             return Objects
                 .Where(c => c.IsSelected.Value)
-                .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name).ToList(), null));
+                .Select(m => new SerializationTableModel(m.ModelDisplayName, m.ObjectType, m.Columns.Where(c => !c.IsSelected.Value).Select(c => c.Name).ToList(), m.ExcludedIndexes?.ToList() ?? null));
         }
 
         public IEnumerable<Schema> GetRenamedObjects()
@@ -254,6 +254,7 @@ namespace EFCorePowerTools.ViewModels
             foreach (var obj in Objects)
             {
                 var t = objects.FirstOrDefault(m => m.Name == obj.ModelDisplayName);
+                obj.ExcludedIndexes = t?.ExcludedIndexes ?? null;
                 obj.SetSelectedCommand.Execute(t != null);
                 if (obj.ObjectType.HasColumns() && obj.IsSelected.Value)
                 {

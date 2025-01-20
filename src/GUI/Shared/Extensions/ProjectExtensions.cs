@@ -46,6 +46,20 @@ namespace EFCorePowerTools.Extensions
             }
         }
 
+        public static async Task<string> GetDacpacPathAsync(this Project project)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            var assemblyName = await project.GetAttributeAsync("SqlTargetPath");
+
+            if (string.IsNullOrEmpty(assemblyName))
+            {
+                assemblyName = await project.GetAttributeAsync("TargetPath");
+            }
+
+            return assemblyName;
+        }
+
         public static async Task<string> GetOutPutAssemblyPathAsync(this Project project)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -54,7 +68,6 @@ namespace EFCorePowerTools.Extensions
 
             var assemblyNameExe = assemblyName + ".exe";
             var assemblyNameDll = assemblyName + ".dll";
-            var assemblyNameDacpac = assemblyName + ".dacpac";
 
             var outputPath = await GetOutputPathAsync(project);
 
@@ -71,11 +84,6 @@ namespace EFCorePowerTools.Extensions
             if (File.Exists(Path.Combine(outputPath, assemblyNameDll)))
             {
                 return Path.Combine(outputPath, assemblyNameDll);
-            }
-
-            if (File.Exists(Path.Combine(outputPath, assemblyNameDacpac)))
-            {
-                return Path.Combine(outputPath, assemblyNameDacpac);
             }
 
             return null;
@@ -246,8 +254,8 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
-            return await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync()
-                || project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase);
+            return project.FullPath.EndsWith(".sqlproj", StringComparison.OrdinalIgnoreCase)
+                || await project.IsMsBuildSqlProjOrMsBuildSqlProjectAsync();
         }
 
         public static async Task<bool> IsMsBuildSqlProjOrMsBuildSqlProjectAsync(this Project project)
@@ -257,7 +265,7 @@ namespace EFCorePowerTools.Extensions
                 return false;
             }
 
-            // Supports older and current MsBuild.Sdk.SqlProj projects and new SQLProject projects
+            // Supports older and current MsBuild.Sdk.SqlProj projects and new Microsoft.Build.Sql projects
             return project.IsCapabilityMatch("CSharp & CPS & (MSBuild.Sdk.SqlProj.BuildTSqlScript | SQLProject)")
                 || (project.IsCSharpProjectPlain() && !string.IsNullOrEmpty(await project.GetAttributeAsync("SqlServerVersion")));
         }
@@ -270,13 +278,6 @@ namespace EFCorePowerTools.Extensions
                 || IsNet70(targetFrameworkMonikers)
                 || IsNet80(targetFrameworkMonikers)
                 || IsNet90(targetFrameworkMonikers);
-        }
-
-        public static async Task<bool> IsNet70OnlyAsync(this Project project)
-        {
-            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-            return IsNet70(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNetStandardAsync(this Project project)
@@ -360,7 +361,7 @@ namespace EFCorePowerTools.Extensions
         {
             string result = null;
 
-            project.GetItemInfo(out IVsHierarchy hierarchy, out uint itemId, out _);
+            project.GetItemInfo(out IVsHierarchy hierarchy, out uint _, out _);
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

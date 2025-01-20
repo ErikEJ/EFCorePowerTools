@@ -20,7 +20,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly string revengRoot;
         private readonly string exeName;
         private readonly string zipName;
-        private readonly ResultDeserializer resultDeserializer;
 
         public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
         {
@@ -34,10 +33,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 case CodeGenerationMode.EFCore6:
                     revengVersion = "6";
-                    break;
-
-                case CodeGenerationMode.EFCore7:
-                    revengVersion = "7";
                     break;
 
                 case CodeGenerationMode.EFCore8:
@@ -59,7 +54,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             revengRoot = revengFolder;
 
             revengFolder += versionSuffix;
-            resultDeserializer = new ResultDeserializer();
         }
 
         public static async Task<ReverseEngineerResult> LaunchExternalRunnerAsync(ReverseEngineerOptions options, CodeGenerationMode codeGenerationMode)
@@ -120,6 +114,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
                 UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
                 UsePrefixNavigationNaming = options.UsePrefixNavigationNaming,
+                UseDatabaseNamesForRoutines = options.UseDatabaseNamesForRoutines,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);
@@ -203,7 +198,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var standardOutput = await RunProcessAsync(startInfo);
 
-            return resultDeserializer.BuildDiagramResult(standardOutput);
+            return ResultDeserializer.BuildDiagramResult(standardOutput);
         }
 
         private async Task<List<TableModel>> GetTablesInternalAsync(string arguments)
@@ -212,7 +207,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var standardOutput = await RunProcessAsync(startInfo);
 
-            return resultDeserializer.BuildTableResult(standardOutput);
+            return ResultDeserializer.BuildTableResult(standardOutput);
         }
 
         private async Task<ProcessStartInfo> CreateStartInfoAsync(string arguments)
@@ -264,7 +259,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 // Ignore
             }
 
-            return resultDeserializer.BuildResult(standardOutput);
+            return ResultDeserializer.BuildResult(standardOutput);
         }
 
         private async Task<bool> IsDotnetInstalledAsync(string version)

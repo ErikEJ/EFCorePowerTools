@@ -25,15 +25,20 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.306'
+        dotnet-version: '9.0.100'
 
-    - name: Package CLI 6
-      run: dotnet pack src\Core\efcpt.6\efcpt.6.csproj -p:PackageVersion=6.1.${{ env.VERSION }}-nightly -p:InformationalVersion=6.1.${{ env.VERSION }}-nightly
+    - name: Build CLI 8
+      run: dotnet build src\Core\efcpt.8\efcpt.8.csproj
+
+    - name: Build CLI 9
+      run: dotnet build src\Core\efcpt.9\efcpt.9.csproj
   
     - name: Package CLI 8
+      if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
 
     - name: Package CLI 9
+      if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
       
     - name: Core test project

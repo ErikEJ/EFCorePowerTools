@@ -49,6 +49,8 @@ namespace RevEng.Core
 
             var databaseType = string.Empty;
 
+            var entityTypeNames = new HashSet<string>();
+
             switch (options.DatabaseType)
             {
                 case DatabaseType.Undefined:
@@ -112,6 +114,13 @@ namespace RevEng.Core
 
                 var type = GenerateEntityName(dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
 
+                if (entityTypeNames.Contains(type))
+                {
+                    type = $"{dbObject.Schema}{type}";
+                }
+
+                entityTypeNames.Add(type);
+
                 if (dbObject.PrimaryKey != null)
                 {
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab add \"{type}\" --source \"[{dbObject.Schema}].[{dbObject.Name}]\" --fields.include \"{columnList}\" --permissions \"anonymous:*\" ");
@@ -135,6 +144,13 @@ namespace RevEng.Core
                     .Select(c => c.Name).ToList());
 
                 var type = GenerateEntityName(dbObject.Name.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
+
+                if (entityTypeNames.Contains(type))
+                {
+                    type = $"{type}View";
+                }
+
+                entityTypeNames.Add(type);
 
                 if (dbObject.PrimaryKey == null)
                 {

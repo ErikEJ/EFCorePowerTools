@@ -12,16 +12,9 @@ using RevEng.Common;
 
 namespace EFCorePowerTools.Handlers
 {
-    internal class DacpacAnalyzerHandler
+    internal static class DacpacAnalyzerHandler
     {
-        private readonly EFCorePowerToolsPackage package;
-
-        public DacpacAnalyzerHandler(EFCorePowerToolsPackage package)
-        {
-            this.package = package;
-        }
-
-        public async Task GenerateAsync(string path, bool isConnectionString)
+        public static async Task GenerateAsync(string path, bool isConnectionString)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             try
@@ -31,12 +24,12 @@ namespace EFCorePowerTools.Handlers
                 string dacpacPath;
                 if (isConnectionString)
                 {
-                    var builder = new SqlConnectionStringBuilderHelper().GetBuilder(path);
+                    var builder = SqlConnectionStringBuilderHelper.GetBuilder(path);
                     dacpacPath = builder.ConnectionString;
                 }
                 else
                 {
-                    dacpacPath = await SqlProjHelper.BuildSqlProjAsync(path);
+                    dacpacPath = await SqlProjHelper.BuildSqlProjectAsync(path);
                 }
 
                 await VS.StatusBar.ShowProgressAsync("Generating DACPAC Analysis report...", 2, 3);
@@ -54,7 +47,7 @@ namespace EFCorePowerTools.Handlers
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
             finally
             {
@@ -62,18 +55,18 @@ namespace EFCorePowerTools.Handlers
             }
         }
 
-        private async Task<string> GetDacpacReportAsync(string path, bool isConnectionString)
+        private static async Task<string> GetDacpacReportAsync(string path, bool isConnectionString)
         {
             var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
             return await launcher.GetReportPathAsync(path, isConnectionString);
         }
 
-        private void OpenWebBrowser(string path)
+        private static void OpenWebBrowser(string path)
         {
             Process.Start(path);
         }
 
-        private async Task OpenVsWebBrowserAsync(string path)
+        private static async Task OpenVsWebBrowserAsync(string path)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

@@ -25,6 +25,41 @@ namespace EFCorePowerTools.Handlers
             this.project = project;
         }
 
+        public static List<Tuple<string, string>> BuildModelResult(string modelInfo)
+        {
+            var result = new List<Tuple<string, string>>();
+
+            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var context in contexts)
+            {
+                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (context.IndexOf("DebugView:", StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    continue;
+                }
+
+                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
+                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
+            }
+
+            return result;
+        }
+
         public static async Task<string> RunProcessAsync(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
@@ -71,41 +106,6 @@ namespace EFCorePowerTools.Handlers
         public Task<string> GetOutputAsync(string outputPath, GenerationType generationType, string contextName)
         {
             return GetOutputInternalAsync(outputPath, generationType, contextName, null);
-        }
-
-        public List<Tuple<string, string>> BuildModelResult(string modelInfo)
-        {
-            var result = new List<Tuple<string, string>>();
-
-            var contexts = modelInfo.Split(new[] { "DbContext:" + Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var context in contexts)
-            {
-                if (context.StartsWith("info:", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (context.StartsWith("dbug:", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (context.StartsWith("warn:", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                if (context.IndexOf("DebugView:", StringComparison.OrdinalIgnoreCase) < 0)
-                {
-                    continue;
-                }
-
-                var parts = context.Split(new[] { "DebugView:" + Environment.NewLine }, StringSplitOptions.None);
-                result.Add(new Tuple<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1].Trim() : string.Empty));
-            }
-
-            return result;
         }
 
         private static string FixExtension(string startupOutputPath)
@@ -237,8 +237,6 @@ namespace EFCorePowerTools.Handlers
 
             var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
 
-            var isNet7 = await project.IsNet70OnlyAsync();
-
             if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt60.exe.zip", RevEng.Common.CodeGenerationMode.EFCore6);
@@ -246,14 +244,6 @@ namespace EFCorePowerTools.Handlers
             else if (versionInfo.Item2.StartsWith("8.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt80.exe.zip", RevEng.Common.CodeGenerationMode.EFCore8);
-            }
-            else if (!isNet7 && versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt70.exe.zip", RevEng.Common.CodeGenerationMode.EFCore7);
-            }
-            else if (isNet7 && versionInfo.Item2.StartsWith("7.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt70sc.exe.zip", RevEng.Common.CodeGenerationMode.EFCore7);
             }
             else if (versionInfo.Item2.StartsWith("9.", StringComparison.OrdinalIgnoreCase))
             {

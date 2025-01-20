@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseBuild", "DatabaseBu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostgresTester", "PostgresTester\PostgresTester.csproj", "{6494E379-EA19-4FBE-88FD-5ED13E154C1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.Dacpac.Chinook", "Chinook\ErikEJ.Dacpac.Chinook.csproj", "{2C2610B4-C031-4837-8193-53015185689D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6494E379-EA19-4FBE-88FD-5ED13E154C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2610B4-C031-4837-8193-53015185689D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2610B4-C031-4837-8193-53015185689D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C2610B4-C031-4837-8193-53015185689D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2610B4-C031-4837-8193-53015185689D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

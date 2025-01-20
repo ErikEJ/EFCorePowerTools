@@ -41,8 +41,38 @@ namespace RevEng.Common
                 case "FirebirdSql.EntityFrameworkCore.Firebird":
                     return DatabaseType.Firebird;
 
+                case "EFCore.Snowflake":
+                    return DatabaseType.Snowflake;
+
                 default:
                     return DatabaseType.Undefined;
+            }
+        }
+
+        public static string ToDatabaseShortName(this DatabaseType databaseType)
+        {
+            switch (databaseType)
+            {
+                case DatabaseType.Undefined:
+                    return "Undefined";
+                case DatabaseType.SQLServer:
+                    return "mssql";
+                case DatabaseType.SQLite:
+                    return "sqlite";
+                case DatabaseType.Npgsql:
+                    return "npgsql";
+                case DatabaseType.Mysql:
+                    return "mysql";
+                case DatabaseType.Oracle:
+                    return "oracle";
+                case DatabaseType.SQLServerDacpac:
+                    return "mssql";
+                case DatabaseType.Firebird:
+                    return "firebird";
+                case DatabaseType.Snowflake:
+                    return "snowflake";
+                default:
+                    return "Undefined";
             }
         }
 
@@ -99,18 +129,20 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
             {
-                var pkgVersion = "7.0.20";
+                var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.35";
+                        pkgVersion = "6.0.36";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.10";
+                        pkgVersion = "8.0.12";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.0-rc.2.24474.1";
+                        pkgVersion = "9.0.1";
                         break;
+                    default:
+                        throw new NotImplementedException();
                 }
 
                 packages.Add(new NuGetPackage
@@ -136,7 +168,6 @@ namespace RevEng.Common
 
                 if (useNodaTime)
                 {
-                    pkgVersion = "7.1.0";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
@@ -146,6 +177,12 @@ namespace RevEng.Common
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.1";
                             break;
+
+                        case CodeGenerationMode.EFCore9:
+                            pkgVersion = "9.0.0";
+                            break;
+
+                        default: throw new NotImplementedException();
                     }
 
                     packages.Add(new NuGetPackage
@@ -160,7 +197,6 @@ namespace RevEng.Common
 
                 if (useHierarchyId)
                 {
-                    pkgVersion = "4.0.0";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
@@ -169,6 +205,11 @@ namespace RevEng.Common
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
                             break;
+                        case CodeGenerationMode.EFCore9:
+                            pkgVersion = "9.0.0";
+                            break;
+
+                        default: throw new NotImplementedException();
                     }
 
                     if (codeGenerationMode == CodeGenerationMode.EFCore8
@@ -198,7 +239,6 @@ namespace RevEng.Common
 
                 if (useDateOnlyTimeOnly)
                 {
-                    pkgVersion = "7.0.10";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
@@ -206,8 +246,7 @@ namespace RevEng.Common
                             break;
                     }
 
-                    if (codeGenerationMode == CodeGenerationMode.EFCore6
-                        || codeGenerationMode == CodeGenerationMode.EFCore7)
+                    if (codeGenerationMode == CodeGenerationMode.EFCore6)
                     {
                         packages.Add(new NuGetPackage
                         {
@@ -235,18 +274,20 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.SQLite)
             {
-                var pkgVersion = "7.0.20";
+                var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.35";
+                        pkgVersion = "6.0.36";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.10";
+                        pkgVersion = "8.0.12";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.0-rc.2.24474.1";
+                        pkgVersion = "9.0.1";
                         break;
+
+                    default: throw new NotImplementedException();
                 }
 
                 packages.Add(new NuGetPackage
@@ -260,7 +301,6 @@ namespace RevEng.Common
 
                 if (useNodaTime)
                 {
-                    pkgVersion = "7.0.0";
                     switch (codeGenerationMode)
                     {
                         case CodeGenerationMode.EFCore6:
@@ -270,6 +310,12 @@ namespace RevEng.Common
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
                             break;
+
+                        case CodeGenerationMode.EFCore9:
+                            pkgVersion = "9.1.0";
+                            break;
+
+                        default: throw new NotImplementedException();
                     }
 
                     packages.Add(new NuGetPackage
@@ -285,18 +331,20 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Npgsql)
             {
-                var pkgVersion = "7.0.11";
+                var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.0.29";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.10";
+                        pkgVersion = "8.0.11";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.0-rc.2";
+                        pkgVersion = "9.0.2";
                         break;
+
+                    default: throw new NotImplementedException();
                 }
 
                 packages.Add(new NuGetPackage
@@ -335,7 +383,7 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Mysql)
             {
-                var pkgVersion = "7.0.0";
+                var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
@@ -345,6 +393,12 @@ namespace RevEng.Common
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.1";
                         break;
+
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.0-preview.2.efcore.9.0.0";
+                        break;
+
+                    default: throw new NotImplementedException();
                 }
 
                 packages.Add(new NuGetPackage
@@ -371,15 +425,20 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Oracle)
             {
-                var pkgVersion = "7.21.13";
+                var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
                         pkgVersion = "6.21.160";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.60";
+                        pkgVersion = "8.23.50";
                         break;
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.23.60";
+                        break;
+
+                    default: throw new NotImplementedException();
                 }
 
                 packages.Add(new NuGetPackage
@@ -394,7 +453,7 @@ namespace RevEng.Common
 
             if (databaseType == DatabaseType.Firebird)
             {
-                var pkgVersion = "10.0.0";
+                var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore6:
@@ -404,6 +463,12 @@ namespace RevEng.Common
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "11.0.0";
                         break;
+
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "12.0.0-beta1";
+                        break;
+
+                    default: throw new NotImplementedException();
                 }
 
                 packages.Add(new NuGetPackage
@@ -413,6 +478,28 @@ namespace RevEng.Common
                     DatabaseTypes = new List<DatabaseType> { databaseType },
                     IsMainProviderPackage = true,
                     UseMethodName = "Firebird",
+                });
+            }
+
+            if (databaseType == DatabaseType.Snowflake)
+            {
+                var pkgVersion = string.Empty;
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.8";
+                        break;
+
+                    default: throw new NotImplementedException();
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "EFCore.Snowflake",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Snowflake",
                 });
             }
 
@@ -491,6 +578,10 @@ namespace RevEng.Common
                 {
                     "FirebirdSql.EntityFrameworkCore.Firebird",
                     new List<string> { "firebird" }
+                },
+                {
+                    "EFCore.Snowflake",
+                    new List<string> { "snowflake" }
                 },
             };
         }

@@ -66,7 +66,7 @@ namespace EFCorePowerTools.Handlers.Compare
                         return;
                     }
 
-                    if (version.Major != 6 && version.Major != 7 && version.Major != 8)
+                    if (version.Major != 6 && version.Major != 7 && version.Major != 8 && version.Major != 9)
                     {
                         VSHelper.ShowError(CompareLocale.VersionSupported);
                         return;
@@ -84,8 +84,13 @@ namespace EFCorePowerTools.Handlers.Compare
                     }
                     else if (version.Major == 8)
                     {
-                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 1, 0));
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 2, 0));
                         nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(8, 0, 0));
+                    }
+                    else if (version.Major == 9)
+                    {
+                        nugetHelper.InstallPackage("EfCore.SchemaCompare", project, new NuGetVersion(8, 2, 0));
+                        nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(9, 0, 0));
                     }
 
                     VSHelper.ShowError(CompareLocale.InstallingEfCoreSchemaCompare);
@@ -166,16 +171,16 @@ namespace EFCorePowerTools.Handlers.Compare
             {
                 foreach (var innerException in ae.Flatten().InnerExceptions)
                 {
-                    package.LogError(new List<string>(), innerException);
+                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
                 }
             }
             catch (Exception exception)
             {
-                package.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
             }
         }
 
-        private async Task<IEnumerable<string>> GetDbContextTypesAsync(string outputPath, Project project)
+        private static async Task<IEnumerable<string>> GetDbContextTypesAsync(string outputPath, Project project)
         {
             var processLauncher = new ProcessLauncher(project);
 
@@ -191,7 +196,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new InvalidOperationException(processResult);
             }
 
-            var modelResults = processLauncher.BuildModelResult(processResult);
+            var modelResults = ProcessLauncher.BuildModelResult(processResult);
             var result = new List<string>();
 
             foreach (var modelResult in modelResults)
@@ -202,7 +207,7 @@ namespace EFCorePowerTools.Handlers.Compare
             return result;
         }
 
-        private async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(
+        private static async Task<IEnumerable<CompareLogModel>> GetComparisonResultAsync(
             string outputPath,
             Project project,
             DatabaseConnectionModel connection,
@@ -222,7 +227,7 @@ namespace EFCorePowerTools.Handlers.Compare
                 throw new InvalidOperationException(processResult);
             }
 
-            var modelResults = processLauncher.BuildModelResult(processResult);
+            var modelResults = ProcessLauncher.BuildModelResult(processResult);
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<List<CompareLogModel>>(modelResults[0].Item2);
         }

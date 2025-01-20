@@ -221,7 +221,7 @@
           "type": "boolean",
           "default": false,
           "title": "Customize code using T4 templates including EntityTypeConfiguration.t4.  This cannot be used in combination with use-t4 or split-dbcontext-preview"
-      },
+        },
         "remove-defaultsql-from-bool-properties": {
           "type": "boolean",
           "title": "Remove SQL default from bool columns to avoid them being bool?"
@@ -267,6 +267,16 @@
         "use-prefix-navigation-naming": {
           "type": "boolean",
           "title": "Use prefix based naming of navigations with EF Core 8 or later"
+        },
+        "use-database-names-for-routines": {
+          "type": "boolean",
+          "title": "Use stored procedure, stored procedure result and function names from the database",
+          "default": true
+        },
+        "use-internal-access-modifiers-for-sprocs-and-functions": {
+          "type": "boolean",
+          "title": "When generating the stored procedure and function classes and helpers, set them to internal instead of public.",
+          "default": false
         }
       }
     },

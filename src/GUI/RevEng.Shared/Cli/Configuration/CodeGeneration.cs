@@ -53,6 +53,10 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("use-database-names")]
         public bool UseDatabaseNames { get; set; }
 
+        [JsonPropertyOrder(125)]
+        [JsonPropertyName("use-database-names-for-routines")]
+        public bool UseDatabaseNamesForRoutines { get; set; } = true;
+
         [JsonPropertyOrder(130)]
         [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
         public bool UseDecimalDataAnnotation { get; set; } = true;
@@ -62,31 +66,35 @@ namespace RevEng.Common.Cli.Configuration
         public bool UseInflector { get; set; } = true;
 
         [JsonPropertyOrder(150)]
+        [JsonPropertyName("use-internal-access-modifiers-for-sprocs-and-functions")]
+        public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
+
+        [JsonPropertyOrder(160)]
         [JsonPropertyName("use-legacy-inflector")]
         public bool UseLegacyInflector { get; set; }
 
-        [JsonPropertyOrder(160)]
+        [JsonPropertyOrder(170)]
         [JsonPropertyName("use-many-to-many-entity")]
         public bool UseManyToManyEntity { get; set; }
 
-        [JsonPropertyOrder(170)]
+        [JsonPropertyOrder(180)]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("use-no-navigations-preview")]
         public bool UseNoNavigationsPreview { get; set; }
 
-        [JsonPropertyOrder(180)]
+        [JsonPropertyOrder(190)]
         [JsonPropertyName("use-nullable-reference-types")]
         public bool UseNullableReferenceTypes { get; set; } = true;
 
-        [JsonPropertyOrder(190)]
+        [JsonPropertyOrder(200)]
         [JsonPropertyName("use-prefix-navigation-naming")]
         public bool UsePrefixNavigationNaming { get; set; }
 
-        [JsonPropertyOrder(200)]
+        [JsonPropertyOrder(210)]
         [JsonPropertyName("use-t4")]
         public bool UseT4 { get; set; }
 
-        [JsonPropertyOrder(210)]
+        [JsonPropertyOrder(220)]
         [JsonPropertyName("use-t4-split")]
         public bool UseT4Split { get; set; }
     }

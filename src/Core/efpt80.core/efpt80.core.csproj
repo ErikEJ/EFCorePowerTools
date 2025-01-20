@@ -7,18 +7,11 @@
     <RootNamespace>Modelling</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>TRACE;DEBUG;CORE60;EFCOMPARE</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\efpt60.core\*.cs">
-      <Link>%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
 
    <ItemGroup>
      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
-     <PackageReference Include="EfCore.SchemaCompare" Version="8.1.0" />
+     <PackageReference Include="EfCore.SchemaCompare" Version="8.2.0" />
    </ItemGroup>
 
 </Project>

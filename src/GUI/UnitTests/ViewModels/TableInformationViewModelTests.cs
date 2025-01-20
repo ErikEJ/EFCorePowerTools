@@ -276,14 +276,14 @@ namespace UnitTests.ViewModels
             ClassicAssert.AreSame(vm.Name, vm.NewName);
         }
 
-        private TableInformationViewModel CreateViewModel()
+        private static TableInformationViewModel CreateViewModel()
         {
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();
             return new TableInformationViewModel(messenger.Object);
         }
 
-        private ColumnInformationViewModel CreateColumnViewModel(string name, bool isPrimaryKey = false, bool isForeignKey = false)
+        private static ColumnInformationViewModel CreateColumnViewModel(string name, bool isPrimaryKey = false, bool isForeignKey = false)
         {
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();

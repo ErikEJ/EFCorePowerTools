@@ -154,7 +154,7 @@ namespace EFCorePowerTools.Helpers
             {
                 var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
                 return providerManager != null &&
-                    providerManager.Providers.TryGetValue(id, out IVsDataProvider provider);
+                    providerManager.Providers.TryGetValue(id, out IVsDataProvider _);
             }
             catch
             {
@@ -243,14 +243,14 @@ namespace EFCorePowerTools.Helpers
                         }
                         catch (Exception ex)
                         {
-                            package.LogError(new List<string> { ex.Message }, ex);
+                            EFCorePowerToolsPackage.LogError(new List<string> { ex.Message }, ex);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                package.LogError(new List<string> { ex.Message }, ex);
+                EFCorePowerToolsPackage.LogError(new List<string> { ex.Message }, ex);
             }
 
             try
@@ -262,7 +262,7 @@ namespace EFCorePowerTools.Helpers
             }
             catch (Exception ex)
             {
-                package.LogError(new List<string> { ex.Message }, ex);
+                EFCorePowerToolsPackage.LogError(new List<string> { ex.Message }, ex);
             }
 
             return databaseList;
@@ -348,7 +348,7 @@ namespace EFCorePowerTools.Helpers
 
         private static string PathFromConnectionString(string connectionString)
         {
-            var builder = new SqlConnectionStringBuilderHelper().GetBuilder(connectionString);
+            var builder = SqlConnectionStringBuilderHelper.GetBuilder(connectionString);
 
             var database = builder.InitialCatalog;
             if (string.IsNullOrEmpty(database) && !string.IsNullOrEmpty(builder.AttachDBFilename))

@@ -275,11 +275,9 @@ namespace Dgml
             // PropertyAccessMode: Field
             var properties = new List<string>();
             var links = new List<string>();
-            int i = 0;
 
             foreach (var navigation in navigations)
             {
-                i++;
                 var trim = navigation.Trim();
 
                 var parts = trim.Split(' ').ToList();

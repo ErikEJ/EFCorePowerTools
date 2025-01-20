@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using RevEng.Common;
+using RevEng.Core;
 
 #nullable enable
 namespace Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
@@ -83,6 +84,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
     private string? _version;
+    private DataverseModelFactoryExtension? _dataverse;
 
     /// <summary>
     ///     This is an internal API that supports the Entity Framework Core infrastructure and not subject to
@@ -123,6 +125,11 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
         var databaseModel = new DatabaseModel();
 
         var connectionStartedOpen = connection.State == ConnectionState.Open;
+
+        // Avoid multiple login prompts for Dataverse by authenticating once with the Dataverse service client
+        // and reusing the access token for the TDS Endpoint connection as well.
+        DataverseModelFactoryExtension.TryCreate(connection, out _dataverse);
+
         if (!connectionStartedOpen)
         {
             connection.Open();
@@ -699,13 +706,20 @@ AND [v].[is_date_correlation_view] = 0
         // This is done separately due to MARS property may be turned off
         GetColumns(connection, tables, tableFilterSql, viewFilter, typeAliases, databaseCollation);
 
-        GetIndexes(connection, tables, tableFilterSql);
-
-        GetForeignKeys(connection, tables, tableFilterSql);
-
-        if (SupportsTriggers())
+        if (_dataverse != null)
         {
-            GetTriggers(connection, tables, tableFilterSql);
+            _dataverse.GetDataverseMetadata(tables);
+        }
+        else
+        {
+            GetIndexes(connection, tables, tableFilterSql);
+
+            GetForeignKeys(connection, tables, tableFilterSql);
+
+            if (SupportsTriggers())
+            {
+                GetTriggers(connection, tables, tableFilterSql);
+            }
         }
 
         foreach (var table in tables)

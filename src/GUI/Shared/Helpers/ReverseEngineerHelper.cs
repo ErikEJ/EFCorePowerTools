@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using EFCorePowerTools.Contracts.ViewModels;
-using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Locales;
 using RevEng.Common;
 
@@ -14,7 +13,7 @@ namespace EFCorePowerTools.Helpers
 {
     public class ReverseEngineerHelper
     {
-        public List<SerializationTableModel> NormalizeTables(List<SerializationTableModel> tables, bool shouldFix)
+        public static List<SerializationTableModel> NormalizeTables(List<SerializationTableModel> tables, bool shouldFix)
         {
             var result = new List<SerializationTableModel>();
             foreach (var table in tables)
@@ -31,12 +30,12 @@ namespace EFCorePowerTools.Helpers
             return result;
         }
 
-        public void DropT4Templates(string projectPath)
+        public static void DropT4Templates(string projectPath)
         {
             DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore8, false);
         }
 
-        public string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
+        public static string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
             string t4Version = "703";
@@ -48,11 +47,11 @@ namespace EFCorePowerTools.Helpers
                     case CodeGenerationMode.EFCore6:
                         zipName = "CodeTemplates600.zip";
                         break;
-                    case CodeGenerationMode.EFCore7:
-                        zipName = "CodeTemplates700.zip";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         zipName = "CodeTemplates800.zip";
+                        break;
+                    case CodeGenerationMode.EFCore9:
+                        zipName = "CodeTemplates900.zip";
                         break;
                     default:
                         throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
@@ -62,9 +61,6 @@ namespace EFCorePowerTools.Helpers
             {
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore7:
-                        t4Version = "703";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         t4Version = "800";
                         break;
@@ -137,67 +133,7 @@ namespace EFCorePowerTools.Helpers
             return string.Empty;
         }
 
-        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
-        {
-            var list = new List<CodeGenerationItem>();
-
-            if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
-            {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6" });
-            }
-
-            if (minimumVersion.Major >= 8)
-            {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore7, Value = "EF Core 7" });
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9 (preview)" });
-            }
-
-            if (!list.Any())
-            {
-                return (codeGenerationMode, list);
-            }
-
-            var firstMode = list.Select(i => i.Key).First();
-
-            if (!list.Exists(i => i.Key == (int)codeGenerationMode))
-            {
-                codeGenerationMode = (CodeGenerationMode)firstMode;
-            }
-
-            return (codeGenerationMode, list);
-        }
-
-        public IList<TemplateTypeItem> CalculateAllowedTemplates(CodeGenerationMode codeGenerationMode)
-        {
-            var list = new List<TemplateTypeItem>();
-
-            if (codeGenerationMode == CodeGenerationMode.EFCore7
-                || codeGenerationMode == CodeGenerationMode.EFCore8)
-            {
-                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
-                list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
-                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
-                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
-                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
-            }
-            else if (codeGenerationMode == CodeGenerationMode.EFCore6)
-            {
-                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
-                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
-            }
-            else if (codeGenerationMode == CodeGenerationMode.EFCore9)
-            {
-                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
-                list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
-                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
-            }
-
-            return list;
-        }
-
-        public string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
+        public static string ReportRevEngErrors(ReverseEngineerResult revEngResult, string missingProviderPackage)
         {
             var errors = new StringBuilder();
             if (revEngResult.EntityErrors.Count == 0)
@@ -228,14 +164,14 @@ namespace EFCorePowerTools.Helpers
             return errors.ToString();
         }
 
-        public string GetReadMeText(ReverseEngineerOptions options, string content)
+        public static string GetReadMeText(ReverseEngineerOptions options, string content)
         {
             return content.Replace("[ProviderName]", GetProviderName(options.DatabaseType))
                 .Replace("[ConnectionString]", options.ConnectionString.Replace(@"\", @"\\"))
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
-        public string GetReadMeText(ReverseEngineerOptions options, string content, List<NuGetPackage> packages)
+        public static string GetReadMeText(ReverseEngineerOptions options, string content, List<NuGetPackage> packages)
         {
             var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
                 .Select(p => $"Use{p.UseMethodName}()").ToList();
@@ -253,7 +189,7 @@ namespace EFCorePowerTools.Helpers
                 .Replace("[ContextName]", options.ContextClassName);
         }
 
-        public string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
+        public static string AddResultToFinalText(string finalText, ReverseEngineerResult revEngResult)
         {
             if (revEngResult.HasIssues)
             {
@@ -280,12 +216,64 @@ namespace EFCorePowerTools.Helpers
             return finalText;
         }
 
-        public bool IsDirectoryEmpty(string path)
+        public static bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
         }
 
-        private string ReplaceFirst(string text, string search, string replace)
+        public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
+        {
+            var list = new List<CodeGenerationItem>();
+
+            if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
+            {
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6 (unsupported)" });
+            }
+
+            if (minimumVersion.Major >= 8)
+            {
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
+            }
+
+            if (!list.Any())
+            {
+                return (codeGenerationMode, list);
+            }
+
+            var firstMode = list.Select(i => i.Key).First();
+
+            if (!list.Exists(i => i.Key == (int)codeGenerationMode))
+            {
+                codeGenerationMode = (CodeGenerationMode)firstMode;
+            }
+
+            return (codeGenerationMode, list);
+        }
+
+        public IList<TemplateTypeItem> CalculateAllowedTemplates(CodeGenerationMode codeGenerationMode)
+        {
+            var list = new List<TemplateTypeItem>();
+
+            if (codeGenerationMode == CodeGenerationMode.EFCore8
+               || codeGenerationMode == CodeGenerationMode.EFCore9)
+            {
+                list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
+                list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
+            }
+            else if (codeGenerationMode == CodeGenerationMode.EFCore6)
+            {
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
+            }
+
+            return list;
+        }
+
+        private static string ReplaceFirst(string text, string search, string replace)
         {
             int pos = text.IndexOf(search);
             if (pos < 0)
@@ -296,7 +284,7 @@ namespace EFCorePowerTools.Helpers
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
-        private string GetProviderName(DatabaseType databaseType)
+        private static string GetProviderName(DatabaseType databaseType)
         {
             switch (databaseType)
             {
@@ -316,6 +304,8 @@ namespace EFCorePowerTools.Helpers
                     return "SqlServer";
                 case DatabaseType.Firebird:
                     return "Firebird";
+                case DatabaseType.Snowflake:
+                    return "Snowflake";
                 default:
                     return "[ProviderName]";
             }

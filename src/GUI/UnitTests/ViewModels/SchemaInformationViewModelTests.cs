@@ -103,7 +103,7 @@ namespace UnitTests.ViewModels
             ClassicAssert.IsNull(vm.IsSelected);
         }
 
-        private TableInformationViewModel CreateTable(string name)
+        private static TableInformationViewModel CreateTable(string name)
         {
             var messenger = new Mock<IMessenger>();
             messenger.SetupAllProperties();

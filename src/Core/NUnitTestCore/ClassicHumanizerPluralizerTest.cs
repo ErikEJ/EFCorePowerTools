@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using RevEng.Core;
 
 namespace UnitTests
@@ -12,7 +11,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Singularize("UserData");
 
-            ClassicAssert.AreEqual("UserDatum", result);
+            Assert.AreEqual("UserDatum", result);
         }
 
         [Test]
@@ -21,7 +20,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Pluralize("UserStatus");
 
-            ClassicAssert.AreEqual("UserStatuses", result);
+            Assert.AreEqual("UserStatuses", result);
         }
     }
 }

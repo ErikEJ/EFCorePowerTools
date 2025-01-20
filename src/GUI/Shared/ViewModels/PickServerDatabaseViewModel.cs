@@ -158,32 +158,28 @@ namespace EFCorePowerTools.ViewModels
         private void Loaded_Executed()
         {
             // Database connection first
-            if (DatabaseConnections.Any(c => c.FilePath == null) && SelectedDatabaseConnection == null)
+            var candidate = DatabaseConnections.FirstOrDefault(m =>
+                    m.FilePath == null
+                    && !string.IsNullOrEmpty(UiHint)
+                    && SelectedDatabaseConnection == null
+                    && m.ConnectionName.Equals(UiHint, StringComparison.OrdinalIgnoreCase));
+
+            if (candidate != null)
             {
-                if (!string.IsNullOrEmpty(UiHint))
-                {
-                    var candidate = DatabaseConnections
-                        .FirstOrDefault(m => m.ConnectionName == UiHint);
-
-                    if (candidate != null)
-                    {
-                        SelectedDatabaseConnection = candidate;
-                        return;
-                    }
-                }
-
-                SelectedDatabaseConnection = DatabaseConnections[0];
+                SelectedDatabaseConnection = candidate;
                 return;
             }
 
             // Database definitions (SQL project) second
-            if (DatabaseConnections.Any(c => c.FilePath != null && SelectedDatabaseConnection == null))
+            candidate = DatabaseConnections.FirstOrDefault(c =>
+                !string.IsNullOrWhiteSpace(c.FilePath)
+                && !string.IsNullOrEmpty(UiHint)
+                && SelectedDatabaseConnection == null
+                && c.FilePath.Equals(UiHint, StringComparison.OrdinalIgnoreCase));
+
+            if (candidate != null)
             {
-                SelectedDatabaseConnection = PreSelectDatabaseDefinition(UiHint);
-                if (SelectedDatabaseConnection is null && DatabaseConnections.Any())
-                {
-                    SelectedDatabaseConnection = DatabaseConnections[0];
-                }
+                SelectedDatabaseConnection = candidate;
             }
         }
 
@@ -321,26 +317,5 @@ namespace EFCorePowerTools.ViewModels
         }
 
         private bool FilterSchemas_CanExecute() => FilterSchemas;
-
-        private DatabaseConnectionModel PreSelectDatabaseDefinition(string uiHint)
-        {
-            var subset = DatabaseConnections
-                .Where(m => !string.IsNullOrWhiteSpace(m.FilePath) && m.FilePath.EndsWith(".sqlproj"))
-                .ToList();
-
-            if (!string.IsNullOrEmpty(uiHint) && uiHint.EndsWith(".sqlproj"))
-            {
-                var candidate = subset.Find(m => m.FilePath.Equals(uiHint));
-
-                if (candidate != null)
-                {
-                    return candidate;
-                }
-            }
-
-            return subset.Any()
-                       ? subset.OrderBy(m => Path.GetFileNameWithoutExtension(m.FilePath)).First()
-                       : null;
-        }
     }
 }
