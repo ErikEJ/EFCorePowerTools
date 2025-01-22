@@ -1,5 +1,4 @@
-﻿#region License
-/*
+﻿/*
  **************************************************************
  *  Author: Rick Strahl
  *          © West Wind Technologies, 2017
@@ -20,7 +19,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  **************************************************************
 */
-#endregion
 
 using System;
 using System.Windows.Threading;
@@ -39,7 +37,7 @@ namespace Westwind.Wpf.Statusbar.Utilities
     /// sequence is fired.
     ///
     /// More info:
-    /// https://weblog.west-wind.com/posts/2017/Jul/02/Debouncing-and-Throttling-Dispatcher-Events
+    /// https://weblog.west-wind.com/posts/2017/Jul/02/Debouncing-and-Throttling-Dispatcher-Events.
     /// </summary>
     internal class DebounceDispatcher
     {
@@ -58,9 +56,9 @@ namespace Westwind.Wpf.Statusbar.Utilities
         /// the  Action you pass to this method to debounce the event.
         /// </summary>
         /// <param name="interval">NotificationTimeout in Milliseconds.</param>
-        /// <param name="action">Action<object> to fire when debounced event fires</object></param>
-        /// <param name="param">optional parameter</param>
-        /// <param name="priority">optional priorty for the dispatcher</param>
+        /// <param name="action">Action.<object> to fire when debounced event fires</object></param>
+        /// <param name="param">optional parameter.</param>
+        /// <param name="priority">optional priorty for the dispatcher.</param>
         /// <param name="disp">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>
         internal void Debounce(
             int interval,
@@ -81,6 +79,7 @@ namespace Westwind.Wpf.Statusbar.Utilities
             // timer is recreated for each event and effectively
             // resets the timeout. Action only fires after timeout has fully
             // elapsed without other events firing in between
+#pragma warning disable SA1117 // Parameters should be on same line or separate lines
             timer = new DispatcherTimer(TimeSpan.FromMilliseconds(interval), priority,
                 (s, e) =>
             {
@@ -93,6 +92,7 @@ namespace Westwind.Wpf.Statusbar.Utilities
                 timer = null;
                 action.Invoke(param);
             }, disp);
+#pragma warning restore SA1117 // Parameters should be on same line or separate lines
 
             timer.Start();
         }
@@ -104,15 +104,12 @@ namespace Westwind.Wpf.Statusbar.Utilities
         ///
         /// Use Throttle where you need to ensure that events fire at given intervals.
         /// </summary>
-        /// <param name="interval">NotificationTimeout in Milliseconds</param>
-        /// <param name="action">Action<object> to fire when debounced event fires</object></param>
-        /// <param name="param">optional parameter</param>
-        /// <param name="priority">optional priorty for the dispatcher</param>
+        /// <param name="interval">NotificationTimeout in Milliseconds.</param>
+        /// <param name="action">Action.<object> to fire when debounced event fires</object></param>
+        /// <param name="param">optional parameter.</param>
+        /// <param name="priority">optional priorty for the dispatcher.</param>
         /// <param name="disp">optional dispatcher. If not passed or null CurrentDispatcher is used.</param>
-        internal void Throttle(int interval, Action<object> action,
-            object param = null,
-            DispatcherPriority priority = DispatcherPriority.ApplicationIdle,
-            Dispatcher disp = null)
+        internal void Throttle(int interval, Action<object> action, object param = null, DispatcherPriority priority = DispatcherPriority.ApplicationIdle, Dispatcher disp = null)
         {
             // kill pending timer and pending ticks
             timer?.Stop();
@@ -133,6 +130,7 @@ namespace Westwind.Wpf.Statusbar.Utilities
             }
 
             timer = new DispatcherTimer(TimeSpan.FromMilliseconds(interval), priority, (s, e) =>
+#pragma warning disable SA1117 // Parameters should be on same line or separate lines
             {
                 if (timer == null)
                 {
@@ -143,6 +141,7 @@ namespace Westwind.Wpf.Statusbar.Utilities
                 timer = null;
                 action.Invoke(param);
             }, disp);
+#pragma warning restore SA1117 // Parameters should be on same line or separate lines
 
             timer.Start();
             TimerStarted = curTime;

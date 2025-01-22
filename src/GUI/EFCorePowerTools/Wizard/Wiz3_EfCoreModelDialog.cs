@@ -29,8 +29,10 @@ namespace EFCorePowerTools.Wizard
         public Wiz3_EfCoreModelDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
+#pragma warning disable S125 // Sections of code should not be commented out
             // telemetryAccess.TrackPageView(nameof(EfCoreModelDialog));
             this.wizardView = wizardView;
+#pragma warning restore S125 // Sections of code should not be commented out
             this.wizardViewModel = viewModel;
 
             getDialogResultPg3 = () => viewModel.Model;
@@ -148,7 +150,9 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
+#pragma warning disable SA1202 // Elements should be ordered by access
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             return (true, getDialogResultPg3());
         }

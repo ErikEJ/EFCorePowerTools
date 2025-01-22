@@ -26,7 +26,9 @@ namespace EFCorePowerTools.Wizard
             WindowTitle = "Status";
         }
 
+#pragma warning disable SA1202 // Elements should be ordered by access
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             IsPageLoaded = wizardViewModel.IsPage4Initialized;
 

@@ -56,7 +56,6 @@ namespace EFCorePowerTools
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
         private readonly RevEngWizardHandler revEngWizardHandler;
-        // private readonly RevEngWizardHandler reverseEngineerHandler;
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly AboutHandler aboutHandler;
         private readonly CompareHandler compareHandler;

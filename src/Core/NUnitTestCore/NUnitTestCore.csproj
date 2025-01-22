@@ -6,14 +6,6 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;NU1903;NU1902</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;NU1903;NU1902</NoWarn>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="AdventureWorks2014.dacpac" />
     <None Remove="Aw2014Person.txt" />

@@ -22,7 +22,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>bin\Debug\EFCorePowerTools.xml</DocumentationFile>
-    <NoWarn>1573,1591,1712,CA1014</NoWarn>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -177,7 +176,6 @@
     <Content Include="Westwind.WPF.Statusbar\icon.png" />
     <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
     <None Include="Westwind.WPF.Statusbar\README.md" />
-    <None Include="Wizard\WizardUprade.qea" />
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
     <Resource Include="Resources\Table.png" />

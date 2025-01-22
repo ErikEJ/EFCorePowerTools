@@ -437,7 +437,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
+#pragma warning disable SA1204 // Static elements should appear before instance elements
         public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
+#pragma warning restore SA1204 // Static elements should appear before instance elements
         {
             var nuGetHelper = new NuGetHelper();
 
@@ -750,7 +752,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
         // Note: invoked by page 2 of the wizard (Wiz2_PickTablesDialog)
+#pragma warning disable SA1202 // Elements should be ordered by access
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

@@ -7,7 +7,9 @@ namespace EFCorePowerTools.Wizard
     {
         public WizardResult Result { get; }
 
+#pragma warning disable SA1201 // Elements should appear in the correct order
         public WizardReturnEventArgs(WizardResult result)
+#pragma warning restore SA1201 // Elements should appear in the correct order
         {
             Result = result;
         }

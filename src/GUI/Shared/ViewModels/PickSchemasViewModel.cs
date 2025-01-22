@@ -63,7 +63,9 @@ namespace EFCorePowerTools.ViewModels
             }
         }
 
+#pragma warning disable SA1201 // Elements should appear in the correct order
         private bool isSelected;
+#pragma warning restore SA1201 // Elements should appear in the correct order
         private bool isRemovedData;
 
         private void Ok_Executed()

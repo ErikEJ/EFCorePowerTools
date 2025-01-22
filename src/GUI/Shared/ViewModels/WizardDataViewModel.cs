@@ -42,7 +42,7 @@ namespace EFCorePowerTools.ViewModels
             this.credentialStore = credentialStore ?? throw new ArgumentNullException(nameof(credentialStore));
             this.serviceProvider = provider;
 
-            #region WizardPage1 - Configuration / database connection
+            // WizardPage1 - Configuration / database connection
             Page1LoadedCommand = new RelayCommand(Page1Loaded_Executed);
             AddDatabaseConnectionCommand = new RelayCommand(AddDatabaseConnection_Executed);
             AddAdhocDatabaseConnectionCommand = new RelayCommand(AddAdhocDatabaseConnection_Executed);
@@ -53,15 +53,13 @@ namespace EFCorePowerTools.ViewModels
             DatabaseConnections = [];
             Schemas = new List<SchemaInfo>();
             DatabaseConnections.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseConnections));
-            #endregion
 
-            #region WizardPage2 - Database Objects
+            // WizardPage2 - Database Objects
             ObjectTree = treeviewModel;
             ObjectTree.ObjectSelectionChanged += (s, e) => UpdateTableSelectionThreeState();
             SearchText = string.Empty;
-            #endregion
 
-            #region WizardPage3 - Modeling Options
+            // WizardPage3 - Modeling Options
             this.advancedModelingOptionsDialogFactory = advancedModelingOptionsDialogFactory;
 
             MayIncludeConnectionString = true;
@@ -77,9 +75,9 @@ namespace EFCorePowerTools.ViewModels
                 ReverseEngineerLocale.DbContextOnly,
                 ReverseEngineerLocale.EntityTypesOnly,
             ];
-            #endregion
         }
 
+#pragma warning disable SA1201 // Elements should appear in the correct order
         private readonly IServiceProvider serviceProvider;
         private readonly IVisualStudioAccess visualStudioAccess;
         private readonly ICredentialStore credentialStore;
@@ -112,8 +110,9 @@ namespace EFCorePowerTools.ViewModels
         public string OptionsPath { get; internal set; }
         public bool FromSqlProject { get; internal set; }
 
-        #region //-- WizardPage1 - Configuration and DatabaseObjects
+        // WizardPage1 - Configuration and DatabaseObjects
         public ObservableCollection<ConfigModel> Configurations { get; set; } = [];
+
         public ConfigModel SelectedConfiguration
         {
             get => selectedConfiguration;
@@ -364,8 +363,6 @@ namespace EFCorePowerTools.ViewModels
             SelectedDatabaseConnection = newDatabaseDefinition;
         }
 
-        // private bool Ok_CanExecute() => SelectedDatabaseConnection != null;
-
         private bool RemoveDatabaseConnection_CanExecute()
         {
             return SelectedDatabaseConnection != null && SelectedDatabaseConnection.FilePath == null;
@@ -407,13 +404,15 @@ namespace EFCorePowerTools.ViewModels
                        ? subset.OrderBy(m => Path.GetFileNameWithoutExtension(m.FilePath)).First()
                        : null;
         }
-        #endregion
 
-        #region //-- WizardPage2 - Database objects
+        // WizardPage2 - Database objects
         public bool IsPage2Initialized { get; set; }
         public RelayCommand Page2LoadedCommand { get; set; }
+
         private bool? tableSelectionThreeState;
+
         private string searchText;
+
         private SearchMode searchMode = SearchMode.Text;
 
         public IObjectTreeViewModel ObjectTree { get; set; }
@@ -502,16 +501,6 @@ namespace EFCorePowerTools.ViewModels
                 .ToArray();
         }
 
-        // private bool Ok_CanExecute()
-        //    => ObjectTree.GetSelectedObjects().Any(c => c.ObjectType.HasColumns())
-        // || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.Procedure)
-        // || ObjectTree.GetSelectedObjects().Any(c => c.ObjectType == ObjectType.ScalarFunction)
-
-        // private void Cancel_Executed()
-        // {
-        // CloseRequested?.Invoke(this, new CloseRequestedEventArgs(false));
-        // }
-
         private void HandleTableSelectionThreeStateChange(bool? selectionMode)
         {
             if (selectionMode == null)
@@ -544,9 +533,7 @@ namespace EFCorePowerTools.ViewModels
             TableSelectionThreeState = ObjectTree.GetSelectionState();
         }
 
-        #endregion
-
-        #region //-- WizardPage3 - Modeling Options / Advanced
+        // WizardPage3 - Modeling Options / Advanced
         public bool IsPage3Initialized { get; set; }
 
         public RelayCommand Page3LoadedCommand { get; set; }
@@ -699,12 +686,12 @@ namespace EFCorePowerTools.ViewModels
             Model.T4TemplatePath = advancedModelingOptionsResult.Payload.T4TemplatePath;
         }
 
-        #endregion
-
         public bool IsPage4Initialized { get; set; }
+
         public RelayCommand Page4LoadedCommand { get; set; }
 
         private string generateStatus = string.Empty;
+#pragma warning restore SA1201 // Elements should appear in the correct order
         public string GenerateStatus
         {
             get

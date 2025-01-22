@@ -18,12 +18,14 @@ namespace EFCorePowerTools.Wizard
         private string initStatusMessage;
         private StatusbarControl statusbarCtrl;
 
+#pragma warning disable SA1202 // Elements should be ordered by access
+
         protected IMessenger Messenger { get; set; }
         public bool IsPageLoaded { get; set; }
 
-        public WizardResultPageFunction(
-            WizardDataViewModel wizardViewModel,
-            IWizardView wizardView)
+#pragma warning disable SA1201 // Elements should appear in the correct order
+        public WizardResultPageFunction(WizardDataViewModel wizardViewModel, IWizardView wizardView)
+#pragma warning restore SA1201 // Elements should appear in the correct order
         {
             this.viewModel = wizardViewModel;
             DataContext = wizardViewModel;
@@ -119,6 +121,7 @@ namespace EFCorePowerTools.Wizard
         }
 
         public void BackButton_Click(object sender, RoutedEventArgs e)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             // Go to previous wizard page
             NavigationService?.GoBack();

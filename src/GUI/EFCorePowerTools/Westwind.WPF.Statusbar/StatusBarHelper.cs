@@ -29,7 +29,9 @@ namespace Westwind.Wpf.Statusbar
     public class StatusbarHelper
     {
         public event EventHandler<StatusbarEventArgs> StatusEvent;
+#pragma warning disable SA1201 // Elements should appear in the correct order
         private readonly DebounceDispatcher debounce = new DebounceDispatcher();
+#pragma warning restore SA1201 // Elements should appear in the correct order
 
         /// <summary>
         /// Gets or sets the textbox that holds the main status text  of the status bar.
@@ -62,9 +64,11 @@ namespace Westwind.Wpf.Statusbar
 
         /// <summary>
         /// Original Icon Height to reset to. If 0 uses value from XAML
-        /// If value is set to auto, 15 is used
+        /// If value is set to auto, 15 is used.
         /// </summary>
+#pragma warning disable SA1201 // Elements should appear in the correct order
         private double originalIconHeight = 0F;
+#pragma warning restore SA1201 // Elements should appear in the correct order
 
         /// <summary>
         /// Original Icon Height to reset to. If 0 uses value from XAML
@@ -106,6 +110,7 @@ namespace Westwind.Wpf.Statusbar
         /// </summary>
         private void CaptureInitialIconSize()
         {
+#pragma warning disable S1244 // Floating point numbers should not be tested for equality
             if (!double.IsNaN(originalIconHeight) && originalIconHeight != 0)
             {
                 StatusImage.Height = originalIconHeight;
@@ -118,7 +123,9 @@ namespace Westwind.Wpf.Statusbar
                     StatusImage.Height = 14F;
                 }
             }
+#pragma warning restore S1244 // Floating point numbers should not be tested for equality
 
+#pragma warning disable S1244 // Floating point numbers should not be tested for equality
             if (!double.IsNaN(originalIconWidth) && originalIconWidth != 0)
             {
                 StatusImage.Width = originalIconWidth;
@@ -131,22 +138,19 @@ namespace Westwind.Wpf.Statusbar
                     StatusImage.Width = StatusImage.Height;
                 }
             }
+#pragma warning restore S1244 // Floating point numbers should not be tested for equality
         }
 
-        #region High level Status Operations
-
         /// <summary>
-        /// Shows a success message with a green check icon for the timeout
+        /// Shows a success message with a green check icon for the timeout.
         /// </summary>
-        /// <param name="message">Message to display</param>
-        /// <param name="timeout">optional timeout. -1 means revert back to default icon after default timeout</param>
-        /// <param name="imageSource">Optional imageSource. Defaults to checkbox circle</param>
-        /// <param name="flashIcon">if true flashes the icon by briefly making it larger</param>
-        public void ShowStatusSuccess(
-            string message,
-            int timeout = -1,
-            ImageSource imageSource = null,
-            bool flashIcon = true)
+        /// <param name="message">Message to display.</param>
+        /// <param name="timeout">optional timeout. -1 means revert back to default icon after default timeout.</param>
+        /// <param name="imageSource">Optional imageSource. Defaults to checkbox circle.</param>
+        /// <param name="flashIcon">if true flashes the icon by briefly making it larger.</param>
+#pragma warning disable SA1202 // Elements should be ordered by access
+        public void ShowStatusSuccess(string message, int timeout = -1, ImageSource imageSource = null, bool flashIcon = true)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             if (timeout == -1)
             {
@@ -162,12 +166,12 @@ namespace Westwind.Wpf.Statusbar
         }
 
         /// <summary>
-        /// Displays an error message using common defaults for a timeout milliseconds
+        /// Displays an error message using common defaults for a timeout milliseconds.
         /// </summary>
-        /// <param name="message">Message to display</param>
+        /// <param name="message">Message to display.</param>
         /// <param name="timeout">optional timeout. -1 means return to default icon after timeout.</param>
-        /// <param name="imageSource">Optional imageSource. Defaults to red error triangle</param>
-        /// <param name="flashIcon">if true flashes the icon by briefly making it larger</param>
+        /// <param name="imageSource">Optional imageSource. Defaults to red error triangle.</param>
+        /// <param name="flashIcon">if true flashes the icon by briefly making it larger.</param>
         public void ShowStatusError(
             string message,
             int timeout = -1,
@@ -188,12 +192,12 @@ namespace Westwind.Wpf.Statusbar
         }
 
         /// <summary>
-        /// Displays an orange warning message using common defaults for a timeout milliseconds
+        /// Displays an orange warning message using common defaults for a timeout milliseconds.
         /// </summary>
-        /// <param name="message">Message to display</param>
-        /// <param name="timeout">optional timeout. -1 means revert back to default icon after default timeout</param>
-        /// <param name="imageSource">Optional imageSource. Defaults to orange warning triangle</param>
-        /// <param name="flashIcon">if true flashes the icon by briefly making it larger</param>
+        /// <param name="message">Message to display.</param>
+        /// <param name="timeout">optional timeout. -1 means revert back to default icon after default timeout.</param>
+        /// <param name="imageSource">Optional imageSource. Defaults to orange warning triangle.</param>
+        /// <param name="flashIcon">if true flashes the icon by briefly making it larger.</param>
         public void ShowStatusWarning(
             string message,
             int timeout = -1,
@@ -214,13 +218,13 @@ namespace Westwind.Wpf.Statusbar
         }
 
         /// <summary>
-        /// Displays an Progress message using common defaults including a spinning icon
+        /// Displays an Progress message using common defaults including a spinning icon.
         /// </summary>
-        /// <param name="message">Message to display</param>
-        /// <param name="timeout">optional timeout. -1 and 0 both mean no timeout</param>
-        /// <param name="imageSource">Optional imageSource. Defaults to spinning circle</param>
-        /// <param name="spin">Determines whether the icons should spin (true by default)</param>
-        /// <param name="flashIcon">If true flashes the icon when first displayed</param>
+        /// <param name="message">Message to display.</param>
+        /// <param name="timeout">optional timeout. -1 and 0 both mean no timeout.</param>
+        /// <param name="imageSource">Optional imageSource. Defaults to spinning circle.</param>
+        /// <param name="spin">Determines whether the icons should spin (true by default).</param>
+        /// <param name="flashIcon">If true flashes the icon when first displayed.</param>
         public void ShowStatusProgress(
             string message,
             int timeout = 0,
@@ -241,10 +245,6 @@ namespace Westwind.Wpf.Statusbar
             ShowStatus(message, timeout, imageSource, spin: spin, flashIcon: flashIcon);
         }
 
-        #endregion
-
-        #region Low Level Status Operations
-
         /// <summary>
         /// Low level ShowStatus method that handles all status operations
         /// and that is called from the higher level ShowStatusXXX methods.
@@ -255,7 +255,7 @@ namespace Westwind.Wpf.Statusbar
         /// </param>
         ///
         /// <param name="imageSource">Image source to render. You can use `StatusIcons.Default` for the default icons.</param>
-        /// <param name="spin">Spin icon</param>
+        /// <param name="spin">Spin icon.</param>
         /// <param name="flashIcon">if true flashes the icon by briefly making it larger.</param>
         /// <param name="noDispatcher">Status update occurs outside of the Dispatcher.</param>
         public void ShowStatus(
@@ -270,11 +270,12 @@ namespace Westwind.Wpf.Statusbar
             if (!noDispatcher)
             {
                 // run in a dispatcher here to force the UI to be updated before render cycle
+#pragma warning disable VSTHRD001 // Avoid legacy thread switching APIs
                 Dispatcher.CurrentDispatcher.Invoke(() => ShowStatusInternal(message, timeoutMs, imageSource, spin, flashIcon: flashIcon));
 
-                // BillKrat: Allow the page to refresh so we don't have to look at blank page while
-                //           the data loads
+                // BillKrat: Allow the page to refresh so we don't have to look at blank page while the data loads
                 Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+#pragma warning restore VSTHRD001 // Avoid legacy thread switching APIs
             }
             else
             {
@@ -288,7 +289,9 @@ namespace Westwind.Wpf.Statusbar
             int milliSeconds = 0,
             ImageSource imageSource = null,
             bool spin = false,
+#pragma warning disable S1172 // Unused method parameters should be removed
             bool noDispatcher = false,
+#pragma warning restore S1172 // Unused method parameters should be removed
             bool flashIcon = false)
         {
             if (imageSource == null)
@@ -314,12 +317,14 @@ namespace Westwind.Wpf.Statusbar
                 // debounce rather than delay so if something else displays
                 // a message the delay timer is 'reset'
                 debounce.Debounce(milliSeconds, (p) =>
+#pragma warning disable SA1117 // Parameters should be on same line or separate lines
                 {
                     if (!dontResetToDefault)
                     {
                         StatusEvent?.Invoke(this, new StatusbarEventArgs(StatusbarEventType.Reset));
                     }
                 }, null);
+#pragma warning restore SA1117 // Parameters should be on same line or separate lines
             }
             else
             {
@@ -332,17 +337,14 @@ namespace Westwind.Wpf.Statusbar
             }
         }
 
-        #endregion
-        #region Helpers
-
         /// <summary>
-        /// Status the statusbar icon on the left bottom to some indicator
+        /// Status the statusbar icon on the left bottom to some indicator.
         /// </summary>
-        /// <param name="imageSource">Allows you to explcitly set the icon's imageSource</param>
-        /// <param name="spin">Optionally spin the icon</param>
-        public void SetStatusIcon(
-            ImageSource imageSource,
-            bool spin = false)
+        /// <param name="imageSource">Allows you to explcitly set the icon's imageSource.</param>
+        /// <param name="spin">Optionally spin the icon.</param>
+#pragma warning disable SA1202 // Elements should be ordered by access
+        public void SetStatusIcon(ImageSource imageSource, bool spin = false)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             StatusImage.Source = imageSource;
 
@@ -366,7 +368,7 @@ namespace Westwind.Wpf.Statusbar
         }
 
         /// <summary>
-        /// Resets the status icon to the default icon
+        /// Resets the status icon to the default icon.
         /// </summary>
         public void SetStatusIcon()
         {
@@ -375,19 +377,21 @@ namespace Westwind.Wpf.Statusbar
         }
 
         /// <summary>
-        /// Gets or sets internally traced GrowAnimation for flashing the icon
+        /// Gets or sets internally traced GrowAnimation for flashing the icon.
         /// </summary>
+#pragma warning disable SA1201 // Elements should appear in the correct order
         protected DoubleAnimation GrowAnimation { get; set; }
+#pragma warning restore SA1201 // Elements should appear in the correct order
 
         /// <summary>
-        /// Gets or sets internally traced ShrinkAnimation for flashing the icon
+        /// Gets or sets internally traced ShrinkAnimation for flashing the icon.
         /// </summary>
         protected DoubleAnimation ShrinkAnimation { get; set; }
 
         /// <summary>
-        /// Flashes the icon briefly by making it larger then reverting back to its original size
+        /// Flashes the icon briefly by making it larger then reverting back to its original size.
         /// </summary>
-        /// <param name="icon">Optionally pass an Image control. Defaults to the Icon Image control</param>
+        /// <param name="icon">Optionally pass an Image control. Defaults to the Icon Image control.</param>
         public void FlashIcon(Image icon = null)
         {
             if (icon == null)
@@ -440,7 +444,5 @@ namespace Westwind.Wpf.Statusbar
             StatusImage.Height = originalIconHeight;
             StatusImage.Width = originalIconHeight;
         }
-
-        #endregion
     }
 }

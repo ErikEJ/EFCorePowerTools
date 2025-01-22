@@ -141,7 +141,9 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
+#pragma warning disable SA1202 // Elements should be ordered by access
         public void NextButton_Click(object sender, RoutedEventArgs e)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             // Go to next wizard page
             if (wizardViewModel.IsPage1Initialized)

@@ -16,7 +16,7 @@ namespace Westwind.Wpf.Statusbar
         ///
         /// Default icon are pulled from the following resource dictionary as DrawingImage:
         ///
-        /// "pack://application:,,,/Westwind.Wpf.Statusbar;component/Assets/icons.xaml"
+        /// "pack://application:,,,/Westwind.Wpf.Statusbar;component/Assets/icons.xaml".
         /// </summary>
         public StatusIcons()
         {
@@ -37,7 +37,9 @@ namespace Westwind.Wpf.Statusbar
             ProgressIcon = dict["circle_notchDrawingImage"] as DrawingImage;
         }
 
+#pragma warning disable SA1204 // Static elements should appear before instance elements
         static StatusIcons()
+#pragma warning restore SA1204 // Static elements should appear before instance elements
         {
             Default = new StatusIcons();
         }

@@ -29,8 +29,10 @@ namespace EFCorePowerTools.Wizard
         public Wiz2_PickTablesDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
+#pragma warning disable S125 // Sections of code should not be commented out
             // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
             DataContext = viewModel;
+#pragma warning restore S125 // Sections of code should not be commented out
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
@@ -79,7 +81,9 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
+#pragma warning disable SA1202 // Elements should be ordered by access
         public (bool ClosedByOK, PickTablesDialogResult Payload) ShowAndAwaitUserResponse(bool modal)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             wizardViewModel.WizardEventArgs.PickTablesDialogComplete = true;
             return (true, new PickTablesDialogResult { Objects = getDialogResultPg2(), CustomReplacers = getReplacerResult() });
