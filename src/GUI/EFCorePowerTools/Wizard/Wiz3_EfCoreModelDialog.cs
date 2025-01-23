@@ -61,7 +61,7 @@ namespace EFCorePowerTools.Wizard
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.ModelingOptionsDialog = this;
 
-                Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
+                //Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {

@@ -112,6 +112,7 @@ namespace EFCorePowerTools.Wizard
 
             InitializeComponent();
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.GettingReadyToConnect);
+            Loaded += (s, e) => OnPageVisible(s, null);
         }
 
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
@@ -127,7 +128,7 @@ namespace EFCorePowerTools.Wizard
                     await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
                 });
 
-                Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.StatusBarLoadingConfiguration));
+                // Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.StatusBarLoadingConfiguration));
 
                 foreach (var option in viewModel.WizardEventArgs.Configurations)
                 {

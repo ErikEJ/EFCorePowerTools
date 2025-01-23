@@ -18,7 +18,9 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.StatusbarGeneratingFiles);
+            //InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.StatusbarGeneratingFiles);
+
+            Loaded += (s, e) => OnPageVisible(s, null);
         }
 
         private void WizardPage4_Loaded(object sender, RoutedEventArgs e)
@@ -34,7 +36,7 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
-                Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarProcessCompleted);
+                Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarGeneratingFiles);
             }
         }
 
