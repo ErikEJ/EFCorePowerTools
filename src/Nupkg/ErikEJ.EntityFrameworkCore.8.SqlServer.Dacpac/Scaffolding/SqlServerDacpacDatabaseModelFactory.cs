@@ -303,7 +303,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
-            var matchingTableType = tableTypes.FirstOrDefault(tt => tt.Name.ToString() == item.Name.ToString());
+            var matchingTableType = tableTypes.FirstOrDefault(tt => tt.Name.ToString() == item.Name.ToString()
+                                                                 && tt.Columns.All(ttc => viewColumns.Any(vc => vc.Name.ToString() == ttc.Name.ToString()))); // All Column Names of Table Type are also in View
 
             foreach (var column in viewColumns)
             {
