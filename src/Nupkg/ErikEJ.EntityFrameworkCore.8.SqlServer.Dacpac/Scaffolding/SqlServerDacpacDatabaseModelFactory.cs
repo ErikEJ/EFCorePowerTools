@@ -303,6 +303,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
+            var matchingTableType = tableTypes.FirstOrDefault(tt => tt.Name.ToString() == item.Name.ToString());
+
             foreach (var column in viewColumns)
             {
                 string storeType = null;
@@ -323,8 +325,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 if (col.ColumnType == ColumnType.ComputedColumn)
                 {
-                    var matchingTableType = tableTypes.FirstOrDefault(tt => tt.Name.ToString() == item.Name.ToString());
-
                     if (matchingTableType == null)
                     {
                         continue;
