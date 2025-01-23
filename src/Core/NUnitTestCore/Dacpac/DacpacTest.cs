@@ -13,7 +13,7 @@ namespace UnitTests
     public class DacpacTest
     {
         private string dacpac;
-
+        private string dacpacViews;
         private string dacpacQuirk;
 
         [SetUp]
@@ -21,6 +21,7 @@ namespace UnitTests
         {
             dacpacQuirk = TestPath("TestDb.dacpac");
             dacpac = TestPath("Chinook.dacpac");
+            dacpacViews = TestPath("ViewColumnTypesSqlProj.dacpac");
         }
 
         [Test]
@@ -35,6 +36,20 @@ namespace UnitTests
 
             // Assert
             Assert.AreEqual(11, dbModel.Tables.Count());
+        }
+
+        [Test]
+        public void CanEnumerateViewColumns()
+        {
+            // Arrange
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(new List<string>(), new List<string>());
+
+            // Act
+            var dbModel = factory.Create(dacpacViews, options);
+
+            // Assert
+            Assert.AreEqual(28, dbModel.Tables[0].Columns.Count());
         }
 
         [Test]

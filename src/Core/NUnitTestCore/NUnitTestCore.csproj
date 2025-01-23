@@ -104,5 +104,10 @@
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\RevEng.Core.80\RevEng.Core.80.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Dacpac\ViewColumnTypesSqlProj.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

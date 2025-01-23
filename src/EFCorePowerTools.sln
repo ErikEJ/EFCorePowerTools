@@ -66,6 +66,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "efcpt.9", "Core\efcpt.9\efc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac", "Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj", "{3B144F11-5B79-443C-98F8-80B4F12625FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewColumnTypesSqlProj", "..\test\ViewColumnTypesSqlProj\ViewColumnTypesSqlProj.csproj", "{5B3985E1-918F-4D11-BB39-1D8772B2A6D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,10 @@ Global
 		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B144F11-5B79-443C-98F8-80B4F12625FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B3985E1-918F-4D11-BB39-1D8772B2A6D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B3985E1-918F-4D11-BB39-1D8772B2A6D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B3985E1-918F-4D11-BB39-1D8772B2A6D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B3985E1-918F-4D11-BB39-1D8772B2A6D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,6 +165,7 @@ Global
 		{F2B3BA67-1A3D-4A1B-BB58-77A3D7C67A58} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{E54F79D2-D056-4B97-8D63-ADBB01A49F9E} = {F33E4994-452C-4C09-9FB5-C2E17D0884B6}
 		{3B144F11-5B79-443C-98F8-80B4F12625FD} = {8B7992B9-F570-4E74-8AE4-F9436BD7CBEF}
+		{5B3985E1-918F-4D11-BB39-1D8772B2A6D0} = {EBED32C4-05FB-4996-BCFF-5DC1EF43CA21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFF7B9CC-46C9-4547-9FA1-D17E2A89613C}

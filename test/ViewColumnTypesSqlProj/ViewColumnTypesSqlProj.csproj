@@ -1,0 +1,23 @@
+﻿<Project Sdk="MSBuild.Sdk.SqlProj/3.0.0">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<SqlServerVersion>Sql150</SqlServerVersion>
+		<RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+		<!-- For additional properties that can be set here, please refer to https://github.com/rr-wfm/MSBuild.Sdk.SqlProj#model-properties -->
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- These packages adds additional code analysis rules -->
+		<!-- We recommend using these, but they can be removed if desired -->
+		<PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.1.0" />
+		<PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.1.0" />
+	</ItemGroup>
+
+	<Target Name="CopyFiles" AfterTargets="Build">
+		<Copy
+            SourceFiles="bin\Debug\netstandard2.1\ViewColumnTypesSqlProj.dacpac"
+            DestinationFolder="..\..\src\Core\NUnitTestCore\Dacpac"
+        />
+	</Target>
+
+</Project>
