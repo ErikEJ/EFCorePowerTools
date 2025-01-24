@@ -142,7 +142,7 @@
         </StackPanel>
         <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" Click="BackButton_Click"/>
-            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" Name="nextButton" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" x:Name="NextButton" IsEnabled="False" Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Name="cancelButton" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>

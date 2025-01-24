@@ -74,6 +74,7 @@ namespace EFCorePowerTools.Wizard
                         // HACK Work around for issue with web app project system on initial run
                         wea.UserOptions = null;
                     }
+                    NextButton.IsEnabled = true;
                 });
 
                 FirstTextBox.Focus();
@@ -94,7 +95,7 @@ namespace EFCorePowerTools.Wizard
             wizardViewModel.GenerateStatus = string.Empty;
             wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
             cancelButton.IsEnabled = false; // Once processed we can't cancel - only finish
-            nextButton.IsEnabled = true;
+            NextButton.IsEnabled = true;
 
             Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.StatusBarLoadingConfiguration));
 

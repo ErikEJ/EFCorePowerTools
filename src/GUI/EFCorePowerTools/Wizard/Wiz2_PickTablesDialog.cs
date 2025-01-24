@@ -59,6 +59,7 @@ namespace EFCorePowerTools.Wizard
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                    NextButton.IsEnabled = true;
                 });
             }
         }
