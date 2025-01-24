@@ -166,6 +166,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 .Where(t => tables == null || !tables.Any() || tables.Contains($"[{t.Name.Parts[0]}].[{t.Name.Parts[1]}]"))
                 .ToList();
 
+            var tableTypes = model.GetObjects<TSqlTableType>(DacQueryScopes.UserDefined);
+
             foreach (var view in views)
             {
                 var dbView = new DatabaseView
@@ -174,7 +176,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Schema = view.Name.Parts[0],
                 };
 
-                GetViewColumns(view, dbView, typeAliases);
+                GetViewColumns(view, dbView, typeAliases, tableTypes);
 
                 dbModel.Tables.Add(dbView);
             }
@@ -297,15 +299,18 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases)
+        private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, IEnumerable<TSqlTableType> tableTypes)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
+
+            var matchingTableType = tableTypes.FirstOrDefault(tt => tt.Name.ToString() == item.Name.ToString()
+                                                                 && tt.Columns.All(ttc => viewColumns.Any(vc => vc.Name.ToString() == ttc.Name.ToString()))); // All Column Names of Table Type are also in View
 
             foreach (var column in viewColumns)
             {
                 string storeType = null;
 
-                var referenced = column.GetReferenced(DacQueryScopes.UserDefined).FirstOrDefault();
+                var referenced = column.GetReferenced(DacQueryScopes.UserDefined).FirstOrDefault() ?? column;
 
                 if (referenced == null)
                 {
@@ -321,10 +326,23 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 if (col.ColumnType == ColumnType.ComputedColumn)
                 {
-                    continue;
-                }
+                    if (matchingTableType == null)
+                    {
+                        continue;
+                    }
 
-                if (col.DataType.First().Name.Parts.Count > 1)
+                    var matchingColumn = matchingTableType.Columns.FirstOrDefault(c => c.Name.ToString() == col.Name.ToString());
+
+                    if (matchingColumn == null)
+                    {
+                        continue;
+                    }
+
+                    var dataTypeName = matchingColumn.DataType.First().Name.Parts[0];
+                    int maxLength = matchingColumn.IsMax ? -1 : matchingColumn.Length;
+                    storeType = GetStoreType(dataTypeName, maxLength, matchingColumn.Precision, matchingColumn.Scale);
+                }
+                else if (col.DataType.First().Name.Parts.Count > 1)
                 {
                     if (typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
                     {
