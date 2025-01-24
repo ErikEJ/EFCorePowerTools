@@ -534,7 +534,7 @@ namespace EFCorePowerTools
             switch ((uint)menuCommand.CommandID.ID)
             {
                 case PkgCmdIDList.cmdidWizardPoc:
-                    menuCommand.Text = "Reverse Engineer (experimental)";
+                    menuCommand.Text = "Reverse Engineer Wizard (preview)";
                     break;
                 case PkgCmdIDList.cmdidAbout:
                     menuCommand.Text = ButtonLocale.cmdidAbout;

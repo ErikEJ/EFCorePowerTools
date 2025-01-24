@@ -571,30 +571,32 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var completedMessage = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss"));
             await VS.StatusBar.ShowMessageAsync(completedMessage);
 
+            var statusMessage = new StringBuilder();
+
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {
-                Func<string, string, string> isNotEmptyProvideHeader = (str, header) =>
-                {
-                    if (string.IsNullOrEmpty(str) || string.IsNullOrEmpty(str.Trim()))
-                    {
-                        return string.Empty;
-                    }
-                    else
-                    {
-                        return $"\r\n{header}:\r\n" + str;
-                    }
-                };
-
                 if (isCalledByWizard)
                 {
-                    string eWarnings = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityWarnings), "Warning");
-                    string eErrors = isNotEmptyProvideHeader(string.Join("\r\n", revEngResult.EntityErrors), "Error");
+                    foreach (var warning in revEngResult.EntityWarnings)
+                    {
+                        statusMessage.AppendLine("⚠️ " + warning);
+                    }
 
-                    finalText = $"{eWarnings}{eErrors}"; // This will be surfaced to wizard.
+                    foreach (var error in revEngResult.EntityErrors)
+                    {
+                        statusMessage.AppendLine("❌ " + error);
+                    }
                 }
                 else
                 {
                     VSHelper.ShowMessage(errors);
+                }
+            }
+            else
+            {
+                if (isCalledByWizard)
+                {
+                    statusMessage.AppendLine("✅ " + ReverseEngineerLocale.ModelGeneratedSuccesfully);
                 }
             }
 
@@ -611,7 +613,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
 
-            return finalText;
+            return statusMessage.ToString();
         }
 
         private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
