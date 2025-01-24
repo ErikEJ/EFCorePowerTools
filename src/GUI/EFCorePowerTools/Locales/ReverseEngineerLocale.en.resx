@@ -142,7 +142,7 @@
     <value>Add Schemas to filter</value>
   </data>
   <data name="Advanced" xml:space="preserve">
-    <value>Advanced...</value>
+    <value>Advanced</value>
   </data>
   <data name="AlwaysIncludeAllDatabaseObjects" xml:space="preserve">
     <value>Always include all database objects</value>
@@ -419,5 +419,35 @@
   </data>
   <data name="WhatToGenerate" xml:space="preserve">
     <value>What to generate</value>
+  </data>
+  <data name="NavigationNext" xml:space="preserve">
+    <value>Next &gt;</value>
+  </data>
+  <data name="NavigationPrevious" xml:space="preserve">
+    <value>&lt; Previous</value>
+  </data>
+  <data name="NavigationCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="NavigationFinish" xml:space="preserve">
+    <value>Finish</value>
+  </data>
+  <data name="InstallSqliteToolbox" xml:space="preserve">
+    <value>Install SQLite Toolbox</value>
+  </data>
+  <data name="StatusBarLoadingConfiguration" xml:space="preserve">
+    <value>Loading Configuration</value>
+  </data>
+  <data name="StatusbarGeneratingFiles" xml:space="preserve">
+    <value>Generating files</value>
+  </data>
+  <data name="StatusbarProcessCompleted" xml:space="preserve">
+    <value>Process completed</value>
+  </data>
+  <data name="StatusbarLoadingBrowser" xml:space="preserve">
+    <value>Loading browser...</value>
+  </data>
+  <data name="StatusbarReady" xml:space="preserve">
+    <value>Ready</value>
   </data>
 </root>

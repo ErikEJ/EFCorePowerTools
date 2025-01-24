@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using RevEng.Common;
@@ -14,7 +15,7 @@ namespace EFCorePowerTools.Dialogs
 {
     public partial class PickServerDatabaseDialog : IPickServerDatabaseDialog
     {
-        private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint)> getDialogResult;
+        private readonly Func<(DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint, WizardEventArgs WizardArgs)> getDialogResult;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
         private readonly Action<IEnumerable<DatabaseConnectionModel>> addDefinitions;
         private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
@@ -33,7 +34,7 @@ namespace EFCorePowerTools.Dialogs
                 DialogResult = args.DialogResult;
                 Close();
             };
-            getDialogResult = () => (viewModel.SelectedDatabaseConnection, (CodeGenerationMode)viewModel.CodeGenerationMode, viewModel.FilterSchemas, viewModel.Schemas.ToArray(), viewModel.UiHint);
+            getDialogResult = () => (viewModel.SelectedDatabaseConnection, (CodeGenerationMode)viewModel.CodeGenerationMode, viewModel.FilterSchemas, viewModel.Schemas.ToArray(), viewModel.UiHint, new WizardEventArgs());
             addConnections = models =>
             {
                 foreach (var model in models)
@@ -90,7 +91,7 @@ namespace EFCorePowerTools.Dialogs
             InitializeComponent();
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint) Payload) ShowAndAwaitUserResponse(bool modal)
+        public (bool ClosedByOK, (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint, WizardEventArgs WizardArgs) Payload) ShowAndAwaitUserResponse(bool modal)
         {
             bool closedByOkay;
 
@@ -129,6 +130,11 @@ namespace EFCorePowerTools.Dialogs
         public void PublishUiHint(string uiHint)
         {
             this.uiHint(uiHint);
+        }
+
+        public (DatabaseConnectionModel Connection, CodeGenerationMode CodeGenerationMode, bool FilterSchemas, SchemaInfo[] Schemas, string UiHint, WizardEventArgs WizardArgs) GetResults()
+        {
+            return getDialogResult();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

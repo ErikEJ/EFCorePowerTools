@@ -1,5 +1,4 @@
-﻿using EFCorePowerTools.Extensions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using RevEng.Common;
 

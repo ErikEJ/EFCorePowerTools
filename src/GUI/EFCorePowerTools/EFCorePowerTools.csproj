@@ -57,6 +57,27 @@
     <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
+    <Compile Include="Westwind.WPF.Statusbar\StatusBarControl.xaml.cs">
+      <DependentUpon>StatusBarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
+    <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
+    <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
+    <Compile Include="Wizard\Wiz4_StatusDialog.xaml.cs">
+      <DependentUpon>Wiz4_StatusDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Wiz1_PickServerDatabaseDialog.cs">
+      <DependentUpon>Wiz1_PickServerDatabaseDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Wiz2_PickTablesDialog.cs">
+      <DependentUpon>Wiz2_PickTablesDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\Wiz3_EfCoreModelDialog.cs">
+      <DependentUpon>Wiz3_EfCoreModelDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\WizardDialogBox.cs">
+      <DependentUpon>WizardDialogBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AdvancedModelingOptionsDialog.xaml.cs">
       <DependentUpon>AdvancedModelingOptionsDialog.xaml</DependentUpon>
     </Compile>
@@ -138,8 +159,23 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Wizard\WizardLauncher.cs" />
+    <Compile Include="Wizard\WizardResult.cs" />
+    <Compile Include="Wizard\WizardResultPageFunction.cs" />
+    <Compile Include="Wizard\WizardReturnEventArgs.cs" />
+    <Compile Include="Wizard\WizardReturnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-check.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-exclamation.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-green.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-notch.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-red.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Assets\Icons\triangle-exclamation.svg" />
+    <Content Include="Westwind.WPF.Statusbar\Icon-512.png" />
+    <Content Include="Westwind.WPF.Statusbar\icon.png" />
+    <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
+    <None Include="Westwind.WPF.Statusbar\README.md" />
     <Resource Include="Resources\TableWarning.png" />
     <Resource Include="Resources\View.png" />
     <Resource Include="Resources\Table.png" />
@@ -392,7 +428,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.de.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.ja.resx" />
@@ -546,6 +584,46 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Westwind.WPF.Statusbar\Assets\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Westwind.WPF.Statusbar\Assets\Icons\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Westwind.WPF.Statusbar\StatusBarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Resources\Converter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Resources\Style.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Wiz4_StatusDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\WizardDialogBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Wiz1_PickServerDatabaseDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Wiz2_PickTablesDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\Wiz3_EfCoreModelDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Content Include="db.png">
@@ -577,6 +655,9 @@
     <PackageReference Include="AdysTech.CredentialManager" Version="2.6.0" />
     <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
     <PackageReference Include="Community.VisualStudio.Toolkit.17" Version="17.0.527" />
+    <PackageReference Include="Markdig.Signed">
+      <Version>0.39.0</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.5.33428.388" />
@@ -595,6 +676,7 @@
     <PackageReference Include="NuGet.ProjectModel" Version="6.12.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

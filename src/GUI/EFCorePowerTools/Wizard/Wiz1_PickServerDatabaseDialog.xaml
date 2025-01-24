@@ -1,0 +1,203 @@
+﻿<local:WizardResultPageFunction
+    x:Class="EFCorePowerTools.Wizard.Wiz1_PickServerDatabaseDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
+    xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+    KeepAlive="True"
+    WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Page1LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Resources\Style.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.Background>
+            <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+        </Grid.Background>        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl Margin="5" >
+            <TabItem Header="Connection String">
+                <Grid Margin="12,0">
+                    <Grid.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary>
+                                    <Style x:Key="SourceSelectionComboBoxStyle" TargetType="ComboBox">
+                                        <Setter Property="Margin" Value="0, 12, 0, 12"/>
+                                    </Style>
+                                    <Style x:Key="SourceSelectionButtonStyle" TargetType="Button">
+                                        <Setter Property="MinWidth" Value="70"/>
+                                        <Setter Property="Margin" Value="10, 0, 0, 0"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </ResourceDictionary>
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="179*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition x:Name="grdRow1" Height="Auto" />
+                        <RowDefinition x:Name="grdRow2" Height="Auto" />
+                        <RowDefinition x:Name="grdRow3" Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,16" Grid.RowSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0"
+                      x:Name="DatabaseConnectionCombobox"
+                      TabIndex="1"
+                      Style="{StaticResource SourceSelectionComboBoxStyle}"
+                      ItemsSource="{Binding DatabaseConnections, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedDatabaseConnection, Mode=TwoWay}"
+                      >
+                            <ComboBox.ItemContainerStyle>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="ToolTip">
+                                        <Setter.Value>
+                                            <TextBlock Text="{Binding Path=ToolTip}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ComboBox.ItemContainerStyle>
+                            <!-- Here you can specify the Items including the Tooltip for each Item-->
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=DisplayName}" 
+                      ToolTip="{Binding Path=ToolTip}"  />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Grid.Column="1"
+                                Margin="8,12,0,12"
+                                ToolTip="{x:Static locale:ReverseEngineerLocale.RemoveSelectedConnection}"
+                                Command="{Binding RemoveDatabaseConnectionCommand}">
+                            <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/Remove.png" />
+                        </Button>
+                        <xctk:DropDownButton Grid.Column="2"
+                              Width="72"
+                              Margin="12,12,0,12"
+                              Content="{x:Static locale:ReverseEngineerLocale.Add}"                              
+                              TabIndex="2" >
+                            <xctk:DropDownButton.DropDownContent>
+                                <StackPanel>
+                                    <MenuItem Header="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnection}"
+                                            Command="{Binding AddDatabaseConnectionCommand}"
+                                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddDatabaseConnectionTip}" >
+                                        <MenuItem.Icon>
+                                            <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem 
+                            Header="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}"
+                            Command="{Binding AddDatabaseDefinitionCommand}"
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddExternalDacPac}">
+                                        <MenuItem.Icon>
+                                            <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/DatabaseSchema.png" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem 
+                            Header="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnection}"
+                            Command="{Binding AddAdhocDatabaseConnectionCommand}"
+                            ToolTip="{x:Static locale:ReverseEngineerLocale.AddAdhocDatabaseConnectionTip}">
+                                        <MenuItem.Icon>
+                                            <Image Source="pack://application:,,,/EFCorePowerTools;component/Resources/ConnectToDatabase.png" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+
+                                </StackPanel>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" VerticalAlignment="Bottom" Text="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"  />
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,15" Grid.RowSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110*"/>
+                            <ColumnDefinition Width="33*"/>
+                            <ColumnDefinition Width="173*"/>
+                            <ColumnDefinition Width="17.6"/>
+                            <ColumnDefinition Width="62.4"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox
+                  TabIndex="6"
+                  Margin="0,6,0,12"
+                  Style="{StaticResource SourceSelectionComboBoxStyle}"
+                  ItemsSource="{Binding CodeGenerationModeList, Mode=OneWay}"
+                  ToolTip="{x:Static locale:ReverseEngineerLocale.EFCoreVersionTip}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Value"
+                  SelectedValue="{Binding CodeGenerationMode, Mode=TwoWay}" />
+                    </Grid>
+                    <StackPanel Grid.Row="3" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Center">
+                        <CheckBox x:Name="FilterSchemas" IsTabStop="False" IsChecked="{Binding FilterSchemas}">
+                            <TextBlock Text="{x:Static locale:ReverseEngineerLocale.FilterSchemas}" />
+                        </CheckBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Config file">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="10" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="10" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="1" Grid.Row="1">Config File:</Label>
+
+                    <ComboBox Grid.Column="2" Grid.Row="1"
+                      TabIndex="1"
+                      ItemsSource="{Binding Configurations, Mode=OneWay}"
+                      SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay}"
+                      DisplayMemberPath="DisplayName"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" IsEnabled="False" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" x:Name="NextButton" IsEnabled="False" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Add}" ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}" Command="{Binding FilterSchemasCommand}"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Click="CancelButton_Click" IsCancel="True"/>
+        </StackPanel>
+        <statusbar:StatusbarControl Grid.Row="2" x:Name="Statusbar"/>
+    </Grid>
+</local:WizardResultPageFunction>

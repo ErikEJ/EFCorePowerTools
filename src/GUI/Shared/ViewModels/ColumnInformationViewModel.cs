@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Windows.Input;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
@@ -29,6 +31,7 @@ namespace EFCorePowerTools.ViewModels
             ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
             CancelEditCommand = new RelayCommand(CancelEdit_Execute);
             SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
+            Children.CollectionChanged += Children_CollectionChanged;
         }
 
         public string Name
@@ -163,6 +166,8 @@ namespace EFCorePowerTools.ViewModels
 
         public ICommand SetSelectedCommand { get; }
 
+        public ObservableCollection<IColumnChildrenViewModel> Children { get; set; } = new ObservableCollection<IColumnChildrenViewModel>();
+
         public void SetSelected(bool value)
         {
             IsSelected = value;
@@ -199,6 +204,14 @@ namespace EFCorePowerTools.ViewModels
             if (IsEnabled)
             {
                 IsSelected = value;
+            }
+        }
+
+        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var item in e.NewItems)
+            {
+                RaisePropertyChanged(nameof(Name));
             }
         }
     }

@@ -1,0 +1,151 @@
+﻿<local:WizardResultPageFunction
+    x:Class="EFCorePowerTools.Wizard.Wiz3_EfCoreModelDialog"   
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dw="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:EFCorePowerTools.Wizard" 
+    xmlns:locale="clr-namespace:EFCorePowerTools.Locales"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
+    xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    KeepAlive="True"    
+    Title="{Binding Title, Mode=OneWay}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Page3LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Resources\Converter.xaml"/>
+                    <ResourceDictionary Source="Resources\Style.xaml"/>
+                  </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.Background>
+            <StaticResource ResourceKey="DialogWindowBackgroundColor"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0"  >
+            <dw:LiveTextBlock Margin="5" 
+                Text="{x:Static locale:ReverseEngineerLocale.ContextName}"/>
+            <TextBox 
+                x:Name="FirstTextBox"
+                Margin="5"
+                Style="{StaticResource TextInputStyle}"
+                TabIndex="0"                 
+                Text="{Binding Model.ModelName, Mode=TwoWay}" />
+        </DockPanel>
+        <DockPanel Grid.Row="1">
+            <dw:LiveTextBlock Margin="5" 
+                Text="{x:Static locale:ReverseEngineerLocale.Namespace}"/>
+            <TextBox TabIndex="1"
+                Margin="5"
+                Style="{StaticResource TextInputStyle}"
+                Text="{Binding Model.Namespace, Mode=TwoWay}"/>
+        </DockPanel>
+        <dw:LiveTextBlock Grid.Row="4" Margin="5"
+                          Text="{x:Static locale:ReverseEngineerLocale.EntityTypesPath}"/>
+        <TextBox Grid.Row="5" Margin="5"
+                 TabIndex="2"
+                 Style="{StaticResource TextInputStyle}"
+                 Text="{Binding Model.OutputPath, Mode=TwoWay}"/>
+        <dw:LiveTextBlock Grid.Row="6" Margin="5"
+                          Text="{x:Static locale:ReverseEngineerLocale.WhatToGenerate}"/>
+        <ComboBox Grid.Row="6" Margin="5"
+                  TabIndex="6"
+                  ItemsSource="{Binding GenerationModeList}"
+                  Style="{StaticResource GenerationMethodComboBoxStyle}"
+                  SelectedIndex="{Binding Model.SelectedToBeGenerated, Mode=TwoWay}" />
+        <GroupBox Grid.Row="7" Margin="5"
+                  Header="{x:Static locale:ReverseEngineerLocale.Naming}"
+                  Style="{StaticResource NamingGroupBoxStyle}">
+            <StackPanel>
+                <CheckBox TabIndex="7"
+                          Content="{x:Static locale:ReverseEngineerLocale.PluralizeSingularizeObjectNames}"
+                          IsChecked="{Binding Model.UsePluralizer}"
+                          Style="{StaticResource GenerationOptionsNamingCheckBoxStyle}"/>
+                <CheckBox TabIndex="8"
+                          Content="{x:Static locale:ReverseEngineerLocale.UseNamesFromDatabase}"
+                          IsChecked="{Binding Model.UseDatabaseNames}"
+                          Style="{StaticResource LastGenerationOptionsNamingCheckBoxStyle}"/>
+            </StackPanel>
+        </GroupBox>
+        <CheckBox Grid.Row="8" Margin="5"
+                  TabIndex="8"
+                  Content="{x:Static locale:ReverseEngineerLocale.UseDataAnnotations}"
+                  IsChecked="{Binding Model.UseDataAnnotations}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+        <StackPanel Grid.Row="9" Margin="5"
+                    Orientation="Horizontal">
+            <CheckBox TabIndex="10"
+                      Name="UseHandlebarsCheckbox"
+                      Content="{x:Static locale:ReverseEngineerLocale.CustomizeUsingHandlebars}"
+                      IsChecked="{Binding Model.UseHandlebars}"
+                      Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+            <ComboBox
+                  TabIndex="11"
+                  Margin="12,0,0,0"
+                  Style="{StaticResource HandlebarsLanguageComboBoxStyle}"
+                  ItemsSource="{Binding TemplateTypeList, Mode=OneWay}"
+                  SelectedValuePath="Key"
+                  DisplayMemberPath="Value"
+                  SelectedValue="{Binding SelectedTemplateType, Mode=TwoWay}" />
+        </StackPanel>
+        <CheckBox Grid.Row="10" Margin="5"
+                  TabIndex="12"
+                  Content="{x:Static locale:ReverseEngineerLocale.IncludeConnectionStringGeneratedCode}"
+                  IsChecked="{Binding Model.IncludeConnectionString}"
+                  IsEnabled="{Binding MayIncludeConnectionString}"
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+        <CheckBox Grid.Row="11" Margin="5"
+                  TabIndex="14"
+                  Content="{x:Static locale:ReverseEngineerLocale.InstallEFCoreProviderPackageInProject}"
+                  IsChecked="{Binding Model.InstallNuGetPackage}" 
+                  Style="{StaticResource GenerationOptionsCheckBoxStyle}"/>
+        <StackPanel Grid.Row="12" HorizontalAlignment="Center">
+        <StackPanel Margin="5" Orientation="Horizontal" >
+            <Button Click="OpenBrowserHelp" FontSize="18" Margin="0,0,10,0" 
+                Style="{StaticResource HyperlinkLikeButton}"
+                ToolTip="{x:Static locale:ReverseEngineerLocale.UserGuide}">
+                <Underline><Run Text="{x:Static locale:ReverseEngineerLocale.Help}"></Run></Underline>
+            </Button>
+            <Button Click="OpenBrowserRate" FontSize="18" 
+                Style="{StaticResource HyperlinkLikeButton}"
+                ToolTip="{x:Static locale:ReverseEngineerLocale.RateTip}">
+                <Underline><Run Text="{x:Static locale:ReverseEngineerLocale.Rate}"></Run></Underline>
+            </Button>
+        </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" Click="BackButton_Click"/>
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" x:Name="NextButton" IsEnabled="False" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Name="cancelButton" Click="CancelButton_Click" IsCancel="True"/>
+        </StackPanel>
+        <statusbar:StatusbarControl Grid.Row="14" x:Name="Statusbar"/>
+    </Grid>
+</local:WizardResultPageFunction>

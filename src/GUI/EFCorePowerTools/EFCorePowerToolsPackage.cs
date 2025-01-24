@@ -12,8 +12,10 @@ using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.BLL;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.DAL;
 using EFCorePowerTools.Dialogs;
 using EFCorePowerTools.Extensions;
@@ -26,6 +28,7 @@ using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.Options;
 using EFCorePowerTools.ViewModels;
+using EFCorePowerTools.Wizard;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio;
@@ -52,6 +55,7 @@ namespace EFCorePowerTools
     {
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
+        private readonly RevEngWizardHandler revEngWizardHandler;
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly AboutHandler aboutHandler;
         private readonly CompareHandler compareHandler;
@@ -63,6 +67,7 @@ namespace EFCorePowerTools
 
         public EFCorePowerToolsPackage()
         {
+            revEngWizardHandler = new RevEngWizardHandler(this);
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             aboutHandler = new AboutHandler(this);
             compareHandler = new CompareHandler(this);
@@ -108,6 +113,13 @@ namespace EFCorePowerTools
             });
         }
 
+        internal async Task<TService> GetServiceAsync<TService>()
+        {
+            var service = extensionServices.GetService<TService>();
+            await Task.Yield();
+            return service;
+        }
+
         internal EnvDTE80.DTE2 Dte2()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -134,6 +146,14 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidWizardPoc)));
+
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
@@ -513,6 +533,9 @@ namespace EFCorePowerTools
 
             switch ((uint)menuCommand.CommandID.ID)
             {
+                case PkgCmdIDList.cmdidWizardPoc:
+                    menuCommand.Text = "Reverse Engineer (experimental)";
+                    break;
                 case PkgCmdIDList.cmdidAbout:
                     menuCommand.Text = ButtonLocale.cmdidAbout;
                     break;
@@ -572,6 +595,7 @@ namespace EFCorePowerTools
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
                 menuCommand.Visible = await project.CanUseReverseEngineerAsync();
@@ -713,6 +737,19 @@ namespace EFCorePowerTools
 
                 string filename = item.FullPath;
 
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
+                {
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(
+                        new WizardEventArgs
+                        {
+                            Project = project,
+                            Filename = filename,
+                            OnlyGenerate = false,
+                            ServiceProvider = extensionServices,
+                            IsInvokedByWizard = true,
+                        });
+                }
+
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
                     if (!IsConfigFile(item.Text))
@@ -793,6 +830,14 @@ namespace EFCorePowerTools
                     {
                         return;
                     }
+                }
+
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
+                {
+                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(new WizardEventArgs()
+                    {
+                        ServiceProvider = extensionServices,
+                    });
                 }
 
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
@@ -1021,7 +1066,8 @@ namespace EFCorePowerTools
             services.AddSingleton<AboutExtensionModel>();
 
             // Register views
-            services.AddTransient<IAboutDialog, AboutDialog>()
+            services.AddTransient<IWizardView, WizardDialogBox>()
+                    .AddTransient<IAboutDialog, AboutDialog>()
                     .AddTransient<IPickConfigDialog, PickConfigDialog>()
                     .AddTransient<IPickProjectDialog, PickProjectDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
@@ -1037,7 +1083,8 @@ namespace EFCorePowerTools
                     .AddTransient<ICompareResultDialog, CompareResultDialog>();
 
             // Register view models
-            services.AddTransient<IAboutViewModel, AboutViewModel>()
+            services.AddTransient<IWizardViewModel, WizardDataViewModel>()
+                    .AddTransient<IAboutViewModel, AboutViewModel>()
                     .AddTransient<IPickConfigViewModel, PickConfigViewModel>()
                     .AddTransient<IPickProjectViewModel, PickProjectViewModel>()
                     .AddTransient<IPickConnectionViewModel, PickConnectionViewModel>()
@@ -1046,6 +1093,7 @@ namespace EFCorePowerTools
                     .AddSingleton<Func<ISchemaInformationViewModel>>(() => new SchemaInformationViewModel())
                     .AddSingleton<Func<ITableInformationViewModel>>(provider => () => new TableInformationViewModel(provider.GetService<IMessenger>()))
                     .AddSingleton<Func<IColumnInformationViewModel>>(provider => () => new ColumnInformationViewModel(provider.GetService<IMessenger>()))
+                    .AddSingleton<Func<IColumnChildrenViewModel>>(provider => () => new ColumnChildrenViewModel(provider.GetService<IMessenger>()))
                     .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
                     .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>()
@@ -1067,7 +1115,8 @@ namespace EFCorePowerTools
                     .AddSingleton<ICredentialStore, CredentialStore>()
                     .AddSingleton<IDotNetAccess, DotNetAccess>();
 
-            return services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
+            return provider;
         }
     }
 }

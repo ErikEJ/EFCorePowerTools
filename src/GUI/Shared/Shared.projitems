@@ -11,8 +11,11 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BLL\ExtensionVersionService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BLL\IExtensionVersionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BLL\IReverseEngineerBll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\CloseRequestedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\EventArgs\WizardEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Models\ProjectModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IColumnChildrenViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\TemplateTypeItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\CodeGenerationItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\ViewModels\IAboutViewModel.cs" />
@@ -50,6 +53,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IPickTablesDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\IView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\PickTablesDialogResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Wizard\IWizardView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contracts\Wizard\IWizardViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolInvertConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\CollectionCountToEnabledConverter.cs" />
@@ -77,6 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DacpacAnalyzerHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerUserOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DatabaseDiagramHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\RevEngWizardHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlConnectionStringBuilderHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlProjHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
@@ -111,6 +117,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\PackageManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\ReverseEngineerWizardLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarEventType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AboutExtensionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ConfigModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ModelingOptionsModel.cs" />
@@ -137,9 +145,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickServerDatabaseViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickTablesViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SchemaInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ColumnChildrenViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TableInformationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\WizardDataViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Resources\Package.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Contracts\Messages\" />
   </ItemGroup>
 </Project>
