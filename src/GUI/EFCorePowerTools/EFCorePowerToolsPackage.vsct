@@ -91,7 +91,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
-          <ButtonText>Reverse Engineer (beta)</ButtonText>
+          <ButtonText>Reverse Engineer Wizard (preview)</ButtonText>
         </Strings>
       </Button>
 
