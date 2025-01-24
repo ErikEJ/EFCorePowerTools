@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
@@ -18,8 +17,6 @@ using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using NuGet.Versioning;
 using RevEng.Common;
-using RevEng.Common.Cli;
-using RevEng.Common.Cli.Configuration;
 
 namespace EFCorePowerTools.Handlers.ReverseEngineer
 {
@@ -106,17 +103,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 var projectPath = project.FullPath;
                 var optionsPaths = project.GetConfigFiles();
-                var cliOptionsPath = project.GetCliConfigFile();
                 var optionsPath = optionsPaths[0];
-
-                if (cliOptionsPath != null
-                    && File.Exists(cliOptionsPath)
-                    && optionsPaths.Count == 1
-                    && !File.Exists(optionsPath))
-                {
-                    optionsPath = cliOptionsPath;
-                    await VS.StatusBar.ShowMessageAsync($"Using CLI config in read-only mode, manually edit the file to make changes.");
-                }
 
                 if (optionsPaths.Count > 1)
                 {
@@ -173,14 +160,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
 
                 var options = ReverseEngineerOptionsExtensions.TryRead(optionsPath);
-
-                if (options == null
-                    && optionsPath.EndsWith(Constants.ConfigFileName)
-                    && File.Exists(optionsPath))
-                {
-                    var config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(optionsPath, Encoding.UTF8));
-                    options = config.ToOptions(Path.GetDirectoryName(project.FullPath), optionsPath);
-                }
 
                 var userOptions = ReverseEngineerUserOptionsExtensions.TryRead(optionsPath, Path.GetDirectoryName(project.FullPath));
 
