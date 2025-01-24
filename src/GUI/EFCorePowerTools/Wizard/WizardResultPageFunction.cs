@@ -6,14 +6,12 @@ using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Extensions.DependencyInjection;
 using Westwind.Wpf.Statusbar;
 
 namespace EFCorePowerTools.Wizard
 {
     public class WizardResultPageFunction : PageFunction<WizardResult>
     {
-        private readonly WizardDataViewModel viewModel;
         private readonly IWizardView wizardView;
         private string initStatusMessage;
         private StatusbarControl statusbarCtrl;
@@ -27,7 +25,6 @@ namespace EFCorePowerTools.Wizard
         public WizardResultPageFunction(WizardDataViewModel wizardViewModel, IWizardView wizardView)
 #pragma warning restore SA1201 // Elements should appear in the correct order
         {
-            this.viewModel = wizardViewModel;
             DataContext = wizardViewModel;
             this.wizardView = wizardView;
         }
@@ -36,30 +33,6 @@ namespace EFCorePowerTools.Wizard
         {
             this.statusbarCtrl = statusbarCtrl;
             this.initStatusMessage = initStatusMessage;
-
-            Messenger = viewModel.WizardEventArgs.ServiceProvider.GetRequiredService<IMessenger>();
-            Messenger.Register<ShowStatusbarMessage>(this, (message) =>
-            {
-                switch (message.Type)
-                {
-                    case StatusbarMessageTypes.Status:
-                        statusbarCtrl.Status.ShowStatus();
-                        break;
-                    case StatusbarMessageTypes.Progress:
-                        statusbarCtrl.Status.ShowStatusProgress(message.Message);
-                        break;
-                    case StatusbarMessageTypes.Success:
-                        statusbarCtrl.Status.ShowStatusSuccess(message.Message);
-                        break;
-                    case StatusbarMessageTypes.Error:
-                        statusbarCtrl.Status.ShowStatusError(message.Message);
-                        break;
-                    case StatusbarMessageTypes.Warning:
-                        statusbarCtrl.Status.ShowStatusWarning(message.Message);
-                        break;
-                }
-            });
-
             statusbarCtrl.Loaded += StatusbarCtrl_Loaded;
         }
 

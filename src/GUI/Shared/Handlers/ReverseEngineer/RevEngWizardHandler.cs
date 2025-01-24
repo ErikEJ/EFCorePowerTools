@@ -17,9 +17,7 @@ using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
-using EFCorePowerTools.Messages;
 using EFCorePowerTools.Wizard;
-using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
@@ -572,10 +570,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var completedMessage = string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss"));
             await VS.StatusBar.ShowMessageAsync(completedMessage);
-
-            var messenger = await package.GetServiceAsync<IMessenger>();
-
-            messenger.Send(new ShowStatusbarMessage { Content = finalText, Message = completedMessage });
 
             if (errors != ReverseEngineerLocale.ModelGeneratedSuccesfully + Environment.NewLine)
             {

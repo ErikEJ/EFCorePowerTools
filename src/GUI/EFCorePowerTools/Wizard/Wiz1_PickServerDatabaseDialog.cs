@@ -111,7 +111,7 @@ namespace EFCorePowerTools.Wizard
             this.wizardViewModel = viewModel;
 
             InitializeComponent();
-            InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.GettingReadyToConnect);
+
             Loaded += (s, e) => OnPageVisible(s, null);
         }
 
@@ -122,6 +122,8 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
+                Statusbar.Status.ShowStatus(ReverseEngineerLocale.GettingReadyToConnect, 100);
+
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     viewModel.WizardEventArgs.PickServerDatabaseDialog = this;

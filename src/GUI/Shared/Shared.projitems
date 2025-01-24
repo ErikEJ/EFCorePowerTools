@@ -82,7 +82,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DacpacAnalyzerHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\ReverseEngineerUserOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Handlers\DatabaseDiagramHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Handlers\Wizard\RevEngWizardHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Handlers\ReverseEngineer\RevEngWizardHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlConnectionStringBuilderHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\SqlProjHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FocusExtensions.cs" />
@@ -117,10 +117,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\PackageManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ItemWizard\ReverseEngineerWizardLauncher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowMessageBoxMessage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\ShowStatusbarMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarEventType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarEventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\StatusbarMessageTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\AboutExtensionModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ConfigModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ModelingOptionsModel.cs" />
