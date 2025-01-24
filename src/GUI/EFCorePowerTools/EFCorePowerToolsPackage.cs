@@ -746,6 +746,7 @@ namespace EFCorePowerTools
                             Filename = filename,
                             OnlyGenerate = false,
                             ServiceProvider = extensionServices,
+                            IsInvokedByWizard = true,
                         });
                 }
 

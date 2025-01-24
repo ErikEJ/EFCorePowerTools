@@ -10,6 +10,8 @@ namespace EFCorePowerTools.Contracts.EventArgs
 {
     public class WizardEventArgs : System.EventArgs
     {
+        public bool IsInvokedByWizard { get; set; }
+
         public Project Project { get; set; }
 
         public string OptionsPath { get; set; }
@@ -21,6 +23,7 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public bool FromSqlProject { get; set; }
 
         public string UiHint { get; set; }
+
         public List<ConfigModel> Configurations { get; set; } = [];
 
         public IServiceProvider ServiceProvider { get; set; }
@@ -43,5 +46,8 @@ namespace EFCorePowerTools.Contracts.EventArgs
         public ReverseEngineerUserOptions UserOptions { get; set; }
         public bool ForceEdit { get; set; }
         public string ReverseEngineerStatus { get; set; }
+
+        // If populated, will be sent to statusbar by wizard processes
+        public string StatusbarMessage { get; internal set; }
     }
 }

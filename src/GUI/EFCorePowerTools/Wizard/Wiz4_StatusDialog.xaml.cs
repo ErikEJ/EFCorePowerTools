@@ -18,7 +18,6 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
-            //InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.StatusbarGeneratingFiles);
 
             Loaded += (s, e) => OnPageVisible(s, null);
         }

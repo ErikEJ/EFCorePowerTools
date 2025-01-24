@@ -128,8 +128,6 @@ namespace EFCorePowerTools.Wizard
                     await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
                 });
 
-                // Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.StatusBarLoadingConfiguration));
-
                 foreach (var option in viewModel.WizardEventArgs.Configurations)
                 {
                     if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))

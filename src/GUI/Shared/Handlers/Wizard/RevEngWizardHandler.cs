@@ -120,21 +120,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 // data using existing business logic; to simplify wizard refactor this handler
                 // serves as the BLL (and DAL)
                 var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
-                var showDialog = wizard.ShowDialog();
-
-                var isOk = showDialog != null && (bool)showDialog;
-                if (isOk)
-                {
-                    await Task.Yield();
-                }
-                else
-                {
-                    await VS.MessageBox.ShowAsync(
-                       "EF Core Power Tools",
-                       "Process cancelled",
-                       icon: Microsoft.VisualStudio.Shell.Interop.OLEMSGICON.OLEMSGICON_WARNING,
-                       buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
-                }
+                wizard.ShowDialog();
+                await Task.Yield();
             }
             catch (AggregateException ae)
             {
@@ -181,7 +168,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     && !File.Exists(optionsPath))
                 {
                     optionsPath = cliOptionsPath;
-                    await VS.StatusBar.ShowMessageAsync($"Using CLI config in read-only mode, manually edit the file to make changes.");
+                    wizardArgs.StatusbarMessage = $"Using CLI config in read-only mode, manually edit the file to make changes.";
+
+                    if (!wizardArgs.IsInvokedByWizard)
+                    {
+                        await VS.StatusBar.ShowMessageAsync(wizardArgs.StatusbarMessage);
+                    }
                 }
 
                 if (optionsPaths.Count > 1)
@@ -256,7 +248,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             {
                 if (await VSHelper.IsDebugModeAsync())
                 {
-                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                    wizardArgs.StatusbarMessage = ReverseEngineerLocale.CannotGenerateCodeWhileDebugging;
+
+                    if (!wizardArgs.IsInvokedByWizard)
+                    {
+                        VSHelper.ShowError(wizardArgs.StatusbarMessage);
+                    }
+
                     return;
                 }
 
@@ -264,7 +262,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 var referenceRenamingPath = project.GetRenamingPath(optionsPath, true);
                 if (!string.IsNullOrEmpty(referenceRenamingPath) && File.Exists(referenceRenamingPath))
                 {
-                    VSHelper.ShowMessage("Property renaming (experimental) is no longer available. See GitHub issue #2171.");
+                    wizardArgs.StatusbarMessage = "Property renaming (experimental) is no longer available. See GitHub issue #2171.";
+
+                    if (!wizardArgs.IsInvokedByWizard)
+                    {
+                        VSHelper.ShowMessage(wizardArgs.StatusbarMessage);
+                    }
                 }
 
                 var namingOptionsAndPath = CustomNameOptionsExtensions.TryRead(renamingPath, optionsPath);
@@ -324,7 +327,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                     if (forceEdit)
                     {
-                        await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh);
+                        wizardArgs.StatusbarMessage = ReverseEngineerLocale.DatabaseConnectionNotFoundCannotRefresh;
+
+                        if (!wizardArgs.IsInvokedByWizard)
+                        {
+                            await VS.StatusBar.ShowMessageAsync(wizardArgs.StatusbarMessage);
+                        }
                     }
                     else
                     {
@@ -347,7 +355,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         // #1 load database connections (IPickServerDatabaseDialog)
                         if (!await ChooseDataBaseConnectionAsync(options, project, wizardArgs))
                         {
-                            await VS.StatusBar.ClearAsync();
+                            if (!wizardArgs.IsInvokedByWizard)
+                            {
+                                await VS.StatusBar.ClearAsync();
+                            }
+
                             return;
                         }
 
@@ -356,7 +368,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
                         }
 
-                        await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
+                        if (!wizardArgs.IsInvokedByWizard)
+                        {
+                            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
+                        }
 
                         dbInfo = await GetDatabaseInfoAsync(options);
 
@@ -368,7 +383,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             wizardArgs.DbInfo = dbInfo;
                             wizardArgs.Options = options;
                             wizardArgs.NamingOptionsAndPath = namingOptionsAndPath;
-                            await VS.StatusBar.ClearAsync();
                             return;
                         }
                     }
@@ -438,7 +452,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
 #pragma warning disable SA1204 // Static elements should appear before instance elements
-        public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
+        public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit, WizardEventArgs wizardArgs = null)
 #pragma warning restore SA1204 // Static elements should appear before instance elements
         {
             var nuGetHelper = new NuGetHelper();
@@ -456,7 +470,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     return;
                 }
 
-                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
+                if (!wizardArgs.IsInvokedByWizard)
+                {
+                    await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.InstallingEFCoreProviderPackage);
+                }
 
                 foreach (var nuGetPackage in packagesToInstall)
                 {
@@ -470,7 +487,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
+            if (!isCalledByWizard)
+            {
+                await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 4);
+            }
 
             var stopWatch = Stopwatch.StartNew();
 
@@ -489,11 +509,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
 
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
+            if (!isCalledByWizard)
+            {
+                await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
+            }
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
 
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
+            if (!isCalledByWizard)
+            {
+                await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
+            }
 
             var readmePath = string.Empty;
             var finalText = string.Empty;
@@ -719,7 +745,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                VSHelper.ShowError($".NET 5 and earlier is not supported.");
+                wizardArgs.StatusbarMessage = $".NET 5 and earlier is not supported.";
+                if (!wizardArgs.IsInvokedByWizard)
+                {
+                    VSHelper.ShowError(wizardArgs.StatusbarMessage);
+                }
+
                 return false;
             }
 
@@ -762,7 +793,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             try
             {
-                await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+                if (!wizardArgs.IsInvokedByWizard)
+                {
+                    await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+                }
 
                 predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
                                            ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
@@ -775,12 +809,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
             finally
             {
-                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+                if (!wizardArgs.IsInvokedByWizard)
+                {
+                    await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+                }
             }
 
             var isSqliteToolboxInstalled = options.DatabaseType != DatabaseType.SQLite;
 
-            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+            if (!wizardArgs.IsInvokedByWizard)
+            {
+                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+            }
 
             var preselectedTables = new List<SerializationTableModel>();
 
@@ -790,7 +830,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 preselectedTables.AddRange(normalizedTables);
             }
 
-            await VS.StatusBar.ClearAsync();
+            if (wizardArgs.IsInvokedByWizard)
+            {
+                await Task.Yield();
+            }
+            else
+            {
+                await VS.StatusBar.ClearAsync();
+            }
 
             // If the wizard is driving then it's implementation of the interface will be used.
             var ptd = wizardArgs?.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
@@ -875,7 +922,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 new Contracts.ViewModels.TemplateTypeItem { Key = options.SelectedHandlebarsLanguage },
                 allowedTemplates);
 
-            await VS.StatusBar.ClearAsync();
+            if (!wizardArgs.IsInvokedByWizard)
+            {
+                await VS.StatusBar.ClearAsync();
+            }
 
             var modelingOptionsResult = modelDialog.ShowAndAwaitUserResponse(true);
 

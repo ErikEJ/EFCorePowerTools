@@ -56,8 +56,6 @@ namespace EFCorePowerTools.Wizard
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.PickTablesDialog = this;
 
-                //Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingDatabaseObjects));
-
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);

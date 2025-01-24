@@ -61,8 +61,6 @@ namespace EFCorePowerTools.Wizard
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.ModelingOptionsDialog = this;
 
-                //Messenger.Send(new ShowStatusbarMessage(ReverseEngineerLocale.LoadingOptions));
-
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
@@ -106,7 +104,7 @@ namespace EFCorePowerTools.Wizard
             {
                 await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
-                await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
+                await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, wea);
 
                 var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
                 var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
