@@ -9,7 +9,7 @@
   </ItemGroup>	
   <ItemGroup>
     <PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.1.2" />
-    <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.1.2" />
+    <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.2.0" />
     <PackageReference Include="Microsoft.SqlServer.DacFx" Version="162.5.57" />
     <PackageReference Include="System.ComponentModel.Composition" Version="9.0.1" />    
   </ItemGroup>
