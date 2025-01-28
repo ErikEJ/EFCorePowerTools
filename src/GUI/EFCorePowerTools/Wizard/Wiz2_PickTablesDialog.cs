@@ -67,7 +67,7 @@ namespace EFCorePowerTools.Wizard
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             // Go to next wizard page
-            if (wizardViewModel.IsPage2Initialized)
+            if (wizardViewModel.IsPage2Initialized && !IsPageDirty)
             {
                 NavigationService.GoForward();
             }

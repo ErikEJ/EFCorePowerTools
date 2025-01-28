@@ -17,7 +17,7 @@ namespace EFCorePowerTools.Wizard
         private StatusbarControl statusbarCtrl;
 
 #pragma warning disable SA1202 // Elements should be ordered by access
-
+        protected static bool IsPageDirty { get; set; } = true;
         protected IMessenger Messenger { get; set; }
         public bool IsPageLoaded { get; set; }
 
@@ -96,6 +96,11 @@ namespace EFCorePowerTools.Wizard
         public void BackButton_Click(object sender, RoutedEventArgs e)
 #pragma warning restore SA1202 // Elements should be ordered by access
         {
+            // If the previous button is clicked then we'll assume that
+            // they are going to change something and set page to dirty
+            // this will ensure all logic is invoked.
+            IsPageDirty = true;
+
             // Go to previous wizard page
             NavigationService?.GoBack();
         }
