@@ -39,7 +39,7 @@ namespace EFCorePowerTools.Wizard
             getDialogResultPg3 = () => viewModel.Model;
             applyPresets = (options) =>
             {
-                if (!isRunningAgain) // Only initialize presets first run
+                if (!isRunningAgain)
                 {
                     viewModel.ApplyPresets(options);
                 }
