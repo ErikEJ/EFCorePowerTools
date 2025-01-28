@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
@@ -35,13 +36,24 @@ namespace EFCorePowerTools.Wizard
 
             if (!IsPageLoaded)
             {
+                // When generating we'll initialize the page to known state
+                wizardViewModel.GenerateStatus = string.Empty;
                 Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarGeneratingFiles);
+                PreviousButton.IsEnabled = false;
+                FinishButton.IsEnabled = false;
             }
         }
 
         private void TextChangedEventHandler(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            Statusbar.Status.ShowStatus(); // Will reset status bar
+            var textBox = sender as TextBox;
+            if (textBox != null && !string.IsNullOrEmpty(textBox.Text) && PreviousButton != null && FinishButton != null)
+            {
+                // If here then we have status update - enabled buttons
+                Statusbar.Status.ShowStatus(); // Will reset status bar
+                PreviousButton.IsEnabled = true;
+                FinishButton.IsEnabled = true;
+            }
         }
     }
 }

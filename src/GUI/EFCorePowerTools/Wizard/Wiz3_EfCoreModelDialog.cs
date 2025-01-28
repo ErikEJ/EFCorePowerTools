@@ -25,6 +25,7 @@ namespace EFCorePowerTools.Wizard
         private readonly Func<ModelingOptionsModel> getDialogResultPg3;
         private readonly Action<ModelingOptionsModel> applyPresets;
         private readonly Action<TemplateTypeItem, IList<TemplateTypeItem>> setTemplateTypes;
+        private bool isRunningAgain = false;
 
         public Wiz3_EfCoreModelDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -36,7 +37,14 @@ namespace EFCorePowerTools.Wizard
             this.wizardViewModel = viewModel;
 
             getDialogResultPg3 = () => viewModel.Model;
-            applyPresets = viewModel.ApplyPresets;
+            applyPresets = (options) =>
+            {
+                if (!isRunningAgain)
+                {
+                    viewModel.ApplyPresets(options);
+                }
+            };
+
             setTemplateTypes = (templateType, templateTypes) =>
             {
                 foreach (var item in templateTypes)
@@ -80,6 +88,11 @@ namespace EFCorePowerTools.Wizard
 
                 FirstTextBox.Focus();
             }
+
+            if (IsPageDirty)
+            {
+                NextButton.IsEnabled = true;
+            }
         }
 
         private void GenerateFiles_Click(object sender, RoutedEventArgs e)
@@ -92,6 +105,20 @@ namespace EFCorePowerTools.Wizard
             var namingOptionsAndPath = wea.NamingOptionsAndPath;
             var onlyGenerate = wea.OnlyGenerate;
             var forceEdit = wea.ForceEdit;
+
+            if (IsPageDirty)
+            {
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    isRunningAgain = true;
+                    await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
+                    if (wea.NewOptions)
+                    {
+                        // HACK Work around for issue with web app project system on initial run
+                        wea.UserOptions = null;
+                    }
+                });
+            }
 
             wizardViewModel.GenerateStatus = string.Empty;
             wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
@@ -133,7 +160,7 @@ namespace EFCorePowerTools.Wizard
             ShowAndAwaitUserResponse(true);
 
             // Go to next wizard page
-            if (wizardViewModel.IsPage3Initialized)
+            if (wizardViewModel.IsPage3Initialized && !IsPageDirty)
             {
                 NavigationService.GoForward();
             }
