@@ -131,7 +131,7 @@ namespace EFCorePowerTools.Wizard
             {
                 await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
-                await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, wea);
+                await ReverseEngineerHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, wea);
 
                 var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
                 var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;

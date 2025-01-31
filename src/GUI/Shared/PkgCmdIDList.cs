@@ -6,7 +6,6 @@ namespace EFCorePowerTools
     {
         // C# project context menu
         public const uint cmdidReverseEngineerCodeFirst = 0x001;
-        public const uint cmdidWizardPoc = 0x002;
         public const uint cmdidReverseEngineerCodeFirstRefresh = 0x007;
         public const uint cmdidReverseEngineerDab = 0x012;
         public const uint cmdidAbout = 0x006;

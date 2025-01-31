@@ -84,17 +84,6 @@
     </Menus>
 
     <Buttons>
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidWizardPoc" priority="0x0100" type="Button">
-        <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
-        <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
-        <CommandFlag>IconIsMoniker</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <CommandFlag>TextChanges</CommandFlag>
-        <Strings>
-          <ButtonText>Reverse Engineer Wizard (preview)</ButtonText>
-        </Strings>
-      </Button>
-
       <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0101" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />

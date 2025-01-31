@@ -55,7 +55,6 @@ namespace EFCorePowerTools
     {
         public const string UIContextGuid = "BB60393B-FCF6-4807-AA92-B7C1019AA827";
 
-        private readonly RevEngWizardHandler revEngWizardHandler;
         private readonly ReverseEngineerHandler reverseEngineerHandler;
         private readonly AboutHandler aboutHandler;
         private readonly CompareHandler compareHandler;
@@ -67,7 +66,6 @@ namespace EFCorePowerTools
 
         public EFCorePowerToolsPackage()
         {
-            revEngWizardHandler = new RevEngWizardHandler(this);
             reverseEngineerHandler = new ReverseEngineerHandler(this);
             aboutHandler = new AboutHandler(this);
             compareHandler = new CompareHandler(this);
@@ -146,14 +144,6 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
-                    oleMenuCommandService.AddCommand(new OleMenuCommand(
-                        OnProjectContextMenuInvokeHandler,
-                        null,
-                        OnProjectMenuBeforeQueryStatus,
-                        new CommandID(
-                            GuidList.GuidDbContextPackageCmdSet,
-                            (int)PkgCmdIDList.cmdidWizardPoc)));
-
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
@@ -533,9 +523,6 @@ namespace EFCorePowerTools
 
             switch ((uint)menuCommand.CommandID.ID)
             {
-                case PkgCmdIDList.cmdidWizardPoc:
-                    menuCommand.Text = "Reverse Engineer Wizard (preview)";
-                    break;
                 case PkgCmdIDList.cmdidAbout:
                     menuCommand.Text = ButtonLocale.cmdidAbout;
                     break;
@@ -595,7 +582,6 @@ namespace EFCorePowerTools
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc
                 || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
             {
                 menuCommand.Visible = await project.CanUseReverseEngineerAsync();
@@ -737,19 +723,6 @@ namespace EFCorePowerTools
 
                 string filename = item.FullPath;
 
-                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
-                {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(
-                        new WizardEventArgs
-                        {
-                            Project = project,
-                            Filename = filename,
-                            OnlyGenerate = false,
-                            ServiceProvider = extensionServices,
-                            IsInvokedByWizard = true,
-                        });
-                }
-
                 if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerEdit)
                 {
                     if (!IsConfigFile(item.Text))
@@ -763,7 +736,15 @@ namespace EFCorePowerTools
                     }
                     else
                     {
-                        await reverseEngineerHandler.ReverseEngineerCodeFirstAsync(project, filename, false);
+                        await reverseEngineerHandler.ReverseEngineerCodeFirstLaunchWizardAsync(
+                            new WizardEventArgs
+                            {
+                                Project = project,
+                                Filename = filename,
+                                OnlyGenerate = false,
+                                ServiceProvider = extensionServices,
+                                IsInvokedByWizard = true,
+                            });
                     }
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerRefresh)
@@ -832,17 +813,12 @@ namespace EFCorePowerTools
                     }
                 }
 
-                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
+                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
                 {
-                    await revEngWizardHandler.ReverseEngineerCodeFirstLaunchWizardAsync(new WizardEventArgs()
+                    await reverseEngineerHandler.ReverseEngineerCodeFirstLaunchWizardAsync(new WizardEventArgs()
                     {
                         ServiceProvider = extensionServices,
                     });
-                }
-
-                if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst)
-                {
-                    await reverseEngineerHandler.ReverseEngineerCodeFirstAsync();
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirstRefresh)
                 {
