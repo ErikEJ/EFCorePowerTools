@@ -40,6 +40,5 @@ namespace Microsoft.SqlServer.Dac.Extensions.Prototype
         public UnresolvedElementException() { }
         public UnresolvedElementException(string message) : base(message) { }
         public UnresolvedElementException(string message, Exception innerException) : base(message, innerException) { }
-        public UnresolvedElementException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }
