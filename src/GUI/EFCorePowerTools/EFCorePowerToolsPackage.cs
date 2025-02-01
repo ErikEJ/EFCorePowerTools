@@ -1069,7 +1069,6 @@ namespace EFCorePowerTools
                     .AddSingleton<Func<ITableInformationViewModel>>(provider => () => new TableInformationViewModel(provider.GetService<IMessenger>()))
                     .AddSingleton<Func<IColumnInformationViewModel>>(provider => () => new ColumnInformationViewModel(provider.GetService<IMessenger>()))
                     .AddSingleton<Func<IColumnChildrenViewModel>>(provider => () => new ColumnChildrenViewModel(provider.GetService<IMessenger>()))
-                    .AddTransient<IModelingOptionsViewModel, ModelingOptionsViewModel>()
                     .AddTransient<IPickSchemasViewModel, PickSchemasViewModel>()
                     .AddTransient<IAdvancedModelingOptionsViewModel, AdvancedModelingOptionsViewModel>()
                     .AddTransient<IObjectTreeViewModel, ObjectTreeViewModel>()

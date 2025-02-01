@@ -134,7 +134,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CompareResultViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ContextTypeItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DatabaseConnectionModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ModelingOptionsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeRootItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ObjectTreeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PickProjectViewModel.cs" />
