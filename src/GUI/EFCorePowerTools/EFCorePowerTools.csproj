@@ -57,9 +57,6 @@
     <Compile Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\DgmlBuilder.cs">
       <Link>DgmlBuilder\DgmlBuilder.cs</Link>
     </Compile>
-    <Compile Include="Dialogs\EfCoreModelDialog.xaml.cs">
-      <DependentUpon>EfCoreModelDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\PickServerDatabaseDialog.xaml.cs">
       <DependentUpon>PickServerDatabaseDialog.xaml</DependentUpon>
     </Compile>
@@ -543,10 +540,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\CompareResultDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Dialogs\EfCoreModelDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

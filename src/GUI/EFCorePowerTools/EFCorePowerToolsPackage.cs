@@ -1048,7 +1048,6 @@ namespace EFCorePowerTools
                     .AddTransient<IPickProjectDialog, PickProjectDialog>()
                     .AddTransient<IPickServerDatabaseDialog, PickServerDatabaseDialog>()
                     .AddTransient<IPickTablesDialog, PickTablesDialog>()
-                    .AddTransient<IModelingOptionsDialog, EfCoreModelDialog>()
                     .AddTransient<IPickSchemasDialog, PickSchemasDialog>()
                     .AddTransient<IPickConnectionDialog, ConnectionDialog>()
                     .AddTransient<IAdvancedModelingOptionsDialog, AdvancedModelingOptionsDialog>()
