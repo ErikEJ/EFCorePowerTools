@@ -609,7 +609,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
 
-        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
+        public static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -1004,7 +1004,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());
             }
 
-            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count > 0)
+            if (renamingOptions?.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count > 0)
             {
                 if (File.Exists(renamingOptions.Item2) && File.GetAttributes(renamingOptions.Item2).HasFlag(FileAttributes.ReadOnly))
                 {

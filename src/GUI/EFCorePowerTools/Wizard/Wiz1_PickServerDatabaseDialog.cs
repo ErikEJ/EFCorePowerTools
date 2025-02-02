@@ -51,7 +51,7 @@ namespace EFCorePowerTools.Wizard
                     }
                 }
 
-                viewModel.SelectedDatabaseConnection = viewModel.DatabaseConnections.FirstOrDefault();
+                // viewModel.SelectedDatabaseConnection = viewModel.DatabaseConnections.FirstOrDefault();
                 wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
             };
             addDefinitions = models =>
@@ -147,11 +147,11 @@ namespace EFCorePowerTools.Wizard
 #pragma warning restore SA1202 // Elements should be ordered by access
         {
             // Go to next wizard page
-            if (wizardViewModel.IsPage1Initialized)
-            {
-                NavigationService.GoForward();
-            }
-            else
+            // if (wizardViewModel.IsPage1Initialized)
+            // {
+            //    NavigationService.GoForward();
+            // }
+            // else
             {
                 wizardViewModel.IsPage1Initialized = true;
                 var wizardPage2 = new Wiz2_PickTablesDialog((WizardDataViewModel)DataContext, wizardView);

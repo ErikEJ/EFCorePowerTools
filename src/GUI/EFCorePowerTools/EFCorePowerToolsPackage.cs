@@ -148,13 +148,13 @@ namespace EFCorePowerTools
                 {
                     // temporary disabled until the wizard is ready
 
-                    ////oleMenuCommandService.AddCommand(new OleMenuCommand(
-                    ////    OnProjectContextMenuInvokeHandler,
-                    ////    null,
-                    ////    OnProjectMenuBeforeQueryStatus,
-                    ////    new CommandID(
-                    ////        GuidList.GuidDbContextPackageCmdSet,
-                    ////        (int)PkgCmdIDList.cmdidWizardPoc)));
+                    oleMenuCommandService.AddCommand(new OleMenuCommand(
+                        OnProjectContextMenuInvokeHandler,
+                        null,
+                        OnProjectMenuBeforeQueryStatus,
+                        new CommandID(
+                            GuidList.GuidDbContextPackageCmdSet,
+                            (int)PkgCmdIDList.cmdidWizardPoc)));
 
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
