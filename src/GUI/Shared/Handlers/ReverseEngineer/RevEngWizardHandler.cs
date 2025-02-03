@@ -603,7 +603,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
 
+#pragma warning disable SA1202 // Elements should be ordered by access
         public static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 

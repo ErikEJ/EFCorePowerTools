@@ -146,8 +146,6 @@ namespace EFCorePowerTools
 
                 if (oleMenuCommandService != null)
                 {
-                    // temporary disabled until the wizard is ready
-
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
                         OnProjectContextMenuInvokeHandler,
                         null,
