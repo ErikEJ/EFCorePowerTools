@@ -57,6 +57,7 @@ namespace EFCorePowerTools.Wizard
                 IsPageLoaded = false;
                 isDataLoaded = false;
                 wea.Options.UiHint = viewModel.UiHint;
+                wea.UserOptions.UiHint = viewModel.UiHint;
                 wea.Options.ConnectionString = viewModel.SelectedDatabaseConnection.ConnectionString;
                 wea.Options.DatabaseType = viewModel.SelectedDatabaseConnection.DatabaseType;
                 wea.Options.ContextClassName = null;

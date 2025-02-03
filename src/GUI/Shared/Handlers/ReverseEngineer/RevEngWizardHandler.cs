@@ -345,7 +345,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
                         }
 
-                        dbInfo = await GetDatabaseInfoAsync(options);
+                        // If no connection string is set then there is no need to get database info
+                        // as it will result in a dialog complaining about the provider
+                        if (options.ConnectionString != null)
+                        {
+                            dbInfo = await GetDatabaseInfoAsync(options);
+                        }
 
                         if (dbInfo == null || wizardArgs.PickServerDatabaseComplete)
                         {
@@ -353,6 +358,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             // the wizard args state so that it can continue processing.  This handler is no
                             // longer driving the logic flow - the wizard pages are.
                             wizardArgs.DbInfo = dbInfo;
+                            wizardArgs.UserOptions = userOptions;
                             wizardArgs.Options = options;
                             wizardArgs.NamingOptionsAndPath = namingOptionsAndPath;
                             return;
