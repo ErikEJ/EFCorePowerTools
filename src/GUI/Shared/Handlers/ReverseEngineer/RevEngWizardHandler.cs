@@ -172,33 +172,21 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
-
-                    // If not null then the wizard is invoking this process so we'll update state
-                    if (wizardArgs != null)
-                    {
-                        wizardArgs.Project = project;
-                        wizardArgs.OptionsPath = optionsPath;
-                        wizardArgs.OnlyGenerate = false;
-                        wizardArgs.FromSqlProject = false;
-                        wizardArgs.UiHint = uiHint;
-                    }
                 }
-                else
-                {
-                    if (wizardArgs != null)
-                    {
-                        wizardArgs.Project = project;
-                        wizardArgs.OptionsPath = optionsPath;
-                        wizardArgs.OnlyGenerate = false;
-                        wizardArgs.FromSqlProject = false;
-                        wizardArgs.UiHint = uiHint;
 
-                        wizardArgs.Configurations.Add(new ConfigModel
-                        {
-                            ConfigPath = optionsPath,
-                            ProjectPath = projectPath,
-                        });
-                    }
+                if (wizardArgs != null)
+                {
+                    wizardArgs.Project = project;
+                    wizardArgs.OptionsPath = optionsPath;
+                    wizardArgs.OnlyGenerate = false;
+                    wizardArgs.FromSqlProject = false;
+                    wizardArgs.UiHint = uiHint;
+
+                    wizardArgs.Configurations.Add(new ConfigModel
+                    {
+                        ConfigPath = optionsPath,
+                        ProjectPath = projectPath,
+                    });
                 }
 
                 await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint, wizardArgs);
