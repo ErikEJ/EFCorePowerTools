@@ -8,6 +8,7 @@ using System.Windows.Input;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
@@ -50,10 +51,26 @@ namespace EFCorePowerTools.Wizard
             var viewModel = wizardViewModel;
             IsPageLoaded = viewModel.IsPage2Initialized;
             var isDataLoaded = wizardViewModel.ObjectTree.Types.Any();
+            var wea = viewModel.WizardEventArgs;
+            if (wea.Options.UiHint != viewModel.UiHint)
+            {
+                IsPageLoaded = false;
+                isDataLoaded = false;
+                wea.Options.UiHint = viewModel.UiHint;
+                wea.UserOptions.UiHint = viewModel.UiHint;
+                wea.Options.ConnectionString = viewModel.SelectedDatabaseConnection.ConnectionString;
+                wea.Options.DatabaseType = viewModel.SelectedDatabaseConnection.DatabaseType;
+                wea.Options.ContextClassName = null;
+
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                {
+                    var dbinfo = await RevEngWizardHandler.GetDatabaseInfoAsync(wea.Options);
+                    wea.DbInfo = dbinfo;
+                });
+            }
 
             if (!IsPageLoaded && !isDataLoaded)
             {
-                var wea = wizardViewModel.WizardEventArgs;
                 wea.PickTablesDialog = this;
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>

@@ -172,33 +172,21 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
 
                     optionsPath = pickConfigResult.Payload.ConfigPath;
-
-                    // If not null then the wizard is invoking this process so we'll update state
-                    if (wizardArgs != null)
-                    {
-                        wizardArgs.Project = project;
-                        wizardArgs.OptionsPath = optionsPath;
-                        wizardArgs.OnlyGenerate = false;
-                        wizardArgs.FromSqlProject = false;
-                        wizardArgs.UiHint = uiHint;
-                    }
                 }
-                else
-                {
-                    if (wizardArgs != null)
-                    {
-                        wizardArgs.Project = project;
-                        wizardArgs.OptionsPath = optionsPath;
-                        wizardArgs.OnlyGenerate = false;
-                        wizardArgs.FromSqlProject = false;
-                        wizardArgs.UiHint = uiHint;
 
-                        wizardArgs.Configurations.Add(new ConfigModel
-                        {
-                            ConfigPath = optionsPath,
-                            ProjectPath = projectPath,
-                        });
-                    }
+                if (wizardArgs != null)
+                {
+                    wizardArgs.Project = project;
+                    wizardArgs.OptionsPath = optionsPath;
+                    wizardArgs.OnlyGenerate = false;
+                    wizardArgs.FromSqlProject = false;
+                    wizardArgs.UiHint = uiHint;
+
+                    wizardArgs.Configurations.Add(new ConfigModel
+                    {
+                        ConfigPath = optionsPath,
+                        ProjectPath = projectPath,
+                    });
                 }
 
                 await ReverseEngineerCodeFirstAsync(project, optionsPath, false, false, uiHint, wizardArgs);
@@ -345,7 +333,12 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
                         }
 
-                        dbInfo = await GetDatabaseInfoAsync(options);
+                        // If no connection string is set then there is no need to get database info
+                        // as it will result in a dialog complaining about the provider
+                        if (options.ConnectionString != null)
+                        {
+                            dbInfo = await GetDatabaseInfoAsync(options);
+                        }
 
                         if (dbInfo == null || wizardArgs.PickServerDatabaseComplete)
                         {
@@ -353,6 +346,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             // the wizard args state so that it can continue processing.  This handler is no
                             // longer driving the logic flow - the wizard pages are.
                             wizardArgs.DbInfo = dbInfo;
+                            wizardArgs.UserOptions = userOptions;
                             wizardArgs.Options = options;
                             wizardArgs.NamingOptionsAndPath = namingOptionsAndPath;
                             return;
@@ -609,7 +603,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await builder.GetTableDefinitionsAsync(codeGenerationMode);
         }
 
-        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
+#pragma warning disable SA1202 // Elements should be ordered by access
+        public static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(ReverseEngineerOptions options)
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -1004,7 +1000,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());
             }
 
-            if (renamingOptions.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count > 0)
+            if (renamingOptions?.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count > 0)
             {
                 if (File.Exists(renamingOptions.Item2) && File.GetAttributes(renamingOptions.Item2).HasFlag(FileAttributes.ReadOnly))
                 {

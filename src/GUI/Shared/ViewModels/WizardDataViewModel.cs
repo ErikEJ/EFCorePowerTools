@@ -49,8 +49,10 @@ namespace EFCorePowerTools.ViewModels
             AddDatabaseDefinitionCommand = new RelayCommand(AddDatabaseDefinition_Executed);
             RemoveDatabaseConnectionCommand = new RelayCommand(RemoveDatabaseConnection_Executed, RemoveDatabaseConnection_CanExecute);
             FilterSchemasCommand = new RelayCommand(FilterSchemas_Executed, FilterSchemas_CanExecute);
-            CodeGenerationModeList = [];
-            DatabaseConnections = [];
+
+            CodeGenerationModeList = new ObservableCollection<CodeGenerationItem>();
+
+            DatabaseConnections = new ObservableCollection<DatabaseConnectionModel>();
             Schemas = new List<SchemaInfo>();
             DatabaseConnections.CollectionChanged += (sender, args) => RaisePropertyChanged(nameof(DatabaseConnections));
 
@@ -136,8 +138,8 @@ namespace EFCorePowerTools.ViewModels
         public RelayCommand RemoveDatabaseConnectionCommand { get; set; }
         public RelayCommand FilterSchemasCommand { get; set; }
 
-        public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; set; } = [];
-        public ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; set; } = [];
+        public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
+        public ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; }
 
         public List<SchemaInfo> Schemas { get; set; } = [];
 
@@ -184,6 +186,7 @@ namespace EFCorePowerTools.ViewModels
 
                 selectedDatabaseConnection = value;
                 RaisePropertyChanged();
+                this.ObjectTree.Types.Clear();
             }
         }
 

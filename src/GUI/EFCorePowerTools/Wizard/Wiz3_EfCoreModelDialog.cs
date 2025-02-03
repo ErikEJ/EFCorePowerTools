@@ -98,6 +98,16 @@ namespace EFCorePowerTools.Wizard
         private void GenerateFiles_Click(object sender, RoutedEventArgs e)
         {
             var wea = wizardViewModel.WizardEventArgs;
+
+            // Ensure that userOptions hint matches the options hint
+            if (wea.UserOptions == null)
+            {
+                wea.UserOptions = new ReverseEngineerUserOptions
+                {
+                    UiHint = wea.Options.UiHint,
+                };
+            }
+
             var project = wea.Project;
             var optionsPath = wea.OptionsPath;
             var options = wea.Options;
