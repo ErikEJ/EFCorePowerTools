@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="EFCorePowerTools.Wizard.BusyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EFCorePowerTools.Wizard"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100">
+    <StackPanel>
+        <Image
+            Width="150"
+            Height="150"
+            Name="gears" 
+            Source="gears.gif"/>
+        <TextBlock Text="Processing, please be patient..."
+                   FontWeight="Bold"/>
+    </StackPanel>
+</UserControl>

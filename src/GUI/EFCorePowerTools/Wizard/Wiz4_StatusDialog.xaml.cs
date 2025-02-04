@@ -20,6 +20,8 @@ namespace EFCorePowerTools.Wizard
 
             InitializeComponent();
 
+            BusyControl.Visibility = Visibility.Visible;
+
             Loaded += (s, e) => OnPageVisible(s, null);
         }
 
@@ -50,6 +52,7 @@ namespace EFCorePowerTools.Wizard
             if (textBox != null && !string.IsNullOrEmpty(textBox.Text) && PreviousButton != null && FinishButton != null)
             {
                 // If here then we have status update - enabled buttons
+                BusyControl.Visibility = Visibility.Collapsed;
                 Statusbar.Status.ShowStatus(); // Will reset status bar
                 PreviousButton.IsEnabled = true;
                 FinishButton.IsEnabled = true;

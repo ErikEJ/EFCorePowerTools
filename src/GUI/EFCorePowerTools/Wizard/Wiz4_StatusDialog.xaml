@@ -59,5 +59,9 @@
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" IsEnabled="False" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="3" x:Name="Statusbar"/>
+        <local:BusyControl 
+            x:Name="BusyControl"
+            VerticalAlignment="Center" 
+            HorizontalAlignment="Center"/>
     </Grid>
 </local:WizardResultPageFunction>
