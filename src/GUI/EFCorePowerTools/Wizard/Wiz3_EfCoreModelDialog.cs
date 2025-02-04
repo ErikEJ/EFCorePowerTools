@@ -165,7 +165,6 @@ namespace EFCorePowerTools.Wizard
                 {
                     errorMessage = ex.Message;
                 }
-
             });
 
             if (string.IsNullOrEmpty(errorMessage))

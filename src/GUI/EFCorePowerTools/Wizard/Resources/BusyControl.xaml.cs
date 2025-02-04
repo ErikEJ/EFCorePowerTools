@@ -3,7 +3,7 @@
 namespace EFCorePowerTools.Wizard
 {
     /// <summary>
-    /// Interaction logic for BusyControl.xaml
+    /// Interaction logic for BusyControl.xaml.
     /// </summary>
     public partial class BusyControl : UserControl
     {
