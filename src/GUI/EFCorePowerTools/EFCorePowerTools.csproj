@@ -63,9 +63,6 @@
     <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
     <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
     <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
-    <Compile Include="Wizard\Resources\BusyControl.xaml.cs">
-      <DependentUpon>BusyControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Wizard\Wiz4_StatusDialog.xaml.cs">
       <DependentUpon>Wiz4_StatusDialog.xaml</DependentUpon>
     </Compile>
@@ -169,9 +166,6 @@
     <Compile Include="Wizard\WizardReturnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Wizard\Resources\Gears.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-check.svg" />
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-exclamation.svg" />
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-green.svg" />
@@ -599,10 +593,6 @@
     <Page Include="Westwind.WPF.Statusbar\StatusBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Wizard\Resources\BusyControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Wizard\Resources\Converter.xaml">
       <Generator>MSBuild:Compile</Generator>

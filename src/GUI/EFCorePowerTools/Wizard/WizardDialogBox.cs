@@ -19,6 +19,7 @@ namespace EFCorePowerTools.Wizard
 
             if (e is WizardEventArgs wizardArgs)
             {
+                wizardArgs.IsInvokedByWizard = true;
                 wizardViewModel.WizardEventArgs = wizardArgs;
                 wizardViewModel.UiHint = wizardArgs.UiHint;
                 wizardViewModel.Filename = wizardArgs.Filename;

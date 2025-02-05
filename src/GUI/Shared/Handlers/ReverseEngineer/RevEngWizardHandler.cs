@@ -771,7 +771,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
             catch (InvalidOperationException ex)
             {
-                VSHelper.ShowError($"{ex.Message}");
+                if (wizardArgs.IsInvokedByWizard)
+                {
+                    wizardArgs.StatusbarMessage = ex.Message;
+                }
+                else
+                {
+                    VSHelper.ShowError($"{ex.Message}");
+                }
+
                 return false;
             }
             finally

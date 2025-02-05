@@ -13,6 +13,7 @@
     KeepAlive="True"
     WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}">
 
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding Page4LoadedCommand}" />
@@ -38,20 +39,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" >Reverse Engineer Status</Label>
-                <TextBox Grid.Row="1" 
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" >Reverse Engineer Status</Label>
+            <TextBox Grid.Row="1" 
                          Padding="5" Margin="5"
                          TextChanged="TextChangedEventHandler"
                          TextWrapping="Wrap"
                          VerticalScrollBarVisibility="Auto"
                          Text="{Binding GenerateStatus, Mode=TwoWay}">
-                </TextBox>
-            </Grid>
+            </TextBox>
+        </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" x:Name="PreviousButton" Click="BackButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" IsEnabled="False"/>
@@ -59,9 +60,5 @@
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" IsEnabled="False" IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="3" x:Name="Statusbar"/>
-        <local:BusyControl 
-            x:Name="BusyControl"
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center"/>
     </Grid>
 </local:WizardResultPageFunction>

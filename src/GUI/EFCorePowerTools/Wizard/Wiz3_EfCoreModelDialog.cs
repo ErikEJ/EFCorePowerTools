@@ -69,21 +69,27 @@ namespace EFCorePowerTools.Wizard
                 var wea = wizardViewModel.WizardEventArgs;
                 wea.ModelingOptionsDialog = this;
 
+                var isSuccessful = false;
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
-                    wea.Options.InstallNuGetPackage = neededPackages
-                        .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
-
-                    await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
-
-                    if (wea.NewOptions)
+                    isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
                     {
-                        // HACK Work around for issue with web app project system on initial run
-                        wea.UserOptions = null;
-                    }
+                        var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
+                        wea.Options.InstallNuGetPackage = neededPackages
+                            .Exists(p => p.DatabaseTypes.Contains(wea.Options.DatabaseType) && !p.Installed);
 
-                    NextButton.IsEnabled = true;
+                        var result = await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
+
+                        if (wea.NewOptions)
+                        {
+                            // HACK Work around for issue with web app project system on initial run
+                            wea.UserOptions = null;
+                        }
+
+                        return result;
+                    });
+
+                    NextButton.IsEnabled = isSuccessful;
                 });
 
                 FirstTextBox.Focus();
@@ -118,15 +124,23 @@ namespace EFCorePowerTools.Wizard
 
             if (IsPageDirty)
             {
+                var isSuccessful2 = false;
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    isRunningAgain = true;
-                    await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
-                    if (wea.NewOptions)
+                    isSuccessful2 = await InvokeWithErrorHandlingAsync(async () =>
                     {
-                        // HACK Work around for issue with web app project system on initial run
-                        wea.UserOptions = null;
-                    }
+                        isRunningAgain = true;
+                        var result = await wizardViewModel.Bll.GetModelOptionsAsync(wea.Options, wea.Project.Name, wea);
+                        if (wea.NewOptions)
+                        {
+                            // HACK Work around for issue with web app project system on initial run
+                            wea.UserOptions = null;
+                        }
+
+                        return result;
+                    });
+
+                    NextButton.IsEnabled = isSuccessful2;
                 });
             }
 
@@ -138,9 +152,10 @@ namespace EFCorePowerTools.Wizard
 
             this.applyPresets(wizardViewModel.Model);
 
+            var isSuccessful = false;
             ThreadHelper.JoinableTaskFactory.Run(async () =>
             {
-                try
+                isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
                 {
                     await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
@@ -160,11 +175,11 @@ namespace EFCorePowerTools.Wizard
                     {
                         Process.Start($"\"{postRunFile}\"");
                     }
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = ex.Message;
-                }
+
+                    return true;
+                });
+
+                NextButton.IsEnabled = isSuccessful;
             });
 
             if (string.IsNullOrEmpty(errorMessage))
