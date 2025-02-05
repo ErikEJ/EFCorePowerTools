@@ -97,6 +97,18 @@ internal sealed class ScaffoldHostedService : HostedService
 
         var paths = GetPaths(result);
         ShowPaths(paths);
+
+        if (scaffoldOptions.Verbose)
+        {
+            var files = GetFileNames(result);
+            foreach (var file in files)
+            {
+                DisplayService.MarkupLine(
+                    () => DisplayService.Markup("file:", Color.Green),
+                    () => DisplayService.Markup(file, Decoration.Bold));
+            }
+        }
+
         DisplayService.MarkupLine();
 
         result.EntityWarnings.AddRange(configWarnings);
@@ -162,6 +174,13 @@ internal sealed class ScaffoldHostedService : HostedService
             .Distinct()).ToList();
         paths = paths.Concat(result.EntityTypeFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p)).Distinct())
             .ToList();
+        return paths;
+    }
+
+    private List<string> GetFileNames(ReverseEngineerResult result)
+    {
+        var paths = new List<string> { result.ContextFilePath };
+        paths = [.. paths, .. result.ContextConfigurationFilePaths, .. result.EntityTypeFilePaths];
         return paths;
     }
 
