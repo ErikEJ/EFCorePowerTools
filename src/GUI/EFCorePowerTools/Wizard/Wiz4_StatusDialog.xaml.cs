@@ -34,6 +34,15 @@ namespace EFCorePowerTools.Wizard
         {
             IsPageLoaded = wizardViewModel.IsPage4Initialized;
 
+            if (wizardViewModel.ErrorMessage != null)
+            {
+                wizardViewModel.GenerateStatus = wizardViewModel.ErrorMessage;
+                Statusbar.Status.ShowStatusError("Error occurred");
+                PreviousButton.IsEnabled = false;
+                FinishButton.IsEnabled = true;
+                return;
+            }
+
             if (!IsPageLoaded)
             {
                 // When generating we'll initialize the page to known state

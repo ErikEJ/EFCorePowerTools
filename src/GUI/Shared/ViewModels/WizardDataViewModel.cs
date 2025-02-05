@@ -707,5 +707,7 @@ namespace EFCorePowerTools.ViewModels
                 this.RaisePropertyChanged("GenerateStatus");
             }
         }
+
+        public string ErrorMessage { get; internal set; }
     }
 }

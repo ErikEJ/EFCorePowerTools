@@ -581,7 +581,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             Telemetry.TrackFrameworkUse(nameof(ReverseEngineerHandler), options.CodeGenerationMode);
             Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
 
-            return statusMessage.ToString();
+            var messageForStatusPage = statusMessage.ToString();
+            return string.IsNullOrEmpty(messageForStatusPage) ? "Successfully completed" : messageForStatusPage;
         }
 
         private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
@@ -770,7 +771,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
             catch (InvalidOperationException ex)
             {
-                VSHelper.ShowError($"{ex.Message}");
+                if (wizardArgs.IsInvokedByWizard)
+                {
+                    wizardArgs.StatusbarMessage = ex.Message;
+                }
+                else
+                {
+                    VSHelper.ShowError($"{ex.Message}");
+                }
+
                 return false;
             }
             finally

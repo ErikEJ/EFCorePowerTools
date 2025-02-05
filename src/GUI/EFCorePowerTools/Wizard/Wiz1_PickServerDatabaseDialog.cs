@@ -125,8 +125,12 @@ namespace EFCorePowerTools.Wizard
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
-                    await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
+                    await InvokeWithErrorHandlingAsync(async () =>
+                    {
+                        viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
+                        await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
+                        return true;
+                    });
                 });
 
                 foreach (var option in viewModel.WizardEventArgs.Configurations)

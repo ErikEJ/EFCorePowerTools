@@ -50,12 +50,10 @@ namespace EFCorePowerTools.Wizard
         {
             var viewModel = wizardViewModel;
             IsPageLoaded = viewModel.IsPage2Initialized;
-            var isDataLoaded = wizardViewModel.ObjectTree.Types.Any();
             var wea = viewModel.WizardEventArgs;
             if (wea.Options.UiHint != viewModel.UiHint)
             {
                 IsPageLoaded = false;
-                isDataLoaded = false;
                 wea.Options.UiHint = viewModel.UiHint;
                 wea.UserOptions.UiHint = viewModel.UiHint;
                 wea.Options.ConnectionString = viewModel.SelectedDatabaseConnection.ConnectionString;
@@ -64,20 +62,34 @@ namespace EFCorePowerTools.Wizard
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    var dbinfo = await RevEngWizardHandler.GetDatabaseInfoAsync(wea.Options);
-                    wea.DbInfo = dbinfo;
+                    await InvokeWithErrorHandlingAsync(async () =>
+                    {
+                        var dbinfo = await RevEngWizardHandler.GetDatabaseInfoAsync(wea.Options);
+                        wea.DbInfo = dbinfo;
+                        return true;
+                    });
                 });
             }
 
-            if (!IsPageLoaded && !isDataLoaded)
+            if (!IsPageLoaded && !wizardViewModel.ObjectTree.Types.Any())
             {
                 wea.PickTablesDialog = this;
 
+                var isSuccessful = false;
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
-                    NextButton.IsEnabled = true;
+                    viewModel.ObjectTree.Types.Clear(); // Initialize to known state (empty)
+                    isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
+                    {
+                        return await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
+                    });
+
+                    NextButton.IsEnabled = isSuccessful;
                 });
+            }
+            else
+            {
+                NextButton.IsEnabled = true;
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
 using EFCorePowerTools.Contracts.Wizard;
@@ -20,6 +22,21 @@ namespace EFCorePowerTools.Wizard
         protected static bool IsPageDirty { get; set; } = true;
         protected IMessenger Messenger { get; set; }
         public bool IsPageLoaded { get; set; }
+
+        public async Task<bool> InvokeWithErrorHandlingAsync(Func<Task<bool>> callbackAsync)
+        {
+            if (!await callbackAsync())
+            {
+                var viewModel = (WizardDataViewModel)DataContext;
+                var wizardPage4 = new Wiz4_StatusDialog(viewModel, wizardView);
+                wizardPage4.Return += WizardPage_Return;
+                NavigationService?.Navigate(wizardPage4);
+                viewModel.ErrorMessage = viewModel.WizardEventArgs.StatusbarMessage;
+                return false;
+            }
+
+            return true;
+        }
 
 #pragma warning disable SA1201 // Elements should appear in the correct order
         public WizardResultPageFunction(WizardDataViewModel wizardViewModel, IWizardView wizardView)
