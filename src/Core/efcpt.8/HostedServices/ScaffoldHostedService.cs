@@ -167,6 +167,13 @@ internal sealed class ScaffoldHostedService : HostedService
         }
     }
 
+    private static List<string> GetFileNames(ReverseEngineerResult result)
+    {
+        var paths = new List<string> { result.ContextFilePath };
+        paths = [.. paths, .. result.ContextConfigurationFilePaths, .. result.EntityTypeFilePaths];
+        return paths;
+    }
+
     private List<string> GetPaths(ReverseEngineerResult result)
     {
         var paths = new List<string> { Path.GetDirectoryName(result.ContextFilePath) };
@@ -174,13 +181,6 @@ internal sealed class ScaffoldHostedService : HostedService
             .Distinct()).ToList();
         paths = paths.Concat(result.EntityTypeFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p)).Distinct())
             .ToList();
-        return paths;
-    }
-
-    private List<string> GetFileNames(ReverseEngineerResult result)
-    {
-        var paths = new List<string> { result.ContextFilePath };
-        paths = [.. paths, .. result.ContextConfigurationFilePaths, .. result.EntityTypeFilePaths];
         return paths;
     }
 
