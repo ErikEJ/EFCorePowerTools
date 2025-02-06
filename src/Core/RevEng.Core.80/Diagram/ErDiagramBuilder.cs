@@ -25,6 +25,7 @@ namespace RevEng.Core.Diagram
                 DatabaseType = dataApiBuilderOptions.DatabaseType,
                 ConnectionString = dataApiBuilderOptions.ConnectionString,
                 Dacpac = dataApiBuilderOptions.Dacpac,
+                MergeDacpacs = dataApiBuilderOptions.MergeDacpacs,
             };
 
             serviceProvider = new ServiceCollection().AddEfpt(options, [], [], []).BuildServiceProvider();
