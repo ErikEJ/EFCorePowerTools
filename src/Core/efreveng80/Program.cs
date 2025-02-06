@@ -68,28 +68,33 @@ namespace EfReveng
                         return 0;
                     }
 
+                    // dgml <options file> <connection string> [schemas]
                     if ((args.Length == 3 || args.Length == 4)
                         && (args[0] == "dgml")
-                        && int.TryParse(args[1], out int dbType))
-                    {
+                        && new FileInfo(args[1]).Exists)
+                        {
                         var schemas = Enumerable.Empty<string>().ToList();
                         if (args.Length == 4)
                         {
                             schemas = args[3].Split(',', StringSplitOptions.RemoveEmptyEntries).Select(s => s).ToList();
                         }
 
-                        var builder = new DiagramBuilder(dbType, args[2], schemas);
+                        var dabOptions = DataApiBuilderOptionsExtensions.TryRead(args[1]);
+
+                        if (dabOptions == null)
+                        {
+                            await Console.Out.WriteLineAsync("Error:");
+                            await Console.Out.WriteLineAsync("Could not read options");
+                            return 1;
+                        }
+
+                        dabOptions.ConnectionString = args[2];
+
+                        var builder = new DiagramBuilder(dabOptions, schemas);
 
                         var buildResult = string.Empty;
 
-                        if (args[0] == "dgml")
-                        {
-                            buildResult = builder.GetDgmlFileName();
-                        }
-                        else
-                        {
-                            buildResult = builder.GetErDiagramFileName();
-                        }
+                        buildResult = builder.GetDgmlFileName();
 
                         await Console.Out.WriteLineAsync("Result:");
                         await Console.Out.WriteLineAsync(buildResult);
@@ -130,6 +135,7 @@ namespace EfReveng
                     }
 #endif
 #if NET8_0
+                    // erdiagram <options file> <connection string>
                     if (args.Length == 3
                         && args[0] == "erdiagram"
                         && new FileInfo(args[1]).Exists)

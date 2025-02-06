@@ -18,5 +18,7 @@ namespace RevEng.Common.Dab
         public string Dacpac { get; set; }
 
         public string ConnectionStringName { get; set; } = "dab-connection-string";
+
+        public bool MergeDacpacs { get; set; }
     }
 }
