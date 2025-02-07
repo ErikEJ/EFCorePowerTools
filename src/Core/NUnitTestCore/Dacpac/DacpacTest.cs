@@ -260,7 +260,7 @@ GO
         }
 
         [Test]
-        public void Issue1262_ConsiderSchemaArgument()
+        public void Issue1262ConsiderSchemaArgument()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
             var options = new DatabaseModelFactoryOptions(null, new List<string>() { "mat" });
@@ -274,7 +274,7 @@ GO
         }
 
         [Test]
-        public void Issue1262_BehaviourWithoutSchemaArgument()
+        public void Issue1262BehaviourWithoutSchemaArgument()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
             var options = new DatabaseModelFactoryOptions(null, new List<string>());
@@ -290,7 +290,7 @@ GO
 
         [Test]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "Test")]
-        public void Temporal_Support()
+        public void TemporalSupport()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
             var options = new DatabaseModelFactoryOptions(null, new List<string>());
@@ -304,7 +304,7 @@ GO
         }
 
         [Test]
-        public void Issue_2322_Tvp_Sproc_Parameters()
+        public void Issue2322TvpSprocParameters()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(
                 new SqlServerDacpacDatabaseModelFactoryOptions{ MergeDacpacs = false });

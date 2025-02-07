@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Globalization;
@@ -220,11 +220,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 primaryKey["SqlServer:Clustered"] = false;
             }
 
-            foreach (var pkCol in pk.Columns)
+            foreach (var pkPart in pk.Columns.Select(pk => pk.Name.Parts))
             {
-                var dbCol = dbTable.Columns.FirstOrDefault(c => c.Name == pkCol.Name.Parts[2])
+                var dbCol = dbTable.Columns.FirstOrDefault(c => c.Name == pkPart[2])
                         ?? dbTable.Columns.FirstOrDefault(
-                            c => c.Name.Equals(pkCol.Name.Parts[2], StringComparison.OrdinalIgnoreCase));
+                            c => c.Name.Equals(pkPart[2], StringComparison.OrdinalIgnoreCase));
 
                 if (dbCol == null)
                 {

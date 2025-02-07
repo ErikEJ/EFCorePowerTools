@@ -1,4 +1,4 @@
-﻿using RevEng.Common;
+using RevEng.Common;
 
 namespace ErikEJ.EFCorePowerTools;
 

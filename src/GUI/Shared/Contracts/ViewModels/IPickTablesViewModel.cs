@@ -11,11 +11,15 @@ namespace EFCorePowerTools.Contracts.ViewModels
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         ICommand OkCommand { get; }
+
         ICommand CancelCommand { get; }
 
         bool? TableSelectionThreeState { get; set; }
+
         string SearchText { get; set; }
+
         SearchMode SearchMode { get; set; }
+
         IObjectTreeViewModel ObjectTree { get; }
 
         void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers);

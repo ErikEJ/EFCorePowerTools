@@ -1,10 +1,9 @@
-﻿using NetTopologySuite.Geometries;
-using NpgsqlTypes;
-using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using NpgsqlTypes;
+using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Routines.Extensions
 {

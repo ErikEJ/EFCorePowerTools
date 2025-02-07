@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
@@ -13,12 +12,14 @@ using RevEng.Common.Dab;
 using RevEng.Core;
 using RevEng.Core.Abstractions.Model;
 #if NET8_0 && !CORE90
+using Microsoft.Data.SqlClient;
 using RevEng.Core.DacpacReport;
 #endif
 using RevEng.Core.Diagram;
 
 [assembly: CLSCompliant(true)]
 [assembly: SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "Reviewed")]
+
 namespace EfReveng
 {
     internal static class Program

@@ -42,6 +42,7 @@ namespace Westwind.Wpf.Statusbar.Utilities
     internal class DebounceDispatcher
     {
         private DispatcherTimer timer;
+
         private DateTime TimerStarted { get; set; } = DateTime.UtcNow.AddYears(-1);
 
         /// <summary>

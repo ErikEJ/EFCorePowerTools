@@ -20,7 +20,9 @@ namespace EFCorePowerTools.Wizard
 
 #pragma warning disable SA1202 // Elements should be ordered by access
         protected static bool IsPageDirty { get; set; } = true;
+
         protected IMessenger Messenger { get; set; }
+
         public bool IsPageLoaded { get; set; }
 
         public async Task<bool> InvokeWithErrorHandlingAsync(Func<Task<bool>> callbackAsync)

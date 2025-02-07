@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
@@ -151,9 +151,9 @@ namespace RevEng.Core.Routines.Procedures
 
                     Sb.AppendLine();
 
-                    foreach (var parameter in outParams)
+                    foreach (var name in outParams.Select(p => p.Name))
                     {
-                        Sb.AppendLine($"{Code.Identifier(parameter.Name, capitalize: false)}?.SetValue({ParameterPrefix}{parameter.Name}.Value);");
+                        Sb.AppendLine($"{Code.Identifier(name, capitalize: false)}?.SetValue({ParameterPrefix}{name}.Value);");
                     }
 
                     if (procedure.SupportsMultipleResultSet)

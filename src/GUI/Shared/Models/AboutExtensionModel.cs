@@ -11,6 +11,7 @@ namespace EFCorePowerTools.Common.Models
         public event PropertyChangedEventHandler PropertyChanged;
 
         public static string SourceCodeUrl => "https://github.com/ErikEJ/EFCorePowerTools";
+
         public static string MarketplaceUrl => "https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details";
 
         public string ExtensionVersion

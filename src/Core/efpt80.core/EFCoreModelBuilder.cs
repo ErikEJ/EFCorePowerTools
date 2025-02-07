@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,17 +33,17 @@ namespace Modelling
         {
             var result = new List<Tuple<string, string>>();
             var operations = GetOperations(outputPath, startupOutputPath);
-            var types = GetDbContextTypes(operations);
+            var names = GetDbContextTypes(operations).Select(t => t.Name);
 
-            foreach (var type in types)
+            foreach (var name in names)
             {
-                var dbContext = operations.CreateContext(type.Name);
+                var dbContext = operations.CreateContext(name);
 
                 var generated = generateDdl
                     ? GenerateCreateScript(dbContext)
                     : dbContext.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 
-                result.Add(new Tuple<string, string>(type.Name, generated));
+                result.Add(new Tuple<string, string>(name, generated));
             }
 
             return result;

@@ -107,9 +107,13 @@ namespace EFCorePowerTools.ViewModels
         public string DialogResult { get; set; } = "DialogResult in WizardDataViewModel";
 
         public Project Project { get; internal set; }
+
         public string Filename { get; internal set; }
+
         public bool OnlyGenerate { get; internal set; }
+
         public string OptionsPath { get; internal set; }
+
         public bool FromSqlProject { get; internal set; }
 
         // WizardPage1 - Configuration and DatabaseObjects
@@ -131,14 +135,21 @@ namespace EFCorePowerTools.ViewModels
         }
 
         public bool IsPage1Initialized { get; set; }
+
         public ICommand Page1LoadedCommand { get; set; }
+
         public ICommand AddDatabaseConnectionCommand { get; set; }
+
         public ICommand AddAdhocDatabaseConnectionCommand { get; set; }
+
         public ICommand AddDatabaseDefinitionCommand { get; set; }
+
         public RelayCommand RemoveDatabaseConnectionCommand { get; set; }
+
         public RelayCommand FilterSchemasCommand { get; set; }
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
+
         public ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; }
 
         public List<SchemaInfo> Schemas { get; set; } = [];
@@ -410,6 +421,7 @@ namespace EFCorePowerTools.ViewModels
 
         // WizardPage2 - Database objects
         public bool IsPage2Initialized { get; set; }
+
         public RelayCommand Page2LoadedCommand { get; set; }
 
         private bool? tableSelectionThreeState;
@@ -544,7 +556,9 @@ namespace EFCorePowerTools.ViewModels
         public ICommand AdvancedCommand { get; }
 
         public ModelingOptionsModel Model { get; }
+
         public IReadOnlyList<string> GenerationModeList { get; }
+
         public IReadOnlyList<string> HandlebarsLanguageList { get; }
 
         public ObservableCollection<TemplateTypeItem> TemplateTypeList { get; }
@@ -694,6 +708,7 @@ namespace EFCorePowerTools.ViewModels
         public RelayCommand Page4LoadedCommand { get; set; }
 
         private string generateStatus = string.Empty;
+
 #pragma warning restore SA1201 // Elements should appear in the correct order
         public string GenerateStatus
         {
@@ -701,6 +716,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 return generateStatus;
             }
+
             set
             {
                 generateStatus = value;

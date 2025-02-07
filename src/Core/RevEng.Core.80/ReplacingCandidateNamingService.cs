@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using RevEng.Common;
 
 namespace RevEng.Core
 {
@@ -15,6 +15,7 @@ namespace RevEng.Core
         private readonly List<Schema> customNameOptions;
         private readonly bool preserveCasingUsingRegex;
         private readonly bool usePrefixNaming;
+
         public ReplacingCandidateNamingService(
             bool usePrefixNaming,
             List<Schema> customNameOptions,

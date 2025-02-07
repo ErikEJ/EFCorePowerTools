@@ -28,6 +28,7 @@ namespace EFCorePowerTools.ViewModels
         public new event PropertyChangedEventHandler PropertyChanged;
 
         public ICommand OkCommand { get; }
+
         public ICommand CancelCommand { get; }
 
         public string ConnectionString

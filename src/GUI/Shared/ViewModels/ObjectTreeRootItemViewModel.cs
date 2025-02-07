@@ -91,8 +91,11 @@ namespace EFCorePowerTools.ViewModels
         public ObservableCollection<ISchemaInformationViewModel> Schemas { get; } = new ObservableCollection<ISchemaInformationViewModel>();
 
         public ICommand SetSelectedCommand { get; }
+
         public ObjectType ObjectType1 { get; set; }
+
         public bool? IsSelected1 { get; set; } = false;
+
         public string Text1 { get; set; }
 
         private void ObjectPropertyChanged(object sender, PropertyChangedEventArgs e)

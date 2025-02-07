@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -69,7 +68,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void CanAddStartsWithFilter_2()
+        public void CanAddStartsWithFilter2()
         {
             var config = GetConfig();
 

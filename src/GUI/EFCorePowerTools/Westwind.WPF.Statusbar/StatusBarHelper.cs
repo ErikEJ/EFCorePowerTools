@@ -29,6 +29,7 @@ namespace Westwind.Wpf.Statusbar
     public class StatusbarHelper
     {
         public event EventHandler<StatusbarEventArgs> StatusEvent;
+
 #pragma warning disable SA1201 // Elements should appear in the correct order
         private readonly DebounceDispatcher debounce = new DebounceDispatcher();
 #pragma warning restore SA1201 // Elements should appear in the correct order
