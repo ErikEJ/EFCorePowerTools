@@ -567,6 +567,7 @@ dotnet_diagnostic.S6605.severity = none             # Collection-specific "Exist
 # Custom - Code Analyzers Rules
 ##########################################
 [*.{cs,csx,cake}]
+dotnet_diagnostic.SA1518.severity = none # Newline at the end of the file
 
 [PatchedSqlServerDatabaseModelFactory.cs]
 generated_code = true
