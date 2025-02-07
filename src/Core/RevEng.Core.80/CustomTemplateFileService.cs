@@ -1,5 +1,5 @@
-﻿using EntityFrameworkCore.Scaffolding.Handlebars;
-using System.IO;
+﻿using System.IO;
+using EntityFrameworkCore.Scaffolding.Handlebars;
 
 namespace RevEng.Core
 {

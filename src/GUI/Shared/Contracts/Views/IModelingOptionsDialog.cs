@@ -7,6 +7,7 @@ namespace EFCorePowerTools.Contracts.Views
     public interface IModelingOptionsDialog : IDialog<ModelingOptionsModel>
     {
         IModelingOptionsDialog ApplyPresets(ModelingOptionsModel presets);
+
         void PublishTemplateTypes(TemplateTypeItem templateType, IList<TemplateTypeItem> allowedTemplateTypes);
     }
 }

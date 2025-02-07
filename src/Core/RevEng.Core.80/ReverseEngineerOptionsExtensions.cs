@@ -1,8 +1,8 @@
-﻿using RevEng.Common;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using RevEng.Common;
 
 namespace RevEng.Core
 {

@@ -8,7 +8,7 @@ namespace UnitTests
     {
         [Test]
         [Ignore("Local only!")]
-        public void CanConsolidate_Issue_274()
+        public void CanConsolidateIssue274()
         {
             // Act
             var result = DacpacConsolidator.Consolidate(@"C:\Users\Erik\Downloads\CompositeDatabase\CompositeDatabase\CompositeDatabase\bin\Debug\CompositeDatabase.dacpac");
@@ -18,7 +18,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void CanConsolidate_Without_References_Issue_274()
+        public void CanConsolidateWithoutReferencesIssue274()
         {
             // Arrange
             var dacPath = TestPath("Chinook.dacpac");

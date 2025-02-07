@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EFCore.Snowflake.Design.Internal;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
@@ -22,7 +23,6 @@ using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
-using System.Linq;
 
 namespace RevEng.Core
 {

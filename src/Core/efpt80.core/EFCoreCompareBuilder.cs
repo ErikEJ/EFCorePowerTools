@@ -1,12 +1,12 @@
-﻿using EfSchemaCompare;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore.Design.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using EfSchemaCompare;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Design.Internal;
 
 namespace Modelling
 {
@@ -35,15 +35,15 @@ namespace Modelling
             var dbContextList = new List<DbContext>();
 
             var operations = GetOperations(outputPath, startupOutputPath);
-            var types = GetDbContextTypes(operations);
+            var names = GetDbContextTypes(operations).Select(t => t.Name);
 
-            foreach (var type in types)
+            foreach (var name in names)
             {
                 try
                 {
-                    if (dbContextNameList.Contains(type.Name))
+                    if (dbContextNameList.Contains(name))
                     {
-                        var context = operations.CreateContext(type.Name);
+                        var context = operations.CreateContext(name);
                         dbContextList.Add(context);
                     }
                 }

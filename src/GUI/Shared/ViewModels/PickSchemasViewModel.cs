@@ -28,8 +28,11 @@ namespace EFCorePowerTools.ViewModels
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand OkCommand { get; }
+
         public ICommand CancelCommand { get; }
+
         public ICommand AddCommand { get; }
+
         public ICommand RemoveCommand { get; }
 
         public ObservableCollection<SchemaInfo> Schemas { get; }
@@ -56,6 +59,7 @@ namespace EFCorePowerTools.ViewModels
             {
                 return isSelected;
             }
+
             set
             {
                 isSelected = value;

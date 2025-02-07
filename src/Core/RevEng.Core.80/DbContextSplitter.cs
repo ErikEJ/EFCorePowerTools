@@ -1,10 +1,10 @@
-﻿using RevEng.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using RevEng.Common;
 
 [assembly: CLSCompliant(false)]
 
@@ -82,10 +82,10 @@ namespace RevEng.Core
             var configurationLines = new List<string>();
             var index = 0;
 
-            foreach (var blockMatch in statementsBlockMatches)
+            foreach (var groups in statementsBlockMatches.Select(m => m.Groups))
             {
-                var entityName = blockMatch.Groups["EntityName"].Value;
-                var entityParameterName = blockMatch.Groups["EntityParameterName"].Value;
+                var entityName = groups["EntityName"].Value;
+                var entityParameterName = groups["EntityParameterName"].Value;
                 var statements = configBlocks[index];
 
                 var sb = new StringBuilder();

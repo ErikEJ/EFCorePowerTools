@@ -1,6 +1,6 @@
-﻿using Microsoft.SqlServer.Dac.CodeAnalysis;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.SqlServer.Dac.CodeAnalysis;
 
 namespace SqlServer.Rules.Report
 {

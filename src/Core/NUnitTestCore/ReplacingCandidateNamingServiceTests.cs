@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
@@ -41,7 +41,7 @@ namespace UnitTests.Services
         }
 
         [Test]
-        public void GeneratePascalCaseTableNameWithSchemaName_Issue988()
+        public void GeneratePascalCaseTableNameWithSchemaNameIssue988()
         {
             // Arrange
             var expected = "PetGuineaPig";
@@ -180,7 +180,7 @@ namespace UnitTests.Services
         }
 
         [Test]
-        public void Issue_354()
+        public void Issue354()
         {
             // Arrange
             var exampleOption = new List<Schema>
@@ -696,7 +696,7 @@ namespace UnitTests.Services
         /// Testing the table renaming method using Regex.
         /// </summary>
         [Test]
-        public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1503_WithCasing()
+        public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1503WithCasing()
         {
             // Arrange
             var expected = "Ggd";
@@ -779,7 +779,7 @@ namespace UnitTests.Services
         }
 
         [Test]
-        public void GenerateCustomColumnNameUsingRegexRenamingIssue1478_Preserve()
+        public void GenerateCustomColumnNameUsingRegexRenamingIssue1478Preserve()
         {
             // Arrange
             var expected = "APPLE_NAME";

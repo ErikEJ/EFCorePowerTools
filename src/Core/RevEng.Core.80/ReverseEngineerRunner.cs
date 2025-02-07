@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.Extensions.DependencyInjection;
-using RevEng.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.Extensions.DependencyInjection;
+using RevEng.Common;
 
 namespace RevEng.Core
 {

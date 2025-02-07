@@ -1,4 +1,4 @@
-﻿using EFCorePowerTools.ViewModels;
+using EFCorePowerTools.ViewModels;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 

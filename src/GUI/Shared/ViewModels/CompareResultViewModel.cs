@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -51,6 +51,7 @@ namespace EFCorePowerTools.ViewModels
         }
 
         private List<CompareLogItemViewModel> CompleteLogs { get; } = new List<CompareLogItemViewModel>();
+
         private List<CompareLogItemViewModel> FilteredLogs { get; } = new List<CompareLogItemViewModel>();
 
         public void AddComparisonResult(IEnumerable<CompareLogModel> logs)
@@ -98,15 +99,12 @@ namespace EFCorePowerTools.ViewModels
             foreach (var ctx in clonedLogs)
             {
                 FilteredLogs.Add(Create(ctx, 0));
-                foreach (var entity in ctx.SubLogs)
+                foreach (var entity in ctx.SubLogs.Where(entity => entity.SubLogs.Any()))
                 {
-                    if (entity.SubLogs.Any())
+                    FilteredLogs.Add(Create(entity, 1));
+                    foreach (var property in entity.SubLogs)
                     {
-                        FilteredLogs.Add(Create(entity, 1));
-                        foreach (var property in entity.SubLogs)
-                        {
-                            FilteredLogs.Add(Create(property, 2));
-                        }
+                        FilteredLogs.Add(Create(property, 2));
                     }
                 }
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using JetBrains.Annotations;
 using Spectre.Console;
 
 namespace ErikEJ.EFCorePowerTools.Services;

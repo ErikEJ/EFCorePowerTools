@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using JetBrains.Annotations;
+using System.Linq;
 
 namespace ErikEJ.EFCorePowerTools.Extensions;
 
