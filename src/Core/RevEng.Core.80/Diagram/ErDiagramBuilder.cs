@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -25,6 +25,7 @@ namespace RevEng.Core.Diagram
                 DatabaseType = dataApiBuilderOptions.DatabaseType,
                 ConnectionString = dataApiBuilderOptions.ConnectionString,
                 Dacpac = dataApiBuilderOptions.Dacpac,
+                MergeDacpacs = dataApiBuilderOptions.MergeDacpacs,
             };
 
             serviceProvider = new ServiceCollection().AddEfpt(options, [], [], []).BuildServiceProvider();

@@ -162,6 +162,9 @@ namespace EFCorePowerTools.Handlers
 
                 if (connection.Value != null)
                 {
+                    options.ConnectionString = connection.Value.ConnectionString;
+                    options.DatabaseType = connection.Value.DatabaseType;
+
                     return (connection.Value, new SchemaInfo[] { });
                 }
             }
@@ -172,6 +175,10 @@ namespace EFCorePowerTools.Handlers
 
                 if (path != null)
                 {
+                    options.Dacpac = path;
+                    options.ConnectionString = path;
+                    options.DatabaseType = DatabaseType.SQLServerDacpac;
+
                     return (new DatabaseConnectionModel
                     {
                         FilePath = path,
