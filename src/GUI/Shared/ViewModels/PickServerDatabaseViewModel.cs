@@ -60,15 +60,23 @@ namespace EFCorePowerTools.ViewModels
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand LoadedCommand { get; }
+
         public ICommand AddDatabaseConnectionCommand { get; }
+
         public ICommand AddAdhocDatabaseConnectionCommand { get; }
+
         public ICommand AddDatabaseDefinitionCommand { get; }
+
         public ICommand RemoveDatabaseConnectionCommand { get; }
+
         public ICommand OkCommand { get; }
+
         public ICommand CancelCommand { get; }
+
         public ICommand FilterSchemasCommand { get; }
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; }
+
         public ObservableCollection<CodeGenerationItem> CodeGenerationModeList { get; }
 
         public List<SchemaInfo> Schemas { get; private set; }

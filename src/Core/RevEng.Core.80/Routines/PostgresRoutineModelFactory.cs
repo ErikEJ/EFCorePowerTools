@@ -1,11 +1,11 @@
-﻿using Npgsql;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Abstractions.Metadata;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using Npgsql;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Routines
 {

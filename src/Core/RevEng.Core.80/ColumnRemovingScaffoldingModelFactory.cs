@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -64,13 +64,7 @@ namespace RevEng.Core
                 var indexesToBeRemoved = new List<DatabaseIndex>();
                 foreach (var index in table.Indexes)
                 {
-                    foreach (var column in index.Columns)
-                    {
-                        if (excludedColumns.Contains(column))
-                        {
-                            indexesToBeRemoved.Add(index);
-                        }
-                    }
+                    indexesToBeRemoved.AddRange(index.Columns.Where(column => excludedColumns.Contains(column)).Select(column => index));
                 }
 
                 foreach (var index in indexesToBeRemoved)
@@ -81,13 +75,7 @@ namespace RevEng.Core
                 var constraintsToBeRemoved = new List<DatabaseUniqueConstraint>();
                 foreach (var constraint in table.UniqueConstraints)
                 {
-                    foreach (var column in constraint.Columns)
-                    {
-                        if (excludedColumns.Contains(column))
-                        {
-                            constraintsToBeRemoved.Add(constraint);
-                        }
-                    }
+                    constraintsToBeRemoved.AddRange(constraint.Columns.Where(column => excludedColumns.Contains(column)).Select(column => constraint));
                 }
 
                 foreach (var constraint in constraintsToBeRemoved)
@@ -98,13 +86,7 @@ namespace RevEng.Core
                 var fksToBeRemoved = new List<DatabaseForeignKey>();
                 foreach (var fk in table.ForeignKeys)
                 {
-                    foreach (var column in fk.Columns)
-                    {
-                        if (excludedColumns.Contains(column))
-                        {
-                            fksToBeRemoved.Add(fk);
-                        }
-                    }
+                    fksToBeRemoved.AddRange(fk.Columns.Where(column => excludedColumns.Contains(column)).Select(column => fk));
                 }
 
                 foreach (var fk in fksToBeRemoved)

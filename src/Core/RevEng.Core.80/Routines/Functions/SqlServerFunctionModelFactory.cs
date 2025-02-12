@@ -1,11 +1,11 @@
-﻿using Microsoft.Data.SqlClient;
-using RevEng.Core.Abstractions;
-using RevEng.Core.Abstractions.Metadata;
-using RevEng.Core.Abstractions.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using Microsoft.Data.SqlClient;
+using RevEng.Core.Abstractions;
+using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Abstractions.Model;
 
 namespace RevEng.Core.Routines.Functions
 {

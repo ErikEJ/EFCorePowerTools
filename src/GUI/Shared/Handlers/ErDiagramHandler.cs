@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -48,8 +48,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
 
-                DatabaseConnectionModel dbInfo = null;
-
                 if (!await ChooseDataBaseConnectionAsync(options, uiHint))
                 {
                     await VS.StatusBar.ClearAsync();
@@ -58,7 +56,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
 
-                dbInfo = await GetDatabaseInfoAsync(options);
+                var dbInfo = await GetDatabaseInfoAsync(options);
 
                 if (dbInfo == null)
                 {
@@ -113,6 +111,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
+                options.MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs;
 
                 options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
                 if (string.IsNullOrEmpty(options.Dacpac))

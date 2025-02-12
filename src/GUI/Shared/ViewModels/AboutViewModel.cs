@@ -39,8 +39,11 @@ namespace EFCorePowerTools.ViewModels
         public event EventHandler CloseRequested;
 
         public ICommand LoadedCommand { get; }
+
         public ICommand OkCommand { get; }
+
         public ICommand OpenSourcesCommand { get; }
+
         public ICommand OpenMarketplaceCommand { get; }
 
         public string Version

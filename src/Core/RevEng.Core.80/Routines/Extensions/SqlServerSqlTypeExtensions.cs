@@ -1,10 +1,10 @@
-﻿using NetTopologySuite.Geometries;
-using RevEng.Core.Abstractions.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using NetTopologySuite.Geometries;
+using RevEng.Core.Abstractions.Metadata;
 
 namespace RevEng.Core.Routines.Extensions
 {

@@ -31,6 +31,7 @@ namespace EFCorePowerTools.ViewModels
         public event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         public ICommand OkCommand { get; }
+
         public ICommand CancelCommand { get; }
 
         public IObjectTreeViewModel ObjectTree { get; }

@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
@@ -349,37 +348,39 @@ namespace RevEng.Common.Cli
 
             var candidates = entities.Where(t => !string.IsNullOrEmpty(t.ExclusionWildcard)
                 && t.ExclusionWildcard != "*"
-                && t.ExclusionWildcard.Contains('*')).ToList();
+                && t.ExclusionWildcard.Contains('*'))
+                .Select(t => t.ExclusionWildcard)
+                .ToList();
 
-            foreach (var candiate in candidates)
+            foreach (var wildcard in candidates)
             {
-                if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase)
-                    && candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase)
-                    && candiate.ExclusionWildcard.Length > 2)
+                if (wildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase)
+                    && wildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase)
+                    && wildcard.Length > 2)
                 {
                     filters.Add(new ExclusionFilter
                     {
-                        Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1).Substring(1),
+                        Filter = wildcard.Substring(0, wildcard.Length - 1).Substring(1),
                         FilterType = ExclusionFilterType.Contains,
                     });
                     continue;
                 }
 
-                if (candiate.ExclusionWildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase))
+                if (wildcard.StartsWith("*", StringComparison.OrdinalIgnoreCase))
                 {
                     filters.Add(new ExclusionFilter
                     {
-                        Filter = candiate.ExclusionWildcard.Substring(1),
+                        Filter = wildcard.Substring(1),
                         FilterType = ExclusionFilterType.EndsWith,
                     });
                     continue;
                 }
 
-                if (candiate.ExclusionWildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase))
+                if (wildcard.EndsWith("*", StringComparison.OrdinalIgnoreCase))
                 {
                     filters.Add(new ExclusionFilter
                     {
-                        Filter = candiate.ExclusionWildcard.Substring(0, candiate.ExclusionWildcard.Length - 1),
+                        Filter = wildcard.Substring(0, wildcard.Length - 1),
                         FilterType = ExclusionFilterType.StartsWith,
                     });
                 }

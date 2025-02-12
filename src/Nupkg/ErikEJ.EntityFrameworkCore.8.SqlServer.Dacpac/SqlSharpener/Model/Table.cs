@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dac = Microsoft.SqlServer.Dac.Model;
 
 namespace SqlSharpener.Model

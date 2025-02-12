@@ -30,21 +30,31 @@ namespace EFCorePowerTools.Contracts.EventArgs
 
         // WizardPage1
         public IPickServerDatabaseDialog PickServerDatabaseDialog { get; set; }
+
         public bool PickServerDatabaseComplete { get; set; }
+
         public DatabaseConnectionModel DbInfo { get; set; }
+
         public ReverseEngineerOptions Options { get; set; }
+
         public Tuple<List<Schema>, string> NamingOptionsAndPath { get; set; }
 
         // WizardPage2
         public IPickTablesDialog PickTablesDialog { get; set; }
+
         public bool PickTablesDialogComplete { get; set; }
 
         // WizardPage3
         public IModelingOptionsDialog ModelingOptionsDialog { get; set; }
+
         public bool ModelingDialogOptionsComplete { get; set; }
+
         public bool NewOptions { get; set; }
+
         public ReverseEngineerUserOptions UserOptions { get; set; }
+
         public bool ForceEdit { get; set; }
+
         public string ReverseEngineerStatus { get; set; }
 
         // If populated, will be sent to statusbar by wizard processes

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -907,7 +907,7 @@ namespace EFCorePowerTools
                         }
                     }
 
-                    await databaseDiagramHandler.GenerateAsync(connectionName);
+                    await databaseDiagramHandler.GenerateAsync(project, connectionName);
                 }
             }
             catch (Exception ex)

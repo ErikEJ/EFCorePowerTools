@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 
 namespace PowerToolsExtensionPack
 {

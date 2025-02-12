@@ -10,6 +10,7 @@ namespace EFCorePowerTools.Contracts.ViewModels
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         void AddDatabaseConnections(IEnumerable<DatabaseConnectionModel> connections);
+
         void AddContextTypes(IEnumerable<string> contextTypes);
 
         (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) GetSelection();

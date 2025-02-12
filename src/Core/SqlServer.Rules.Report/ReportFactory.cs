@@ -1,6 +1,3 @@
-﻿using Microsoft.SqlServer.Dac.CodeAnalysis;
-using Microsoft.SqlServer.Dac.Model;
-using SqlServer.Rules.Report.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +8,9 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using System.Xml.Xsl;
+using Microsoft.SqlServer.Dac.CodeAnalysis;
+using Microsoft.SqlServer.Dac.Model;
+using SqlServer.Rules.Report.Properties;
 
 namespace SqlServer.Rules.Report
 {

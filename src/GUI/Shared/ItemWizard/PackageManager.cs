@@ -13,6 +13,7 @@ namespace EFCorePowerTools.ItemWizard
                 Debug.Assert(package != null, "PackageManager.Package: package is null and someone is trying to access it!");
                 return package;
             }
+
             set
             {
                 package = value;

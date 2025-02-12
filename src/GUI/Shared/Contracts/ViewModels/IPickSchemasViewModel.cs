@@ -11,8 +11,11 @@ namespace EFCorePowerTools.Contracts.ViewModels
         event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
         ICommand OkCommand { get; }
+
         ICommand CancelCommand { get; }
+
         ICommand AddCommand { get; }
+
         ICommand RemoveCommand { get; }
 
         ObservableCollection<SchemaInfo> Schemas { get; }

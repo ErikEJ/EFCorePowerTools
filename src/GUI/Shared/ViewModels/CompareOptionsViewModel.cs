@@ -52,6 +52,7 @@ namespace EFCorePowerTools.ViewModels
         }
 
         public ObservableCollection<DatabaseConnectionModel> DatabaseConnections { get; } = new ObservableCollection<DatabaseConnectionModel>();
+
         public ObservableCollection<ContextTypeItemViewModel> ContextTypes { get; } = new ObservableCollection<ContextTypeItemViewModel>();
 
         public DatabaseConnectionModel SelectedDatabaseConnection

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -133,15 +133,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             return await GetTablesInternalAsync(arguments);
         }
 
-        public async Task<string> GetDiagramAsync(string connectionString, DatabaseType databaseType, List<string> schemaList)
+        public async Task<string> GetDiagramAsync(string connectionString, string optionsPath, List<string> schemaList)
         {
             var option = "dgml ";
 
-            var arguments = option + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
+            var arguments = option + " \"" + optionsPath.Replace("\"", "\\\"") + "\" " + " \"" + connectionString.Replace("\"", "\\\"") + "\" \"" + string.Join(",", schemaList) + "\"";
 
             if (schemaList.Count == 0)
             {
-                arguments = option + ((int)databaseType).ToString() + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
+                arguments = option + " \"" + optionsPath.Replace("\"", "\\\"") + "\" " + " \"" + connectionString.Replace("\"", "\\\"") + "\"";
             }
 
             var filePath = await GetDiagramInternalAsync(arguments);

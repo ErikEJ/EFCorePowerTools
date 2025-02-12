@@ -1,10 +1,10 @@
-﻿using Npgsql;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using Npgsql;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
-using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace RevEng.Core.Routines.Procedures
 {

@@ -35,6 +35,12 @@ internal sealed class ScaffoldOptions
         HelpText = $"Full pathname to the {Constants.RenamingFileName} file, default is '{Constants.RenamingFileName}' in currrent directory")]
     public FileInfo RenamingFile { get; set; }
 
+    [Option(
+       'v',
+       "verbose",
+       HelpText = $"Provide more detailed output")]
+    public bool Verbose { get; set; }
+
     public bool IsDacpac => ConnectionString?.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase) ?? false;
 }
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes

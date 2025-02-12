@@ -1,6 +1,6 @@
-﻿using Microsoft.SqlServer.Dac.CodeAnalysis;
-using System;
+﻿using System;
 using System.IO;
+using Microsoft.SqlServer.Dac.CodeAnalysis;
 
 namespace SqlServer.Rules.Report
 {
@@ -9,6 +9,7 @@ namespace SqlServer.Rules.Report
         private string outputFileName;
 
         public string Solution { get; set; }
+
         public string InputPath { get; set; }
 
         public string SolutionName
