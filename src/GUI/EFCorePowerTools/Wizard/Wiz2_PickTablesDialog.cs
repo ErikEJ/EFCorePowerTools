@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -30,6 +30,8 @@ namespace EFCorePowerTools.Wizard
         public Wiz2_PickTablesDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
+            viewModel.WizardDialogBox = wizardView;
+
 #pragma warning disable S125 // Sections of code should not be commented out
             // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
             DataContext = viewModel;
