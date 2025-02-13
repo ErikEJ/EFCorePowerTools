@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.DAL;
@@ -14,15 +21,6 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
-#pragma warning disable SA1208 // System using directives should be placed before other using directives
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-#pragma warning restore SA1208 // System using directives should be placed before other using directives
 
 namespace EFCorePowerTools.ViewModels
 {

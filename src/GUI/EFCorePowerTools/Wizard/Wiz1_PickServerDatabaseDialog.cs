@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -8,12 +12,6 @@ using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
-#pragma warning disable SA1208 // System using directives should be placed before other using directives
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-#pragma warning restore SA1208 // System using directives should be placed before other using directives
 
 namespace EFCorePowerTools.Wizard
 {
