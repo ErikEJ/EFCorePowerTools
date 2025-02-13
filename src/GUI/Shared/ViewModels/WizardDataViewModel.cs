@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.DAL;
@@ -15,10 +8,21 @@ using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.DAL;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.Wizard;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
+#pragma warning disable SA1208 // System using directives should be placed before other using directives
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+#pragma warning restore SA1208 // System using directives should be placed before other using directives
 
 namespace EFCorePowerTools.ViewModels
 {
@@ -96,6 +100,8 @@ namespace EFCorePowerTools.ViewModels
         private string title = "Hello world";
         private bool mayIncludeConnectionString;
         private int selectedTemplateType;
+
+        public IWizardView WizardDialogBox { get; set; }
 
         public IServiceProvider ServiceProvider
         {
@@ -385,8 +391,10 @@ namespace EFCorePowerTools.ViewModels
         private void FilterSchemas_Executed()
         {
             IPickSchemasDialog dialog = pickSchemasDialogFactory();
+            ((DialogWindow)dialog).Owner = (NavigationWindow)WizardDialogBox;
+
             dialog.AddSchemas(Schemas);
-            var dialogResult = dialog.ShowAndAwaitUserResponse(true);
+            var dialogResult = dialog.ShowAndAwaitUserResponse(false);
             if (dialogResult.ClosedByOK)
             {
                 Schemas = new List<SchemaInfo>(dialogResult.Payload);
@@ -676,8 +684,10 @@ namespace EFCorePowerTools.ViewModels
         private void Advanced_Executed()
         {
             IAdvancedModelingOptionsDialog dialog = advancedModelingOptionsDialogFactory();
+            ((DialogWindow)dialog).Owner = (NavigationWindow)WizardDialogBox;
+
             dialog.ApplyPresets(Model);
-            var advancedModelingOptionsResult = dialog.ShowAndAwaitUserResponse(true);
+            var advancedModelingOptionsResult = dialog.ShowAndAwaitUserResponse(false);
             if (!advancedModelingOptionsResult.ClosedByOK)
             {
                 return;

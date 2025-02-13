@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
@@ -14,6 +7,15 @@ using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
+#pragma warning disable SA1208 // System using directives should be placed before other using directives
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+#pragma warning restore SA1208 // System using directives should be placed before other using directives
 
 namespace EFCorePowerTools.Wizard
 {
@@ -30,6 +32,8 @@ namespace EFCorePowerTools.Wizard
         public Wiz2_PickTablesDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
+            viewModel.WizardDialogBox = wizardView;
+
 #pragma warning disable S125 // Sections of code should not be commented out
             // telemetryAccess.TrackPageView(nameof(PickTablesDialog));
             DataContext = viewModel;
