@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
@@ -84,7 +84,7 @@
     </Menus>
 
     <Buttons>
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidWizardPoc" priority="0x0100" type="Button">
+      <!--<Button guid="guidDbContextPackageCmdSet" id="cmdidWizardPoc" priority="0x0100" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -93,7 +93,7 @@
         <Strings>
           <ButtonText>Reverse Engineer Wizard (preview)</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
 
       <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0101" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
