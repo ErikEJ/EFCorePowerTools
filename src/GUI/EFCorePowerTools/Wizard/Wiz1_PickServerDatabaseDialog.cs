@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -29,6 +29,8 @@ namespace EFCorePowerTools.Wizard
         public Wiz1_PickServerDatabaseDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
         {
+            viewModel.WizardDialogBox = wizardView;
+
             getDialogResult = () =>
             {
                 wizardViewModel.WizardEventArgs.PickServerDatabaseComplete = true;
@@ -170,6 +172,8 @@ namespace EFCorePowerTools.Wizard
             wizardViewModel.SelectedConfiguration = config;
             wizardViewModel.OptionsPath = config.ConfigPath;
             NextButton.IsEnabled = true;
+
+            wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
         }
 
         public void PublishConnections(IEnumerable<DatabaseConnectionModel> connections)

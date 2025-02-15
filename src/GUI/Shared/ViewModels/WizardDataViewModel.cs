@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -15,8 +15,10 @@ using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.DAL;
 using EFCorePowerTools.Locales;
+using EFCorePowerTools.Wizard;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
@@ -96,6 +98,8 @@ namespace EFCorePowerTools.ViewModels
         private string title = "Hello world";
         private bool mayIncludeConnectionString;
         private int selectedTemplateType;
+
+        public IWizardView WizardDialogBox { get; set; }
 
         public IServiceProvider ServiceProvider
         {
@@ -385,8 +389,10 @@ namespace EFCorePowerTools.ViewModels
         private void FilterSchemas_Executed()
         {
             IPickSchemasDialog dialog = pickSchemasDialogFactory();
+            ((DialogWindow)dialog).Owner = (NavigationWindow)WizardDialogBox;
+
             dialog.AddSchemas(Schemas);
-            var dialogResult = dialog.ShowAndAwaitUserResponse(true);
+            var dialogResult = dialog.ShowAndAwaitUserResponse(false);
             if (dialogResult.ClosedByOK)
             {
                 Schemas = new List<SchemaInfo>(dialogResult.Payload);
@@ -676,8 +682,10 @@ namespace EFCorePowerTools.ViewModels
         private void Advanced_Executed()
         {
             IAdvancedModelingOptionsDialog dialog = advancedModelingOptionsDialogFactory();
+            ((DialogWindow)dialog).Owner = (NavigationWindow)WizardDialogBox;
+
             dialog.ApplyPresets(Model);
-            var advancedModelingOptionsResult = dialog.ShowAndAwaitUserResponse(true);
+            var advancedModelingOptionsResult = dialog.ShowAndAwaitUserResponse(false);
             if (!advancedModelingOptionsResult.ClosedByOK)
             {
                 return;
