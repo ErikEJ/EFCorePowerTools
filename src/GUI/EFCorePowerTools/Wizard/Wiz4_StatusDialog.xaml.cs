@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -27,6 +27,9 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
+
+            FinishButton.IsEnabled = false;
+            wizardViewModel.GenerateStatus = string.Empty;
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.StatusbarGeneratingFiles);
         }
 
@@ -67,7 +70,6 @@ namespace EFCorePowerTools.Wizard
                 PreviousButton.IsEnabled = false;
                 FinishButton.IsEnabled = false;
 
-                wizardViewModel.GenerateStatus = string.Empty;
                 wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
                 var errorMessage = string.Empty;
 
