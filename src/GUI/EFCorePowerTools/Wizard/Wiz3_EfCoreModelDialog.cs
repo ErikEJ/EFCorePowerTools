@@ -1,7 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -14,7 +12,6 @@ using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
 using Microsoft.VisualStudio.Shell;
-using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
 {
@@ -114,14 +111,6 @@ namespace EFCorePowerTools.Wizard
                 };
             }
 
-            var project = wea.Project;
-            var optionsPath = wea.OptionsPath;
-            var options = wea.Options;
-            var userOptions = wea.UserOptions;
-            var namingOptionsAndPath = wea.NamingOptionsAndPath;
-            var onlyGenerate = wea.OnlyGenerate;
-            var forceEdit = wea.ForceEdit;
-
             if (IsPageDirty)
             {
                 var isSuccessful2 = false;
@@ -144,53 +133,7 @@ namespace EFCorePowerTools.Wizard
                 });
             }
 
-            wizardViewModel.GenerateStatus = string.Empty;
-            wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
-            cancelButton.IsEnabled = false; // Once processed we can't cancel - only finish
-            NextButton.IsEnabled = true;
-            var errorMessage = string.Empty;
-
             this.applyPresets(wizardViewModel.Model);
-
-            var isSuccessful = false;
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
-                {
-                    await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
-
-                    await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, wea);
-
-                    var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
-                    var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
-                    if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
-                    {
-                        missingProviderPackage = null;
-                    }
-
-                    wea.ReverseEngineerStatus = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
-
-                    var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
-                    if (File.Exists(postRunFile))
-                    {
-                        Process.Start($"\"{postRunFile}\"");
-                    }
-
-                    return true;
-                });
-
-                NextButton.IsEnabled = isSuccessful;
-            });
-
-            if (string.IsNullOrEmpty(errorMessage))
-            {
-                Statusbar.Status.ShowStatus();
-                wizardViewModel.GenerateStatus = wea.ReverseEngineerStatus;
-            }
-            else
-            {
-                wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
-            }
 
             Telemetry.TrackEvent("PowerTools.ReverseEngineer");
         }

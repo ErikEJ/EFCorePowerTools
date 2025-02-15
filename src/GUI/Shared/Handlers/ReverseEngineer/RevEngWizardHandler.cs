@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -115,7 +115,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 // data using existing business logic; to simplify wizard refactor this handler
                 // serves as the BLL (and DAL)
                 var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
-                wizard.ShowDialog();
+                wizard.Show();
                 await Task.Yield();
             }
             catch (AggregateException ae)
