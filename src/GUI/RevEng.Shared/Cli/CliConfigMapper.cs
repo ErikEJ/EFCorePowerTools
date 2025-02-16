@@ -306,7 +306,13 @@ namespace RevEng.Common.Cli
 
             foreach (var table in objectsToCheck)
             {
-                var dbTable = objects.Single(x => x.DisplayName == table.Name);
+                var dbTable = objects.SingleOrDefault(x => x.DisplayName == table.Name);
+
+                if (dbTable is null)
+                {
+                    continue;
+                }
+
                 var columnsThatCannotBeExcluded = dbTable.Columns.Where(x => x.IsForeignKey || x.IsPrimaryKey).Select(x => x.Name);
 
                 var badExclusions = columnsThatCannotBeExcluded.Intersect(table.ExcludedColumns);
