@@ -273,9 +273,6 @@ namespace Westwind.Wpf.Statusbar
                 // run in a dispatcher here to force the UI to be updated before render cycle
 #pragma warning disable VSTHRD001 // Avoid legacy thread switching APIs
                 Dispatcher.CurrentDispatcher.Invoke(() => ShowStatusInternal(message, timeoutMs, imageSource, spin, flashIcon: flashIcon));
-
-                // BillKrat: Allow the page to refresh so we don't have to look at blank page while the data loads
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
 #pragma warning restore VSTHRD001 // Avoid legacy thread switching APIs
             }
             else

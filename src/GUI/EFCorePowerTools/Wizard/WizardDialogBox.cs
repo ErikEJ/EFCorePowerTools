@@ -46,7 +46,14 @@ namespace EFCorePowerTools.Wizard
         {
             if (DialogResult == null)
             {
-                DialogResult = e.Result == WizardResult.Finished;
+                try
+                {
+                    DialogResult = e.Result == WizardResult.Finished;
+                }
+                catch
+                {
+                    this.Close();
+                }
             }
         }
     }

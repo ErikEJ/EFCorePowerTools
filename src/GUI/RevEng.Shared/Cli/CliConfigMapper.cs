@@ -306,7 +306,13 @@ namespace RevEng.Common.Cli
 
             foreach (var table in objectsToCheck)
             {
-                var dbTable = objects.Single(x => x.DisplayName == table.Name);
+                var dbTable = objects.SingleOrDefault(x => x.DisplayName == table.Name);
+
+                if (dbTable is null)
+                {
+                    continue;
+                }
+
                 var columnsThatCannotBeExcluded = dbTable.Columns.Where(x => x.IsForeignKey || x.IsPrimaryKey).Select(x => x.Name);
 
                 var badExclusions = columnsThatCannotBeExcluded.Intersect(table.ExcludedColumns);
@@ -321,7 +327,7 @@ namespace RevEng.Common.Cli
             return warnings;
         }
 
-        private static void ToSerializationModel<T>(IEnumerable<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
+        private static void ToSerializationModel<T>(IList<T> entities, Action<IEnumerable<SerializationTableModel>> addRange)
             where T : IEntity, new()
         {
             if (entities is null)
@@ -337,7 +343,16 @@ namespace RevEng.Common.Cli
 
             var serializationTableModels = entities.Where<T>(entity => ExclusionFilter(entity, excludeAll, filters)
                 && !string.IsNullOrEmpty(entity.Name))
-                .Select(entity => new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns, entity.ExcludedIndexes));
+                .Select(entity => new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns, entity.ExcludedIndexes))
+                .ToList();
+
+            if (typeof(T) == typeof(Table)
+                && !serializationTableModels.Any())
+            {
+                    // No tables selected, so add a dummy table in order to generate an empty DbContext
+                    serializationTableModels.Add(new SerializationTableModel($"Dummy_{new Guid("9A016951-3470-4926-A7B2-58392A3F8CF3")}", ObjectType.Table, null, null));
+            }
+
             addRange(serializationTableModels);
         }
 

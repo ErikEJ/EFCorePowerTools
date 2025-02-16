@@ -253,7 +253,8 @@
         },
         "refresh-object-lists": {
           "type": "boolean",
-          "default": true
+          "default": true,
+          "title": "Refresh the lists of objects (tables, views, stored procedures, functions) from the database in the config file during scaffolding"
         },
         "generate-mermaid-diagram": {
           "type": "boolean",

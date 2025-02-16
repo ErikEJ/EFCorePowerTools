@@ -50,7 +50,8 @@ namespace UnitTests
 
             Assert.NotNull(result);
 
-            Assert.IsEmpty(result);
+            Assert.AreEqual(result.Count, 1);
+            Assert.IsTrue(result[0].Name.StartsWith("Dummy"));
         }
 
         [Test]
