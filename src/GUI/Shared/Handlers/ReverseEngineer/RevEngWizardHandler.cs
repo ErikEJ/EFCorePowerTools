@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Common.Models;
@@ -32,6 +33,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
+        public static bool WizardIsRunning { get; set; }
 
         public RevEngWizardHandler(EFCorePowerToolsPackage package)
         {
@@ -114,8 +116,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 // which this class implements.  The wizard pages will use the BLL to process
                 // data using existing business logic; to simplify wizard refactor this handler
                 // serves as the BLL (and DAL)
-                var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
-                wizard.Show();
+                if (!WizardIsRunning)
+                {
+                    WizardIsRunning = true;
+                    var wizard = new WizardDialogBox(this, wizardArgs, wizardViewModel);
+                    wizard.Owner = Application.Current.MainWindow;
+                    wizard.Show();
+                }
+
                 await Task.Yield();
             }
             catch (AggregateException ae)
