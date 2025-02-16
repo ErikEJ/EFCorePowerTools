@@ -1,4 +1,4 @@
-﻿using Humanizer.Inflections;
+using Humanizer.Inflections;
 using NUnit.Framework;
 using RevEng.Core;
 
@@ -8,30 +8,20 @@ namespace UnitTests
     public class CustomHumanizerPluralizerTest
     {
         [Test]
-        public void DoesNotPluralizeUserStatus()
+        [TestCase("UserStatus")]
+        [TestCase("UserData")]
+        [TestCase("Delta")]
+        public void DoesNotPluralize(string word)
         {
-            var word = "UserStatus";
             Pluralize(word);
         }
 
         [Test]
-        public void DoesNotPluralizeUserData()
+        [TestCase("UserStatus")]
+        [TestCase("UserData")]
+        [TestCase("Delta")]
+        public void DoesNotSinguralize(string word)
         {
-            var word = "UserData";
-            Pluralize(word);
-        }
-
-        [Test]
-        public void DoesNotSinguralizeUserStatus()
-        {
-            var word = "UserStatus";
-            Singularize(word);
-        }
-
-        [Test]
-        public void DoesNotSinguralizeUserData()
-        {
-            var word = "UserData";
             Singularize(word);
         }
 
