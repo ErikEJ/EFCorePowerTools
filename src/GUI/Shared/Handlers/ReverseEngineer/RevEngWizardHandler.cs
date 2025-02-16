@@ -33,6 +33,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         private readonly VsDataHelper vsDataHelper;
         private List<string> legacyDiscoveryObjects = new List<string>();
         private Dictionary<string, string> mappedTypes = new Dictionary<string, string>();
+
         public static bool WizardIsRunning { get; set; }
 
         public RevEngWizardHandler(EFCorePowerToolsPackage package)
