@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
@@ -14,6 +14,7 @@ namespace RevEng.Core
     public class ConnectionStringResolver
     {
         private readonly string connectionString;
+        private readonly bool isDacpac;
 
         public ConnectionStringResolver(string connectionString)
         {
@@ -23,6 +24,7 @@ namespace RevEng.Core
 
             if (connectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase))
             {
+                isDacpac = true;
                 var database = Path.GetFileNameWithoutExtension(connectionString);
                 this.connectionString = $"Data Source=(local);Initial Catalog={database};Integrated Security=true;Encrypt=false";
             }
@@ -33,6 +35,12 @@ namespace RevEng.Core
         public IList<string> ResolveAlias()
         {
             var aliases = new List<string>();
+
+            if (isDacpac)
+            {
+                aliases.Add("mssql");
+                return aliases;
+            }
 
             try
             {
