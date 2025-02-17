@@ -1,10 +1,11 @@
-﻿// // Copyright (c) Microsoft. All rights reserved.
+// // Copyright (c) Microsoft. All rights reserved.
 // // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
 using EFCorePowerTools.BLL;
 using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.Wizard;
+using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.ViewModels;
 
 namespace EFCorePowerTools.Wizard
@@ -32,8 +33,12 @@ namespace EFCorePowerTools.Wizard
             // Launch the wizard
             var wizardLauncher = new WizardLauncher(wizardViewModel, this);
             WizardReturn += WizardLauncher_WizardReturn;
+            Closed += WizardDialogBox_Closed;
             Navigate(wizardLauncher);
         }
+
+        private void WizardDialogBox_Closed(object sender, EventArgs e) =>
+            RevEngWizardHandler.WizardIsRunning = false;
 
         public event WizardReturnEventHandler WizardReturn;
 
