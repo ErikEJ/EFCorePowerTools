@@ -18,7 +18,7 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -28,21 +28,21 @@ jobs:
         dotnet-version: '9.0.100'
 
     - name: Build CLI 8
-      run: dotnet build src\Core\efcpt.8\efcpt.8.csproj
+      run: dotnet build src/Core/efcpt.8/efcpt.8.csproj
 
     - name: Build CLI 9
-      run: dotnet build src\Core\efcpt.9\efcpt.9.csproj
+      run: dotnet build src/Core/efcpt.9/efcpt.9.csproj
   
     - name: Package CLI 8
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src/Core/efcpt.8/efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
 
     - name: Package CLI 9
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
+      run: dotnet pack src/Core/efcpt.9/efcpt.9.csproj -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
       
     - name: Core test project
-      run: dotnet test src\Core\NUnitTestCore\NUnitTestCore.csproj
+      run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
       continue-on-error: false
 
     - name: Publish NuGet

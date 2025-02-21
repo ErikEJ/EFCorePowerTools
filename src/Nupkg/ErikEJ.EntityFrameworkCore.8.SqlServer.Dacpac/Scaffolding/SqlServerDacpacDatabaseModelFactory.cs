@@ -589,7 +589,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 try
                 {
-                    return Convert.ChangeType(defaultValueSql, type, CultureInfo.CurrentCulture);
+                    return Convert.ChangeType(defaultValueSql, type, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exp) when (exp is InvalidCastException or FormatException or OverflowException or ArgumentNullException)
                 {
