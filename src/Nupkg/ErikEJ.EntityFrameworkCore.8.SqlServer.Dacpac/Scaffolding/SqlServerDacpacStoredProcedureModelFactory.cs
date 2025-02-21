@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -68,6 +68,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     if (options.FullModel)
                     {
+                        procedure.HasValidResultSet = true;
+
                         procedure.Parameters = GetStoredProcedureParameters(proc);
 
                         if (options.MappedModules?.ContainsKey(key) ?? false)
@@ -78,10 +80,11 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #pragma warning disable CA1031 // Do not catch general exception types
                         try
                         {
-                            procedure.Results.Add(GetStoredProcedureResultElements(proc));
+                            procedure.Results.AddRange(GetStoredProcedureResultElements(proc));
                         }
                         catch (Exception ex)
                         {
+                            procedure.HasValidResultSet = false;
                             errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.ToString());
                         }
 #pragma warning restore CA1031 // Do not catch general exception types
@@ -135,7 +138,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var newParameter = new ModuleParameter()
                 {
-                    Length = parameter.Length,
+                    Length = parameter.IsMax ? -1 : parameter.Length,
                     Name = parameter.Name.Parts[2].Trim('@'),
                     Output = parameter.IsOutput,
                     Precision = parameter.Precision,
@@ -161,9 +164,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return result;
         }
 
-        private static List<ModuleResultElement> GetStoredProcedureResultElements(TSqlProcedure proc)
+        private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
-            var result = new List<ModuleResultElement>();
+            var result = new List<List<ModuleResultElement>>();
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
 
             if (metaProc.Selects == null || !metaProc.Selects.Any())
@@ -176,12 +179,15 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 if (column.DataTypes != null)
                 {
-                    result.Add(new ModuleResultElement
+                    result.Add(new List<ModuleResultElement>
                     {
-                        Name = column.Name,
-                        Nullable = column.IsNullable,
-                        StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
-                        Ordinal = ordinal++,
+                        new ModuleResultElement
+                        {
+                            Name = column.Name,
+                            Nullable = column.IsNullable,
+                            StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
+                            Ordinal = ordinal++,
+                        },
                     });
                 }
             }
