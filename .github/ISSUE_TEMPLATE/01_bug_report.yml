@@ -77,3 +77,11 @@ body:
         Visual Studio 2022 17.13
     validations:
       required: false
+  - type: dropdown
+    id: tfour
+    attributes:
+      label: Do you use T4 templates?
+      multiple: false
+      options:
+        - Yes
+        - No
