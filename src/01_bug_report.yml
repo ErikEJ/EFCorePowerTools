@@ -77,3 +77,27 @@ body:
         Visual Studio 2022 17.13
     validations:
       required: false
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Do you use T4 templates?
+      multiple: false
+      options:
+        - No
+        - Yes
+  - type: dropdown
+    id: handlebars
+    attributes:
+      label: Do you use Handlebars templates?
+      multiple: false
+      options:
+        - No
+        - Yes
+  - type: dropdown
+    id: dacpac
+    attributes:
+      label:  Is a SQL Server .dacpac / Database project used?
+      multiple: false
+      options:
+        - No
+        - Yes
