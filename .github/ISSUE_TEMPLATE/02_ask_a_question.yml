@@ -1,0 +1,81 @@
+name: ❓ Ask a question
+description: Ask a question about EF Core Power Tools
+labels: ["customer-reported"]
+body:
+  - type: markdown
+    attributes:
+      value: |-
+        Remember:
+
+        * Please check that the [documentation](https://github.com/ErikEJ/EFCorePowerTools/wiki) does not explain the behavior you are seeing.
+        * Please search in [closed](https://github.com/ErikEJ/EFCorePowerTools/issues?q=is%3Aissue%20state%3Aclosed) issues to check that your question has not already been answered.
+  - type: textarea
+    id: description
+    attributes:
+      label: Question
+    validations:
+      required: true
+  - type: input
+    id: version-efcore
+    attributes:
+      label: EF Core Power Tools version
+      placeholder: |-
+        2.6.0
+    validations:
+      required: false
+  - type: input
+    id: version-cli
+    attributes:
+      label: EF Core Power Tools CLI version
+      placeholder: |-
+        2.6.0
+    validations:
+      required: false      
+  - type: input
+    id: version-provider
+    attributes:
+      label: Database provider
+      placeholder: |-
+        Microsoft.EntityFrameworkCore.SqlServer
+    validations:
+      required: false
+  - type: input
+    id: version-target
+    attributes:
+      label: Target framework
+      placeholder: |-
+        .NET 9.0
+    validations:
+      required: false
+  - type: input
+    id: version-ide
+    attributes:
+      label: IDE
+      placeholder: |-
+        Visual Studio 2022 17.13
+    validations:
+      required: false
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Do you use T4 templates?
+      multiple: false
+      options:
+        - No
+        - Yes
+  - type: dropdown
+    id: handlebars
+    attributes:
+      label: Do you use Handlebars templates?
+      multiple: false
+      options:
+        - No
+        - Yes
+  - type: dropdown
+    id: dacpac
+    attributes:
+      label:  Is a SQL Server .dacpac / Database project used?
+      multiple: false
+      options:
+        - No
+        - Yes
