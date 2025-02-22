@@ -77,11 +77,13 @@ body:
         Visual Studio 2022 17.13
     validations:
       required: false
-  - type: dropdown
-    id: tfour
+  - type: checkboxes
+    id: other-features
     attributes:
-      label: Do you use T4 templates?
-      multiple: false
+      label: Additional features in use
+      description: You may select more than one.
       options:
-        - Yes
-        - No
+        - label: T4 templates
+        - label: SQL Server .dacpac
+        - label: Handlebars template
+
