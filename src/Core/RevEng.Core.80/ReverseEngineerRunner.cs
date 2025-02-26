@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
@@ -66,6 +67,9 @@ namespace RevEng.Core
             }
             else
             {
+                var code = serviceProvider.GetRequiredService<ICSharpHelper>();
+                options.ProjectRootNamespace = code.Identifier(options.ProjectRootNamespace, capitalize: true);
+
                 modelNamespace = !string.IsNullOrEmpty(options.ModelNamespace)
                     ? options.ProjectRootNamespace + "." + options.ModelNamespace
                     : PathHelper.GetNamespaceFromOutputPath(outputDir, options.ProjectPath, options.ProjectRootNamespace);
