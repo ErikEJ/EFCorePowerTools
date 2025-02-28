@@ -26,7 +26,6 @@ namespace Modelling
                     {
                         result = EfCoreModelBuilder.GenerateDatabaseCreateScript(args[1], args[2]);
                     }
-#if EFCOMPARE
                     else if (args.Contains("contextlist") && args.Length >= 3)
                     {
                         result = EfCoreCompareBuilder.GenerateDbContextList(args[1], args[2]);
@@ -35,7 +34,6 @@ namespace Modelling
                     {
                         result = EfCoreCompareBuilder.GenerateSchemaCompareResult(args[1], args[2], args[3], args[4]);
                     }
-#endif
                     else
                     {
                         result = EfCoreModelBuilder.GenerateDebugView(args[0], args[1]);
