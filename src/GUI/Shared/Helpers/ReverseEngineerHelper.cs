@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -28,11 +28,6 @@ namespace EFCorePowerTools.Helpers
             }
 
             return result;
-        }
-
-        public static void DropT4Templates(string projectPath)
-        {
-            DropTemplates(projectPath, projectPath, CodeGenerationMode.EFCore8, false);
         }
 
         public static string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)

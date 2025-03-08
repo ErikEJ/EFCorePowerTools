@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 namespace EFCorePowerTools
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1303:Const field names should begin with upper-case letter", Justification = "Reviewed")]
@@ -12,7 +12,6 @@ namespace EFCorePowerTools
         public const uint cmdidAbout = 0x006;
         public const uint cmdidDgmlBuild = 0x0100;
         public const uint cmdidDgmlNuget = 0x0200;
-        public const uint cmdidT4Drop = 0x0250;
         public const uint cmdidSqlBuild = 0x0400;
         public const uint cmdidDebugViewBuild = 0x0450;
         public const uint cmdidDbCompare = 0x008;
