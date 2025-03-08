@@ -184,14 +184,6 @@ namespace EFCorePowerTools
                         OnProjectMenuBeforeQueryStatus,
                         new CommandID(
                             GuidList.GuidDbContextPackageCmdSet,
-                            (int)PkgCmdIDList.cmdidT4Drop)));
-
-                    oleMenuCommandService.AddCommand(new OleMenuCommand(
-                        OnProjectContextMenuInvokeHandler,
-                        null,
-                        OnProjectMenuBeforeQueryStatus,
-                        new CommandID(
-                            GuidList.GuidDbContextPackageCmdSet,
                             (int)PkgCmdIDList.cmdidAbout)));
 
                     oleMenuCommandService.AddCommand(new OleMenuCommand(
@@ -569,9 +561,6 @@ namespace EFCorePowerTools
                 case PkgCmdIDList.cmdidSqlBuild:
                     menuCommand.Text = ButtonLocale.cmdidSqlBuild;
                     break;
-                case PkgCmdIDList.cmdidT4Drop:
-                    menuCommand.Text = ButtonLocale.cmdidT4Drop;
-                    break;
 
                 default:
                     break;
@@ -595,8 +584,7 @@ namespace EFCorePowerTools
             }
 
             if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidReverseEngineerCodeFirst
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc
-                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
+                || menuCommand.CommandID.ID == PkgCmdIDList.cmdidWizardPoc)
             {
                 menuCommand.Visible = await project.CanUseReverseEngineerAsync();
                 return;
@@ -861,10 +849,6 @@ namespace EFCorePowerTools
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlNuget)
                 {
                     await DgmlNugetHandler.InstallDgmlNugetAsync(project);
-                }
-                else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidT4Drop)
-                {
-                    DgmlNugetHandler.UnzipT4Templates(project);
                 }
                 else if (menuCommand.CommandID.ID == PkgCmdIDList.cmdidDgmlBuild)
                 {

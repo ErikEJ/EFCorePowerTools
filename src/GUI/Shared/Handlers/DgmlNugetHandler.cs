@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using Community.VisualStudio.Toolkit;
@@ -23,13 +23,6 @@ namespace EFCorePowerTools.Handlers
             var window = await VS.Documents.OpenInPreviewTabAsync(path);
             await window.WindowFrame.ShowAsync();
             Telemetry.TrackEvent("PowerTools.InstallDgmlNuget");
-        }
-
-        public static void UnzipT4Templates(Project project)
-        {
-            var path = Path.GetDirectoryName(project.FullPath);
-
-            ReverseEngineerHelper.DropT4Templates(path);
         }
 
         private static string GetReadme()
