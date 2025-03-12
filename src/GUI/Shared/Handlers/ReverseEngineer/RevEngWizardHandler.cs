@@ -763,14 +763,14 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
 #pragma warning restore SA1202 // Elements should be ordered by access
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
             IEnumerable<TableModel> predefinedTables = null;
 
             try
             {
                 if (!wizardArgs.IsInvokedByWizard)
                 {
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
                     await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
                 }
 
